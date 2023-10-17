@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { MdOutlineMeetingRoom } from "react-icons/md";
+import { MdOutlineDashboard } from "react-icons/md";
+import useAuth from "../hooks/useAuth.js";
+import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const [isHbMenu, setHbMenu] = useState(true);
 
   const handleResize = () => {
@@ -23,22 +26,21 @@ const Dashboard = () => {
       <div className={`grid grid-cols-1 md:grid-cols-[18rem_auto]`}>
         <div
           className={`md:self-start fixed md:sticky top-0 ${
-            isHbMenu ? "left-96" : "left-0"
-          } bg-gray-500 text-white text-lg w-36 md:w-auto h-full md:h-auto px-2 py-5 z-30 transition-[left] duration-500`}
+            isHbMenu ? "-left-96" : "left-0"
+          } bg-gray-500 text-white text-lg w-36 md:w-auto h-full md:h-auto px-2 py-5 md:-my-10 z-30 transition-[left] duration-500`}
         >
-          <div className={`h-full md:h-[calc(100vh_-_5rem)] overflow-y-auto`}>
-            <ul>
+          <div className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}>
+            <ul className={`space-y-1.5`}>
               <li>
-                <div className={`flex`}>
-                  <MdOutlineMeetingRoom />
-                  <span>Rooms</span>
-                </div>
-                <ul className={`ml-5`}>
-                  <li>
-                    <Link to={`/dashboard/add-room`}>Add Room</Link>
-                  </li>
-                </ul>
+                <Link
+                  to={`/dashboard`}
+                  className={`flex hover:text-green-slimy transition-colors duration-500`}
+                >
+                  <MdOutlineDashboard />
+                  <span className={`-mt-0.5`}>Dashboard</span>
+                </Link>
               </li>
+              {user.status === "manager" ? <ManagerSBItems /> : null}
             </ul>
           </div>
         </div>
