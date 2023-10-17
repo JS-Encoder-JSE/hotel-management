@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Admin",
+    "email": "admin@xyz.com",
+    "password": 12345678,
+    "status": "admin"
+  },
+  {
+    "name": "Owner",
+    "email": "owner@xyz.com",
+    "password": 12345678,
+    "status": "owner"
+  },
+  {
+    "name": "Manager",
+    "email": "manager@xyz.com",
+    "password": 12345678,
+    "status": "manager"
+  }
+]
