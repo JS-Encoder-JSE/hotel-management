@@ -9,7 +9,7 @@ const ManagerRoute = ({ children }) => {
     user.status === "manager" ? (
       children
     ) : (
-      <Navigate to="dashboard"></Navigate>
+      <Navigate to="/dashboard"></Navigate>
     )
   ) : null;
 };
