@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -19,6 +20,7 @@ const validationSchema = yup.object({
 
 const SignIn = () => {
   const { signIn } = useAuth();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -28,11 +30,14 @@ const SignIn = () => {
     validationSchema,
     onSubmit: (values) => {
       // console.log(values);
-      signIn(values).then((response) =>
-        response
-          ? toast.success("Sign In Successfully!")
-          : toast.error("Sign In Unsuccessfully!"),
-      );
+      signIn(values).then((response) => {
+        if (response) {
+          navigate("dashboard");
+          toast.success("Sign In Successfully!");
+        } else {
+          toast.error("Sign In Unsuccessfully!");
+        }
+      });
     },
   });
 

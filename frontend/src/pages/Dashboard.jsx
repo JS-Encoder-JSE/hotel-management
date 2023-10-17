@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import {
-  MdKeyboardArrowDown,
-  MdOutlineDashboard,
-  MdOutlineMeetingRoom,
-} from "react-icons/md";
+import { MdOutlineDashboard } from "react-icons/md";
+import useAuth from "../hooks/useAuth.js";
+import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const [isHbMenu, setHbMenu] = useState(true);
 
   const handleResize = () => {
@@ -41,27 +40,7 @@ const Dashboard = () => {
                   <span className={`-mt-0.5`}>Dashboard</span>
                 </Link>
               </li>
-              <li>
-                <div
-                  className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-                >
-                  <div className={`flex`}>
-                    <MdOutlineMeetingRoom />
-                    <span className={`-mt-0.5`}>Rooms</span>
-                  </div>
-                  <MdKeyboardArrowDown />
-                </div>
-                <ul className={`ml-5`}>
-                  <li>
-                    <Link
-                      to={`/dashboard/add-room`}
-                      className={`hover:text-green-slimy transition-colors duration-500`}
-                    >
-                      Add Room
-                    </Link>
-                  </li>
-                </ul>
-              </li>
+              {user.status === "manager" ? <ManagerSBItems /> : null}
             </ul>
           </div>
         </div>

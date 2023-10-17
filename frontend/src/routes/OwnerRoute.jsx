@@ -9,7 +9,7 @@ const OwnerRoute = ({ children }) => {
     user.status === "owner" ? (
       children
     ) : (
-      <Navigate to="dashboard"></Navigate>
+      <Navigate to="/dashboard"></Navigate>
     )
   ) : null;
 };

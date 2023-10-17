@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const existUser = sessionStorage.getItem("user");
+    const existUser = sessionStorage.getItem("_user");
 
     if (existUser) setUser(JSON.parse(existUser));
     else setUser(null);
