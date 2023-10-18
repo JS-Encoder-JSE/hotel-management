@@ -7,11 +7,12 @@ import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Header from "./pages/Header.jsx";
-// import AddRoom from "./components/AddRoom.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import ManageRoom from "./pages/room/ManageRoom.jsx";
 import AddRoom from "./pages/room/AddRoom.jsx";
 import AddFood from "./components/AddFood.jsx";
+import FoodCard from "./components/Food/FoodCard.jsx";
+import EditFood from "./components/Food/EditFood.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -57,8 +58,32 @@ const App = () => {
             },
             {
               path: "add-food",
-              element: <AddFood />,
+              element: (
+                <ManagerRoute>
+                  <AddFood />
+                </ManagerRoute>
+              ),
             },
+            {
+              path: "Foodcard",
+              element: (
+                <ManagerRoute>
+                  <FoodCard />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "edit-food",
+              element: (
+                <ManagerRoute>
+                  <EditFood />
+                </ManagerRoute>
+              ),
+            },
+            // {
+            //   path: "add-food",
+            //   element: <AddFood />,
+            // },
             {
               path: "header",
               element: <Header />,

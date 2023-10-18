@@ -10,12 +10,9 @@ const validationSchema = yup.object({
     price: yup.string().required("Price is required"),
     setMenu: yup.string().required("setMenu is required"),
     text: yup.string().required("text is required"),
-
-//   category: yup.string().required("Category is required"),
-image: yup.string().required("image is required"),
+    image: yup.string().required("image is required"),
   
-//   bedSize: yup.string().required("Bed size is required"),
-//   floorNumber: yup.string().required("Floor number is required"),
+
 
 });
 
