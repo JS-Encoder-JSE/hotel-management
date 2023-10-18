@@ -1,10 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MdKeyboardArrowDown, MdOutlineMeetingRoom } from "react-icons/md";
+import {
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+  MdOutlineMeetingRoom,
+} from "react-icons/md";
 
-const ManagerSbItems = () => {
+const ManagerSbItems = ({ handleSBItems }) => {
   return (
-    <li>
+    <li className={`group`} onClick={(e) => handleSBItems(e)}>
       <div
         className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
       >
@@ -12,9 +16,14 @@ const ManagerSbItems = () => {
           <MdOutlineMeetingRoom />
           <span className={`-mt-0.5`}>Rooms</span>
         </div>
-        <MdKeyboardArrowDown />
+        <span className={`group-[.active]:hidden`}>
+          <MdKeyboardArrowDown />
+        </span>
+        <span className={`hidden group-[.active]:inline`}>
+          <MdKeyboardArrowUp />
+        </span>
       </div>
-      <ul className={`ml-5`}>
+      <ul className={`group-[.active]:block hidden ml-5`}>
         <li>
           <Link
             to={`/dashboard/add-room`}

@@ -13,6 +13,10 @@ const Dashboard = () => {
     else setHbMenu(true);
   };
 
+  const handleSBItems = (e) => {
+    e.currentTarget.classList.toggle("active");
+  };
+
   useEffect(() => {
     handleResize();
 
@@ -40,7 +44,9 @@ const Dashboard = () => {
                   <span className={`-mt-0.5`}>Dashboard</span>
                 </Link>
               </li>
-              {user.status === "manager" ? <ManagerSBItems /> : null}
+              {user.status === "manager" ? (
+                <ManagerSBItems handleSBItems={handleSBItems} />
+              ) : null}
             </ul>
           </div>
         </div>
