@@ -58,8 +58,6 @@ const InventoryManagement = () => {
         const value = e.target.value;
         const updatedItems = [...items];
 
-        // if(value)
-
         if (value > 0) {
             updatedItems[index].active = true;
         }
