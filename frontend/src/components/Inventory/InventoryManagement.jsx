@@ -55,18 +55,16 @@ const InventoryManagement = () => {
     };
 
     const handleQuantity = (e, index) => {
-        const value = e.target.value;
+        const value = e.target.value ? e.target.value : 1;
         const updatedItems = [...items];
 
-        if (value > 0) {
+        if (!isNaN(value) && value >= 0) {
             updatedItems[index].active = true;
-        }
-
-        else {
+            updatedItems[index].quantity = value;
+        } else {
             updatedItems[index].active = false;
+            updatedItems[index].quantity = 0;
         }
-
-        updatedItems[index].quantity = value;
         setItems(updatedItems);
     }
 
