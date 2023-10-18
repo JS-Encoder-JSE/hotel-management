@@ -29,9 +29,8 @@ const Dashboard = () => {
     <section className={`py-10`}>
       <div className={`grid grid-cols-1 md:grid-cols-[18rem_auto]`}>
         <div
-          className={`md:self-start fixed md:sticky top-0 ${
-            isHbMenu ? "-left-96" : "left-0"
-          } bg-gray-500 text-white text-lg w-36 md:w-auto h-full md:h-auto px-2 py-5 md:-my-10 z-30 transition-[left] duration-500`}
+          className={`md:self-start fixed md:sticky top-0 ${isHbMenu ? "-left-96" : "left-0"
+            } bg-gray-500 text-white text-lg w-36 md:w-auto h-full md:h-auto px-2 py-5 md:-my-10 z-30 transition-[left] duration-500`}
         >
           <div className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}>
             <ul className={`space-y-1.5`}>
@@ -45,7 +44,10 @@ const Dashboard = () => {
                 </Link>
               </li>
               {user.status === "manager" ? (
-                <ManagerSBItems handleSBItems={handleSBItems} />
+                <>
+                  <ManagerSBItems handleSBItems={handleSBItems} category={"Rooms"} itemName={"Add Room"} to={'add-room'} />
+                  <ManagerSBItems handleSBItems={handleSBItems} category={"Inventory"} itemName={"Manage Inventory"} to={''} />
+                </>
               ) : null}
             </ul>
           </div>

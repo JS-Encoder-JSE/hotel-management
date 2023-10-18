@@ -7,6 +7,7 @@ import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import AddRoom from "./components/AddRoom.jsx";
+import InventoryManagement from "./components/Inventory/InventoryManagement.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
