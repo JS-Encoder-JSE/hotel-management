@@ -11,12 +11,12 @@ const validationSchema = yup.object({
 
 const InventoryManagement = () => {
     const [items, setItems] = useState([
-        { name: 'Bed Sheet', quantity: 0 },
-        { name: 'Pillow', quantity: 0 },
-        { name: 'Cutlery', quantity: 0 },
-        { name: 'Cookware', quantity: 0 },
-        { name: 'Soap', quantity: 0 },
-        { name: 'Tissue', quantity: 0 },
+        { name: 'Bed Sheet', quantity: 0, active: false },
+        { name: 'Pillow', quantity: 0, active: false },
+        { name: 'Cutlery', quantity: 0, active: false },
+        { name: 'Cookware', quantity: 0, active: false },
+        { name: 'Soap', quantity: 0, active: false },
+        { name: 'Tissue', quantity: 0, active: false },
     ]);
 
 
@@ -31,6 +31,15 @@ const InventoryManagement = () => {
         },
     });
 
+
+    const handleSelectItem = (index) => {
+        const selectItem = [...items];
+        selectItem[index].active = !selectItem[index].active;
+        if (selectItem[index].active === false) {
+            setItems(selectItem[index].quantity = 0)
+        }
+        setItems(selectItem)
+    }
 
     const handleIncrease = (index) => {
         const updatedItems = [...items];
@@ -116,20 +125,28 @@ const InventoryManagement = () => {
                         <tbody>
                             {items.map((item, index) => (
                                 <tr key={index} className="grid grid-cols-5 items-center">
-                                    <label className="ml-5">
-                                        <input type="checkbox" className="checkbox" />
-                                    </label>
+                                    <td>
+                                        <label className="ml-5">
+                                            <input type="checkbox" onChange={() => handleSelectItem(index)} className="checkbox" />
+                                        </label>
+                                    </td>
                                     <td className="col-span-3">{item.name}</td>
                                     <td className="col-span-1 flex items-center gap-4 text-lg">
                                         <button
                                             onClick={() => handleDecrease(index)}
+                                            type='btn'
                                             disabled={item.quantity === 0}
-                                            className={item.quantity === 0 && 'opacity-5'}
+                                            className={item.quantity === 0 ? 'opacity-50' : null}
                                         >
                                             <FaMinusCircle />
                                         </button>
                                         {item.quantity}
-                                        <button onClick={() => handleIncrease(index)}>
+                                        <button
+                                            onClick={() => handleIncrease(index)}
+                                            type='btn'
+                                            disabled={item.active === false}
+                                            className={item.active === false ? 'opacity-50' : null}
+                                        >
                                             <FaPlusCircle />
                                         </button>
                                     </td>
@@ -138,11 +155,6 @@ const InventoryManagement = () => {
                         </tbody>
                     </table>
                 </div >
-
-
-
-
-
 
 
                 {/* submit button */}
