@@ -115,6 +115,7 @@ const InventoryManagement = () => {
                                         <input
                                             defaultValue={item.quantity}
                                             onChange={(e) => handleQuantity(e, index)}
+                                            disabled={item.active === false}
                                             className='w-12 flex text-center outline-none rounded-md'
                                         />
                                         <button
