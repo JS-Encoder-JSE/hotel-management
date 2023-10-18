@@ -19,7 +19,6 @@ const InventoryManagement = () => {
         { name: 'Tissue', quantity: 0, active: false },
     ]);
 
-
     const formik = useFormik({
         initialValues: {
             itemName: "",
@@ -30,7 +29,6 @@ const InventoryManagement = () => {
             console.log(values);
         },
     });
-
 
     const handleSelectItem = (index) => {
         const selectItem = [...items];
@@ -55,6 +53,21 @@ const InventoryManagement = () => {
         }
     };
 
+    const handleQuantity = (e, index) => {
+        console.log(e.target.value);
+        const updatedItems = [...items];
+
+        if (e.target.value > 0) {
+            updatedItems[index].active = true;
+        }
+
+        else{
+            updatedItems[index].active = false;
+        }
+
+        updatedItems[index].quantity = e.target.value;
+        setItems(updatedItems);
+    }
 
     return (
         <div className={`space-y-10`}>
@@ -98,7 +111,12 @@ const InventoryManagement = () => {
                                         >
                                             <FaMinusCircle />
                                         </button>
-                                        {item.quantity}
+                                        {/* {item.quantity} */}
+                                        <input
+                                            defaultValue={item.quantity}
+                                            onChange={(e) => handleQuantity(e, index)}
+                                            className='w-12 flex text-center outline-none rounded-md'
+                                        />
                                         <button
                                             onClick={() => handleIncrease(index)}
                                             type='btn'
