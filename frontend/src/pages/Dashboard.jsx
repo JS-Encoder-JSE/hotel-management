@@ -14,7 +14,7 @@ const Dashboard = () => {
   };
 
   const handleSBItems = (e) => {
-    e.currentTarget.classList.toggle("active");
+    e.currentTarget.parentElement.classList.toggle("active");
   };
 
   useEffect(() => {

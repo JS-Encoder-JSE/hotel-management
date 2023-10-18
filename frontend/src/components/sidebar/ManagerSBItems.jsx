@@ -8,9 +8,10 @@ import {
 
 const ManagerSbItems = ({ handleSBItems }) => {
   return (
-    <li className={`group`} onClick={(e) => handleSBItems(e)}>
+    <li className={`group`}>
       <div
         className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+        onClick={(e) => handleSBItems(e)}
       >
         <div className={`flex`}>
           <MdOutlineMeetingRoom />
@@ -30,6 +31,14 @@ const ManagerSbItems = ({ handleSBItems }) => {
             className={`hover:text-green-slimy transition-colors duration-500`}
           >
             Add Room
+          </Link>
+        </li>
+        <li>
+          <Link
+            to={`/dashboard/manage-room`}
+            className={`hover:text-green-slimy transition-colors duration-500`}
+          >
+            Manage Room
           </Link>
         </li>
       </ul>
