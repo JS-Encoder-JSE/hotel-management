@@ -41,8 +41,9 @@ const InventoryManagement = () => {
 
     const handleIncrease = (index) => {
         const updatedItems = [...items];
-        updatedItems[index].quantity += 1;
+        updatedItems[index].quantity = parseInt(updatedItems[index].quantity + 1);
         setItems(updatedItems);
+        console.log(typeof (updatedItems[index].quantity));
     };
 
     const handleDecrease = (index) => {
@@ -61,7 +62,7 @@ const InventoryManagement = () => {
             updatedItems[index].active = true;
         }
 
-        else{
+        else {
             updatedItems[index].active = false;
         }
 
@@ -113,7 +114,8 @@ const InventoryManagement = () => {
                                         </button>
                                         {/* {item.quantity} */}
                                         <input
-                                            defaultValue={item.quantity}
+                                            type='number'
+                                            value={item.quantity}
                                             onChange={(e) => handleQuantity(e, index)}
                                             disabled={item.active === false}
                                             className='w-12 flex text-center outline-none rounded-md'
