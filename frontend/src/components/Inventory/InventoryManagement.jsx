@@ -5,7 +5,7 @@ import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
-    category: yup.string().required("Category is required"),
+    itemName: yup.string(),
     price: yup.string().required("Price is required"),
 });
 
@@ -22,7 +22,7 @@ const InventoryManagement = () => {
 
     const formik = useFormik({
         initialValues: {
-            category: "",
+            itemName: "",
             price: "",
         },
         validationSchema,
@@ -130,7 +130,9 @@ const InventoryManagement = () => {
                                             <input type="checkbox" onChange={() => handleSelectItem(index)} className="checkbox" />
                                         </label>
                                     </td>
-                                    <td className="col-span-3">{item.name}</td>
+                                    <td className="col-span-3">
+                                        {item.name}
+                                    </td>
                                     <td className="col-span-1 flex items-center gap-4 text-lg">
                                         <button
                                             onClick={() => handleDecrease(index)}
