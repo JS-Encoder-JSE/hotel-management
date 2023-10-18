@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import { FaSearch } from "react-icons/fa";
-import RoomCard from "./RoomCard.jsx";
+import RoomCard from "../../components/room/RoomCard.jsx";
 
 const ManageRoom = () => {
   const formik = useFormik({

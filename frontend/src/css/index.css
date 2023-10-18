@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* === Swiper Slider === */
+.swiper-er-button-disabled {
+  @apply bg-green-slimy/50 pointer-events-none;
+}
+
+.swiper-er-pagination .swiper-pagination-bullet {
+  @apply w-1.5 h-1.5;
+}
+
+.swiper-er-pagination .swiper-pagination-bullet-active {
+  @apply bg-green-slimy;
+}
