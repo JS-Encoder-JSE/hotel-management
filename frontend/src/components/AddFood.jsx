@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle,FaUpload } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
@@ -124,8 +124,39 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
-        {/* Description box */}
-        <div className="flex flex-col gap-3">
+       
+     
+     {/* room photos */}
+     <div className="flex flex-col gap-3">
+          <label className="relative input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none">
+            {formik.values.photos ? (
+              <span>{formik.values.photos.length + " files"}</span>
+            ) : (
+              <span className={`flex items-baseline space-x-1.5`}>
+                <FaUpload />
+                <span>Choose photos</span>
+              </span>
+            )}
+            <input
+              type="file"
+              multiple
+              name="photos"
+              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+              onChange={(e) =>
+                formik.setFieldValue("photos", e.currentTarget.files)
+              }
+              onBlur={formik.handleBlur}
+            />
+          </label>
+          {formik.touched.photos && Boolean(formik.errors.photos) ? (
+            <small className="text-red-600">
+              {formik.touched.photos && formik.errors.photos}
+            </small>
+          ) : null}
+        </div>
+
+         {/* Description box */}
+         <div className="flex flex-col gap-3">
           <textarea
             type="text"
             placeholder="Description"
@@ -138,25 +169,6 @@ const AddFood = () => {
           {formik.touched.text && Boolean(formik.errors.text) ? (
             <small className="text-red-600">
               {formik.touched.text && formik.errors.text}
-            </small>
-          ) : null}
-        </div>
-     
-  
-        {/* floor number box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="file"
-            placeholder="Choose file"
-            name="image"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-            value={formik.values.image}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.image && Boolean(formik.errors.image) ? (
-            <small className="text-red-600">
-              {formik.touched.image && formik.errors.image}
             </small>
           ) : null}
         </div>
