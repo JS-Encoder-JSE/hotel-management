@@ -6,11 +6,12 @@ import ManagerRoute from "./routes/ManagerRoute.jsx";
 import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import AddRoom from "./components/AddRoom.jsx";
 import Header from "./pages/Header.jsx";
-import AddFood from "./components/AddFood.jsx";
+// import AddRoom from "./components/AddRoom.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import ManageRoom from "./pages/room/ManageRoom.jsx";
+import AddRoom from "./pages/room/AddRoom.jsx";
+import AddFood from "./components/AddFood.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
