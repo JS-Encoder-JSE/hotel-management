@@ -6,7 +6,7 @@ import {
   MdOutlineMeetingRoom,
 } from "react-icons/md";
 
-const ManagerSbItems = ({ handleSBItems }) => {
+const ManagerSbItems = ({ handleSBItems, category, itemName, to }) => {
   return (
     <li className={`group`} onClick={(e) => handleSBItems(e)}>
       <div
@@ -14,7 +14,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
       >
         <div className={`flex`}>
           <MdOutlineMeetingRoom />
-          <span className={`-mt-0.5`}>Rooms</span>
+          <span className={`-mt-0.5`}>{category}</span>
         </div>
         <span className={`group-[.active]:hidden`}>
           <MdKeyboardArrowDown />
@@ -26,10 +26,10 @@ const ManagerSbItems = ({ handleSBItems }) => {
       <ul className={`group-[.active]:block hidden ml-5`}>
         <li>
           <Link
-            to={`/dashboard/add-room`}
+            to={`/dashboard/${to}`}
             className={`hover:text-green-slimy transition-colors duration-500`}
           >
-            Add Room
+            {itemName}
           </Link>
         </li>
       </ul>
