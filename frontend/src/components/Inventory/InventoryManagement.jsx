@@ -41,7 +41,7 @@ const InventoryManagement = () => {
 
     const handleIncrease = (index) => {
         const updatedItems = [...items];
-        updatedItems[index].quantity = parseInt(updatedItems[index].quantity + 1);
+        updatedItems[index].quantity = parseInt(updatedItems[index].quantity) + 1;
         setItems(updatedItems);
         console.log(typeof (updatedItems[index].quantity));
     };
@@ -55,10 +55,12 @@ const InventoryManagement = () => {
     };
 
     const handleQuantity = (e, index) => {
-        console.log(e.target.value);
+        const value = e.target.value;
         const updatedItems = [...items];
 
-        if (e.target.value > 0) {
+        // if(value)
+
+        if (value > 0) {
             updatedItems[index].active = true;
         }
 
@@ -66,7 +68,7 @@ const InventoryManagement = () => {
             updatedItems[index].active = false;
         }
 
-        updatedItems[index].quantity = e.target.value;
+        updatedItems[index].quantity = value;
         setItems(updatedItems);
     }
 
