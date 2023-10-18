@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineMenu } from "react-icons/ai";
+import profile from '../../src/assets/profile.jpeg'
+
 
 const Header = () => {
+  const [time,setTime] = useState(new Date());
+
+  useEffect(()=>{
+setInterval(()=>setTime(new Date()),1000)
+
+  },[])
     return (
         <div>
              <div className="navbar bg-base-100">
@@ -26,11 +34,20 @@ const Header = () => {
             </ul>
           </div>
         </div>
+
+{/* time setUp */}
+<div className="me-9">
+    <p className="text-2xl">{time.toLocaleTimeString()}</p>
+   </div>
+{/* time setUp */}
+
         <div className="flex-none gap-2">
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                <img src={profile}/> 
+               
+              
               </div>
             </label>
             <ul

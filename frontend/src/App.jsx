@@ -5,6 +5,7 @@ import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import AddRoom from "./components/AddRoom.jsx";
+import Header from "./pages/Header.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const App = () => {
             {
               path: "add-room",
               element: <AddRoom />,
+            },
+            {
+              path: "header",
+              element: <Header />,
             },
           ],
         },
