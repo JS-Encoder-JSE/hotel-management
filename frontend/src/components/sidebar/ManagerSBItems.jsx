@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
+  MdOutlineInventory2,
   MdOutlineMeetingRoom,
 } from "react-icons/md";
 
@@ -43,7 +44,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
         >
           <div className={`flex`}>
-            <MdOutlineMeetingRoom />
+            <MdOutlineInventory2 />
             <span className={`-mt-0.5`}>Inventory</span>
           </div>
           <span className={`group-[.active]:hidden`}>
