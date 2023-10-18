@@ -68,50 +68,6 @@ const InventoryManagement = () => {
                 className="form-control max-w-3xl mx-auto"
                 onSubmit={formik.handleSubmit}
             >
-                {/* category box */}
-                {/* <div className="flex flex-col gap-3">
-                    <select
-                        name="category"
-                        className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
-                        value={formik.values.category}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    >
-                        <option value="" selected disabled>
-                            Category
-                        </option>
-                        <option value="general">General</option>
-                        <option value="deluxe">Deluxe</option>
-                    </select>
-                    {formik.touched.category && Boolean(formik.errors.category) ? (
-                        <small className="text-red-600">
-                            {formik.touched.category && formik.errors.category}
-                        </small>
-                    ) : null}
-                </div> */}
-
-                {/* price box */}
-                {/* <div className="flex flex-col gap-3">
-                    <input
-                        type="text"
-                        placeholder="Price"
-                        name="price"
-                        className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-                        value={formik.values.price}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    {formik.touched.price && Boolean(formik.errors.price) ? (
-                        <small className="text-red-600">
-                            {formik.touched.price && formik.errors.price}
-                        </small>
-                    ) : null}
-                </div> */}
-
-
-
-
-
                 <div className="overflow-x-auto">
                     <table className="table">
                         {/* head */}
