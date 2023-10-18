@@ -6,8 +6,9 @@ import ManagerRoute from "./routes/ManagerRoute.jsx";
 import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import AddRoom from "./components/room/AddRoom.jsx";
-import ManageRoom from "./components/room/ManageRoom.jsx";
+import AddRoom from "./pages/room/AddRoom.jsx";
+import EditRoom from "./pages/room/EditRoom.jsx";
+import ManageRoom from "./pages/room/ManageRoom.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -32,6 +33,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <AddRoom />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "edit-room/:id",
+              element: (
+                <ManagerRoute>
+                  <EditRoom />
                 </ManagerRoute>
               ),
             },

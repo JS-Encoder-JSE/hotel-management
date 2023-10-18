@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const RoomCard = ({ room }) => {
+  const generateID = ++room;
+
   return (
     <div className="card bg-white">
       <figure className={`relative`}>
@@ -12,7 +14,7 @@ const RoomCard = ({ room }) => {
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">Room {++room}</h2>
+        <h2 className="card-title">Room {generateID}</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
           asperiores beatae commodi cumque eligendi est illo ipsam iusto
@@ -20,7 +22,7 @@ const RoomCard = ({ room }) => {
         </p>
         <div className="card-actions mt-5">
           <Link
-            to={``}
+            to={`/dashboard/edit-room/${generateID}`}
             className="btn btn-sm min-w-[8rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case"
           >
             Edit
