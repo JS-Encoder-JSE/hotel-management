@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
@@ -10,6 +10,16 @@ const validationSchema = yup.object({
 });
 
 const InventoryManagement = () => {
+    const [items, setItems] = useState([
+        { name: 'Bed Sheet', quantity: 0 },
+        { name: 'Pillow', quantity: 0 },
+        { name: 'Cutlery', quantity: 0 },
+        { name: 'Cookware', quantity: 0 },
+        { name: 'Soap', quantity: 0 },
+        { name: 'Tissue', quantity: 0 },
+    ]);
+
+
     const formik = useFormik({
         initialValues: {
             category: "",
@@ -20,6 +30,22 @@ const InventoryManagement = () => {
             console.log(values);
         },
     });
+
+
+    const handleIncrease = (index) => {
+        const updatedItems = [...items];
+        updatedItems[index].quantity += 1;
+        setItems(updatedItems);
+    };
+
+    const handleDecrease = (index) => {
+        if (items[index].quantity > 0) {
+            const updatedItems = [...items];
+            updatedItems[index].quantity -= 1;
+            setItems(updatedItems);
+        }
+    };
+
 
     return (
         <div className={`space-y-10`}>
@@ -88,102 +114,27 @@ const InventoryManagement = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* row 1 */}
-                            <tr className='grid grid-cols-5 items-center'>
-                                <label className='ml-5'>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                                <td className='col-span-3'>Bed Sheet</td>
-                                <td className='col-span-1 flex items-center gap-4 text-lg'>
-                                    <button >
-                                        <FaMinusCircle />
-                                    </button>
-                                    1
-                                    <button>
-                                        <FaPlusCircle />
-                                    </button>
-                                </td>
-                            </tr>
-                            {/* row 2 */}
-                            <tr className='grid grid-cols-5 items-center'>
-                                <label className='ml-5'>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                                <td className='col-span-3'>Pillow</td>
-                                <td className='col-span-1 flex items-center gap-4 text-lg'>
-                                    <button >
-                                        <FaMinusCircle />
-                                    </button>
-                                    2
-                                    <button>
-                                        <FaPlusCircle />
-                                    </button>
-                                </td>
-                            </tr>
-                            {/* row 3 */}
-                            <tr className='grid grid-cols-5 items-center'>
-                                <label className='ml-5'>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                                <td className='col-span-3'>Cutlery</td>
-                                <td className='col-span-1 flex items-center gap-4 text-lg'>
-                                    <button >
-                                        <FaMinusCircle />
-                                    </button>
-                                    3
-                                    <button>
-                                        <FaPlusCircle />
-                                    </button>
-                                </td>
-                            </tr>
-                            {/* row 4 */}
-                            <tr className='grid grid-cols-5 items-center'>
-                                <label className='ml-5'>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                                <td className='col-span-3'>Cookware</td>
-                                <td className='col-span-1 flex items-center gap-4 text-lg'>
-                                    <button >
-                                        <FaMinusCircle />
-                                    </button>
-                                    5
-                                    <button>
-                                        <FaPlusCircle />
-                                    </button>
-                                </td>
-                            </tr>
-                            {/* row 5 */}
-                            <tr className='grid grid-cols-5 items-center'>
-                                <label className='ml-5'>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                                <td className='col-span-3'>Soap</td>
-                                <td className='col-span-1 flex items-center gap-4 text-lg'>
-                                    <button >
-                                        <FaMinusCircle />
-                                    </button>
-                                    8
-                                    <button>
-                                        <FaPlusCircle />
-                                    </button>
-                                </td>
-                            </tr>
-                            {/* row 6 */}
-                            <tr className='grid grid-cols-5 items-center'>
-                                <label className='ml-5'>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                                <td className='col-span-3'>Tissue</td>
-                                <td className='col-span-1 flex items-center gap-4 text-lg'>
-                                    <button >
-                                        <FaMinusCircle />
-                                    </button>
-                                    3
-                                    <button>
-                                        <FaPlusCircle />
-                                    </button>
-                                </td>
-                            </tr>
+                            {items.map((item, index) => (
+                                <tr key={index} className="grid grid-cols-5 items-center">
+                                    <label className="ml-5">
+                                        <input type="checkbox" className="checkbox" />
+                                    </label>
+                                    <td className="col-span-3">{item.name}</td>
+                                    <td className="col-span-1 flex items-center gap-4 text-lg">
+                                        <button
+                                            onClick={() => handleDecrease(index)}
+                                            disabled={item.quantity === 0}
+                                            className={item.quantity === 0 && 'opacity-5'}
+                                        >
+                                            <FaMinusCircle />
+                                        </button>
+                                        {item.quantity}
+                                        <button onClick={() => handleIncrease(index)}>
+                                            <FaPlusCircle />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div >
@@ -195,12 +146,12 @@ const InventoryManagement = () => {
 
 
                 {/* submit button */}
-                <button button
+                <button
                     type="submit"
                     className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                 >
                     Add
-                </button >
+                </button>
             </form >
         </div >
     );
