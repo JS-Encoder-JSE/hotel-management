@@ -44,10 +44,7 @@ const Dashboard = () => {
                 </Link>
               </li>
               {user.status === "manager" ? (
-                <>
-                  <ManagerSBItems handleSBItems={handleSBItems} category={"Rooms"} itemName={"Add Room"} to={'add-room'} />
-                  <ManagerSBItems handleSBItems={handleSBItems} category={"Inventory"} itemName={"Manage Inventory"} to={''} />
-                </>
+                <ManagerSBItems handleSBItems={handleSBItems} />
               ) : null}
             </ul>
           </div>

@@ -35,6 +35,14 @@ const App = () => {
                 </ManagerRoute>
               ),
             },
+            {
+              path: "manage-inventory",
+              element: (
+                <ManagerRoute>
+                  <InventoryManagement />
+                </ManagerRoute>
+              ),
+            },
           ],
         },
       ],

@@ -6,34 +6,65 @@ import {
   MdOutlineMeetingRoom,
 } from "react-icons/md";
 
-const ManagerSbItems = ({ handleSBItems, category, itemName, to }) => {
+const ManagerSbItems = ({ handleSBItems }) => {
   return (
-    <li className={`group`} onClick={(e) => handleSBItems(e)}>
-      <div
-        className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-      >
-        <div className={`flex`}>
-          <MdOutlineMeetingRoom />
-          <span className={`-mt-0.5`}>{category}</span>
+    <>
+      {/* List for Rooms */}
+      <li className={`group`} onClick={(e) => handleSBItems(e)}>
+        <div
+          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+        >
+          <div className={`flex`}>
+            <MdOutlineMeetingRoom />
+            <span className={`-mt-0.5`}>Rooms</span>
+          </div>
+          <span className={`group-[.active]:hidden`}>
+            <MdKeyboardArrowDown />
+          </span>
+          <span className={`hidden group-[.active]:inline`}>
+            <MdKeyboardArrowUp />
+          </span>
         </div>
-        <span className={`group-[.active]:hidden`}>
-          <MdKeyboardArrowDown />
-        </span>
-        <span className={`hidden group-[.active]:inline`}>
-          <MdKeyboardArrowUp />
-        </span>
-      </div>
-      <ul className={`group-[.active]:block hidden ml-5`}>
-        <li>
-          <Link
-            to={`/dashboard/${to}`}
-            className={`hover:text-green-slimy transition-colors duration-500`}
-          >
-            {itemName}
-          </Link>
-        </li>
-      </ul>
-    </li>
+        <ul className={`group-[.active]:block hidden ml-5`}>
+          <li>
+            <Link
+              to={`/dashboard/add-room`}
+              className={`hover:text-green-slimy transition-colors duration-500`}
+            >
+              Add Room
+            </Link>
+          </li>
+        </ul>
+      </li>
+
+      {/* List for Inventory */}
+      <li className={`group`} onClick={(e) => handleSBItems(e)}>
+        <div
+          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+        >
+          <div className={`flex`}>
+            <MdOutlineMeetingRoom />
+            <span className={`-mt-0.5`}>Inventory</span>
+          </div>
+          <span className={`group-[.active]:hidden`}>
+            <MdKeyboardArrowDown />
+          </span>
+          <span className={`hidden group-[.active]:inline`}>
+            <MdKeyboardArrowUp />
+          </span>
+        </div>
+        <ul className={`group-[.active]:block hidden ml-5`}>
+          <li>
+            <Link
+              to={`/dashboard/manage-inventory`}
+              className={`hover:text-green-slimy transition-colors duration-500`}
+            >
+              Manage Inventory
+            </Link>
+          </li>
+        </ul>
+      </li>
+    </>
   );
 };
 
