@@ -6,13 +6,20 @@ import {
   MdOutlineMeetingRoom,
   MdOutlineFoodBank
 } from "react-icons/md";
+import useAuth from "../hooks/useAuth.js";
+import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const [isHbMenu, setHbMenu] = useState(true);
 
   const handleResize = () => {
     if (innerWidth >= 768) setHbMenu(false);
     else setHbMenu(true);
+  };
+
+  const handleSBItems = (e) => {
+    e.currentTarget.parentElement.classList.toggle("active");
   };
 
   useEffect(() => {
@@ -42,48 +49,9 @@ const Dashboard = () => {
                   <span className={`-mt-0.5`}>Dashboard</span>
                 </Link>
               </li>
-              <li>
-                <div
-                  className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-                >
-                  <div className={`flex`}>
-                    <MdOutlineMeetingRoom />
-                    <span className={`-mt-0.5`}>Rooms</span>
-                  </div>
-                  <MdKeyboardArrowDown />
-                </div>
-
-   <ul className={`ml-5`}>
-                  <li>
-                    <Link
-                      to={`/dashboard/add-room`}
-                      className={`hover:text-green-slimy transition-colors duration-500`}
-                    >
-                      Add Room
-                    </Link>
-                  </li>
-                </ul>
-                {/* food */}
-                <div
-                  className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-                >
-                  <div className={`flex`}>
-                    <MdOutlineFoodBank />
-                    <span className={`-mt-0.5`}>Foods</span>
-                  </div>
-                  <MdKeyboardArrowDown />
-                </div>
-                <ul className={`ml-5`}>
-                  <li>
-                    <Link
-                      to={`/dashboard/add-food`}
-                      className={`hover:text-green-slimy transition-colors duration-500`}
-                    >
-                      Add Food
-                    </Link>
-                  </li>
-                </ul>
-              </li>
+              {user.status === "manager" ? (
+                <ManagerSBItems handleSBItems={handleSBItems} />
+              ) : null}
             </ul>
           </div>
         </div>

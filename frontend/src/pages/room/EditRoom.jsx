@@ -1,7 +1,15 @@
 import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaTrash, FaUpload } from "react-icons/fa";
+import { FaPencil } from "react-icons/fa6";
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import { TbReplaceFilled } from "react-icons/tb";
 
 // form validation
 const validationSchema = yup.object({
@@ -14,7 +22,7 @@ const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
 });
 
-const AddRoom = () => {
+const EditRoom = () => {
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -24,6 +32,7 @@ const AddRoom = () => {
       bedSize: "",
       floorNumber: "",
       roomNumber: "",
+      photos: null,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -36,13 +45,87 @@ const AddRoom = () => {
       <h3
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
-        <FaPlusCircle />
-        <span>Add Room</span>
+        <FaPencil />
+        <span>Edit Room</span>
       </h3>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
+        <div className={`relative col-span-full`}>
+          <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+            <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+              <MdOutlineKeyboardArrowLeft />
+            </div>
+            <div className="swiper-er-pagination !w-fit"></div>
+            <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+              <MdOutlineKeyboardArrowRight />
+            </div>
+          </div>
+          <Swiper
+            modules={[Navigation]}
+            navigation={{
+              enabled: true,
+              prevEl: ".swiper-er-button-prev",
+              nextEl: ".swiper-er-button-next",
+              disabledClass: "swiper-er-button-disabled",
+            }}
+            slidesPerView={1}
+            spaceBetween={50}
+          >
+            <SwiperSlide>
+              <div className={`relative`}>
+                <div className={`absolute top-3 right-3 space-x-1.5`}>
+                  <button className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
+                    <TbReplaceFilled />
+                  </button>
+                  <button className="btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case">
+                    <FaTrash />
+                  </button>
+                </div>
+                <img
+                  src="/temp/room-1.jpeg"
+                  alt=""
+                  className={`w-auto h-auto rounded`}
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={`relative`}>
+                <div className={`absolute top-3 right-3 space-x-1.5`}>
+                  <button className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
+                    <TbReplaceFilled />
+                  </button>
+                  <button className="btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case">
+                    <FaTrash />
+                  </button>
+                </div>
+                <img
+                  src="/temp/room-2.jpeg"
+                  alt=""
+                  className={`w-auto h-auto rounded`}
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={`relative`}>
+                <div className={`absolute top-3 right-3 space-x-1.5`}>
+                  <button className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
+                    <TbReplaceFilled />
+                  </button>
+                  <button className="btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case">
+                    <FaTrash />
+                  </button>
+                </div>
+                <img
+                  src="/temp/room-3.jpeg"
+                  alt=""
+                  className={`w-auto h-auto rounded`}
+                />
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
         {/* category box */}
         <div className="flex flex-col gap-3">
           <select
@@ -52,7 +135,7 @@ const AddRoom = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value="" selected disabled>
+            <option value="" disabled>
               Category
             </option>
             <option value="general">General</option>
@@ -73,7 +156,7 @@ const AddRoom = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value="" selected disabled>
+            <option value="" disabled>
               Type
             </option>
             <option value="ac">AC</option>
@@ -94,7 +177,7 @@ const AddRoom = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value="" selected disabled>
+            <option value="" disabled>
               Capacity
             </option>
             <option value={1}>1</option>
@@ -133,7 +216,7 @@ const AddRoom = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value="" selected disabled>
+            <option value="" disabled>
               Bed Size
             </option>
             <option value="sm">SM</option>
@@ -180,16 +263,38 @@ const AddRoom = () => {
             </small>
           ) : null}
         </div>
+        {/* room photos */}
+        <div className="flex flex-col gap-3">
+          <label className="relative input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none">
+            {formik.values.photos ? (
+              <span>{formik.values.photos.length + " files"}</span>
+            ) : (
+              <span className={`flex items-baseline space-x-1.5`}>
+                <FaUpload />
+                <span>Choose more photos</span>
+              </span>
+            )}
+            <input
+              type="file"
+              multiple
+              name="photos"
+              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+              onChange={(e) =>
+                formik.setFieldValue("photos", e.currentTarget.files)
+              }
+            />
+          </label>
+        </div>
         {/* submit button */}
         <button
           type="submit"
-          className="btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
-          Add
+          Update
         </button>
       </form>
     </div>
   );
 };
 
-export default AddRoom;
+export default EditRoom;
