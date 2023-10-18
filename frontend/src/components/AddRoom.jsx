@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle, FaUpload } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
@@ -12,6 +12,7 @@ const validationSchema = yup.object({
   bedSize: yup.string().required("Bed size is required"),
   floorNumber: yup.string().required("Floor number is required"),
   roomNumber: yup.string().required("Room number is required"),
+  photos: yup.mixed().required("Photos are required"),
 });
 
 const AddRoom = () => {
@@ -24,6 +25,7 @@ const AddRoom = () => {
       bedSize: "",
       floorNumber: "",
       roomNumber: "",
+      photos: null,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -180,10 +182,38 @@ const AddRoom = () => {
             </small>
           ) : null}
         </div>
+        {/* room photos */}
+        <div className="flex flex-col gap-3">
+          <label className="relative input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none">
+            {formik.values.photos ? (
+              <span>{formik.values.photos.length + " files"}</span>
+            ) : (
+              <span className={`flex items-baseline space-x-1.5`}>
+                <FaUpload />
+                <span>Choose photos</span>
+              </span>
+            )}
+            <input
+              type="file"
+              multiple
+              name="photos"
+              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+              onChange={(e) =>
+                formik.setFieldValue("photos", e.currentTarget.files)
+              }
+              onBlur={formik.handleBlur}
+            />
+          </label>
+          {formik.touched.photos && Boolean(formik.errors.photos) ? (
+            <small className="text-red-600">
+              {formik.touched.photos && formik.errors.photos}
+            </small>
+          ) : null}
+        </div>
         {/* submit button */}
         <button
           type="submit"
-          className="btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
           Add
         </button>
