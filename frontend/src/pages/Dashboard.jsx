@@ -4,6 +4,7 @@ import {
   MdKeyboardArrowDown,
   MdOutlineDashboard,
   MdOutlineMeetingRoom,
+  MdOutlineFoodBank
 } from "react-icons/md";
 
 const Dashboard = () => {
@@ -51,13 +52,34 @@ const Dashboard = () => {
                   </div>
                   <MdKeyboardArrowDown />
                 </div>
-                <ul className={`ml-5`}>
+
+   <ul className={`ml-5`}>
                   <li>
                     <Link
                       to={`/dashboard/add-room`}
                       className={`hover:text-green-slimy transition-colors duration-500`}
                     >
                       Add Room
+                    </Link>
+                  </li>
+                </ul>
+                {/* food */}
+                <div
+                  className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+                >
+                  <div className={`flex`}>
+                    <MdOutlineFoodBank />
+                    <span className={`-mt-0.5`}>Foods</span>
+                  </div>
+                  <MdKeyboardArrowDown />
+                </div>
+                <ul className={`ml-5`}>
+                  <li>
+                    <Link
+                      to={`/dashboard/add-food`}
+                      className={`hover:text-green-slimy transition-colors duration-500`}
+                    >
+                      Add Food
                     </Link>
                   </li>
                 </ul>
