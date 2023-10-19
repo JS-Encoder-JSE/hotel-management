@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 import {
-  MdKeyboardArrowDown,
   MdOutlineDashboard,
-  MdOutlineMeetingRoom,
-  MdOutlineFoodBank, MdKeyboardArrowLeft
+  MdKeyboardArrowLeft,
 } from "react-icons/md";
 import useAuth from "../hooks/useAuth.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
-import ManagerFoodItems from "../components/sidebar/ManagerFoodItems.jsx";
-import Header from "../components/Header.jsx";
-import ManageInventoryItems from "../components/sidebar/ManageInventoryItems.jsx";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const {isHbMenu, setHbMenu} = useOutletContext()
+  const { isHbMenu, setHbMenu } = useOutletContext();
 
   const handleSBItems = (e) => {
     e.currentTarget.parentElement.classList.toggle("active");
@@ -32,7 +27,10 @@ const Dashboard = () => {
             <div
               className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}
             >
-              <div className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`} onClick={() => setHbMenu(!isHbMenu)}>
+              <div
+                className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`}
+                onClick={() => setHbMenu(!isHbMenu)}
+              >
                 <MdKeyboardArrowLeft />
               </div>
               <ul className={`space-y-1.5`}>
@@ -45,17 +43,8 @@ const Dashboard = () => {
                     <span className={`-mt-0.5`}>Dashboard</span>
                   </Link>
                 </li>
-
                 {user.status === "manager" ? (
                   <ManagerSBItems handleSBItems={handleSBItems} />
-                ) : null}
-                {/* Inventory */}
-                {user.status === "manager" ? (
-                  <ManageInventoryItems handleSBItems={handleSBItems} />
-                ) : null}
-                {/* food */}
-                {user.status === "manager" ? (
-                  <ManagerFoodItems handleSBItems={handleSBItems} />
                 ) : null}
               </ul>
             </div>
