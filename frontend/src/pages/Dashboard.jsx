@@ -10,6 +10,7 @@ import useAuth from "../hooks/useAuth.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 import ManagerFoodItems from "../components/sidebar/ManagerFoodItems.jsx";
 import Header from "../components/Header.jsx";
+import ManageInventoryItems from "../components/sidebar/ManageInventoryItems.jsx";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -47,6 +48,10 @@ const Dashboard = () => {
 
                 {user.status === "manager" ? (
                   <ManagerSBItems handleSBItems={handleSBItems} />
+                ) : null}
+                {/* Inventory */}
+                {user.status === "manager" ? (
+                  <ManageInventoryItems handleSBItems={handleSBItems} />
                 ) : null}
                 {/* food */}
                 {user.status === "manager" ? (

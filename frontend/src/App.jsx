@@ -18,6 +18,8 @@ import ManageSingleRoom from "./pages/room/ManageSingleRoom.jsx";
 import AddEmployee from "./pages/employee/AddEmployee.jsx";
 import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
+import AllInventory from "./pages/Inventory/AllInventory.jsx";
+import AddInventory from "./pages/Inventory/AddInventory.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -58,6 +60,22 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <ManageRoom />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "all-inventory",
+              element: (
+                <ManagerRoute>
+                  <AllInventory />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-inventory",
+              element: (
+                <ManagerRoute>
+                  <AddInventory />
                 </ManagerRoute>
               ),
             },
