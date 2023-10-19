@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* === Swiper Slider === */
-.swiper-er-button-disabled {
+.swiper-er-button-disabled, .swiper-rts-button-disabled {
   @apply bg-green-slimy/50 pointer-events-none;
 }
 

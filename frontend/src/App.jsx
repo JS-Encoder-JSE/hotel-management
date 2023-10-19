@@ -14,6 +14,7 @@ import AddFood from "./components/AddFood.jsx";
 import FoodCard from "./components/Food/FoodCard.jsx";
 import EditFood from "./components/Food/EditFood.jsx";
 import InventoryFood from "./components/Food/InventoryFood.jsx";
+import ManageSingleRoom from "./pages/room/ManageSingleRoom.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -96,6 +97,13 @@ const App = () => {
             {
               path: "header",
               element: <Header />,
+            },
+              {path: "manage-room/:id",
+              element: (
+                <ManagerRoute>
+                  <ManageSingleRoom />
+                </ManagerRoute>
+              ),
             },
           ],
         },

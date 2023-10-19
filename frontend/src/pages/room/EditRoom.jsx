@@ -57,7 +57,6 @@ const EditRoom = () => {
             <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
               <MdOutlineKeyboardArrowLeft />
             </div>
-            <div className="swiper-er-pagination !w-fit"></div>
             <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
               <MdOutlineKeyboardArrowRight />
             </div>
