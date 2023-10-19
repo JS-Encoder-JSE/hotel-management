@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 const AllInventory = () => {
     const [items, setItems] = useState([
-        { name: 'Bed Sheet', quantity: 4 },
-        { name: 'Pillow', quantity: 23 },
-        { name: 'Cutlery', quantity: 45 },
-        { name: 'Cookware', quantity: 10 },
-        { name: 'Soap', quantity: 54 },
-        { name: 'Tissue', quantity: 78 },
+        { name: 'Bed Sheet', quantity: 4, inUse: 2 },
+        { name: 'Pillow', quantity: 23, inUse: 3 },
+        { name: 'Cutlery', quantity: 45, inUse: 32 },
+        { name: 'Cookware', quantity: 10, inUse: 5 },
+        { name: 'Soap', quantity: 54, inUse: 4 },
+        { name: 'Tissue', quantity: 78, inUse: 34 },
     ]);
 
     return (
@@ -26,7 +26,9 @@ const AllInventory = () => {
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Quantity</th>
+                            <th>Items in Use</th>
+                            <th>Available Quantity</th>
+                            <th>Total Quantity</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -35,6 +37,14 @@ const AllInventory = () => {
                             <tr key={index} className='text-lg'>
                                 <td>
                                     {item.name}
+                                </td>
+                                <td>
+                                    {item.inUse}
+                                </td>
+                                <td>
+                                    {
+                                        item.quantity-item.inUse
+                                    }
                                 </td>
                                 <td>
                                     {item.quantity}
