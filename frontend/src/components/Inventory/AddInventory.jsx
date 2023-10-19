@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
-    itemName: yup.string(),
-    price: yup.string().required("Price is required"),
+    itemName: yup.string().required("Category is required"),
+    itemDescription: yup.string().required("Type is required"),
+    ItemQuantity: yup.string().required("Floor number is required"),
 });
 
 const AddInventory = () => {
@@ -22,50 +23,14 @@ const AddInventory = () => {
     const formik = useFormik({
         initialValues: {
             itemName: "",
-            price: "",
+            itemDescription: "",
+            ItemQuantity: "",
         },
         validationSchema,
         onSubmit: (values) => {
             console.log(values);
         },
     });
-
-    const handleSelectItem = (index) => {
-        const selectItem = [...items];
-        selectItem[index].active = !selectItem[index].active;
-        if (selectItem[index].active === false) {
-            setItems(selectItem[index].quantity = 0)
-        }
-        setItems(selectItem)
-    }
-
-    const handleIncrease = (index) => {
-        const updatedItems = [...items];
-        updatedItems[index].quantity = parseInt(updatedItems[index].quantity) + 1;
-        setItems(updatedItems);
-        console.log(typeof (updatedItems[index].quantity));
-    };
-
-    const handleDecrease = (index) => {
-        if (items[index].quantity > 0) {
-            const updatedItems = [...items];
-            updatedItems[index].quantity -= 1;
-            setItems(updatedItems);
-        }
-    };
-
-    const handleQuantity = (e, index) => {
-        const value = e.target.value ? e.target.value : 0;
-        const updatedItems = [...items];
-
-        if (!isNaN(value) && value >= 0) {
-            updatedItems[index].active = true;
-            updatedItems[index].quantity = value;
-        } else {
-            updatedItems[index].quantity = 0;
-        }
-        setItems(updatedItems);
-    }
 
     return (
         <div className={`space-y-10`}>
@@ -76,63 +41,58 @@ const AddInventory = () => {
                 <span>Add Items</span>
             </h3>
             <form
-                className="form-control max-w-3xl mx-auto"
+                className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
                 onSubmit={formik.handleSubmit}
             >
-                <div className="overflow-x-auto">
-                    <table className="table">
-                        {/* head */}
-                        <thead>
-                            <tr className='grid grid-cols-5 items-center'>
-                                <th>Select</th>
-                                <th className='col-span-3'>Name</th>
-                                <th className='col-span-1'>Quantity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {items.map((item, index) => (
-                                <tr key={index} className="grid grid-cols-5 items-center">
-                                    <td>
-                                        <label className="ml-5">
-                                            <input type="checkbox" onChange={() => handleSelectItem(index)} className="checkbox" />
-                                        </label>
-                                    </td>
-                                    <td className="col-span-3">
-                                        {item.name}
-                                    </td>
-                                    <td className="col-span-1 flex items-center gap-4 text-lg">
-                                        <button
-                                            onClick={() => handleDecrease(index)}
-                                            type='btn'
-                                            disabled={item.quantity === 0}
-                                            className={item.quantity === 0 ? 'opacity-50' : null}
-                                        >
-                                            <FaMinusCircle />
-                                        </button>
-                                        {/* {item.quantity} */}
-                                        <input
-                                            type='number'
-                                            value={item.quantity}
-                                            onChange={(e) => handleQuantity(e, index)}
-                                            disabled={item.active === false}
-                                            className='w-12 flex text-center outline-none rounded-md'
-                                        />
-                                        <button
-                                            onClick={() => handleIncrease(index)}
-                                            type='btn'
-                                            disabled={item.active === false}
-                                            className={item.active === false ? 'opacity-50' : null}
-                                        >
-                                            <FaPlusCircle />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div >
-
-
+                {/* Item Name */}
+                <div className="flex flex-col gap-3">
+                    <input
+                        type="text"
+                        placeholder="Item Name"
+                        name="itemName"
+                        className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+                        value={formik.values.itemName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.itemName && Boolean(formik.errors.itemName) ? (
+                        <small className="text-red-600">
+                            {formik.touched.itemName && formik.errors.itemName}
+                        </small>
+                    ) : null}
+                </div>
+                {/* Item Quantity */}
+                <div className="flex flex-col gap-3">
+                    <input
+                        type="number"
+                        placeholder="Item Quantity"
+                        name="ItemQuantity"
+                        className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+                        value={formik.values.ItemQuantity}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.ItemQuantity && Boolean(formik.errors.ItemQuantity) ? (
+                        <small className="text-red-600">
+                            {formik.touched.ItemQuantity && formik.errors.ItemQuantity}
+                        </small>
+                    ) : null}
+                </div>
+                <div className="col-span-2 flex flex-col gap-3">
+                    <textarea
+                        placeholder="Item Description"
+                        name="itemDescription"
+                        className="textarea textarea-sm textarea-bordered resize-none border-green-slimy rounded w-full focus:outline-none"
+                        value={formik.values.itemDescription}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.itemDescription && Boolean(formik.errors.itemDescription) ? (
+                        <small className="text-red-600">
+                            {formik.touched.itemDescription && formik.errors.itemDescription}
+                        </small>
+                    ) : null}
+                </div>
                 {/* submit button */}
                 <button
                     type="submit"
@@ -140,7 +100,7 @@ const AddInventory = () => {
                 >
                     Add
                 </button>
-            </form >
+            </form>
         </div >
     );
 };

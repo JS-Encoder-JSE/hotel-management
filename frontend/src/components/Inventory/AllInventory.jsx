@@ -22,7 +22,7 @@ const AllInventory = () => {
                 className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
             >
                 <FaThList />
-                <span>Add Items</span>
+                <span>All Items</span>
             </h3>
             <div className="overflow-x-auto max-w-3xl mx-auto">
                 <table className="table text-center">
