@@ -57,10 +57,18 @@ const ManagerSbItems = ({ handleSBItems }) => {
         <ul className={`group-[.active]:block hidden ml-5`}>
           <li>
             <Link
-              to={`/dashboard/manage-inventory`}
+              to={`/dashboard/add-inventory`}
               className={`hover:text-green-slimy transition-colors duration-500`}
             >
-              Manage Inventory
+              Add Items
+            </Link>
+          </li>
+          <li>
+            <Link
+              to={`/dashboard/all-inventory`}
+              className={`hover:text-green-slimy transition-colors duration-500`}
+            >
+              All Items
             </Link>
           </li>
         </ul>
