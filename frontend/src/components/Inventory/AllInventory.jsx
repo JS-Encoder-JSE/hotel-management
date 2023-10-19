@@ -53,9 +53,11 @@ const AllInventory = () => {
                                     {item.quantity}
                                 </td>
                                 <td>
-                                    <button className='btn btn-ghost hover:bg-transparent'>
+                                    <Link
+                                    to='/dashboard/add-inventory'
+                                    className='btn btn-ghost hover:bg-transparent'>
                                         <FaRegEdit className='text-xl text-red-500' />
-                                    </button>
+                                    </Link>
                                     <button
                                         onClick={() => handleDelete(item.id)}
                                         className='btn btn-ghost hover:bg-transparent'
