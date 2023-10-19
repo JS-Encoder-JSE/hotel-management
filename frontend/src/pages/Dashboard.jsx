@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useOutletContext } from "react-router-dom";
 import {
   MdKeyboardArrowDown,
   MdOutlineDashboard,
   MdOutlineMeetingRoom,
-  MdOutlineFoodBank,
+  MdOutlineFoodBank, MdKeyboardArrowLeft
 } from "react-icons/md";
 import useAuth from "../hooks/useAuth.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
@@ -13,24 +13,11 @@ import Header from "../components/Header.jsx";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [isHbMenu, setHbMenu] = useState(true);
-
-  const handleResize = () => {
-    if (innerWidth >= 768) setHbMenu(false);
-    else setHbMenu(true);
-  };
+  const {isHbMenu, setHbMenu} = useOutletContext()
 
   const handleSBItems = (e) => {
     e.currentTarget.parentElement.classList.toggle("active");
   };
-
-  useEffect(() => {
-    handleResize();
-
-    addEventListener("resize", handleResize);
-
-    return () => removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <>
@@ -44,6 +31,9 @@ const Dashboard = () => {
             <div
               className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}
             >
+              <div className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`} onClick={() => setHbMenu(!isHbMenu)}>
+                <MdKeyboardArrowLeft />
+              </div>
               <ul className={`space-y-1.5`}>
                 <li>
                   <Link
@@ -67,8 +57,6 @@ const Dashboard = () => {
           </div>
 
           <div className={`px-3`}>
-            {/* to-do */}
-            <Header></Header>
             <Outlet />
           </div>
         </div>
