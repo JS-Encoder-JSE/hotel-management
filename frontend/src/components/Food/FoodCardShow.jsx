@@ -34,11 +34,9 @@ const FoodCardShow = () => {
             View
             </Link> */}
            
-<button   className="btn btn-sm min-w-[8rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case" onClick={()=>document.getElementById('my_modal_5').showModal()}>View</button>
+<button   className="btn btn-sm min-w-[8rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case" onClick={()=>document.getElementById('my_modal_5').showModal()}>Update Food</button>
 <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
   <div className="modal-box">
-    {/* <h3 className="font-bold text-lg">Hello!</h3>
-    <p className="py-4">Press ESC key or click the button below to close</p> */}
 
     <EditFood></EditFood>
     <div className="modal-action">
@@ -49,12 +47,13 @@ const FoodCardShow = () => {
   </div>
 </dialog>
          
-          {/* <Link
-            // to={``}
+          <Link
+            to=""
             className="btn btn-sm min-w-[8rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case"
           >
             Manage
-          </Link> */}
+          </Link>
+     
         </div>
       </div>
     </div>

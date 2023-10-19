@@ -39,8 +39,16 @@ const ManagerFoodItems = ({ handleSBItems }) => {
             to={`/dashboard/Foodcard`}
             className={`hover:text-green-slimy transition-colors duration-500`}
           >
+            Manage Food
+          </Link>
+        <li>
+        <Link
+            to={`/dashboard/inventoryFood`}
+            className={`hover:text-green-slimy transition-colors duration-500`}
+          >
             Food Inventory
           </Link>
+        </li>
         </li>
       </ul>
     </li>

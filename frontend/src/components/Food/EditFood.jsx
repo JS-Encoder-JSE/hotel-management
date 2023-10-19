@@ -6,10 +6,9 @@ import { FaPlusCircle, FaUpload } from "react-icons/fa";
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("name is required"),
-  quantity: yup.string().required("quantity is required"),
+  setMenu: yup.string().required("setMenu is required"),
   price: yup.string().required("Price is required"),
-  floorNumber: yup.string().required("Floor number is required"),
-  roomNumber: yup.string().required("Room number is required"),
+  category: yup.string().required("Category is required"),
   photos: yup.mixed().required("Photos are required"),
 });
 
@@ -17,9 +16,8 @@ const EditFood = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      roomNumber: "",
-      floorNumber: "",
-      quantity: "",
+      setMenu: "",
+      category:"",
       price: "",
       photos: null,
       
@@ -36,7 +34,7 @@ const EditFood = () => {
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
         <FaPlusCircle />
-        <span>Food Edit</span>
+        <span>Food Update</span>
       </h3>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
@@ -47,7 +45,7 @@ const EditFood = () => {
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Food Name"
             name="name"
             className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.name}
@@ -61,62 +59,34 @@ const EditFood = () => {
           ) : null}
         </div>
 
-         {/* room number box */}
-         <div className="flex flex-col gap-3">
-          <input
-            type="number"
-            placeholder="Room Number"
-            name="roomNumber"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-            value={formik.values.roomNumber}
+  {/* setMenu box */}
+  <div className="flex flex-col gap-3">
+          <select
+            name="setMenu"
+            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            value={formik.values.setMenu}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-          />
-          {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
+          >
+            <option value="" selected disabled>
+              Set Menu
+            </option>
+
+            <option value="menu1:1">1:1</option>
+            <option value="menu1:2">1:2</option>
+            <option value="menu1:3">1:3</option>
+            <option value="menu2:2">2:2</option>
+          
+          </select>
+          {formik.touched.setMenu && Boolean(formik.errors.setMenu) ? (
             <small className="text-red-600">
-              {formik.touched.roomNumber && formik.errors.roomNumber}
+              {formik.touched.setMenu && formik.errors.setMenu}
             </small>
           ) : null}
         </div>
 
-              {/* floor number box */}
-              <div className="flex flex-col gap-3">
-          <input
-            type="number"
-            placeholder="Floor Number"
-            name="floorNumber"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-            value={formik.values.floorNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.floorNumber && Boolean(formik.errors.floorNumber) ? (
-            <small className="text-red-600">
-              {formik.touched.floorNumber && formik.errors.floorNumber}
-            </small>
-          ) : null}
-        </div>
-        
-        {/* Quantity box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="number"
-            placeholder="Quantity"
-            name="quantity"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-            value={formik.values.quantity}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.quantity && Boolean(formik.errors.quantity) ? (
-            <small className="text-red-600">
-              {formik.touched.quantity && formik.errors.quantity}
-            </small>
-          ) : null}
-        </div>
-      
-        {/* price box */}
-        <div className="flex flex-col gap-3">
+            {/* price box */}
+            <div className="flex flex-col gap-3">
           <input
             type="text"
             placeholder="Price"
@@ -132,6 +102,65 @@ const EditFood = () => {
             </small>
           ) : null}
         </div>
+        
+         {/* category box */}
+  <div className="flex flex-col gap-3">
+          <select
+            name="category"
+            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            value={formik.values.category}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Category
+            </option>
+            <option value="Available">Available</option>
+            <option value="notAvailable">Not Available</option>
+            <option value="NewItem">New Item</option>
+          </select>
+          {formik.touched.category && Boolean(formik.errors.category) ? (
+            <small className="text-red-600">
+              {formik.touched.category && formik.errors.category}
+            </small>
+          ) : null}
+        </div>
+             
+              {/* <div className="flex flex-col gap-3">
+          <input
+            type="number"
+            placeholder="Floor Number"
+            name="floorNumber"
+            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            value={formik.values.floorNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.floorNumber && Boolean(formik.errors.floorNumber) ? (
+            <small className="text-red-600">
+              {formik.touched.floorNumber && formik.errors.floorNumber}
+            </small>
+          ) : null}
+        </div> */}
+        
+        {/* Quantity box */}
+        {/* <div className="flex flex-col gap-3">
+          <input
+            type="number"
+            placeholder="Quantity"
+            name="quantity"
+            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            value={formik.values.quantity}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.quantity && Boolean(formik.errors.quantity) ? (
+            <small className="text-red-600">
+              {formik.touched.quantity && formik.errors.quantity}
+            </small>
+          ) : null}
+        </div> */}
+      
     
         {/* room photos */}
         <div className="flex flex-col gap-3">
@@ -166,7 +195,7 @@ const EditFood = () => {
           type="submit"
           className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
-          Add
+          Update
         </button>
       </form>
     </div>

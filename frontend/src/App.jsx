@@ -13,6 +13,7 @@ import AddRoom from "./pages/room/AddRoom.jsx";
 import AddFood from "./components/AddFood.jsx";
 import FoodCard from "./components/Food/FoodCard.jsx";
 import EditFood from "./components/Food/EditFood.jsx";
+import InventoryFood from "./components/Food/InventoryFood.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -69,6 +70,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <FoodCard />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "inventoryFood",
+              element: (
+                <ManagerRoute>
+                  <InventoryFood />
                 </ManagerRoute>
               ),
             },

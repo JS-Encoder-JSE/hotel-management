@@ -44,7 +44,7 @@ const FoodCard = () => {
           </div>
         </div>
         <div className={`grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4`}>
-          {[...Array(5)].map((elem, idx) => (
+          {[...Array(8)].map((elem, idx) => (
             <FoodCardShow key={idx} room={idx} />
           ))}
         </div>
