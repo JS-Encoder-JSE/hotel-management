@@ -6,7 +6,7 @@ import ManagerRoute from "./routes/ManagerRoute.jsx";
 import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import Header from "./pages/Header.jsx";
+import Header from "./components/Header.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import ManageRoom from "./pages/room/ManageRoom.jsx";
 import AddRoom from "./pages/room/AddRoom.jsx";
@@ -98,7 +98,8 @@ const App = () => {
               path: "header",
               element: <Header />,
             },
-              {path: "manage-room/:id",
+            {
+              path: "manage-room/:id",
               element: (
                 <ManagerRoute>
                   <ManageSingleRoom />
