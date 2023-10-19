@@ -26,12 +26,7 @@ const Root = () => {
     <>
       {preloader ? (
         <Preloader setPreloader={setPreloader} />
-      ) : (
-        <>
-          {location.pathname !== "/" ? <Header isHbMenu={isHbMenu} setHbMenu={setHbMenu} /> : null}
-          <Outlet context={{isHbMenu, setHbMenu}} />
-        </>
-      )}
+      ) : <Outlet context={{isHbMenu, setHbMenu}} />}
       <Toaster />
     </>
   );

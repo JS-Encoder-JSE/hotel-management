@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
@@ -16,7 +16,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
           onClick={(e) => handleSBItems(e)}
         >
-          <div className={`flex`}>
+          <div className={`flex space-x-1.5`}>
             <MdOutlineMeetingRoom />
             <span className={`-mt-0.5`}>Rooms</span>
           </div>
@@ -27,22 +27,28 @@ const ManagerSbItems = ({ handleSBItems }) => {
             <MdKeyboardArrowUp />
           </span>
         </div>
-        <ul className={`group-[.active]:block hidden ml-5`}>
+        <ul className={`group-[.active]:block hidden`}>
           <li>
-            <Link
+            <NavLink
               to={`/dashboard/add-room`}
-              className={`hover:text-green-slimy transition-colors duration-500`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Add Room
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to={`/dashboard/manage-room`}
-              className={`hover:text-green-slimy transition-colors duration-500`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Manage Room
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </li>
@@ -51,7 +57,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
           onClick={(e) => handleSBItems(e)}
         >
-          <div className={`flex`}>
+          <div className={`flex space-x-1.5`}>
             <MdOutlineFoodBank />
             <span className={`-mt-0.5`}>Food</span>
           </div>
@@ -62,29 +68,38 @@ const ManagerSbItems = ({ handleSBItems }) => {
             <MdKeyboardArrowUp />
           </span>
         </div>
-        <ul className={`group-[.active]:block hidden ml-5`}>
+        <ul className={`group-[.active]:block hidden`}>
           <li>
-            <Link
+            <NavLink
               to={`/dashboard/add-food`}
-              className={`hover:text-green-slimy transition-colors duration-500`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Add Food
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to={`/dashboard/Foodcard`}
-              className={`hover:text-green-slimy transition-colors duration-500`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Manage Food
-            </Link>
+            </NavLink>
             <li>
-              <Link
+              <NavLink
                 to={`/dashboard/inventoryFood`}
-                className={`hover:text-green-slimy transition-colors duration-500`}
+                className={({ isActive }) =>
+                  "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                  (isActive ? " bg-gray-300" : "")
+                }
               >
                 Food Inventory
-              </Link>
+              </NavLink>
             </li>
           </li>
         </ul>
@@ -94,7 +109,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           onClick={(e) => handleSBItems(e)}
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
         >
-          <div className={`flex`}>
+          <div className={`flex space-x-1.5`}>
             <MdOutlineInventory2 />
             <span className={`-mt-0.5`}>Inventory</span>
           </div>
@@ -105,22 +120,28 @@ const ManagerSbItems = ({ handleSBItems }) => {
             <MdKeyboardArrowUp />
           </span>
         </div>
-        <ul className={`group-[.active]:block hidden ml-5`}>
+        <ul className={`group-[.active]:block hidden`}>
           <li>
-            <Link
+            <NavLink
               to={`/dashboard/add-inventory`}
-              className={`hover:text-green-slimy transition-colors duration-500`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Add Items
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to={`/dashboard/all-inventory`}
-              className={`hover:text-green-slimy transition-colors duration-500`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               All Items
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </li>
@@ -129,7 +150,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
           onClick={(e) => handleSBItems(e)}
         >
-          <div className={`flex`}>
+          <div className={`flex space-x-1.5`}>
             <MdOutlineMeetingRoom />
             <span className={`-mt-0.5`}>Employee</span>
           </div>
@@ -140,22 +161,28 @@ const ManagerSbItems = ({ handleSBItems }) => {
             <MdKeyboardArrowUp />
           </span>
         </div>
-        <ul className={`group-[.active]:block hidden ml-5`}>
+        <ul className={`group-[.active]:block hidden`}>
           <li>
-            <Link
+            <NavLink
               to={`/dashboard/add-employee`}
-              className={`hover:text-green-slimy transition-colors duration-500`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Add Employee
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to={`/dashboard/manage-employee`}
-              className={`hover:text-green-slimy transition-colors duration-500`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Manage Employee
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </li>
