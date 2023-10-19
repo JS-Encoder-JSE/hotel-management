@@ -15,6 +15,9 @@ import FoodCard from "./components/Food/FoodCard.jsx";
 import EditFood from "./components/Food/EditFood.jsx";
 import InventoryFood from "./components/Food/InventoryFood.jsx";
 import ManageSingleRoom from "./pages/room/ManageSingleRoom.jsx";
+import AddEmployee from "./pages/employee/AddEmployee.jsx";
+import EditEmployee from "./pages/employee/EditEmployee.jsx";
+import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -103,6 +106,30 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <ManageSingleRoom />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-employee",
+              element: (
+                <ManagerRoute>
+                  <AddEmployee />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "edit-employee/:id",
+              element: (
+                <ManagerRoute>
+                  <EditEmployee />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "manage-employee",
+              element: (
+                <ManagerRoute>
+                  <ManageEmployee />
                 </ManagerRoute>
               ),
             },
