@@ -46,7 +46,7 @@ const AllInventory = () => {
                                 </td>
                                 <td>
                                     {
-                                        item.quantity - item.inUse
+                                        item.quantity - item.inUse 
                                     }
                                 </td>
                                 <td>
