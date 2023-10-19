@@ -11,15 +11,6 @@ const validationSchema = yup.object({
 });
 
 const AddInventory = () => {
-    const [items, setItems] = useState([
-        { name: 'Bed Sheet', quantity: 0, active: false },
-        { name: 'Pillow', quantity: 0, active: false },
-        { name: 'Cutlery', quantity: 0, active: false },
-        { name: 'Cookware', quantity: 0, active: false },
-        { name: 'Soap', quantity: 0, active: false },
-        { name: 'Tissue', quantity: 0, active: false },
-    ]);
-
     const formik = useFormik({
         initialValues: {
             itemName: "",
