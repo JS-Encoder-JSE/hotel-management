@@ -9,7 +9,7 @@ import {
 import useAuth from "../hooks/useAuth.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 import ManagerFoodItems from "../components/sidebar/ManagerFoodItems.jsx";
-// import Header from "./Header.jsx";
+import Header from "./Header.jsx";
 
 
 const Dashboard = () => {
@@ -70,7 +70,7 @@ const Dashboard = () => {
        
         <div className={`px-3`}>
           {/* to-do */}
-                {/* <Header></Header> */}
+                <Header></Header>
           <Outlet />
         </div>
         
