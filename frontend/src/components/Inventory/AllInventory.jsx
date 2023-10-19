@@ -4,13 +4,17 @@ import { Link } from 'react-router-dom';
 
 const AllInventory = () => {
     const [items, setItems] = useState([
-        { name: 'Bed Sheet', quantity: 4, inUse: 2 },
-        { name: 'Pillow', quantity: 23, inUse: 3 },
-        { name: 'Cutlery', quantity: 45, inUse: 32 },
-        { name: 'Cookware', quantity: 10, inUse: 5 },
-        { name: 'Soap', quantity: 54, inUse: 4 },
-        { name: 'Tissue', quantity: 78, inUse: 34 },
+        { id: 1, name: 'Bed Sheet', quantity: 4, inUse: 2 },
+        { id: 2, name: 'Pillow', quantity: 23, inUse: 3 },
+        { id: 3, name: 'Cutlery', quantity: 45, inUse: 32 },
+        { id: 4, name: 'Cookware', quantity: 10, inUse: 5 },
+        { id: 5, name: 'Soap', quantity: 54, inUse: 4 },
+        { id: 6, name: 'Tissue', quantity: 78, inUse: 34 },
     ]);
+
+    const handleDelete = (id) => {
+        // item remove/delete code will be add gere. 
+    }
 
     return (
         <div className={`space-y-10`}>
@@ -22,7 +26,6 @@ const AllInventory = () => {
             </h3>
             <div className="overflow-x-auto max-w-3xl mx-auto">
                 <table className="table text-center">
-                    {/* head */}
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -43,7 +46,7 @@ const AllInventory = () => {
                                 </td>
                                 <td>
                                     {
-                                        item.quantity-item.inUse
+                                        item.quantity - item.inUse
                                     }
                                 </td>
                                 <td>
@@ -53,7 +56,10 @@ const AllInventory = () => {
                                     <button className='btn btn-ghost hover:bg-transparent'>
                                         <FaRegEdit className='text-xl text-red-500' />
                                     </button>
-                                    <button className='btn btn-ghost hover:bg-transparent'>
+                                    <button
+                                        onClick={() => handleDelete(item.id)}
+                                        className='btn btn-ghost hover:bg-transparent'
+                                    >
                                         <FaRegTrashAlt className='text-xl text-green-slimy' />
                                     </button>
                                 </td>

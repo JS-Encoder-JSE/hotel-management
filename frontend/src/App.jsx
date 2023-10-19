@@ -8,6 +8,7 @@ import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import AddRoom from "./components/AddRoom.jsx";
 import AllInventory from "./components/Inventory/AllInventory.jsx";
+import AddInventory from "./components/Inventory/AddInventory.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -47,7 +48,7 @@ const App = () => {
               path: "add-inventory",
               element: (
                 <ManagerRoute>
-                  {/* <InventoryManagement /> */}
+                  <AddInventory />
                 </ManagerRoute>
               ),
             },
