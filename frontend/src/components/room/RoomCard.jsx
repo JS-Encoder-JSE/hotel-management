@@ -28,7 +28,7 @@ const RoomCard = ({ room }) => {
             Edit
           </Link>
           <Link
-            to={``}
+            to={`${generateID}`}
             className="btn btn-sm min-w-[8rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case"
           >
             Manage
