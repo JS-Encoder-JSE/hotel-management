@@ -15,6 +15,8 @@ import FoodCard from "./components/Food/FoodCard.jsx";
 import EditFood from "./components/Food/EditFood.jsx";
 import InventoryFood from "./components/Food/InventoryFood.jsx";
 import ManageSingleRoom from "./pages/room/ManageSingleRoom.jsx";
+import AllInventory from "./pages/Inventory/AllInventory.jsx";
+import AddInventory from "./pages/Inventory/AddInventory.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -55,6 +57,22 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <ManageRoom />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "all-inventory",
+              element: (
+                <ManagerRoute>
+                  <AllInventory />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-inventory",
+              element: (
+                <ManagerRoute>
+                  <AddInventory />
                 </ManagerRoute>
               ),
             },
