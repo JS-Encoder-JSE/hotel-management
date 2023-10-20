@@ -1,64 +1,73 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import EditFood from './EditFood';
+import React from "react";
+import { Link } from "react-router-dom";
+import EditFood from "./EditFood";
 
-const FoodCardShow = () => {
-    return (
-        <div>
-   <div className="card bg-white">
-      <figure className={`relative`}>
-        {/* <span className="badge absolute top-3 right-3 h-auto">Available</span> */}
-        <img
-          src="https://c.ndtvimg.com/2021-04/umk8i7ko_pasta_625x300_01_April_21.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=675"
-          alt=""
-        />
-      </figure>
-      <div className="card-body">
-        <h2 className="card-title">Chiken Chowmin 
-        
-        {/* {generateID} */}
-        </h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
-          asperiores beatae commodi cumque eligendi est illo ipsam iusto
-          praesentium quibusdam.
-        </p>
-        <div className="card-actions mt-5 justify-end">
-          {/* <Link
-            // to={`/dashboard/edit-food/
-            //  ${generateID}
-            // `}
-            to="/dashboard/edit-food"
-            className="btn btn-sm min-w-[8rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case"
-          >
-            View
-            </Link> */}
+const FoodCardShow = ({ food }) => {
+  const generateID = ++food;
+  return (
+    <div>
+      <div className="card bg-white">
+        <figure className={`relative`}>
+          <span className="badge absolute top-3 right-3 h-auto">Available</span>
+          <img
+            src="https://c.ndtvimg.com/2021-04/umk8i7ko_pasta_625x300_01_April_21.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=675"
+            alt=""
+          />
+        </figure>
+        <div className="card-body">
+          <h2 className="card-title">Food {generateID} </h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
+            asperiores beatae commodi cumque eligendi est illo ipsam iusto
+            praesentium quibusdam.
+          </p>
+          <div className="card-actions mt-5 justify-end">
+           <div>
+           <Link to={`/dashboard/edit-food/${generateID}`} 
+            >
+              <button
+                className="btn btn-sm min-w-[8rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case"
+                onClick={() =>
+                  document.getElementById("my_modal_5").showModal()
+                }
+                 >
+                Update Food
+              </button>
+             
+            
+            <dialog
+              id="my_modal_5"
+              className="modal modal-bottom sm:modal-middle"
+            >
+              <div className="modal-box">
+                <EditFood></EditFood>
+                <div className="modal-action">
+                  <form method="dialog">
+                    <button className="bg-red-600 p-2 rounded-md text-white ">
+                      Close
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+            </Link>
+           </div>
+{/* Manage button  */}
+            <Link
+              to={`/dashboard/manage-food/${generateID}`}
+              // "/dashboard/manage-food"
+              className="btn btn-sm min-w-[8rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case"
+            >
+              Manage
+            </Link>
+
+            {/* Manage button  */}
            
-<button   className="btn btn-sm min-w-[8rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case" onClick={()=>document.getElementById('my_modal_5').showModal()}>Update Food</button>
-<dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-  <div className="modal-box">
-
-    <EditFood></EditFood>
-    <div className="modal-action">
-      <form method="dialog">
-        <button  className="bg-red-600 p-2 rounded-md text-white ">Close</button>
-      </form>
-    </div>
-  </div>
-</dialog>
-         
-          <Link
-            to="/dashboard/manage-food"
-            className="btn btn-sm min-w-[8rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case"
-          >
-            Manage
-          </Link>
-     
+          </div>
         </div>
       </div>
     </div>
-        </div>
-    );
+  );
 };
 
 export default FoodCardShow;

@@ -34,13 +34,21 @@ const AddRoom = () => {
   });
 
   return (
+
+    <>
     <div className={`space-y-10`}>
-      <h3
-        className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
+    
+     <div className="card bg-white shadow-xl">
+      <div className="card-body">
+        <div>
+        <h3
+        className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 md:w-[728px] lg:w-[728px] `}
       >
         <FaPlusCircle />
         <span>Add Room</span>
       </h3>
+        </div>
+     
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
@@ -49,7 +57,7 @@ const AddRoom = () => {
         <div className="flex flex-col gap-3">
           <select
             name="category"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy   w-[353px]"
             value={formik.values.category}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -70,7 +78,7 @@ const AddRoom = () => {
         <div className="flex flex-col gap-3">
           <select
             name="type"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy  w-[353px]"
             value={formik.values.type}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -91,7 +99,7 @@ const AddRoom = () => {
         <div className="flex flex-col gap-3">
           <select
             name="capacity"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy  w-[353px]"
             value={formik.values.capacity}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -115,7 +123,7 @@ const AddRoom = () => {
             type="text"
             placeholder="Price"
             name="price"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy  w-[353px]"
             value={formik.values.price}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -130,7 +138,7 @@ const AddRoom = () => {
         <div className="flex flex-col gap-3">
           <select
             name="bedSize"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy  w-[353px]"
             value={formik.values.bedSize}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -154,7 +162,7 @@ const AddRoom = () => {
             type="number"
             placeholder="Floor Number"
             name="floorNumber"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy  w-[353px]"
             value={formik.values.floorNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -171,7 +179,7 @@ const AddRoom = () => {
             type="number"
             placeholder="Room Number"
             name="roomNumber"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-[353px]"
             value={formik.values.roomNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -183,42 +191,53 @@ const AddRoom = () => {
           ) : null}
         </div>
         {/* room photos */}
-        <div className="flex flex-col gap-3">
-          <label className="relative input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none">
-            {formik.values.photos ? (
-              <span>{formik.values.photos.length + " files"}</span>
-            ) : (
-              <span className={`flex items-baseline space-x-1.5`}>
-                <FaUpload />
-                <span>Choose photos</span>
-              </span>
-            )}
-            <input
-              type="file"
-              multiple
-              name="photos"
-              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
-              onChange={(e) =>
-                formik.setFieldValue("photos", e.currentTarget.files)
-              }
-              onBlur={formik.handleBlur}
-            />
-          </label>
-          {formik.touched.photos && Boolean(formik.errors.photos) ? (
-            <small className="text-red-600">
-              {formik.touched.photos && formik.errors.photos}
-            </small>
-          ) : null}
-        </div>
+        <div className={`flex space-x-1.5`}>
+            
+                <div className="flex flex-col gap-3 ">
+                  <label className="relative input input-sm input-bordered border-green-slimy rounded  focus:outline-none p-2 h-auto w-[352px]">
+                    {formik.values.photos ? (
+                      <span>{formik.values.photos.length + " files"}</span>
+                    ) : (
+                      <span
+                        className={`flex items-baseline space-x-1.5 `}
+                      >
+                        <FaUpload />
+                        <span>Choose photos</span>
+                      </span>
+                    )}
+                    <input
+                      type="file"
+                      multiple
+                      name="photos"
+                      className="absolute left-0 top-0  overflow-hidden h-0"
+                      onChange={(e) =>
+                        formik.setFieldValue("photos", e.currentTarget.files)
+                      }
+                      onBlur={formik.handleBlur}
+                    />
+                  </label>
+                  {formik.touched.photos && Boolean(formik.errors.photos) ? (
+                    <small className="text-red-600">
+                      {formik.touched.photos && formik.errors.photos}
+                    </small>
+                  ) : null}
+                </div>
+              </div>
         {/* submit button */}
-        <button
+     <div className=" col-span-full text-end mt-5 ">
+
+  <button
           type="submit"
-          className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-[90px] "
         >
           Add
         </button>
+     </div>
       </form>
+      </div>
+     </div>
     </div>
+    </>
   );
 };
 

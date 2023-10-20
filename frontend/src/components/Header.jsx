@@ -16,7 +16,7 @@ const Header = ({isHbMenu, setHbMenu}) => {
 
   return (
     <div>
-      <div className="navbar bg-sky-50">
+      <div className="navbar bg-white">
         <div className="flex-1">
           <div className="dropdown">
             <label tabIndex={0} className="md:hidden btn btn-ghost btn-circle" onClick={() => setHbMenu(!isHbMenu)}>
@@ -26,7 +26,7 @@ const Header = ({isHbMenu, setHbMenu}) => {
         </div>
 
         {/* time setUp */}
-        <div className="me-9">
+        <div className="me-9 border p-3">
           <p className="text-2xl">{time.toLocaleTimeString()}</p>
         </div>
         {/* time setUp */}

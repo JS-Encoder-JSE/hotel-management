@@ -105,7 +105,7 @@ const App = () => {
               ),
             },
             {
-              path: "edit-food",
+              path: "edit-food/:id",
               element: (
                 <ManagerRoute>
                   <EditFood />
@@ -113,7 +113,7 @@ const App = () => {
               ),
             },
             {
-              path: "manage-food",
+              path: "manage-food/:id",
               element: (
                 <ManagerRoute>
                   <ManageFood />
