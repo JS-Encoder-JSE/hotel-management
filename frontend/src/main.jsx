@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/free-mode";
 import "swiper/css/thumbs";
+import "react-datepicker/dist/react-datepicker.css";
 import "./css/index.css";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.jsx";

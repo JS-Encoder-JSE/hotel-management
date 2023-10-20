@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Outlet, useOutletContext } from "react-router-dom";
+import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
 import {
   MdOutlineDashboard,
   MdKeyboardArrowLeft,
@@ -38,15 +38,19 @@ const Dashboard = () => {
               >
                 <MdKeyboardArrowLeft />
               </div>
-              <ul className={`space-y-3`}>
+              <ul className={`space-y-1.5`}>
                 <li>
-                  <Link
+                  <NavLink
                     to={`/dashboard`}
-                    className={`flex hover:text-green-slimy transition-colors duration-500`}
+                    className={({ isActive }) =>
+                      "flex p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
+                      (isActive ? " bg-gray-300" : "")
+                    }
+                    end
                   >
                     <MdOutlineDashboard />
                     <span className={`-mt-0.5`}>Dashboard</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 {user.status === "manager" ? (
                   <ManagerSBItems handleSBItems={handleSBItems} />

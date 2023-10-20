@@ -9,7 +9,7 @@ const RoomTabs = () => {
           className="tab tab-bordered"
           selectedClassName="tab-active text-green-slimy !border-b-green-slimy"
         >
-          Description
+          <span className={`text-xl`}>Description</span>
         </Tab>
       </TabList>
       <TabPanel>

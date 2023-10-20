@@ -7,8 +7,8 @@ const ManageSingleRoom = () => {
   const [isCheckIn, setCheckIn] = useState(false);
 
   return (
-    <div className={`space-y-5`}>
-      <div className={`grid grid-cols-1 lg:grid-cols-3 gap-4`}>
+    <div className={`bg-white max-w-6xl mx-auto rounded-3xl p-10 space-y-10`}>
+      <div className={`grid grid-cols-1 lg:grid-cols-3 gap-10`}>
         <RoomThumbsSlider />
         <div className={`lg:col-span-2`}>
           <h2 className="card-title">Room</h2>
