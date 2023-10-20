@@ -53,8 +53,8 @@ const AddFood = () => {
     <div>
       {/* Name */}
       <div className={`flex space-x-1.5`}>
-        <h3>Name <span className="text-red-400">*</span></h3>
-        <div className="flex flex-col gap-3 ">
+        <h3 className="">Name <span className="text-red-400">*</span></h3>
+        <div className="flex flex-col gap-3">
           <input
             type="text"
             placeholder="Name of Food"
@@ -144,12 +144,14 @@ const AddFood = () => {
        </div>
 
             {/* room photos */}
+     <div className={`flex space-x-1.5`}>
+     <h3 className="mt-3">Image File <span className="text-red-400">*</span></h3>
      <div className="flex flex-col gap-3 mt-4 mb-4">
           <label className="relative input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none">
             {formik.values.photos ? (
               <span>{formik.values.photos.length + " files"}</span>
             ) : (
-              <span className={`flex items-baseline space-x-1.5`}>
+              <span className={`flex items-baseline space-x-1.5 w-[329px] `}>
                 <FaUpload />
                 <span>Choose photos</span>
               </span>
@@ -158,7 +160,7 @@ const AddFood = () => {
               type="file"
               multiple
               name="photos"
-              className="absolute left-0 top-0 h-0 overflow-hidden input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-[352px]"
+              className="absolute left-0 top-0 h-0 overflow-hidden input input-md "
               onChange={(e) =>
                 formik.setFieldValue("photos", e.currentTarget.files)
               }
@@ -171,14 +173,17 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
+     </div>
 
          {/* Description box */}
-         <div className="flex flex-col gap-3 w-1/2">
+        <div className={`flex space-x-1.5`}>
+        <h3 className="mt-3">Description <span className="text-red-400">*</span></h3>
+        <div className="flex flex-col gap-3 w-1/2">
           <textarea
             type="text"
             placeholder="Description"
             name="text"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-[353px]"
             value={formik.values.text}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -189,11 +194,12 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
+        </div>
        
         {/* submit button */}
         <button
           type="submit"
-          className="btn btn-sm w-1/2 bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case mt-4"
+          className="btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case mt-4"
         >
           Add Food
         </button>

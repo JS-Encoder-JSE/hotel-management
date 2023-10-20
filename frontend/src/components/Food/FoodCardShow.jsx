@@ -41,14 +41,14 @@ const FoodCardShow = () => {
     <EditFood></EditFood>
     <div className="modal-action">
       <form method="dialog">
-        <button  className="btn btn-sm min-w-[8rem] bg-red-400 hover:bg-transparent text-white hover:text-green-300 !border-green-slimy normal-case">Close</button>
+        <button  className="bg-red-600 p-2 rounded-md text-white ">Close</button>
       </form>
     </div>
   </div>
 </dialog>
          
           <Link
-            to=""
+            to="/dashboard/manage-food"
             className="btn btn-sm min-w-[8rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case"
           >
             Manage

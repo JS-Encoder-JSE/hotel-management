@@ -20,6 +20,7 @@ import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
 import AllInventory from "./pages/Inventory/AllInventory.jsx";
 import AddInventory from "./pages/Inventory/AddInventory.jsx";
+import ManageFood from "./components/Food/ManageFood.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -111,10 +112,15 @@ const App = () => {
                 </ManagerRoute>
               ),
             },
-            // {
-            //   path: "add-food",
-            //   element: <AddFood />,
-            // },
+            {
+              path: "manage-food",
+              element: (
+                <ManagerRoute>
+                  <ManageFood />
+                </ManagerRoute>
+              ),
+            },
+          
             {
               path: "header",
               element: <Header />,
