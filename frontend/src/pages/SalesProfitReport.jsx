@@ -140,6 +140,12 @@ const SalesProfitReport = () => {
                   );
                 })}
               </tbody>
+              <tfoot className={`text-sm`}>
+                <tr>
+                  <td colSpan={5} className={`text-end`}>Total</td>
+                  <td>250000</td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>

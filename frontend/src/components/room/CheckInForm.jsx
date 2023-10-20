@@ -6,6 +6,7 @@ import * as yup from "yup";
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   age: yup.string().required("Age is required"),
+  adult: yup.string().required("Adult is required"),
   paymentMethod: yup.string().required("Payment method is required"),
 });
 
@@ -14,7 +15,12 @@ const CheckInForm = ({ setCheckIn }) => {
     initialValues: {
       name: "",
       age: "",
+      adult: "",
+      children: "",
       paymentMethod: "",
+      cardNumber: "",
+      mobileBankingNo: "",
+      trxID: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -47,7 +53,7 @@ const CheckInForm = ({ setCheckIn }) => {
       {/* age box */}
       <div className="flex flex-col gap-3">
         <input
-          type="text"
+          type="number"
           placeholder="Age"
           name="age"
           className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
@@ -58,6 +64,40 @@ const CheckInForm = ({ setCheckIn }) => {
         {formik.touched.age && Boolean(formik.errors.age) ? (
           <small className="text-red-600">
             {formik.touched.age && formik.errors.age}
+          </small>
+        ) : null}
+      </div>
+      {/* adult box */}
+      <div className="flex flex-col gap-3">
+        <input
+          type="number"
+          placeholder="Adult"
+          name="adult"
+          className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+          value={formik.values.adult}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.adult && Boolean(formik.errors.adult) ? (
+          <small className="text-red-600">
+            {formik.touched.adult && formik.errors.adult}
+          </small>
+        ) : null}
+      </div>
+      {/* children box */}
+      <div className="flex flex-col gap-3">
+        <input
+          type="number"
+          placeholder="Children"
+          name="children"
+          className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+          value={formik.values.children}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.children && Boolean(formik.errors.children) ? (
+          <small className="text-red-600">
+            {formik.touched.children && formik.errors.children}
           </small>
         ) : null}
       </div>
@@ -75,7 +115,7 @@ const CheckInForm = ({ setCheckIn }) => {
           </option>
           <option value="cash">Cash</option>
           <option value="card">Card</option>
-          <option value="deluxe">Mobile Banking</option>
+          <option value="mfs">Mobile Banking</option>
         </select>
         {formik.touched.paymentMethod &&
         Boolean(formik.errors.paymentMethod) ? (
@@ -84,6 +124,61 @@ const CheckInForm = ({ setCheckIn }) => {
           </small>
         ) : null}
       </div>
+      {formik.values.paymentMethod === "card" ? (
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Card Number"
+            name="cardNumber"
+            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            value={formik.values.cardNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.cardNumber && Boolean(formik.errors.cardNumber) ? (
+            <small className="text-red-600">
+              {formik.touched.cardNumber && formik.errors.cardNumber}
+            </small>
+          ) : null}
+        </div>
+      ) : null}
+      {formik.values.paymentMethod === "mfs" ? (
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Mobile Banking Number"
+            name="mobileBankingNo"
+            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            value={formik.values.mobileBankingNo}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.mobileBankingNo &&
+          Boolean(formik.errors.mobileBankingNo) ? (
+            <small className="text-red-600">
+              {formik.touched.mobileBankingNo && formik.errors.mobileBankingNo}
+            </small>
+          ) : null}
+        </div>
+      ) : null}
+      {formik.values.paymentMethod && formik.values.paymentMethod !== "cash" ? (
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Transaction ID"
+            name="trxID"
+            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            value={formik.values.trxID}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.trxID && Boolean(formik.errors.trxID) ? (
+            <small className="text-red-600">
+              {formik.touched.trxID && formik.errors.trxID}
+            </small>
+          ) : null}
+        </div>
+      ) : null}
       {/* button */}
       <div className={`flex justify-between`}>
         <button
