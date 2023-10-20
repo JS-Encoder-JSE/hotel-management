@@ -21,6 +21,7 @@ const CheckInForm = ({ setCheckIn }) => {
       cardNumber: "",
       mobileBankingNo: "",
       trxID: "",
+      discount: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -179,6 +180,22 @@ const CheckInForm = ({ setCheckIn }) => {
           ) : null}
         </div>
       ) : null}
+      <div className="flex flex-col gap-3">
+        <input
+          type="text"
+          placeholder="Discount"
+          name="discount"
+          className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+          value={formik.values.discount}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.discount && Boolean(formik.errors.discount) ? (
+          <small className="text-red-600">
+            {formik.touched.discount && formik.errors.discount}
+          </small>
+        ) : null}
+      </div>
       {/* button */}
       <div className={`flex justify-between`}>
         <button
