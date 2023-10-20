@@ -29,7 +29,7 @@ const EditFood = () => {
   });
 
   return (
-    <div className={`space-y-10`}>
+    <div className={`space-y-10 bg-white rounded-2xl p-10`}>
       <h3
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >

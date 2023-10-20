@@ -143,12 +143,12 @@ const AddFood = () => {
               </div>
 
               {/* Image*/}
-              <div className={`flex space-x-1.5`}>
-                <h3 className="mt-5 ms-9">
+              <div className={`flex items-center space-x-1.5`}>
+                <h3 className="ms-9">
                   Image <span className="text-red-400 me-3">*</span>
                 </h3>
                 <div className="flex flex-col gap-3 mt-4 mb-4">
-                  <label className="relative input input-sm input-bordered border-green-slimy rounded  focus:outline-none w-[356px] ms-6">
+                  <label className="relative input input-sm input-bordered border-green-slimy rounded  focus:outline-none w-[356px] ms-6 p-2 h-auto bg-transparent">
                     {formik.values.photos ? (
                       <span>{formik.values.photos.length + " files"}</span>
                     ) : (
@@ -185,10 +185,9 @@ const AddFood = () => {
                 </h3>
                 <div className="flex flex-col gap-3 w-1/2">
                   <textarea
-                    type="text"
                     placeholder="Description"
                     name="text"
-                    className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-[355px] ms-9"
+                    className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-[355px] ms-9 resize-none"
                     value={formik.values.text}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}

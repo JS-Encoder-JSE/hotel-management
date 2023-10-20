@@ -37,7 +37,7 @@ const AddEmployee = () => {
   });
 
   return (
-    <div className={`space-y-10`}>
+    <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
       <h3
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
@@ -54,7 +54,7 @@ const AddEmployee = () => {
             type="text"
             placeholder="Name"
             name="name"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -69,7 +69,7 @@ const AddEmployee = () => {
         <div className="flex flex-col gap-3">
           <select
             name="designation"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
             value={formik.values.designation}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -90,7 +90,7 @@ const AddEmployee = () => {
         <div className="flex flex-col gap-3">
           <select
             name="shift"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
             value={formik.values.shift}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -113,7 +113,7 @@ const AddEmployee = () => {
             type="text"
             placeholder="Salary"
             name="salary"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.salary}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -130,7 +130,7 @@ const AddEmployee = () => {
             type="text"
             placeholder="Street address"
             name="name"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.street}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -147,7 +147,7 @@ const AddEmployee = () => {
             type="text"
             placeholder="State"
             name="state"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.state}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -164,7 +164,7 @@ const AddEmployee = () => {
             type="text"
             placeholder="City"
             name="city"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.city}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -181,7 +181,7 @@ const AddEmployee = () => {
             type="text"
             placeholder="Zip"
             name="zip"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.zip}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -193,8 +193,8 @@ const AddEmployee = () => {
           ) : null}
         </div>
         {/* user image box */}
-        <div className="col-span-full flex flex-col gap-3">
-          <label className="relative input input-sm input-bordered border-green-slimy rounded w-full text-center cursor-pointer focus:outline-none">
+        <div className="flex flex-col gap-3">
+          <label className="relative input input-sm input-bordered border-gray-500/50 rounded  focus:outline-none p-2 h-auto bg-transparent">
             {formik.values.userImg ? (
               formik.values.userImg.name.substring(
                 0,
@@ -226,7 +226,7 @@ const AddEmployee = () => {
         {/* submit button */}
         <button
           type="submit"
-          className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          className="btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto"
         >
           Add
         </button>

@@ -10,7 +10,7 @@ const validationSchema = yup.object({
   ItemQuantity: yup.string().required("Floor number is required"),
 });
 
-const AddInventory = () => {
+const EditInventory = () => {
   const formik = useFormik({
     initialValues: {
       itemName: "",
@@ -87,17 +87,17 @@ const AddInventory = () => {
           ) : null}
         </div>
         {/* submit button */}
-          <div className=" col-span-full text-end mt-5 ">
-              <button
-                type="submit"
-                className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-[90px] p-4 h-auto"
-              >
-                  Add
-              </button>
-          </div>
+        <div className=" col-span-full text-end mt-5 ">
+          <button
+            type="submit"
+            className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-[90px] p-4 h-auto"
+          >
+            Add
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
-export default AddInventory;
+export default EditInventory;

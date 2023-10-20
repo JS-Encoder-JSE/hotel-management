@@ -41,7 +41,7 @@ const EditRoom = () => {
   });
 
   return (
-    <div className={`space-y-10`}>
+    <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
       <h3
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >

@@ -23,6 +23,7 @@ import AddInventory from "./pages/Inventory/AddInventory.jsx";
 import ManageFood from "./components/Food/ManageFood.jsx";
 import SalesProfitReport from "./pages/SalesProfitReport.jsx";
 import AddOrder from "./pages/restaurant/AddOrder.jsx";
+import EditInventory from "./pages/Inventory/EditInventory.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -119,6 +120,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <ManageFood />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "edit-inventory/:id",
+              element: (
+                <ManagerRoute>
+                  <EditInventory />
                 </ManagerRoute>
               ),
             },
