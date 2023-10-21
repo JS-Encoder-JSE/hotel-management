@@ -3,7 +3,7 @@ import { FaEye, FaFileInvoice } from "react-icons/fa";
 import { useFormik } from "formik";
 import DatePicker from "react-datepicker";
 
-const HotelList = () => {
+const HotelLists = () => {
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -75,4 +75,4 @@ const HotelList = () => {
   );
 };
 
-export default HotelList;
+export default HotelLists;

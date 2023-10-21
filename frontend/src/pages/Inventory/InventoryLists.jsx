@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import FoodLists from "../../components/restaurant/FoodLists.jsx";
 
-const AllInventory = () => {
+const InventoryLists = () => {
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -50,4 +50,4 @@ const AllInventory = () => {
   );
 };
 
-export default AllInventory;
+export default InventoryLists;

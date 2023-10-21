@@ -1,29 +1,34 @@
 import React from "react";
 import { FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 const FoodInventory = () => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       search: "",
-      filter: "",
+      entries: "",
     },
   });
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-      <div className={`flex justify-between gap-4`}>
-        <div>
+      <div className={`flex justify-between`}>
+        <div className={`space-x-1.5`}>
+          <span>Show</span>
           <select
-            name="filter"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
-            value={formik.values.filter}
+            name="entries"
+            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+            value={formik.values.entries}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
           >
-            <option value="all">All</option>
-            <option value="available">Menu 1</option>
-            <option value="booked">Menu 2</option>
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
           </select>
+          <span>entries</span>
         </div>
         <div className={`relative sm:min-w-[20rem]`}>
           <input
@@ -55,7 +60,7 @@ const FoodInventory = () => {
             </tr>
           </thead>
           <tbody>
-            {[...Array(10)].map((_, idx) => {
+            {[...Array(+formik.values.entries || 10)].map((_, idx) => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <td>
@@ -63,7 +68,7 @@ const FoodInventory = () => {
                       <div className="avatar">
                         <div className="mask mask-squircle w-12 h-12">
                           <img
-                            src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
+                            src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D"
                             alt=""
                           />
                         </div>
@@ -86,6 +91,7 @@ const FoodInventory = () => {
                     </span>
                     <span
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                      onClick={() => navigate(`/dashboard/edit-food/${idx}`)}
                     >
                       <FaEdit />
                     </span>
