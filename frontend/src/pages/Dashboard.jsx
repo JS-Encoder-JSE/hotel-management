@@ -7,6 +7,7 @@ import {
 import useAuth from "../hooks/useAuth.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 import Header from "../components/Header.jsx";
+import OwnerSBItems from "../components/sidebar/OwnerSBItems.jsx";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -28,7 +29,7 @@ const Dashboard = () => {
             <figure className={`mb-10 max-w-[10rem] mx-auto`}>
               <img src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png" alt="" />
             </figure>
-            <h3 className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}>Manager</h3>
+            <h3 className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}>Owner</h3>
             <div
               className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}
             >
@@ -52,9 +53,9 @@ const Dashboard = () => {
                     <span className={`-mt-0.5`}>Dashboard</span>
                   </NavLink>
                 </li>
-                {user.status === "manager" ? (
-                  <ManagerSBItems handleSBItems={handleSBItems} />
-                ) : null}
+                {user.status === "owner" ? (
+                  <OwnerSBItems handleSBItems={handleSBItems} />
+                ) : <ManagerSBItems handleSBItems={handleSBItems} />}
               </ul>
             </div>
           </div>

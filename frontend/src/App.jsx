@@ -10,7 +10,6 @@ import Header from "./components/Header.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import ManageRoom from "./pages/room/ManageRoom.jsx";
 import AddRoom from "./pages/room/AddRoom.jsx";
-import AddFood from "./components/AddFood.jsx";
 import FoodCard from "./components/Food/FoodCard.jsx";
 import EditFood from "./components/Food/EditFood.jsx";
 import InventoryFood from "./components/Food/InventoryFood.jsx";
@@ -24,6 +23,10 @@ import ManageFood from "./components/Food/ManageFood.jsx";
 import SalesProfitReport from "./pages/SalesProfitReport.jsx";
 import AddOrder from "./pages/restaurant/AddOrder.jsx";
 import EditInventory from "./pages/Inventory/EditInventory.jsx";
+import AddFood from "./components/Food/AddFood.jsx";
+import OwnerRoute from "./routes/OwnerRoute.jsx";
+import AddHotels from "./pages/Owner- Add-Hotels/AddHotels.jsx";
+import HotelList from "./pages/Owner- Add-Hotels/HotelList.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -182,6 +185,23 @@ const App = () => {
                 <ManagerRoute>
                   <AddOrder />
                 </ManagerRoute>
+              ),
+            },
+            // Owner Hotel 
+            {
+              path: "add-hotel",
+              element: (
+                <OwnerRoute>
+                  <AddHotels />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "hotel-list",
+              element: (
+                <OwnerRoute>
+                  <HotelList />
+                </OwnerRoute>
               ),
             },
           ],
