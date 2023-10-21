@@ -29,9 +29,9 @@ const Dashboard = () => {
             <figure className={`mb-10 max-w-[10rem] mx-auto`}>
               <img src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png" alt="" />
             </figure>
-            <h3 className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}>Owner</h3>
+            <h3 className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}>Manager</h3>
             <div
-              className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}
+              className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto scrollbar-none`}
             >
               <div
                 className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`}

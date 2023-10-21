@@ -13,7 +13,7 @@ const validationSchema = yup.object({
   branchName: yup.string().required("Branch Name is required"),
 });
 
-const AddHotels = () => {
+const AddHotel = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -162,4 +162,4 @@ const AddHotels = () => {
   );
 };
 
-export default AddHotels;
+export default AddHotel;

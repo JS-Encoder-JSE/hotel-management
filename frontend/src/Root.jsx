@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Preloader from "./components/Preloader.jsx";
-import Header from "./components/Header.jsx";
 
 const Root = () => {
-  const location = useLocation();
   const [preloader, setPreloader] = useState(true);
   const [isHbMenu, setHbMenu] = useState(true);
 
@@ -26,8 +24,11 @@ const Root = () => {
     <>
       {preloader ? (
         <Preloader setPreloader={setPreloader} />
-      ) : <Outlet context={{isHbMenu, setHbMenu}} />}
+      ) : (
+        <Outlet context={{ isHbMenu, setHbMenu }} />
+      )}
       <Toaster />
+      <ScrollRestoration />
     </>
   );
 };
