@@ -1,9 +1,6 @@
 import React from "react";
 import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
-import {
-  MdOutlineDashboard,
-  MdKeyboardArrowLeft,
-} from "react-icons/md";
+import { MdOutlineDashboard, MdKeyboardArrowLeft } from "react-icons/md";
 import useAuth from "../hooks/useAuth.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 import Header from "../components/Header.jsx";
@@ -28,9 +25,16 @@ const Dashboard = () => {
             } bg-gray-200 text-lg w-36 md:w-auto h-full md:h-auto px-10 py-5 md:-my-10 z-30 transition-[left] duration-500`}
           >
             <figure className={`mb-10 max-w-[10rem] mx-auto`}>
-              <img src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png" alt="" />
+              <img
+                src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png"
+                alt=""
+              />
             </figure>
-            <h3 className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}>Owner</h3>
+            <h3
+              className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}
+            >
+              Owner
+            </h3>
             <div
               className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}
             >
@@ -54,12 +58,13 @@ const Dashboard = () => {
                     <span className={`-mt-0.5`}>Dashboard</span>
                   </NavLink>
                 </li>
-                {user.status === "owner" ?
-                (     
+                {user.status === "admin" ? (
+                  <AdminSBItems handleSBItems={handleSBItems} />
+                ) : user.status === "owner" ? (
                   <OwnerSBItems handleSBItems={handleSBItems} />
-                ) : <ManagerSBItems handleSBItems={handleSBItems} />
-                
-                }
+                ) : (
+                  <ManagerSBItems handleSBItems={handleSBItems} />
+                )}
               </ul>
             </div>
           </div>

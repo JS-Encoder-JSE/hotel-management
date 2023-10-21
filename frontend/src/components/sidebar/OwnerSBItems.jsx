@@ -61,7 +61,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineFoodBank />
-            <span className={`-mt-0.5`}>Manager-Management</span>
+            <span className={`-mt-0.5`}>Manager Management</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
