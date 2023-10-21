@@ -2,22 +2,27 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthProvider from "./providers/AuthProvider.jsx";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
+import OwnerRoute from "./routes/OwnerRoute.jsx";
 import ManagerRoute from "./routes/ManagerRoute.jsx";
 import Root from "./Root.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import Header from "./components/Header.jsx";
+import AddRoom from "./pages/room/AddRoom.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import ManageRoom from "./pages/room/ManageRoom.jsx";
-import AddRoom from "./pages/room/AddRoom.jsx";
-import EditFood from "./components/Food/EditFood.jsx";
-import FoodInventory from "./components/Food/FoodInventory.jsx";
 import ManageSingleRoom from "./pages/room/ManageSingleRoom.jsx";
+import ManageBooking from "./pages/room/ManageBooking.jsx";
+import CheckIn from "./pages/room/CheckIn.jsx";
+import AddFood from "./pages/restaurant/AddFood.jsx";
+import EditFood from "./pages/restaurant/EditFood.jsx";
+import AddOrder from "./pages/restaurant/AddOrder.jsx";
+import FoodInventory from "./pages/restaurant/FoodInventory.jsx";
+import AddInventory from "./pages/Inventory/AddInventory.jsx";
+import EditInventory from "./pages/Inventory/EditInventory.jsx";
+import InventoryLists from "./pages/Inventory/InventoryLists.jsx";
 import AddEmployee from "./pages/employee/AddEmployee.jsx";
 import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
-import AllInventory from "./pages/Inventory/AllInventory.jsx";
-import AddInventory from "./pages/Inventory/AddInventory.jsx";
 import SalesProfitReport from "./pages/SalesProfitReport.jsx";
 import AddOrder from "./pages/restaurant/AddOrder.jsx";
 import EditInventory from "./pages/Inventory/EditInventory.jsx";
@@ -31,6 +36,9 @@ import AddManager from "./pages/ManagerManagement/AddManager.jsx";
 import ManagerList from "./pages/ManagerManagement/ManagerList.jsx";
 import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
 import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
+import AddHotel from "./pages/hotel/AddHotel.jsx";
+import HotelLists from "./pages/hotel/HotelLists.jsx";
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -61,30 +69,6 @@ const App = () => {
               ),
             },
             {
-              path: "checkin",
-              element: (
-                <ManagerRoute>
-                  <CheckIn />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "add-room",
-              element: (
-                <ManagerRoute>
-                  <AddRoom />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "manage-booking",
-              element: (
-                <ManagerRoute>
-                  <ManageBooking />
-                </ManagerRoute>
-              ),
-            },
-            {
               path: "edit-room/:id",
               element: (
                 <ManagerRoute>
@@ -101,18 +85,26 @@ const App = () => {
               ),
             },
             {
-              path: "all-inventory",
+              path: "manage-room/:id",
               element: (
                 <ManagerRoute>
-                  <AllInventory />
+                  <ManageSingleRoom />
                 </ManagerRoute>
               ),
             },
             {
-              path: "add-inventory",
+              path: "manage-booking",
               element: (
                 <ManagerRoute>
-                  <AddInventory />
+                  <ManageBooking />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "checkin",
+              element: (
+                <ManagerRoute>
+                  <CheckIn />
                 </ManagerRoute>
               ),
             },
@@ -125,14 +117,6 @@ const App = () => {
               ),
             },
             {
-              path: "inventoryFood",
-              element: (
-                <ManagerRoute>
-                  <FoodInventory />
-                </ManagerRoute>
-              ),
-            },
-            {
               path: "edit-food/:id",
               element: (
                 <ManagerRoute>
@@ -141,23 +125,42 @@ const App = () => {
               ),
             },
             {
+              path: "add-order",
+              element: (
+                <ManagerRoute>
+                  <AddOrder />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "food-inventory",
+              element: (
+                <ManagerRoute>
+                  <FoodInventory />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-inventory",
+              element: (
+                <ManagerRoute>
+                  <AddInventory />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "all-inventory",
+              element: (
+                <ManagerRoute>
+                  <InventoryLists />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "edit-inventory/:id",
               element: (
                 <ManagerRoute>
                   <EditInventory />
-                </ManagerRoute>
-              ),
-            },
-          
-            {
-              path: "header",
-              element: <Header />,
-            },
-            {
-              path: "manage-room/:id",
-              element: (
-                <ManagerRoute>
-                  <ManageSingleRoom />
                 </ManagerRoute>
               ),
             },
@@ -194,6 +197,7 @@ const App = () => {
               ),
             },
             {
+
               path: "add-order",
               element: (
                 <ManagerRoute>
@@ -203,10 +207,11 @@ const App = () => {
             },
             // Owner Hotel  Sideber
             {
+
               path: "add-hotel",
               element: (
                 <OwnerRoute>
-                  <AddHotels />
+                  <AddHotel />
                 </OwnerRoute>
               ),
             },
@@ -214,7 +219,7 @@ const App = () => {
               path: "hotel-list",
               element: (
                 <OwnerRoute>
-                  <HotelList />
+                  <HotelLists />
                 </OwnerRoute>
               ),
             },

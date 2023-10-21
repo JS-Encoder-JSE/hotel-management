@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 
-const HotelList = () => {
+const HotelLists = () => {
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -81,4 +81,4 @@ const HotelList = () => {
   );
 };
 
-export default HotelList;
+export default HotelLists;

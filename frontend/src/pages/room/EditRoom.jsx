@@ -3,13 +3,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaTrash, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaTrash, FaUpload } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 import { TbReplaceFilled } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -23,6 +24,7 @@ const validationSchema = yup.object({
 });
 
 const EditRoom = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -42,12 +44,21 @@ const EditRoom = () => {
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
-      <h3
-        className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
+      <div
+        className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
       >
-        <FaPencil />
-        <span>Edit Room</span>
-      </h3>
+        <h3 className={`flex text-2xl text-white space-x-1.5`}>
+          <FaPencil />
+          <span>Edit Room</span>
+        </h3>
+        <div
+          className={`flex hover:text-white hover:bg-transparent border border-white items-center space-x-1.5 bg-white text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+          <span>Back</span>
+        </div>
+      </div>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
@@ -129,12 +140,12 @@ const EditRoom = () => {
         <div className="flex flex-col gap-3">
           <select
             name="category"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.category}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value="" disabled>
+            <option value="" selected disabled>
               Category
             </option>
             <option value="general">General</option>
@@ -150,12 +161,12 @@ const EditRoom = () => {
         <div className="flex flex-col gap-3">
           <select
             name="type"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.type}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value="" disabled>
+            <option value="" selected disabled>
               Type
             </option>
             <option value="ac">AC</option>
@@ -171,12 +182,12 @@ const EditRoom = () => {
         <div className="flex flex-col gap-3">
           <select
             name="capacity"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.capacity}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value="" disabled>
+            <option value="" selected disabled>
               Capacity
             </option>
             <option value={1}>1</option>
@@ -192,10 +203,10 @@ const EditRoom = () => {
         {/* price box */}
         <div className="flex flex-col gap-3">
           <input
-            type="text"
+            type="number"
             placeholder="Price"
             name="price"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.price}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -210,12 +221,12 @@ const EditRoom = () => {
         <div className="flex flex-col gap-3">
           <select
             name="bedSize"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.bedSize}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value="" disabled>
+            <option value="" selected disabled>
               Bed Size
             </option>
             <option value="sm">SM</option>
@@ -234,7 +245,7 @@ const EditRoom = () => {
             type="number"
             placeholder="Floor Number"
             name="floorNumber"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.floorNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -251,7 +262,7 @@ const EditRoom = () => {
             type="number"
             placeholder="Room Number"
             name="roomNumber"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.roomNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -263,34 +274,42 @@ const EditRoom = () => {
           ) : null}
         </div>
         {/* room photos */}
-        <div className="flex flex-col gap-3">
-          <label className="relative input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none">
+        <div className="flex flex-col gap-3 ">
+          <label className="relative input input-sm input-bordered border-gray-500/50 rounded  focus:outline-none p-2 h-auto bg-transparent">
             {formik.values.photos ? (
               <span>{formik.values.photos.length + " files"}</span>
             ) : (
-              <span className={`flex items-baseline space-x-1.5`}>
+              <span className={`flex items-baseline space-x-1.5 `}>
                 <FaUpload />
-                <span>Choose more photos</span>
+                <span>Choose photos</span>
               </span>
             )}
             <input
               type="file"
               multiple
               name="photos"
-              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+              className="absolute left-0 top-0  overflow-hidden h-0"
               onChange={(e) =>
                 formik.setFieldValue("photos", e.currentTarget.files)
               }
+              onBlur={formik.handleBlur}
             />
           </label>
+          {formik.touched.photos && Boolean(formik.errors.photos) ? (
+            <small className="text-red-600">
+              {formik.touched.photos && formik.errors.photos}
+            </small>
+          ) : null}
         </div>
         {/* submit button */}
-        <button
-          type="submit"
-          className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-        >
-          Update
-        </button>
+        <div className=" col-span-full text-end mt-5 ">
+          <button
+            type="submit"
+            className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-[90px] p-4 h-auto"
+          >
+            Add
+          </button>
+        </div>
       </form>
     </div>
   );

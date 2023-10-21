@@ -8,10 +8,22 @@ const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
   type: yup.string().required("Type is required"),
   capacity: yup.string().required("Capacity is required"),
-  price: yup.string().required("Price is required"),
+  price: yup
+    .number()
+    .required("Price is required")
+    .positive("Price must be a positive number")
+    .integer("Price must be an integer"),
   bedSize: yup.string().required("Bed size is required"),
-  floorNumber: yup.string().required("Floor number is required"),
-  roomNumber: yup.string().required("Room number is required"),
+  floorNumber: yup
+    .number()
+    .required("Floor number is required")
+    .positive("Floor number must be a positive")
+    .integer("Floor number must be an integer"),
+  roomNumber: yup
+    .number()
+    .required("Room number is required")
+    .positive("Room number must be a positive")
+    .integer("Room number must be an integer"),
   photos: yup.mixed().required("Photos are required"),
 });
 
@@ -118,7 +130,7 @@ const AddRoom = () => {
               {/* price box */}
               <div className="flex flex-col gap-3">
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Price"
                   name="price"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy  w-[353px]"

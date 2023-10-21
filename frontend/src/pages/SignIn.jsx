@@ -33,7 +33,9 @@ const SignIn = () => {
       signIn(values).then((response) => {
         if (response) {
           navigate("dashboard");
-          toast.success("Sign In Successfully!");
+          toast.success("Sign In Successfully!", {
+            duration: 5000,
+          });
         } else {
           toast.error("Sign In Unsuccessfully!");
         }
@@ -45,14 +47,16 @@ const SignIn = () => {
     <section className={`relative py-10`}>
       {/* background pattern */}
       <figure
-        className={`hidden md:block absolute top-0 left-0 w-full h-96 overflow-hidden -z-10`}
+        className={`hidden md:block absolute top-0 left-0 w-full h-96 overflow-hidden`}
       >
         <img src={imgAbstractSI} alt="" />
       </figure>
       <div className="container">
         <div className={`mt-28`}>
           {/* brand title */}
-          <h1 className={`text-4xl font-black text-green-slimy text-center`}>
+          <h1
+            className={`relative text-4xl font-black text-green-slimy text-center`}
+          >
             Hotel Management Application
           </h1>
           {/* sign in card */}
