@@ -1,23 +1,24 @@
 import React from "react";
 import { useFormik } from "formik";
-import { FaSearch } from "react-icons/fa";
-import RoomCard from "../../components/room/RoomCard.jsx";
+import RoomLists from "../../components/room/RoomLists.jsx";
 
 const ManageRoom = () => {
   const formik = useFormik({
     initialValues: {
-      search: "",
       filter: "",
-    },
+      search: ""
+    }
   });
 
   return (
-    <div className={`space-y-8`}>
-      <div className={`flex justify-between gap-4`}>
-        <div>
+    <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
+      <div
+        className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
+      >
+        <div className="flex flex-col gap-3">
           <select
             name="filter"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
             value={formik.values.filter}
             onChange={formik.handleChange}
           >
@@ -26,7 +27,7 @@ const ManageRoom = () => {
             <option value="booked">Booked</option>
           </select>
         </div>
-        <div className={`relative sm:min-w-[20rem]`}>
+        <div>
           <input
             type="text"
             placeholder="Search by room number..."
@@ -35,19 +36,9 @@ const ManageRoom = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
           />
-          <button
-            type="button"
-            className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-          >
-            <FaSearch />
-          </button>
         </div>
       </div>
-      <div className={`grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4`}>
-        {[...Array(9)].map((elem, idx) => (
-          <RoomCard key={idx} room={idx} />
-        ))}
-      </div>
+      <RoomLists />
     </div>
   );
 };

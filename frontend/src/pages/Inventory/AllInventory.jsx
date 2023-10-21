@@ -1,72 +1,51 @@
-import React, { useState } from "react";
-import { FaRegEdit, FaRegTrashAlt, FaThList } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import FoodLists from "../../components/restaurant/FoodLists.jsx";
 
 const AllInventory = () => {
-  const [items, setItems] = useState([
-    { id: 1, name: "Bed Sheet", quantity: 4, inUse: 2 },
-    { id: 2, name: "Pillow", quantity: 23, inUse: 3 },
-    { id: 3, name: "Cutlery", quantity: 45, inUse: 32 },
-    { id: 4, name: "Cookware", quantity: 10, inUse: 5 },
-    { id: 5, name: "Soap", quantity: 54, inUse: 4 },
-    { id: 6, name: "Tissue", quantity: 78, inUse: 34 },
-  ]);
-
-  const handleDelete = (id) => {
-    // item remove/delete code will be add gere.
-  };
+  const formik = useFormik({
+    initialValues: {
+      filter: "",
+      search: ""
+    }
+  });
 
   return (
-    <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
-      <h3
-        className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
+    <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
+      <div
+        className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
       >
-        <FaThList />
-        <span>All Items</span>
-      </h3>
-      <div className="overflow-x-auto max-w-3xl mx-auto">
-        <table className="table text-center">
-          <thead>
-            <tr className={`text-sm`}>
-              <th>Name</th>
-              <th>Items in Use</th>
-              <th>Available Quantity</th>
-              <th>Total Quantity</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item, index) => (
-              <tr key={index} className="text-lg">
-                <td>{item.name}</td>
-                <td>{item.inUse}</td>
-                <td>{item.quantity - item.inUse}</td>
-                <td>{item.quantity}</td>
-                <td>
-                  <Link
-                    to="/dashboard/add-inventory"
-                    className="btn btn-ghost hover:bg-transparent"
-                  >
-                    <FaRegEdit className="text-xl text-red-500" />
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="btn btn-ghost hover:bg-transparent"
-                  >
-                    <FaRegTrashAlt className="text-xl text-green-slimy" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Link
-          to="/dashboard/edit-inventory"
-          className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case mt-5"
-        >
-          Add Item
-        </Link>
+        <div className="flex flex-col gap-3">
+          <select
+            name="filter"
+            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+            value={formik.values.filter}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="all">All</option>
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+          </select>
+          {formik.touched.filter && Boolean(formik.errors.filter) ? (
+            <small className="text-red-600">
+              {formik.touched.filter && formik.errors.filter}
+            </small>
+          ) : null}
+        </div>
+        <div>
+          <input
+          type="text"
+          placeholder="Search by name..."
+          name="search"
+          className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+          value={formik.values.search}
+          onChange={formik.handleChange}
+          />
+        </div>
       </div>
+      <FoodLists />
     </div>
   );
 };

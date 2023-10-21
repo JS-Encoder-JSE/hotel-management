@@ -5,8 +5,9 @@ import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdOutlineFoodBank,
-  MdOutlineInventory2, MdOutlineKitchen,
-  MdOutlineMeetingRoom
+  MdOutlineInventory2,
+  MdOutlineKitchen,
+  MdOutlineMeetingRoom,
 } from "react-icons/md";
 
 const ManagerSbItems = ({ handleSBItems }) => {
@@ -19,7 +20,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineMeetingRoom />
-            <span className={`-mt-0.5`}>Rooms</span>
+            <span className={`-mt-0.5`}>Room</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
@@ -51,57 +52,38 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Manage Room
             </NavLink>
           </li>
-        </ul>
-      </li>
-      <li className={`group p-2`}>
-        <div
-          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-          onClick={(e) => handleSBItems(e)}
-        >
-          <div className={`flex space-x-1.5`}>
-            <MdOutlineFoodBank />
-            <span className={`-mt-0.5`}>Food</span>
-          </div>
-          <span className={`group-[.active]:hidden`}>
-            <MdKeyboardArrowDown />
-          </span>
-          <span className={`hidden group-[.active]:inline`}>
-            <MdKeyboardArrowUp />
-          </span>
-        </div>
-        <ul className={`group-[.active]:block hidden`}>
           <li>
             <NavLink
-              to={`/dashboard/add-food`}
+              to={`/dashboard/manage-booking`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Food
+              Manage Booking
             </NavLink>
           </li>
           <li>
             <NavLink
-              to={`/dashboard/Foodcard`}
+              to={`/dashboard/checkin`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Manage Food
+              Check In
             </NavLink>
-            <li>
-              <NavLink
-                to={`/dashboard/inventoryFood`}
-                className={({ isActive }) =>
-                  "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                  (isActive ? " bg-gray-300" : "")
-                }
-              >
-                Food Inventory
-              </NavLink>
-            </li>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/checkout`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Check Out
+            </NavLink>
           </li>
         </ul>
       </li>
@@ -124,6 +106,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
         <ul className={`group-[.active]:block hidden`}>
           <li>
             <NavLink
+              to={`/dashboard/add-food`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Add Food
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to={`/dashboard/add-order`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
@@ -131,6 +124,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
               }
             >
               Add Order
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/inventoryFood`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Food Inventory
             </NavLink>
           </li>
         </ul>

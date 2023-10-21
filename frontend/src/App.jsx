@@ -11,19 +11,19 @@ import EditRoom from "./pages/room/EditRoom.jsx";
 import ManageRoom from "./pages/room/ManageRoom.jsx";
 import AddRoom from "./pages/room/AddRoom.jsx";
 import AddFood from "./components/AddFood.jsx";
-import FoodCard from "./components/Food/FoodCard.jsx";
 import EditFood from "./components/Food/EditFood.jsx";
-import InventoryFood from "./components/Food/InventoryFood.jsx";
+import FoodInventory from "./components/Food/FoodInventory.jsx";
 import ManageSingleRoom from "./pages/room/ManageSingleRoom.jsx";
 import AddEmployee from "./pages/employee/AddEmployee.jsx";
 import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
 import AllInventory from "./pages/Inventory/AllInventory.jsx";
 import AddInventory from "./pages/Inventory/AddInventory.jsx";
-import ManageFood from "./components/Food/ManageFood.jsx";
 import SalesProfitReport from "./pages/SalesProfitReport.jsx";
 import AddOrder from "./pages/restaurant/AddOrder.jsx";
 import EditInventory from "./pages/Inventory/EditInventory.jsx";
+import ManageBooking from "./pages/room/ManageBooking.jsx";
+import CheckIn from "./pages/room/CheckIn.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -48,6 +48,30 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <AddRoom />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "checkin",
+              element: (
+                <ManagerRoute>
+                  <CheckIn />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-room",
+              element: (
+                <ManagerRoute>
+                  <AddRoom />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "manage-booking",
+              element: (
+                <ManagerRoute>
+                  <ManageBooking />
                 </ManagerRoute>
               ),
             },
@@ -92,18 +116,10 @@ const App = () => {
               ),
             },
             {
-              path: "Foodcard",
-              element: (
-                <ManagerRoute>
-                  <FoodCard />
-                </ManagerRoute>
-              ),
-            },
-            {
               path: "inventoryFood",
               element: (
                 <ManagerRoute>
-                  <InventoryFood />
+                  <FoodInventory />
                 </ManagerRoute>
               ),
             },
@@ -112,14 +128,6 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <EditFood />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "manage-food/:id",
-              element: (
-                <ManagerRoute>
-                  <ManageFood />
                 </ManagerRoute>
               ),
             },

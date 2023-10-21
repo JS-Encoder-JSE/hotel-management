@@ -19,7 +19,6 @@ const AddFood = () => {
       foodName: "",
       quantity: "",
       price: "",
-      setMenu: "",
       text: "",
       photos: "",
     },
@@ -112,37 +111,7 @@ const AddFood = () => {
                   ) : null}
                 </div>
               </div>
-
-              {/* setMenu box */}
-              <div className={`flex space-x-1.5`}>
-                <h3 className="mt-7 ms-4">
-                  set-Menu <span className="text-red-400">*</span>
-                </h3>
-                <div className="flex flex-col gap-3 mt-4">
-                  <select
-                    name="setMenu"
-                    className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy ms-9 w-[356px]"
-                    value={formik.values.setMenu}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  >
-                    <option value="" selected disabled>
-                      Set Menu
-                    </option>
-                    <option value="menu1:1">1:1</option>
-                    <option value="menu1:2">1:2</option>
-                    <option value="menu1:3">1:3</option>
-                    <option value="menu2:2">2:2</option>
-                  </select>
-                  {formik.touched.setMenu && Boolean(formik.errors.setMenu) ? (
-                    <small className="text-red-600">
-                      {formik.touched.setMenu && formik.errors.setMenu}
-                    </small>
-                  ) : null}
-                </div>
-              </div>
-
-              {/* Image*/}
+              {/* Image */}
               <div className={`flex items-center space-x-1.5`}>
                 <h3 className="ms-9">
                   Image <span className="text-red-400 me-3">*</span>
