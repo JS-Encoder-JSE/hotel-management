@@ -10,8 +10,6 @@ import Header from "./components/Header.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import ManageRoom from "./pages/room/ManageRoom.jsx";
 import AddRoom from "./pages/room/AddRoom.jsx";
-import AddFood from "./components/AddFood.jsx";
-import FoodCard from "./components/Food/FoodCard.jsx";
 import EditFood from "./components/Food/EditFood.jsx";
 import FoodInventory from "./components/Food/FoodInventory.jsx";
 import ManageSingleRoom from "./pages/room/ManageSingleRoom.jsx";
