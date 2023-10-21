@@ -13,7 +13,7 @@ const validationSchema = yup.object({
   branchName: yup.string().required("Branch Name is required"),
 });
 
-const AddHotels = () => {
+const HotelEdit = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -33,7 +33,7 @@ const AddHotels = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
     <div className="card-body p-4">
-    <h2 className={`text-3xl max-w-xs`}>Add Hotels</h2>
+    <h2 className={`text-3xl max-w-xs`}>Add Hotels Update</h2>
         <hr className={`my-5`} />
       </div>
 
@@ -178,7 +178,7 @@ const AddHotels = () => {
               type="submit"
               className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs px-9 h-auto md:me-12"
             >
-              Add
+              Update
             </button>
           </div>
         </form>
@@ -188,4 +188,4 @@ const AddHotels = () => {
   );
 };
 
-export default AddHotels;
+export default HotelEdit;

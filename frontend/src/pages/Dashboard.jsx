@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 import Header from "../components/Header.jsx";
 import OwnerSBItems from "../components/sidebar/OwnerSBItems.jsx";
+import AdminSBItems from "../components/sidebar/AdminSBItems.jsx";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -53,9 +54,12 @@ const Dashboard = () => {
                     <span className={`-mt-0.5`}>Dashboard</span>
                   </NavLink>
                 </li>
-                {user.status === "owner" ? (
+                {user.status === "owner" ?
+                (     
                   <OwnerSBItems handleSBItems={handleSBItems} />
-                ) : <ManagerSBItems handleSBItems={handleSBItems} />}
+                ) : <ManagerSBItems handleSBItems={handleSBItems} />
+                
+                }
               </ul>
             </div>
           </div>

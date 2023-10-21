@@ -1,26 +1,26 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle, FaUpload } from "react-icons/fa";
+
 
 // form validation
 const validationSchema = yup.object({
-  name: yup.string().required("Hotel Name is required"),
-  address: yup.string().required("Hotel Address is required"),
-  email: yup.string().required("Hotel Email is required"),
-  phoneNumber: yup.string().required("Phone Number size is required"),
-  license: yup.string().required("License Number is required"),
-  branchName: yup.string().required("Branch Name is required"),
+  name: yup.string().required("Manager Name is required"),
+  address: yup.string().required("Manager Address is required"),
+  email: yup.string().required("Manager Email is required"),
+  phoneNumber: yup.string().required("Manager Phone Number size is required"),
+  salary: yup.string().required("Manager Salary is required"),
+  branchName: yup.string().required("Manager Branch Name is required"),
 });
 
-const AddHotels = () => {
+const AddManager = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
       address: "",
       email: "",
       phoneNumber:"",
-      license: "",
+      salary: "",
       branchName:""
      
     },
@@ -33,7 +33,7 @@ const AddHotels = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
     <div className="card-body p-4">
-    <h2 className={`text-3xl max-w-xs`}>Add Hotels</h2>
+    <h2 className={`text-3xl max-w-xs`}>Add Manager</h2>
         <hr className={`my-5`} />
       </div>
 
@@ -42,11 +42,11 @@ const AddHotels = () => {
           className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
           onSubmit={formik.handleSubmit}
         >
-          {/* Hotel Name box */}
+          {/* manager Name box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
-              placeholder="Hotel Name"
+              placeholder="Manager Name"
               name="name"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.price}
@@ -59,11 +59,11 @@ const AddHotels = () => {
               </small>
             ) : null}
           </div>
-          {/* Hotel Address box */}
+          {/* Manager Address box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
-              placeholder="Hotel Address "
+              placeholder="Manager Address "
               name="address"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.price}
@@ -77,11 +77,11 @@ const AddHotels = () => {
               </small>
             ) : null}
           </div>
-          {/* Email box */}
+          {/*Manager Email box */}
           <div className="flex flex-col gap-3">
             <input
               type="email"
-              placeholder="Hotel Email @ "
+              placeholder="Manager Email @ "
               name="email"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.price}
@@ -95,11 +95,11 @@ const AddHotels = () => {
             ) : null}
           </div>
 
-            {/*Phone Number  box */}
+            {/*Manager Phone Number  box */}
             <div className="flex flex-col gap-3">
             <input
               type="number"
-              placeholder="Hotel Phone Number #"
+              placeholder="Manager Phone Number #"
               name="phoneNumber"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.phoneNumber}
@@ -113,64 +113,24 @@ const AddHotels = () => {
             ) : null}
           </div>
 
-          {/*license  box */}
+          {/*Manager salary  box */}
           <div className="flex flex-col gap-3">
             <input
               type="number"
-              placeholder="Hotel License Number"
-              name="license"
+              placeholder="Manager Salary"
+              name="salary"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.license}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.license && Boolean(formik.errors.license) ? (
+            {formik.touched.salary && Boolean(formik.errors.salary) ? (
               <small className="text-red-600">
-                {formik.touched.license && formik.errors.license}
+                {formik.touched.salary && formik.errors.salary}
               </small>
             ) : null}
           </div>
-          {/*Hotel Branch box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Hotel Branch Name"
-              name="branchName"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-              value={formik.values.license}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.branchName && Boolean(formik.errors.branchName) ? (
-              <small className="text-red-600">
-                {formik.touched.branchName && formik.errors.branchName}
-              </small>
-            ) : null}
-          </div>
-
-                 {/* category box */}
-                 <div className="flex flex-col gap-3">
-                <select
-                  name="category"
-                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-                  value={formik.values.category}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="" selected disabled>
-                    Manager
-                  </option>
-                  <option value="manager1">Manager 1</option>
-                  <option value="manager2">Manager 2</option>
-                  <option value="manager3">Manager 3</option>
-                  <option value="manager4">Manager 4</option>
-                </select>
-                {formik.touched.category && Boolean(formik.errors.category) ? (
-                  <small className="text-red-600">
-                    {formik.touched.category && formik.errors.category}
-                  </small>
-                ) : null}
-              </div>
+       
        
           {/* submit button */}
           <div className=" col-span-full text-end mb-5 ">
@@ -188,4 +148,4 @@ const AddHotels = () => {
   );
 };
 
-export default AddHotels;
+export default AddManager;

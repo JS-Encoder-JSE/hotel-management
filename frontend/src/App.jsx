@@ -27,6 +27,10 @@ import AddFood from "./components/Food/AddFood.jsx";
 import OwnerRoute from "./routes/OwnerRoute.jsx";
 import AddHotels from "./pages/Owner- Add-Hotels/AddHotels.jsx";
 import HotelList from "./pages/Owner- Add-Hotels/HotelList.jsx";
+import AddManager from "./pages/ManagerManagement/AddManager.jsx";
+import ManagerList from "./pages/ManagerManagement/ManagerList.jsx";
+import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
+import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -46,6 +50,8 @@ const App = () => {
             </PrivateRoute>
           ),
           children: [
+
+            // Manager Sideber
             {
               path: "add-room",
               element: (
@@ -195,7 +201,7 @@ const App = () => {
                 </ManagerRoute>
               ),
             },
-            // Owner Hotel 
+            // Owner Hotel  Sideber
             {
               path: "add-hotel",
               element: (
@@ -212,6 +218,40 @@ const App = () => {
                 </OwnerRoute>
               ),
             },
+            {
+              path: "hotel-edit",
+              element: (
+                <OwnerRoute>
+                  <HotelEdit />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "add-manager",
+              element: (
+                <OwnerRoute>
+                  <AddManager />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "manager-list",
+              element: (
+                <OwnerRoute>
+                  <ManagerList />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "manager-edit",
+              element: (
+                <OwnerRoute>
+                  <ManagerEdit />
+                </OwnerRoute>
+              ),
+            },
+
+            // Admin sideber
           ],
         },
       ],

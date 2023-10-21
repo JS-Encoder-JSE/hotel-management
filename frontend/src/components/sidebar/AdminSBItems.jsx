@@ -10,7 +10,7 @@ import {
   MdOutlineMeetingRoom,
 } from "react-icons/md";
 
-const OwnerSBItems = ({ handleSBItems }) => {
+const AdminSBItems = ({ handleSBItems }) => {
   return (
     <>
       <li className={`group p-2`}>
@@ -124,4 +124,4 @@ const OwnerSBItems = ({ handleSBItems }) => {
   );
 };
 
-export default OwnerSBItems;
+export default AdminSBItems;
