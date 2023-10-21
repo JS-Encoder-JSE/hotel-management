@@ -30,8 +30,6 @@ import ManageBooking from "./pages/room/ManageBooking.jsx";
 import CheckIn from "./pages/room/CheckIn.jsx";
 import AddFood from "./components/Food/AddFood.jsx";
 import OwnerRoute from "./routes/OwnerRoute.jsx";
-import AddHotels from "./pages/Owner- Add-Hotels/AddHotels.jsx";
-import HotelList from "./pages/Owner- Add-Hotels/HotelList.jsx";
 import AddManager from "./pages/ManagerManagement/AddManager.jsx";
 import ManagerList from "./pages/ManagerManagement/ManagerList.jsx";
 import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
