@@ -97,7 +97,7 @@ const CheckOut = () => {
                         <hr />
                         <div className='p-5'>
                             {
-                                [...Array(5)].map((_, index) =>
+                                [...Array(selectedRooms.length)].map((_, index) =>
                                     <div className='border p-3 rounded-md flex gap-3 items-center mb-4'>
                                         <React.Fragment key={index}>
                                             <input type="radio" name="radio-default-customer" className="radio radio-primary" />
