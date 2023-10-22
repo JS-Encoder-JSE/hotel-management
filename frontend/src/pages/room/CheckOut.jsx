@@ -49,6 +49,8 @@ const CheckOut = () => {
 
             {/* Customer Info and Set them to default */}
             <section className='grid lg:grid-cols-2 gap-5'>
+
+                {/* Left Side */}
                 <div className='bg-white'>
                     <h3 className='p-5 text-xl'>Customer Details</h3>
                     <hr />
@@ -86,18 +88,29 @@ const CheckOut = () => {
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
-
-                <div className='bg-white p-5'>
-                    dfs
+                {/* Right Side */}
+                <div className='bg-white'>
+                    <h3 className='p-5 text-xl'>Set Default Customer</h3>
+                    <hr />
+                    <div className='p-5'>
+                        {
+                            [...Array(5)].map((_, index) =>
+                                <div className='border p-3 rounded-md flex gap-3 items-center mb-4'>
+                                    <React.Fragment key={index}>
+                                        <input type="radio" name="radio-default-customer" className="radio radio-primary" />
+                                        <div>
+                                            <p className='text-sm opacity-80'>
+                                                2{index + 1} - 00012{index}
+                                            </p>
+                                            <p>
+                                                2023-02-24 12:00:00 - 2023-02-25 11:00:00
+                                            </p>
+                                        </div>
+                                    </React.Fragment>
+                                </div>
+                            )
+                        }
+                    </div>
                 </div>
             </section>
         </div>
