@@ -54,8 +54,8 @@ const CheckOut = () => {
                 <div className='bg-white'>
                     <h3 className='p-5 text-xl'>Customer Details</h3>
                     <hr />
-                    <div className='p-5 grid grid-cols-3 items-center'>
-                        <di className='flex flex-col gap-2'>
+                    <div className='p-5 grid grid-cols-3 items-center text-sm font-semibold'>
+                        <di className='flex flex-col gap-3'>
                             <p>Name</p>
                             <p>Room No..</p>
                             <p>Email ID</p>
@@ -65,7 +65,7 @@ const CheckOut = () => {
                             <p>Booking Time</p>
                             <p>Booking Source</p>
                         </di>
-                        <div className='col-span-2 flex flex-col gap-2'>
+                        <div className='col-span-2 flex flex-col gap-3'>
                             <p>Tajkir _ Rion</p>
                             <p>108</p>
                             <p>dev.tajkir@gmail.com</p>
