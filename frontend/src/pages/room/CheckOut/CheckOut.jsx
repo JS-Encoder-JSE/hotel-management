@@ -3,12 +3,14 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import CustomerInfoSection from './CustomerInfoSection';
 import RoomDetailsSection from './RoomDetailsSection';
+import BillingSection from './BillingSection';
 
 const CheckOut = () => {
     const [selectedRooms, setSelectedRooms] = useState([]);
     const [showRooms, setShowRooms] = useState(false);
     const animatedComponents = makeAnimated();
 
+    // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
     const roomList = [
         // { value: '', label: 'Room Select' },
         { value: '1', label: '1 - Chocolate' },
@@ -63,6 +65,7 @@ const CheckOut = () => {
                 <>
                     <CustomerInfoSection selectedRooms={selectedRooms} />
                     <RoomDetailsSection />
+                    <BillingSection />
                 </>
             }
         </div>

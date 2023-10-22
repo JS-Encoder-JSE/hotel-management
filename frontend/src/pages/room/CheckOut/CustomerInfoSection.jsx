@@ -9,7 +9,7 @@ const CustomerInfoSection = ({ selectedRooms }) => {
                 <h3 className='p-5 text-xl'>Customer Details</h3>
                 <hr />
                 <div className='p-5 grid grid-cols-3 items-center text-sm font-semibold'>
-                    <div className='flex flex-col gap-3'>
+                    <div className='space-y-3'>
                         <p>Name</p>
                         <p>Room No..</p>
                         <p>Email ID</p>
@@ -19,7 +19,7 @@ const CustomerInfoSection = ({ selectedRooms }) => {
                         <p>Booking Time</p>
                         <p>Booking Source</p>
                     </div>
-                    <div className='col-span-2 flex flex-col gap-3'>
+                    <div className='col-span-2 space-y-3'>
                         <p>Tajkir _ Rion</p>
                         <p>108</p>
                         <p>dev.tajkir@gmail.com</p>
@@ -30,13 +30,13 @@ const CustomerInfoSection = ({ selectedRooms }) => {
                             type="text"
                             disabled
                             placeholder='Instant'
-                            className='pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed'
+                            className='pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block'
                         />
                         <input
                             type="text"
                             disabled
                             placeholder='JS Encoder'
-                            className='pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed'
+                            className='pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block'
                         />
                     </div>
                 </div>
