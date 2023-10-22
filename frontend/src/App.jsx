@@ -35,7 +35,7 @@ import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
 import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
 import AddHotel from "./pages/hotel/AddHotel.jsx";
 import HotelLists from "./pages/hotel/HotelLists.jsx";
-import CheckOut from "./pages/room/CheckOut.jsx";
+import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
 
 
 const App = () => {
