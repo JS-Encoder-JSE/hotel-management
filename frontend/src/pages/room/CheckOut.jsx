@@ -21,12 +21,12 @@ const CheckOut = () => {
         { value: '12', label: '12 - Vanilla' },
     ]
 
-    const handleSearchRoom = (e)=>{
+    const handleSearchRoom = (e) => {
         console.log(e.map(i => i.value));
     }
 
     return (
-        <div>
+        <div className='space-y-5'>
             {/* Select Room Section */}
             <section className='max-w-3xl mx-auto flex gap-5 items-center'>
                 <p>Room No. :</p>
@@ -37,7 +37,7 @@ const CheckOut = () => {
                         isMulti
                         options={roomList}
                         placeholder='Room Select'
-                        onChange={(e)=>handleSearchRoom(e)}
+                        onChange={(e) => handleSearchRoom(e)}
                     />
                 </div>
                 <button
@@ -45,6 +45,60 @@ const CheckOut = () => {
                 >
                     Go
                 </button>
+            </section>
+
+            {/* Customer Info and Set them to default */}
+            <section className='grid lg:grid-cols-2 gap-5'>
+                <div className='bg-white'>
+                    <h3 className='p-5 text-xl'>Customer Details</h3>
+                    <hr />
+                    <div className='p-5 grid grid-cols-3 items-center'>
+                        <di className='flex flex-col gap-2'>
+                            <p>Name</p>
+                            <p>Room No..</p>
+                            <p>Email ID</p>
+                            <p>Mobile No</p>
+                            <p>Address</p>
+                            <p>Time Format</p>
+                            <p>Booking Time</p>
+                            <p>Booking Source</p>
+                        </di>
+                        <div className='col-span-2 flex flex-col gap-2'>
+                            <p>Tajkir _ Rion</p>
+                            <p>108</p>
+                            <p>dev.tajkir@gmail.com</p>
+                            <p>0123456789101</p>
+                            <p>Banglamotor, Dhaka</p>
+                            <p>24 hrs</p>
+                            <input
+                                type="text"
+                                disabled
+                                placeholder='Instant'
+                                className='pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed'
+                            />
+                            <input
+                                type="text"
+                                disabled
+                                placeholder='JS Encoder'
+                                className='pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed'
+                            />
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div className='bg-white p-5'>
+                    dfs
+                </div>
             </section>
         </div>
     );
