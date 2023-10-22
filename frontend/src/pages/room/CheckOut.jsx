@@ -4,27 +4,32 @@ import makeAnimated from 'react-select/animated';
 
 const CheckOut = () => {
     const [selectedRooms, setSelectedRooms] = useState([]);
+    const [showRooms, setShowRooms] = useState(false);
     const animatedComponents = makeAnimated();
 
     const roomList = [
         // { value: '', label: 'Room Select' },
         { value: '1', label: '1 - Chocolate' },
         { value: '2', label: '2 - Strawberry' },
-        { value: '3', label: '3 - Vanilla' },
-        { value: '4', label: '4 - Vanilla' },
-        { value: '5', label: '5 - Vanilla' },
-        { value: '6', label: '6 - Vanilla' },
-        { value: '7', label: '7 - Vanilla' },
-        { value: '8', label: '8 - Vanilla' },
-        { value: '9', label: '9 - Vanilla' },
-        { value: '10', label: '10 - Vanilla' },
-        { value: '11', label: '11 - Vanilla' },
-        { value: '12', label: '12 - Vanilla' },
+        { value: '3', label: '3 - Shake' },
+        { value: '4', label: '4 - AC' },
+        { value: '5', label: '5 - None AC' },
+        { value: '6', label: '6 - Fan' },
+        { value: '7', label: '7 - Deluxe' },
+        { value: '8', label: '8 - None-Deluxe' },
+        { value: '9', label: '9 - Couple' },
+        { value: '10', label: '10 - Anniversary' },
+        { value: '11', label: '11 - Official' },
+        { value: '12', label: '12 - VIP' },
     ]
 
-    const handleSearchRoom = (e) => {
+    const handleSearchRoom = e => {
         const rooms = e.map(i => i.value);
         setSelectedRooms(rooms);
+    }
+
+    const handleGetRooms = () => {
+        setShowRooms(true)
     }
 
     return (
@@ -43,6 +48,8 @@ const CheckOut = () => {
                     />
                 </div>
                 <button
+                    onClick={handleGetRooms}
+                    disabled={selectedRooms.length === 0}
                     className=" btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case p-4 h-auto"
                 >
                     Go
@@ -50,7 +57,7 @@ const CheckOut = () => {
             </section>
 
             {/* Customer Info and Set them to default */}
-            {selectedRooms.length > 0 &&
+            {showRooms &&
                 <section className='grid lg:grid-cols-2 gap-5'>
 
                     {/* Left Side */}
