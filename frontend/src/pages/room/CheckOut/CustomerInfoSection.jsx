@@ -5,7 +5,7 @@ const CustomerInfoSection = ({ selectedRooms }) => {
         <section className='grid lg:grid-cols-2 gap-5'>
 
             {/* Left Side */}
-            <div className='bg-white'>
+            <div className='bg-white rounded'>
                 <h3 className='p-5 text-xl'>Customer Details</h3>
                 <hr />
                 <div className='p-5 grid grid-cols-3 items-center text-sm font-semibold'>
@@ -43,7 +43,7 @@ const CustomerInfoSection = ({ selectedRooms }) => {
             </div>
 
             {/* Right Side */}
-            <div className='bg-white'>
+            <div className='bg-white rounded'>
                 <h3 className='p-5 text-xl'>Set Default Customer</h3>
                 <hr />
                 <div className='p-5'>

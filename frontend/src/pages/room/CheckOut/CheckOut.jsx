@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import CustomerInfoSection from './CustomerInfoSection';
+import RoomDetailsSection from './RoomDetailsSection';
 
 const CheckOut = () => {
     const [selectedRooms, setSelectedRooms] = useState([]);
@@ -34,7 +35,7 @@ const CheckOut = () => {
     }
 
     return (
-        <div className='space-y-5'>
+        <div className='space-y-8'>
             {/* Select Room Section */}
             <section className='max-w-3xl mx-auto flex gap-5 items-center'>
                 <p>Room No. :</p>
@@ -59,7 +60,10 @@ const CheckOut = () => {
 
             {/* Customer Info and Set them to default */}
             {showRooms &&
-                <CustomerInfoSection selectedRooms={selectedRooms} />
+                <>
+                    <CustomerInfoSection selectedRooms={selectedRooms} />
+                    <RoomDetailsSection />
+                </>
             }
         </div>
     );
