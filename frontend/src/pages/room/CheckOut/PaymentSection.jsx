@@ -15,6 +15,17 @@ const PaymentSection = () => {
         },
     });
 
+    const handlePaymentMode = (e) => {
+        console.log(e.value);
+        const value = e.value;
+        if (value == 'Bank Payment') {
+            setBankShow(false);
+        }
+        else {
+            setBankShow(true);
+        }
+    }
+
     const paymentModeList = [
         { value: 'null', label: 'Choose Payment Mode' },
         { value: 'Bank Payment', label: 'Bank Payment' },
@@ -81,6 +92,7 @@ const PaymentSection = () => {
                                             <Select
                                                 components={animatedComponents}
                                                 options={paymentModeList}
+                                                onChange={handlePaymentMode}
                                                 placeholder='Choose Payment Mode'
                                                 className='mt-5 text-xs'
                                             />
@@ -135,7 +147,10 @@ const PaymentSection = () => {
                             <div className='border-b border-black/20 py-1 mb-5'>Action</div>
                             {
                                 [...Array(paymentList)].map((_, index) =>
-                                    <button key={index} className='border border-green-slimy hover:bg-green-slimy text-green-slimy hover:text-white duration-300 text-xl p-1 mb-24 rounded w-fit'>
+                                    <button
+                                        onClick={() => setPaymentList((prev) => prev - 1)}
+                                        key={index}
+                                        className='border border-green-slimy hover:bg-green-slimy text-green-slimy hover:text-white duration-300 text-xl p-1 mb-24 rounded w-fit'>
                                         <AiOutlineCloseCircle />
                                     </button>
                                 )
