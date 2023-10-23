@@ -10,6 +10,9 @@ const ConfirmOrder = () => {
         { name: 'Sandwich', quantity: 1, price: 504, totalPrice: 504 },
     ]);
 
+    // Getting the total sum of total price.
+    const totalSumOfPrice = foods.reduce((sum, foodPrice) => sum + foodPrice.totalPrice, 0);
+
     const formik = useFormik({
         initialValues: {
             // roomNumber: "",
@@ -123,20 +126,20 @@ const ConfirmOrder = () => {
                                 </tbody>
                                 <tfoot className={`text-sm`}>
                                     <tr>
-                                        <td colSpan={5} className={`text-end`}><div className="card  bg-white-300 shadow-xl">
-                                            <div className="card-body text-center max-auto">
-                                                <h2 className="card-title underline">Cart </h2>
-                                                <p>Total Price : $120</p>
-                                                <p>Tax : $20</p>
-                                                <p>Grand Total: $140</p>
-                                                <div>
-                                                    <button className="btn bg-green-400">Clear cart</button>
-                                                    <button className="btn bg-green-400">CheckOut</button>
+                                        <td colSpan={5} className={`text-end`}>
+                                            <div className="card  bg-white-300 shadow-xl">
+                                                <div className="card-body text-center max-auto">
+                                                    <h2 className="card-title underline">Proceed To Checkout</h2>
+                                                    <p>Total Price : ${totalSumOfPrice}</p>
+                                                    <p>Tax : $20</p>
+                                                    <p>Grand Total: ${totalSumOfPrice + 20}</p>
+                                                    <div>
+                                                        <button className="btn bg-green-400">Clear cart</button>
+                                                        <button className="btn bg-green-400">CheckOut</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div></td>
-                                        <td></td>
-
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>
