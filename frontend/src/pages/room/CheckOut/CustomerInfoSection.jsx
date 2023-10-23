@@ -46,7 +46,7 @@ const CustomerInfoSection = ({ selectedRooms }) => {
             <div className='bg-white rounded'>
                 <h3 className='p-5 text-xl'>Set Default Customer</h3>
                 <hr />
-                <div className='p-5'>
+                <div className='p-5 max-h-[450px] overflow-y-scroll'>
                     {
                         [...Array(selectedRooms.length)].map((_, index) =>
                             <div key={index} className='border p-3 rounded-md flex gap-3 items-center mb-4'>
