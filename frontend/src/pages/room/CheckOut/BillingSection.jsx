@@ -31,7 +31,7 @@ const BillingSection = () => {
                         <tr>
                             <td>
                                 <span>Discount (Max-100%)</span>
-                                <div className='grid grid-cols-2'>
+                                <div className='grid grid-cols-2 mb-1'>
                                     <input
                                         disabled={discount}
                                         type="number"
