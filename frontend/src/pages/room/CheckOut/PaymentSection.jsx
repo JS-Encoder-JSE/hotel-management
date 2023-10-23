@@ -9,6 +9,7 @@ const PaymentSection = () => {
     const [paymentList, setPaymentList] = useState(1);
     const [bankShow, setBankShow] = useState(true);
     const [cardInput, setCardInput] = useState(true);
+    const [cardOrMobile, setCardOrMobile] = useState(true)
 
     const formik = useFormik({
         initialValues: {
@@ -45,9 +46,16 @@ const PaymentSection = () => {
             setCardInput(false);
         }
 
+        else if (value == 'Mobile Banking') {
+            setCardOrMobile(false);
+        }
+
+
+
         else {
             setBankShow(true);
             setCardInput(true);
+            setCardOrMobile(true);
         }
     }
 
@@ -103,12 +111,21 @@ const PaymentSection = () => {
                                             />
                                         </div>
                                         <div>
-                                            {cardInput &&
-                                                <input
-                                                    type="number"
-                                                    placeholder='Card Number'
-                                                    className={`w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
-                                                />
+                                            {(cardInput || cardOrMobile) &&
+                                                <div>
+                                                    <input
+                                                        type="number"
+                                                        required
+                                                        placeholder={cardOrMobile ? 'Card Number' : 'Mobile Number'}
+                                                        className={`input-hide_Arrows w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        required
+                                                        placeholder='Transaction ID'
+                                                        className={`input-hide_Arrows w-full mt-5 outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
+                                                    />
+                                                </div>
                                             }
                                         </div>
                                     </React.Fragment>
@@ -123,6 +140,7 @@ const PaymentSection = () => {
                                         <div>
                                             <input
                                                 type="number"
+                                                required
                                                 placeholder='Amount'
                                                 className={`w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
                                             />
