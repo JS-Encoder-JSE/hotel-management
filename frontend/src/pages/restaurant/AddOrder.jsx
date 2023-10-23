@@ -59,16 +59,17 @@ const AddOrder = () => {
 
           {/* modal */}
 
-          <label htmlFor="my_modal_6"
+          <button onClick={() => window.fp_modal.showModal()}
             type={`button`}
             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case "
           >
             Confirm Order
-          </label>
-          <input type="checkbox" id="my_modal_6" className="modal-toggle " />
-          <Modal id={`my_modal_6`}>
-            <ConfirmOrder />
-          </Modal>
+          </button>
+
+            <Modal id={`fp_modal`}>
+              <ConfirmOrder />
+            </Modal>
+
 
           {/* modal */}
 

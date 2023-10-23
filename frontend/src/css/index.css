@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 /* === Swiper Slider === */
-.swiper-er-button-disabled, .swiper-rts-button-disabled {
+.swiper-er-button-disabled,
+.swiper-rts-button-disabled {
   @apply bg-green-slimy/50 pointer-events-none;
 }
 
@@ -16,3 +17,13 @@
 }
 
 
+.input-hide_Arrows::-webkit-outer-spin-button,
+.input-hide_Arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.input-hide_Arrows[type=number] {
+  -moz-appearance: textfield;
+}
