@@ -126,17 +126,18 @@ const ConfirmOrder = () => {
                                 </tbody>
                                 <tfoot className={`text-sm`}>
                                     <tr>
-                                        <td colSpan={5} className={`text-end`}>
-                                            <div className="card  bg-white-300 shadow-xl">
-                                                <div className="card-body text-center max-auto">
-                                                    <h2 className="card-title underline">Proceed To Checkout</h2>
-                                                    <p>Total Price : ${totalSumOfPrice}</p>
-                                                    <p>Tax : $20</p>
-                                                    <p>Grand Total: ${totalSumOfPrice + 20}</p>
-                                                    <div>
-                                                        <button className="btn bg-green-400">Clear cart</button>
-                                                        <button className="btn bg-green-400">CheckOut</button>
-                                                    </div>
+                                        <td colSpan={5}>
+                                            <div className="mt-3">
+                                                <h2 className="card-title underline my-4">Proceed To Checkout</h2>
+                                                <div className="pl-2 mb-4 w-[70%] text-md font-semibold">
+                                                    <p className='flex justify-between'>Total Price : <span>${totalSumOfPrice}</span></p>
+                                                    <p className='flex justify-between'>Tax : <span>$20</span></p>
+                                                    <p className='flex justify-between'>Grand Total: <span>${totalSumOfPrice + 20}</span></p>
+                                                </div>
+                                                <div className='flex justify-end'>
+                                                    <button className='p-2 bg-green-slimy hover:bg-[#64bece] text-xl text-white duration-300 rounded-lg'>
+                                                        Checkout
+                                                    </button>
                                                 </div>
                                             </div>
                                         </td>
