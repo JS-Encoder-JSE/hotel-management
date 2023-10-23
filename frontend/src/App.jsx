@@ -23,7 +23,7 @@ import ManageInventory from "./pages/Inventory/ManageInventory.jsx";
 import AddEmployee from "./pages/employee/AddEmployee.jsx";
 import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
-import SalesProfitReport from "./pages/SalesProfitReport.jsx";
+import SalesProfitReport from "./pages/report/SalesProfitReport.jsx";
 
 import ManageBooking from "./pages/room/ManageBooking.jsx";
 // import CheckIn from "./pages/room/CheckIn.jsx";
@@ -37,6 +37,7 @@ import AddHotel from "./pages/hotel/AddHotel.jsx";
 import HotelLists from "./pages/hotel/HotelLists.jsx";
 import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
 import BookingView from "./pages/room/BookingView.jsx";
+import CheckPDF from "./pages/CheckPDF.jsx";
 
 
 const App = () => {
@@ -57,6 +58,10 @@ const App = () => {
             </PrivateRoute>
           ),
           children: [
+            {
+              path: "check-pdf",
+              element: <CheckPDF />,
+            },
 
             // Manager Sideber
             {
