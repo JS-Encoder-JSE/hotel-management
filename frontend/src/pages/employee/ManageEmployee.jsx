@@ -1,8 +1,10 @@
 import React from "react";
 import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
+import {useNavigate} from "react-router-dom";
 
 const ManageEmployee = () => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -79,6 +81,7 @@ const ManageEmployee = () => {
                   <td className={`space-x-1.5`}>
                     <span
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                      onClick={() => navigate(`/dashboard/edit-employee/${idx}`)}
                     >
                       <FaEdit />
                     </span>

@@ -36,7 +36,7 @@ const Dashboard = () => {
               Owner
             </h3>
             <div
-              className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}
+              className={`h-full md:h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar-none`}
             >
               <div
                 className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`}

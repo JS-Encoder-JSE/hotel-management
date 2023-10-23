@@ -193,7 +193,7 @@ const AddEmployee = () => {
           ) : null}
         </div>
         {/* user image box */}
-        <div className="flex flex-col gap-3">
+        <div className="col-span-full flex flex-col gap-3">
           <label className="relative input input-sm input-bordered border-gray-500/50 rounded  focus:outline-none p-2 h-auto bg-transparent">
             {formik.values.userImg ? (
               formik.values.userImg.name.substring(
@@ -226,7 +226,7 @@ const AddEmployee = () => {
         {/* submit button */}
         <button
           type="submit"
-          className="btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto"
+          className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
           Add
         </button>

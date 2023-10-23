@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
 const FoodInventory = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -86,17 +86,12 @@ const FoodInventory = () => {
                   <td className={`space-x-1.5`}>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                    >
-                      <FaEye />
-                    </span>
-                    <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                       onClick={() => navigate(`/dashboard/edit-food/${idx}`)}
                     >
                       <FaEdit />
                     </span>
                     <span
-                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                     >
                       <FaTrash />
                     </span>

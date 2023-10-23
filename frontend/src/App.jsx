@@ -19,7 +19,7 @@ import AddOrder from "./pages/restaurant/AddOrder.jsx";
 import FoodInventory from "./pages/restaurant/FoodInventory.jsx";
 import AddInventory from "./pages/Inventory/AddInventory.jsx";
 import EditInventory from "./pages/Inventory/EditInventory.jsx";
-import InventoryLists from "./pages/Inventory/InventoryLists.jsx";
+import ManageInventory from "./pages/Inventory/ManageInventory.jsx";
 import AddEmployee from "./pages/employee/AddEmployee.jsx";
 import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
@@ -36,6 +36,7 @@ import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
 import AddHotel from "./pages/hotel/AddHotel.jsx";
 import HotelLists from "./pages/hotel/HotelLists.jsx";
 import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
+import BookingView from "./pages/room/BookingView.jsx";
 
 
 const App = () => {
@@ -99,6 +100,14 @@ const App = () => {
               ),
             },
             {
+              path: "manage-booking/:id",
+              element: (
+                  <ManagerRoute>
+                    <BookingView />
+                  </ManagerRoute>
+              ),
+            },
+            {
               path: "checkin",
               element: (
                 <ManagerRoute>
@@ -158,7 +167,7 @@ const App = () => {
               path: "all-inventory",
               element: (
                 <ManagerRoute>
-                  <InventoryLists />
+                  <ManageInventory />
                 </ManagerRoute>
               ),
             },

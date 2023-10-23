@@ -19,6 +19,7 @@ const BookingLists = () => {
       <table className="table">
         <thead>
           <tr className={`text-lg`}>
+            <th>Booking No</th>
             <th>Name</th>
             <th>Price</th>
             <th>Capacity</th>
@@ -30,6 +31,7 @@ const BookingLists = () => {
           {[...Array(10)].map((_, idx) => {
             return (
               <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                <td>{++idx}</td>
                 <td>
                   <div className="flex items-center space-x-3">
                     <div className="avatar">
@@ -55,6 +57,7 @@ const BookingLists = () => {
                   <span
                     className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                     title={`View`}
+                    onClick={() => navigate(`${++idx}`)}
                   >
                     <FaEye />
                   </span>

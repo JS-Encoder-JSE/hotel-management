@@ -164,7 +164,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Items
+              Add Item
             </NavLink>
           </li>
           <li>
