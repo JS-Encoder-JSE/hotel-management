@@ -7,9 +7,9 @@ import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 const PaymentSection = () => {
     const animatedComponents = makeAnimated();
     const [paymentList, setPaymentList] = useState(1);
-    const [bankShow, setBankShow] = useState(true);
-    const [cardInput, setCardInput] = useState(true);
-    const [cardOrMobile, setCardOrMobile] = useState(true)
+    const [bankShow, setBankShow] = useState(false);
+    const [cardInput, setCardInput] = useState(false);
+    const [cardOrMobile, setCardOrMobile] = useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -38,24 +38,25 @@ const PaymentSection = () => {
     const handlePaymentMode = (e) => {
         console.log(e.value);
         let value = e.value;
+
         if (value == 'Bank Payment') {
-            setBankShow(false);
+            setBankShow(true);
         }
 
         else if (value == 'Cash Payment') {
-            setCardInput(false);
+            setCardInput(true);
         }
 
         else if (value == 'Mobile Banking') {
-            setCardOrMobile(false);
+            setCardOrMobile(true);
         }
 
 
 
         else {
-            setBankShow(true);
-            setCardInput(true);
-            setCardOrMobile(true);
+            setBankShow(false);
+            setCardInput(false);
+            setCardOrMobile(false);
         }
     }
 
