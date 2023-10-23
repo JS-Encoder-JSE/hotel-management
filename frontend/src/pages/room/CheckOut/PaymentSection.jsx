@@ -9,7 +9,7 @@ const PaymentSection = () => {
     const [paymentList, setPaymentList] = useState(1);
     const [bankShow, setBankShow] = useState(false);
     const [cardInput, setCardInput] = useState(false);
-    const [cardOrMobile, setCardOrMobile] = useState(false)
+    const [notCardOrMobile, setNotCardOrMobile] = useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -38,16 +38,16 @@ const PaymentSection = () => {
     const handlePaymentMode = (e) => {
         let value = e.value;
 
-        if (value == 'Bank Payment') {
+        if (value == 'Mobile Banking') {
             setBankShow(true);
         }
 
         else if (value == 'Cash Payment') {
-            setCardInput(true);
+            setNotCardOrMobile(true);
         }
 
-        else if (value == 'Mobile Banking') {
-            setCardOrMobile(true);
+        else if (value == 'Card Payment') {
+            setCardInput(true);
         }
 
 
@@ -55,7 +55,7 @@ const PaymentSection = () => {
         else {
             setBankShow(false);
             setCardInput(false);
-            setCardOrMobile(false);
+            setNotCardOrMobile(false);
         }
     }
 
@@ -111,12 +111,12 @@ const PaymentSection = () => {
                                             />
                                         </div>
                                         <div>
-                                            {(cardInput || cardOrMobile) &&
+                                            {!notCardOrMobile &&
                                                 <div>
                                                     <input
                                                         type="number"
                                                         required
-                                                        placeholder={cardOrMobile ? 'Card Number' : 'Mobile Number'}
+                                                        placeholder={notCardOrMobile ? 'Card Number' : 'Mobile Number'}
                                                         className={`input-hide_Arrows w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
                                                     />
                                                     <input

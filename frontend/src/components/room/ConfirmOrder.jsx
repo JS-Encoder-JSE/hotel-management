@@ -135,7 +135,7 @@ const ConfirmOrder = () => {
                                                 </div>
                                                 <div className='flex justify-end'>
                                                     <button className='p-2 bg-green-slimy hover:bg-[#64bece] text-xl text-white duration-300 rounded-lg'>
-                                                        Checkout
+                                                        Place Order
                                                     </button>
                                                 </div>
                                             </div>
