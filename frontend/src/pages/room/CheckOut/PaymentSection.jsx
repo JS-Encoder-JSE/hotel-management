@@ -6,8 +6,9 @@ import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 
 const PaymentSection = () => {
     const animatedComponents = makeAnimated();
-    const [bankShow, setBankShow] = useState(true);
     const [paymentList, setPaymentList] = useState(1);
+    const [bankShow, setBankShow] = useState(true);
+    const [cardInput, setCardInput] = useState(true);
 
     const formik = useFormik({
         initialValues: {
@@ -15,23 +16,10 @@ const PaymentSection = () => {
         },
     });
 
-    const handlePaymentMode = (e) => {
-        console.log(e.value);
-        const value = e.value;
-        if (value == 'Bank Payment') {
-            setBankShow(false);
-        }
-        else {
-            setBankShow(true);
-        }
-    }
-
     const paymentModeList = [
         { value: 'null', label: 'Choose Payment Mode' },
-        { value: 'Bank Payment', label: 'Bank Payment' },
-        { value: 'SSLCommerz', label: 'SSLCommerz' },
+        { value: 'Mobile Banking', label: 'Mobile Banking' },
         { value: 'Cash Payment', label: 'Cash Payment' },
-        { value: 'Paypal', label: 'Paypal' },
         { value: 'Card Payment', label: 'Card Payment' },
     ]
 
@@ -45,6 +33,23 @@ const PaymentSection = () => {
         { value: 'DBBL', label: 'DBBL' },
         { value: 'AIBL', label: 'AIBL' },
     ]
+
+    const handlePaymentMode = (e) => {
+        console.log(e.value);
+        let value = e.value;
+        if (value == 'Bank Payment') {
+            setBankShow(false);
+        }
+
+        else if (value == 'Cash Payment') {
+            setCardInput(false);
+        }
+
+        else {
+            setBankShow(true);
+            setCardInput(true);
+        }
+    }
 
     return (
         <section>
@@ -98,11 +103,13 @@ const PaymentSection = () => {
                                             />
                                         </div>
                                         <div>
-                                            <input
-                                                type="number"
-                                                placeholder='Card Number'
-                                                className={`w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
-                                            />
+                                            {cardInput &&
+                                                <input
+                                                    type="number"
+                                                    placeholder='Card Number'
+                                                    className={`w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
+                                                />
+                                            }
                                         </div>
                                     </React.Fragment>
                                 )
