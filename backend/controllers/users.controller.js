@@ -83,8 +83,9 @@ export const createSuperUser = async () => {
     });
 
     await superuser.save();
-
+    res.status(200).json({message: "Superuser created", data:superuser})
     console.log("Superuser created successfully.");
+
   } catch (error) {
     console.error("Error creating superuser:", error.message);
   }
