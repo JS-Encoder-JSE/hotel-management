@@ -16,7 +16,7 @@ const FoodLists = () => {
         <tbody>
         {[...Array(10)].map((_, idx) => {
           return (
-            <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+            <tr key={idx} className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
               <td>
                 <div className="flex items-center space-x-3">
                   <div className="avatar">

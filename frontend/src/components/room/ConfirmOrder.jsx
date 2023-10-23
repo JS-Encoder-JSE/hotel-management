@@ -37,7 +37,6 @@ const ConfirmOrder = () => {
         updatedItems[index].quantity = parseInt(updatedItems[index].quantity) + 1;
         updatedItems[index].totalPrice = parseInt(updatedItems[index].totalPrice) + parseInt(updatedItems[index].price);
         setFoods(updatedItems);
-        console.log(typeof (updatedItems[index].quantity));
     };
 
     const handleDecrease = (index) => {

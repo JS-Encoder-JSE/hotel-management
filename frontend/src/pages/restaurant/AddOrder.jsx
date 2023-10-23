@@ -49,16 +49,8 @@ const AddOrder = () => {
           ) : null}
         </div>
         <div className={`flex space-x-1.5`}>
-          {/* <button
-            type={`button`}
-            className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-          >
-            Confirm Order
-          </button> */}
-
 
           {/* modal */}
-
           <button onClick={() => window.fp_modal.showModal()}
             type={`button`}
             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case "
@@ -66,11 +58,9 @@ const AddOrder = () => {
             Confirm Order
           </button>
 
-            <Modal id={`fp_modal`}>
-              <ConfirmOrder />
-            </Modal>
-
-
+          <Modal id={`fp_modal`}>
+            <ConfirmOrder />
+          </Modal>
           {/* modal */}
 
           <input

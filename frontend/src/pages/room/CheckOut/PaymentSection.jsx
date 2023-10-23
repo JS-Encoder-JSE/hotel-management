@@ -36,7 +36,6 @@ const PaymentSection = () => {
     ]
 
     const handlePaymentMode = (e) => {
-        console.log(e.value);
         let value = e.value;
 
         if (value == 'Bank Payment') {
