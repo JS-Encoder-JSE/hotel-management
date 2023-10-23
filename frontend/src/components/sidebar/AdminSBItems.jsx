@@ -20,7 +20,7 @@ const AdminSBItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineMeetingRoom />
-            <span className={`-mt-0.5`}>Add Hotels</span>
+            <span className={`-mt-0.5`}>Software license and Sale </span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
@@ -61,7 +61,7 @@ const AdminSBItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineFoodBank />
-            <span className={`-mt-0.5`}>Manager Management</span>
+            <span className={`-mt-0.5`}>Hotel Owner Management</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
@@ -102,7 +102,25 @@ const AdminSBItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineKitchen />
-            <span className={`-mt-0.5`}>Monitor Finaances</span>
+            <span className={`-mt-0.5`}>Hotel Owner Limit</span>
+          </div>
+          <span className={`group-[.active]:hidden`}>
+            <MdKeyboardArrowDown />
+          </span>
+          <span className={`hidden group-[.active]:inline`}>
+            <MdKeyboardArrowUp />
+          </span>
+        </div>
+        <ul className={`group-[.active]:block hidden`}></ul>
+      </li>
+      <li className={`group p-2`}>
+        <div
+          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+          onClick={(e) => handleSBItems(e)}
+        >
+          <div className={`flex space-x-1.5`}>
+            <MdOutlineKitchen />
+            <span className={`-mt-0.5`}>Sub Admin Management</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
