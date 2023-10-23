@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { FaFileInvoice, FaMinus, FaPlus } from 'react-icons/fa';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 
 const ConfirmOrder = () => {
     const [foods, setFoods] = useState([
-        { name: 'Rice', quantity: 1, price: 104 },
-        { name: 'Chicken', quantity: 1, price: 134 },
-        { name: 'Burger', quantity: 1, price: 454 },
-        { name: 'Sandwich', quantity: 1, price: 504 },
+        { name: 'Rice', quantity: 1, price: 104, totalPrice: 104 },
+        { name: 'Chicken', quantity: 1, price: 134, totalPrice: 134 },
+        { name: 'Burger', quantity: 1, price: 454, totalPrice: 454 },
+        { name: 'Sandwich', quantity: 1, price: 504, totalPrice: 504 },
     ]);
 
     const formik = useFormik({
@@ -32,6 +32,7 @@ const ConfirmOrder = () => {
     const handleIncrease = (index) => {
         const updatedItems = [...foods];
         updatedItems[index].quantity = parseInt(updatedItems[index].quantity) + 1;
+        updatedItems[index].totalPrice = parseInt(updatedItems[index].totalPrice) + parseInt(updatedItems[index].price);
         setFoods(updatedItems);
         console.log(typeof (updatedItems[index].quantity));
     };
@@ -39,6 +40,7 @@ const ConfirmOrder = () => {
     const handleDecrease = (index) => {
         if (foods[index].quantity > 1) {
             const updatedItems = [...foods];
+            updatedItems[index].totalPrice = parseInt(updatedItems[index].totalPrice) - parseInt(updatedItems[index].price);
             updatedItems[index].quantity -= 1;
             setFoods(updatedItems);
         }
@@ -113,7 +115,7 @@ const ConfirmOrder = () => {
                                                     </button>
                                                 </td>
                                                 <td>
-                                                    120
+                                                    {item.totalPrice}
                                                 </td>
                                             </tr>
                                         )
