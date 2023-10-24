@@ -43,13 +43,13 @@ const AdminSBItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/renew-list`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Hotel List
+              Renew List
             </NavLink>
           </li>
         </ul>

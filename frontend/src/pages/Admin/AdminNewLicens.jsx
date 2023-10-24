@@ -256,23 +256,7 @@ const AdminNewLicens = () => {
             </small>
           ) : null}
         </div>
-        {/* Payment Information box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="payment Information"
-            name="paymentInformation"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.paymentInformation}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.paymentInformation && Boolean(formik.errors.paymentInformation) ? (
-            <small className="text-red-600">
-              {formik.touched.paymentInformation && formik.errors.paymentInformation}
-            </small>
-          ) : null}
-        </div>
+
      
         {/* submit button */}
         <button

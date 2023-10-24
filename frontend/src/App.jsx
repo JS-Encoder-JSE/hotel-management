@@ -34,6 +34,8 @@ import AddHotel from "./pages/Ownerhotel/AddHotel.jsx";
 import HotelLists from "./pages/Ownerhotel/HotelLists.jsx";
 import AdminNewLicens from "./pages/Admin/AdminNewLicens.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
+import RenewList from "./pages/Admin/RenewList.jsx";
+import RenewView from "./pages/Admin/RenewView.jsx";
 
 
 const App = () => {
@@ -275,6 +277,23 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <AdminNewLicens />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "renew-list",
+              element: (
+                <AdminRoute>
+                  <RenewList />
+                </AdminRoute>
+              ),
+            },
+
+            {
+              path: "renew-view/:id",
+              element: (
+                <AdminRoute>
+                  <RenewView />
                 </AdminRoute>
               ),
             },
