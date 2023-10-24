@@ -38,7 +38,7 @@ const AdminSBItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Hotel
+              New License
             </NavLink>
           </li>
           <li>
