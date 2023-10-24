@@ -32,6 +32,8 @@ import AddManager from "./pages/OwnerManagerManagement/AddManager.jsx";
 import ManagerList from "./pages/OwnerManagerManagement/ManagerList.jsx";
 import AddHotel from "./pages/Ownerhotel/AddHotel.jsx";
 import HotelLists from "./pages/Ownerhotel/HotelLists.jsx";
+import AdminNewLicens from "./pages/Admin/AdminNewLicens.jsx";
+import AdminRoute from "./routes/AdminRoute.jsx";
 
 
 const App = () => {
@@ -267,6 +269,17 @@ const App = () => {
             },
 
             // Admin sideber
+
+            {
+              path: "new-licens",
+              element: (
+                <AdminRoute>
+                  <AdminNewLicens />
+                </AdminRoute>
+              ),
+            },
+
+
           ],
         },
       ],
