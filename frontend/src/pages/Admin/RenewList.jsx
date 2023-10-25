@@ -14,6 +14,7 @@ const RenewList = () => {
         <table className="table border">
           <thead>
             <tr>
+              <th>Sl</th>
               <th>Client Name</th>
               <th>Email</th>
               <th>Action</th>
@@ -23,6 +24,7 @@ const RenewList = () => {
             {[...Array(4)].map((_, idx) => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                  <th>{++idx}</th>
                   <td>
                     <div className="flex items-center space-x-3">
                       <div className="avatar">

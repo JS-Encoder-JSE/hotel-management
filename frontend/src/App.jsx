@@ -36,6 +36,8 @@ import AdminNewLicens from "./pages/Admin/AdminNewLicens.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
 import RenewList from "./pages/Admin/RenewList.jsx";
 import RenewView from "./pages/Admin/RenewView.jsx";
+import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
+import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
 
 
 const App = () => {
@@ -294,6 +296,22 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <RenewView />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "adminowner-list",
+              element: (
+                <AdminRoute>
+                  <AdminOwnerList />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "adminowner-view/:id",
+              element: (
+                <AdminRoute>
+                  <AdminOwnerView />
                 </AdminRoute>
               ),
             },

@@ -52,6 +52,17 @@ const AdminSBItems = ({ handleSBItems }) => {
               Renew List
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to={`/dashboard/adminowner-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+             Owner List
+            </NavLink>
+          </li>
         </ul>
       </li>
       <li className={`group p-2`}>

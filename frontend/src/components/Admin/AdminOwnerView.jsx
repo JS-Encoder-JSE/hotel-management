@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RenewView = () => {
+const AdminOwnerView = () => {
     return (
         <div>
             
@@ -38,4 +38,4 @@ const RenewView = () => {
     );
 };
 
-export default RenewView;
+export default AdminOwnerView;
