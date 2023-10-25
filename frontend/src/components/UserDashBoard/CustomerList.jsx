@@ -61,9 +61,9 @@ const CustomerList = () => {
     
 
     return (
-        <div>
+        <div className='custom-scroll-bar'>
             <h5 className='mb-8 font-bold'>Customer List</h5>
-            <div className='overflow-y-scroll h-[300px]'>
+            <div className='h-[300px] overflow-y-scroll scroll-smooth'>
                 {
                     customers.map(customer =>
                         <div className='text-sm'>

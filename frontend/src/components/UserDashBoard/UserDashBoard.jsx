@@ -5,6 +5,7 @@ import BookingChart from './BookingChart';
 import ReservationChart from './ReservationChart';
 import TotalBookingAmountAndNumber from './TotalBookingAmountAndNumber';
 import CustomerList from './CustomerList';
+import TodaysBooking from './TodaysBooking';
 
 const UserDashBoard = () => {
     return (
@@ -60,6 +61,15 @@ const UserDashBoard = () => {
             <section className='mt-8 grid md:grid-cols-2 gap-5'>
                 <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
                     <TotalBookingAmountAndNumber />
+                </div>
+                <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
+                   <CustomerList />
+                </div>
+            </section>
+
+            <section className='mt-8 grid md:grid-cols-2 gap-5'>
+                <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
+                    <TodaysBooking />
                 </div>
                 <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
                    <CustomerList />

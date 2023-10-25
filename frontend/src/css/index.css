@@ -16,6 +16,21 @@
   @apply bg-green-slimy;
 }
 
+.custom-scroll-bar {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 100%;
+    background-color: rgba(235, 232, 226, 0.774);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    height: 30px;
+    background: rgba(92, 92, 190, 0.507);
+    border-radius: 4px;
+  }
+
+}
 
 .input-hide_Arrows::-webkit-outer-spin-button,
 .input-hide_Arrows::-webkit-inner-spin-button {
