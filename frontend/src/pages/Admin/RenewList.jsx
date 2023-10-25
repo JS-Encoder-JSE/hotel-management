@@ -19,6 +19,7 @@ const RenewList = () => {
               <th>Sl</th>
               <th>Client Name</th>
               <th>Email</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -37,6 +38,7 @@ const RenewList = () => {
                     </div>
                   </td>
                   <td>JonDoe@gmail.com</td>
+                  <td>Active</td>
                   <td className={`space-x-1.5`}>
                     <span
                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
