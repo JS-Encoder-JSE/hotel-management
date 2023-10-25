@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { useFormik } from "formik";
@@ -7,9 +7,8 @@ import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 const PaymentSection = () => {
     const animatedComponents = makeAnimated();
     const [paymentList, setPaymentList] = useState(1);
-    const [bankShow, setBankShow] = useState(false);
-    const [cardInput, setCardInput] = useState(false);
-    const [notCardOrMobile, setNotCardOrMobile] = useState(false)
+    const [selectMobilePayment, setSelectMobilePayment] = useState(false);
+    const [selectCashPayment, setSelectCashPayment] = useState(true);
 
     const formik = useFormik({
         initialValues: {
@@ -38,24 +37,18 @@ const PaymentSection = () => {
     const handlePaymentMode = (e) => {
         let value = e.value;
 
+        console.log(value);
         if (value == 'Mobile Banking') {
-            setBankShow(true);
+            setSelectMobilePayment(true);
         }
 
-        else if (value == 'Cash Payment') {
-            setNotCardOrMobile(true);
+        else if (value == 'Cash Payment' || value == 'null') {
+            setSelectCashPayment(true);
         }
-
-        else if (value == 'Card Payment') {
-            setCardInput(true);
-        }
-
-
 
         else {
-            setBankShow(false);
-            setCardInput(false);
-            setNotCardOrMobile(false);
+            setSelectMobilePayment(false);
+            setSelectCashPayment(false);
         }
     }
 
@@ -111,12 +104,13 @@ const PaymentSection = () => {
                                             />
                                         </div>
                                         <div>
-                                            {!notCardOrMobile &&
+                                            {
+                                                !selectCashPayment &&
                                                 <div>
                                                     <input
                                                         type="number"
                                                         required
-                                                        placeholder={notCardOrMobile ? 'Card Number' : 'Mobile Number'}
+                                                        placeholder={selectMobilePayment ? 'Mobile Number' : 'Card Number'}
                                                         className={`input-hide_Arrows w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
                                                     />
                                                     <input
@@ -146,22 +140,21 @@ const PaymentSection = () => {
                                             />
                                         </div>
                                         <div>
-                                            {
-                                                !bankShow ?
-                                                    <Select
-                                                        components={animatedComponents}
-                                                        options={bankList}
-                                                        placeholder='Choose Bank Name'
-                                                        className='text-xs whitespace-nowrap'
-                                                    />
-                                                    :
-                                                    <input
-                                                        type="date"
-                                                        name={`startDate`}
-                                                        className={`input input-sm input-bordered rounded focus:outline-none w-full mt-1`}
-                                                        value={formik.values.startDate}
-                                                        onChange={formik.handleChange}
-                                                    />
+                                            {!selectCashPayment ?
+                                                <Select
+                                                    components={animatedComponents}
+                                                    options={bankList}
+                                                    placeholder='Choose Bank Name'
+                                                    className='text-xs whitespace-nowrap'
+                                                />
+                                                :
+                                                <input
+                                                    type="date"
+                                                    name={`startDate`}
+                                                    className={`input input-sm input-bordered rounded focus:outline-none w-full mt-1`}
+                                                    value={formik.values.startDate}
+                                                    onChange={formik.handleChange}
+                                                />
                                             }
                                         </div>
                                     </React.Fragment>
