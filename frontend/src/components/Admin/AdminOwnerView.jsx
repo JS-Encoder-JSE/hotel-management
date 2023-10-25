@@ -4,14 +4,14 @@ const AdminOwnerView = () => {
     return (
         <div>
             
-    <h1 className={`text-2xl text-center mb-8`}>Client Information </h1>
+    <h1 className={`text-2xl text-center mb-8`}>Owner Information </h1>
 <footer className={`footer px-10 text-white-content bg-white p-20 rounded`}>
   <nav >
-    <header className={`footer-title underline py-2 `}>Client Information</header> 
-    <p>Client Name : Jon Dow</p>
+    <header className={`footer-title underline py-2 `}>Owner Information</header> 
+    <p>Owner Name : Jon Dow</p>
     <p>Hotel Address : Kolkata</p>
     <p>Contact Number : +98812554</p>
-    <p>Client Email : jondoe@gmail.com</p>
+    <p>Owner Email : jondoe@gmail.com</p>
   </nav> 
   <nav >
     <header className="footer-title underline py-2">Bill-Information</header> 
