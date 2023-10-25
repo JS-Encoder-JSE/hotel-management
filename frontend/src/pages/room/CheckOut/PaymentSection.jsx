@@ -44,7 +44,7 @@ const PaymentSection = () => {
 
         else if (value === 'Cash Payment' || value === 'null') {
             setSelectCashPayment(true);
-            selectMobilePayment(false);
+            // selectMobilePayment(false);
         }
 
         else {
@@ -101,7 +101,7 @@ const PaymentSection = () => {
                                                 options={paymentModeList}
                                                 onChange={handlePaymentMode}
                                                 placeholder='Choose Payment Mode'
-                                                className='mt-5 text-xs'
+                                                className={`text-xs ${!selectCashPayment ? 'mt-5' : 'mb-[70px]'}`}
                                             />
                                         </div>
                                         <div>
