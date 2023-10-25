@@ -36,6 +36,7 @@ import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
 import AddHotel from "./pages/hotel/AddHotel.jsx";
 import HotelLists from "./pages/hotel/HotelLists.jsx";
 import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
+import UserDashBoard from "./components/UserDashBoard/UserDashBoard.jsx";
 
 
 const App = () => {
@@ -58,6 +59,14 @@ const App = () => {
           children: [
 
             // Manager Sideber
+            {
+              path: '',
+              element: (
+                <ManagerRoute>
+                  <UserDashBoard />
+                </ManagerRoute>
+              ),
+            },
             {
               path: "add-room",
               element: (
