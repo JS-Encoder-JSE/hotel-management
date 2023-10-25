@@ -26,7 +26,7 @@ import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
 import SalesProfitReport from "./pages/report/SalesProfitReport.jsx";
 
 
-import SalesProfitReport from "./pages/SalesProfitReport.jsx";
+// import SalesProfitReport from "./pages/SalesProfitReport.jsx";
 
 import ManageBooking from "./pages/room/ManageBooking.jsx";
 import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
