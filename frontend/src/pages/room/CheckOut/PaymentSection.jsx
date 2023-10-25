@@ -34,6 +34,9 @@ const PaymentSection = () => {
         { value: 'AIBL', label: 'AIBL' },
     ]
 
+
+
+    // BackDoor -----> After adding more than 1 payment method all filed are using same state...
     const handlePaymentMode = (e) => {
         let value = e.value;
 
@@ -44,7 +47,6 @@ const PaymentSection = () => {
 
         else if (value === 'Cash Payment' || value === 'null') {
             setSelectCashPayment(true);
-            // selectMobilePayment(false);
         }
 
         else {
@@ -52,6 +54,7 @@ const PaymentSection = () => {
             setSelectCashPayment(false);
         }
     }
+
 
     return (
         <section>
@@ -146,7 +149,7 @@ const PaymentSection = () => {
                                                     components={animatedComponents}
                                                     options={bankList}
                                                     placeholder='Choose Bank Name'
-                                                    className='text-xs whitespace-nowrap'
+                                                    className='text-xs whitespace-nowrap mb-[75px]'
                                                 />
                                                 :
                                                 <input
@@ -167,9 +170,9 @@ const PaymentSection = () => {
                             {
                                 [...Array(paymentList)].map((_, index) =>
                                     <button
+                                    key={index}
                                         onClick={() => setPaymentList((prev) => prev - 1)}
-                                        key={index}
-                                        className='border border-green-slimy hover:bg-green-slimy text-green-slimy hover:text-white duration-300 text-xl p-1 mb-24 rounded w-fit'>
+                                        className={`${!selectCashPayment ? 'mb-[140px]' : 'mb-20'} border border-green-slimy hover:bg-green-slimy text-green-slimy hover:text-white duration-300 text-xl p-1 rounded w-fit`}>
                                         <AiOutlineCloseCircle />
                                     </button>
                                 )

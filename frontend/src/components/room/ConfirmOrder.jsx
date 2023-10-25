@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { FaMinus, FaPlus } from 'react-icons/fa';
+import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa';
 
 const ConfirmOrder = () => {
     const [foods, setFoods] = useState([
@@ -52,6 +52,11 @@ const ConfirmOrder = () => {
         }
     }
 
+    const handleRemoveCart = () => {
+        // cart remove code....
+        console.log('removed from cart...');
+    }
+
     return (
         <>
             <form method="dialog">
@@ -64,7 +69,7 @@ const ConfirmOrder = () => {
             </form>
 
             <div className='space-y-10 my-5'>
-                <div className={`bg-white px-10 py-5 rounded `}>
+                <div className={`bg-white px-2 py-5 rounded`}>
                     <h3 className={`text-xl font-semibold`}>Confirm Order</h3>
                     <hr className={`my-5`} />
                     <div className={`space-y-10`}>
@@ -77,6 +82,7 @@ const ConfirmOrder = () => {
                                         <th>Price</th>
                                         <th>Quantity</th>
                                         <th>Total</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,6 +116,15 @@ const ConfirmOrder = () => {
                                                 </td>
                                                 <td>
                                                     {item.totalPrice}
+                                                </td>
+                                                <td className='flex justify-center'>
+                                                    <button
+                                                        type='button'
+                                                        onClick={() => handleRemoveCart(index)}
+                                                        className='hover:text-green-slimy duration-200'
+                                                    >
+                                                        <FaTrash />
+                                                    </button>
                                                 </td>
                                             </tr>
                                         )
