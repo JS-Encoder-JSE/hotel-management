@@ -4,6 +4,7 @@ import CustomerReservation from './CustomerReservation';
 import BookingChart from './BookingChart';
 import ReservationChart from './ReservationChart';
 import TotalBookingAmountAndNumber from './TotalBookingAmountAndNumber';
+import CustomerList from './CustomerList';
 
 const UserDashBoard = () => {
     return (
@@ -61,7 +62,7 @@ const UserDashBoard = () => {
                     <TotalBookingAmountAndNumber />
                 </div>
                 <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
-                    {/* <ReservationChart /> */}
+                   <CustomerList />
                 </div>
             </section>
         </div>

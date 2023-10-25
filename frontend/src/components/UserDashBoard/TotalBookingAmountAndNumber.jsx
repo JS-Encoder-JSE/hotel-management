@@ -13,12 +13,16 @@ const TotalBookingAmountAndNumber = () => {
             options: {
                 chart: {
                     type: 'bar',
-                    height: 350
+                    height: 350,
+                    stacked: true,
                 },
-                colors: '#9bcf7f', 
+                colors: '#9bcf7f',
                 title: {
-                    text: 'Total Reservation Total Booking Amount vs Total Number of Booking',
+                    text: 'Total Booking Amount vs Total Number of Booking',
                     align: 'left',
+                    style: {
+                        fontSize: '13px',
+                    },
                 },
                 plotOptions: {
                     bar: {

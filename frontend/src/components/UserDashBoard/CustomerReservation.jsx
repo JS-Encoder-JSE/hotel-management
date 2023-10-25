@@ -20,7 +20,7 @@ const CustomerReservation = () => {
                 chart: {
                     height: 350,
                     type: 'line',
-                    stacked: false,
+                    stacked: true,
                     zoom: {
                         enabled: false
                     }

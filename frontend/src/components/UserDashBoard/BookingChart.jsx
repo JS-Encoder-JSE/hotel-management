@@ -11,8 +11,8 @@ const BookingChart = () => {
                     type: 'donut',
                 },
                 title: {
-                    text: 'Total Reservation',
-                    align: 'left'
+                    text: 'Total Booking History',
+                    align: 'left',
                 },
                 labels: ['Checkin', 'Checkout', 'Pending', 'Canceled'],
                 responsive: [{
