@@ -240,7 +240,7 @@ const App = () => {
               ),
             },
             {
-              path: "hotel-edit",
+              path: "hotel-edit/:id",
               element: (
                 <OwnerRoute>
                   <HotelEdit />
@@ -264,7 +264,7 @@ const App = () => {
               ),
             },
             {
-              path: "manager-edit",
+              path: "manager-edit/:id",
               element: (
                 <OwnerRoute>
                   <ManagerEdit />

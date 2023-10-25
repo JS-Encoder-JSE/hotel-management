@@ -10,7 +10,6 @@ const validationSchema = yup.object({
   email: yup.string().required("Manager Email is required"),
   phoneNumber: yup.string().required("Manager Phone Number size is required"),
   salary: yup.string().required("Manager Salary is required"),
-  branchName: yup.string().required("Manager Branch Name is required"),
 });
 
 const ManagerEdit = () => {
@@ -21,7 +20,6 @@ const ManagerEdit = () => {
       email: "",
       phoneNumber:"",
       salary: "",
-      branchName:""
      
     },
     validationSchema,
@@ -81,7 +79,7 @@ const ManagerEdit = () => {
           <div className="flex flex-col gap-3">
             <input
               type="email"
-              placeholder="Manager Email @ "
+              placeholder="Manager Email "
               name="email"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.price}
@@ -99,7 +97,7 @@ const ManagerEdit = () => {
             <div className="flex flex-col gap-3">
             <input
               type="number"
-              placeholder="Manager Phone Number #"
+              placeholder="Manager Phone Number"
               name="phoneNumber"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.phoneNumber}

@@ -33,7 +33,7 @@ const HotelEdit = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
     <div className="card-body p-4">
-    <h2 className={`text-3xl max-w-xs`}>Add Hotels Update</h2>
+    <h2 className={`text-3xl max-w-xs`}>Hotels Update</h2>
         <hr className={`my-5`} />
       </div>
 
@@ -81,7 +81,7 @@ const HotelEdit = () => {
           <div className="flex flex-col gap-3">
             <input
               type="email"
-              placeholder="Hotel Email @ "
+              placeholder="Hotel Email "
               name="email"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.price}
@@ -99,7 +99,7 @@ const HotelEdit = () => {
             <div className="flex flex-col gap-3">
             <input
               type="number"
-              placeholder="Hotel Phone Number #"
+              placeholder="Hotel Phone Number"
               name="phoneNumber"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.phoneNumber}

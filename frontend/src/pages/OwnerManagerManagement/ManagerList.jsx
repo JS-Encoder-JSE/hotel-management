@@ -52,7 +52,7 @@ const ManagerList = () => {
                       </td>
                       <td>$25000</td>
                       <td className={`space-x-1.5`}>
-                      <Link to={`/dashboard/manager-edit`}>
+                      <Link to={`/dashboard/manager-edit/${idx}`}>
                       <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                         >
