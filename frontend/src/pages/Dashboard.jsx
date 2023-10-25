@@ -34,7 +34,7 @@ const Dashboard = () => {
             <h3
               className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}
             >
-              Owner
+              Admin
             </h3>
             <div
               className={`h-full md:h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar-none`}

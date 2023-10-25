@@ -11,7 +11,6 @@ import AddRoom from "./pages/room/AddRoom.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import ManageRoom from "./pages/room/ManageRoom.jsx";
 import ManageSingleRoom from "./pages/room/ManageSingleRoom.jsx";
-// import ManageBooking from "./pages/room/ManageBooking.jsx";
 import CheckIn from "./pages/room/CheckIn.jsx";
 import AddFood from "./pages/restaurant/AddFood.jsx";
 import EditFood from "./pages/restaurant/EditFood.jsx";
@@ -23,21 +22,31 @@ import ManageInventory from "./pages/Inventory/ManageInventory.jsx";
 import AddEmployee from "./pages/employee/AddEmployee.jsx";
 import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
+
 import SalesProfitReport from "./pages/report/SalesProfitReport.jsx";
 
+
+import SalesProfitReport from "./pages/SalesProfitReport.jsx";
+
 import ManageBooking from "./pages/room/ManageBooking.jsx";
-// import CheckIn from "./pages/room/CheckIn.jsx";
-// import AddFood from "./components/Food/AddFood.jsx";
-// import OwnerRoute from "./routes/OwnerRoute.jsx";
-import AddManager from "./pages/ManagerManagement/AddManager.jsx";
-import ManagerList from "./pages/ManagerManagement/ManagerList.jsx";
 import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
 import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
-import AddHotel from "./pages/hotel/AddHotel.jsx";
-import HotelLists from "./pages/hotel/HotelLists.jsx";
 import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
 import BookingView from "./pages/room/BookingView.jsx";
+
 import CheckPDF from "./pages/CheckPDF.jsx";
+
+import AddManager from "./pages/OwnerManagerManagement/AddManager.jsx";
+import ManagerList from "./pages/OwnerManagerManagement/ManagerList.jsx";
+import AddHotel from "./pages/Ownerhotel/AddHotel.jsx";
+import HotelLists from "./pages/Ownerhotel/HotelLists.jsx";
+import AdminNewLicens from "./pages/Admin/AdminNewLicens.jsx";
+import AdminRoute from "./routes/AdminRoute.jsx";
+import RenewList from "./pages/Admin/RenewList.jsx";
+import RenewView from "./pages/Admin/RenewView.jsx";
+import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
+import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
+
 
 
 const App = () => {
@@ -244,7 +253,7 @@ const App = () => {
               ),
             },
             {
-              path: "hotel-edit",
+              path: "hotel-edit/:id",
               element: (
                 <OwnerRoute>
                   <HotelEdit />
@@ -268,7 +277,7 @@ const App = () => {
               ),
             },
             {
-              path: "manager-edit",
+              path: "manager-edit/:id",
               element: (
                 <OwnerRoute>
                   <ManagerEdit />
@@ -277,6 +286,50 @@ const App = () => {
             },
 
             // Admin sideber
+
+            {
+              path: "new-licens",
+              element: (
+                <AdminRoute>
+                  <AdminNewLicens />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "renew-list",
+              element: (
+                <AdminRoute>
+                  <RenewList />
+                </AdminRoute>
+              ),
+            },
+
+            {
+              path: "renew-view/:id",
+              element: (
+                <AdminRoute>
+                  <RenewView />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "adminowner-list",
+              element: (
+                <AdminRoute>
+                  <AdminOwnerList />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "adminowner-view/:id",
+              element: (
+                <AdminRoute>
+                  <AdminOwnerView />
+                </AdminRoute>
+              ),
+            },
+
+
           ],
         },
       ],
