@@ -2,6 +2,7 @@ import React from 'react';
 import { FaCalendarDay, FaDollarSign, FaRegCalendarAlt, FaUserCircle } from 'react-icons/fa'
 import CustomerReservation from './CustomerReservation';
 import BookingChart from './BookingChart';
+import ReservationChart from './ReservationChart';
 
 const UserDashBoard = () => {
     return (
@@ -45,9 +46,12 @@ const UserDashBoard = () => {
                 <CustomerReservation />
             </section>
 
-            <section className='bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200 grid md:grid-cols-2 gap-5'>
-                <div>
+            <section className='mt-8 grid md:grid-cols-2 gap-5'>
+                <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
                     <BookingChart />
+                </div>
+                <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
+                    <ReservationChart />
                 </div>
             </section>
         </div>

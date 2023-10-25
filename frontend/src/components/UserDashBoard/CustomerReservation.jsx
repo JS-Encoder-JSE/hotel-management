@@ -21,6 +21,9 @@ const CustomerReservation = () => {
                     height: 350,
                     type: 'line',
                     stacked: false,
+                    zoom: {
+                        enabled: false
+                    }
                 },
                 stroke: {
                     width: [0, 5],
