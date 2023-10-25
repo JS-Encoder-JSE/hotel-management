@@ -1,6 +1,5 @@
 import React from "react";
 import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
-import { GrView } from "react-icons/gr";
 import { useFormik } from "formik";
 import {useNavigate} from "react-router-dom";
 
@@ -52,12 +51,12 @@ const HotelLists = () => {
             <tr>
             <th>Sl</th>
             <th>Hotel Name</th>
-                  <th>Hotel Address</th>
-                  <th>Hotel Email</th>
-                  <th>Phone Number</th>
-                  <th>License Number</th>
-                  <th> Branch Name</th>
-                  <th> Manager List</th>
+                  <th>Hotel <br /> Address</th>
+                  <th className="text-center">Hotel <br /> Email</th>
+                  <th>Phone <br /> Number</th>
+                  <th>License <br /> Number</th>
+                  <th> Branch <br /> Name</th>
+                  <th> Manager <br /> List</th>
                   <th>Action</th>
             </tr>
           </thead>
