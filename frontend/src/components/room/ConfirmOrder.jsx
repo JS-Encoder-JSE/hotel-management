@@ -15,18 +15,7 @@ const ConfirmOrder = () => {
 
     const formik = useFormik({
         initialValues: {
-            // roomNumber: "",
-            // name: "",
-            // age: "",
-            // adult: "",
-            // children: "",
-            // paymentMethod: "",
-            // cardNumber: "",
-            // mobileBankingNo: "",
-            // trxID: "",
-            // discount: "",
         },
-        // validationSchema,
         onSubmit: (values) => {
             console.log(values);
         },
@@ -42,22 +31,25 @@ const ConfirmOrder = () => {
     const handleDecrease = (index) => {
         if (foods[index].quantity > 1) {
             const updatedItems = [...foods];
-            updatedItems[index].totalPrice = parseInt(updatedItems[index].totalPrice) - parseInt(updatedItems[index].price);
             updatedItems[index].quantity -= 1;
+            updatedItems[index].totalPrice = parseInt(updatedItems[index].totalPrice) - parseInt(updatedItems[index].price);
             setFoods(updatedItems);
         }
     };
 
     const handleQuantity = (e, index) => {
-        const value = e.target.value ? e.target.value : 1;
-        const updatedItems = [...items];
+        let value = e.target.value ? e.target.value : 1;
+        const updatedItems = [...foods];
+        const parsedValue = parseInt(value);
 
-        if (!isNaN(value) && value >= 1) {
-            updatedItems[index].quantity = value;
+        if (!isNaN(parsedValue) && value >= 1) {
+            updatedItems[index].quantity = parsedValue;
+            updatedItems[index].totalPrice = parseInt(updatedItems[index].price) * parsedValue;
+            setFoods(updatedItems);
         } else {
             updatedItems[index].quantity = 1;
+            setFoods(updatedItems);
         }
-        setFoods(updatedItems);
     }
 
     return (
@@ -107,7 +99,7 @@ const ConfirmOrder = () => {
                                                         type='number'
                                                         value={item.quantity}
                                                         onChange={(e) => handleQuantity(e, index)}
-                                                        className='input-hide_Arrows w-12 flex outline-none text-center rounded-md p-1 border focus:border-green-slimy'
+                                                        className='input-hide_Arrows w-12 flex outline-none text-center rounded-md p-1 placeholder:text-black border focus:border-green-slimy'
                                                     />
                                                     <button
                                                         onClick={() => handleIncrease(index)}

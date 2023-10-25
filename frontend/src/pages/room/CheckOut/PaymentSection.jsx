@@ -37,13 +37,14 @@ const PaymentSection = () => {
     const handlePaymentMode = (e) => {
         let value = e.value;
 
-        console.log(value);
-        if (value == 'Mobile Banking') {
+        if (value === 'Mobile Banking') {
             setSelectMobilePayment(true);
+            setSelectCashPayment(false);
         }
 
-        else if (value == 'Cash Payment' || value == 'null') {
+        else if (value === 'Cash Payment' || value === 'null') {
             setSelectCashPayment(true);
+            selectMobilePayment(false);
         }
 
         else {
