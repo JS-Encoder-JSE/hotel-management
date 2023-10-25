@@ -1,6 +1,8 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 
 // form validation
@@ -13,6 +15,7 @@ const validationSchema = yup.object({
 });
 
 const ManagerEdit = () => {
+  const navigate =useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -31,7 +34,16 @@ const ManagerEdit = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
     <div className="card-body p-4">
-    <h2 className={`text-3xl max-w-xs`}>Edit Manager</h2>
+    <div>
+       
+       <span
+          className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+        </span>
+       </div>
+    <h2 className={`text-3xl text-center`}>Edit Manager</h2>
         <hr className={`my-5`} />
       </div>
 

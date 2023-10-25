@@ -10,7 +10,6 @@ const validationSchema = yup.object({
   email: yup.string().required("Manager Email is required"),
   phoneNumber: yup.string().required("Manager Phone Number size is required"),
   salary: yup.string().required("Manager Salary is required"),
-  branchName: yup.string().required("Manager Branch Name is required"),
 });
 
 const AddManager = () => {
@@ -20,8 +19,7 @@ const AddManager = () => {
       address: "",
       email: "",
       phoneNumber:"",
-      salary: "",
-      branchName:""
+      salary: ""
      
     },
     validationSchema,

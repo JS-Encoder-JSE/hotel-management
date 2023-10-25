@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle, FaUpload } from "react-icons/fa";
+
 
 // form validation
 const validationSchema = yup.object({
@@ -11,6 +11,7 @@ const validationSchema = yup.object({
   phoneNumber: yup.string().required("Phone Number size is required"),
   license: yup.string().required("License Number is required"),
   branchName: yup.string().required("Branch Name is required"),
+  category: yup.string().required("Manager Name is required"),
 });
 
 const AddHotel = () => {
@@ -21,7 +22,8 @@ const AddHotel = () => {
       email: "",
       phoneNumber:"",
       license: "",
-      branchName:""
+      branchName:"",
+      category:""
      
     },
     validationSchema,
@@ -137,7 +139,7 @@ const AddHotel = () => {
               placeholder="Hotel Branch Name"
               name="branchName"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-              value={formik.values.license}
+              value={formik.values.branchName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
