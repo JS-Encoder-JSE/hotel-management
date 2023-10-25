@@ -1,85 +1,80 @@
 import React, { useState } from 'react';
-import ApexCharts from 'apexcharts'
+import ReactApexChart from 'react-apexcharts'
 
 const CustomerReservation = () => {
     const [chartProps, setChartProps] = useState(
         {
 
-        series: [{
-            name: 'TEAM A',
-            type: 'column',
-            data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
-        }, {
-            name: 'TEAM B',
-            type: 'area',
-            data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
-        }, {
-            name: 'TEAM C',
-            type: 'line',
-            data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
-        }],
-        options: {
-            chart: {
-                height: 350,
+            series: [{
+                name: 'Booking Confirmed',
+                type: 'column',
+                data: [23, 24, 40, 27, 13, 22, 37, 21, 44, 22, 30],
+                color: '#fe9302'
+            }, {
+                name: 'Booking Pending',
                 type: 'line',
-                stacked: false,
-            },
-            stroke: {
-                width: [0, 2, 5],
-                curve: 'smooth'
-            },
-            plotOptions: {
-                bar: {
-                    columnWidth: '50%'
-                }
-            },
-
-            fill: {
-                opacity: [0.85, 0.25, 1],
-                gradient: {
-                    inverseColors: false,
-                    shade: 'light',
-                    type: "vertical",
-                    opacityFrom: 0.85,
-                    opacityTo: 0.55,
-                    stops: [0, 100, 100, 100]
-                }
-            },
-            labels: ['01/01/2003', '02/01/2003', '03/01/2003', '04/01/2003', '05/01/2003', '06/01/2003', '07/01/2003',
-                '08/01/2003', '09/01/2003', '10/01/2003', '11/01/2003'
-            ],
-            markers: {
-                size: 0
-            },
-            xaxis: {
-                type: 'datetime'
-            },
-            yaxis: {
-                title: {
-                    text: 'Points',
+                data: [27, 25, 22, 27, 13, 22, 37, 25, 26],
+                color: '#5c44ab'
+            }],
+            options: {
+                chart: {
+                    height: 350,
+                    type: 'line',
+                    stacked: false,
                 },
-                min: 0
-            },
-            tooltip: {
-                shared: true,
-                intersect: false,
-                y: {
-                    formatter: function (y) {
-                        if (typeof y !== "undefined") {
-                            return y.toFixed(0) + " points";
-                        }
-                        return y;
+                stroke: {
+                    width: [0, 5],
+                    curve: 'smooth'
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: '70%'
+                    }
+                },
+                fill: {
+                    opacity: [1, 1],
+                    gradient: {
+                        inverseColors: false,
+                        shade: 'light',
+                        type: "vertical",
+                        opacityFrom: 0.85,
+                        opacityTo: 0.55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ['01/01/2023', '02/01/2023', '03/01/2023', '04/01/2023', '05/01/2023', '06/01/2023', '07/01/2023',
+                    '08/01/2023', '09/01/2023', '10/01/2023', '11/01/2023', '12/01/2023'],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: 'datetime'
+                },
+                yaxis: {
+                    title: {
+                        text: 'Booking Confirmed',
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    y: {
+                        formatter: function (y) {
+                            if (typeof y !== "undefined") {
+                                return y.toFixed(0) + " bookings";
+                            }
+                            return y;
 
+                        }
                     }
                 }
-            }
+            },
         }
-        )
+    )
 
     return (
-        <div>
-
-        </div>
+        <ReactApexChart options={chartProps.options} series={chartProps.series} type="line" height={350} />
     );
 };
 

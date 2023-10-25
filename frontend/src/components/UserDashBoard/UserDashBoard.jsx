@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaCalendarDay, FaDollarSign, FaRegCalendarAlt, FaUserCircle } from 'react-icons/fa'
+import CustomerReservation from './CustomerReservation';
 
 const UserDashBoard = () => {
     return (
@@ -37,6 +38,10 @@ const UserDashBoard = () => {
                     <p className='text-2xl font-semibold mb-5'>750</p>
                     <hr />
                 </div>
+            </section>
+
+            <section className='bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200'>
+                <CustomerReservation />
             </section>
         </div>
     );
