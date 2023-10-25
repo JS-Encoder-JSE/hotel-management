@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "apexcharts": "^3.44.0",
     "react-select": "^5.7.7"
   }
 }
