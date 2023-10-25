@@ -10,6 +10,10 @@ const BookingChart = () => {
                 chart: {
                     type: 'donut',
                 },
+                title: {
+                    text: 'Total Reservation',
+                    align: 'left'
+                },
                 labels: ['Checkin', 'Checkout', 'Pending', 'Canceled'],
                 responsive: [{
                     breakpoint: 480,

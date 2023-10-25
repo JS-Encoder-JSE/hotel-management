@@ -6,7 +6,7 @@ const ReservationChart = () => {
         {
             series: [{
                 name: "Desktops",
-                data: [10, 41, 35, 51, 49, 62, 69, 91, 148, 23, 23 ,23],
+                data: [10, 41, 35, 71, 49, 39, 53, 33 ,23],
                 color: "#359b00",
             }],
             options: {
@@ -24,12 +24,11 @@ const ReservationChart = () => {
                     curve: 'smooth'
                 },
                 title: {
-                    text: 'Product Trends by Month',
+                    text: 'Total Reservation',
                     align: 'left'
                 },
                 grid: {
                     row: {
-                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
                         opacity: 0.5
                     },
                 },
