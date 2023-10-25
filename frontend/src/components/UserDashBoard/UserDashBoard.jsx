@@ -6,6 +6,7 @@ import ReservationChart from './ReservationChart';
 import TotalBookingAmountAndNumber from './TotalBookingAmountAndNumber';
 import CustomerList from './CustomerList';
 import TodaysBooking from './TodaysBooking';
+import NextBooking from './NextBooking';
 
 const UserDashBoard = () => {
     return (
@@ -72,7 +73,7 @@ const UserDashBoard = () => {
                     <TodaysBooking />
                 </div>
                 <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
-                   <CustomerList />
+                   <NextBooking />
                 </div>
             </section>
         </div>

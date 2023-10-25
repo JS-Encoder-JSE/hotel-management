@@ -1,13 +1,11 @@
 import React from 'react';
 
-const TodaysBooking = () => {
-    const customers = [
-        { name: 'Rion', phone: '1234567890', address: 'Dhaka', email: 'rion@example.com' },
-    ];
+const NextBooking = () => {
+    const customers = [];
 
     return (
         <div className='custom-scroll-bar'>
-            <h5 className='mb-5 font-bold'>Customer List</h5>
+            <h5 className='mb-5 font-bold'>Next Day Booking</h5>
             <hr className="my-5 mr-5" />
             <div className='h-[300px] overflow-y-scroll scroll-smooth'>
                 {
@@ -26,4 +24,4 @@ const TodaysBooking = () => {
     );
 };
 
-export default TodaysBooking;
+export default NextBooking;
