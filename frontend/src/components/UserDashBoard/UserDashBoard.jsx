@@ -3,11 +3,12 @@ import { FaCalendarDay, FaDollarSign, FaRegCalendarAlt, FaUserCircle } from 'rea
 import CustomerReservation from './CustomerReservation';
 import BookingChart from './BookingChart';
 import ReservationChart from './ReservationChart';
+import TotalBookingAmountAndNumber from './TotalBookingAmountAndNumber';
 
 const UserDashBoard = () => {
     return (
         <div>
-            <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+            <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-5'>
                 <div className='relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200'>
                     <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
                         <FaCalendarDay />
@@ -52,6 +53,15 @@ const UserDashBoard = () => {
                 </div>
                 <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
                     <ReservationChart />
+                </div>
+            </section>
+           
+            <section className='mt-8 grid md:grid-cols-2 gap-5'>
+                <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
+                    <TotalBookingAmountAndNumber />
+                </div>
+                <div className='bg-white p-3 rounded shadow hover:shadow-md duration-200'>
+                    {/* <ReservationChart /> */}
                 </div>
             </section>
         </div>
