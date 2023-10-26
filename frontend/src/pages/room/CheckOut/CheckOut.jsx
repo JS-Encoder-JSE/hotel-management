@@ -4,6 +4,7 @@ import makeAnimated from 'react-select/animated';
 import CustomerInfoSection from './CustomerInfoSection';
 import RoomDetailsSection from './RoomDetailsSection';
 import BillingSection from './BillingSection';
+import PaymentSection from './PaymentSection';
 
 const CheckOut = () => {
     const [selectedRooms, setSelectedRooms] = useState([]);
@@ -66,6 +67,7 @@ const CheckOut = () => {
                     <CustomerInfoSection selectedRooms={selectedRooms} />
                     <RoomDetailsSection />
                     <BillingSection />
+                    <PaymentSection />
                 </>
             }
         </div>

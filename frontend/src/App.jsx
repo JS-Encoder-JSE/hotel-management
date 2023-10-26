@@ -32,6 +32,7 @@ import ManageBooking from "./pages/room/ManageBooking.jsx";
 import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
 import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
 import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
+import UserDashBoard from "./components/UserDashBoard/UserDashBoard.jsx";
 import BookingView from "./pages/room/BookingView.jsx";
 
 import CheckPDF from "./pages/CheckPDF.jsx";
@@ -46,7 +47,6 @@ import RenewList from "./pages/Admin/RenewList.jsx";
 import RenewView from "./pages/Admin/RenewView.jsx";
 import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
 import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
-
 
 
 const App = () => {
@@ -73,6 +73,14 @@ const App = () => {
             },
 
             // Manager Sideber
+            {
+              path: '',
+              element: (
+                <ManagerRoute>
+                  <UserDashBoard />
+                </ManagerRoute>
+              ),
+            },
             {
               path: "add-room",
               element: (
@@ -226,7 +234,6 @@ const App = () => {
               ),
             },
             {
-
               path: "add-order",
               element: (
                 <ManagerRoute>
@@ -236,7 +243,14 @@ const App = () => {
             },
             // Owner Hotel  Sideber
             {
-
+              path: '',
+              element: (
+                <OwnerRoute>
+                  <UserDashBoard />
+                </OwnerRoute>
+              ),
+            },
+            {
               path: "add-hotel",
               element: (
                 <OwnerRoute>

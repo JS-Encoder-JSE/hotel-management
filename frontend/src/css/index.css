@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 /* === Swiper Slider === */
-.swiper-er-button-disabled, .swiper-rts-button-disabled {
+.swiper-er-button-disabled,
+.swiper-rts-button-disabled {
   @apply bg-green-slimy/50 pointer-events-none;
 }
 
@@ -15,14 +16,15 @@
   @apply bg-green-slimy;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.custom-scroll-bar ::-webkit-scrollbar {
+  width: 10px;
+  height: 100%;
+  background-color: rgba(235, 232, 226, 0.774);
+  border-radius: 4px;
 }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+.custom-scroll-bar ::-webkit-scrollbar-thumb {
+  height: 30px;
+  background: rgba(92, 92, 190, 0.507);
+  border-radius: 4px;
 }

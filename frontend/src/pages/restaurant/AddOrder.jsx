@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import FoodLists from "../../components/restaurant/FoodLists.jsx";
 import { FaEye, FaFileInvoice } from "react-icons/fa";
+import Modal from "../../components/Modal.jsx";
+import ConfirmOrder from "../../components/room/ConfirmOrder.jsx";
 
 // form validation
 const validationSchema = yup.object({
@@ -47,23 +49,14 @@ const AddOrder = () => {
           ) : null}
         </div>
         <div className={`flex space-x-1.5`}>
-          {/* <button
-            type={`button`}
-            className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-          >
-            Confirm Order
-          </button> */}
 
           {/* modal */}
-
-          <label
-            htmlFor="my_modal_6"
+          <button onClick={() => window.fp_modal.showModal()}
             type={`button`}
             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case "
           >
-            {" "}
             Confirm Order
-          </label>
+          </button>
           <input type="checkbox" id="my_modal_6" className="modal-toggle " />
           <div className="modal ">
             <div className="modal-box">
@@ -151,6 +144,9 @@ const AddOrder = () => {
               </div>
             </div>
           </div>
+<Modal id={`fp_modal`}>
+            <ConfirmOrder />
+          </Modal>
           {/* modal */}
 
           <input
