@@ -15,7 +15,7 @@ const validationSchema = yup.object({
 });
 
 const AddHotel = () => {
-  const [hotelLimit, setHotelLimit] = useState(1)
+  const [hotelLimit, setHotelLimit] = useState(0)
 
   const formik = useFormik({
     initialValues: {
@@ -37,9 +37,9 @@ const AddHotel = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
-          <div className="text-2xl flex justify-between items-center">
+          <div className="text-2xl md:flex justify-between items-center">
             <h2>Add Hotels</h2>
-            <h2>
+            <h2 className="shadow px-4 py-2 rounded-md text-green-slimy inline-block">
               {hotelLimit >= 1 ?
                 <>
                   You can add
