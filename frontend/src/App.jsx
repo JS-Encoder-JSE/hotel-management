@@ -37,6 +37,8 @@ import AddHotel from "./pages/hotel/AddHotel.jsx";
 import HotelLists from "./pages/hotel/HotelLists.jsx";
 import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
 import UserDashBoard from "./components/UserDashBoard/UserDashBoard.jsx";
+import AdminRoute from "./routes/AdminRoute.jsx";
+import MonitorFinance from "./pages/MonitorFinance/MonitorFinance.jsx";
 
 
 const App = () => {
@@ -273,6 +275,14 @@ const App = () => {
               element: (
                 <OwnerRoute>
                   <ManagerEdit />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "finance",
+              element: (
+                <OwnerRoute>
+                  <MonitorFinance />
                 </OwnerRoute>
               ),
             },
