@@ -47,6 +47,7 @@ import RenewList from "./pages/Admin/RenewList.jsx";
 import RenewView from "./pages/Admin/RenewView.jsx";
 import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
 import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
 
 
 const App = () => {
@@ -70,6 +71,10 @@ const App = () => {
             {
               path: "check-pdf",
               element: <CheckPDF />,
+            },
+            {
+              path: "profile",
+              element: <Profile />
             },
 
             // Manager Sideber
