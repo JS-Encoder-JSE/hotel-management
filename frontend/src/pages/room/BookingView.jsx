@@ -1,8 +1,19 @@
 import React from "react";
+import {FaArrowLeft} from "react-icons/fa";
+import {useNavigate} from "react-router-dom";
 
 const BookingView = () => {
+  const navigate = useNavigate()
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
+      <div
+          className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+          onClick={() => navigate(-1)}
+      >
+        <FaArrowLeft />
+        <span>Back</span>
+      </div>
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Booking Information</h3>
         <table>

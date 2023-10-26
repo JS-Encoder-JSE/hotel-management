@@ -6,8 +6,15 @@ import { FaPlusCircle } from "react-icons/fa";
 // form validation
 const validationSchema = yup.object({
   itemName: yup.string().required("Name is required"),
-  itemDescription: yup.string().required("Description is required"),
-  ItemQuantity: yup.string().required("Quantity is required"),
+  itemDescription: yup
+    .string()
+    .required("Description is required")
+    .min(20, "Description at least 20 characters length"),
+  ItemQuantity: yup
+    .number()
+    .required("Quantity is required")
+    .positive("Quantity must be a positive number")
+    .integer("Quantity must be an integer"),
 });
 
 const AddInventory = () => {
@@ -90,7 +97,7 @@ const AddInventory = () => {
         <div className=" col-span-full text-end mt-5 ">
           <button
             type="submit"
-            className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-[90px] p-4 h-auto"
+            className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
           >
             Add
           </button>

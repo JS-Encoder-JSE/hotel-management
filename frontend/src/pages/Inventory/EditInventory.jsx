@@ -1,16 +1,26 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
+import { FaPencil } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
   itemName: yup.string().required("Name is required"),
-  itemDescription: yup.string().required("Description is required"),
-  ItemQuantity: yup.string().required("Quantity is required"),
+  itemDescription: yup
+    .string()
+    .required("Description is required")
+    .min(20, "Description at least 20 characters length"),
+  ItemQuantity: yup
+    .number()
+    .required("Quantity is required")
+    .positive("Quantity must be a positive number")
+    .integer("Quantity must be an integer"),
 });
 
 const EditInventory = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       itemName: "",
@@ -25,12 +35,21 @@ const EditInventory = () => {
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
-      <h3
-        className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
+      <div
+        className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
       >
-        <FaPlusCircle />
-        <span>Edit Item</span>
-      </h3>
+        <h3 className={`flex text-2xl text-white space-x-1.5`}>
+          <FaPencil />
+          <span>Edit Item</span>
+        </h3>
+        <div
+          className={`flex hover:text-white hover:bg-transparent border border-white items-center space-x-1.5 bg-white text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+          <span>Back</span>
+        </div>
+      </div>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
@@ -90,7 +109,7 @@ const EditInventory = () => {
         <div className=" col-span-full text-end mt-5 ">
           <button
             type="submit"
-            className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-[90px] p-4 h-auto"
+            className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
           >
             Update
           </button>

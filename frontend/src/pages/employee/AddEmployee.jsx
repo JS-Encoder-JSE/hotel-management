@@ -13,7 +13,7 @@ const validationSchema = yup.object({
   state: yup.string().required("State is required"),
   city: yup.string().required("City is required"),
   zip: yup.string().required("Zip is required"),
-  userImg: yup.string().required("Image is required"),
+  userImg: yup.mixed().required("Image is required"),
 });
 
 const AddEmployee = () => {
@@ -28,7 +28,7 @@ const AddEmployee = () => {
       state: "",
       city: "",
       zip: "",
-      userImg: ""
+      userImg: null,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -129,7 +129,7 @@ const AddEmployee = () => {
           <input
             type="text"
             placeholder="Street address"
-            name="name"
+            name="street"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.street}
             onChange={formik.handleChange}
@@ -194,14 +194,16 @@ const AddEmployee = () => {
         </div>
         {/* user image box */}
         <div className="col-span-full flex flex-col gap-3">
-          <label className="relative input input-sm input-bordered border-gray-500/50 rounded  focus:outline-none p-2 h-auto bg-transparent">
+          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
             {formik.values.userImg ? (
               formik.values.userImg.name.substring(
                 0,
-                formik.values.userImg.name.lastIndexOf(".")
+                formik.values.userImg.name.lastIndexOf("."),
               )
             ) : (
-              <span className={`flex justify-center items-baseline space-x-1.5`}>
+              <span
+                className={`flex justify-center items-baseline space-x-1.5`}
+              >
                 <FaUpload />
                 <span>Choose photo</span>
               </span>
@@ -226,7 +228,7 @@ const AddEmployee = () => {
         {/* submit button */}
         <button
           type="submit"
-          className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
+          className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
           Add
         </button>
