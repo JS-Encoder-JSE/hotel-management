@@ -46,128 +46,211 @@ const AdminOwnerView = () => {
               <h6> Expire Date : 14-10-2023</h6>
               <h6> Remaing Days: 15 Days</h6>
               <h6>Status : Active</h6>
-
-              {/* <div>
-                  <div className="flex gap-5">
-                    <div>
-                      <button
-                        onClick={increament}
-                        className=" p-2 rounded bg-green-100 px-5 "
-                      >
-                        +
-                      </button>
-                    </div>
-                  <div>
-                  <h1 
-                 className=" p-2 rounded bg-green-100 px-9 ">
-                    {user}
-                  </h1>
-                  </div>
-                    <div>
-                      <button
-                        onClick={decrement}
-                        className=" p-2 rounded bg-green-100 px-5"
-                      >
-                        -
-                      </button>
-                    </div>
-                  </div>
-                </div> */}
               <div className="flex ">
                 <div>
                   <h6>Number Of Hotels : 05</h6>
                 </div>
+
+                {/* modal */}
                 <div>
-<button className=" ms-2 " onClick={()=>document.getElementById('my_modal_3').showModal()}>
-<FaEdit />
-</button>
-<dialog id="my_modal_3" className="modal">
-  <div className="modal-box">
-    <form method="dialog">
-      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-  <div>
-                  <div className="flex gap-5">
-                    <div>
-                      <button
-                        onClick={increament}
-                        className=" p-2 rounded bg-green-100 px-5 "
-                      >
-                        +
-                      </button>
+                  <button
+                    className=" ms-2  "
+                    onClick={() =>
+                      document.getElementById("my_modal_3").showModal()
+                    }
+                  >
+                    <FaEdit />
+                  </button>
+                  <dialog id="my_modal_3" className="modal w-full">
+                    <div className="modal-box">
+                      <form method="dialog">
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                          ✕
+                        </button>
+                      </form>
+                      <div>
+                        {/* Quntity Of hotel management */}
+                        <div className="flex gap-5">
+                          <h2 className="mt-2">Number Of Hotels :</h2>
+                          <div>
+                            <button
+                              onClick={increament}
+                              className=" p-2 rounded bg-green-400 px-5 "
+                            >
+                              +
+                            </button>
+                          </div>
+                          <div>
+                            <h1 className=" p-2 rounded bg-green-400 px-9 ">
+                              {user}
+                            </h1>
+                          </div>
+                          {/* decrement */}
+                          <div>
+                            <button
+                              onClick={decrement}
+                              className=" p-2 rounded bg-green-400 px-5"
+                            >
+                              -
+                            </button>
+                          </div>
+                        </div>
+                        {/* Modal  Table information Start */}
+                        <div className="card w-full bg-white shadow-xl mt-10">
+                          <div className="card-body">
+                            <h1 className="text-2xl text-center ">
+                              Owner Hotel List
+                            </h1>
+                            <div className="overflow-x-auto mt-10">
+                              <table className="table border">
+                                <thead>
+                                  <tr>
+                                    <th>Sl</th>
+                                    <th>Hotel Name</th>
+                                    <th>Hotel Email</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {[...Array(5)].map((_, idx) => {
+                                    return (
+                                      <tr
+                                        className={
+                                          idx % 2 === 0
+                                            ? "bg-gray-100 hover"
+                                            : "hover"
+                                        }
+                                      >
+                                        <th> {++idx}</th>
+                                        <td className="font-bold">Jon Doe</td>
+                                        <td>jondoe@gmail.com</td>
+                                        <td className={`space-x-1.5`}>
+                                          <span
+                                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                                            onClick={() =>
+                                              navigate(
+                                                `/dashboard/adminowner-view/${idx}`
+                                              )
+                                            }
+                                          >
+                                            <GrView />
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        {/* Modal  Table information End */}
+                      </div>
                     </div>
-                  <div>
-                  <h1 
-                 className=" p-2 rounded bg-green-100 px-9 ">
-                    {user}
-                  </h1>
-                  </div>
-                    <div>
-                      <button
-                        onClick={decrement}
-                        className=" p-2 rounded bg-green-100 px-5"
-                      >
-                        -
-                      </button>
-                    </div>
-                  </div>
+                  </dialog>
                 </div>
-  </div>
-</dialog>
-                </div>
+                {/* modal */}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/*  Table */}
-      <div className="overflow-x-auto mt-10">
-        <table className="table border">
-          <thead>
-            <tr>
-              <th>Sl</th>
-              <th>Hotel Name</th>
-              <th>Hotel Email</th>
-              {/* <th>
-                Number Of <br /> Hotels
-              </th> */}
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[...Array(5)].map((_, idx) => {
-              return (
-                <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                  <th> {++idx}</th>
-                  <td className="font-bold">Jon Doe</td>
-                  <td>jondoe@gmail.com</td>
-                  {/* <td>
-                    <h1 className="border w-10 px-8 py-2 text-center bg-base-100 mb-3 ">
-                      {user}
-                    </h1>
-                  </td> */}
-                  <td className={`space-x-1.5`}>
-                    <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                      onClick={() =>
-                        navigate(`/dashboard/adminowner-view/${idx}`)
-                      }
-                    >
-                      <GrView />
-                    </span>
-                    {/* <span
-                      className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case mt-2`}
-                    >
-                      <FaTrash />
-                    </span> */}
-                  </td>
+      {/*owner Table start */}
+
+      <div className="card w-full bg-white shadow-xl mt-10">
+        <div className="card-body">
+          <h1 className="text-2xl text-center ">
+            Owner Hotel List 
+          </h1>
+          <div className="overflow-x-auto mt-10">
+            <table className="table border">
+              <thead>
+                <tr>
+                  <th>Sl</th>
+                  <th>Hotel Name</th>
+                  <th>Hotel Email</th>
+                  <th>Action</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {[...Array(5)].map((_, idx) => {
+                  return (
+                    <tr
+                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                    >
+                      <th> {++idx}</th>
+                      <td className="font-bold">Jon Doe</td>
+                      <td>jondoe@gmail.com</td>
+                      <td className={`space-x-1.5`}>
+                        <span
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                          onClick={() =>
+                            navigate(`/dashboard/adminowner-view/${idx}`)
+                          }
+                        >
+                          <GrView />
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+
+      {/*owner Table End */}
+
+      {/*transaction Table start */}
+
+      <div className="card w-full bg-white shadow-xl mt-10">
+        <div className="card-body">
+          <h1 className="text-2xl text-center ">
+            Owner transaction History 
+          </h1>
+          <div className="overflow-x-auto mt-10">
+            <table className="table border">
+              <thead>
+                <tr>
+                  <th>Sl</th>
+                  <th>Date</th>
+                  <th>Transacion Id</th>
+                  <th>Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...Array(5)].map((_, idx) => {
+                  return (
+                    <tr
+                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                    >
+                      <th> {++idx}</th>
+                      <td className="font-bold">12-10-2023</td>
+                      <td>DSER-HGYT-GHTY-54564</td>
+                      <td>$25000</td>
+                      <td className={`space-x-1.5`}>
+                        <span
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                          onClick={() =>
+                            navigate(`/dashboard/adminowner-view/${idx}`)
+                          }
+                        >
+                          <GrView />
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/*transaction Table End */}
     </>
   );
 };
