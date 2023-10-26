@@ -50,6 +50,7 @@ const CheckOut = () => {
                         options={roomList}
                         placeholder='Room Select'
                         onChange={(e) => handleSearchRoom(e)}
+                        className='custom-scroll-bar'
                     />
                 </div>
                 <button
