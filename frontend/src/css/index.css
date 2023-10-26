@@ -28,14 +28,3 @@
   background: rgba(92, 92, 190, 0.507);
   border-radius: 4px;
 }
-
-.input-hide_Arrows::-webkit-outer-spin-button,
-.input-hide_Arrows::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-.input-hide_Arrows[type=number] {
-  -moz-appearance: textfield;
-}

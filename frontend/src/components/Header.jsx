@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
+import {
+  AiOutlineFullscreen,
+  AiOutlineFullscreenExit,
+  AiOutlineMenu,
+} from "react-icons/ai";
 import profile from "../../src/assets/profile.jpeg";
 import useAuth from "../hooks/useAuth.js";
 import { Link } from "react-router-dom";
 
-const Header = ({isHbMenu, setHbMenu}) => {
+const Header = ({
+  isFullscreen,
+  enterFullscreen,
+  exitFullscreen,
+  isHbMenu,
+  setHbMenu,
+}) => {
   const { signOut } = useAuth();
   const [time, setTime] = useState(new Date());
 
@@ -19,15 +29,26 @@ const Header = ({isHbMenu, setHbMenu}) => {
       <div className="navbar bg-white">
         <div className="flex-1">
           <div className="dropdown">
-            <label tabIndex={0} className="md:hidden btn btn-ghost btn-circle" onClick={() => setHbMenu(!isHbMenu)}>
+            <label
+              tabIndex={0}
+              className="md:hidden btn btn-ghost btn-circle"
+              onClick={() => setHbMenu(!isHbMenu)}
+            >
               <AiOutlineMenu></AiOutlineMenu>
             </label>
           </div>
         </div>
+        <label
+          tabIndex={0}
+          className="btn btn-ghost btn-circle text-2xl mr-3"
+          onClick={isFullscreen ? exitFullscreen : enterFullscreen}
+        >
+          {isFullscreen ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />}
+        </label>
 
         {/* time setUp */}
-        <div className="me-9 border p-3">
-          <p className="text-2xl">{time.toLocaleTimeString()}</p>
+        <div className="inline-flex justify-center border me-3 p-3 w-52">
+          <span className="text-2xl">{time.toLocaleTimeString()}</span>
         </div>
         {/* time setUp */}
 

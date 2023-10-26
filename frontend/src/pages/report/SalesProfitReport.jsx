@@ -1,7 +1,10 @@
 import React from "react";
 import { FaEye, FaFileInvoice } from "react-icons/fa";
 import { useFormik } from "formik";
-import DatePicker from "react-datepicker";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import CreateCustomerReceipt from "../../components/pdf/CreateCustomerReceipt.jsx";
+import * as XLSX from "xlsx";
+import CreateReport from "../../components/pdf/CreateReport.jsx";
 
 const SalesProfitReport = () => {
   const formik = useFormik({
@@ -12,6 +15,14 @@ const SalesProfitReport = () => {
       endDate: "",
     },
   });
+
+  const exportExcel = async (data, name) => {
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    XLSX.writeFile(wb, `${name}.xlsx`);
+  };
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -67,6 +78,9 @@ const SalesProfitReport = () => {
               <button
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+                onClick={() =>
+                  exportExcel([{ name: "test", age: 12 }], "testexcel")
+                }
               >
                 CSV
               </button>
@@ -74,13 +88,12 @@ const SalesProfitReport = () => {
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
-                PDF
-              </button>
-              <button
-                type={"button"}
-                className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-              >
-                PRINT
+                <PDFDownloadLink
+                  document={<CreateReport />}
+                  fileName={`${new Date().toLocaleDateString()}.pdf`}
+                >
+                  PDF
+                </PDFDownloadLink>
               </button>
             </div>
             <div className={`flex items-center space-x-1.5`}>
@@ -130,11 +143,16 @@ const SalesProfitReport = () => {
                         >
                           <FaEye />
                         </span>
-                        <span
-                          className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                        <PDFDownloadLink
+                          document={<CreateCustomerReceipt />}
+                          fileName={`${idx}.pdf`}
                         >
-                          <FaFileInvoice />
-                        </span>
+                          <span
+                            className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                          >
+                            <FaFileInvoice />
+                          </span>
+                        </PDFDownloadLink>
                       </td>
                     </tr>
                   );
@@ -142,7 +160,9 @@ const SalesProfitReport = () => {
               </tbody>
               <tfoot className={`text-sm`}>
                 <tr>
-                  <td colSpan={5} className={`text-end`}>Total</td>
+                  <td colSpan={5} className={`text-end`}>
+                    Total
+                  </td>
                   <td>250000</td>
                 </tr>
               </tfoot>

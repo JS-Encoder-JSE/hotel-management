@@ -6,11 +6,13 @@ import {
   getManagersByOwner,
   getOwners,
   login,
+  createSuperUser
 } from "../controllers/users.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
 const router = Router();
 
+router.post('/user/create-superuser',createSuperUser)
 router.post("/users/add-owner", checkToken, addOwner);
 router.post("/users/login", login);
 router.post("/users/add-manager", checkToken, addManager);

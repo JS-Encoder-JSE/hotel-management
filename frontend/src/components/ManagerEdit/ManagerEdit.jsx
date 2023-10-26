@@ -1,6 +1,8 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 
 // form validation
@@ -10,10 +12,10 @@ const validationSchema = yup.object({
   email: yup.string().required("Manager Email is required"),
   phoneNumber: yup.string().required("Manager Phone Number size is required"),
   salary: yup.string().required("Manager Salary is required"),
-  branchName: yup.string().required("Manager Branch Name is required"),
 });
 
 const ManagerEdit = () => {
+  const navigate =useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -21,7 +23,6 @@ const ManagerEdit = () => {
       email: "",
       phoneNumber:"",
       salary: "",
-      branchName:""
      
     },
     validationSchema,
@@ -33,7 +34,16 @@ const ManagerEdit = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
     <div className="card-body p-4">
-    <h2 className={`text-3xl max-w-xs`}>Edit Manager</h2>
+    <div>
+       
+       <span
+          className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+        </span>
+       </div>
+    <h2 className={`text-3xl text-center`}>Edit Manager</h2>
         <hr className={`my-5`} />
       </div>
 
@@ -81,7 +91,7 @@ const ManagerEdit = () => {
           <div className="flex flex-col gap-3">
             <input
               type="email"
-              placeholder="Manager Email @ "
+              placeholder="Manager Email "
               name="email"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.price}
@@ -99,7 +109,7 @@ const ManagerEdit = () => {
             <div className="flex flex-col gap-3">
             <input
               type="number"
-              placeholder="Manager Phone Number #"
+              placeholder="Manager Phone Number"
               name="phoneNumber"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.phoneNumber}

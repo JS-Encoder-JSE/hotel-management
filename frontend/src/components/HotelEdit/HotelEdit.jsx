@@ -1,7 +1,8 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaPlusCircle, FaUpload } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -14,6 +15,7 @@ const validationSchema = yup.object({
 });
 
 const HotelEdit = () => {
+  const navigate =useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -33,7 +35,16 @@ const HotelEdit = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
     <div className="card-body p-4">
-    <h2 className={`text-3xl max-w-xs`}>Add Hotels Update</h2>
+    <div>
+       
+       <span
+          className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+        </span>
+       </div>
+    <h2 className={`text-3xl text-center`}>Hotels Update</h2>
         <hr className={`my-5`} />
       </div>
 
@@ -81,7 +92,7 @@ const HotelEdit = () => {
           <div className="flex flex-col gap-3">
             <input
               type="email"
-              placeholder="Hotel Email @ "
+              placeholder="Hotel Email "
               name="email"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.price}
@@ -99,7 +110,7 @@ const HotelEdit = () => {
             <div className="flex flex-col gap-3">
             <input
               type="number"
-              placeholder="Hotel Phone Number #"
+              placeholder="Hotel Phone Number"
               name="phoneNumber"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
               value={formik.values.phoneNumber}

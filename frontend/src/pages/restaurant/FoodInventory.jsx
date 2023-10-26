@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
 const FoodInventory = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -30,7 +30,7 @@ const FoodInventory = () => {
           </select>
           <span>entries</span>
         </div>
-        <div className={`relative sm:min-w-[20rem]`}>
+        <div>
           <input
             type="text"
             placeholder="Search by name..."
@@ -39,12 +39,6 @@ const FoodInventory = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
           />
-          <button
-            type="button"
-            className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-          >
-            <FaSearch />
-          </button>
         </div>
       </div>
       <div className="overflow-x-auto">
@@ -52,8 +46,7 @@ const FoodInventory = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Quantity</th>
-              <th>Stock</th>
+              <th>Status</th>
               <th>Sell</th>
               <th>Price</th>
               <th>Action</th>
@@ -75,28 +68,23 @@ const FoodInventory = () => {
                       </div>
                       <div>
                         <div className="font-bold">Hart Hagerty</div>
-                        <div className="text-sm opacity-50">Menu 1</div>
                       </div>
                     </div>
                   </td>
-                  <td>20</td>
+                  <td>Available</td>
                   <td>30</td>
-                  <td>10</td>
                   <td>$10</td>
                   <td className={`space-x-1.5`}>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                    >
-                      <FaEye />
-                    </span>
-                    <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                       onClick={() => navigate(`/dashboard/edit-food/${idx}`)}
+                      title={`Edit`}
                     >
                       <FaEdit />
                     </span>
                     <span
-                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                      title={`Delete`}
                     >
                       <FaTrash />
                     </span>

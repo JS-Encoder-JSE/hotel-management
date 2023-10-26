@@ -2,8 +2,9 @@ import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import FoodLists from "../../components/restaurant/FoodLists.jsx";
+import InventoryLists from "../../components/inventory/InventoryLists.jsx";
 
-const InventoryLists = () => {
+const ManageInventory = () => {
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -45,9 +46,9 @@ const InventoryLists = () => {
           />
         </div>
       </div>
-      <FoodLists />
+      <InventoryLists />
     </div>
   );
 };
 
-export default InventoryLists;
+export default ManageInventory;

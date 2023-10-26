@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from "dotenv";
+import userRoute from "./routes/users.route.js"
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ db.once('open', () => {
   console.log('Connected to the database');
 });
 
+app.use('/users',userRoute)
 // Define your routes here
 
 app.listen(port, () => {

@@ -5,9 +5,16 @@ import { FaPlusCircle } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
-  itemName: yup.string().required("Category is required"),
-  itemDescription: yup.string().required("Type is required"),
-  ItemQuantity: yup.string().required("Floor number is required"),
+  itemName: yup.string().required("Name is required"),
+  itemDescription: yup
+    .string()
+    .required("Description is required")
+    .min(20, "Description at least 20 characters length"),
+  ItemQuantity: yup
+    .number()
+    .required("Quantity is required")
+    .positive("Quantity must be a positive number")
+    .integer("Quantity must be an integer"),
 });
 
 const AddInventory = () => {
@@ -29,7 +36,7 @@ const AddInventory = () => {
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
         <FaPlusCircle />
-        <span>Add Items</span>
+        <span>Add Item</span>
       </h3>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
@@ -87,14 +94,14 @@ const AddInventory = () => {
           ) : null}
         </div>
         {/* submit button */}
-          <div className=" col-span-full text-end mt-5 ">
-              <button
-                type="submit"
-                className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-[90px] p-4 h-auto"
-              >
-                  Add
-              </button>
-          </div>
+        <div className=" col-span-full text-end mt-5 ">
+          <button
+            type="submit"
+            className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
+          >
+            Add
+          </button>
+        </div>
       </form>
     </div>
   );

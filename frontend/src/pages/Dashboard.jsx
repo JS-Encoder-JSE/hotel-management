@@ -9,7 +9,8 @@ import AdminSBItems from "../components/sidebar/AdminSBItems.jsx";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { isHbMenu, setHbMenu } = useOutletContext();
+  const { isFullscreen, enterFullscreen, exitFullscreen, isHbMenu, setHbMenu } =
+    useOutletContext();
 
   const handleSBItems = (e) => {
     e.currentTarget.parentElement.classList.toggle("active");
@@ -33,10 +34,10 @@ const Dashboard = () => {
             <h3
               className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}
             >
-              Owner
+              Admin
             </h3>
             <div
-              className={`h-full md:h-[calc(100vh_-_2.5rem)] overflow-y-auto`}
+              className={`h-full md:h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar-none`}
             >
               <div
                 className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`}
@@ -71,7 +72,13 @@ const Dashboard = () => {
 
           <div>
             <div className={`-mt-10 mb-10`}>
-              <Header isHbMenu={isHbMenu} setHbMenu={setHbMenu} />
+              <Header
+                isFullscreen={isFullscreen}
+                enterFullscreen={enterFullscreen}
+                exitFullscreen={exitFullscreen}
+                isHbMenu={isHbMenu}
+                setHbMenu={setHbMenu}
+              />
             </div>
             <div className={`px-10`}>
               <Outlet />

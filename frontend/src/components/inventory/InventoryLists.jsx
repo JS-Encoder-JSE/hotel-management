@@ -1,15 +1,26 @@
 import React from "react";
-import { FaEye, FaFileInvoice, FaPlusCircle } from "react-icons/fa";
+import {
+  FaDoorOpen,
+  FaEdit,
+  FaEye,
+  FaFileInvoice,
+  FaPlusCircle,
+  FaTrash,
+} from "react-icons/fa";
+import {useNavigate} from "react-router-dom";
 
 const InventoryLists = () => {
+  const navigate = useNavigate()
+
   return (
     <div className="overflow-x-auto border">
       <table className="table">
         <thead>
           <tr className={`text-lg`}>
             <th>Name</th>
+            <th>Quantity</th>
             <th>Stock</th>
-            <th>Price</th>
+            <th>Use</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -29,19 +40,27 @@ const InventoryLists = () => {
                     </div>
                     <div>
                       <div className="font-bold">Hart Hagerty</div>
-                      <div className="text-sm opacity-50">Menu 1</div>
                     </div>
                   </div>
                 </td>
                 <td>20</td>
-                <td>$12</td>
-                <th>
+                <td>12</td>
+                <td>8</td>
+                <td className={`space-x-1.5`}>
+                  <span
+                    className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                    title={`Edit`}
+                    onClick={() => navigate(`/dashboard/edit-inventory/${idx}`)}
+                  >
+                    <FaEdit />
+                  </span>
                   <span
                     className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                    title={`Delete`}
                   >
-                    <FaPlusCircle />
+                    <FaTrash />
                   </span>
-                </th>
+                </td>
               </tr>
             );
           })}

@@ -1,19 +1,34 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaUpload } from "react-icons/fa";
+import { TbReplaceFilled } from "react-icons/tb";
+import { FaPencil } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
   foodName: yup.string().required("Food name is required"),
-  quantity: yup.string().required("Quantity is required"),
-  price: yup.string().required("Price is required"),
-  setMenu: yup.string().required("setMenu is required"),
-  text: yup.string().required("text is required"),
-  photo: yup.string().required("image is required"),
+  // quantity: yup.number().when(["quantity"], ([quantity], schema) => {
+  //   if (quantity)
+  //     return schema
+  //       .positive("Quantity must be a positive number")
+  //       .integer("Quantity must be an integer");
+  //   else return schema;
+  // }),
+  price: yup
+    .number()
+    .required("Price is required")
+    .positive("Price must be a positive number")
+    .integer("Price must be an integer"),
+  description: yup
+    .string()
+    .required("Description is required")
+    .min(20, "Description at least 20 characters length"),
 });
 
 const EditFood = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       foodName: "",
@@ -30,18 +45,43 @@ const EditFood = () => {
 
   return (
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
-      <h3 className={`text-2xl font-semibold mb-3`}>Edit Food</h3>
-      <hr />
+      <div
+        className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
+      >
+        <h3 className={`flex text-2xl text-white space-x-1.5`}>
+          <FaPencil />
+          <span>Edit Food</span>
+        </h3>
+        <div
+          className={`flex hover:text-white hover:bg-transparent border border-white items-center space-x-1.5 bg-white text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+          <span>Back</span>
+        </div>
+      </div>
       <form
         className="form-control grid grid-cols-1 gap-4 mt-5"
         onSubmit={formik.handleSubmit}
       >
+        <div className={`col-span-full relative h-64 rounded overflow-hidden`}>
+          <div className={`absolute top-3 right-3`}>
+            <button className="btn btn-md p-2 h-auto bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-gray-500/50 focus:border-green-slimy normal-case">
+              <TbReplaceFilled />
+            </button>
+          </div>
+          <img
+            src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D"
+            alt=""
+            className={`w-full h-full`}
+          />
+        </div>
         {/* name box */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
             placeholder="Food name"
-            name="name"
+            name="foodName"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
             value={formik.values.foodName}
             onChange={formik.handleChange}
@@ -56,7 +96,7 @@ const EditFood = () => {
         {/* age box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Quantity"
             name="quantity"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -73,7 +113,7 @@ const EditFood = () => {
         {/* adult box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Price"
             name="price"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -84,37 +124,6 @@ const EditFood = () => {
           {formik.touched.price && Boolean(formik.errors.price) ? (
             <small className="text-red-600">
               {formik.touched.price && formik.errors.price}
-            </small>
-          ) : null}
-        </div>
-        {/* photo box */}
-        <div className="flex flex-col gap-3">
-          <label className="relative input input-sm input-bordered border-gray-500/50 rounded  focus:outline-none p-2 h-auto bg-transparent">
-            {formik.values.photo ? (
-              formik.values.photo.name.substring(
-                0,
-                formik.values.photo.name.lastIndexOf("."),
-              )
-            ) : (
-              <span className={`flex items-baseline space-x-1.5 `}>
-                <FaUpload />
-                <span>Choose photo</span>
-              </span>
-            )}
-            <input
-              type="file"
-              name="photo"
-              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
-              accept="image/*"
-              onChange={(e) =>
-                formik.setFieldValue("photo", e.currentTarget.files[0])
-              }
-              onBlur={formik.handleBlur}
-            />
-          </label>
-          {formik.touched.photo && Boolean(formik.errors.photo) ? (
-            <small className="text-red-600">
-              {formik.touched.photo && formik.errors.photo}
             </small>
           ) : null}
         </div>
@@ -139,7 +148,7 @@ const EditFood = () => {
             type={"submit"}
             className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
           >
-            Confirm
+            Update
           </button>
         </div>
       </form>

@@ -1,8 +1,10 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
+import {FaArrowLeft, FaPlusCircle, FaTrash, FaUpload} from "react-icons/fa";
 import { TbReplaceFilled } from "react-icons/tb";
+import {FaPencil} from "react-icons/fa6";
+import {useNavigate} from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -17,6 +19,7 @@ const validationSchema = yup.object({
 });
 
 const EditEmployee = () => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -28,7 +31,7 @@ const EditEmployee = () => {
       state: "",
       city: "",
       zip: "",
-      userImg: "",
+      userImg: null,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -38,19 +41,28 @@ const EditEmployee = () => {
 
   return (
     <div className={`space-y-10`}>
-      <h3
-        className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
+      <div
+          className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
       >
-        <FaPlusCircle />
-        <span>Edit Employee</span>
-      </h3>
+        <h3 className={`flex text-2xl text-white space-x-1.5`}>
+          <FaPencil />
+          <span>Edit Employee</span>
+        </h3>
+        <div
+            className={`flex hover:text-white hover:bg-transparent border border-white items-center space-x-1.5 bg-white text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+            onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+          <span>Back</span>
+        </div>
+      </div>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
         <div className={`col-span-full relative h-64 rounded overflow-hidden`}>
           <div className={`absolute top-3 right-3`}>
-            <button className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
+            <button className="btn btn-md p-2 h-auto bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-gray-500/50 focus:border-green-slimy normal-case">
               <TbReplaceFilled />
             </button>
           </div>
@@ -66,7 +78,7 @@ const EditEmployee = () => {
             type="text"
             placeholder="Name"
             name="name"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md p-2 h-auto input-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -81,7 +93,7 @@ const EditEmployee = () => {
         <div className="flex flex-col gap-3">
           <select
             name="designation"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="select select-md p-2 h-auto select-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.designation}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -102,7 +114,7 @@ const EditEmployee = () => {
         <div className="flex flex-col gap-3">
           <select
             name="shift"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="select select-md p-2 h-auto select-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.shift}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -125,7 +137,7 @@ const EditEmployee = () => {
             type="text"
             placeholder="Salary"
             name="salary"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md p-2 h-auto input-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.salary}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -141,8 +153,8 @@ const EditEmployee = () => {
           <input
             type="text"
             placeholder="Street address"
-            name="name"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            name="street"
+            className="input input-md p-2 h-auto input-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.street}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -159,7 +171,7 @@ const EditEmployee = () => {
             type="text"
             placeholder="State"
             name="state"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md p-2 h-auto input-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.state}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -176,7 +188,7 @@ const EditEmployee = () => {
             type="text"
             placeholder="City"
             name="city"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md p-2 h-auto input-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.city}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -193,7 +205,7 @@ const EditEmployee = () => {
             type="text"
             placeholder="Zip"
             name="zip"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="input input-md p-2 h-auto input-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.zip}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -207,7 +219,7 @@ const EditEmployee = () => {
         {/* update button */}
         <button
           type="submit"
-          className="col-span-full btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
           Update
         </button>
