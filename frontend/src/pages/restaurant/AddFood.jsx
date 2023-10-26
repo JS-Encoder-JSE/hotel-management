@@ -1,16 +1,28 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle, FaUpload } from "react-icons/fa";
+import { FaPlus, FaUpload } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
   foodName: yup.string().required("Food name is required"),
-  quantity: yup.string().required("Quantity is required"),
-  price: yup.string().required("Price is required"),
-  setMenu: yup.string().required("setMenu is required"),
-  text: yup.string().required("text is required"),
-  photo: yup.string().required("image is required"),
+  // quantity: yup.number().when(["quantity"], ([quantity], schema) => {
+  //   if (quantity)
+  //     return schema
+  //       .positive("Quantity must be a positive number")
+  //       .integer("Quantity must be an integer");
+  //   else return schema;
+  // }),
+  price: yup
+    .number()
+    .required("Price is required")
+    .positive("Price must be a positive number")
+    .integer("Price must be an integer"),
+  description: yup
+    .string()
+    .required("Description is required")
+    .min(20, "Description at least 20 characters length"),
+  photo: yup.mixed().required("Image is required"),
 });
 
 const AddFood = () => {
@@ -30,8 +42,14 @@ const AddFood = () => {
 
   return (
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
-      <h3 className={`text-2xl font-semibold mb-3`}>Add Food</h3>
-      <hr />
+      <div
+        className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
+      >
+        <h3 className={`flex text-2xl text-white space-x-1.5`}>
+          <FaPlus />
+          <span>Add Food</span>
+        </h3>
+      </div>
       <form
         className="form-control grid grid-cols-1 gap-4 mt-5"
         onSubmit={formik.handleSubmit}
@@ -41,7 +59,7 @@ const AddFood = () => {
           <input
             type="text"
             placeholder="Food name"
-            name="name"
+            name="foodName"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
             value={formik.values.foodName}
             onChange={formik.handleChange}
@@ -56,7 +74,7 @@ const AddFood = () => {
         {/* age box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Quantity"
             name="quantity"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -73,7 +91,7 @@ const AddFood = () => {
         {/* adult box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Price"
             name="price"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -89,14 +107,14 @@ const AddFood = () => {
         </div>
         {/* photo box */}
         <div className="flex flex-col gap-3">
-          <label className="relative input input-sm input-bordered border-gray-500/50 rounded  focus:outline-none p-2 h-auto bg-transparent">
+          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center">
             {formik.values.photo ? (
               formik.values.photo.name.substring(
                 0,
                 formik.values.photo.name.lastIndexOf("."),
               )
             ) : (
-              <span className={`flex items-baseline space-x-1.5 `}>
+              <span className={`flex items-baseline space-x-1.5`}>
                 <FaUpload />
                 <span>Choose photo</span>
               </span>

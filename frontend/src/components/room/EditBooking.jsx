@@ -6,24 +6,35 @@ import * as yup from "yup";
 const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
   name: yup.string().required("Name is required"),
-  age: yup.string().required("Age is required"),
-  adult: yup.string().required("Adult is required"),
-  paymentMethod: yup.string().required("Payment method is required"),
-  cardNumber: yup.string().when("paymentMethod", (paymentMethod, schema) => {
-    if (paymentMethod === "card") schema.required("Card number is required");
-    return schema;
-  }),
-  // mobileBankingNo: yup.string().when("paymentMethod", {
-  //   is: (paymentMethod) => paymentMethod === "mfs",
-  //   then: yup.string().required("Mobile banking number is required"),
-  //   otherwise: yup.string().notRequired(),
+  age: yup
+    .number()
+    .required("Age is required")
+    .positive("Age must be a positive number")
+    .integer("Age must be an integer"),
+  adult: yup
+    .number()
+    .required("Adult is required")
+    .positive("Adult must be a positive number")
+    .integer("Adult must be an integer"),
+  // children: yup.number().when(["children"], ([children], schema) => {
+  //   if (children)
+  //     return schema
+  //       .positive("Children must be a positive number")
+  //       .integer("Children must be an integer");
+  //   else return schema;
   // }),
-  // trxID: yup.string().when(["paymentMethod", "cardNumber", "mobileBankingNo"], {
-  //   is: (paymentMethod, cardNumber, mobileBankingNo) => {
-  //     return paymentMethod !== "cash" && (!cardNumber || !mobileBankingNo);
-  //   },
-  //   then: yup.string().required("Transaction ID is required"),
-  //   otherwise: yup.string().notRequired(),
+  paymentMethod: yup.string().required("Payment method is required"),
+  trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
+    if (paymentMethod !== "cash")
+      return schema.required("Transaction ID is required");
+    else return schema;
+  }),
+  // discount: yup.number().when(["discount"], ([discount], schema) => {
+  //   if (discount)
+  //     return schema
+  //       .positive("Discount must be a positive number")
+  //       .integer("Discount must be an integer");
+  //   else return schema;
   // }),
 });
 
@@ -36,8 +47,6 @@ const EditBooking = () => {
       adult: "",
       children: "",
       paymentMethod: "",
-      cardNumber: "",
-      mobileBankingNo: "",
       trxID: "",
       discount: "",
     },
@@ -105,7 +114,7 @@ const EditBooking = () => {
           {/* age box */}
           <div className="flex flex-col gap-3">
             <input
-              type="number"
+              type="text"
               placeholder="Age"
               name="age"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -122,7 +131,7 @@ const EditBooking = () => {
           {/* adult box */}
           <div className="flex flex-col gap-3">
             <input
-              type="number"
+              type="text"
               placeholder="Adult"
               name="adult"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -139,7 +148,7 @@ const EditBooking = () => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
-              type="number"
+              type="text"
               placeholder="Children"
               name="children"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -176,45 +185,6 @@ const EditBooking = () => {
               </small>
             ) : null}
           </div>
-          {formik.values.paymentMethod === "card" ? (
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                placeholder="Card Number"
-                name="cardNumber"
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                value={formik.values.cardNumber}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.cardNumber &&
-              Boolean(formik.errors.cardNumber) ? (
-                <small className="text-red-600">
-                  {formik.touched.cardNumber && formik.errors.cardNumber}
-                </small>
-              ) : null}
-            </div>
-          ) : null}
-          {formik.values.paymentMethod === "mfs" ? (
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                placeholder="Mobile Banking Number"
-                name="mobileBankingNo"
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                value={formik.values.mobileBankingNo}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.mobileBankingNo &&
-              Boolean(formik.errors.mobileBankingNo) ? (
-                <small className="text-red-600">
-                  {formik.touched.mobileBankingNo &&
-                    formik.errors.mobileBankingNo}
-                </small>
-              ) : null}
-            </div>
-          ) : null}
           {formik.values.paymentMethod &&
           formik.values.paymentMethod !== "cash" ? (
             <div className="flex flex-col gap-3">
@@ -256,7 +226,7 @@ const EditBooking = () => {
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
-              Confirm
+              Update
             </button>
           </div>
         </form>

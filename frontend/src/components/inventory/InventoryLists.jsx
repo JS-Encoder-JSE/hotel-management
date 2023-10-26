@@ -40,7 +40,6 @@ const InventoryLists = () => {
                     </div>
                     <div>
                       <div className="font-bold">Hart Hagerty</div>
-                      <div className="text-sm opacity-50">Menu 1</div>
                     </div>
                   </div>
                 </td>

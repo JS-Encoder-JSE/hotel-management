@@ -17,10 +17,22 @@ const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
   type: yup.string().required("Type is required"),
   capacity: yup.string().required("Capacity is required"),
-  price: yup.string().required("Price is required"),
+  price: yup
+    .number()
+    .required("Price is required")
+    .positive("Price must be a positive number")
+    .integer("Price must be an integer"),
   bedSize: yup.string().required("Bed size is required"),
-  floorNumber: yup.string().required("Floor number is required"),
-  roomNumber: yup.string().required("Room number is required"),
+  floorNumber: yup
+    .number()
+    .required("Floor number is required")
+    .positive("Floor number must be a positive")
+    .integer("Floor number must be an integer"),
+  roomNumber: yup
+    .number()
+    .required("Room number is required")
+    .positive("Room number must be a positive")
+    .integer("Room number must be an integer"),
 });
 
 const EditRoom = () => {
@@ -60,7 +72,7 @@ const EditRoom = () => {
         </div>
       </div>
       <form
-        className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
+        className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
         onSubmit={formik.handleSubmit}
       >
         <div className={`relative col-span-full`}>
@@ -203,7 +215,7 @@ const EditRoom = () => {
         {/* price box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Price"
             name="price"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -242,7 +254,7 @@ const EditRoom = () => {
         {/* floor number box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Floor Number"
             name="floorNumber"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -259,7 +271,7 @@ const EditRoom = () => {
         {/* room number box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Room Number"
             name="roomNumber"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -275,11 +287,11 @@ const EditRoom = () => {
         </div>
         {/* room photos */}
         <div className="flex flex-col gap-3 ">
-          <label className="relative input input-sm input-bordered border-gray-500/50 rounded  focus:outline-none p-2 h-auto bg-transparent">
+          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center">
             {formik.values.photos ? (
               <span>{formik.values.photos.length + " files"}</span>
             ) : (
-              <span className={`flex items-baseline space-x-1.5 `}>
+              <span className={`flex items-baseline space-x-1.5`}>
                 <FaUpload />
                 <span>Choose photos</span>
               </span>
@@ -295,19 +307,14 @@ const EditRoom = () => {
               onBlur={formik.handleBlur}
             />
           </label>
-          {formik.touched.photos && Boolean(formik.errors.photos) ? (
-            <small className="text-red-600">
-              {formik.touched.photos && formik.errors.photos}
-            </small>
-          ) : null}
         </div>
         {/* submit button */}
         <div className=" col-span-full text-end mt-5 ">
           <button
             type="submit"
-            className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-[90px] p-4 h-auto"
+            className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
           >
-            Add
+            Update
           </button>
         </div>
       </form>

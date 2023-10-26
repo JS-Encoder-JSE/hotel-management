@@ -31,7 +31,7 @@ const EditEmployee = () => {
       state: "",
       city: "",
       zip: "",
-      userImg: "",
+      userImg: null,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -153,7 +153,7 @@ const EditEmployee = () => {
           <input
             type="text"
             placeholder="Street address"
-            name="name"
+            name="street"
             className="input input-md p-2 h-auto input-bordered border-gray-500/50 focus:border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.street}
             onChange={formik.handleChange}
@@ -219,7 +219,7 @@ const EditEmployee = () => {
         {/* update button */}
         <button
           type="submit"
-          className="col-span-full btn btn-md p-2 h-auto w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
           Update
         </button>
