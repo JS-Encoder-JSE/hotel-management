@@ -7,26 +7,28 @@ import UserDashBoard from '../../components/UserDashBoard/UserDashBoard';
 
 const MonitorFinance = () => {
     const animatedComponents = makeAnimated();
-     
+
     // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
-     const hotelList = [
+    const hotelList = [
         // { value: '', label: 'Room Select' },
-        { value: 'Hotel - 1', label: '1 - Chocolate' },
-        { value: 'Hotel - 2', label: '2 - Strawberry' },
-        { value: 'Hotel - 3', label: '3 - Shake' },
-        { value: 'Hotel - 4', label: '4 - AC' },
-        { value: 'Hotel - 5', label: '5 - None AC' },
-        { value: 'Hotel - 6', label: '6 - Fan' },
-        { value: 'Hotel - 7', label: '7 - Deluxe' },
-        { value: 'Hotel - 8', label: '8 - None-Deluxe' },
-        { value: 'Hotel - 9', label: '9 - Couple' },
-        { value: 'Hotel - 10', label: '10 - Anniversary' },
-        { value: 'Hotel - 11', label: '11 - Official' },
-        { value: 'Hotel - 12', label: '12 - VIP' },
+        { value: 'Hotel - 1', label: 'Hotel - 1' },
+        { value: 'Hotel - 2', label: 'Hotel - 2' },
+        { value: 'Hotel - 3', label: 'Hotel - 3' },
+        { value: 'Hotel - 4', label: 'Hotel - 4' },
+        { value: 'Hotel - 5', label: 'Hotel - 5' },
+        { value: 'Hotel - 6', label: 'Hotel - 6' },
+        { value: 'Hotel - 7', label: 'Hotel - 7' },
+        { value: 'Hotel - 8', label: 'Hotel - 8' },
+        { value: 'Hotel - 9', label: 'Hotel - 9' },
+        { value: 'Hotel - 10', label: 'Hotel - 10' },
+        { value: 'Hotel - 11', label: 'Hotel - 11' },
+        { value: 'Hotel - 12', label: 'Hotel - 12' },
     ]
 
     const handleSearchHotel = e => {
         console.log(e.value);
+
+        // Here it will get the value and pass a state props to match hotel id and show that particular dashboard data.
     }
 
     return (
@@ -40,6 +42,7 @@ const MonitorFinance = () => {
                         options={hotelList}
                         placeholder='Search with hotel name'
                         onChange={(e) => handleSearchHotel(e)}
+                        className='custom-scroll-bar'
                     />
                 </div>
             </section>
