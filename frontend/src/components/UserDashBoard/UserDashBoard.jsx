@@ -46,6 +46,10 @@ const UserDashBoard = () => {
                 </div>
             </section>
 
+
+
+            {/* The below section is for dashboard. the data will get from api which can be pass through props or contextAPI */}
+
             <section className='bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200'>
                 <CustomerReservation />
             </section>

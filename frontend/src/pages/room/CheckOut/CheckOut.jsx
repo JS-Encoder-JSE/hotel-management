@@ -41,7 +41,7 @@ const CheckOut = () => {
         <div className='space-y-8'>
             {/* Select Room Section */}
             <section className='max-w-3xl mx-auto flex gap-5 items-center'>
-                <p>Room No. :</p>
+                <p className='whitespace-nowrap'>Room No. :</p>
                 <div className='w-[353px]'>
                     <Select
                         closeMenuOnSelect={false}

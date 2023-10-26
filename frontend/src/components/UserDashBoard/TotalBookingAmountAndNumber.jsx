@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const TotalBookingAmountAndNumber = () => {
+
+    // Here series data will be taken from props or context api which will be an Array.
     const [chartProps, setChartProps] = useState(
         {
             series: [

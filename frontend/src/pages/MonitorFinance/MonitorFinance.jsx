@@ -30,10 +30,10 @@ const MonitorFinance = () => {
     }
 
     return (
-        <div className='space-y-8'>
+        <div className='space-y-20'>
             {/* Select Room Section */}
             <section className='max-w-3xl mx-auto flex gap-5 items-center'>
-                <p>Hotel Name :</p>
+                <p className='whitespace-nowrap'>Hotel Name :</p>
                 <div className='w-[353px]'>
                     <Select
                         components={animatedComponents}
@@ -44,7 +44,7 @@ const MonitorFinance = () => {
                 </div>
             </section>
 
-            <section className='mt-5'>
+            <section>
                 <UserDashBoard></UserDashBoard>
             </section>
 
