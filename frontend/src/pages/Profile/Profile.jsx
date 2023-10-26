@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaPen, FaUpload, FaUserCircle } from "react-icons/fa";
 import { AiOutlineEdit } from "react-icons/ai";
+import Modal from '../../components/Modal';
+import ConfirmOrder from '../../components/room/ConfirmOrder';
 
 // form validation
 const validationSchema = yup.object({
@@ -83,8 +85,17 @@ const Profile = () => {
                 {/* Password box */}
                 <div className="flex items-center gap-5 py-2 pl-2 rounded-md glass">
                     <label htmlFor="email">Password: </label>
-                    <p className='text-slate-600 mt-2 -mr-4'>********************</p>
-                    <FaPen className='text-md cursor-pointer' />
+                    <p className='text-slate-600 mt-2 -mr-6'>********************</p>
+                    <button onClick={() => window.fp_modal.showModal()}
+                        type={`button`}
+                        className="btn btn-sm bg-transparent hover:bg-transparent border-0 text-green-slimy rounded normal-case "
+                    >
+                        <FaPen className='text-md cursor-pointer' />
+                    </button>
+                    {/* modal */}
+                    <Modal id={`fp_modal`}>
+                        <ConfirmOrder />
+                    </Modal>
                 </div>
                 {/* Description */}
                 <div className="col-span-full flex flex-col gap-3">
