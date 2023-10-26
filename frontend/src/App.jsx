@@ -22,7 +22,7 @@ import ManageInventory from "./pages/Inventory/ManageInventory.jsx";
 import AddEmployee from "./pages/employee/AddEmployee.jsx";
 import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
-
+import MonitorFinance from "./pages/MonitorFinance/MonitorFinance.jsx";
 import SalesProfitReport from "./pages/report/SalesProfitReport.jsx";
 
 
@@ -124,9 +124,9 @@ const App = () => {
             {
               path: "manage-booking/:id",
               element: (
-                  <ManagerRoute>
-                    <BookingView />
-                  </ManagerRoute>
+                <ManagerRoute>
+                  <BookingView />
+                </ManagerRoute>
               ),
             },
             {
@@ -295,6 +295,14 @@ const App = () => {
               element: (
                 <OwnerRoute>
                   <ManagerEdit />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "finance",
+              element: (
+                <OwnerRoute>
+                  <MonitorFinance />
                 </OwnerRoute>
               ),
             },
