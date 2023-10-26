@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { FaUpload } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
@@ -36,6 +37,7 @@ const validationSchema = yup.object({
   //       .integer("Discount must be an integer");
   //   else return schema;
   // }),
+  documents: yup.mixed().required("Documents are required"),
 });
 
 const CheckIn = () => {
@@ -49,6 +51,7 @@ const CheckIn = () => {
       paymentMethod: "",
       trxID: "",
       discount: "",
+      documents: null,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -210,6 +213,36 @@ const CheckIn = () => {
               {formik.touched.discount && formik.errors.discount}
             </small>
           ) : null}
+        </div>
+        {/* documents */}
+        <div className={`flex space-x-1.5`}>
+          <div className="flex flex-col gap-3 w-full">
+            <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+              {formik.values.documents ? (
+                <span>{formik.values.documents.length + " files"}</span>
+              ) : (
+                <span className={`flex items-baseline space-x-1.5`}>
+                  <FaUpload />
+                  <span>Choose documents</span>
+                </span>
+              )}
+              <input
+                type="file"
+                multiple
+                name="documents"
+                className="absolute left-0 top-0  overflow-hidden h-0"
+                onChange={(e) =>
+                  formik.setFieldValue("documents", e.currentTarget.files)
+                }
+                onBlur={formik.handleBlur}
+              />
+            </label>
+            {formik.touched.documents && Boolean(formik.errors.documents) ? (
+              <small className="text-red-600">
+                {formik.touched.documents && formik.errors.documents}
+              </small>
+            ) : null}
+          </div>
         </div>
         {/* button */}
         <div className={`flex justify-between`}>
