@@ -1,6 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import UserDashBoard from '../../components/UserDashBoard/UserDashBoard';
 
 
 
@@ -41,6 +42,10 @@ const MonitorFinance = () => {
                         onChange={(e) => handleSearchHotel(e)}
                     />
                 </div>
+            </section>
+
+            <section className='mt-5'>
+                <UserDashBoard></UserDashBoard>
             </section>
 
         </div>
