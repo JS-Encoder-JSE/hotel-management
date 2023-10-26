@@ -2,21 +2,12 @@ import React, { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPen, FaUpload, FaUserCircle } from "react-icons/fa";
-import { AiOutlineEdit } from "react-icons/ai";
+import { FaPen, FaUpload } from "react-icons/fa";
 import Modal from '../../components/Modal';
-import ConfirmOrder from '../../components/room/ConfirmOrder';
+import ChangePasswordModal from './ChangePasswordModal';
 
 // form validation
 const validationSchema = yup.object({
-    // email: yup
-    //     .string()
-    //     .email("Enter a valid email")
-    //     .required("Email is required"),
-    // password: yup
-    //     .string()
-    //     .min(8, "Password should be of minimum 8 characters length")
-    //     .required("Password is required"),
     description: yup
         .string()
         .required("Description is required")
@@ -58,7 +49,7 @@ const Profile = () => {
                     <img
                         src={imagePreview}
                         alt="Selected"
-                        className="object-cover h-full w-full rounded-full"
+                        className="object-cover object-top h-full w-full rounded-full"
                     />
                     :
                     <img
@@ -68,6 +59,7 @@ const Profile = () => {
                     />
                 }
             </div>
+
             <form
                 className="form-control grid grid-cols-1 gap-4 mt-10"
                 onSubmit={formik.handleSubmit}
@@ -86,16 +78,12 @@ const Profile = () => {
                 <div className="flex items-center gap-5 py-2 pl-2 rounded-md glass">
                     <label htmlFor="email">Password: </label>
                     <p className='text-slate-600 mt-2 -mr-6'>********************</p>
-                    <button onClick={() => window.fp_modal.showModal()}
+                    <button onClick={() => window.PSChange_modal.showModal()}
                         type={`button`}
                         className="btn btn-sm bg-transparent hover:bg-transparent border-0 text-green-slimy rounded normal-case "
                     >
                         <FaPen className='text-md cursor-pointer' />
                     </button>
-                    {/* modal */}
-                    <Modal id={`fp_modal`}>
-                        <ConfirmOrder />
-                    </Modal>
                 </div>
                 {/* Description */}
                 <div className="col-span-full flex flex-col gap-3">
@@ -154,6 +142,10 @@ const Profile = () => {
                     </button>
                 </div>
             </form>
+            {/* modal */}
+            <Modal id={`PSChange_modal`}>
+                <ChangePasswordModal />
+            </Modal>
         </div>
     );
 };
