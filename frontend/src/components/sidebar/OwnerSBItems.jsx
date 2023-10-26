@@ -101,7 +101,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           onClick={(e) => handleSBItems(e)}
         >
           <div className={`flex space-x-1.5`}>
-            <MdOutlineKitchen />
+            <MdOutlineKitchen />  
             <span className={`-mt-0.5`}>Monitor Finaances</span>
           </div>
           <span className={`group-[.active]:hidden`}>

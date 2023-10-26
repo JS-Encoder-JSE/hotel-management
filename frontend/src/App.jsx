@@ -212,7 +212,6 @@ const App = () => {
               ),
             },
             {
-
               path: "add-order",
               element: (
                 <ManagerRoute>
@@ -222,7 +221,14 @@ const App = () => {
             },
             // Owner Hotel  Sideber
             {
-
+              path: '',
+              element: (
+                <OwnerRoute>
+                  <UserDashBoard />
+                </OwnerRoute>
+              ),
+            },
+            {
               path: "add-hotel",
               element: (
                 <OwnerRoute>
