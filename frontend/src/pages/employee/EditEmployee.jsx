@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import {FaArrowLeft, FaPlusCircle, FaTrash, FaUpload} from "react-icons/fa";
+import { FaArrowLeft, FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
 import { TbReplaceFilled } from "react-icons/tb";
-import {FaPencil} from "react-icons/fa6";
-import {useNavigate} from "react-router-dom";
+import { FaPencil } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -19,7 +19,8 @@ const validationSchema = yup.object({
 });
 
 const EditEmployee = () => {
-  const navigate = useNavigate()
+  const [userImgPrev, setUserImgPrev] = useState(null);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -39,18 +40,29 @@ const EditEmployee = () => {
     },
   });
 
+  useEffect(() => {
+    if (formik.values.userImg) {
+      const reader = new FileReader();
+
+      reader.onload = () => setUserImgPrev(reader.result);
+      reader.readAsDataURL(formik.values.userImg);
+    } else {
+      setUserImgPrev(null);
+    }
+  }, [formik.values.userImg]);
+
   return (
     <div className={`space-y-10`}>
       <div
-          className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
+        className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
       >
         <h3 className={`flex text-2xl text-white space-x-1.5`}>
           <FaPencil />
           <span>Edit Employee</span>
         </h3>
         <div
-            className={`flex hover:text-white hover:bg-transparent border border-white items-center space-x-1.5 bg-white text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
-            onClick={() => navigate(-1)}
+          className={`flex hover:text-white hover:bg-transparent border border-white items-center space-x-1.5 bg-white text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+          onClick={() => navigate(-1)}
         >
           <FaArrowLeft />
           <span>Back</span>
@@ -60,16 +72,26 @@ const EditEmployee = () => {
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
-        <div className={`col-span-full relative h-64 rounded overflow-hidden`}>
+        <div className={`col-span-full relative rounded overflow-hidden`}>
           <div className={`absolute top-3 right-3`}>
-            <button className="btn btn-md p-2 h-auto bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-gray-500/50 focus:border-green-slimy normal-case">
+            <label className="relative btn btn-md p-2 h-auto bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-gray-500/50 focus:border-green-slimy normal-case">
               <TbReplaceFilled />
-            </button>
+              <input
+                type="file"
+                name="userImg"
+                className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+                accept="image/*"
+                onChange={(e) =>
+                  formik.setFieldValue("userImg", e.currentTarget.files[0])
+                }
+                onBlur={formik.handleBlur}
+              />
+            </label>
           </div>
           <img
-            src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
+            src={userImgPrev || "https://daisyui.com/tailwind-css-component-profile-2@56w.png"}
             alt=""
-            className={`w-full h-full`}
+            className={`w-full h-96 object-cover`}
           />
         </div>
         {/* name box */}

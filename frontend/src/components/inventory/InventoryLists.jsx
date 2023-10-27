@@ -30,14 +30,6 @@ const InventoryLists = () => {
               <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                 <td>
                   <div className="flex items-center space-x-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle w-12 h-12">
-                        <img
-                          src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
-                          alt=""
-                        />
-                      </div>
-                    </div>
                     <div>
                       <div className="font-bold">Hart Hagerty</div>
                     </div>
@@ -55,7 +47,7 @@ const InventoryLists = () => {
                     <FaEdit />
                   </span>
                   <span
-                    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                    className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                     title={`Delete`}
                   >
                     <FaTrash />

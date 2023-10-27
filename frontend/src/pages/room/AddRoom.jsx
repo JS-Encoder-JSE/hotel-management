@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle, FaUpload } from "react-icons/fa";
+import { FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { TbReplaceFilled } from "react-icons/tb";
 
 // form validation
 const validationSchema = yup.object({
@@ -25,9 +32,14 @@ const validationSchema = yup.object({
     .positive("Room number must be a positive")
     .integer("Room number must be an integer"),
   photos: yup.mixed().required("Photos are required"),
+  description: yup
+    .string()
+    .required("Description is required")
+    .min(20, "Description at least 20 characters length"),
 });
 
 const AddRoom = () => {
+  const [selectedImages, setSelectedImages] = useState([]);
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -38,12 +50,49 @@ const AddRoom = () => {
       floorNumber: "",
       roomNumber: "",
       photos: null,
+      description: "",
     },
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
     },
   });
+
+  const handleDelete = (idx) => {
+    const tempImgs = [
+      ...selectedImages.slice(0, idx),
+      ...selectedImages.slice(idx + 1),
+    ];
+    const dataTransfer = new DataTransfer();
+
+    for (const file of tempImgs) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("photos", dataTransfer.files);
+    setSelectedImages(tempImgs);
+  };
+
+  const handleChange = (idx, newFile) => {
+    const updatedImages = [...selectedImages];
+    updatedImages[idx] = newFile;
+
+    const dataTransfer = new DataTransfer();
+
+    for (const file of updatedImages) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("photos", dataTransfer.files);
+    setSelectedImages(updatedImages);
+  };
+
+  useEffect(() => {
+    if (formik.values.photos) {
+      const selectedImagesArray = Array.from(formik.values.photos);
+      setSelectedImages(selectedImagesArray);
+    }
+  }, [formik.values.photos]);
 
   return (
     <>
@@ -62,6 +111,66 @@ const AddRoom = () => {
               className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
               onSubmit={formik.handleSubmit}
             >
+              <div className={`relative col-span-full`}>
+                <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+                  <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                    <MdOutlineKeyboardArrowLeft />
+                  </div>
+                  <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                    <MdOutlineKeyboardArrowRight />
+                  </div>
+                </div>
+                <Swiper
+                  modules={[Navigation]}
+                  navigation={{
+                    enabled: true,
+                    prevEl: ".swiper-er-button-prev",
+                    nextEl: ".swiper-er-button-next",
+                    disabledClass: "swiper-er-button-disabled",
+                  }}
+                  slidesPerView={1}
+                  spaceBetween={50}
+                >
+                  {selectedImages.length ? (
+                    selectedImages.map((image, idx) => (
+                      <SwiperSlide>
+                        <div className={`relative`}>
+                          <div className={`absolute top-3 right-3 space-x-1.5`}>
+                            <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                              <TbReplaceFilled />
+                              <input
+                                type="file"
+                                className="absolute left-0 top-0  overflow-hidden h-0"
+                                onChange={(e) =>
+                                  handleChange(idx, e.currentTarget.files[0])
+                                }
+                              />
+                            </label>
+                            <button
+                              className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                              onClick={() => handleDelete(idx)}
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                          <img
+                            key={idx}
+                            src={URL.createObjectURL(image)}
+                            alt=""
+                            className={`w-full h-96 object-cover rounded`}
+                          />
+                        </div>
+                      </SwiperSlide>
+                    ))
+                  ) : (
+                    <img
+                      src="/temp/room-1.jpeg"
+                      alt=""
+                      className={`w-full h-96 object-cover rounded`}
+                    />
+                  )}
+                </Swiper>
+              </div>
               {/* category box */}
               <div className="flex flex-col gap-3">
                 <select
@@ -129,7 +238,7 @@ const AddRoom = () => {
               {/* price box */}
               <div className="flex flex-col gap-3">
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Price"
                   name="price"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -168,7 +277,7 @@ const AddRoom = () => {
               {/* floor number box */}
               <div className="flex flex-col gap-3">
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Floor Number"
                   name="floorNumber"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -186,7 +295,7 @@ const AddRoom = () => {
               {/* room number box */}
               <div className="flex flex-col gap-3">
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Room Number"
                   name="roomNumber"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -230,6 +339,22 @@ const AddRoom = () => {
                     </small>
                   ) : null}
                 </div>
+              </div>
+              <div className="col-span-full flex flex-col gap-3">
+                <textarea
+                  placeholder="Description"
+                  name="description"
+                  className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.description &&
+                Boolean(formik.errors.description) ? (
+                  <small className="text-red-600">
+                    {formik.touched.description && formik.errors.description}
+                  </small>
+                ) : null}
               </div>
               {/* submit button */}
               <div className=" col-span-full text-end mt-5">

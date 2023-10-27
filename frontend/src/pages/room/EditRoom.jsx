@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useFormik } from "formik";
@@ -33,10 +33,15 @@ const validationSchema = yup.object({
     .required("Room number is required")
     .positive("Room number must be a positive")
     .integer("Room number must be an integer"),
+  description: yup
+    .string()
+    .required("Description is required")
+    .min(20, "Description at least 20 characters length"),
 });
 
 const EditRoom = () => {
   const navigate = useNavigate();
+  const [selectedImages, setSelectedImages] = useState([]);
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -47,12 +52,49 @@ const EditRoom = () => {
       floorNumber: "",
       roomNumber: "",
       photos: null,
+      description: "",
     },
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
     },
   });
+
+  const handleDelete = (idx) => {
+    const tempImgs = [
+      ...selectedImages.slice(0, idx),
+      ...selectedImages.slice(idx + 1),
+    ];
+    const dataTransfer = new DataTransfer();
+
+    for (const file of tempImgs) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("photos", dataTransfer.files);
+    setSelectedImages(tempImgs);
+  };
+
+  const handleChange = (idx, newFile) => {
+    const updatedImages = [...selectedImages];
+    updatedImages[idx] = newFile;
+
+    const dataTransfer = new DataTransfer();
+
+    for (const file of updatedImages) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("photos", dataTransfer.files);
+    setSelectedImages(updatedImages);
+  };
+
+  useEffect(() => {
+    if (formik.values.photos) {
+      const selectedImagesArray = Array.from(formik.values.photos);
+      setSelectedImages(selectedImagesArray);
+    }
+  }, [formik.values.photos]);
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -95,57 +137,44 @@ const EditRoom = () => {
             slidesPerView={1}
             spaceBetween={50}
           >
-            <SwiperSlide>
-              <div className={`relative`}>
-                <div className={`absolute top-3 right-3 space-x-1.5`}>
-                  <button className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
-                    <TbReplaceFilled />
-                  </button>
-                  <button className="btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case">
-                    <FaTrash />
-                  </button>
-                </div>
-                <img
-                  src="/temp/room-1.jpeg"
-                  alt=""
-                  className={`w-auto h-auto rounded`}
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={`relative`}>
-                <div className={`absolute top-3 right-3 space-x-1.5`}>
-                  <button className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
-                    <TbReplaceFilled />
-                  </button>
-                  <button className="btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case">
-                    <FaTrash />
-                  </button>
-                </div>
-                <img
-                  src="/temp/room-2.jpeg"
-                  alt=""
-                  className={`w-auto h-auto rounded`}
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={`relative`}>
-                <div className={`absolute top-3 right-3 space-x-1.5`}>
-                  <button className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
-                    <TbReplaceFilled />
-                  </button>
-                  <button className="btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy normal-case">
-                    <FaTrash />
-                  </button>
-                </div>
-                <img
-                  src="/temp/room-3.jpeg"
-                  alt=""
-                  className={`w-auto h-auto rounded`}
-                />
-              </div>
-            </SwiperSlide>
+            {selectedImages.length ? (
+              selectedImages.map((image, idx) => (
+                <SwiperSlide>
+                  <div className={`relative`}>
+                    <div className={`absolute top-3 right-3 space-x-1.5`}>
+                      <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
+                        <TbReplaceFilled />
+                        <input
+                          type="file"
+                          className="absolute left-0 top-0  overflow-hidden h-0"
+                          onChange={(e) =>
+                            handleChange(idx, e.currentTarget.files[0])
+                          }
+                        />
+                      </label>
+                      <button
+                        className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                        onClick={() => handleDelete(idx)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                    <img
+                      key={idx}
+                      src={URL.createObjectURL(image)}
+                      alt=""
+                      className={`w-full h-96 object-cover rounded`}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              <img
+                src="/temp/room-1.jpeg"
+                alt=""
+                className={`w-full h-96 object-cover rounded`}
+              />
+            )}
           </Swiper>
         </div>
         {/* category box */}
@@ -286,35 +315,57 @@ const EditRoom = () => {
           ) : null}
         </div>
         {/* room photos */}
-        <div className="flex flex-col gap-3 ">
-          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center">
-            {formik.values.photos ? (
-              <span>{formik.values.photos.length + " files"}</span>
-            ) : (
-              <span className={`flex items-baseline space-x-1.5`}>
-                <FaUpload />
-                <span>Choose photos</span>
-              </span>
-            )}
-            <input
-              type="file"
-              multiple
-              name="photos"
-              className="absolute left-0 top-0  overflow-hidden h-0"
-              onChange={(e) =>
-                formik.setFieldValue("photos", e.currentTarget.files)
-              }
-              onBlur={formik.handleBlur}
-            />
-          </label>
+        <div className={`flex space-x-1.5`}>
+          <div className="flex flex-col gap-3 w-full">
+            <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+              {formik.values.photos ? (
+                <span>{formik.values.photos.length + " files"}</span>
+              ) : (
+                <span className={`flex items-baseline space-x-1.5`}>
+                  <FaUpload />
+                  <span>Choose photos</span>
+                </span>
+              )}
+              <input
+                type="file"
+                multiple
+                name="photos"
+                className="absolute left-0 top-0  overflow-hidden h-0"
+                onChange={(e) =>
+                  formik.setFieldValue("photos", e.currentTarget.files)
+                }
+                onBlur={formik.handleBlur}
+              />
+            </label>
+            {formik.touched.photos && Boolean(formik.errors.photos) ? (
+              <small className="text-red-600">
+                {formik.touched.photos && formik.errors.photos}
+              </small>
+            ) : null}
+          </div>
+        </div>
+        <div className="col-span-full flex flex-col gap-3">
+          <textarea
+            placeholder="Description"
+            name="description"
+            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.description && Boolean(formik.errors.description) ? (
+            <small className="text-red-600">
+              {formik.touched.description && formik.errors.description}
+            </small>
+          ) : null}
         </div>
         {/* submit button */}
-        <div className=" col-span-full text-end mt-5 ">
+        <div className=" col-span-full text-end mt-5">
           <button
             type="submit"
-            className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
+            className=" btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
           >
-            Update
+            Add
           </button>
         </div>
       </form>

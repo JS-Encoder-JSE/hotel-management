@@ -6,6 +6,7 @@ import * as yup from "yup";
 const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
   name: yup.string().required("Name is required"),
+  mobile: yup.string().required("Mobile number is required"),
   age: yup
     .number()
     .required("Age is required")
@@ -43,6 +44,7 @@ const EditBooking = () => {
     initialValues: {
       roomNumber: "",
       name: "",
+      mobile: "",
       age: "",
       adult: "",
       children: "",
@@ -108,6 +110,23 @@ const EditBooking = () => {
             {formik.touched.name && Boolean(formik.errors.name) ? (
               <small className="text-red-600">
                 {formik.touched.name && formik.errors.name}
+              </small>
+            ) : null}
+          </div>
+          {/* mobile box */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Mobile number"
+              name="mobile"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.mobile}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.mobile && Boolean(formik.errors.mobile) ? (
+              <small className="text-red-600">
+                {formik.touched.mobile && formik.errors.mobile}
               </small>
             ) : null}
           </div>
