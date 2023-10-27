@@ -48,6 +48,7 @@ import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
 import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
 import DashboardRoot from "./pages/DashboardRoot.jsx";
+import EditRenew from "./pages/Admin/EditRenew.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -322,6 +323,14 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <RenewView />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "edit-renew/:id",
+              element: (
+                <AdminRoute>
+                  <EditRenew />
                 </AdminRoute>
               ),
             },

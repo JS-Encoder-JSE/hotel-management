@@ -1,6 +1,8 @@
 import React from "react";
-import { FaEdit, FaStreetView, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
+import { MdOutlineAutorenew } from "react-icons/md";
+
 import { useNavigate } from "react-router-dom";
 
 
@@ -41,15 +43,16 @@ const RenewList = () => {
                   <td>Active</td>
                   <td className={`space-x-1.5`}>
                     <span
-                     className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                     className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
                       onClick={() => navigate(`/dashboard/renew-view/${idx}`)}
                     >
                       <GrView />
                     </span>
                     <span
                       className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                      onClick={() => navigate(`/dashboard/edit-renew/${idx}`)}
                     >
-                      <FaTrash />
+                      <MdOutlineAutorenew />
                     </span>
                   </td>
                 </tr>
