@@ -22,7 +22,7 @@ import ManageInventory from "./pages/Inventory/ManageInventory.jsx";
 import AddEmployee from "./pages/employee/AddEmployee.jsx";
 import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
-
+import MonitorFinance from "./pages/MonitorFinance/MonitorFinance.jsx";
 import SalesProfitReport from "./pages/report/SalesProfitReport.jsx";
 
 // import SalesProfitReport from "./pages/SalesProfitReport.jsx";
@@ -46,6 +46,7 @@ import RenewList from "./pages/Admin/RenewList.jsx";
 import RenewView from "./pages/Admin/RenewView.jsx";
 import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
 import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -68,6 +69,10 @@ const App = () => {
             {
               path: "check-pdf",
               element: <CheckPDF />,
+            },
+            {
+              path: "profile",
+              element: <Profile />
             },
 
             // Manager Sideber
@@ -293,6 +298,14 @@ const App = () => {
               element: (
                 <OwnerRoute>
                   <ManagerEdit />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "finance",
+              element: (
+                <OwnerRoute>
+                  <MonitorFinance />
                 </OwnerRoute>
               ),
             },

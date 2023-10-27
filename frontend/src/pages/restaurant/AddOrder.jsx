@@ -144,7 +144,7 @@ const AddOrder = () => {
               </div>
             </div>
           </div>
-<Modal id={`fp_modal`}>
+          <Modal id={`fp_modal`}>
             <ConfirmOrder />
           </Modal>
           {/* modal */}
