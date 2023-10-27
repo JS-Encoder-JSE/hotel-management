@@ -12,7 +12,7 @@ const port = process.env.PORT || 5001;
 app.use(bodyParser.json());
 app.use(cors());
 
-mongoose.connect('mongodb://localhost/hotelmanagement', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.DB_CONNECTION_STR, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
