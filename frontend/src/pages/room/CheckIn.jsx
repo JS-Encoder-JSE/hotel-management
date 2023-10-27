@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaUpload } from "react-icons/fa";
+import { FaTrash, FaUpload } from "react-icons/fa";
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { TbReplaceFilled } from "react-icons/tb";
 
 // form validation
 const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
   name: yup.string().required("Name is required"),
+  mobile: yup.string().required("Mobile number is required"),
   age: yup
     .number()
     .required("Age is required")
@@ -41,10 +46,12 @@ const validationSchema = yup.object({
 });
 
 const CheckIn = () => {
+  const [selectedImages, setSelectedImages] = useState([]);
   const formik = useFormik({
     initialValues: {
       roomNumber: "",
       name: "",
+      mobile: "",
       age: "",
       adult: "",
       children: "",
@@ -59,6 +66,42 @@ const CheckIn = () => {
     },
   });
 
+  const handleDelete = (idx) => {
+    const tempImgs = [
+      ...selectedImages.slice(0, idx),
+      ...selectedImages.slice(idx + 1),
+    ];
+    const dataTransfer = new DataTransfer();
+
+    for (const file of tempImgs) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("documents", dataTransfer.files);
+    setSelectedImages(tempImgs);
+  };
+
+  const handleChange = (idx, newFile) => {
+    const updatedImages = [...selectedImages];
+    updatedImages[idx] = newFile;
+
+    const dataTransfer = new DataTransfer();
+
+    for (const file of updatedImages) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("documents", dataTransfer.files);
+    setSelectedImages(updatedImages);
+  };
+
+  useEffect(() => {
+    if (formik.values.documents) {
+      const selectedImagesArray = Array.from(formik.values.documents);
+      setSelectedImages(selectedImagesArray);
+    }
+  }, [formik.values.documents]);
+
   return (
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
       <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
@@ -67,6 +110,66 @@ const CheckIn = () => {
         className="form-control grid grid-cols-1 gap-4 mt-5"
         onSubmit={formik.handleSubmit}
       >
+        <div className={`relative col-span-full`}>
+          <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+            <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+              <MdOutlineKeyboardArrowLeft />
+            </div>
+            <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+              <MdOutlineKeyboardArrowRight />
+            </div>
+          </div>
+          <Swiper
+            modules={[Navigation]}
+            navigation={{
+              enabled: true,
+              prevEl: ".swiper-er-button-prev",
+              nextEl: ".swiper-er-button-next",
+              disabledClass: "swiper-er-button-disabled",
+            }}
+            slidesPerView={1}
+            spaceBetween={50}
+          >
+            {selectedImages.length ? (
+              selectedImages.map((image, idx) => (
+                <SwiperSlide>
+                  <div className={`relative`}>
+                    <div className={`absolute top-3 right-3 space-x-1.5`}>
+                      <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                        <TbReplaceFilled />
+                        <input
+                          type="file"
+                          className="absolute left-0 top-0  overflow-hidden h-0"
+                          onChange={(e) =>
+                            handleChange(idx, e.currentTarget.files[0])
+                          }
+                        />
+                      </label>
+                      <button
+                        className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                        onClick={() => handleDelete(idx)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                    <img
+                      key={idx}
+                      src={URL.createObjectURL(image)}
+                      alt=""
+                      className={`w-full h-96 object-cover rounded`}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              <img
+                src="/temp/room-1.jpeg"
+                alt=""
+                className={`w-full h-96 object-cover rounded`}
+              />
+            )}
+          </Swiper>
+        </div>
         <div className="flex flex-col gap-3">
           <select
             name="roomNumber"
@@ -102,6 +205,23 @@ const CheckIn = () => {
           {formik.touched.name && Boolean(formik.errors.name) ? (
             <small className="text-red-600">
               {formik.touched.name && formik.errors.name}
+            </small>
+          ) : null}
+        </div>
+        {/* mobile box */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Mobile number"
+            name="mobile"
+            className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+            value={formik.values.mobile}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.mobile && Boolean(formik.errors.mobile) ? (
+            <small className="text-red-600">
+              {formik.touched.mobile && formik.errors.mobile}
             </small>
           ) : null}
         </div>

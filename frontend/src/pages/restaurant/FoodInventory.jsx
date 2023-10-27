@@ -83,7 +83,7 @@ const FoodInventory = () => {
                       <FaEdit />
                     </span>
                     <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                      className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                       title={`Delete`}
                     >
                       <FaTrash />

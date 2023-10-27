@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaPlusCircle, FaUpload } from "react-icons/fa";
@@ -17,6 +17,7 @@ const validationSchema = yup.object({
 });
 
 const AddEmployee = () => {
+  const [userImgPrev, setUserImgPrev] = useState(null);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -36,6 +37,17 @@ const AddEmployee = () => {
     },
   });
 
+  useEffect(() => {
+    if (formik.values.userImg) {
+      const reader = new FileReader();
+
+      reader.onload = () => setUserImgPrev(reader.result);
+      reader.readAsDataURL(formik.values.userImg);
+    } else {
+      setUserImgPrev(null);
+    }
+  }, [formik.values.userImg]);
+
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
       <h3
@@ -48,6 +60,16 @@ const AddEmployee = () => {
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
+        <div className={`col-span-full`}>
+          <img
+            src={
+              userImgPrev ||
+              "https://nhit.in/wp-content/uploads/2017/08/Passport-Size-Photograph-1024x847.jpg"
+            }
+            className={`h-96 w-full object-cover`}
+            alt=""
+          />
+        </div>
         {/* name box */}
         <div className="flex flex-col gap-3">
           <input
