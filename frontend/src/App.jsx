@@ -47,6 +47,7 @@ import RenewView from "./pages/Admin/RenewView.jsx";
 import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
 import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
+import DashboardRoot from "./pages/DashboardRoot.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -67,23 +68,19 @@ const App = () => {
           ),
           children: [
             {
+              index: true,
+              element: <DashboardRoot />,
+            },
+            {
               path: "check-pdf",
               element: <CheckPDF />,
             },
             {
               path: "profile",
-              element: <Profile />
+              element: <Profile />,
             },
 
-            // Manager Sideber
-            {
-              path: "",
-              element: (
-                <ManagerRoute>
-                  <UserDashBoard />
-                </ManagerRoute>
-              ),
-            },
+            // Manager Sidebar
             {
               path: "add-room",
               element: (
@@ -244,15 +241,7 @@ const App = () => {
                 </ManagerRoute>
               ),
             },
-            // Owner Hotel  Sideber
-            {
-              path: "",
-              element: (
-                <OwnerRoute>
-                  <UserDashBoard />
-                </OwnerRoute>
-              ),
-            },
+            // Owner Hotel  Sidebar
             {
               path: "add-hotel",
               element: (
@@ -310,8 +299,7 @@ const App = () => {
               ),
             },
 
-            // Admin sideber
-
+            // Admin sidebar
             {
               path: "new-licens",
               element: (
