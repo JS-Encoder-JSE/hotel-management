@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AuthProvider from "./providers/AuthProvider.jsx";
+import Providers from "./providers/index.jsx";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import OwnerRoute from "./routes/OwnerRoute.jsx";
 import ManagerRoute from "./routes/ManagerRoute.jsx";
@@ -25,7 +25,6 @@ import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
 
 import SalesProfitReport from "./pages/report/SalesProfitReport.jsx";
 
-
 // import SalesProfitReport from "./pages/SalesProfitReport.jsx";
 
 import ManageBooking from "./pages/room/ManageBooking.jsx";
@@ -47,7 +46,6 @@ import RenewList from "./pages/Admin/RenewList.jsx";
 import RenewView from "./pages/Admin/RenewView.jsx";
 import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
 import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
-
 
 const App = () => {
   const router = createBrowserRouter([
@@ -74,7 +72,7 @@ const App = () => {
 
             // Manager Sideber
             {
-              path: '',
+              path: "",
               element: (
                 <ManagerRoute>
                   <UserDashBoard />
@@ -124,9 +122,9 @@ const App = () => {
             {
               path: "manage-booking/:id",
               element: (
-                  <ManagerRoute>
-                    <BookingView />
-                  </ManagerRoute>
+                <ManagerRoute>
+                  <BookingView />
+                </ManagerRoute>
               ),
             },
             {
@@ -243,7 +241,7 @@ const App = () => {
             },
             // Owner Hotel  Sideber
             {
-              path: '',
+              path: "",
               element: (
                 <OwnerRoute>
                   <UserDashBoard />
@@ -342,8 +340,6 @@ const App = () => {
                 </AdminRoute>
               ),
             },
-
-
           ],
         },
       ],
@@ -351,9 +347,9 @@ const App = () => {
   ]);
 
   return (
-    <AuthProvider>
+    <Providers>
       <RouterProvider router={router} />
-    </AuthProvider>
+    </Providers>
   );
 };
 

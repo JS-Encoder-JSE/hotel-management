@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Outlet, ScrollRestoration } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import Preloader from "./components/Preloader.jsx";
 
 const Root = () => {
@@ -97,7 +96,6 @@ const Root = () => {
           />
         </div>
       )}
-      <Toaster />
       <ScrollRestoration />
     </>
   );
