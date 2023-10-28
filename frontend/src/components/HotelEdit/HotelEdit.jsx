@@ -134,6 +134,8 @@ const HotelEdit = () => {
               value={formik.values.license}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              isInitialValid={false}
+          
             />
             {formik.touched.license && Boolean(formik.errors.license) ? (
               <small className="text-red-600">
@@ -188,6 +190,7 @@ const HotelEdit = () => {
             <button
               type="submit"
               className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs px-9 h-auto md:me-12"
+              
             >
               Update
             </button>

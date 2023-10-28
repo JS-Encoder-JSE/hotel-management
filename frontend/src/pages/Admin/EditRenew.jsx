@@ -1,7 +1,8 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -26,7 +27,8 @@ const validationSchema = yup.object({
 
 });
 
-const AdminNewLicense = () => {
+const EditRenew = () => {
+    const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -51,13 +53,17 @@ const AdminNewLicense = () => {
   });
 
   return (
-    <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
-      <h3
-        className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
-      >
-        <FaPlusCircle />
-        <span>New License Add</span>
-      </h3>
+    <div className={`space-y-5 bg-white p-2 rounded-2xl`}>
+            <div>
+            <span
+              className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+              onClick={() => navigate(-1)}
+            >
+              <FaArrowLeft />
+            </span>
+          </div>
+      <h1 className="text-2xl text-center ">Update hotel Renew</h1>
+      <hr  className={``}/>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
@@ -130,125 +136,6 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-        {/*Billing Information box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Bill Information"
-            name="billInformation"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.billInformation}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.billInformation &&
-          Boolean(formik.errors.billInformation) ? (
-            <small className="text-red-600">
-              {formik.touched.billInformation && formik.errors.billInformation}
-            </small>
-          ) : null}
-        </div>
-        {/*License Duration box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="License Duration"
-            name="licenseDuration"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.licenseDuration}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.licenseDuration &&
-          Boolean(formik.errors.licenseDuration) ? (
-            <small className="text-red-600">
-              {formik.touched.licenseDuration && formik.errors.licenseDuration}
-            </small>
-          ) : null}
-        </div>
-        {/*Billing From box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="From  MM/DD/YYY"
-            name="fromDate"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.fromDate}
-            onChange={formik.handleChange}
-            onBlur={(e) => {
-              e.target.type = "text";
-              formik.handleBlur;
-            }}
-            onFocus={(e) => (e.target.type = "date")}
-          />
-          {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
-            <small className="text-red-600">
-              {formik.touched.fromDate && formik.errors.fromDate}
-            </small>
-          ) : null}
-        </div>
-        {/*Billing To box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="To  MM/DD/YYY"
-            name="toDate"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.toDate}
-            onChange={formik.handleChange}
-            onBlur={(e) => {
-              e.target.type = "text";
-              formik.handleBlur;
-            }}
-            onFocus={(e) => (e.target.type = "date")}
-          />
-          {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
-            <small className="text-red-600">
-              {formik.touched.toDate && formik.errors.toDate}
-            </small>
-          ) : null}
-        </div>
-        {/* Status box */}
-        <div className="flex flex-col gap-3">
-          <select
-            name="status"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
-            value={formik.values.designation}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Status
-            </option>
-            <option value="Active">Active</option>
-            <option value="Deactive">Deactive</option>
-            <option value="Suspended">Suspended</option>
-          </select>
-          {formik.touched.status && Boolean(formik.errors.status) ? (
-            <small className="text-red-600">
-              {formik.touched.status && formik.errors.status}
-            </small>
-          ) : null}
-        </div>
-
-        {/*Number Of Hotels box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="number"
-            placeholder="Number Of Hotels"
-            name="numberOfHotel"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.numberOfHotel}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.numberOfHotel &&
-          Boolean(formik.errors.numberOfHotel) ? (
-            <small className="text-red-600">
-              {formik.touched.numberOfHotel && formik.errors.numberOfHotel}
-            </small>
-          ) : null}
-        </div>
        {/* payment method box */}
        <div className="flex flex-col gap-3">
           <select
@@ -292,16 +179,17 @@ const AdminNewLicense = () => {
           </div>
         ) : null}
 
+     
         {/* submit button */}
         <button
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
-          Add
+          Update
         </button>
       </form>
     </div>
   );
 };
 
-export default AdminNewLicense;
+export default EditRenew;

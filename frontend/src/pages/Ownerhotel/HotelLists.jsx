@@ -54,9 +54,9 @@ const HotelLists = () => {
                   <th>Hotel <br /> Address</th>
                   <th className="text-center">Hotel <br /> Email</th>
                   <th>Phone <br /> Number</th>
-                  <th>License <br /> Number</th>
+                  {/* <th>License <br /> Number</th> */}
                   <th> Branch <br /> Name</th>
-                  <th> Manager <br /> List</th>
+                  <th> Manager</th>
                   <th>Action</th>
             </tr>
           </thead>
@@ -69,7 +69,7 @@ const HotelLists = () => {
                   <td >Kolkata</td>
                   <td>jondoe@gmail.com</td>
                   <td>+98825456</td>
-                  <td>123456</td>
+                  {/* <td>123456</td> */}
                   <td>Branch 1</td>
                   <td>Manager 1</td>
                   <td className={`space-x-1.5`}>

@@ -10,6 +10,7 @@ const validationSchema = yup.object({
   email: yup.string().required("Manager Email is required"),
   phoneNumber: yup.string().required("Manager Phone Number size is required"),
   salary: yup.string().required("Manager Salary is required"),
+  joiningdate: yup.string().required("Manager Joining Date is required"),
 });
 
 const AddManager = () => {
@@ -19,7 +20,8 @@ const AddManager = () => {
       address: "",
       email: "",
       phoneNumber:"",
-      salary: ""
+      salary: "",
+      joiningdate: "",
      
     },
     validationSchema,
@@ -42,6 +44,7 @@ const AddManager = () => {
         >
           {/* manager Name box */}
           <div className="flex flex-col gap-3">
+          <label> Manager Name <span>*</span></label>
             <input
               type="text"
               placeholder="Manager Name"
@@ -59,6 +62,7 @@ const AddManager = () => {
           </div>
           {/* Manager Address box */}
           <div className="flex flex-col gap-3">
+          <label> Manager Address <span>*</span></label>
             <input
               type="text"
               placeholder="Manager Address "
@@ -77,6 +81,7 @@ const AddManager = () => {
           </div>
           {/*Manager Email box */}
           <div className="flex flex-col gap-3">
+          <label> Manager Email <span>*</span></label>
             <input
               type="email"
               placeholder="Manager Email @ "
@@ -95,6 +100,7 @@ const AddManager = () => {
 
             {/*Manager Phone Number  box */}
             <div className="flex flex-col gap-3">
+            <label> Manager Phone Number <span>*</span></label>
             <input
               type="number"
               placeholder="Manager Phone Number #"
@@ -113,18 +119,37 @@ const AddManager = () => {
 
           {/*Manager salary  box */}
           <div className="flex flex-col gap-3">
+          <label> Manager Salary <span>*</span></label>
             <input
               type="number"
               placeholder="Manager Salary"
               name="salary"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-              value={formik.values.license}
+              value={formik.values.joiningdate}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
             {formik.touched.salary && Boolean(formik.errors.salary) ? (
               <small className="text-red-600">
                 {formik.touched.salary && formik.errors.salary}
+              </small>
+            ) : null}
+          </div>
+          {/*Manager Joining Date  box */}
+          <div className="flex flex-col gap-3">
+            <label> Joining Date <span>*</span></label>
+            <input
+              type="date"
+              placeholder="Manager Joining"
+              name="joiningdate"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+              value={formik.values.joiningdate}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.joiningdate && Boolean(formik.errors.joiningdate) ? (
+              <small className="text-red-600">
+                {formik.touched.joiningdate && formik.errors.joiningdate}
               </small>
             ) : null}
           </div>
