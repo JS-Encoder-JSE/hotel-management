@@ -24,6 +24,7 @@ const validationSchema = yup.object({
     .required("Room number is required")
     .positive("Room number must be a positive")
     .integer("Room number must be an integer"),
+    roomDescription: yup.string().required("Room Description is required"),
   photos: yup.mixed().required("Photos are required"),
 });
 
@@ -37,6 +38,7 @@ const RoomEdit = () => {
       bedSize: "",
       floorNumber: "",
       roomNumber: "",
+      roomDescription:"",
       photos: null,
     },
     validationSchema,
@@ -225,6 +227,23 @@ const RoomEdit = () => {
                   ) : null}
                 </div>
               </div>
+                 {/* Description box */}
+                 <div className="col-span-full flex flex-col gap-3">
+          <textarea
+            placeholder="Room Description"
+            name="roomDescription"
+            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+            value={formik.values.roomDescription}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.roomDescription &&
+          Boolean(formik.errors.roomDescription) ? (
+            <small className="text-red-600">
+              {formik.touched.roomDescription && formik.errors.roomDescription}
+            </small>
+          ) : null}
+        </div>
               {/* submit button */}
               <div className=" col-span-full text-end mt-5">
                 <button
