@@ -1,5 +1,7 @@
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
+import { MdDelete } from "react-icons/md";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 const AdminOwnerView = () => {
@@ -62,45 +64,44 @@ const AdminOwnerView = () => {
                     <FaEdit />
                   </button>
                   <dialog id="my_modal_3" className="modal w-full">
-                    <div className="modal-box">
-                      <form method="dialog">
+                    <div className="modal-box max-w-[800px]">
+                     
+                      <div>
+                         <form method="dialog">
                         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                           ✕
                         </button>
                       </form>
-                      <div>
-                        {/* Quntity Of hotel management */}
-                        <div className="flex gap-5">
-                          <h2 className="mt-2">Number Of Hotels :</h2>
-                          <div>
-                            <button
-                              onClick={increament}
-                              className=" p-2 rounded bg-green-400 px-5 "
-                            >
-                              +
-                            </button>
-                          </div>
-                          <div>
-                            <h1 className=" p-2 rounded bg-green-400 px-9 ">
-                              {user}
-                            </h1>
-                          </div>
-                          {/* decrement */}
-                          <div>
-                            <button
-                              onClick={decrement}
-                              className=" p-2 rounded bg-green-400 px-5"
-                            >
-                              -
-                            </button>
-                          </div>
-                        </div>
                         {/* Modal  Table information Start */}
-                        <div className="card w-full bg-white shadow-xl mt-10">
+                        <div className="card w-full bg-white shadow-xl mt-10 p-3 ">
+                          {/* Quntity Of hotel management */}
+                          <div className="flex gap-5 mt-2">
+                            <h2 className="mt-1">Number Of Hotels :</h2>
+                            <div>
+                              {/* decrement */}
+                              <button
+                                onClick={decrement}
+                                className=" p-2 rounded bg-white-400 border border-gray-400 px-5"
+                              >
+                                <AiOutlineMinus />
+                              </button>
+                            </div>
+                            <div>
+                              <h1 className=" py-1 rounded bg-white-400 border border-gray-400 px-7 ">
+                                {user}
+                              </h1>
+                            </div>
+                            {/* increment */}
+                            <div>
+                              <button
+                                onClick={increament}
+                                className=" p-2 rounded bg-white-400 border border-gray-400 px-5 "
+                              >
+                                <AiOutlinePlus />
+                              </button>
+                            </div>
+                          </div>
                           <div className="card-body">
-                            <h1 className="text-2xl text-center ">
-                              Owner Hotel List
-                            </h1>
                             <div className="overflow-x-auto mt-10">
                               <table className="table border">
                                 <thead>
@@ -126,14 +127,14 @@ const AdminOwnerView = () => {
                                         <td>jondoe@gmail.com</td>
                                         <td className={`space-x-1.5`}>
                                           <span
-                                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                                            className={`btn btn-sm bg-transparent hover:bg-red-500 text-red-500 hover:text-white !border-red-500 rounded normal-case ms-2`}
                                             onClick={() =>
                                               navigate(
                                                 `/dashboard/adminowner-view/${idx}`
                                               )
                                             }
                                           >
-                                            <GrView />
+                                            <MdDelete />
                                           </span>
                                         </td>
                                       </tr>
@@ -160,9 +161,7 @@ const AdminOwnerView = () => {
 
       <div className="card w-full bg-white shadow-xl mt-10">
         <div className="card-body">
-          <h1 className="text-2xl text-center ">
-            Owner Hotel List 
-          </h1>
+          <h1 className="text-2xl text-center ">Owner Hotel List</h1>
           <div className="overflow-x-auto mt-10">
             <table className="table border">
               <thead>
@@ -207,9 +206,7 @@ const AdminOwnerView = () => {
 
       <div className="card w-full bg-white shadow-xl mt-10">
         <div className="card-body">
-          <h1 className="text-2xl text-center ">
-            Owner transaction History 
-          </h1>
+          <h1 className="text-2xl text-center ">Owner transaction History</h1>
           <div className="overflow-x-auto mt-10">
             <table className="table border">
               <thead>

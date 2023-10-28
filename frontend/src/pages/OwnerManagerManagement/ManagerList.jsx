@@ -1,5 +1,6 @@
 import React from "react";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaStreetView } from "react-icons/fa";
+import {GrView } from "react-icons/gr";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
@@ -27,11 +28,11 @@ const ManagerList = () => {
                 <tr>
                   <th>SL</th>
                   <th>Manager Name</th>
-                  <th>Manager Address</th>
+                  {/* <th>Manager Address</th> */}
                   <th>Manager Email</th>
                   <th>Phone Number</th>
-                  <th>Salary</th>
-                  <th>Action</th>
+                  {/* <th>Salary</th> */}
+                  <th >Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -43,15 +44,22 @@ const ManagerList = () => {
                     >
                       <th>{++idx}</th>
                       <td>Jon Doe</td>
-                      <td>Kolkata</td>
+                      {/* <td>Kolkata</td> */}
                       <td>
                         jondoe@gmail.com
                       </td>
                       <td>
                         +99801111
                       </td>
-                      <td>$25000</td>
+                      {/* <td>$25000</td> */}
                       <td className={`space-x-1.5`}>
+                      <Link to={`/dashboard/managerList-view/${idx}`}>
+                      <span
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                        >
+                          <GrView />
+                        </span>
+                      </Link>
                       <Link to={`/dashboard/manager-edit/${idx}`}>
                       <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}

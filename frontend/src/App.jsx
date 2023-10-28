@@ -49,6 +49,9 @@ import DashboardRoot from "./pages/DashboardRoot.jsx";
 import Profile from "./pages/profile/index.jsx";
 import EditProfile from "./pages/profile/EditProfile.jsx";
 import AdminNewLicense from "./pages/Admin/AdminNewLicense.jsx";
+import EditRenew from "./pages/Admin/EditRenew.jsx";
+import ManagerListView from "./pages/OwnerManagerManagement/ManagerListView.jsx";
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -288,6 +291,14 @@ const App = () => {
               ),
             },
             {
+              path: "managerList-view/:id",
+              element: (
+                <OwnerRoute>
+                  <ManagerListView />
+                </OwnerRoute>
+              ),
+            },
+            {
               path: "manager-edit/:id",
               element: (
                 <OwnerRoute>
@@ -327,6 +338,14 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <RenewView />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "edit-renew/:id",
+              element: (
+                <AdminRoute>
+                  <EditRenew />
                 </AdminRoute>
               ),
             },

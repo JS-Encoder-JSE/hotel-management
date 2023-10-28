@@ -137,8 +137,8 @@ const AddHotel = () => {
             {/*license  box */}
             <div className="flex flex-col gap-3">
               <input
-                type="number"
-                placeholder="Hotel License Number"
+                type="text"
+                placeholder="Hotel License"
                 name="license"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
                 value={formik.values.license}
