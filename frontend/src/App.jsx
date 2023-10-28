@@ -49,7 +49,7 @@ import DashboardRoot from "./pages/DashboardRoot.jsx";
 import Profile from "./pages/profile/index.jsx";
 import EditProfile from "./pages/profile/EditProfile.jsx";
 import AdminNewLicense from "./pages/Admin/AdminNewLicense.jsx";
-import SuspendAndLockList from "./components/sidebar/SuspendAndLockList.jsx";
+import SuspendAndLockList from "./pages/Admin/SuspendAndLockList.jsx";
 import EditRenew from "./pages/Admin/EditRenew.jsx";
 import ManagerListView from "./pages/OwnerManagerManagement/ManagerListView.jsx";
 
@@ -371,6 +371,14 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <SuspendAndLockList />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "suspend-lock-management/:id",
+              element: (
+                <AdminRoute>
+                  <EditRenew />
                 </AdminRoute>
               ),
             },

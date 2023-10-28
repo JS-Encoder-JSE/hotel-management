@@ -1,11 +1,12 @@
 import React from "react";
-import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import { MdOutlineAutorenew } from "react-icons/md";
 import { GrView } from "react-icons/gr";
-  import { useFormik } from "formik";
-  import {useNavigate} from "react-router-dom";
 
-const AdminOwnerList = () => {
-  const navigate = useNavigate()
+const SuspendAndLockList = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -24,9 +25,8 @@ const AdminOwnerList = () => {
             onChange={formik.handleChange}
           >
             <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="deactive">deActive</option>
-            <option value="suspended">Suspended</option>
+            <option value="suspend">Suspend</option>
+            <option value="lock">Lock</option>
           </select>
         </div>
         <div className={`relative sm:min-w-[20rem]`}>
@@ -46,38 +46,45 @@ const AdminOwnerList = () => {
           </button>
         </div>
       </div>
+
       <div className="overflow-x-auto">
         <table className="table border">
           <thead>
             <tr>
-                <th>Sl</th>
-              <th>Name</th>
+              <th>Sl</th>
+              <th>Client Name</th>
               <th>Email</th>
               <th>Status</th>
-              <th>Duration</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {[...Array(5)].map((_,idx) => {
+            {[...Array(5)].map((_, idx) => {
               return (
-                <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                  <th> {++idx}</th>
-                  <td className="font-bold">Jon Doe</td>
-                  <td>jondoe@gmail.com</td>
+                <tr key={idx} className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                  <th>{++idx}</th>
+                  <td>
+                    <div className="flex items-center space-x-3">
+                      <div className="avatar"></div>
+                      <div>
+                        <div className="font-bold">Jon Doe</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>JonDoe@gmail.com</td>
                   <td>Active</td>
-                  <td>12-10-2023</td>
                   <td className={`space-x-1.5`}>
                     <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                      onClick={() => navigate(`/dashboard/adminowner-view/${idx}`)}
+                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
+                      onClick={() => navigate(`/dashboard/renew-view/${idx}`)}
                     >
                       <GrView />
                     </span>
                     <span
-                      className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case mt-2`}
+                      className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                      onClick={() => navigate(`/dashboard/suspend-lock-management/${idx}`)}
                     >
-                      <FaTrash />
+                      <MdOutlineAutorenew />
                     </span>
                   </td>
                 </tr>
@@ -90,4 +97,4 @@ const AdminOwnerList = () => {
   );
 };
 
-export default AdminOwnerList;
+export default SuspendAndLockList;
