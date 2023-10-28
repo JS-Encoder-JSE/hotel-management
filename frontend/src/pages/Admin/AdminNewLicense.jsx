@@ -38,7 +38,7 @@ const AdminNewLicense = () => {
       designation: "",
       phone: "",
     },
-    // validationSchema,
+    validationSchema,
     onSubmit: (values) => {
       console.log(values);
     },
@@ -184,8 +184,8 @@ const AdminNewLicense = () => {
         {/*Billing To box */}
         <div className="flex flex-col gap-3">
           <input
-            type="date"
-            placeholder="To"
+            type="text"
+            placeholder="To  MM/DD/YYY"
             name="toDate"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.toDate}
