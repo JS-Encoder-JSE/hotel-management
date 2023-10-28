@@ -56,6 +56,7 @@ import AddSubAdmin from "./pages/Admin/AddSubAdmin.jsx";
 import SubAdminList from "./pages/Admin/SubAdminList.jsx";
 import SubAdminListView from "./pages/Admin/SubAdminListView.jsx";
 import SubAdminProfile from "./pages/Admin/SubAdminProfile.jsx";
+import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -421,7 +422,7 @@ const App = () => {
               path: "sub-admin-profile/:id/edit",
               element: (
                 <AdminRoute>
-                  <SubAdminProfile />
+                  <SubAdminChangePass />
                 </AdminRoute>
               ),
             },
