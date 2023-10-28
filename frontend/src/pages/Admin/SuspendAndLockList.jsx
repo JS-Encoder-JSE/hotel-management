@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,8 @@ import { MdOutlineAutorenew } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 
 const SuspendAndLockList = () => {
+  const [pageNo, setPageNo] = useState(1);
+
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -13,6 +15,11 @@ const SuspendAndLockList = () => {
       filter: "",
     },
   });
+
+  const handlePagination = (index) => {
+    setPageNo(index);
+    console.log(pageNo);
+  };
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
@@ -61,7 +68,10 @@ const SuspendAndLockList = () => {
           <tbody>
             {[...Array(5)].map((_, idx) => {
               return (
-                <tr key={idx} className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                <tr
+                  key={idx}
+                  className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                >
                   <th>{++idx}</th>
                   <td>
                     <div className="flex items-center space-x-3">
@@ -82,7 +92,9 @@ const SuspendAndLockList = () => {
                     </span>
                     <span
                       className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                      onClick={() => navigate(`/dashboard/suspend-lock-management/${idx}`)}
+                      onClick={() =>
+                        navigate(`/dashboard/suspend-lock-management/${idx}`)
+                      }
                     >
                       <MdOutlineAutorenew />
                     </span>
@@ -92,6 +104,23 @@ const SuspendAndLockList = () => {
             })}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center">
+        {[...Array(5)].map((_, index) => (
+          <button
+            type="button"
+            onClick={() => handlePagination(index)}
+            className={`btn px-4 py-2 rounded border-0 ${
+              pageNo === index+1
+                ? "bg-green-slimy text-white hover:bg-green-slimy"
+                : "bg-white hover:bg-green-slimy/80"
+            }`}
+          >
+            {++index}
+          </button>
+        ))}
       </div>
     </div>
   );
