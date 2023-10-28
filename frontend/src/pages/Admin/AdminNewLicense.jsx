@@ -18,29 +18,27 @@ const validationSchema = yup.object({
   payment: yup.string().required("payment is required"),
   paymentInformation: yup.string().required("payment Information is required"),
   designation: yup.string().required("Designation is required"),
-
 });
 
 const AdminNewLicense = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      adress:"",
-      phoneNumber:"",
-      email:"",
-      billInformation:"",
-      licenseDuration:"",
-      fromDate:"",
-      toDate:"",
-      status:"",
-      numberOfHotel:"",
+      adress: "",
+      phoneNumber: "",
+      email: "",
+      billInformation: "",
+      licenseDuration: "",
+      fromDate: "",
+      toDate: "",
+      status: "",
+      numberOfHotel: "",
       payment: "",
       paymentInformation: "",
       designation: "",
       phone: "",
-     
     },
-    validationSchema,
+    // validationSchema,
     onSubmit: (values) => {
       console.log(values);
     },
@@ -137,7 +135,8 @@ const AdminNewLicense = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.billInformation && Boolean(formik.errors.billInformation) ? (
+          {formik.touched.billInformation &&
+          Boolean(formik.errors.billInformation) ? (
             <small className="text-red-600">
               {formik.touched.billInformation && formik.errors.billInformation}
             </small>
@@ -154,7 +153,8 @@ const AdminNewLicense = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.licenseDuration && Boolean(formik.errors.licenseDuration) ? (
+          {formik.touched.licenseDuration &&
+          Boolean(formik.errors.licenseDuration) ? (
             <small className="text-red-600">
               {formik.touched.licenseDuration && formik.errors.licenseDuration}
             </small>
@@ -163,13 +163,17 @@ const AdminNewLicense = () => {
         {/*Billing From box */}
         <div className="flex flex-col gap-3">
           <input
-            type="date"
-            placeholder="From"
+            type="text"
+            placeholder="From  MM/DD/YYY"
             name="fromDate"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.fromDate}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            onBlur={(e) => {
+              e.target.type = "text";
+              formik.handleBlur;
+            }}
+            onFocus={(e) => (e.target.type = "date")}
           />
           {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
             <small className="text-red-600">
@@ -186,7 +190,11 @@ const AdminNewLicense = () => {
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.toDate}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            onBlur={(e) => {
+              e.target.type = "text";
+              formik.handleBlur;
+            }}
+            onFocus={(e) => (e.target.type = "date")}
           />
           {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
             <small className="text-red-600">
@@ -228,7 +236,8 @@ const AdminNewLicense = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.numberOfHotel && Boolean(formik.errors.numberOfHotel) ? (
+          {formik.touched.numberOfHotel &&
+          Boolean(formik.errors.numberOfHotel) ? (
             <small className="text-red-600">
               {formik.touched.numberOfHotel && formik.errors.numberOfHotel}
             </small>
@@ -244,7 +253,7 @@ const AdminNewLicense = () => {
             onBlur={formik.handleBlur}
           >
             <option value="" selected disabled>
-            payment Type
+              payment Type
             </option>
             <option value="Cash">Cash</option>
             <option value="Card">Card</option>
@@ -257,7 +266,6 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
 
-     
         {/* submit button */}
         <button
           type="submit"
