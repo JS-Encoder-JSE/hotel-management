@@ -53,6 +53,7 @@ import SuspendAndLockList from "./pages/Admin/SuspendAndLockList.jsx";
 import EditRenew from "./pages/Admin/EditRenew.jsx";
 import ManagerListView from "./pages/OwnerManagerManagement/ManagerListView.jsx";
 
+import ReportView from "./pages/report/ReportView.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -240,6 +241,14 @@ const App = () => {
                 <ManagerRoute>
                   <SalesProfitReport />
                 </ManagerRoute>
+              ),
+            },
+            {
+              path: "report/view",
+              element: (
+                  <ManagerRoute>
+                    <ReportView />
+                  </ManagerRoute>
               ),
             },
             {

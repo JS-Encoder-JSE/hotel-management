@@ -5,8 +5,10 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import CreateCustomerReceipt from "../../components/pdf/CreateCustomerReceipt.jsx";
 import * as XLSX from "xlsx";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
+import {useNavigate} from "react-router-dom";
 
 const SalesProfitReport = () => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -140,19 +142,11 @@ const SalesProfitReport = () => {
                       <td className={`space-x-1.5`}>
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                          onClick={() => navigate("view")}
                         >
                           <FaEye />
                         </span>
-                        <PDFDownloadLink
-                          document={<CreateCustomerReceipt />}
-                          fileName={`${idx}.pdf`}
-                        >
-                          <span
-                            className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                          >
-                            <FaFileInvoice />
-                          </span>
-                        </PDFDownloadLink>
+
                       </td>
                     </tr>
                   );
