@@ -54,6 +54,7 @@ import EditRenew from "./pages/Admin/EditRenew.jsx";
 import ManagerListView from "./pages/OwnerManagerManagement/ManagerListView.jsx";
 import AddSubAdmin from "./pages/Admin/AddSubAdmin.jsx";
 import SubAdminList from "./pages/Admin/SubAdminList.jsx";
+import SubAdminListView from "./pages/Admin/SubAdminListView.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -396,6 +397,14 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <SubAdminList />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "sub-admin-list-view/:id",
+              element: (
+                <AdminRoute>
+                  <SubAdminListView />
                 </AdminRoute>
               ),
             },

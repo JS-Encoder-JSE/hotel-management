@@ -45,7 +45,7 @@ const SubAdminList = () => {
                       <td>jondoe@gmail.com</td>
                       <td>+99801111</td>
                       <td className={`space-x-1.5`}>
-                        <Link to={`/dashboard/managerList-view/${idx}`}>
+                        <Link to={`/dashboard/sub-admin-list-view/${idx}`}>
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                           >
