@@ -58,6 +58,8 @@ import SubAdminListView from "./pages/Admin/SubAdminListView.jsx";
 import SubAdminProfile from "./pages/Admin/SubAdminProfile.jsx";
 import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 
+import ReportView from "./pages/report/ReportView.jsx";
+
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -244,6 +246,14 @@ const App = () => {
                 <ManagerRoute>
                   <SalesProfitReport />
                 </ManagerRoute>
+              ),
+            },
+            {
+              path: "report/view",
+              element: (
+                  <ManagerRoute>
+                    <ReportView />
+                  </ManagerRoute>
               ),
             },
             {

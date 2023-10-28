@@ -1,7 +1,24 @@
 import React from "react";
 import { FaEye, FaFileInvoice, FaPlusCircle } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setOrder, setOrderCalc } from "../../redux/add-order/addOrderSlice.js";
+import FoodList from "./FoodList.jsx";
 
-const FoodLists = () => {
+const FoodLists = ({ foods }) => {
+  const { order } = useSelector((store) => store.addOrderSlice);
+  const dispatch = useDispatch();
+
+  const handleOrder = (item) => {
+    const tempOrder = { ...order };
+
+    const tempFoods = [...tempOrder.foods];
+    tempFoods.push({ ...item, quantity: 1 });
+
+    const newOrder = { ...tempOrder, foods: tempFoods };
+    dispatch(setOrder(newOrder));
+    dispatch(setOrderCalc());
+  };
+
   return (
     <div className="overflow-x-auto border">
       <table className="table">
@@ -14,37 +31,14 @@ const FoodLists = () => {
           </tr>
         </thead>
         <tbody>
-          {[...Array(10)].map((_, idx) => {
-            return (
-              <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                <td>
-                  <div className="flex items-center space-x-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle w-16 h-16">
-                        <img
-                          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-bold">Hart Hagerty</div>
-                    </div>
-                  </div>
-                </td>
-                <td>Available</td>
-                <td>$12</td>
-                <th>
-                  <span
-                    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                    title={`Add`}
-                  >
-                    <FaPlusCircle />
-                  </span>
-                </th>
-              </tr>
-            );
-          })}
+          {foods.map((food, idx) => (
+            <FoodList
+              key={idx}
+              idx={idx}
+              food={food}
+              handleOrder={handleOrder}
+            />
+          ))}
         </tbody>
       </table>
     </div>
