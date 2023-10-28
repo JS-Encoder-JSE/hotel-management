@@ -4,6 +4,7 @@ import {
   MdBarChart,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
+  MdOutlineDashboard,
   MdOutlineFoodBank,
   MdOutlineInventory2,
   MdOutlineKitchen,
@@ -121,12 +122,18 @@ const AdminSBItems = ({ handleSBItems }) => {
           </li>
         </ul>
       </li>
-      <li className={`group p-2`}>
-        <div
-          onClick={(e) => handleSBItems(e)}
-          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-        ></div>
-        <ul className={`group-[.active]:block hidden`}></ul>
+      <li>
+        <NavLink
+          to={`/dashboard/admin-report`}
+          className={({ isActive }) =>
+            "flex p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
+            (isActive ? " bg-gray-300" : "")
+          }
+          end
+        >
+          <MdBarChart />
+          <span className={`-mt-0.5`}>Report</span>
+        </NavLink>
       </li>
     </>
   );

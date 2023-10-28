@@ -72,6 +72,7 @@ const ManageSingleRoom = () => {
           >
             <button
               className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
+              onClick={() => navigate("/dashboard/checkin")}
             >
               CheckIn
             </button>
@@ -92,17 +93,23 @@ const ManageSingleRoom = () => {
               <RoomBookingEdit />
             </Modal>
 
-
-              {/* Modal Edit  */}
-<button  className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `} onClick={()=>document.getElementById('my_modal_3').showModal()}>Edit</button>
-<dialog id="my_modal_3" className="modal">
-  <div className="modal-box">
-    <form method="dialog">
-      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-<RoomEdit/>
-  </div>
-</dialog>
+            {/* Modal Edit  */}
+            <button
+              className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
+              onClick={() => document.getElementById("my_modal_3").showModal()}
+            >
+              Edit
+            </button>
+            <dialog id="my_modal_3" className="modal">
+              <div className="modal-box">
+                <form method="dialog">
+                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                    ✕
+                  </button>
+                </form>
+                <RoomEdit />
+              </div>
+            </dialog>
           </div>
 
           <div className={`mt-5`}></div>

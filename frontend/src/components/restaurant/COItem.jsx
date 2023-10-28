@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   decQuantity,
-  delFood,
+  delOrder,
   incQuantity,
   setOrderCalc,
   setQuantity,
@@ -25,13 +25,13 @@ const COItem = ({ idx, food }) => {
       <td>{food.price}</td>
       <td className="flex gap-1">
         <button
-          type="btn"
+          type="button"
           onClick={() => {
             dispatch(decQuantity(food));
             dispatch(setOrderCalc());
             setRefetch(!refetch);
           }}
-          disabled={food.quantity === 1}
+          disabled={food.quantity <= 1}
           className={food.quantity === 1 ? "opacity-50" : null}
         >
           <FaMinus />
@@ -40,14 +40,17 @@ const COItem = ({ idx, food }) => {
           type="number"
           value={input}
           className="input-hide_Arrows w-12 flex outline-none text-center rounded-md p-1 placeholder:text-black border focus:border-green-slimy"
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            if (e.target.value > 0 || e.target.value === "")
+              setInput(e.target.value);
+          }}
           onBlur={(e) => {
-            dispatch(setQuantity({ food, quantity: e.target.value }));
+            dispatch(setQuantity({ food, quantity: +e.target.value }));
             dispatch(setOrderCalc());
           }}
         />
         <button
-          type="btn"
+          type="button"
           onClick={() => {
             dispatch(incQuantity(food));
             dispatch(setOrderCalc());
@@ -63,7 +66,7 @@ const COItem = ({ idx, food }) => {
           type="button"
           className="text-red-600 hover:text-red-400 transition-colors duration-500"
           onClick={() => {
-            dispatch(delFood(food));
+            dispatch(delOrder(food));
             dispatch(setOrderCalc());
           }}
         >

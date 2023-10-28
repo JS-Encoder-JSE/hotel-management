@@ -1,8 +1,19 @@
-import React, { useState } from "react";
-import { FaPlusCircle } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
+import {useDispatch, useSelector} from "react-redux";
+import { delOrder, setOrderCalc } from "../../redux/add-order/addOrderSlice.js";
 
 const FoodList = ({ idx, food, handleOrder }) => {
-  const [isDisable, setDisable] = useState(false);
+  const [isAdd, setAdd] = useState(false);
+  const { order } = useSelector((store) => store.addOrderSlice);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const findFoodIdx = order.foods.findIndex((item) => item.id === food.id);
+
+    if (findFoodIdx !== -1) setAdd(true);
+    else setAdd(false);
+  }, [order.foods]);
 
   return (
     <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
@@ -21,18 +32,28 @@ const FoodList = ({ idx, food, handleOrder }) => {
       <td>Available</td>
       <td>${food.price}</td>
       <th>
-        <span
-          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
-            isDisable ? "opacity-50 pointer-events-none" : ""
-          }`}
-          title={`Add`}
-          onClick={() => {
-            handleOrder(food);
-            setDisable(true);
-          }}
-        >
-          <FaPlusCircle />
-        </span>
+        {!isAdd ? (
+          <span
+            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+            title={`Add`}
+            onClick={() => {
+              handleOrder(food);
+            }}
+          >
+            <FaPlusCircle />
+          </span>
+        ) : (
+          <span
+            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+            title={`Remove`}
+            onClick={() => {
+              dispatch(delOrder(food));
+              dispatch(setOrderCalc());
+            }}
+          >
+            <FaMinusCircle />
+          </span>
+        )}
       </th>
     </tr>
   );

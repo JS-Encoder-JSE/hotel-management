@@ -19,6 +19,13 @@ const addOrderSlice = createSlice({
     setOrder: (state, action) => {
       state.order = action.payload;
     },
+    delOrder: (state, action) => {
+      const findFoodIdx = state.order.foods.findIndex(
+        (item) => item.id === action.payload.id,
+      );
+
+      state.order.foods.splice(findFoodIdx, 1);
+    },
     incQuantity: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
         (item) => item.id === action.payload.id,
@@ -44,17 +51,17 @@ const addOrderSlice = createSlice({
         (item) => item.id === action.payload.food.id,
       );
 
-      state.order.foods.splice(findFoodIdx, 1, {
-        ...action.payload.food,
-        quantity: action.payload.quantity,
-      });
-    },
-    delFood: (state, action) => {
-      const findFoodIdx = state.order.foods.findIndex(
-        (item) => item.id === action.payload.id,
-      );
-
-      state.order.foods.splice(findFoodIdx, 1);
+      if (action.payload.quantity) {
+        state.order.foods.splice(findFoodIdx, 1, {
+          ...action.payload.food,
+          quantity: action.payload.quantity,
+        });
+      } else {
+        state.order.foods.splice(findFoodIdx, 1, {
+          ...action.payload.food,
+          quantity: 1,
+        });
+      }
     },
     setOrderCalc: (state, action) => {
       const total = state.order.foods.reduce(
@@ -75,10 +82,10 @@ const addOrderSlice = createSlice({
 
 export const {
   setOrder,
+  delOrder,
   incQuantity,
   decQuantity,
   setQuantity,
   setOrderCalc,
-  delFood,
 } = addOrderSlice.actions;
 export default addOrderSlice.reducer;

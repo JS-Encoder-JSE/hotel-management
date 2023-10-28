@@ -9,7 +9,7 @@ const BookingView = () => {
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
-      <div className={`space-x-1.5`}>
+      <div className={`flex justify-between`}>
         <div
           className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
           onClick={() => navigate(-1)}
@@ -17,21 +17,24 @@ const BookingView = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <span
-          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-          title={`Check In`}
-        >
+        <div className={`space-x-1.5`}>
+          <span
+              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+              title={`Check In`}
+              onClick={() => navigate("/dashboard/checkin")}
+          >
           <FaDoorOpen />
         </span>
-        <span
-          className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-          title={`Edit`}
-          onClick={() => window.eb_modal.showModal()}
-        >
+          <span
+              className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+              title={`Edit`}
+              onClick={() => window.eb_modal.showModal()}
+          >
           <FaEdit />
         </span>
+        </div>
       </div>
-      <div className={`flex flex-col lg:flex-row gap-10`}>
+      <div className={`flex flex-col lg:flex-row gap-10 lg:gap-16`}>
         <div>
           <h3 className={`text-2xl font-semibold mb-3`}>
             Customer Information
@@ -39,11 +42,13 @@ const BookingView = () => {
           <table>
             <tbody>
               <tr>
-                <th className={`text-start`}>Name:</th>
+                <th className={`text-start`}>Name</th>
+                <td className={`w-4 text-center`}>:</td>
                 <td>S.M. Khalid Mahmud</td>
               </tr>
               <tr>
-                <th className={`text-start`}>Phone:</th>
+                <th className={`text-start`}>Phone</th>
+                <td className={`w-4 text-center`}>:</td>
                 <td>01715738573</td>
               </tr>
             </tbody>
@@ -53,24 +58,29 @@ const BookingView = () => {
           <h3 className={`text-2xl font-semibold mb-3`}>Booking Information</h3>
           <table>
             <tbody>
+            <tr>
+              <th className={`text-start`}>Booking Date</th>
+              <td className={`w-4 text-center`}>:</td>
+              <td>10.10.23 10:12:34</td>
+            </tr>
               <tr>
-                <th className={`text-start`}>Booking No:</th>
+                <th className={`text-start`}>Booking No</th>
+                <td className={`w-4 text-center`}>:</td>
                 <td>1</td>
               </tr>
               <tr>
-                <th className={`text-start`}>Booking Date:</th>
-                <td>10.10.23 10:12:34</td>
-              </tr>
-              <tr>
-                <th className={`text-start`}>Room No:</th>
+                <th className={`text-start`}>Room No</th>
+                <td className={`w-4 text-center`}>:</td>
                 <td>1</td>
               </tr>
               <tr>
-                <th className={`text-start`}>Check In:</th>
+                <th className={`text-start`}>Check In</th>
+                <td className={`w-4 text-center`}>:</td>
                 <td>10.10.23 10:12:34</td>
               </tr>
               <tr>
-                <th className={`text-start`}>Check Out:</th>
+                <th className={`text-start`}>Check Out</th>
+                <td className={`w-4 text-center`}>:</td>
                 <td>10.10.23 10:12:34</td>
               </tr>
             </tbody>

@@ -59,6 +59,7 @@ import SubAdminProfile from "./pages/Admin/SubAdminProfile.jsx";
 import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 
 import ReportView from "./pages/report/ReportView.jsx";
+import Report from "./pages/Admin/Report.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -251,9 +252,9 @@ const App = () => {
             {
               path: "report/view",
               element: (
-                  <ManagerRoute>
-                    <ReportView />
-                  </ManagerRoute>
+                <ManagerRoute>
+                  <ReportView />
+                </ManagerRoute>
               ),
             },
             {
@@ -433,6 +434,14 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <SubAdminChangePass />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "admin-report",
+              element: (
+                <AdminRoute>
+                  <Report />
                 </AdminRoute>
               ),
             },
