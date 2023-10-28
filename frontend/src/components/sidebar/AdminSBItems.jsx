@@ -32,7 +32,7 @@ const AdminSBItems = ({ handleSBItems }) => {
         <ul className={`group-[.active]:block hidden`}>
           <li>
             <NavLink
-              to={`/dashboard/new-licens`}
+              to={`/dashboard/new-license`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
