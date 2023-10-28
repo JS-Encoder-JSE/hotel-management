@@ -10,7 +10,7 @@ const validationSchema = yup.object({
   address: yup.string().required("Hotel Address is required"),
   email: yup.string().required("Hotel Email is required"),
   phoneNumber: yup.string().required("Phone Number size is required"),
-  license: yup.string().required("License Number is required"),
+  // license: yup.string().required("License Number is required"),
   branchName: yup.string().required("Branch Name is required"),
   manager: yup.string().required("Manager Name is required"),
 });
@@ -23,7 +23,7 @@ const HotelEdit = () => {
       address: "",
       email: "",
       phoneNumber:"",
-      license: "",
+      // license: "",
       branchName:"",
       manager:"",
      
@@ -137,6 +137,7 @@ const HotelEdit = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               isInitialValid={false}
+              readOnly
           
             />
             {formik.touched.license && Boolean(formik.errors.license) ? (
