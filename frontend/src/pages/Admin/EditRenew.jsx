@@ -62,7 +62,9 @@ const EditRenew = () => {
           <FaArrowLeft />
         </span>
       </div>
-      <h1 className="text-2xl text-center ">Update hotel {pathSuspend ? 'status' : 'review'}</h1>
+      <h1 className="text-2xl text-center ">
+        Update hotel {pathSuspend ? "status" : "review"}
+      </h1>
       <hr className={``} />
       <form
         className="form-control max-w-3xl mx-auto"
@@ -180,6 +182,48 @@ const EditRenew = () => {
               ) : null}
             </div>
           ) : null}
+          {/*Billing From box */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="From  MM/DD/YYY"
+              name="fromDate"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.fromDate}
+              onChange={formik.handleChange}
+              onBlur={(e) => {
+                e.target.type = "text";
+                formik.handleBlur;
+              }}
+              onFocus={(e) => (e.target.type = "date")}
+            />
+            {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
+              <small className="text-red-600">
+                {formik.touched.fromDate && formik.errors.fromDate}
+              </small>
+            ) : null}
+          </div>
+          {/*Billing To box */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="To  MM/DD/YYY"
+              name="toDate"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.toDate}
+              onChange={formik.handleChange}
+              onBlur={(e) => {
+                e.target.type = "text";
+                formik.handleBlur;
+              }}
+              onFocus={(e) => (e.target.type = "date")}
+            />
+            {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
+              <small className="text-red-600">
+                {formik.touched.toDate && formik.errors.toDate}
+              </small>
+            ) : null}
+          </div>
         </div>
 
         {/* submit button */}
