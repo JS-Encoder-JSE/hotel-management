@@ -1,8 +1,8 @@
 import React from "react";
 import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
-import { useFormik } from "formik";
-import {useNavigate} from "react-router-dom";
+  import { useFormik } from "formik";
+  import {useNavigate} from "react-router-dom";
 
 const AdminOwnerList = () => {
   const navigate = useNavigate()
