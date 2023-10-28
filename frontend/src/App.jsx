@@ -40,7 +40,6 @@ import AddManager from "./pages/OwnerManagerManagement/AddManager.jsx";
 import ManagerList from "./pages/OwnerManagerManagement/ManagerList.jsx";
 import AddHotel from "./pages/Ownerhotel/AddHotel.jsx";
 import HotelLists from "./pages/Ownerhotel/HotelLists.jsx";
-import AdminNewLicens from "./pages/Admin/AdminNewLicens.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
 import RenewList from "./pages/Admin/RenewList.jsx";
 import RenewView from "./pages/Admin/RenewView.jsx";
@@ -49,6 +48,7 @@ import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
 import DashboardRoot from "./pages/DashboardRoot.jsx";
 import Profile from "./pages/profile/index.jsx";
 import EditProfile from "./pages/profile/EditProfile.jsx";
+import AdminNewLicense from "./pages/Admin/AdminNewLicense.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -306,10 +306,10 @@ const App = () => {
 
             // Admin sidebar
             {
-              path: "new-licens",
+              path: "new-license",
               element: (
                 <AdminRoute>
-                  <AdminNewLicens />
+                  <AdminNewLicense />
                 </AdminRoute>
               ),
             },
