@@ -74,10 +74,10 @@ const AdminSBItems = ({ handleSBItems }) => {
             (isActive ? " bg-gray-300" : "")
           }
         >
-            <div className={`flex space-x-1.5`}>
-              <MdOutlineLockClock />
-              <span className={`-mt-0.5`}>Suspend & Lock List</span>
-            </div>
+          <div className={`flex space-x-1.5`}>
+            <MdOutlineLockClock />
+            <span className={`-mt-0.5`}>Suspend & Lock List</span>
+          </div>
         </NavLink>
       </li>
       <li className={`group p-2`}>
@@ -96,7 +96,30 @@ const AdminSBItems = ({ handleSBItems }) => {
             <MdKeyboardArrowUp />
           </span>
         </div>
-        <ul className={`group-[.active]:block hidden`}></ul>
+        <ul className={`group-[.active]:block hidden`}>
+          <li>
+            <NavLink
+              to={`/dashboard/add-sub-admin`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Add Sub Admin
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/sub-admin-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Sub Admin List
+            </NavLink>
+          </li>
+        </ul>
       </li>
       <li className={`group p-2`}>
         <div

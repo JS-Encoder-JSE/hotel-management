@@ -52,6 +52,11 @@ import AdminNewLicense from "./pages/Admin/AdminNewLicense.jsx";
 import SuspendAndLockList from "./pages/Admin/SuspendAndLockList.jsx";
 import EditRenew from "./pages/Admin/EditRenew.jsx";
 import ManagerListView from "./pages/OwnerManagerManagement/ManagerListView.jsx";
+import AddSubAdmin from "./pages/Admin/AddSubAdmin.jsx";
+import SubAdminList from "./pages/Admin/SubAdminList.jsx";
+import SubAdminListView from "./pages/Admin/SubAdminListView.jsx";
+import SubAdminProfile from "./pages/Admin/SubAdminProfile.jsx";
+import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 
 import ReportView from "./pages/report/ReportView.jsx";
 
@@ -376,6 +381,14 @@ const App = () => {
               ),
             },
             {
+              path: "suspend-lock-management/:id",
+              element: (
+                <AdminRoute>
+                  <EditRenew />
+                </AdminRoute>
+              ),
+            },
+            {
               path: "suspend-lock-list",
               element: (
                 <AdminRoute>
@@ -384,10 +397,42 @@ const App = () => {
               ),
             },
             {
-              path: "suspend-lock-management/:id",
+              path: "add-sub-admin",
               element: (
                 <AdminRoute>
-                  <EditRenew />
+                  <AddSubAdmin />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "sub-admin-list",
+              element: (
+                <AdminRoute>
+                  <SubAdminList />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "sub-admin-list-view/:id",
+              element: (
+                <AdminRoute>
+                  <SubAdminListView />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "sub-admin-profile/:id",
+              element: (
+                <AdminRoute>
+                  <SubAdminProfile />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "sub-admin-profile/:id/edit",
+              element: (
+                <AdminRoute>
+                  <SubAdminChangePass />
                 </AdminRoute>
               ),
             },
