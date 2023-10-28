@@ -7,6 +7,7 @@ import {
   MdOutlineFoodBank,
   MdOutlineInventory2,
   MdOutlineKitchen,
+  MdOutlineLockClock,
   MdOutlineMeetingRoom,
 } from "react-icons/md";
 
@@ -20,7 +21,7 @@ const AdminSBItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineMeetingRoom />
-            <span className={`-mt-0.5`}>Software license and Sale </span>
+            <span className={`-mt-0.5`}>Software License and Sale </span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
@@ -64,6 +65,20 @@ const AdminSBItems = ({ handleSBItems }) => {
             </NavLink>
           </li>
         </ul>
+      </li>
+      <li className={`group p-2`}>
+        <NavLink
+          to={`/dashboard/suspend-lock-list`}
+          className={({ isActive }) =>
+            "flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500 rounded-lg p-2" +
+            (isActive ? " bg-gray-300" : "")
+          }
+        >
+            <div className={`flex space-x-1.5`}>
+              <MdOutlineLockClock />
+              <span className={`-mt-0.5`}>Suspend & Lock List</span>
+            </div>
+        </NavLink>
       </li>
       <li className={`group p-2`}>
         <div

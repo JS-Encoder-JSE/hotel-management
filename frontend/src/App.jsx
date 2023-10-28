@@ -48,6 +48,7 @@ import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
 import DashboardRoot from "./pages/DashboardRoot.jsx";
 import AdminNewLicense from "./pages/Admin/AdminNewLicense.jsx";
+import SuspendAndLockList from "./components/sidebar/SuspendAndLockList.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -338,6 +339,14 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <AdminOwnerView />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "suspend-lock-list",
+              element: (
+                <AdminRoute>
+                  <SuspendAndLockList />
                 </AdminRoute>
               ),
             },
