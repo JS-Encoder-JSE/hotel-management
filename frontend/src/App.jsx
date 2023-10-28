@@ -52,7 +52,7 @@ import AdminNewLicense from "./pages/Admin/AdminNewLicense.jsx";
 import SuspendAndLockList from "./pages/Admin/SuspendAndLockList.jsx";
 import EditRenew from "./pages/Admin/EditRenew.jsx";
 import ManagerListView from "./pages/OwnerManagerManagement/ManagerListView.jsx";
-
+import AddSubAdmin from "./pages/Admin/AddSubAdmin.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -367,6 +367,14 @@ const App = () => {
               ),
             },
             {
+              path: "suspend-lock-management/:id",
+              element: (
+                <AdminRoute>
+                  <EditRenew />
+                </AdminRoute>
+              ),
+            },
+            {
               path: "suspend-lock-list",
               element: (
                 <AdminRoute>
@@ -375,10 +383,10 @@ const App = () => {
               ),
             },
             {
-              path: "suspend-lock-management/:id",
+              path: "add-sub-admin",
               element: (
                 <AdminRoute>
-                  <EditRenew />
+                  <AddSubAdmin />
                 </AdminRoute>
               ),
             },
