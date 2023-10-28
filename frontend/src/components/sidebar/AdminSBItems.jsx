@@ -87,7 +87,7 @@ const AdminSBItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineKitchen />
-            <span className={`-mt-0.5`}>Sub Admin Management</span>
+            <span className={`-mt-0.5`}>Sub Admin Section</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />

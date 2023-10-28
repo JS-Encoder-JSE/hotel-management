@@ -63,8 +63,8 @@ const AdminOwnerView = () => {
                   >
                     <FaEdit />
                   </button>
-                  <dialog id="my_modal_3" className="modal w-full">
-                    <div className="modal-box max-w-[800px]">
+                  <dialog id="my_modal_3" className="modal ">
+                    <div className="modal-box bg-white max-w-[700px]">
                      
                       <div>
                          <form method="dialog">
@@ -74,7 +74,7 @@ const AdminOwnerView = () => {
                       </form>
                         {/* Modal  Table information Start */}
                         <div className="card w-full bg-white shadow-xl mt-10 p-3 ">
-                          {/* Quntity Of hotel management */}
+                       
                           <div className="flex gap-5 mt-2">
                             <h2 className="mt-1">Number Of Hotels :</h2>
                             <div>

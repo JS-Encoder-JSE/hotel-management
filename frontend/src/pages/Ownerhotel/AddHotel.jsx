@@ -11,7 +11,7 @@ const validationSchema = yup.object({
   phoneNumber: yup.string().required("Phone Number size is required"),
   license: yup.string().required("License Number is required"),
   branchName: yup.string().required("Branch Name is required"),
-  category: yup.string().required("Manager Name is required"),
+  manager: yup.string().required("Manager Name is required"),
 });
 
 const AddHotel = () => {
@@ -25,7 +25,7 @@ const AddHotel = () => {
       phoneNumber: "",
       license: "",
       branchName: "",
-      category: ""
+      manager: ""
 
     },
     validationSchema,
@@ -169,12 +169,12 @@ const AddHotel = () => {
               ) : null}
             </div>
 
-            {/* category box */}
+            {/* Manager box */}
             <div className="flex flex-col gap-3">
               <select
-                name="category"
+                name="manager"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-                value={formik.values.category}
+                value={formik.values.manager}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               >
@@ -186,9 +186,9 @@ const AddHotel = () => {
                 <option value="manager3">Manager 3</option>
                 <option value="manager4">Manager 4</option>
               </select>
-              {formik.touched.category && Boolean(formik.errors.category) ? (
+              {formik.touched.manager && Boolean(formik.errors.manager) ? (
                 <small className="text-red-600">
-                  {formik.touched.category && formik.errors.category}
+                  {formik.touched.manager && formik.errors.manager}
                 </small>
               ) : null}
             </div>
