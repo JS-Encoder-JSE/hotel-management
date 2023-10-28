@@ -46,8 +46,9 @@ import RenewList from "./pages/Admin/RenewList.jsx";
 import RenewView from "./pages/Admin/RenewView.jsx";
 import AdminOwnerList from "./pages/Admin/AdminOwnerList.jsx";
 import AdminOwnerView from "./components/Admin/AdminOwnerView.jsx";
-import Profile from "./pages/Profile/Profile.jsx";
 import DashboardRoot from "./pages/DashboardRoot.jsx";
+import Profile from "./pages/profile/index.jsx";
+import EditProfile from "./pages/profile/EditProfile.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -78,6 +79,10 @@ const App = () => {
             {
               path: "profile",
               element: <Profile />,
+            },
+            {
+              path: "profile/edit",
+              element: <EditProfile />,
             },
 
             // Manager Sidebar
