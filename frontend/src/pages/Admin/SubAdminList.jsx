@@ -53,7 +53,7 @@ const SubAdminList = () => {
                             <GrView />
                           </span>
                         </Link>
-                        <Link to={`/dashboard/manager-edit/${idx}`}>
+                        <Link to={`/dashboard/sub-admin-profile/${idx}`}>
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                           >

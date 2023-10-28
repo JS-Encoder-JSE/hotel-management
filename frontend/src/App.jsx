@@ -55,6 +55,7 @@ import ManagerListView from "./pages/OwnerManagerManagement/ManagerListView.jsx"
 import AddSubAdmin from "./pages/Admin/AddSubAdmin.jsx";
 import SubAdminList from "./pages/Admin/SubAdminList.jsx";
 import SubAdminListView from "./pages/Admin/SubAdminListView.jsx";
+import SubAdminProfile from "./pages/Admin/SubAdminProfile.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -405,6 +406,22 @@ const App = () => {
               element: (
                 <AdminRoute>
                   <SubAdminListView />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "sub-admin-profile/:id",
+              element: (
+                <AdminRoute>
+                  <SubAdminProfile />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "sub-admin-profile/:id/edit",
+              element: (
+                <AdminRoute>
+                  <SubAdminProfile />
                 </AdminRoute>
               ),
             },
