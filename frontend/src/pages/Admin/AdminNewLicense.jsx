@@ -21,7 +21,7 @@ const validationSchema = yup.object({
 
 });
 
-const AdminNewLicens = () => {
+const AdminNewLicense = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -270,4 +270,4 @@ const AdminNewLicens = () => {
   );
 };
 
-export default AdminNewLicens;
+export default AdminNewLicense;
