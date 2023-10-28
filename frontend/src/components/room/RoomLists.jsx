@@ -62,7 +62,7 @@ const RoomLists = () => {
                     <FaEdit />
                   </span>
                   <span
-                    className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                    className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                     title={`Delete`}
                   >
                     <FaTrash />

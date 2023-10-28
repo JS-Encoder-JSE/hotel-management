@@ -49,6 +49,7 @@ import DashboardRoot from "./pages/DashboardRoot.jsx";
 import Profile from "./pages/profile/index.jsx";
 import EditProfile from "./pages/profile/EditProfile.jsx";
 import AdminNewLicense from "./pages/Admin/AdminNewLicense.jsx";
+import ReportView from "./pages/report/ReportView.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -236,6 +237,14 @@ const App = () => {
                 <ManagerRoute>
                   <SalesProfitReport />
                 </ManagerRoute>
+              ),
+            },
+            {
+              path: "report/view",
+              element: (
+                  <ManagerRoute>
+                    <ReportView />
+                  </ManagerRoute>
               ),
             },
             {

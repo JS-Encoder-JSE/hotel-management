@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import FoodLists from "../../components/restaurant/FoodLists.jsx";
 import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/restaurant/ConfirmOrder.jsx";
+import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
 });
 
+const foods = [
+  {
+    id: 1,
+    name: "Basmati Kacchi",
+    price: 200,
+    img: "https://www.upoharbd.com/images/uploads/Food/kacchi_vai_basmati.jpg",
+  },
+  {
+    id: 2,
+    name: "The Mughal Empire Kacchi",
+    price: 340,
+    img: "https://www.upoharbd.com/images/uploads/Food/mughal_kacchi_lover.jpg",
+  },
+  {
+    id: 3,
+    name: "Mughal Empire Basmati Kacchi",
+    price: 450,
+    img: "https://www.upoharbd.com/images/uploads/Food/mughal_Basmati_kacchi.jpg",
+  },
+];
+
 const AddOrder = () => {
+  const { order } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
     initialValues: {
       roomNumber: "",
@@ -51,7 +74,9 @@ const AddOrder = () => {
           <button
             onClick={() => window.fp_modal.showModal()}
             type={`button`}
-            className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case "
+            className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
+              !order.foods.length ? "opacity-50 pointer-events-none" : ""
+            }`}
           >
             Confirm Order
           </button>
@@ -65,7 +90,7 @@ const AddOrder = () => {
           />
         </div>
       </div>
-      <FoodLists />
+      <FoodLists foods={foods} />
       <Modal id={`fp_modal`}>
         <ConfirmOrder />
       </Modal>
