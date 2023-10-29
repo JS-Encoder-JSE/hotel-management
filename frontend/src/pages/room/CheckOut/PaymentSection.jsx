@@ -6,6 +6,7 @@ import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 
 const PaymentSection = () => {
   const animatedComponents = makeAnimated();
+
   const [paymentList, setPaymentList] = useState(1);
   const [selectMobilePayment, setSelectMobilePayment] = useState(false);
   const [selectCashPayment, setSelectCashPayment] = useState(true);
@@ -173,9 +174,9 @@ const PaymentSection = () => {
                   key={index}
                   disabled={paymentList === 1}
                   onClick={() => setPaymentList((prev) => prev - 1)}
-                  className={`${
-                    !selectCashPayment ? "mb-[140px]" : "mb-20"
-                  } ${paymentList === 1 && 'opacity-40'} border border-green-slimy hover:bg-green-slimy text-green-slimy hover:text-white duration-300 text-xl p-1 rounded w-fit`}
+                  className={`${!selectCashPayment ? "mb-[140px]" : "mb-20"} ${
+                    paymentList === 1 && "opacity-40"
+                  } border border-green-slimy hover:bg-green-slimy text-green-slimy hover:text-white duration-300 text-xl p-1 rounded w-fit`}
                 >
                   <AiOutlineCloseCircle />
                 </button>
@@ -187,7 +188,9 @@ const PaymentSection = () => {
             <button
               onClick={() => setPaymentList((prev) => prev + 1)}
               disabled={paymentList === 3}
-              className={`border border-green-slimy hover:bg-green-slimy text-3xl text-green-slimy hover:text-white duration-300 rounded ${paymentList === 3 && 'opacity-40'}`}
+              className={`border border-green-slimy hover:bg-green-slimy text-3xl text-green-slimy hover:text-white duration-300 rounded ${
+                paymentList === 3 && "opacity-40"
+              }`}
             >
               <AiOutlinePlus />
             </button>
