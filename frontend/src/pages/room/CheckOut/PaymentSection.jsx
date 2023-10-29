@@ -8,7 +8,6 @@ const PaymentSection = () => {
   const animatedComponents = makeAnimated();
 
   const [paymentList, setPaymentList] = useState(1);
-  const [selectMobilePayment, setSelectMobilePayment] = useState(false);
   const [selectCashPayment, setSelectCashPayment] = useState(true);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
@@ -28,28 +27,15 @@ const PaymentSection = () => {
     { value: "Card Payment", label: "Card Payment" },
   ];
 
-  const bankList = [
-    { value: "null", label: "Choose Bank Name" },
-    { value: "Dhaka Bank", label: "Dhaka Bank" },
-    { value: "Bank Alfarah", label: "Bank Alfarah" },
-    { value: "Bank AlFalah", label: "Bank AlFalah" },
-    { value: "Standard Bank", label: "Standard Bank" },
-    { value: "State Bank", label: "State Bank" },
-    { value: "DBBL", label: "DBBL" },
-    { value: "AIBL", label: "AIBL" },
-  ];
-
   // BackDoor -----> After adding more than 1 payment method all filed are using same state...
   const handlePaymentMode = (e) => {
     let value = e.value;
 
     if (value === "Mobile Banking") {
-      setSelectMobilePayment(true);
       setSelectCashPayment(false);
     } else if (value === "Cash Payment" || value === "null") {
       setSelectCashPayment(true);
     } else {
-      setSelectMobilePayment(false);
       setSelectCashPayment(false);
     }
   };
@@ -61,10 +47,9 @@ const PaymentSection = () => {
     setCollectedAmount(value);
     setChangeAmount(value - remainAmount);
 
-    if(value >= remainAmount){
+    if (value >= remainAmount) {
       setCheckoutBtn(false);
-    }
-    else{
+    } else {
       setCheckoutBtn(true);
     }
   };
@@ -123,31 +108,17 @@ const PaymentSection = () => {
                       options={paymentModeList}
                       onChange={handlePaymentMode}
                       placeholder="Choose Payment Mode"
-                      className={`text-xs ${
-                        !selectCashPayment ? "mt-5" : "mb-[70px]"
-                      }`}
+                      className={`text-xs ${selectCashPayment && "mb-[70px]"}`}
                     />
                   </div>
                   <div>
                     {!selectCashPayment && (
-                      <div>
-                        <input
-                          type="number"
-                          required
-                          placeholder={
-                            selectMobilePayment
-                              ? "Mobile Number"
-                              : "Card Number"
-                          }
-                          className={`input-hide_Arrows w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
-                        />
-                        <input
-                          type="number"
-                          required
-                          placeholder="Transaction ID"
-                          className={`input-hide_Arrows w-full mt-5 outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
-                        />
-                      </div>
+                      <input
+                        type="number"
+                        required
+                        placeholder="Transaction ID"
+                        className={`hide-number-arrow-input input-hide_Arrows w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
+                      />
                     )}
                   </div>
                 </React.Fragment>
@@ -167,22 +138,13 @@ const PaymentSection = () => {
                     />
                   </div>
                   <div>
-                    {!selectCashPayment ? (
-                      <Select
-                        components={animatedComponents}
-                        options={bankList}
-                        placeholder="Choose Bank Name"
-                        className="text-xs whitespace-nowrap mb-[75px]"
-                      />
-                    ) : (
-                      <input
-                        type="date"
-                        name={`startDate`}
-                        className={`input input-sm input-bordered rounded focus:outline-none w-full mt-1`}
-                        value={formik.values.startDate}
-                        onChange={formik.handleChange}
-                      />
-                    )}
+                    <input
+                      type="date"
+                      name={`startDate`}
+                      className={`input input-sm input-bordered rounded focus:outline-none w-full mt-1`}
+                      value={formik.values.startDate}
+                      onChange={formik.handleChange}
+                    />
                   </div>
                 </React.Fragment>
               ))}
@@ -194,7 +156,7 @@ const PaymentSection = () => {
                   key={index}
                   disabled={paymentList === 1}
                   onClick={() => setPaymentList((prev) => prev - 1)}
-                  className={`${!selectCashPayment ? "mb-[140px]" : "mb-20"} ${
+                  className={`mb-20 ${
                     paymentList === 1 && "opacity-40"
                   } border border-green-slimy hover:bg-green-slimy text-green-slimy hover:text-white duration-300 text-xl p-1 rounded w-fit`}
                 >
@@ -266,7 +228,10 @@ const PaymentSection = () => {
               <p>$ {remainAmount.toFixed(2)}</p>
               <p>$ {collectedAmount.toFixed(2)}</p>
               <p>
-                $ {collectedAmount > remainAmount ? changeAmount.toFixed(2) : '0.00'}
+                ${" "}
+                {collectedAmount > remainAmount
+                  ? changeAmount.toFixed(2)
+                  : "0.00"}
               </p>
             </div>
           </div>
