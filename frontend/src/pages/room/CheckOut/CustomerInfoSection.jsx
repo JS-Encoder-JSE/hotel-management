@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 const CustomerInfoSection = ({ selectedRooms }) => {
-  //   console.log(selectedRooms);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState(
     new Array(selectedRooms.length).fill(true)
   );
@@ -11,9 +10,6 @@ const CustomerInfoSection = ({ selectedRooms }) => {
     updatedCheckboxes[index] = !updatedCheckboxes[index];
     setSelectedCheckboxes(updatedCheckboxes);
   };
-
-  //   console.log(selectedRooms.length);
-  //   console.log(selectedCheckboxes);
 
   return (
     <section className="grid lg:grid-cols-2 gap-5">
