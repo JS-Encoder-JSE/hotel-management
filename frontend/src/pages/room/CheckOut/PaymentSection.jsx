@@ -10,6 +10,10 @@ const PaymentSection = () => {
   const [paymentList, setPaymentList] = useState(1);
   const [selectMobilePayment, setSelectMobilePayment] = useState(false);
   const [selectCashPayment, setSelectCashPayment] = useState(true);
+  const [checkoutBtn, setCheckoutBtn] = useState(true);
+  const [remainAmount, setRemainAmount] = useState(5493.0);
+  const [collectedAmount, setCollectedAmount] = useState(0);
+  const [changeAmount, setChangeAmount] = useState(collectedAmount);
 
   const formik = useFormik({
     initialValues: {
@@ -47,6 +51,21 @@ const PaymentSection = () => {
     } else {
       setSelectMobilePayment(false);
       setSelectCashPayment(false);
+    }
+  };
+
+  const handleAmount = (e) => {
+    const parseValue = parseFloat(e.target.value);
+    const fixedValue = parseValue.toFixed(2);
+    const value = parseFloat(fixedValue);
+    setCollectedAmount(value);
+    setChangeAmount(value - remainAmount);
+
+    if(value >= remainAmount){
+      setCheckoutBtn(false);
+    }
+    else{
+      setCheckoutBtn(true);
     }
   };
 
@@ -143,7 +162,8 @@ const PaymentSection = () => {
                       type="number"
                       required
                       placeholder="Amount"
-                      className={`w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
+                      onChange={handleAmount}
+                      className={`w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500 hide-number-arrow-input`}
                     />
                   </div>
                   <div>
@@ -243,19 +263,26 @@ const PaymentSection = () => {
               <p>Change Amt.</p>
             </div>
             <div className="col-span-2 space-y-3">
-              <p>$5646.00</p>
-              <p>$0</p>
-              <p>$0</p>
+              <p>$ {remainAmount.toFixed(2)}</p>
+              <p>$ {collectedAmount.toFixed(2)}</p>
+              <p>
+                $ {collectedAmount > remainAmount ? changeAmount.toFixed(2) : '0.00'}
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       <div className="flex justify-end gap-2 mt-5">
-        <button className="p-2 bg-[#28a745] text-xl text-white duration-300 rounded">
+        <button className="p-2 bg-[#28a745] text-xl text-white duration-300 rounded active:scale-90">
           Print
         </button>
-        <button className="p-2 bg-[#64bece] text-xl text-white duration-300 rounded">
+        <button
+          disabled={checkoutBtn}
+          className={`p-2 bg-[#64bece] text-xl text-white duration-300 rounded active:scale-90 ${
+            checkoutBtn && "opacity-40 active:scale-100"
+          }`}
+        >
           Checkout
         </button>
       </div>
