@@ -15,7 +15,7 @@ const BillingSection = () => {
     }
 
     // Problem to getting the value of discount if it set to true from the if else condition (handleDiscount())
-    console.log(discount);
+    // console.log(discount);
 
     return (
         <section className='grid lg:grid-cols-3 gap-5'>

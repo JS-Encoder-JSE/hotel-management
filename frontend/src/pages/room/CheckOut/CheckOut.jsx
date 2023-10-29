@@ -14,18 +14,18 @@ const CheckOut = () => {
     // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
     const roomList = [
         // { value: '', label: 'Room Select' },
-        { value: '1', label: '1 - Chocolate' },
-        { value: '2', label: '2 - Strawberry' },
-        { value: '3', label: '3 - Shake' },
-        { value: '4', label: '4 - AC' },
-        { value: '5', label: '5 - None AC' },
-        { value: '6', label: '6 - Fan' },
-        { value: '7', label: '7 - Deluxe' },
-        { value: '8', label: '8 - None-Deluxe' },
-        { value: '9', label: '9 - Couple' },
-        { value: '10', label: '10 - Anniversary' },
-        { value: '11', label: '11 - Official' },
-        { value: '12', label: '12 - VIP' },
+        { value: '1 - Chocolate', label: '1 - Chocolate' },
+        { value: '2 - Strawberry', label: '2 - Strawberry' },
+        { value: '3 - Shake', label: '3 - Shake' },
+        { value: '4 - AC', label: '4 - AC' },
+        { value: '5 - None AC', label: '5 - None AC' },
+        { value: '6 - Fan', label: '6 - Fan' },
+        { value: '7 - Deluxe', label: '7 - Deluxe' },
+        { value: '8 - None-Deluxe', label: '8 - None-Deluxe' },
+        { value: '9 - Couple', label: '9 - Couple' },
+        { value: '10 - Anniversary', label: '10 - Anniversary' },
+        { value: '11 - Official', label: '11 - Official' },
+        { value: '12 - VIP', label: '12 - VIP' },
     ]
 
     const handleSearchRoom = e => {
