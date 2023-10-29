@@ -108,7 +108,7 @@ const PaymentSection = () => {
                       options={paymentModeList}
                       onChange={handlePaymentMode}
                       placeholder="Choose Payment Mode"
-                      className={`text-xs ${selectCashPayment && 'mb-[70px]'}`}
+                      className={`text-xs ${selectCashPayment && "mb-[70px]"}`}
                     />
                   </div>
                   <div>
