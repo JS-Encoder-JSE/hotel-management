@@ -40,8 +40,8 @@ const SubAdminListView = () => {
           </div>
           <div className="">
             <h2 className="card-title mb-3">Sub Admin Other Information </h2>
-            <h6> Sub Admin Joint Date :12-10-2023 </h6>
-            <h6> Sub Admin Salary :12-10-2023 </h6>
+            <h6> Sub Admin Joint Date : 12-10-2023 </h6>
+            <h6> Sub Admin Salary : 20,000 </h6>
             <h6>Status : Active</h6>
           </div>
         </div>
