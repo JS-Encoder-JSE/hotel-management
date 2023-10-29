@@ -65,7 +65,7 @@ const CheckOut = () => {
             {showRooms &&
                 <>
                     <CustomerInfoSection selectedRooms={selectedRooms} />
-                    <RoomDetailsSection />
+                    <RoomDetailsSection selectedRooms={selectedRooms} />
                     <BillingSection />
                     <PaymentSection />
                 </>

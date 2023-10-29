@@ -12,6 +12,9 @@ const CustomerInfoSection = ({ selectedRooms }) => {
     setSelectedCheckboxes(updatedCheckboxes);
   };
 
+  //   console.log(selectedRooms.length);
+  //   console.log(selectedCheckboxes);
+
   return (
     <section className="grid lg:grid-cols-2 gap-5">
       {/* Left Side */}
@@ -53,7 +56,7 @@ const CustomerInfoSection = ({ selectedRooms }) => {
       </div>
 
       {/* Right Side */}
-      <div className="bg-white rounded">
+      <div className="bg-white rounded custom-scroll-bar">
         <h3 className="p-5 text-xl">Room List</h3>
         <hr />
         <div className="p-5 max-h-[450px] overflow-y-scroll">
