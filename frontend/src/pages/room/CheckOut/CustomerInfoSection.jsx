@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
 const CustomerInfoSection = ({ selectedRooms }) => {
-  console.log(selectedRooms);
+  //   console.log(selectedRooms);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState(
+    new Array(selectedRooms.length).fill(true)
+  );
+
+  const toggleCheckbox = (index) => {
+    const updatedCheckboxes = [...selectedCheckboxes];
+    updatedCheckboxes[index] = !updatedCheckboxes[index];
+    setSelectedCheckboxes(updatedCheckboxes);
+  };
 
   return (
     <section className="grid lg:grid-cols-2 gap-5">
@@ -55,9 +64,10 @@ const CustomerInfoSection = ({ selectedRooms }) => {
             >
               <React.Fragment>
                 <input
-                  type="radio"
-                  name="radio-default-customer"
-                  className="radio radio-primary"
+                  type="checkbox"
+                  className="checkbox checkbox-primary"
+                  checked={selectedCheckboxes[index]}
+                  onChange={() => toggleCheckbox(index)}
                 />
                 <div>
                   <p className="text-sm opacity-80">{room}</p>
