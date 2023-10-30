@@ -6,6 +6,8 @@ import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
+import Select from "react-select";
+
 
 const Report = () => {
   const navigate = useNavigate();
@@ -16,6 +18,13 @@ const Report = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
+
+
+  const options = [
+    {value: 'total-renew', label: 'Total-Renew'},
+    {value: 'total-sale', label: 'Total-Sale'},
+    {value: 'total-expired', label: 'Total-Expired'},
+  ]  
 
   const formik = useFormik({
     initialValues: {
@@ -34,34 +43,50 @@ const Report = () => {
     XLSX.writeFile(wb, `${name}.xlsx`);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
         <h3 className={`text-xl font-semibold`}>Search Report</h3>
         <hr className={`my-5`} />
-        <div className={`space-x-3`}>
-          <span>From</span>
-          <input
-            type="date"
-            name={`startDate`}
-            className={`input input-sm input-bordered rounded focus:outline-none`}
-            value={formik.values.startDate}
-            onChange={formik.handleChange}
-          />
-          <span>To</span>
-          <input
-            type="date"
-            name={`endDate`}
-            className={`input input-sm input-bordered rounded focus:outline-none`}
-            value={formik.values.endDate}
-            onChange={formik.handleChange}
-          />
-          <button
-            type={"button"}
-            className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-          >
-            Search
-          </button>
+        <div className="flex justify-between">
+          <div className={`space-x-3`}>
+            <span>From</span>
+            <input
+              type="date"
+              name={`startDate`}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              value={formik.values.startDate}
+              onChange={formik.handleChange}
+            />
+            <span>To</span>
+            <input
+              type="date"
+              name={`endDate`}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              value={formik.values.endDate}
+              onChange={formik.handleChange}
+            />
+            <button
+              type={"button"}
+              className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+            >
+              Search
+            </button>
+          </div>
+          <div className="w-fit">
+            <Select
+              options={options}
+              placeholder="Filter"
+              // onChange={(e) => handleSearchRoom(e)}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
         </div>
       </div>
       <div className={`bg-white px-10 py-5 rounded`}>
@@ -127,6 +152,8 @@ const Report = () => {
                   <th>Phone Number</th>
                   <th>Purchase Date</th>
                   <th>Expired Date</th>
+                  <th>Hotels Have</th>
+                  <th>Hotel Limits</th>
                   <th>Paid Amount</th>
                 </tr>
               </thead>
@@ -145,6 +172,8 @@ const Report = () => {
                       <td>
                         2023-10-21 <br /> 10:00:00
                       </td>
+                      <td>5</td>
+                      <td>2</td>
                       <td>25000</td>
                     </tr>
                   );
