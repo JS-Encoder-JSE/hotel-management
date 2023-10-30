@@ -11,6 +11,8 @@ import {
 } from "react-icons/md";
 import { TbReplaceFilled } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 // form validation
 const validationSchema = yup.object({
@@ -28,11 +30,6 @@ const validationSchema = yup.object({
     .required("Floor number is required")
     .positive("Floor number must be a positive")
     .integer("Floor number must be an integer"),
-  roomNumber: yup
-    .number()
-    .required("Room number is required")
-    .positive("Room number must be a positive")
-    .integer("Room number must be an integer"),
   description: yup
     .string()
     .required("Description is required")
@@ -42,6 +39,31 @@ const validationSchema = yup.object({
 const EditRoom = () => {
   const navigate = useNavigate();
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedRooms, setSelectedRooms] = useState([]);
+  const animatedComponents = makeAnimated();
+
+  // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
+  const roomList = [
+    // { value: '', label: 'Room Select' },
+    { value: "1 - Chocolate", label: "1 - Chocolate" },
+    { value: "2 - Strawberry", label: "2 - Strawberry" },
+    { value: "3 - Shake", label: "3 - Shake" },
+    { value: "4 - AC", label: "4 - AC" },
+    { value: "5 - None AC", label: "5 - None AC" },
+    { value: "6 - Fan", label: "6 - Fan" },
+    { value: "7 - Deluxe", label: "7 - Deluxe" },
+    { value: "8 - None-Deluxe", label: "8 - None-Deluxe" },
+    { value: "9 - Couple", label: "9 - Couple" },
+    { value: "10 - Anniversary", label: "10 - Anniversary" },
+    { value: "11 - Official", label: "11 - Official" },
+    { value: "12 - VIP", label: "12 - VIP" },
+  ];
+
+  const handleSearchRoom = (e) => {
+    const rooms = e.map((i) => i.value);
+    setSelectedRooms(rooms);
+  };
+
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -50,7 +72,6 @@ const EditRoom = () => {
       price: "",
       bedSize: "",
       floorNumber: "",
-      roomNumber: "",
       photos: null,
       description: "",
     },
@@ -179,24 +200,14 @@ const EditRoom = () => {
         </div>
         {/* category box */}
         <div className="flex flex-col gap-3">
-          <select
-            name="category"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.category}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Category
-            </option>
-            <option value="general">General</option>
-            <option value="deluxe">Deluxe</option>
-          </select>
-          {formik.touched.category && Boolean(formik.errors.category) ? (
-            <small className="text-red-600">
-              {formik.touched.category && formik.errors.category}
-            </small>
-          ) : null}
+          <Select
+            closeMenuOnSelect={false}
+            components={animatedComponents}
+            isMulti
+            options={roomList}
+            placeholder="Room Select"
+            onChange={(e) => handleSearchRoom(e)}
+          />
         </div>
         {/* type box */}
         <div className="flex flex-col gap-3">
