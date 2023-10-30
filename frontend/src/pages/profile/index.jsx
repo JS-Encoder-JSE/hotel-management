@@ -57,7 +57,7 @@ const Profile = () => {
                 type="file"
                 accept="image/*"
                 id="fileInput"
-                style={{ display: "none" }}
+                className="hidden"
                 onChange={handleImageUpload}
               />
             </button>
