@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const HotelLists = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [hotelsPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
+
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -49,24 +58,33 @@ const HotelLists = () => {
         <table className="table border">
           <thead>
             <tr>
-            <th>Sl</th>
-            <th>Hotel Name</th>
-                  <th>Hotel <br /> Address</th>
-                  <th className="text-center">Hotel <br /> Email</th>
-                  <th>Phone <br /> Number</th>
-                  {/* <th>License <br /> Number</th> */}
-                  <th> Branch <br /> Name</th>
-                  <th> Manager</th>
-                  <th>Action</th>
+              <th>Sl</th>
+              <th>Hotel Name</th>
+              <th>
+                Hotel <br /> Address
+              </th>
+              <th className="text-center">
+                Hotel <br /> Email
+              </th>
+              <th>
+                Phone <br /> Number
+              </th>
+              {/* <th>License <br /> Number</th> */}
+              <th>
+                {" "}
+                Branch <br /> Name
+              </th>
+              <th> Manager</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {[...Array(10)].map((_,idx) => {
+            {[...Array(10)].map((_, idx) => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <th> {++idx}</th>
                   <td className="font-bold">Jon Doe</td>
-                  <td >Kolkata</td>
+                  <td>Kolkata</td>
                   <td>jondoe@gmail.com</td>
                   <td>+98825456</td>
                   {/* <td>123456</td> */}
@@ -90,6 +108,25 @@ const HotelLists = () => {
             })}
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-center mt-10">
+        <ReactPaginate
+          containerClassName="join rounded-none"
+          pageLinkClassName="join-item btn btn-md bg-transparent"
+          activeLinkClassName="btn-active !bg-green-slimy text-white"
+          disabledLinkClassName="btn-disabled"
+          previousLinkClassName="join-item btn btn-md bg-transparent"
+          nextLinkClassName="join-item btn btn-md bg-transparent"
+          breakLinkClassName="join-item btn btn-md bg-transparent"
+          previousLabel="<"
+          nextLabel=">"
+          breakLabel="..."
+          pageCount={pageCount}
+          pageRangeDisplayed={2}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageClick}
+          renderOnZeroPageCount={null}
+        />
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ const Profile = () => {
             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded-md normal-case"
             onClick={() => navigate("edit")}
           >
-            Edit
+            Change Password
           </button>
         </div>
       </div>

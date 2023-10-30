@@ -1,9 +1,11 @@
 import React from "react";
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import StatusSettings from "./StatusSettings.jsx";
+import Modal from "../../components/Modal.jsx";
 
 const ManagerListView = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div>
       <div className="card w-full bg-white shadow-xl p-5">
@@ -29,10 +31,16 @@ const ManagerListView = () => {
             <h2 className="card-title mb-3">Manager Other Information </h2>
             <h6> Manager Joint Date :12-10-2023 </h6>
             <h6> Manager Salary :12-10-2023 </h6>
-            <h6>Status : Active</h6>
+            <h6 className={`flex space-x-1.5`}>
+              <span>Status : Active</span>
+              <span className={`cursor-pointer hover:text-green-slimy`} onClick={() => window.ol_modal.showModal()}><FaEdit /></span>
+            </h6>
           </div>
         </div>
       </div>
+      <Modal id={`ol_modal`}>
+        <StatusSettings />
+      </Modal>
     </div>
   );
 };

@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEye, FaFileInvoice } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
+import ReactPaginate from "react-paginate";
 
 const Report = () => {
   const navigate = useNavigate();
+  const [reportsPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
+
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -150,6 +159,25 @@ const Report = () => {
                 </tr>
               </tfoot>
             </table>
+          </div>
+          <div className="flex justify-center mt-10">
+            <ReactPaginate
+              containerClassName="join rounded-none"
+              pageLinkClassName="join-item btn btn-md bg-transparent"
+              activeLinkClassName="btn-active !bg-green-slimy text-white"
+              disabledLinkClassName="btn-disabled"
+              previousLinkClassName="join-item btn btn-md bg-transparent"
+              nextLinkClassName="join-item btn btn-md bg-transparent"
+              breakLinkClassName="join-item btn btn-md bg-transparent"
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel="..."
+              pageCount={pageCount}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              onPageChange={handlePageClick}
+              renderOnZeroPageCount={null}
+            />
           </div>
         </div>
       </div>
