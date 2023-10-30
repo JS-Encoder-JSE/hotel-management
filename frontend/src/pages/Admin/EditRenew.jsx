@@ -232,6 +232,7 @@ const EditRenew = () => {
         {pathSuspend ? (
           <div className="flex justify-end gap-2">
             <button
+              type="button"
               onClick={() => window.consider_modal.showModal()}
               className="col-span-full btn btn-md  bg-green-slimy text-xl hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
             >
