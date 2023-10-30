@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaPlusCircle, FaUpload } from "react-icons/fa";
+import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 
 // form validation
 const validationSchema = yup.object({
@@ -62,11 +63,8 @@ const AddEmployee = () => {
       >
         <div className={`col-span-full`}>
           <img
-            src={
-              userImgPrev ||
-              "https://nhit.in/wp-content/uploads/2017/08/Passport-Size-Photograph-1024x847.jpg"
-            }
-            className={`h-96 w-full object-cover`}
+            src={userImgPrev || imgPlaceHolder}
+            className={`h-96 w-full object-cover rounded`}
             alt=""
           />
         </div>

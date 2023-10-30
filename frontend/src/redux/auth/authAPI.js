@@ -3,11 +3,11 @@ import baseAPI from "../baseAPI.js";
 const authAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
     signIn: build.mutation({
-      query: (user) => {
+      query: (credentials) => {
         return {
-          url: "signin",
+          url: "user/login",
           method: "post",
-          body: user,
+          body: credentials,
         };
       },
     }),
