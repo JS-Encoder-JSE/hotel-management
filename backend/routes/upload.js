@@ -3,7 +3,7 @@ import multer from 'multer'
 import path from 'path'
 import { Router } from 'express';
 import {fileURLToPath } from 'url';
-import { checkToken } from '../middlewares/checkToken';
+import { checkToken } from '../middlewares/checkToken.js';
 const router = Router()
 
 // Set up multer for file uploads
