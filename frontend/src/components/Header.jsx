@@ -5,8 +5,8 @@ import {
   AiOutlineMenu,
 } from "react-icons/ai";
 import profile from "../../src/assets/profile.jpeg";
-import useAuth from "../hooks/useAuth.js";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = ({
   isFullscreen,
@@ -15,7 +15,7 @@ const Header = ({
   isHbMenu,
   setHbMenu,
 }) => {
-  const { signOut } = useAuth();
+  const { signOut } = useSelector((store) => store.authSlice);
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {

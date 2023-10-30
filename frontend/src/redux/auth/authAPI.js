@@ -13,6 +13,7 @@ const authAPI = baseAPI.injectEndpoints({
     }),
     user: build.query({
       query: () => "users/get-login-user",
+      keepUnusedDataFor: 1,
     }),
   }),
 });
