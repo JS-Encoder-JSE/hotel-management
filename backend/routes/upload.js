@@ -7,7 +7,7 @@ const router = Router()
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
-  destination: './uploads/',
+  destination: '../uploads',
   filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
@@ -27,12 +27,14 @@ router.post('/upload', (req, res) => {
       });
     }
 
-    const imageUrl = `http://localhost:3000/uploads/${req.file.filename}`;
+    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     res.status(200).json({
       success: true,
       imageUrl: imageUrl
     });
   });
 });
+
+
 
 export default router

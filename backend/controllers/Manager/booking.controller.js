@@ -128,3 +128,27 @@ export const updateBooking = async (req, res) => {
         });
       }
 };
+
+
+export const deleteBooking = async (req, res) => {
+  try {
+    const bookingId = req.params.bookingId; // Assuming you pass the booking ID in the request body
+        const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+        if (!deletedBooking) {
+          return res.status(404).json({
+            success: false,
+            error: 'Booking not found'
+          });
+        }
+    
+        res.status(200).json({
+          success: true,
+          message: 'Booking updated successfully'
+        });
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          error: 'Internal Server Error'
+        });
+      }
+};
