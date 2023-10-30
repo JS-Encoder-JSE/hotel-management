@@ -1,14 +1,14 @@
 import React from "react";
 import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
 import { MdOutlineDashboard, MdKeyboardArrowLeft } from "react-icons/md";
-import useAuth from "../hooks/useAuth.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 import Header from "../components/Header.jsx";
 import OwnerSBItems from "../components/sidebar/OwnerSBItems.jsx";
 import AdminSBItems from "../components/sidebar/AdminSBItems.jsx";
+import { useUserQuery } from "../redux/auth/authAPI.js";
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { isLoading, data: user } = useUserQuery();
   const { isFullscreen, enterFullscreen, exitFullscreen, isHbMenu, setHbMenu } =
     useOutletContext();
 
@@ -32,9 +32,11 @@ const Dashboard = () => {
               />
             </figure>
             <h3
-              className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy`}
+              className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy capitalize`}
             >
-              Admin
+              {
+                user?.data?.role
+              }
             </h3>
             <div
               className={`h-full md:h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar-none`}
@@ -59,13 +61,16 @@ const Dashboard = () => {
                     <span className={`-mt-0.5`}>Dashboard</span>
                   </NavLink>
                 </li>
-                {user.status === "admin" || user.status === "sub-admin" ? (
-                  <AdminSBItems handleSBItems={handleSBItems} />
-                ) : user.status === "owner" ? (
-                  <OwnerSBItems handleSBItems={handleSBItems} />
-                ) : (
-                  <ManagerSBItems handleSBItems={handleSBItems} />
-                )}
+                {!isLoading ? (
+                  user?.data?.role === "admin" ||
+                  user?.data?.role === "subadmin" ? (
+                    <AdminSBItems handleSBItems={handleSBItems} />
+                  ) : user?.data?.role === "owner" ? (
+                    <OwnerSBItems handleSBItems={handleSBItems} />
+                  ) : (
+                    <ManagerSBItems handleSBItems={handleSBItems} />
+                  )
+                ) : null}
               </ul>
             </div>
           </div>

@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { signOut } from "./auth/authSlice.js";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5001",
+  baseUrl: "https://hotel-managment-backend.onrender.com",
   prepareHeaders: (headers) => {
     const token = Cookies.get("token");
 
@@ -18,7 +18,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReAuth = async (args, api, extraOptions) => {
   let response = await baseQuery(args, api, extraOptions);
 
-  if (response.error && [401, 403].includes(response.error.status)) {
+  if (response.error && [401, 403].includes(response.error.originalStatus)) {
     api.dispatch(signOut());
   }
 

@@ -11,20 +11,21 @@ import {
   MdOutlineLockClock,
   MdOutlineMeetingRoom,
 } from "react-icons/md";
-import useAuth from "../../hooks/useAuth";
+import { useUserQuery } from "../../redux/auth/authAPI.js";
 
 const AdminSBItems = ({ handleSBItems }) => {
+  const { isLoading, data: user } = useUserQuery();
   const [subAdmin, setSubAdmin] = useState(false);
-  const { user } = useAuth();
 
   useEffect(() => {
-    if (user.status === "sub-admin") {
-      setSubAdmin(true);
-    } else {
-      setSubAdmin(false);
+    if (user) {
+      if (user.data.role === "subadmin") {
+        setSubAdmin(true);
+      } else {
+        setSubAdmin(false);
+      }
     }
   }, [user]);
-  console.log(subAdmin);
 
   return (
     <>
