@@ -397,6 +397,7 @@ const AdminNewLicense = () => {
               )}
               <input
                 type="file"
+                accept="image/*"
                 multiple
                 name="utility"
                 className="absolute left-0 top-0  overflow-hidden h-0"
@@ -427,6 +428,7 @@ const AdminNewLicense = () => {
               )}
               <input
                 type="file"
+                accept="image/*"
                 multiple
                 name="tradeLicense"
                 className="absolute left-0 top-0  overflow-hidden h-0"
