@@ -67,7 +67,7 @@ const EditBooking = () => {
     const rooms = e.map((i) => i.value);
     setSelectedRooms(rooms);
   };
-  
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -86,6 +86,12 @@ const EditBooking = () => {
       console.log(values);
     },
   });
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <>
@@ -112,6 +118,7 @@ const EditBooking = () => {
               options={roomList}
               placeholder="Room Select"
               onChange={(e) => handleSearchRoom(e)}
+              onKeyDown={handleKeyDown}
             />
           </div>
           {/* name box */}

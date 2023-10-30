@@ -70,6 +70,12 @@ const RoomBookingEdit = () => {
       console.log(values);
     },
   });
+  
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <>
@@ -96,6 +102,7 @@ const RoomBookingEdit = () => {
               options={roomList}
               placeholder="Room Select"
               onChange={(e) => handleSearchRoom(e)}
+              onKeyDown={handleKeyDown}
             />
           </div>
           {/* name box */}

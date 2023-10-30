@@ -54,6 +54,12 @@ const PaymentSection = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <section>
       <div className="grid lg:grid-cols-2 gap-5">
@@ -106,6 +112,7 @@ const PaymentSection = () => {
                     <Select
                       components={animatedComponents}
                       options={paymentModeList}
+                      onKeyDown={handleKeyDown}
                       onChange={handlePaymentMode}
                       placeholder="Choose Payment Mode"
                       className={`text-xs ${selectCashPayment && "mb-[70px]"}`}

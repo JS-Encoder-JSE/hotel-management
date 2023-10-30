@@ -87,6 +87,12 @@ const AddBooking = () => {
       console.log(values);
     },
   });
+  
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <>
@@ -112,6 +118,7 @@ const AddBooking = () => {
               isMulti
               options={roomList}
               placeholder="Room Select"
+              onKeyDown={handleKeyDown}
               onChange={(e) => handleSearchRoom(e)}
             />
           </div>

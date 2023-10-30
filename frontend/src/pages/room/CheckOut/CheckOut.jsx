@@ -36,6 +36,12 @@ const CheckOut = () => {
     const handleGetRooms = () => {
         setShowRooms(true)
     }
+    
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
 
     return (
         <div className='space-y-8'>

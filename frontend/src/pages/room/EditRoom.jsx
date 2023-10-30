@@ -110,6 +110,12 @@ const EditRoom = () => {
     setSelectedImages(updatedImages);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
+  
   useEffect(() => {
     if (formik.values.photos) {
       const selectedImagesArray = Array.from(formik.values.photos);
@@ -206,6 +212,7 @@ const EditRoom = () => {
             isMulti
             options={roomList}
             placeholder="Room Select"
+            onKeyDown={handleKeyDown}
             onChange={(e) => handleSearchRoom(e)}
           />
         </div>
