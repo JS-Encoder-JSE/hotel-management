@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['owner', 'manager', 'employee', 'superuser'],
+    enum: ['owner', 'manager', 'admin', 'subadmin'],
     required: true,
   },
   // Add other user-related fields here

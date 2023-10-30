@@ -2,20 +2,21 @@
 import multer from 'multer'
 import path from 'path'
 import { Router } from 'express';
-
+import {fileURLToPath } from 'url';
 const router = Router()
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
-  destination: '../uploads',
+  destination: './uploads',
   filename: function (req, file, cb) {
+    console.log(file)
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
 
 const upload = multer({
   storage: storage
-}).single('image'); // 'image' should match the name attribute in your HTML form
+}).any(); // 'image' should match the name attribute in your HTML form
 
 // Define a route for handling image uploads
 router.post('/upload', (req, res) => {
@@ -27,7 +28,8 @@ router.post('/upload', (req, res) => {
       });
     }
 
-    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    console.log(req.files)
+    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.files[0].filename}`;
     res.status(200).json({
       success: true,
       imageUrl: imageUrl
@@ -35,6 +37,19 @@ router.post('/upload', (req, res) => {
   });
 });
 
+router.get('/uploads/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(path.join(path.dirname(fileURLToPath(import.meta.url)), '../uploads', filename))
 
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.log(err)
+      res.status(500).json({
+        success: false,
+        error: 'Internal Server Error'
+      });
+    }
+  });
+});
 
 export default router

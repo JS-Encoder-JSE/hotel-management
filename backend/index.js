@@ -3,14 +3,15 @@ import cors from 'cors';
 import dotenv from "dotenv";
 import express from 'express';
 import mongoose from 'mongoose';
-
+import path from 'path'
 import hotelsRoute from './routes/hotels.route.js';
 import uploadRoute from './routes/upload.js';
 import userRoute from "./routes/users.route.js";
-
+import { fileURLToPath } from 'url';
 // Manager Routes 
 import roomRoute from './routes/Manager/room.routs.js';
 import bookingRoute from './routes/Manager/booking.route.js'
+import { url } from 'inspector';
 
 
 dotenv.config();
@@ -28,7 +29,7 @@ db.once('open', () => {
 });
 //
 // static file directory
-app.use(express.static('uploads'));
+app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), 'uploads')));
 
 // routes
 app.use('/users', userRoute)
