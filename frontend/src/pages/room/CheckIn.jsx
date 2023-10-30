@@ -10,10 +10,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 // form validation
 const validationSchema = yup.object({
-  roomNumber: yup.string().required("Room number is required"),
   name: yup.string().required("Name is required"),
   mobile: yup.string().required("Mobile number is required"),
   age: yup
@@ -53,9 +54,33 @@ const validationSchema = yup.object({
 
 const CheckIn = () => {
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedRooms, setSelectedRooms] = useState([]);
+  const animatedComponents = makeAnimated();
+
+  // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
+  const roomList = [
+    // { value: '', label: 'Room Select' },
+    { value: "1 - Chocolate", label: "1 - Chocolate" },
+    { value: "2 - Strawberry", label: "2 - Strawberry" },
+    { value: "3 - Shake", label: "3 - Shake" },
+    { value: "4 - AC", label: "4 - AC" },
+    { value: "5 - None AC", label: "5 - None AC" },
+    { value: "6 - Fan", label: "6 - Fan" },
+    { value: "7 - Deluxe", label: "7 - Deluxe" },
+    { value: "8 - None-Deluxe", label: "8 - None-Deluxe" },
+    { value: "9 - Couple", label: "9 - Couple" },
+    { value: "10 - Anniversary", label: "10 - Anniversary" },
+    { value: "11 - Official", label: "11 - Official" },
+    { value: "12 - VIP", label: "12 - VIP" },
+  ];
+
+  const handleSearchRoom = (e) => {
+    const rooms = e.map((i) => i.value);
+    setSelectedRooms(rooms);
+  };
+
   const formik = useFormik({
     initialValues: {
-      roomNumber: "",
       name: "",
       mobile: "",
       age: "",
@@ -179,25 +204,14 @@ const CheckIn = () => {
           </Swiper>
         </div>
         <div className="flex flex-col gap-3">
-          <select
-            name="roomNumber"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-            value={formik.values.roomNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Room number
-            </option>
-            <option value={101}>101</option>
-            <option value={102}>102</option>
-            <option value={103}>103</option>
-          </select>
-          {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
-            <small className="text-red-600">
-              {formik.touched.roomNumber && formik.errors.roomNumber}
-            </small>
-          ) : null}
+          <Select
+            closeMenuOnSelect={false}
+            components={animatedComponents}
+            isMulti
+            options={roomList}
+            placeholder="Room Select"
+            onChange={(e) => handleSearchRoom(e)}
+          />
         </div>
         {/* name box */}
         <div className="flex flex-col gap-3">
