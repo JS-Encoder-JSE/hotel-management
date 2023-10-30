@@ -5,8 +5,6 @@ import * as yup from "yup";
 // form validation
 const validationSchema = yup.object({
   remarks: yup.string().required("Remarks is required"),
-  fromDate: yup.string().required("From Date is required"),
-  toDate: yup.string().required("To Date is required"),
 });
 
 const SuspendedOwnerConsideration = () => {
