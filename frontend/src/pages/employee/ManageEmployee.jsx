@@ -35,16 +35,22 @@ const ManageEmployee = () => {
             <option value="booked">Housekeeper</option>
           </select>
         </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Search by name..."
-            name="search"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-            value={formik.values.search}
-            onChange={formik.handleChange}
-          />
-        </div>
+        <div className={`relative sm:min-w-[20rem]`}>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+            />
+            <button
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
       </div>
       <div className="overflow-x-auto">
         <table className="table border">

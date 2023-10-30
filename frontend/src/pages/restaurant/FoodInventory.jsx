@@ -38,7 +38,7 @@ const FoodInventory = () => {
           </select>
           <span>entries</span>
         </div>
-        <div>
+        <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"
             placeholder="Search by name..."
@@ -47,6 +47,12 @@ const FoodInventory = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
           />
+          <button
+            type="button"
+            className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          >
+            <FaSearch />
+          </button>
         </div>
       </div>
       <div className="overflow-x-auto">
