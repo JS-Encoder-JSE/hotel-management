@@ -9,6 +9,7 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
+import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 
 // form validation
 const validationSchema = yup.object({
@@ -170,7 +171,7 @@ const CheckIn = () => {
               ))
             ) : (
               <img
-                src="/temp/room-1.jpeg"
+                src={imgPlaceHolder}
                 alt=""
                 className={`w-full h-96 object-cover rounded`}
               />

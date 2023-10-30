@@ -6,11 +6,10 @@ import { FaPlusCircle } from "react-icons/fa";
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Client Name is required"),
-  adress: yup.string().required("Hotel Adress is required"),
+  address: yup.string().required("Hotel Adress is required"),
   phoneNumber: yup.string().required("Client Phone Number is required"),
   email: yup.string().required("Client Email is required"),
   billInformation: yup.string().required("Client Bill Information is required"),
-  licenseDuration: yup.string().required("license Duration is required"),
   fromDate: yup.string().required("From Date is required"),
   toDate: yup.string().required("To Date is required"),
   status: yup.string().required("status is required"),
@@ -30,11 +29,10 @@ const AdminNewLicense = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      adress:"",
+      address:"",
       phoneNumber:"",
       email:"",
       billInformation:"",
-      licenseDuration:"",
       fromDate:"",
       toDate:"",
       status:"",
@@ -84,15 +82,15 @@ const AdminNewLicense = () => {
           <input
             type="text"
             placeholder="Hotel Address"
-            name="adress"
+            name="address"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.adress}
+            value={formik.values.address}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.adress && Boolean(formik.errors.adress) ? (
+          {formik.touched.address && Boolean(formik.errors.address) ? (
             <small className="text-red-600">
-              {formik.touched.adress && formik.errors.adress}
+              {formik.touched.address && formik.errors.address}
             </small>
           ) : null}
         </div>
@@ -145,24 +143,6 @@ const AdminNewLicense = () => {
           Boolean(formik.errors.billInformation) ? (
             <small className="text-red-600">
               {formik.touched.billInformation && formik.errors.billInformation}
-            </small>
-          ) : null}
-        </div>
-        {/*License Duration box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="License Duration"
-            name="licenseDuration"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.licenseDuration}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.licenseDuration &&
-          Boolean(formik.errors.licenseDuration) ? (
-            <small className="text-red-600">
-              {formik.touched.licenseDuration && formik.errors.licenseDuration}
             </small>
           ) : null}
         </div>
@@ -235,7 +215,7 @@ const AdminNewLicense = () => {
         <div className="flex flex-col gap-3">
           <input
             type="number"
-            placeholder="Number Of Hotels"
+            placeholder="Hotel Limit"
             name="numberOfHotel"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.numberOfHotel}
