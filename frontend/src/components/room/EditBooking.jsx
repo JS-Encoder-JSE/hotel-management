@@ -37,6 +37,8 @@ const validationSchema = yup.object({
   //       .integer("Discount must be an integer");
   //   else return schema;
   // }),
+  fromDate: yup.string().required("From Date is required"),
+  toDate: yup.string().required("To Date is required"),
 });
 
 const EditBooking = () => {
@@ -51,6 +53,8 @@ const EditBooking = () => {
       paymentMethod: "",
       trxID: "",
       discount: "",
+      fromDate: "",
+      toDate: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -236,6 +240,47 @@ const EditBooking = () => {
             {formik.touched.discount && Boolean(formik.errors.discount) ? (
               <small className="text-red-600">
                 {formik.touched.discount && formik.errors.discount}
+              </small>
+            ) : null}
+          </div>
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="From  MM/DD/YYY"
+              name="fromDate"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.fromDate}
+              onChange={formik.handleChange}
+              onBlur={(e) => {
+                e.target.type = "text";
+                formik.handleBlur;
+              }}
+              onFocus={(e) => (e.target.type = "date")}
+            />
+            {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
+              <small className="text-red-600">
+                {formik.touched.fromDate && formik.errors.fromDate}
+              </small>
+            ) : null}
+          </div>
+          {/*Billing To box */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="To  MM/DD/YYY"
+              name="toDate"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.toDate}
+              onChange={formik.handleChange}
+              onBlur={(e) => {
+                e.target.type = "text";
+                formik.handleBlur;
+              }}
+              onFocus={(e) => (e.target.type = "date")}
+            />
+            {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
+              <small className="text-red-600">
+                {formik.touched.toDate && formik.errors.toDate}
               </small>
             ) : null}
           </div>
