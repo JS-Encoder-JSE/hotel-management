@@ -127,6 +127,12 @@ const CheckIn = () => {
     formik.setFieldValue("documents", dataTransfer.files);
     setSelectedImages(updatedImages);
   };
+  
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
 
   useEffect(() => {
     if (formik.values.documents) {
@@ -211,6 +217,7 @@ const CheckIn = () => {
             options={roomList}
             placeholder="Room Select"
             onChange={(e) => handleSearchRoom(e)}
+            onKeyDown={handleKeyDown}
           />
         </div>
         {/* name box */}
