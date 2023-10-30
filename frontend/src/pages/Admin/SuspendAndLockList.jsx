@@ -4,22 +4,24 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineAutorenew } from "react-icons/md";
 import { GrView } from "react-icons/gr";
+import ReactPaginate from "react-paginate";
 
 const SuspendAndLockList = () => {
-  const [pageNo, setPageNo] = useState(1);
-
   const navigate = useNavigate();
+  const [listsPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
+
   const formik = useFormik({
     initialValues: {
       search: "",
       filter: "",
     },
   });
-
-  const handlePagination = (index) => {
-    setPageNo(index);
-    console.log(pageNo);
-  };
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
@@ -105,22 +107,24 @@ const SuspendAndLockList = () => {
           </tbody>
         </table>
       </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center">
-        {[...Array(5)].map((_, index) => (
-          <button
-            type="button"
-            onClick={() => handlePagination(index)}
-            className={`btn px-4 py-2 rounded border-0 ${
-              pageNo === index+1
-                ? "bg-green-slimy text-white hover:bg-green-slimy"
-                : "bg-white hover:bg-green-slimy/80"
-            }`}
-          >
-            {++index}
-          </button>
-        ))}
+      <div className="flex justify-center mt-10">
+        <ReactPaginate
+          containerClassName="join rounded-none"
+          pageLinkClassName="join-item btn btn-md bg-transparent"
+          activeLinkClassName="btn-active !bg-green-slimy text-white"
+          disabledLinkClassName="btn-disabled"
+          previousLinkClassName="join-item btn btn-md bg-transparent"
+          nextLinkClassName="join-item btn btn-md bg-transparent"
+          breakLinkClassName="join-item btn btn-md bg-transparent"
+          previousLabel="<"
+          nextLabel=">"
+          breakLabel="..."
+          pageCount={pageCount}
+          pageRangeDisplayed={2}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageClick}
+          renderOnZeroPageCount={null}
+        />
       </div>
     </div>
   );

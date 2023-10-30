@@ -4,8 +4,15 @@ import { MdDelete } from "react-icons/md";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import ReactPaginate from "react-paginate";
+
 const AdminOwnerView = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(5);
+  const [roomsPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+
   const increament = () => {
     setUser(user + 1);
   };
@@ -16,7 +23,10 @@ const AdminOwnerView = () => {
       setUser(0);
     }
   };
-  const navigate = useNavigate();
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -65,16 +75,14 @@ const AdminOwnerView = () => {
                   </button>
                   <dialog id="my_modal_3" className="modal ">
                     <div className="modal-box bg-white max-w-[700px]">
-                     
                       <div>
-                         <form method="dialog">
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                          ✕
-                        </button>
-                      </form>
+                        <form method="dialog">
+                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                            ✕
+                          </button>
+                        </form>
                         {/* Modal  Table information Start */}
                         <div className="card w-full bg-white shadow-xl mt-10 p-3 ">
-                       
                           <div className="flex gap-5 mt-2">
                             <h2 className="mt-1">Number Of Hotels :</h2>
                             <div>
@@ -196,6 +204,25 @@ const AdminOwnerView = () => {
                 })}
               </tbody>
             </table>
+            <div className="flex justify-center mt-10">
+              <ReactPaginate
+                containerClassName="join rounded-none"
+                pageLinkClassName="join-item btn btn-md bg-transparent"
+                activeLinkClassName="btn-active !bg-green-slimy text-white"
+                disabledLinkClassName="btn-disabled"
+                previousLinkClassName="join-item btn btn-md bg-transparent"
+                nextLinkClassName="join-item btn btn-md bg-transparent"
+                breakLinkClassName="join-item btn btn-md bg-transparent"
+                previousLabel="<"
+                nextLabel=">"
+                breakLabel="..."
+                pageCount={pageCount}
+                pageRangeDisplayed={2}
+                marginPagesDisplayed={2}
+                onPageChange={handlePageClick}
+                renderOnZeroPageCount={null}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -243,6 +270,25 @@ const AdminOwnerView = () => {
                 })}
               </tbody>
             </table>
+            <div className="flex justify-center mt-10">
+              <ReactPaginate
+                containerClassName="join rounded-none"
+                pageLinkClassName="join-item btn btn-md bg-transparent"
+                activeLinkClassName="btn-active !bg-green-slimy text-white"
+                disabledLinkClassName="btn-disabled"
+                previousLinkClassName="join-item btn btn-md bg-transparent"
+                nextLinkClassName="join-item btn btn-md bg-transparent"
+                breakLinkClassName="join-item btn btn-md bg-transparent"
+                previousLabel="<"
+                nextLabel=">"
+                breakLabel="..."
+                pageCount={pageCount}
+                pageRangeDisplayed={2}
+                marginPagesDisplayed={2}
+                onPageChange={handlePageClick}
+                renderOnZeroPageCount={null}
+              />
+            </div>
           </div>
         </div>
       </div>

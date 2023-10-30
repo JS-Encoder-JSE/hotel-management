@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaArrowLeft } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import Modal from "../../components/Modal";
+import SuspendedOwnerConsideration from "../../components/Admin/SuspendedOwnerConsideration";
 
 // form validation
 const validationSchema = yup.object({
@@ -230,7 +232,8 @@ const EditRenew = () => {
         {pathSuspend ? (
           <div className="flex justify-end gap-2">
             <button
-              type="submit"
+              type="button"
+              onClick={() => window.consider_modal.showModal()}
               className="col-span-full btn btn-md  bg-green-slimy text-xl hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
             >
               Consider
@@ -251,6 +254,9 @@ const EditRenew = () => {
           </button>
         )}
       </form>
+      <Modal id={`consider_modal`}>
+        <SuspendedOwnerConsideration />
+      </Modal>
     </div>
   );
 };

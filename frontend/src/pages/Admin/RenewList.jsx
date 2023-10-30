@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
 import { MdOutlineAutorenew } from "react-icons/md";
 
 import { useNavigate } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 
 const RenewList = () => {
   const navigate = useNavigate();
+  const [renewPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
@@ -60,6 +68,25 @@ const RenewList = () => {
             })}
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-center mt-10">
+        <ReactPaginate
+          containerClassName="join rounded-none"
+          pageLinkClassName="join-item btn btn-md bg-transparent"
+          activeLinkClassName="btn-active !bg-green-slimy text-white"
+          disabledLinkClassName="btn-disabled"
+          previousLinkClassName="join-item btn btn-md bg-transparent"
+          nextLinkClassName="join-item btn btn-md bg-transparent"
+          breakLinkClassName="join-item btn btn-md bg-transparent"
+          previousLabel="<"
+          nextLabel=">"
+          breakLabel="..."
+          pageCount={pageCount}
+          pageRangeDisplayed={2}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageClick}
+          renderOnZeroPageCount={null}
+        />
       </div>
     </div>
   );

@@ -5,18 +5,18 @@ import * as yup from "yup";
 // form validation
 const validationSchema = yup.object({
   password: yup.string().required("Password is required"),
-  feedback: yup.string().when(["status"], ([status], schema) => {
+  remarks: yup.string().when(["status"], ([status], schema) => {
     if (status !== "active") return schema.required("Feedback is required");
     else return schema;
   }),
 });
 
-const OwnerSettings = () => {
+const StatusSettings = () => {
   const formik = useFormik({
     initialValues: {
       status: "",
       password: "",
-      feedback: "",
+      remarks: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -72,16 +72,16 @@ const OwnerSettings = () => {
           </div>
           <div className="flex flex-col gap-3">
             <textarea
-              placeholder="Feedback"
-              name="feedback"
+              placeholder="Remarks"
+              name="remarks"
               className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
-              value={formik.values.feedback}
+              value={formik.values.remarks}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.feedback && Boolean(formik.errors.feedback) ? (
+            {formik.touched.remarks && Boolean(formik.errors.remarks) ? (
               <small className="text-red-600">
-                {formik.touched.feedback && formik.errors.feedback}
+                {formik.touched.remarks && formik.errors.remarks}
               </small>
             ) : null}
           </div>
@@ -97,4 +97,4 @@ const OwnerSettings = () => {
   );
 };
 
-export default OwnerSettings;
+export default StatusSettings;

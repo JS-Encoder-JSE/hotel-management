@@ -2,14 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaTrash, FaUpload } from "react-icons/fa";
-import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
+import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 // form validation
 const validationSchema = yup.object({
-  roomNumber: yup.string().required("Room number is required"),
   name: yup.string().required("Name is required"),
   mobile: yup.string().required("Mobile number is required"),
   age: yup
@@ -43,13 +48,39 @@ const validationSchema = yup.object({
   //   else return schema;
   // }),
   documents: yup.mixed().required("Documents are required"),
+  fromDate: yup.string().required("From Date is required"),
+  toDate: yup.string().required("To Date is required"),
 });
 
 const CheckIn = () => {
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedRooms, setSelectedRooms] = useState([]);
+  const animatedComponents = makeAnimated();
+
+  // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
+  const roomList = [
+    // { value: '', label: 'Room Select' },
+    { value: "1 - Chocolate", label: "1 - Chocolate" },
+    { value: "2 - Strawberry", label: "2 - Strawberry" },
+    { value: "3 - Shake", label: "3 - Shake" },
+    { value: "4 - AC", label: "4 - AC" },
+    { value: "5 - None AC", label: "5 - None AC" },
+    { value: "6 - Fan", label: "6 - Fan" },
+    { value: "7 - Deluxe", label: "7 - Deluxe" },
+    { value: "8 - None-Deluxe", label: "8 - None-Deluxe" },
+    { value: "9 - Couple", label: "9 - Couple" },
+    { value: "10 - Anniversary", label: "10 - Anniversary" },
+    { value: "11 - Official", label: "11 - Official" },
+    { value: "12 - VIP", label: "12 - VIP" },
+  ];
+
+  const handleSearchRoom = (e) => {
+    const rooms = e.map((i) => i.value);
+    setSelectedRooms(rooms);
+  };
+
   const formik = useFormik({
     initialValues: {
-      roomNumber: "",
       name: "",
       mobile: "",
       age: "",
@@ -58,6 +89,8 @@ const CheckIn = () => {
       paymentMethod: "",
       trxID: "",
       discount: "",
+      fromDate: "",
+      toDate: "",
       documents: null,
     },
     validationSchema,
@@ -163,7 +196,7 @@ const CheckIn = () => {
               ))
             ) : (
               <img
-                src="/temp/room-1.jpeg"
+                src={imgPlaceHolder}
                 alt=""
                 className={`w-full h-96 object-cover rounded`}
               />
@@ -171,25 +204,14 @@ const CheckIn = () => {
           </Swiper>
         </div>
         <div className="flex flex-col gap-3">
-          <select
-            name="roomNumber"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-            value={formik.values.roomNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Room number
-            </option>
-            <option value={101}>101</option>
-            <option value={102}>102</option>
-            <option value={103}>103</option>
-          </select>
-          {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
-            <small className="text-red-600">
-              {formik.touched.roomNumber && formik.errors.roomNumber}
-            </small>
-          ) : null}
+          <Select
+            closeMenuOnSelect={false}
+            components={animatedComponents}
+            isMulti
+            options={roomList}
+            placeholder="Room Select"
+            onChange={(e) => handleSearchRoom(e)}
+          />
         </div>
         {/* name box */}
         <div className="flex flex-col gap-3">
@@ -331,6 +353,47 @@ const CheckIn = () => {
           {formik.touched.discount && Boolean(formik.errors.discount) ? (
             <small className="text-red-600">
               {formik.touched.discount && formik.errors.discount}
+            </small>
+          ) : null}
+        </div>
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="From  MM/DD/YYY"
+            name="fromDate"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.fromDate}
+            onChange={formik.handleChange}
+            onBlur={(e) => {
+              e.target.type = "text";
+              formik.handleBlur;
+            }}
+            onFocus={(e) => (e.target.type = "date")}
+          />
+          {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
+            <small className="text-red-600">
+              {formik.touched.fromDate && formik.errors.fromDate}
+            </small>
+          ) : null}
+        </div>
+        {/*Billing To box */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="To  MM/DD/YYY"
+            name="toDate"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.toDate}
+            onChange={formik.handleChange}
+            onBlur={(e) => {
+              e.target.type = "text";
+              formik.handleBlur;
+            }}
+            onFocus={(e) => (e.target.type = "date")}
+          />
+          {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
+            <small className="text-red-600">
+              {formik.touched.toDate && formik.errors.toDate}
             </small>
           ) : null}
         </div>
