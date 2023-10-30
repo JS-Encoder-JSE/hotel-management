@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { TbReplaceFilled } from "react-icons/tb";
+import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 
 // form validation
 const validationSchema = yup.object({
@@ -20,33 +28,76 @@ const validationSchema = yup.object({
       return schema.required("Transaction ID is required");
     else return schema;
   }),
- 
- 
-
+  utility: yup.mixed().required("Documents are required"),
+  tradeLicense: yup.mixed().required("Documents are required"),
 });
 
 const AdminNewLicense = () => {
+  const [selectedImages, setSelectedImages] = useState([]);
+
   const formik = useFormik({
     initialValues: {
       name: "",
-      address:"",
-      phoneNumber:"",
-      email:"",
-      billInformation:"",
-      fromDate:"",
-      toDate:"",
-      status:"",
-      numberOfHotel:"",
+      address: "",
+      phoneNumber: "",
+      email: "",
+      billInformation: "",
+      fromDate: "",
+      toDate: "",
+      status: "",
+      numberOfHotel: "",
       paymentMethod: "",
       trxID: "",
-
-     
+      utility: null,
+      tradeLicense: null,
     },
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
     },
   });
+
+  const handleDelete = (idx) => {
+    const tempImgs = [
+      ...selectedImages.slice(0, idx),
+      ...selectedImages.slice(idx + 1),
+    ];
+    const dataTransfer = new DataTransfer();
+
+    for (const file of tempImgs) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("utility", dataTransfer.files);
+    formik.setFieldValue("tradeLicense", dataTransfer.files);
+    setSelectedImages(tempImgs);
+  };
+
+  const handleChange = (idx, newFile) => {
+    const updatedImages = [...selectedImages];
+    updatedImages[idx] = newFile;
+
+    const dataTransfer = new DataTransfer();
+
+    for (const file of updatedImages) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("utility", dataTransfer.files);
+    formik.setFieldValue("tradeLicense", dataTransfer.files);
+    setSelectedImages(updatedImages);
+  };
+
+  useEffect(() => {
+    if (formik.values.utility) {
+      const selectedImagesArray = Array.from(formik.values.utility);
+      setSelectedImages(selectedImagesArray);
+    }
+    if (formik.values.tradeLicense) {
+      const selectedImagesArray = Array.from(formik.values.tradeLicense);
+      setSelectedImages(selectedImagesArray);
+    }
+  }, [formik.values.utility, formik.values.tradeLicense]);
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -60,6 +111,66 @@ const AdminNewLicense = () => {
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
+        <div className={`relative col-span-full`}>
+          <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+            <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+              <MdOutlineKeyboardArrowLeft />
+            </div>
+            <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+              <MdOutlineKeyboardArrowRight />
+            </div>
+          </div>
+          <Swiper
+            modules={[Navigation]}
+            navigation={{
+              enabled: true,
+              prevEl: ".swiper-er-button-prev",
+              nextEl: ".swiper-er-button-next",
+              disabledClass: "swiper-er-button-disabled",
+            }}
+            slidesPerView={1}
+            spaceBetween={50}
+          >
+            {selectedImages.length ? (
+              selectedImages.map((image, idx) => (
+                <SwiperSlide>
+                  <div className={`relative`}>
+                    <div className={`absolute top-3 right-3 space-x-1.5`}>
+                      <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                        <TbReplaceFilled />
+                        <input
+                          type="file"
+                          className="absolute left-0 top-0  overflow-hidden h-0"
+                          onChange={(e) =>
+                            handleChange(idx, e.currentTarget.files[0])
+                          }
+                        />
+                      </label>
+                      <button
+                        className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                        onClick={() => handleDelete(idx)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                    <img
+                      key={idx}
+                      src={URL.createObjectURL(image)}
+                      alt=""
+                      className={`w-full h-96 object-cover rounded`}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              <img
+                src={imgPlaceHolder}
+                alt=""
+                className={`w-full h-96 object-cover rounded`}
+              />
+            )}
+          </Swiper>
+        </div>
         {/*Client name box */}
         <div className="flex flex-col gap-3">
           <input
@@ -229,8 +340,8 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-       {/* payment method box */}
-       <div className="flex flex-col gap-3">
+        {/* payment method box */}
+        <div className="flex flex-col gap-3">
           <select
             name="paymentMethod"
             className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
@@ -271,6 +382,70 @@ const AdminNewLicense = () => {
             ) : null}
           </div>
         ) : null}
+
+        {/* utility */}
+        <div className={`flex space-x-1.5`}>
+          <div className="flex flex-col gap-3 w-full">
+            <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+              {formik.values.utility ? (
+                <span>{formik.values.utility.length + " files"}</span>
+              ) : (
+                <span className={`flex items-baseline space-x-1.5`}>
+                  <FaUpload />
+                  <span>Choose Utilities</span>
+                </span>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                name="utility"
+                className="absolute left-0 top-0  overflow-hidden h-0"
+                onChange={(e) =>
+                  formik.setFieldValue("utility", e.currentTarget.files)
+                }
+                onBlur={formik.handleBlur}
+              />
+            </label>
+            {formik.touched.utility && Boolean(formik.errors.utility) ? (
+              <small className="text-red-600">
+                {formik.touched.utility && formik.errors.utility}
+              </small>
+            ) : null}
+          </div>
+        </div>
+        {/* Trade License */}
+        <div className={`flex space-x-1.5`}>
+          <div className="flex flex-col gap-3 w-full">
+            <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+              {formik.values.tradeLicense ? (
+                <span>{formik.values.tradeLicense.length + " files"}</span>
+              ) : (
+                <span className={`flex items-baseline space-x-1.5`}>
+                  <FaUpload />
+                  <span>Choose Trade License</span>
+                </span>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                name="tradeLicense"
+                className="absolute left-0 top-0  overflow-hidden h-0"
+                onChange={(e) =>
+                  formik.setFieldValue("tradeLicense", e.currentTarget.files)
+                }
+                onBlur={formik.handleBlur}
+              />
+            </label>
+            {formik.touched.tradeLicense &&
+            Boolean(formik.errors.tradeLicense) ? (
+              <small className="text-red-600">
+                {formik.touched.tradeLicense && formik.errors.tradeLicense}
+              </small>
+            ) : null}
+          </div>
+        </div>
 
         {/* submit button */}
         <button
