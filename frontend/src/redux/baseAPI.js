@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { signOut } from "./auth/authSlice.js";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000",
+  baseUrl: "http://localhost:5001",
   prepareHeaders: (headers) => {
     const token = Cookies.get("token");
 

@@ -8,10 +8,10 @@ import imgAbstractSI from "../assets/bg-abstract-signin.svg";
 
 // sign in form validation
 const validationSchema = yup.object({
-  email: yup
+  username: yup
     .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
+    .email("Enter a valid username")
+    .required("Username is required"),
   password: yup
     .string()
     .min(8, "Password should be of minimum 8 characters length")
@@ -24,7 +24,7 @@ const SignIn = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      username: "",
       password: "",
     },
     validationSchema,
@@ -70,20 +70,20 @@ const SignIn = () => {
                 className="form-control gap-y-4"
                 onSubmit={formik.handleSubmit}
               >
-                {/* email box */}
+                {/* username box */}
                 <div className="flex flex-col gap-3">
                   <input
-                    type="email"
-                    placeholder="Email"
-                    name="email"
+                    type="username"
+                    placeholder="Username"
+                    name="username"
                     className="input input-sm bg-transparent text-green-slimy w-full px-0 border-0 border-b border-b-green-slimy rounded-none focus:outline-none"
-                    value={formik.values.email}
+                    value={formik.values.username}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.touched.email && Boolean(formik.errors.email) ? (
+                  {formik.touched.username && Boolean(formik.errors.username) ? (
                     <small className="text-red-600">
-                      {formik.touched.email && formik.errors.email}
+                      {formik.touched.username && formik.errors.username}
                     </small>
                   ) : null}
                 </div>

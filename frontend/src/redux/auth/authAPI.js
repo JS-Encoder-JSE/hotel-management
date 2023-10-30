@@ -5,13 +5,16 @@ const authAPI = baseAPI.injectEndpoints({
     signIn: build.mutation({
       query: (credentials) => {
         return {
-          url: "user/login",
+          url: "users/login",
           method: "post",
           body: credentials,
         };
       },
     }),
+    user: build.query({
+      query: () => "users/get-login-user",
+    }),
   }),
 });
 
-export const { useSignInMutation } = authAPI;
+export const { useSignInMutation, useUserQuery } = authAPI;
