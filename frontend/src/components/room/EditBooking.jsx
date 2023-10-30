@@ -67,7 +67,7 @@ const EditBooking = () => {
     const rooms = e.map((i) => i.value);
     setSelectedRooms(rooms);
   };
-
+  
   const formik = useFormik({
     initialValues: {
       name: "",
