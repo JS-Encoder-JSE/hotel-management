@@ -63,7 +63,7 @@ export const addManager = async (req, res) => {
   }
 };
 
-export const createSuperUser = async () => {
+export const createSuperUser = async (req,res) => {
   try {
     const username = "superuser";
     const password = "superuserpassword";
@@ -72,6 +72,7 @@ export const createSuperUser = async () => {
     const existingSuperUser = await User.findOne({ username });
     if (existingSuperUser) {
       console.log("Superuser already exists.");
+      res.status(400).json('already existed')
       return;
     }
 
@@ -110,7 +111,7 @@ export const login = async (req, res) => {
     }
 
     // Generate a JSON Web Token (JWT)
-    const token = jwt.sign({ userId: user._id }, "jkncaiyecnijn8c98acnon23bn", {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
@@ -119,6 +120,26 @@ export const login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// get login user 
+export const getLoginUser = async(req, res) => {
+  try {
+    // If you want to exclude sensitive information like password
+    const { _id } = req.user;
+  const user = await User.findById(_id)
+    res.status(200).json({
+      success: true,
+      data: user,
+      message: 'Logged in user retrieved successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Internal Server Error'
+    });
+  }
+};
+
 
 
 export const getOwners = async (req, res) => {

@@ -1,9 +1,17 @@
-import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from "dotenv";
-import userRoute from "./routes/users.route.js"
+import express from 'express';
+import mongoose from 'mongoose';
+
+import hotelsRoute from './routes/hotels.route.js';
+import uploadRoute from './routes/upload.js';
+import userRoute from "./routes/users.route.js";
+
+// Manager Routes 
+import roomRoute from './routes/Manager/room.routs.js';
+import bookingRoute from './routes/Manager/booking.route.js'
+
 
 dotenv.config();
 const app = express();
@@ -18,8 +26,17 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to the database');
 });
+//
+// static file directory
+app.use(express.static('uploads'));
 
-app.use('/users',userRoute)
+// routes
+app.use('/users', userRoute)
+app.use('/hotels', hotelsRoute)
+app.use('/rooms', roomRoute)
+app.use('/booking',bookingRoute)
+app.use('/', uploadRoute)
+
 // Define your routes here
 
 app.listen(port, () => {
