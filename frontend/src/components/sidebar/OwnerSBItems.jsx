@@ -1,11 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {
-  MdBarChart,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
-  MdOutlineFoodBank,
-  MdOutlineInventory2,
+  MdManageAccounts,
   MdOutlineKitchen,
   MdOutlineMeetingRoom,
 } from "react-icons/md";
@@ -60,7 +58,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           onClick={(e) => handleSBItems(e)}
         >
           <div className={`flex space-x-1.5`}>
-            <MdOutlineFoodBank />
+            <MdManageAccounts />
             <span className={`-mt-0.5`}>Manager Management</span>
           </div>
           <span className={`group-[.active]:hidden`}>

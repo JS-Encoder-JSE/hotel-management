@@ -72,9 +72,9 @@ const addOrderSlice = createSlice({
       const grandTotal = total + tax;
 
       state.orderCalc = {
-        total,
-        tax,
-        grandTotal,
+        total: total.toFixed(2),
+        tax: tax.toFixed(2),
+        grandTotal: grandTotal.toFixed(2),
       };
     },
   },
