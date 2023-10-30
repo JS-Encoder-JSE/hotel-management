@@ -65,16 +65,14 @@ const AdminOwnerView = () => {
                   </button>
                   <dialog id="my_modal_3" className="modal ">
                     <div className="modal-box bg-white max-w-[700px]">
-                     
                       <div>
-                         <form method="dialog">
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                          ✕
-                        </button>
-                      </form>
+                        <form method="dialog">
+                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                            ✕
+                          </button>
+                        </form>
                         {/* Modal  Table information Start */}
                         <div className="card w-full bg-white shadow-xl mt-10 p-3 ">
-                       
                           <div className="flex gap-5 mt-2">
                             <h2 className="mt-1">Number Of Hotels :</h2>
                             <div>
