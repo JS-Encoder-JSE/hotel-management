@@ -3,6 +3,7 @@ import multer from 'multer'
 import path from 'path'
 import { Router } from 'express';
 import {fileURLToPath } from 'url';
+import { checkToken } from '../middlewares/checkToken';
 const router = Router()
 
 // Set up multer for file uploads
@@ -19,7 +20,7 @@ const upload = multer({
 }).any(); // 'image' should match the name attribute in your HTML form
 
 // Define a route for handling image uploads
-router.post('/upload', (req, res) => {
+router.post('/upload', checkToken,(req, res) => {
   upload(req, res, (err) => {
     if (err) {
       return res.status(500).json({
@@ -37,7 +38,7 @@ router.post('/upload', (req, res) => {
   });
 });
 
-router.get('/uploads/:filename', (req, res) => {
+router.get('/uploads/:filename',checkToken, (req, res) => {
   const filename = req.params.filename;
   const filePath = path.join(path.join(path.dirname(fileURLToPath(import.meta.url)), '../uploads', filename))
 
