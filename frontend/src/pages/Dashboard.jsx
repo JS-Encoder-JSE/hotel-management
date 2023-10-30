@@ -59,7 +59,7 @@ const Dashboard = () => {
                     <span className={`-mt-0.5`}>Dashboard</span>
                   </NavLink>
                 </li>
-                {user.status === "admin" ? (
+                {user.status === "admin" || user.status === "sub-admin" ? (
                   <AdminSBItems handleSBItems={handleSBItems} />
                 ) : user.status === "owner" ? (
                   <OwnerSBItems handleSBItems={handleSBItems} />

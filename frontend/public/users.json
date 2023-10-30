@@ -6,6 +6,12 @@
     "status": "admin"
   },
   {
+    "name": "Sub Admin",
+    "email": "subadmin@xyz.com",
+    "password": 12345678,
+    "status": "sub-admin"
+  },
+  {
     "name": "Owner",
     "email": "owner@xyz.com",
     "password": 12345678,

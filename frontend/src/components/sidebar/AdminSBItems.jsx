@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   MdBarChart,
@@ -11,8 +11,21 @@ import {
   MdOutlineLockClock,
   MdOutlineMeetingRoom,
 } from "react-icons/md";
+import useAuth from "../../hooks/useAuth";
 
 const AdminSBItems = ({ handleSBItems }) => {
+  const [subAdmin, setSubAdmin] = useState(false);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user.status === "sub-admin") {
+      setSubAdmin(true);
+    } else {
+      setSubAdmin(false);
+    }
+  }, [user]);
+  console.log(subAdmin);
+
   return (
     <>
       <li className={`group p-2`}>
@@ -43,17 +56,19 @@ const AdminSBItems = ({ handleSBItems }) => {
               New License
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to={`/dashboard/renew-list`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Renew List
-            </NavLink>
-          </li>
+          {!subAdmin && (
+            <li>
+              <NavLink
+                to={`/dashboard/renew-list`}
+                className={({ isActive }) =>
+                  "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                  (isActive ? " bg-gray-300" : "")
+                }
+              >
+                Renew List
+              </NavLink>
+            </li>
+          )}
           <li>
             <NavLink
               to={`/dashboard/adminowner-list`}
@@ -81,47 +96,49 @@ const AdminSBItems = ({ handleSBItems }) => {
           </div>
         </NavLink>
       </li>
-      <li className={`group p-2`}>
-        <div
-          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-          onClick={(e) => handleSBItems(e)}
-        >
-          <div className={`flex space-x-1.5`}>
-            <MdOutlineKitchen />
-            <span className={`-mt-0.5`}>Sub Admin Section</span>
+      {!subAdmin && (
+        <li className={`group p-2`}>
+          <div
+            className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+            onClick={(e) => handleSBItems(e)}
+          >
+            <div className={`flex space-x-1.5`}>
+              <MdOutlineKitchen />
+              <span className={`-mt-0.5`}>Sub Admin Section</span>
+            </div>
+            <span className={`group-[.active]:hidden`}>
+              <MdKeyboardArrowDown />
+            </span>
+            <span className={`hidden group-[.active]:inline`}>
+              <MdKeyboardArrowUp />
+            </span>
           </div>
-          <span className={`group-[.active]:hidden`}>
-            <MdKeyboardArrowDown />
-          </span>
-          <span className={`hidden group-[.active]:inline`}>
-            <MdKeyboardArrowUp />
-          </span>
-        </div>
-        <ul className={`group-[.active]:block hidden`}>
-          <li>
-            <NavLink
-              to={`/dashboard/add-sub-admin`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Add Sub Admin
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={`/dashboard/sub-admin-list`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Sub Admin List
-            </NavLink>
-          </li>
-        </ul>
-      </li>
+          <ul className={`group-[.active]:block hidden`}>
+            <li>
+              <NavLink
+                to={`/dashboard/add-sub-admin`}
+                className={({ isActive }) =>
+                  "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                  (isActive ? " bg-gray-300" : "")
+                }
+              >
+                Add Sub Admin
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to={`/dashboard/sub-admin-list`}
+                className={({ isActive }) =>
+                  "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                  (isActive ? " bg-gray-300" : "")
+                }
+              >
+                Sub Admin List
+              </NavLink>
+            </li>
+          </ul>
+        </li>
+      )}
       <li>
         <NavLink
           to={`/dashboard/admin-report`}

@@ -9,6 +9,7 @@ const validationSchema = yup.object({
   address: yup.string().required("Sub Admin Address is required"),
   email: yup.string().required("Sub Admin Email is required"),
   phoneNumber: yup.string().required("Sub Admin Phone Number size is required"),
+  salary: yup.string().required("Sub Admin Salary size is required"),
 });
 
 const SubAdminProfile = () => {
@@ -18,9 +19,10 @@ const SubAdminProfile = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      address: "",
       email: "",
       phoneNumber: "",
+      address: "",
+      salary: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -72,7 +74,7 @@ const SubAdminProfile = () => {
               placeholder="Rion"
               name="name"
               className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.price}
+              value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
@@ -92,7 +94,7 @@ const SubAdminProfile = () => {
               placeholder="rion@email.com"
               name="email"
               className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.price}
+              value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
@@ -133,7 +135,7 @@ const SubAdminProfile = () => {
               placeholder="Dhaka, Banglamotor"
               name="address"
               className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.price}
+              value={formik.values.address}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
@@ -143,6 +145,40 @@ const SubAdminProfile = () => {
                 {formik.touched.address && formik.errors.address}
               </small>
             ) : null}
+          </div>
+        </div>
+        {/* Salary box */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+          <label className={`min-w-[4rem]`}>Salary : </label>
+          <div className="flex flex-col w-full space-y-2">
+            <input
+              type="number"
+              placeholder="20,000"
+              name="salary"
+              className="hide-number-arrow-input input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.salary}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+
+            {formik.touched.salary && Boolean(formik.errors.salary) ? (
+              <small className="text-red-600">
+                {formik.touched.salary && formik.errors.salary}
+              </small>
+            ) : null}
+          </div>
+        </div>
+        {/* Joining Date box */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+          <label className={`min-w-[4rem]`}>Joining Date : </label>
+          <div className="flex flex-col w-full space-y-2">
+            <input
+              type="text"
+              name="salary"
+              disabled
+              className="hide-number-arrow-input input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value="20/10/23"
+            />
           </div>
         </div>
         {/* submit button */}

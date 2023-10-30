@@ -1,11 +1,13 @@
 import React from "react";
-import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
-import { GrView } from "react-icons/gr";
-  import { useFormik } from "formik";
-  import {useNavigate} from "react-router-dom";
+import { FaEye, FaSearch, FaTrash } from "react-icons/fa";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import { AiFillSetting } from "react-icons/ai";
+import Modal from "../../components/Modal.jsx";
+import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
 
 const AdminOwnerList = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -50,7 +52,7 @@ const AdminOwnerList = () => {
         <table className="table border">
           <thead>
             <tr>
-                <th>Sl</th>
+              <th>Sl</th>
               <th>Name</th>
               <th>Email</th>
               <th>Status</th>
@@ -59,7 +61,7 @@ const AdminOwnerList = () => {
             </tr>
           </thead>
           <tbody>
-            {[...Array(5)].map((_,idx) => {
+            {[...Array(5)].map((_, idx) => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <th> {++idx}</th>
@@ -69,10 +71,18 @@ const AdminOwnerList = () => {
                   <td>12-10-2023</td>
                   <td className={`space-x-1.5`}>
                     <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                      onClick={() => navigate(`/dashboard/adminowner-view/${idx}`)}
+                      className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case ms-2`}
+                      onClick={() => window.ol_modal.showModal()}
                     >
-                      <GrView />
+                      <AiFillSetting />
+                    </span>
+                    <span
+                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                      onClick={() =>
+                        navigate(`/dashboard/adminowner-view/${idx}`)
+                      }
+                    >
+                      <FaEye />
                     </span>
                     <span
                       className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case mt-2`}
@@ -86,6 +96,9 @@ const AdminOwnerList = () => {
           </tbody>
         </table>
       </div>
+      <Modal id={`ol_modal`}>
+        <OwnerSettings />
+      </Modal>
     </div>
   );
 };

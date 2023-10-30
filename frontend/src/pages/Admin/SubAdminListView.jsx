@@ -1,9 +1,13 @@
 import { useFormik } from "formik";
 import React from "react";
-import { AiTwotoneDelete } from "react-icons/ai";
-import { FaArrowLeft, FaRegEdit } from "react-icons/fa";
-import { GrView } from "react-icons/gr";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  FaArrowLeft,
+  FaUserAltSlash,
+  FaUserCheck,
+  FaUserLock,
+} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import SubAdminReport from "./SubAdminReport";
 
 const SubAdminListView = () => {
   const navigate = useNavigate();
@@ -40,35 +44,93 @@ const SubAdminListView = () => {
           </div>
           <div className="">
             <h2 className="card-title mb-3">Sub Admin Other Information </h2>
-            <h6> Sub Admin Joint Date :12-10-2023 </h6>
-            <h6> Sub Admin Salary :12-10-2023 </h6>
+            <h6> Sub Admin Joint Date : 12-10-2023 </h6>
+            <h6> Sub Admin Salary : 20,000 </h6>
             <h6>Status : Active</h6>
           </div>
         </div>
       </div>
 
-      <div className={`bg-white px-10 py-5 mt-12 rounded-xl`}>
-        <div className="overflow-x-auto">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Providing Total Owner Support</th>
-                <th>Suspended Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className={"hover:bg-gray-100"}
-              >
-                <td>Jon Doe</td>
-                <td>{2 * 2}</td>
-                <td>{2 * 4}</td>
-              </tr>
-            </tbody>
-          </table>
+      {/* Owner List */}
+      <div className="card w-full bg-white shadow-xl mt-10">
+        <div className="card-body">
+          <h1 className="text-2xl text-center ">Owner List</h1>
+          <div className="overflow-x-auto mt-10">
+            <table className="table border">
+              <thead>
+                <tr>
+                  <th>Sl</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...Array(5)].map((_, idx) => {
+                  return (
+                    <tr
+                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                    >
+                      <th> {++idx}</th>
+                      <td className="font-bold">Jon Doe</td>
+                      <td>jondoe@gmail.com</td>
+                      <td className="flex gap-3">
+                        <button type="button" title="suspend owner">
+                          <FaUserAltSlash className="hover:text-green-slimy duration-300 text-lg" />
+                        </button>
+                        <button type="button" title="lock owner">
+                          <FaUserLock className="hover:text-green-slimy duration-300 text-lg" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <h6 className="m-5">Total: 5</h6>
+          </div>
         </div>
       </div>
+
+      {/* Suspended Owner */}
+      <div className="card w-full bg-white shadow-xl mt-10">
+        <div className="card-body">
+          <h1 className="text-2xl text-center ">Suspended Owner</h1>
+          <div className="overflow-x-auto mt-10">
+            <table className="table border">
+              <thead>
+                <tr>
+                  <th>Sl</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th className="text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...Array(5)].map((_, idx) => {
+                  return (
+                    <tr
+                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                    >
+                      <th> {++idx}</th>
+                      <td className="font-bold">Jon Doe</td>
+                      <td>jondoe@gmail.com</td>
+                      <td className={`space-x-1.5`}></td>
+                      <td>
+                        <button type="button" title="unsuspend owner">
+                          <FaUserCheck className="hover:text-green-slimy duration-300 text-lg" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <h6 className="m-5">Total: 5</h6>
+          </div>
+        </div>
+      </div>
+      <SubAdminReport />
     </div>
   );
 };

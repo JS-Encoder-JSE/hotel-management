@@ -6,7 +6,6 @@ import * as yup from "yup";
 
 // form validation
 const validationSchema = yup.object({
-  currentPassword: yup.string().required("Current password is required"),
   newPassword: yup
     .string()
     .min(8, "Password should be of minimum 8 characters length")
@@ -24,7 +23,6 @@ const SubAdminChangePass = () => {
 
   const formik = useFormik({
     initialValues: {
-      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -72,40 +70,7 @@ const SubAdminChangePass = () => {
         className="form-control grid grid-cols-1 gap-4 mt-14"
         onSubmit={formik.handleSubmit}
       >
-        <div>
-          <h3 className={`font-semibold`}>Current Password</h3>
-          <div className="relative">
-            <input
-              type={showPass ? "text" : "password"}
-              placeholder="Enter Current Password"
-              name="currentPassword"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.currentPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.currentPassword &&
-            Boolean(formik.errors.currentPassword) ? (
-              <small className="text-red-600">
-                {formik.touched.currentPassword &&
-                  formik.errors.currentPassword}
-              </small>
-            ) : null}
-
-            {!showPass ? (
-              <FaEyeSlash
-                onClick={handleShowPass}
-                className="absolute right-0 top-4 text-green-slimy text-lg mr-3 cursor-pointer"
-              />
-            ) : (
-              <FaEye
-                onClick={handleShowPass}
-                className="absolute right-0 top-4 text-green-slimy text-lg mr-3 cursor-pointer"
-              />
-            )}
-          </div>
-        </div>
-
+       
         <div>
           <h3 className={`font-semibold`}>New Password</h3>
           <div className="relative">
