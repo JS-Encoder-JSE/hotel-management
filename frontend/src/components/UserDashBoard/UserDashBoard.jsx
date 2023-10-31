@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { FaDollarSign, FaDollyFlatbed, FaUsers } from "react-icons/fa";
+import {
+  FaDollarSign,
+  FaDollyFlatbed,
+  FaUsers,
+  FaCalendarDay,
+  FaRegCalendarAlt,
+} from "react-icons/fa";
 import { MdAutorenew } from "react-icons/md";
 import CustomerReservation from "./CustomerReservation";
 import BookingChart from "./BookingChart";
@@ -19,7 +25,7 @@ const UserDashBoard = () => {
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-5">
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
-            <FaDollyFlatbed />
+            {userManager ? <FaCalendarDay /> : <FaDollyFlatbed />}
           </div>
           <h6 className="text-xs text-slate-400">
             {userManager ? "TODAY CHECK IN" : "TOTAL SELL"}
@@ -45,7 +51,7 @@ const UserDashBoard = () => {
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
-            <MdAutorenew />
+            {userManager ? <FaRegCalendarAlt /> : <MdAutorenew />}
           </div>
           <h6 className="text-xs text-slate-400">
             TOTAL {userManager ? "CHECK IN" : "RENEW"}
@@ -75,9 +81,9 @@ const UserDashBoard = () => {
         <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
           <CustomerList />
         </div>
-      {/* </section> */}
+        {/* </section> */}
 
-      {/* <section className="mt-8 grid md:grid-cols-2 gap-5"> */}
+        {/* <section className="mt-8 grid md:grid-cols-2 gap-5"> */}
         {/* <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
           <TodaysBooking />
         </div> */}
