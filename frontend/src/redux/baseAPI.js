@@ -1,15 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Cookies from "js-cookie";
 import { signOut } from "./auth/authSlice.js";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://hotel-managment-backend.onrender.com",
-  prepareHeaders: (headers) => {
-    const token = Cookies.get("token");
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().authSlice.token;
 
-    if (token) {
-      headers.set("authorization", `Bearer ${token}`);
-    }
+    if (token) headers.set("authorization", `Bearer ${token}`);
 
     return headers;
   },
@@ -27,6 +24,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 
 const baseAPI = createApi({
   reducerPath: "baseAPI",
+  tagTypes: ["auth"],
   baseQuery: baseQueryWithReAuth,
   endpoints: () => ({}),
 });

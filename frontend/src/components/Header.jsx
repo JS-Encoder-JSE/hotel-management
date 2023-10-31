@@ -6,7 +6,8 @@ import {
 } from "react-icons/ai";
 import profile from "../../src/assets/profile.jpeg";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {useDispatch} from "react-redux";
+import {signOut} from "../redux/auth/authSlice.js";
 
 const Header = ({
   isFullscreen,
@@ -15,7 +16,7 @@ const Header = ({
   isHbMenu,
   setHbMenu,
 }) => {
-  const { signOut } = useSelector((store) => store.authSlice);
+  const dispatch = useDispatch()
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const Header = ({
               <li>
                 <Link to="profile">Profile</Link>
               </li>
-              <li onClick={signOut}>
+              <li onClick={() => dispatch(signOut())}>
                 <Link to={`/`}>Logout</Link>
               </li>
             </ul>

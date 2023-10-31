@@ -1,13 +1,16 @@
-import React from "react";
-import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink, Outlet, useOutletContext } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { MdOutlineDashboard, MdKeyboardArrowLeft } from "react-icons/md";
+import { setUser } from "../redux/auth/authSlice.js";
+import { useUserQuery } from "../redux/auth/authAPI.js";
 import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 import Header from "../components/Header.jsx";
 import OwnerSBItems from "../components/sidebar/OwnerSBItems.jsx";
 import AdminSBItems from "../components/sidebar/AdminSBItems.jsx";
-import { useUserQuery } from "../redux/auth/authAPI.js";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const { isLoading, data: user } = useUserQuery();
   const { isFullscreen, enterFullscreen, exitFullscreen, isHbMenu, setHbMenu } =
     useOutletContext();
@@ -15,6 +18,10 @@ const Dashboard = () => {
   const handleSBItems = (e) => {
     e.currentTarget.parentElement.classList.toggle("active");
   };
+
+  useEffect(() => {
+    if (user) dispatch(setUser(user.data));
+  }, [user]);
 
   return (
     <>
@@ -34,9 +41,7 @@ const Dashboard = () => {
             <h3
               className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy capitalize`}
             >
-              {
-                user?.data?.role
-              }
+              {user?.data?.role}
             </h3>
             <div
               className={`h-full md:h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar-none`}

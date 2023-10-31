@@ -1,10 +1,10 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children }) => {
-  const token = Cookies.get("token");
   const location = useLocation();
+  const { token } = useSelector((store) => store.authSlice);
 
   return token ? (
     children

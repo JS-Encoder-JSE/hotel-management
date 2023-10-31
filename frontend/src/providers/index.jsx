@@ -1,12 +1,15 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { Toaster } from "react-hot-toast";
-import store from "../redux/store.js";
+import store, { persistor } from "../redux/store.js";
 
 const Providers = ({ children }) => {
   return (
     <>
-      <Provider store={store}>{children}</Provider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>{children}</PersistGate>
+      </Provider>
       <Toaster />
     </>
   );

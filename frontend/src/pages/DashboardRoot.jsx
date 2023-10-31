@@ -1,14 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import UserDashBoard from "../components/UserDashBoard/UserDashBoard.jsx";
-import { useUserQuery } from "../redux/auth/authAPI.js";
 
 const DashboardRoot = () => {
-  const { isLoading, data: user } = useUserQuery();
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  return !isLoading ? (
-    user?.data?.role === "admin" ? (
+  return !isUserLoading ? (
+    user?.role === "admin" ? (
       <UserDashBoard />
-    ) : user?.data?.role === "owner" ? (
+    ) : user?.role === "owner" ? (
       <UserDashBoard />
     ) : (
       <UserDashBoard />

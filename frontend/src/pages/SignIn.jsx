@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import imgAbstractSI from "../assets/bg-abstract-signin.svg";
+import { setToken } from "../redux/auth/authSlice.js";
 import { useSignInMutation } from "../redux/auth/authAPI.js";
-import Cookies from "js-cookie";
+import imgAbstractSI from "../assets/bg-abstract-signin.svg";
 
 // sign in form validation
 const validationSchema = yup.object({
@@ -20,6 +21,7 @@ const validationSchema = yup.object({
 });
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const [signIn, { isLoading }] = useSignInMutation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,7 +39,7 @@ const SignIn = () => {
       if (response.error) {
         toast.error(response.error.data.message);
       } else {
-        Cookies.set("token", response.data.token, { expires: 3 });
+        dispatch(setToken(response.data.token));
         navigate(fromURL || "/dashboard");
         toast.success("Sign In Successfully!", {
           duration: 3000,

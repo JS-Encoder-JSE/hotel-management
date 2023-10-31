@@ -1,12 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useUserQuery } from "../redux/auth/authAPI.js";
+import { useSelector } from "react-redux";
 
 const OwnerRoute = ({ children }) => {
-  const { isLoading, data: user } = useUserQuery();
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  return !isLoading ? (
-    user?.data?.role === "owner" ? (
+  return !isUserLoading ? (
+    user?.role === "owner" ? (
       children
     ) : (
       <Navigate to="/dashboard"></Navigate>
