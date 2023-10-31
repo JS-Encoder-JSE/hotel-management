@@ -34,6 +34,8 @@ const bookingSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  from: { type: Date, required: true, },
+  to:{type:Date, required:true},
   document: {
     type: String // Assuming you'll store a link or file path to the document
   }
