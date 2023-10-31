@@ -21,6 +21,7 @@ const Report = () => {
 
 
   const options = [
+    {value: 'all', label: 'All'},
     {value: 'total-renew', label: 'Total-Renew'},
     {value: 'total-sale', label: 'Total-Sale'},
     {value: 'total-expired', label: 'Total-Expired'},
@@ -79,7 +80,7 @@ const Report = () => {
               Search
             </button>
           </div>
-          <div className="w-fit">
+          <div className="w-[200px]">
             <Select
               options={options}
               placeholder="Filter"
