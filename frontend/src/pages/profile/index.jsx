@@ -30,7 +30,10 @@ const Profile = () => {
       className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
     >
       <div>
-        <div className="group absolute -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
+        <div
+          onClick={handleUploadImg}
+          className="group absolute -top-16 inset-x-1/2 -translate-x-1/2 cursor-pointer border-4 border-green-slimy rounded-full h-32 w-32"
+        >
           {imagePreview ? (
             <img
               src={imagePreview}
@@ -48,7 +51,6 @@ const Profile = () => {
           {/* On image hover to replace the image */}
           <div className="opacity-0 group-hover:opacity-100 duration-300 bg-white/50 rounded-full absolute w-full h-full top-0">
             <button
-              onClick={handleUploadImg}
               type="button"
               className="absolute -bottom-1 -right-1 text-xl text-green-slimy"
             >

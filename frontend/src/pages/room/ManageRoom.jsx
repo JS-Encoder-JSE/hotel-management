@@ -17,14 +17,14 @@ const ManageRoom = () => {
         <div>
           <select
             name="filter"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
+            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
             value={formik.values.filter}
             onChange={formik.handleChange}
           >
             <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="deactive">deActive</option>
-            <option value="suspended">Suspended</option>
+            <option value="available">Available</option>
+            <option value="booked">Booked</option>
+            <option value="checkedin">Checked In</option>
           </select>
         </div>
         <div className={`relative sm:min-w-[20rem]`}>

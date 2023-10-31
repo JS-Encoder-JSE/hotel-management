@@ -56,6 +56,7 @@ const CheckOut = () => {
                         options={roomList}
                         placeholder='Room Select'
                         onChange={(e) => handleSearchRoom(e)}
+                        onKeyDown={handleKeyDown}
                     />
                 </div>
                 <button
