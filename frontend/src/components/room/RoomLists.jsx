@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 
-const RoomLists = () => {
+const RoomLists = ({ setCurrentPage, rooms }) => {
   const navigate = useNavigate();
   const [roomsPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
+
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    if (rooms) setPageCount(rooms.pagination.totalPages)
+  }, [rooms]);
 
   return (
     <div>
@@ -27,39 +31,50 @@ const RoomLists = () => {
             </tr>
           </thead>
           <tbody>
-            {[...Array(10)].map((_, idx) => {
+            {rooms?.data?.map((room, idx) => {
+              const {
+                _id,
+                bedSize,
+                capacity,
+                category,
+                description,
+                floorNumber,
+                image,
+                price,
+                roomNumber,
+                status,
+                type,
+              } = room;
+
               return (
-                <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                <tr key={room._id} className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <td>
                     <div className="flex items-center space-x-3">
                       <div className="avatar">
                         <div className="mask mask-squircle w-16 h-16">
-                          <img
-                            src="https://www.usatoday.com/gcdn/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg"
-                            alt=""
-                          />
+                          <img src={image} alt="" />
                         </div>
                       </div>
                       <div>
-                        <div className="font-bold">Room 703</div>
-                        <div className="text-md opacity-50">Floor 2</div>
+                        <div className="font-bold">{roomNumber}</div>
+                        <div className="text-md opacity-50">{floorNumber}</div>
                       </div>
                     </div>
                   </td>
-                  <td>$12</td>
-                  <td>4</td>
-                  <td>Available</td>
+                  <td>{price}</td>
+                  <td>{capacity}</td>
+                  <td>{status}</td>
                   <td className={`space-x-1.5`}>
                     <span
                       className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                      onClick={() => navigate(`/dashboard/manage-room/${idx}`)}
+                      onClick={() => navigate(`/dashboard/manage-room/${_id}`)}
                       title={`View`}
                     >
                       <FaEye />
                     </span>
                     <span
                       className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                      onClick={() => navigate(`/dashboard/edit-room/${idx}`)}
+                      onClick={() => navigate(`/dashboard/edit-room/${_id}`)}
                       title={`Edit`}
                     >
                       <FaEdit />
