@@ -26,7 +26,18 @@ const baseAPI = createApi({
   reducerPath: "baseAPI",
   tagTypes: ["auth"],
   baseQuery: baseQueryWithReAuth,
-  endpoints: () => ({}),
+  endpoints: (build) => ({
+    upload: build.mutation({
+      query: (data) => {
+        return {
+          url: "upload",
+          method: "post",
+          body: data,
+        };
+      },
+    }),
+  }),
 });
 
+export const { useUploadMutation } = baseAPI;
 export default baseAPI;

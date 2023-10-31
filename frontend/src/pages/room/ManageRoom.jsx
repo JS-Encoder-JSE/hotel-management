@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import RoomLists from "../../components/room/RoomLists.jsx";
 import { FaSearch } from "react-icons/fa";
+import { useRoomsQuery } from "../../redux/room/roomAPI.js";
+import { Rings } from "react-loader-spinner";
 
 const ManageRoom = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const { isLoading, data: rooms } = useRoomsQuery(currentPage);
+
   const formik = useFormik({
     initialValues: {
       filter: "",
       search: "",
     },
   });
-
+  console.log(rooms);
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
       <div className={`flex justify-between gap-4`}>
@@ -44,7 +49,16 @@ const ManageRoom = () => {
           </button>
         </div>
       </div>
-      <RoomLists />
+      {!isLoading ? (
+        <RoomLists setCurrentPage={setCurrentPage} rooms={rooms} />
+      ) : (
+        <Rings
+          width="50"
+          height="50"
+          color="#37a000"
+          wrapperClass="justify-center"
+        />
+      )}
     </div>
   );
 };

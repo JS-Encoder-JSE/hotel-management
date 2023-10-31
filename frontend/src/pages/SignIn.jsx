@@ -36,7 +36,7 @@ const SignIn = () => {
     onSubmit: async (values) => {
       const response = await signIn(values);
 
-      if (response.error) {
+      if (response?.error) {
         toast.error(response.error.data.message);
       } else {
         dispatch(setToken(response.data.token));
