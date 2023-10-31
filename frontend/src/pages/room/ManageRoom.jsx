@@ -15,7 +15,7 @@ const ManageRoom = () => {
       search: "",
     },
   });
-  console.log(rooms);
+
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
       <div className={`flex justify-between gap-4`}>
@@ -35,7 +35,7 @@ const ManageRoom = () => {
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"
-            placeholder="Search by name..."
+            placeholder="Search by room..."
             name="search"
             className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.search}

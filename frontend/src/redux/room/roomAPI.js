@@ -17,7 +17,21 @@ const roomAPI = baseAPI.injectEndpoints({
         };
       },
     }),
+    addBooking: build.mutation({
+      query: (data) => {
+        return {
+          url: "booking/add-booking",
+          method: "post",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useRoomQuery, useRoomsQuery, useAddRoomMutation } = roomAPI;
+export const {
+  useRoomQuery,
+  useRoomsQuery,
+  useAddRoomMutation,
+  useAddBookingMutation,
+} = roomAPI;
