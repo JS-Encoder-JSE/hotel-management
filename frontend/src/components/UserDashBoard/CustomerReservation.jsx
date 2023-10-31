@@ -6,12 +6,12 @@ const CustomerReservation = () => {
         {
 
             series: [{
-                name: 'Booking Confirmed',
+                name: 'Checkin Confirmed',
                 type: 'column',
                 data: [23, 24, 40, 27, 13, 22, 37, 21, 44, 22, 30],
                 color: '#fe9302'
             }, {
-                name: 'Booking Pending',
+                name: 'Booking',
                 type: 'line',
                 data: [27, 25, 22, 27, 13, 22, 37, 25, 26],
                 color: '#5c44ab'
@@ -55,7 +55,7 @@ const CustomerReservation = () => {
                 },
                 yaxis: {
                     title: {
-                        text: 'Booking Confirmed',
+                        text: 'Checkin Confirmed',
                     },
                     min: 0
                 },

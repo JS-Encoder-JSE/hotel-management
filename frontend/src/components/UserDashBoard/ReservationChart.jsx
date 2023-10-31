@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const ReservationChart = () => {
+const ReservationChart = ({userManager}) => {
     const [chartProps, setChartProps] = useState(
         {
             series: [{
@@ -24,7 +24,7 @@ const ReservationChart = () => {
                     curve: 'smooth'
                 },
                 title: {
-                    text: 'Total Reservation',
+                    text: userManager ? 'Total Check in' : 'Total Sale',
                     align: 'left'
                 },
                 grid: {
