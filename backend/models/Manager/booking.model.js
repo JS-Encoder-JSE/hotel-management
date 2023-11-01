@@ -35,6 +35,7 @@ const bookingSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+
   from: { type: Date, required: true, },
   to:{type:Date, required:true},
   documents: {

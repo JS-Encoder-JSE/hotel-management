@@ -1,6 +1,6 @@
 ﻿// controllers/Manager/food.controller.js
 
-import Food from '../../models/Manager/food.model.js';
+import {Food,FoodOrder} from '../../models/Manager/food.model.js';
 
 export const addfood = async (req, res) => {
   try {
@@ -125,3 +125,31 @@ export const deletefood = async (req, res) => {
     });
   }
 };
+
+
+// order 
+export const addOrder = async (req, res) => {
+  try {
+    const orderItems = req.body;
+    if (!orderItems.length) {
+     return res.status(400).json('Please add order items')
+    }
+
+    const orders = orderItems.map(async element => {
+     const {food,quantity,price,total_price} = element
+      const order = new FoodOrder(
+        {
+          food,
+          quantity: Number(quantity),
+          price: Number(price),
+          total_price:Number(total_price)
+       }
+     );
+     await order.save();
+     return order
+   });
+    res.status(201).json({ message: 'Order created successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating order', error: error.message });
+  }
+}
