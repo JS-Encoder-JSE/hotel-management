@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEye, FaFileInvoice } from "react-icons/fa";
+import { FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
@@ -133,15 +133,22 @@ const Report = () => {
               </button>
             </div>
             <div className={`flex items-center space-x-1.5`}>
-              <span>Search: </span>
-              <input
-                type="text"
-                placeholder="Search"
-                name="search"
-                className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-                value={formik.values.search}
-                onChange={formik.handleChange}
-              />
+            <div className={`relative sm:min-w-[20rem]`}>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+            />
+            <button
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
             </div>
           </div>
           <div className="overflow-x-auto">
