@@ -158,12 +158,16 @@ const AddSubAdmin = () => {
               </label>
               <input
                 type="date"
-                placeholder="Sub Admin Joining"
+                placeholder="From  MM/DD/YYY"
                 name="joiningdate"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
                 value={formik.values.joiningdate}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                onBlur={(e) => {
+                  e.target.type = "text";
+                  formik.handleBlur;
+                }}
+                onFocus={(e) => (e.target.type = "date")}
               />
               {formik.touched.joiningdate &&
               Boolean(formik.errors.joiningdate) ? (
