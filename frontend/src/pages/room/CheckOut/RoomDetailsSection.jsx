@@ -23,7 +23,7 @@ const RoomDetailsSection = ({ selectedRooms }) => {
             <td className="py-1 px-3 border-r border-black/20">
               {selectedRooms.map((room, index) => (
                 <div key={index}>
-                  <p className="font-semibold">{room}</p>
+                  <p className="font-semibold">{room.label}</p>
                   <p className="text-xs text-slate-400 font-light">VIP Guest</p>
                   <hr className="my-2" />
                 </div>

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
+import foodRoute from "./routes/Manager/food.route.js";
 import hotelsRoute from "./routes/hotels.route.js";
 import uploadRoute from "./routes/upload.js";
 import userRoute from "./routes/users.route.js";
@@ -42,8 +43,10 @@ app.use(
 app.use("/users", userRoute);
 app.use("/hotels", hotelsRoute);
 app.use("/rooms", roomRoute);
+app.use("/foods", foodRoute);
 app.use("/booking", bookingRoute);
-app.use('/item',itemRoute);
+app.use("/item", itemRoute);
+
 app.use("/", uploadRoute);
 
 // Define your routes here
