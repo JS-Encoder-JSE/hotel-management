@@ -96,6 +96,8 @@ const EditRoom = () => {
         photos: null,
         description: room?.data?.description,
       });
+
+      setSelectedImages(room?.data?.images);
     }
   }, [room]);
 
@@ -142,8 +144,8 @@ const EditRoom = () => {
               spaceBetween={50}
             >
               {selectedImages.length ? (
-                selectedImages.map((image, idx) => (
-                  <SwiperSlide>
+                selectedImages?.map((image, idx) => (
+                  <SwiperSlide key={idx}>
                     <div className={`relative`}>
                       <div className={`absolute top-3 right-3 space-x-1.5`}>
                         <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case">
@@ -163,12 +165,21 @@ const EditRoom = () => {
                           <FaTrash />
                         </button>
                       </div>
-                      <img
-                        key={idx}
-                        src={URL.createObjectURL(image)}
-                        alt=""
-                        className={`w-full h-96 object-cover rounded`}
-                      />
+                      {typeof image === "string" ? (
+                        <img
+                          key={idx}
+                          src={image}
+                          alt=""
+                          className={`w-full h-96 object-cover rounded`}
+                        />
+                      ) : (
+                        <img
+                          key={idx}
+                          src={URL.createObjectURL(image)}
+                          alt=""
+                          className={`w-full h-96 object-cover rounded`}
+                        />
+                      )}
                     </div>
                   </SwiperSlide>
                 ))

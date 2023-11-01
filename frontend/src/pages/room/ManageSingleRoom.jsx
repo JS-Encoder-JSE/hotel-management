@@ -26,7 +26,7 @@ const ManageSingleRoom = () => {
       {!isLoading ? (
         <>
           <div className={`grid grid-cols-1 lg:grid-cols-3 gap-10 !mt-5`}>
-            <RoomThumbsSlider />
+            <RoomThumbsSlider images={room?.data?.images} />
             <div className={`lg:col-span-2`}>
               <h2 className="card-title">{room?.data?.roomNumber}</h2>
 
@@ -116,7 +116,7 @@ const ManageSingleRoom = () => {
                 {/* Modal Edit  */}
                 <button
                   className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
-                  onClick={() => navigate(`/dashboard/edit-room/0`)}
+                  onClick={() => navigate(`/dashboard/edit-room/${room?.data?._id}`)}
                 >
                   Edit
                 </button>
