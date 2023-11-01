@@ -72,7 +72,9 @@ export const getRoomById = async (req, res) => {
   
 // get all rooms 
 export const getAllRooms = async (req, res) => {
+
   try {
+    const filter = req?.query?.filter
     const { limit = 10, page = 1, ...query } = req.query;
 
     const parsedLimit = parseInt(limit);

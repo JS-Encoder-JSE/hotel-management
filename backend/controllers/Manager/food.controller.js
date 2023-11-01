@@ -145,7 +145,9 @@ export const addOrder = async (req, res) => {
           price: Number(price),
           total_price:Number(total_price)
        }
-     );
+      );
+      
+      await Food.findByIdAndUpdate(food, { $inc: { sell: 1 } });
      await order.save();
      return order
    });
