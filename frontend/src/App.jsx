@@ -60,12 +60,14 @@ import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 
 import ReportView from "./pages/report/ReportView.jsx";
 import Report from "./pages/Admin/Report.jsx";
+import Error from "./Error.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Root />,
+      errorElement: <Error />,
       children: [
         {
           index: true,

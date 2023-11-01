@@ -29,8 +29,8 @@ const BookingLists = () => {
           <thead>
             <tr className={`text-lg`}>
               <th>Name</th>
-              <th>Price</th>
-              <th>Capacity</th>
+              <th>Phone</th>
+              <th>Amount</th>
               <th>Booking Date</th>
               <th>Action</th>
             </tr>
@@ -41,22 +41,14 @@ const BookingLists = () => {
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <td>
                     <div className="flex items-center space-x-3">
-                      <div className="avatar">
-                        <div className="mask mask-squircle w-12 h-12">
-                          <img
-                            src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
                       <div>
-                        <div className="font-bold">Room 1</div>
-                        <div className="text-sm opacity-50">Floor 2</div>
+                        <div className="font-bold">Hasan</div>
+                        <div className="text-sm opacity-50">Rooms: 1, 2</div>
                       </div>
                     </div>
                   </td>
+                  <td>01715738573</td>
                   <td>$12</td>
-                  <td>4</td>
                   <td>
                     27-08-23 <br /> 10.00.00
                   </td>
