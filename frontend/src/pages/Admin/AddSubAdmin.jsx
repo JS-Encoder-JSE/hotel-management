@@ -157,7 +157,7 @@ const AddSubAdmin = () => {
                 Joining Date <span>*</span>
               </label>
               <input
-                type="date"
+                type="text"
                 placeholder="From  MM/DD/YYY"
                 name="joiningdate"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
