@@ -135,10 +135,11 @@ export const addOrder = async (req, res) => {
      return res.status(400).json('Please add order items')
     }
 
-    const orders = orderItems.map(async element => {
-     const {food,quantity,price,total_price} = element
+    orderItems.map(async element => {
+     const {room,food,quantity,price,total_price} = element
       const order = new FoodOrder(
         {
+          room,
           food,
           quantity: Number(quantity),
           price: Number(price),

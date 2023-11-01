@@ -26,6 +26,11 @@ const foodSchema = new mongoose.Schema({
 
 // Food Order List
 const foodOrderList = new mongoose.Schema({
+  room: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Room',
+    required: true
+  },
   food: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Food',
