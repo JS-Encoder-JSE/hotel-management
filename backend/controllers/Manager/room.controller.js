@@ -108,5 +108,58 @@ export const getAllRooms = async (req, res) => {
 };
 
 
+// update room 
+export const updateRoom = async (req, res) => {
+  try {
+      
+    const roomId = req.params.roomId; // Assuming you pass the booking ID in the request body
+        const updateData = req.body; // Object containing the fields to update
+    
+        const updateRoom = await Room.findByIdAndUpdate(roomId, updateData, { new: true });
+    
+        if (!updateRoom) {
+          return res.status(404).json({
+            success: false,
+            error: 'Room not found'
+          });
+        }
+    
+        res.status(200).json({
+          success: true,
+          data: updateRoom,
+          message: 'Room updated successfully'
+        });
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          error: 'Internal Server Error'
+        });
+      }
+}
+
+// delete room 
+export const deleteRoom = async (req, res) => {
+  try {
+    const roomId = req.params.roomId; // Assuming you pass the booking ID in the request body
+        const deleteRoom = await Room.findByIdAndDelete(roomId);
+        if (!deleteRoom) {
+          return res.status(404).json({
+            success: false,
+            error: 'Room not found'
+          });
+        }
+    
+        res.status(200).json({
+          success: true,
+          message: 'Room deleted successfully'
+        });
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          error: 'Internal Server Error'
+        });
+      }
+}
+
 
 

@@ -6,7 +6,7 @@ import {
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 
-const RoomThumbsSlider = () => {
+const RoomThumbsSlider = ({images}) => {
   const [activeThumb, setActiveThumb] = useState(null);
 
   return (
@@ -35,10 +35,10 @@ const RoomThumbsSlider = () => {
           grabCursor={true}
         >
           <>
-            {[...Array(10)].map((_, idx) => (
+            {images?.map((image, idx) => (
               <SwiperSlide key={idx} className={`relative pt-[100%]`}>
                 <img
-                  src={`https://swiperjs.com/demos/images/nature-${++idx}.jpg`}
+                  src={image}
                   alt=""
                   className={`absolute top-0 left-0 w-full h-full`}
                 />
@@ -55,11 +55,11 @@ const RoomThumbsSlider = () => {
         spaceBetween={10}
       >
         <>
-          {[...Array(10)].map((_, idx) => (
+          {images?.map((image, idx) => (
             <SwiperSlide key={idx} className={`group cursor-pointer`}>
               <div className="relative pt-[100%]">
                 <img
-                  src={`https://swiperjs.com/demos/images/nature-${++idx}.jpg`}
+                  src={image}
                   alt=""
                   className={`absolute top-0 left-0 w-full h-full opacity-50 group-[.swiper-slide-thumb-active]:border-4 group-[.swiper-slide-thumb-active]:border-green-slimy group-[.swiper-slide-thumb-active]:opacity-100`}
                 />

@@ -4,6 +4,7 @@ const roomAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
     rooms: build.query({
       query: (page) => `rooms/get-room?page=${++page}`,
+      invalidatesTags: ["room"]
     }),
     room: build.query({
       query: (id) => `rooms/get-room-by-id/${id}`,
@@ -16,6 +17,16 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
+      providesTags: ["room"]
+    }),
+    deleteRoom: build.mutation({
+      query: (id) => {
+        return {
+          url: `rooms/delete-room/${id}`,
+          method: "delete",
+        };
+      },
+      providesTags: ["room"]
     }),
     addBooking: build.mutation({
       query: (data) => {
@@ -33,5 +44,6 @@ export const {
   useRoomQuery,
   useRoomsQuery,
   useAddRoomMutation,
+  useDeleteRoomMutation,
   useAddBookingMutation,
 } = roomAPI;

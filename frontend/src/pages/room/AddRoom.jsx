@@ -77,7 +77,7 @@ const AddRoom = () => {
 
       delete obj.photos;
       await upload(formData).then(
-        (result) => (obj.image = result.data.imageUrl),
+        (result) => (obj.images = result.data.imageUrls),
       );
 
       const response = await addRoom(obj);
@@ -85,6 +85,7 @@ const AddRoom = () => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
+        console.log(response)
         toast.success(response.data.message);
         formikHelpers.resetForm();
         setSelectedImages([]);
