@@ -83,26 +83,26 @@ export const updateEmployee = async (req, res) => {
   }
 };
 
-// Controller to get all items with filter options and pagination
+// Controller to get all employees with filter options and pagination
 export const getAllEmployees = async (req, res) => {
-    try {
-      const { page = 1, limit = 10, filter, search } = req.query;
-      const query = {};
-  
-      if (filter === "Waiter"||filter === "House_Keeper") {
-        query.designation = filter;
-      }
-      if (search) {
-        query.name = { $regex: search, $options: "i" };
-      }
-  
-      const options = {
-        page: parseInt(page, 10),
-        limit: parseInt(limit, 10),
-      };
-      const items = await Employee.paginate(query, options);
-      res.status(200).json(items);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to retrieve items" });
+  try {
+    const { page = 1, limit = 10, filter, search } = req.query;
+    const query = {};
+
+    if (filter === "Waiter" || filter === "House_Keeper") {
+      query.designation = filter;
     }
-  };
+    if (search) {
+      query.name = { $regex: search, $options: "i" };
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+    const items = await Employee.paginate(query, options);
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve items" });
+  }
+};

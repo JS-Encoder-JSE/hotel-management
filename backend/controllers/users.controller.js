@@ -30,7 +30,16 @@ export const addOwner = async (req, res) => {
 
 export const addManager = async (req, res) => {
   try {
-    const { username, password, assignedHotelId } = req.body;
+    const {
+      username,
+      password,
+      assignedHotelId,
+      address,
+      email,
+      phone_no,
+      salary,
+      joining_date,
+    } = req.body;
 
     // Check if a user with the same username already exists
     const existingUser = await User.findOne({ username });
@@ -44,6 +53,11 @@ export const addManager = async (req, res) => {
       password,
       role: "manager",
       assignedHotel: assignedHotelId,
+      address,
+      email,
+      phone_no,
+      salary,
+      joining_date,
     });
 
     await manager.save();
@@ -53,17 +67,15 @@ export const addManager = async (req, res) => {
       $push: { managers: manager._id },
     });
 
-    res
-      .status(201)
-      .json({
-        message: "Manager added and assigned to the hotel successfully",
-      });
+    res.status(201).json({
+      message: "Manager added and assigned to the hotel successfully",
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const createSuperUser = async (req,res) => {
+export const createSuperUser = async (req, res) => {
   try {
     const username = "superuser";
     const password = "superuserpassword";
@@ -72,7 +84,7 @@ export const createSuperUser = async (req,res) => {
     const existingSuperUser = await User.findOne({ username });
     if (existingSuperUser) {
       console.log("Superuser already exists.");
-      res.status(400).json('already existed')
+      res.status(400).json("already existed");
       return;
     }
 
@@ -84,9 +96,8 @@ export const createSuperUser = async (req,res) => {
     });
 
     await superuser.save();
-    res.status(200).json({message: "Superuser created", data:superuser})
+    res.status(200).json({ message: "Superuser created", data: superuser });
     console.log("Superuser created successfully.");
-
   } catch (error) {
     console.error("Error creating superuser:", error.message);
   }
@@ -121,33 +132,31 @@ export const login = async (req, res) => {
   }
 };
 
-// get login user 
-export const getLoginUser = async(req, res) => {
+// get login user
+export const getLoginUser = async (req, res) => {
   try {
     // If you want to exclude sensitive information like password
-    const {userId } = req.user;
-    console.log(req.user)
-    const user = await User.findById(userId)
-    const {password,...rest}= user._doc
+    const { userId } = req.user;
+    console.log(req.user);
+    const user = await User.findById(userId);
+    const { password, ...rest } = user._doc;
     res.status(200).json({
       success: true,
       data: rest,
-      message: 'Logged in user retrieved successfully'
+      message: "Logged in user retrieved successfully",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal Server Error'
+      error: "Internal Server Error",
     });
   }
 };
 
-
-
 export const getOwners = async (req, res) => {
   try {
     // Find all users with the role 'owner'
-    const owners = await User.find({ role: 'owner' });
+    const owners = await User.find({ role: "owner" });
 
     res.json(owners);
   } catch (error) {
@@ -157,35 +166,49 @@ export const getOwners = async (req, res) => {
 
 export const getManagersByOwner = async (req, res) => {
   try {
-    const ownerId = req.params.ownerId; // Assuming you pass the owner's ID as a route parameter
-
+    const ownerId = req.user.userId; // Assuming you pass the owner's ID as a route parameter
+    const { page = 1, limit = 10, filter, search } = req.query;
     // Find the owner's user document
-    const owner = await User.findOne({ _id: ownerId, role: 'owner' });
-
+    const owner = await User.findOne({ _id: ownerId, role: "owner" });
     if (!owner) {
-      return res.status(404).json({ message: 'Owner not found' });
+      return res.status(404).json({ message: "Owner not found" });
     }
-
+    const query = {
+      role: "manager",
+      assignedHotel: { $in: owner.assignedHotels },
+    };
+    if (
+      filter === "Active" ||
+      filter === "Deactive" ||
+      filter === "Suspended"
+    ) {
+      query.status = filter;
+    }
+    if (search) {
+      query.username = { $regex: search, $options: "i" };
+    }
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
     // Find all users with the role 'manager' and assigned to the owner's hotels
-    const managers = await User.find({ role: 'manager', assignedHotel: { $in: owner.assignedHotels } });
+    const managers = await User.paginate(query, options);
 
-    res.json(managers);
+    res.status(200).json(managers);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
-
 
 export const getManagerById = async (req, res) => {
   try {
     const managerId = req.params.managerId; // Assuming you pass the manager's ID as a route parameter
 
     // Find the manager by ID
-    const manager = await User.findOne({ _id: managerId, role: 'manager' });
+    const manager = await User.findOne({ _id: managerId, role: "manager" });
 
     if (!manager) {
-      return res.status(404).json({ message: 'Manager not found' });
+      return res.status(404).json({ message: "Manager not found" });
     }
 
     res.json(manager);
