@@ -63,7 +63,6 @@ export const getfood = async (req, res) => {
       });
     }
   };
-  
 
 export const getfoodById = async (req, res) => {
   try {

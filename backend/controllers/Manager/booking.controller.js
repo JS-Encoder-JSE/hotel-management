@@ -47,6 +47,7 @@ export const addBooking = async (req, res) => {
 
 export const getBooking = async (req, res) => {
     try {
+      
       const { limit = 10, page = 1 } = req.query;
       const parsedLimit = parseInt(limit);
       const parsedPage = parseInt(page);
