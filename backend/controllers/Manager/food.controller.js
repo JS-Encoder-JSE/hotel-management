@@ -1,6 +1,6 @@
 ﻿// controllers/Manager/food.controller.js
 
-import Food from '../../models/Manager/food.model';
+import Food from '../../models/Manager/food.model.js';
 
 export const addfood = async (req, res) => {
   try {
