@@ -30,6 +30,7 @@ export const addfood = async (req, res) => {
 };
 
 export const getfood = async (req, res) => {
+  
     try {
       const { page = 1, limit = 10, ...query } = req.query;
       const parsedLimit = parseInt(limit);
@@ -37,23 +38,38 @@ export const getfood = async (req, res) => {
   
       const startIndex = (parsedPage - 1) * parsedLimit;
       const endIndex = parsedPage * parsedLimit;
+
+
   
       const totalFoods = await Food.countDocuments(query);
       const totalPages = Math.ceil(totalFoods / parsedLimit);
-  
+      const pagination= {
+        total: totalFoods,
+        totalPages: totalPages,
+        currentPage: parsedPage,
+        limit: parsedLimit
+      }
+      // search by food name 
+      if (query.food_name) {
+        const food_name = new RegExp(query.food_name, 'i');
+        const foods = await Food.find({food_name}).skip(startIndex).limit(parsedLimit);
+          res.status(200).json({
+            success: true,
+            data: foods,
+            pagination,
+            message: 'Food items retrieved successfully'
+          });
+        
+        return
+      }
+
       const foods = await Food.find(query)
         .skip(startIndex)
         .limit(parsedLimit);
-  
       res.status(200).json({
         success: true,
         data: foods,
-        pagination: {
-          total: totalFoods,
-          totalPages: totalPages,
-          currentPage: parsedPage,
-          limit: parsedLimit
-        },
+        pagination,
         message: 'Food items retrieved successfully'
       });
     } catch (error) {
