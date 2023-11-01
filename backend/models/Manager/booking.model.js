@@ -40,7 +40,8 @@ const bookingSchema = new mongoose.Schema({
   to:{type:Date, required:true},
   documents: {
     type: Array // Assuming you'll store a link or file path to the document
-  }
+  },
+  status:{type:String,enum:['booking','checkin','checkout','canceled'],required:true,default:'booking'}
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);

@@ -40,7 +40,7 @@ const ManageBooking = () => {
           <div className={`relative sm:min-w-[20rem]`}>
             <input
               type="text"
-              placeholder="Search by name..."
+              placeholder="Search by phone number..."
               name="search"
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}

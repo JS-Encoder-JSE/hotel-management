@@ -1,25 +1,16 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
 
-const ConfirmOrder = () => {
+const ConfirmOrder = ({formik}) => {
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
-  const dispatch = useDispatch();
-  const formik = useFormik({
-    initialValues: {},
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
 
   return (
     <>
       <form method="dialog">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={() => formik.handleReset()}
         >
           ✕
         </button>
@@ -62,7 +53,10 @@ const ConfirmOrder = () => {
                         </p>
                       </div>
                       <div className="flex">
-                        <button className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+                        <button
+                          onClick={() => formik.handleSubmit()}
+                          className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                        >
                           Place Order
                         </button>
                       </div>

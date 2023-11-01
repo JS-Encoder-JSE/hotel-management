@@ -23,9 +23,9 @@ const RoomLists = ({ setCurrentPage, rooms }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          position: "top-end",
+          position: "center",
           icon: "success",
-          title: "Done!",
+          title: "Deleted!",
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
@@ -85,14 +85,30 @@ const RoomLists = ({ setCurrentPage, rooms }) => {
                         </div>
                       </div>
                       <div>
-                        <div className="font-bold">{roomNumber}</div>
-                        <div className="text-md opacity-50">{floorNumber}</div>
+                        <div className="font-bold">Room - {roomNumber}</div>
+                        <div className="text-md opacity-50">
+                          Floor - {floorNumber}
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td>{price}</td>
                   <td>{capacity}</td>
-                  <td>{status}</td>
+                  <td>
+                    {status === "Available" ? (
+                      <div className="badge min-w-[6rem] bg-green-slimy border-green-slimy text-white">
+                        Available
+                      </div>
+                    ) : status === "Booked" ? (
+                      <div className="badge min-w-[6rem] bg-orange-600 border-orange-600 text-white">
+                        Booked
+                      </div>
+                    ) : (
+                      <div className="badge min-w-[6rem] bg-red-600 border-red-600 text-white">
+                        Checked In
+                      </div>
+                    )}
+                  </td>
                   <td className={`space-x-1.5`}>
                     <span
                       className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
