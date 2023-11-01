@@ -85,7 +85,6 @@ const AddRoom = () => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
-        console.log(response)
         toast.success(response.data.message);
         formikHelpers.resetForm();
         setSelectedImages([]);
