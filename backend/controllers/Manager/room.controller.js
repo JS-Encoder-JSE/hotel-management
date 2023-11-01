@@ -11,7 +11,7 @@ export const addRoom = async (req, res) => {
       bedSize,
       floorNumber,
       roomNumber,
-      image,
+      images,
       description
     } = req.body;
 
@@ -23,7 +23,7 @@ export const addRoom = async (req, res) => {
       bedSize,
       floorNumber,
       roomNumber,
-      image,
+      images,
       description
     });
 
