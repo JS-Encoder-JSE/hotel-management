@@ -2,7 +2,7 @@
 
 const bookingSchema = new mongoose.Schema({
   roomNumber: {
-    type: Number,
+    type: Array,
     required: true
   },
   guestName: {

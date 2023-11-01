@@ -30,8 +30,8 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  image: {
-    type: String, // Assuming you will store a URL or file path to the image
+  images: {
+    type: Array, 
     required: true
   },
   description: {
