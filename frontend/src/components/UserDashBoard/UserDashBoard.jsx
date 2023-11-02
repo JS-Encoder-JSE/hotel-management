@@ -15,27 +15,29 @@ import CustomerList from "./CustomerList";
 import TodaysBooking from "./TodaysBooking";
 import NextBooking from "./NextBooking";
 import { useSelector } from "react-redux";
+import { TbCurrencyTaka } from "react-icons/tb";
 
 const UserDashBoard = () => {
   const { user } = useSelector((store) => store.authSlice);
-  const [userManager, setUserManager] = useState(user.role === "manager");
+  const [userHotel, setUserHotel] = useState(user.role === "manager" || user.role === "owner");
 
   return (
     <div>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-5">
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
-            {userManager ? <FaCalendarDay /> : <FaDollyFlatbed />}
+            {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
           </div>
           <h6 className="text-xs text-slate-400">
-            {userManager ? "TODAY CHECK IN" : "TOTAL SELL"}
+            {userHotel ? "TODAY CHECK IN" : "TOTAL SELL"}
           </h6>
           <p className="text-2xl font-semibold mb-5">0</p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
-            <FaDollarSign />
+            {/* <FaDollarSign /> */}
+            <TbCurrencyTaka />
           </div>
           <h6 className="text-xs text-slate-400">TOTAL AMOUNT</h6>
           <p className="text-2xl font-semibold mb-5">299m</p>
@@ -51,10 +53,10 @@ const UserDashBoard = () => {
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
-            {userManager ? <FaRegCalendarAlt /> : <MdAutorenew />}
+            {userHotel ? <FaRegCalendarAlt /> : <MdAutorenew />}
           </div>
           <h6 className="text-xs text-slate-400">
-            TOTAL {userManager ? "CHECK IN" : "RENEW"}
+            TOTAL {userHotel ? "CHECK IN" : "RENEW"}
           </h6>
           <p className="text-2xl font-semibold mb-5">750</p>
           <hr />
@@ -62,15 +64,15 @@ const UserDashBoard = () => {
       </section>
 
       <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
-        <CustomerReservation />
+        <CustomerReservation userHotel={userHotel} />
       </section>
 
       <section className="mt-8 grid md:grid-cols-2 gap-5">
         <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-          <BookingChart userManager={userManager} />
+          <BookingChart userManager={userHotel} />
         </div>
         <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-          <ReservationChart userManager={userManager} />
+          <ReservationChart userManager={userHotel} />
         </div>
       </section>
 
@@ -87,7 +89,7 @@ const UserDashBoard = () => {
         {/* <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
           <TodaysBooking />
         </div> */}
-        {userManager && (
+        {userHotel && (
           <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
             <NextBooking />
           </div>

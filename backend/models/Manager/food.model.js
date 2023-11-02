@@ -1,20 +1,21 @@
-﻿import mongoose from 'mongoose';
+﻿import mongoose, { Schema } from 'mongoose';
 
 const foodSchema = new mongoose.Schema({
   food_name: {
     type: String,
     required: true
   },
+  sell:{type:Number,default:0,},
   quantity: {
     type: Number,
-    required: true
+    default:0
   },
   price: {
     type: Number,
     required: true
   },
-  image: {
-    type: String,
+  images: {
+    type: Array,
     required: true
   },
   description: {
@@ -23,6 +24,36 @@ const foodSchema = new mongoose.Schema({
   }
 });
 
-const Food = mongoose.model('Food', foodSchema);
 
-export default Food;
+// Food Order List
+const foodOrderList = new mongoose.Schema({
+  room: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Room',
+    required: true
+  },
+  food: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Food',
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true
+  },
+  price:{type:Number,required:true},
+  total_price: {
+    type: Number,
+    required: true
+  },
+  order_date: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+const Food = mongoose.model('Food', foodSchema);
+const FoodOrder = mongoose.model('FoodOrder', foodOrderList);
+
+export {FoodOrder ,Food}
+

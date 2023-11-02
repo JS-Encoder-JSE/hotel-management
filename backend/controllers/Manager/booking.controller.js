@@ -11,7 +11,9 @@ export const addBooking = async (req, res) => {
           children,
           paymentMethod,
           discount,
-          document
+          documents,
+          to,
+          from,
         } = req.body;
     
         const newBooking = new Booking({
@@ -23,7 +25,9 @@ export const addBooking = async (req, res) => {
           children,
           paymentMethod,
           discount,
-          document
+          documents,
+          from,
+          to
         });
     
         const savedBooking = await newBooking.save();
@@ -43,17 +47,17 @@ export const addBooking = async (req, res) => {
 
 export const getBooking = async (req, res) => {
     try {
-      const { limit = 10, page = 1 } = req.query;
+      const { limit = 10, page = 1,...query } = req.query;
       const parsedLimit = parseInt(limit);
       const parsedPage = parseInt(page);
   
       const startIndex = (parsedPage - 1) * parsedLimit;
       const endIndex = parsedPage * parsedLimit;
   
-      const totalBookings = await Booking.countDocuments();
+      const totalBookings = await Booking.countDocuments(query);
       const totalPages = Math.ceil(totalBookings / parsedLimit);
   
-      const bookings = await Booking.find().skip(startIndex).limit(parsedLimit);
+      const bookings = await Booking.find(query).skip(startIndex).limit(parsedLimit);
   
       res.status(200).json({
         success: true,
@@ -143,7 +147,7 @@ export const deleteBooking = async (req, res) => {
     
         res.status(200).json({
           success: true,
-          message: 'Booking updated successfully'
+          message: 'Booking deleted successfully'
         });
       } catch (error) {
         res.status(500).json({

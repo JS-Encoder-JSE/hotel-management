@@ -77,7 +77,7 @@ const AddRoom = () => {
 
       delete obj.photos;
       await upload(formData).then(
-        (result) => (obj.image = result.data.imageUrl),
+        (result) => (obj.images = result.data.imageUrls),
       );
 
       const response = await addRoom(obj);
