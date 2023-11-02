@@ -105,4 +105,16 @@ export const getAllEmployees = async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: "Failed to retrieve items" });
     }
-  };
+};
+  
+
+// Controller to get all items with filter options and pagination
+export const getEmployeeById = async (req, res) => {
+  try {
+    const employeeId = req.query.employeeId;
+    const items = await Employee.findById(employeeId);
+    res.status(200).json({message:'Employee data retrieved',data:items,status:true});
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve items" });
+  }
+};

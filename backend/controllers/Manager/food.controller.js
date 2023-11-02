@@ -143,33 +143,23 @@ export const deletefood = async (req, res) => {
 // order
 export const addOrder = async (req, res) => {
 	try {
-		const orderItems = req.body;
-		if (!orderItems.length) {
-			return res.status(400).json("Please add order items");
-		}
+		const {foods,room} = req.body;
 
-		orderItems.map(async (element) => {
-			const { room, food, quantity, price, total_price } = element;
+    
+
+
+		const orderFoods = foods?.map(async (element) => {
+			const {food, quantity, } = element;
 			let foodItem = await Food.findById(food);
-
-			const order = new FoodOrder({
-				room,
-				foods: [
-          { 
-            food,
-						quantity: Number(quantity),
-						price: Number(price),
-						total_price: food.price * Number(quantity),
-					},
-				],
-			});
 			foodItem = { sell: foodItem.sell + 1, ...foodItem };
 			await foodItem.save();
-
 			// await Food.findByIdAndUpdate(food, { $inc: { sell: 1 } });
-			await order.save();
-			return order;
-		});
+    });
+    const order = new FoodOrder({
+      room,
+      foods:orderFoods
+    });
+    await order.save();
 		res.status(201).json({ message: "Order created successfully" });
 	} catch (error) {
 		res.status(500).json({
