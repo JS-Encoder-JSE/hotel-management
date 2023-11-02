@@ -38,7 +38,7 @@ router.post('/upload', checkToken, (req, res) => {
   });
 });
 
-router.get('/uploads/:filename', checkToken, (req, res) => {
+router.get('/uploads/:filename', (req, res) => {
   const filename = req.params.filename;
   const filePath = path.join(path.join(path.dirname(fileURLToPath(import.meta.url)), '../uploads', filename));
 
