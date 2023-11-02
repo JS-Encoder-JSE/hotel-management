@@ -3,11 +3,11 @@
 const roomSchema = new mongoose.Schema({
   category: {
     type: String,
-    enum: ['Standard', 'Deluxe', 'Suite','General'] // Add other category options as needed
+    enum: ["Standard", "Deluxe", "Suite", "General"],  // Add other category options as needed
   },
   type: {
     type: String,
-    enum: ['Single', 'Double', 'Twin'] // Add other type options as needed
+    enum: ["Single", "Double", "Twin"],  // Add other type options as needed
   },
   capacity: {
     type: Number,
