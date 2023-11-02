@@ -74,9 +74,23 @@ export const getRoomById = async (req, res) => {
 export const getAllRooms = async (req, res) => {
 
   try {
-    const filter = req?.query?.filter
-    const { limit = 10, page = 1, ...query } = req.query;
+    // getting only room numbers 
+    const only_for_room = req.query.only_for_room
+    if (only_for_room === 'true') {
+      const rooms = await Room.find({}, 'category _id roomNumber',);
 
+      // send res 
+      res.status(200).json({
+        success: true,
+        data: rooms,
+        message: 'Rooms retrieved successfully'
+      });
+      return
+}
+
+
+
+    const { limit = 10, page = 1, ...query } = req.query;
     const parsedLimit = parseInt(limit);
     const parsedPage = parseInt(page);
 
@@ -95,6 +109,7 @@ export const getAllRooms = async (req, res) => {
       limit: parsedLimit
     };
 
+
     res.status(200).json({
       success: true,
       data: rooms,
@@ -102,6 +117,7 @@ export const getAllRooms = async (req, res) => {
       message: 'Rooms retrieved successfully'
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       success: false,
       error: 'Internal Server Error'
