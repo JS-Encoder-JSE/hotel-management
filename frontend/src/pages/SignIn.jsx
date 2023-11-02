@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { setToken } from "../redux/auth/authSlice.js";
 import { useSignInMutation } from "../redux/auth/authAPI.js";
 import imgAbstractSI from "../assets/bg-abstract-signin.svg";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 // sign in form validation
 const validationSchema = yup.object({
@@ -25,6 +26,7 @@ const SignIn = () => {
   const [signIn, { isLoading }] = useSignInMutation();
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPass, setShowPass] = useState(false);
   const fromURL = location.state?.fromURL.pathname;
 
   const formik = useFormik({
@@ -76,7 +78,7 @@ const SignIn = () => {
             <div className="card-body">
               <div className={`flex flex-col items-center space-y-2`}>
                 <h3 className={`text-2xl font-bold`}>Sign In</h3>
-                <p>Sign in Using Your Email Address</p>
+                <p>Sign in Using Your Username</p>
               </div>
               <form
                 className="form-control gap-y-4"
@@ -102,15 +104,32 @@ const SignIn = () => {
                 </div>
                 {/* password box */}
                 <div className="flex flex-col gap-3">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    className="input input-sm bg-transparent text-green-slimy w-full px-0 border-0 border-b border-b-green-slimy rounded-none focus:outline-none"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
+                  <div className={`relative`}>
+                    <input
+                      type={showPass ? "text" : "password"}
+                      placeholder="Password"
+                      name="password"
+                      className="input input-sm bg-transparent text-green-slimy w-full px-0 border-0 border-b border-b-green-slimy rounded-none focus:outline-none"
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    {showPass ? (
+                      <span
+                        className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                        onClick={() => setShowPass(false)}
+                      >
+                        <FaEyeSlash />
+                      </span>
+                    ) : (
+                      <span
+                        className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                        onClick={() => setShowPass(true)}
+                      >
+                        <FaEye />
+                      </span>
+                    )}
+                  </div>
                   {formik.touched.password &&
                   Boolean(formik.errors.password) ? (
                     <small className="text-red-600">

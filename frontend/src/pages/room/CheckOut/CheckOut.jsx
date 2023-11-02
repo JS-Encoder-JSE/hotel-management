@@ -4,10 +4,10 @@ import CustomerInfoSection from "./CustomerInfoSection";
 import RoomDetailsSection from "./RoomDetailsSection";
 import BillingSection from "./BillingSection";
 import PaymentSection from "./PaymentSection";
-import { useRoomsQuery } from "../../../redux/room/roomAPI";
+import {useRoomNumbersQuery, useRoomsQuery} from "../../../redux/room/roomAPI";
 
 const CheckOut = () => {
-  const { isLoading, data: rooms } = useRoomsQuery();
+  const { isLoading, data: rooms } = useRoomNumbersQuery();
   const [selectedRooms, setSelectedRooms] = useState([]);
   const [showRooms, setShowRooms] = useState(false);
 

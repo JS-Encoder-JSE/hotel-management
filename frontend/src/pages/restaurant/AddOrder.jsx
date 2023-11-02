@@ -7,7 +7,7 @@ import ConfirmOrder from "../../components/restaurant/ConfirmOrder.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
 import { setOrder } from "../../redux/add-order/addOrderSlice.js";
-import { useRoomsQuery } from "../../redux/room/roomAPI.js";
+import {useRoomNumbersQuery, useRoomsQuery} from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -15,7 +15,7 @@ const validationSchema = yup.object({
 });
 
 const AddOrder = () => {
-  const { isLoading, data: rooms } = useRoomsQuery();
+  const { isLoading, data: rooms } = useRoomNumbersQuery();
   const { order } = useSelector((store) => store.addOrderSlice);
   const dispatch = useDispatch();
   const formik = useFormik({

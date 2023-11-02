@@ -3,7 +3,9 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {useUpdateInventoryMutation} from "../../redux/inventory/inventoryAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -20,7 +22,9 @@ const validationSchema = yup.object({
 });
 
 const EditInventory = () => {
+  const {id} = useParams()
   const navigate = useNavigate();
+  const [updateInventory] = useUpdateInventoryMutation()
   const formik = useFormik({
     initialValues: {
       itemName: "",
@@ -28,8 +32,17 @@ const EditInventory = () => {
       ItemQuantity: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const response = await updateInventory({id, values})
+
+      console.log(response)
+
+      // if (response?.error) {
+      //   toast.error(response.error.data.message);
+      // } else {
+      //   toast.success(response.data.message);
+      //   formikHelpers.resetForm();
+      // }
     },
   });
 
