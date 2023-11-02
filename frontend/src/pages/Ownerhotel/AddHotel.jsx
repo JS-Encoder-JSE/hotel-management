@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { FaEyeSlash } from "react-icons/fa";
+
 
 
 // form validation
@@ -12,10 +14,12 @@ const validationSchema = yup.object({
   license: yup.string().required("License Number is required"),
   branchName: yup.string().required("Branch Name is required"),
   manager: yup.string().required("Manager Name is required"),
+  password: yup.string().required("password is required"),
 });
 
 const AddHotel = () => {
   const [hotelLimit, setHotelLimit] = useState(0)
+  const [showPass, setShowPass] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -25,7 +29,8 @@ const AddHotel = () => {
       phoneNumber: "",
       license: "",
       branchName: "",
-      manager: ""
+      manager: "",
+      password:""
 
     },
     validationSchema,
@@ -33,6 +38,10 @@ const AddHotel = () => {
       console.log(values);
     },
   });
+
+  const handleShowPass = () => {
+    setShowPass(!showPass);
+  };
   return (
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
@@ -151,6 +160,7 @@ const AddHotel = () => {
                 </small>
               ) : null}
             </div>
+
             {/*Hotel Branch box */}
             <div className="flex flex-col gap-3">
               <input
@@ -192,6 +202,57 @@ const AddHotel = () => {
                 </small>
               ) : null}
             </div>
+
+           {/* password */}
+                    {/* <div className="flex flex-col gap-3">
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.password && Boolean(formik.errors.password) ? (
+                <small className="text-red-600">
+                  {formik.touched.password && formik.errors.password}
+                </small>
+              ) : null}
+            </div>  */}
+              <div>
+         
+          <div className="absolute">
+            <input
+              type={showPass ? "text" : "password"}
+              placeholder="Enter Password"
+              name="password"
+              className="input input-md input-bordered bg-transparent rounded max-w-xs w-96 border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.password &&
+            Boolean(formik.errors.password) ? (
+              <small className="text-red-600">
+                {formik.touched.password && formik.errors.password}
+              </small>
+            ) : null}
+
+            {!showPass ? (
+              <FaEyeSlash
+                onClick={handleShowPass}
+                className="absolute right-0 top-4 text-black text-lg mr-3 cursor-pointer"
+              />
+            ) : (
+              <FaEye
+                onClick={handleShowPass}
+                className="absolute right-0 top-4 text-black text-lg mr-3 cursor-pointer"
+              />
+            )}
+          </div>
+        </div>
+
 
             {/* submit button */}
             <div className=" col-span-full text-end mb-5 ">
