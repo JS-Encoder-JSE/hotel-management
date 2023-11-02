@@ -56,7 +56,7 @@ const AdminNewLicense = () => {
       console.log(values);
     },
   });
-
+  // image delate
   const handleDelete = (idx) => {
     const tempImgs = [
       ...selectedImages.slice(0, idx),
@@ -73,6 +73,7 @@ const AdminNewLicense = () => {
     setSelectedImages(tempImgs);
   };
 
+  // handlechange
   const handleChange = (idx, newFile) => {
     const updatedImages = [...selectedImages];
     updatedImages[idx] = newFile;
@@ -91,11 +92,11 @@ const AdminNewLicense = () => {
   useEffect(() => {
     if (formik.values.utility) {
       const selectedImagesArray = Array.from(formik.values.utility);
-      setSelectedImages(selectedImagesArray);
+      setSelectedImages([...selectedImagesArray, ...selectedImages]);
     }
     if (formik.values.tradeLicense) {
       const selectedImagesArray = Array.from(formik.values.tradeLicense);
-      setSelectedImages(selectedImagesArray);
+      setSelectedImages([...selectedImagesArray, ...selectedImages]);
     }
   }, [formik.values.utility, formik.values.tradeLicense]);
 
@@ -432,9 +433,9 @@ const AdminNewLicense = () => {
                 multiple
                 name="tradeLicense"
                 className="absolute left-0 top-0  overflow-hidden h-0"
-                onChange={(e) =>
-                  formik.setFieldValue("tradeLicense", e.currentTarget.files)
-                }
+                onChange={(e) => {
+                  formik.setFieldValue("tradeLicense", e.currentTarget.files);
+                }}
                 onBlur={formik.handleBlur}
               />
             </label>
