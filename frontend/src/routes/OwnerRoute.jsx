@@ -1,12 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth.js";
+import { useSelector } from "react-redux";
 
 const OwnerRoute = ({ children }) => {
-  const { isUserLoading, user } = useAuth();
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   return !isUserLoading ? (
-    user.status === "owner" ? (
+    user?.role === "owner" ? (
       children
     ) : (
       <Navigate to="/dashboard"></Navigate>

@@ -11,7 +11,7 @@ import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import Select from "react-select";
-import makeAnimated from "react-select/animated";
+import { useRoomsQuery } from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -53,31 +53,9 @@ const validationSchema = yup.object({
 });
 
 const CheckIn = () => {
-  const [selectedImages, setSelectedImages] = useState([]);
+  const { isLoading, data: rooms } = useRoomsQuery();
   const [selectedRooms, setSelectedRooms] = useState([]);
-  const animatedComponents = makeAnimated();
-
-  // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
-  const roomList = [
-    // { value: '', label: 'Room Select' },
-    { value: "1 - Chocolate", label: "1 - Chocolate" },
-    { value: "2 - Strawberry", label: "2 - Strawberry" },
-    { value: "3 - Shake", label: "3 - Shake" },
-    { value: "4 - AC", label: "4 - AC" },
-    { value: "5 - None AC", label: "5 - None AC" },
-    { value: "6 - Fan", label: "6 - Fan" },
-    { value: "7 - Deluxe", label: "7 - Deluxe" },
-    { value: "8 - None-Deluxe", label: "8 - None-Deluxe" },
-    { value: "9 - Couple", label: "9 - Couple" },
-    { value: "10 - Anniversary", label: "10 - Anniversary" },
-    { value: "11 - Official", label: "11 - Official" },
-    { value: "12 - VIP", label: "12 - VIP" },
-  ];
-
-  const handleSearchRoom = (e) => {
-    const rooms = e.map((i) => i.value);
-    setSelectedRooms(rooms);
-  };
+  const [selectedImages, setSelectedImages] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -127,6 +105,17 @@ const CheckIn = () => {
     formik.setFieldValue("documents", dataTransfer.files);
     setSelectedImages(updatedImages);
   };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
+
+  const transformedRooms = rooms?.data?.map((room) => ({
+    value: room.roomNumber,
+    label: `${room.roomNumber} - ${room.category}`,
+  }));
 
   useEffect(() => {
     if (formik.values.documents) {
@@ -205,12 +194,23 @@ const CheckIn = () => {
         </div>
         <div className="flex flex-col gap-3">
           <Select
-            closeMenuOnSelect={false}
-            components={animatedComponents}
-            isMulti
-            options={roomList}
             placeholder="Room Select"
-            onChange={(e) => handleSearchRoom(e)}
+            defaultValue={selectedRooms}
+            options={transformedRooms}
+            isMulti
+            isSearchable
+            closeMenuOnSelect={false}
+            onKeyDown={handleKeyDown}
+            onChange={setSelectedRooms}
+            noOptionsMessage={() => "No room available"}
+            classNames={{
+              control: (state) =>
+                `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                  state.isFocused ? "!shadow-none" : ""
+                }`,
+              valueContainer: () => "!p-0",
+              placeholder: () => "!m-0",
+            }}
           />
         </div>
         {/* name box */}

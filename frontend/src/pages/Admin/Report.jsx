@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { FaEye, FaFileInvoice } from "react-icons/fa";
+import { FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
+import Select from "react-select";
+
 
 const Report = () => {
   const navigate = useNavigate();
@@ -16,6 +18,14 @@ const Report = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
+
+
+  const options = [
+    {value: 'all', label: 'All'},
+    {value: 'total-renew', label: 'Total-Renew'},
+    {value: 'total-sale', label: 'Total-Sale'},
+    {value: 'total-expired', label: 'Total-Expired'},
+  ]  
 
   const formik = useFormik({
     initialValues: {
@@ -34,34 +44,50 @@ const Report = () => {
     XLSX.writeFile(wb, `${name}.xlsx`);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
         <h3 className={`text-xl font-semibold`}>Search Report</h3>
         <hr className={`my-5`} />
-        <div className={`space-x-3`}>
-          <span>From</span>
-          <input
-            type="date"
-            name={`startDate`}
-            className={`input input-sm input-bordered rounded focus:outline-none`}
-            value={formik.values.startDate}
-            onChange={formik.handleChange}
-          />
-          <span>To</span>
-          <input
-            type="date"
-            name={`endDate`}
-            className={`input input-sm input-bordered rounded focus:outline-none`}
-            value={formik.values.endDate}
-            onChange={formik.handleChange}
-          />
-          <button
-            type={"button"}
-            className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-          >
-            Search
-          </button>
+        <div className="flex justify-between">
+          <div className={`space-x-3`}>
+            <span>From</span>
+            <input
+              type="date"
+              name={`startDate`}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              value={formik.values.startDate}
+              onChange={formik.handleChange}
+            />
+            <span>To</span>
+            <input
+              type="date"
+              name={`endDate`}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              value={formik.values.endDate}
+              onChange={formik.handleChange}
+            />
+            <button
+              type={"button"}
+              className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+            >
+              Search
+            </button>
+          </div>
+          <div className="w-[200px]">
+            <Select
+              options={options}
+              placeholder="Filter"
+              // onChange={(e) => handleSearchRoom(e)}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
         </div>
       </div>
       <div className={`bg-white px-10 py-5 rounded`}>
@@ -107,15 +133,22 @@ const Report = () => {
               </button>
             </div>
             <div className={`flex items-center space-x-1.5`}>
-              <span>Search: </span>
-              <input
-                type="text"
-                placeholder="Search"
-                name="search"
-                className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-                value={formik.values.search}
-                onChange={formik.handleChange}
-              />
+            <div className={`relative sm:min-w-[20rem]`}>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+            />
+            <button
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
             </div>
           </div>
           <div className="overflow-x-auto">
@@ -127,6 +160,8 @@ const Report = () => {
                   <th>Phone Number</th>
                   <th>Purchase Date</th>
                   <th>Expired Date</th>
+                  <th>Hotels Have</th>
+                  <th>Hotel Limits</th>
                   <th>Paid Amount</th>
                 </tr>
               </thead>
@@ -145,6 +180,8 @@ const Report = () => {
                       <td>
                         2023-10-21 <br /> 10:00:00
                       </td>
+                      <td>5</td>
+                      <td>2</td>
                       <td>25000</td>
                     </tr>
                   );

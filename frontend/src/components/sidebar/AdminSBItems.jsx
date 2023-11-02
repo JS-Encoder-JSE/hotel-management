@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   MdBarChart,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
-  MdOutlineDashboard,
-  MdOutlineFoodBank,
-  MdOutlineInventory2,
   MdOutlineKitchen,
   MdOutlineLockClock,
   MdOutlineMeetingRoom,
 } from "react-icons/md";
-import useAuth from "../../hooks/useAuth";
 
 const AdminSBItems = ({ handleSBItems }) => {
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const [subAdmin, setSubAdmin] = useState(false);
-  const { user } = useAuth();
 
   useEffect(() => {
-    if (user.status === "sub-admin") {
-      setSubAdmin(true);
-    } else {
-      setSubAdmin(false);
+    if (user) {
+      if (user.role === "subadmin") {
+        setSubAdmin(true);
+      } else {
+        setSubAdmin(false);
+      }
     }
   }, [user]);
-  console.log(subAdmin);
 
   return (
     <>

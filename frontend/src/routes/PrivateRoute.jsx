@@ -1,18 +1,16 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import useAuth from "../hooks/useAuth.js";
+import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children }) => {
-  const { isUserLoading, user } = useAuth();
   const location = useLocation();
+  const { token } = useSelector((store) => store.authSlice);
 
-  return !isUserLoading ? (
-    user ? (
-      children
-    ) : (
-      <Navigate to="/" state={{ fromURL: location }} replace={true}></Navigate>
-    )
-  ) : null;
+  return token ? (
+    children
+  ) : (
+    <Navigate to="/" state={{ fromURL: location }}></Navigate>
+  );
 };
 
 export default PrivateRoute;

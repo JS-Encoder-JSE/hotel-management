@@ -150,7 +150,7 @@ const SubAdminReport = () => {
                       <td className={`space-x-1.5`}>
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                          onClick={() => navigate("view")}
+                          onClick={() => navigate(`/dashboard/sub-admin-list-view/${idx}`)}
                         >
                           <FaEye />
                         </span>

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts'
 
-const CustomerReservation = () => {
+const CustomerReservation = ({userHotel}) => {
     const [chartProps, setChartProps] = useState(
         {
 
             series: [{
-                name: 'Booking Confirmed',
+                name: userHotel ? 'Checkin Confirmed' : 'Total Expired',
                 type: 'column',
                 data: [23, 24, 40, 27, 13, 22, 37, 21, 44, 22, 30],
                 color: '#fe9302'
             }, {
-                name: 'Booking Pending',
+                name: userHotel ? 'Booking' : 'Total Renew',
                 type: 'line',
                 data: [27, 25, 22, 27, 13, 22, 37, 25, 26],
                 color: '#5c44ab'
@@ -55,7 +55,7 @@ const CustomerReservation = () => {
                 },
                 yaxis: {
                     title: {
-                        text: 'Booking Confirmed',
+                        text: userHotel ? 'Checkin Confirmed' : 'Total Expired',
                     },
                     min: 0
                 },
@@ -65,7 +65,7 @@ const CustomerReservation = () => {
                     y: {
                         formatter: function (y) {
                             if (typeof y !== "undefined") {
-                                return y.toFixed(0) + " bookings";
+                                return y.toFixed(0) + (userHotel ? " bookings" : " renew");
                             }
                             return y;
 

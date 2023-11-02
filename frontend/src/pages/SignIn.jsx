@@ -1,9 +1,11 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import useAuth from "../hooks/useAuth.js";
+import { setToken } from "../redux/auth/authSlice.js";
+import { useSignInMutation } from "../redux/auth/authAPI.js";
 import imgAbstractSI from "../assets/bg-abstract-signin.svg";
 
 // sign in form validation
@@ -19,8 +21,11 @@ const validationSchema = yup.object({
 });
 
 const SignIn = () => {
-  const { signIn } = useAuth();
+  const dispatch = useDispatch();
+  const [signIn, { isLoading }] = useSignInMutation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromURL = location.state?.fromURL.pathname;
 
   const formik = useFormik({
     initialValues: {
@@ -28,20 +33,27 @@ const SignIn = () => {
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      // console.log(values);
-      signIn(values).then((response) => {
-        if (response) {
-          navigate("dashboard");
-          toast.success("Sign In Successfully!", {
-            duration: 5000,
-          });
-        } else {
-          toast.error("Sign In Unsuccessfully!");
-        }
-      });
+    onSubmit: async (values) => {
+      const response = await signIn(values);
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        dispatch(setToken(response.data.token));
+        navigate(fromURL || "/dashboard");
+        toast.success("Sign In Successfully!", {
+          duration: 3000,
+        });
+      }
     },
   });
+
+  useEffect(() => {
+    if (fromURL)
+      toast.error(
+        "Only registered user can access this page. Please, login first!",
+      );
+  }, []);
 
   return (
     <section className={`relative py-10`}>
@@ -81,7 +93,8 @@ const SignIn = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.touched.username && Boolean(formik.errors.username) ? (
+                  {formik.touched.username &&
+                  Boolean(formik.errors.username) ? (
                     <small className="text-red-600">
                       {formik.touched.username && formik.errors.username}
                     </small>
@@ -110,7 +123,13 @@ const SignIn = () => {
                   type="submit"
                   className="btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                 >
-                  Sign In
+                  <span>Sign In</span>
+                  {isLoading ? (
+                    <span
+                      className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                      role="status"
+                    ></span>
+                  ) : null}
                 </button>
               </form>
             </div>

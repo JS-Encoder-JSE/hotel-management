@@ -179,13 +179,17 @@ const AddManager = () => {
                 Joining Date <span>*</span>
               </label>
               <input
-                type="date"
-                placeholder="Manager Joining"
-                name="joinningdate"
+                type="text"
+                placeholder="From  MM/DD/YYY"
+                name="joiningdate"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.joinningdate}
+                value={formik.values.joiningdate}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                onBlur={(e) => {
+                  e.target.type = "text";
+                  formik.handleBlur;
+                }}
+                onFocus={(e) => (e.target.type = "date")}
               />
               {formik.touched.joinningdate &&
               Boolean(formik.errors.joinningdate) ? (
@@ -200,7 +204,7 @@ const AddManager = () => {
                 {formik.values.userImg ? (
                   formik.values.userImg.name.substring(
                     0,
-                    formik.values.userImg.name.lastIndexOf("."),
+                    formik.values.userImg.name.lastIndexOf(".")
                   )
                 ) : (
                   <span

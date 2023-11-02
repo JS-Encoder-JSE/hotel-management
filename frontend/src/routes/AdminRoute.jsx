@@ -1,12 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth.js";
+import { useSelector } from "react-redux";
 
 const AdminRoute = ({ children }) => {
-  const { isUserLoading, user } = useAuth();
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   return !isUserLoading ? (
-    user.status === "admin" || user.status === "sub-admin"? (
+    user?.role === "admin" || user?.role === "subadmin" ? (
       children
     ) : (
       <Navigate to="/dashboard"></Navigate>

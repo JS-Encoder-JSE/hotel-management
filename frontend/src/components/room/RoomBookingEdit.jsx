@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 
 // form validation
 const validationSchema = yup.object({
@@ -28,26 +26,6 @@ const validationSchema = yup.object({
 });
 
 const RoomBookingEdit = () => {
-  const [selectedRooms, setSelectedRooms] = useState([]);
-  const animatedComponents = makeAnimated();
-
-  // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
-  const roomList = [
-    // { value: '', label: 'Room Select' },
-    { value: "1 - Chocolate", label: "1 - Chocolate" },
-    { value: "2 - Strawberry", label: "2 - Strawberry" },
-    { value: "3 - Shake", label: "3 - Shake" },
-    { value: "4 - AC", label: "4 - AC" },
-    { value: "5 - None AC", label: "5 - None AC" },
-    { value: "6 - Fan", label: "6 - Fan" },
-    { value: "7 - Deluxe", label: "7 - Deluxe" },
-    { value: "8 - None-Deluxe", label: "8 - None-Deluxe" },
-    { value: "9 - Couple", label: "9 - Couple" },
-    { value: "10 - Anniversary", label: "10 - Anniversary" },
-    { value: "11 - Official", label: "11 - Official" },
-    { value: "12 - VIP", label: "12 - VIP" },
-  ];
-
   const handleSearchRoom = (e) => {
     const rooms = e.map((i) => i.value);
     setSelectedRooms(rooms);
@@ -88,16 +66,6 @@ const RoomBookingEdit = () => {
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
-          <div className="flex flex-col gap-3">
-            <Select
-              closeMenuOnSelect={false}
-              components={animatedComponents}
-              isMulti
-              options={roomList}
-              placeholder="Room Select"
-              onChange={(e) => handleSearchRoom(e)}
-            />
-          </div>
           {/* name box */}
           <div className="flex flex-col gap-3">
             <input

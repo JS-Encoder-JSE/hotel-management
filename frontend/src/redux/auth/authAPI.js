@@ -10,9 +10,11 @@ const authAPI = baseAPI.injectEndpoints({
           body: credentials,
         };
       },
+      invalidatesTags: ["auth"],
     }),
     user: build.query({
       query: () => "users/get-login-user",
+      providesTags: ["auth"],
     }),
   }),
 });

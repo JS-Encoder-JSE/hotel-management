@@ -10,6 +10,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import { useUploadMutation } from "../../redux/baseAPI.js";
+import { useAddFoodMutation } from "../../redux/restaurant/foodAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -34,6 +37,9 @@ const validationSchema = yup.object({
 });
 
 const AddFood = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [addFood] = useAddFoodMutation();
+  const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const formik = useFormik({
     initialValues: {
@@ -44,8 +50,45 @@ const AddFood = () => {
       photos: null,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
+
+      const obj = { ...values };
+      const { foodName: food_name, quantity, price, description } = obj;
+
+      const formData = new FormData();
+
+      for (let i = 0; i < values.photos.length; i++) {
+        const photoName = values.photos[i].name.substring(
+          0,
+          values.photos[i].name.lastIndexOf("."),
+        );
+
+        formData.append(photoName, values.photos[i]);
+      }
+
+      await upload(formData).then(
+        (result) => (obj.images = result.data.imageUrls),
+      );
+
+      const response = await addFood({
+        food_name,
+        quantity,
+        price,
+        description,
+        images: obj.images,
+      });
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        console.log(response);
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+        setSelectedImages([]);
+      }
+
+      setLoading(false);
     },
   });
 
@@ -120,8 +163,8 @@ const AddFood = () => {
             spaceBetween={50}
           >
             {selectedImages.length ? (
-              selectedImages.map((image, idx) => (
-                <SwiperSlide>
+              selectedImages?.map((image, idx) => (
+                <SwiperSlide key={idx}>
                   <div className={`relative`}>
                     <div className={`absolute top-3 right-3 space-x-1.5`}>
                       <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
@@ -261,7 +304,13 @@ const AddFood = () => {
             type={"submit"}
             className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
           >
-            Add
+            <span>Add</span>
+            {isLoading ? (
+              <span
+                className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                role="status"
+              ></span>
+            ) : null}
           </button>
         </div>
       </form>

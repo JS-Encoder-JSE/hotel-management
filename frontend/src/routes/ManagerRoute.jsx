@@ -1,12 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth.js";
+import { useSelector } from "react-redux";
 
 const ManagerRoute = ({ children }) => {
-  const { isUserLoading, user } = useAuth();
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   return !isUserLoading ? (
-    user.status === "manager" ? (
+    user?.role === "manager" ? (
       children
     ) : (
       <Navigate to="/dashboard"></Navigate>

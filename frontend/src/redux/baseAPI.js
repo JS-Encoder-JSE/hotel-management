@@ -1,15 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Cookies from "js-cookie";
 import { signOut } from "./auth/authSlice.js";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5001",
-  prepareHeaders: (headers) => {
-    const token = Cookies.get("token");
+  baseUrl: "https://hotel-managment-backend.onrender.com",
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().authSlice.token;
 
-    if (token) {
-      headers.set("authorization", `Bearer ${token}`);
-    }
+    if (token) headers.set("authorization", `Bearer ${token}`);
 
     return headers;
   },
@@ -18,7 +15,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReAuth = async (args, api, extraOptions) => {
   let response = await baseQuery(args, api, extraOptions);
 
-  if (response.error && [401, 403].includes(response.error.status)) {
+  if (response.error && [401, 403].includes(response.error.originalStatus)) {
     api.dispatch(signOut());
   }
 
@@ -27,8 +24,20 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 
 const baseAPI = createApi({
   reducerPath: "baseAPI",
+  tagTypes: ["auth", "room", "food"],
   baseQuery: baseQueryWithReAuth,
-  endpoints: () => ({}),
+  endpoints: (build) => ({
+    upload: build.mutation({
+      query: (data) => {
+        return {
+          url: "upload",
+          method: "post",
+          body: data,
+        };
+      },
+    }),
+  }),
 });
 
+export const { useUploadMutation } = baseAPI;
 export default baseAPI;

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Select from "react-select";
-import makeAnimated from "react-select/animated";
-
+import {useAddBookingMutation, useRoomsQuery} from "../../redux/room/roomAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
-  name: yup.string().required("Name is required"),
-  mobile: yup.string().required("Mobile number is required"),
+  guestName: yup.string().required("Name is required"),
+  mobileNumber: yup.string().required("Mobile number is required"),
   age: yup
     .number()
     .required("Age is required")
@@ -44,35 +44,15 @@ const validationSchema = yup.object({
 });
 
 const AddBooking = () => {
+  const { isLoading, data: rooms } = useRoomsQuery();
+  const [addBooking] = useAddBookingMutation();
   const [selectedRooms, setSelectedRooms] = useState([]);
-  const animatedComponents = makeAnimated();
-
-  // This portion will come from api. and After fetching api needs a state [roomList, setRoomList]
-  const roomList = [
-    // { value: '', label: 'Room Select' },
-    { value: "1 - Chocolate", label: "1 - Chocolate" },
-    { value: "2 - Strawberry", label: "2 - Strawberry" },
-    { value: "3 - Shake", label: "3 - Shake" },
-    { value: "4 - AC", label: "4 - AC" },
-    { value: "5 - None AC", label: "5 - None AC" },
-    { value: "6 - Fan", label: "6 - Fan" },
-    { value: "7 - Deluxe", label: "7 - Deluxe" },
-    { value: "8 - None-Deluxe", label: "8 - None-Deluxe" },
-    { value: "9 - Couple", label: "9 - Couple" },
-    { value: "10 - Anniversary", label: "10 - Anniversary" },
-    { value: "11 - Official", label: "11 - Official" },
-    { value: "12 - VIP", label: "12 - VIP" },
-  ];
-
-  const handleSearchRoom = (e) => {
-    const rooms = e.map((i) => i.value);
-    setSelectedRooms(rooms);
-  };
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      mobile: "",
+      rooms: null,
+      guestName: "",
+      mobileNumber: "",
       age: "",
       adult: "",
       children: "",
@@ -83,10 +63,34 @@ const AddBooking = () => {
       toDate: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      const obj = { ...values };
+      obj.roomNumber = 101
+
+      console.log(obj)
+
+      const response = await addBooking(obj);
+console.log(response)
+      // if (response?.error) {
+      //   toast.error(response.error.data.message);
+      // } else {
+      //   toast.success(response.data.message);
+      //   // formikHelpers.resetForm();
+      //   // setSelectedImages([]);
+      // }
     },
   });
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
+
+  const transformedRooms = rooms?.data?.map(room => ({
+    value: room.roomNumber,
+    label: `${room.roomNumber} - ${room.category}`
+  }));
 
   return (
     <>
@@ -107,12 +111,23 @@ const AddBooking = () => {
         >
           <div className="flex flex-col gap-3">
             <Select
-              closeMenuOnSelect={false}
-              components={animatedComponents}
+              placeholder="Room number"
+              defaultValue={selectedRooms}
+              options={transformedRooms}
               isMulti
-              options={roomList}
-              placeholder="Room Select"
-              onChange={(e) => handleSearchRoom(e)}
+              isSearchable
+              closeMenuOnSelect={false}
+              onKeyDown={handleKeyDown}
+              onChange={setSelectedRooms}
+              noOptionsMessage={() => "No room available"}
+              classNames={{
+                control: (state) =>
+                  `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    state.isFocused ? "!shadow-none" : ""
+                  }`,
+                valueContainer: () => "!p-0",
+                placeholder: () => "!m-0",
+              }}
             />
           </div>
           {/* name box */}
@@ -120,32 +135,32 @@ const AddBooking = () => {
             <input
               type="text"
               placeholder="Guest name"
-              name="name"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.name}
+              name="guestName"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.guestName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.name && Boolean(formik.errors.name) ? (
+            {formik.touched.guestName && Boolean(formik.errors.guestName) ? (
               <small className="text-red-600">
-                {formik.touched.name && formik.errors.name}
+                {formik.touched.guestName && formik.errors.guestName}
               </small>
             ) : null}
           </div>
-          {/* mobile box */}
+          {/* mobileNumber box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
               placeholder="Mobile number"
-              name="mobile"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.mobile}
+              name="mobileNumber"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.mobileNumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.mobile && Boolean(formik.errors.mobile) ? (
+            {formik.touched.mobileNumber && Boolean(formik.errors.mobileNumber) ? (
               <small className="text-red-600">
-                {formik.touched.mobile && formik.errors.mobile}
+                {formik.touched.mobileNumber && formik.errors.mobileNumber}
               </small>
             ) : null}
           </div>
@@ -155,7 +170,7 @@ const AddBooking = () => {
               type="text"
               placeholder="Age"
               name="age"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.age}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -172,7 +187,7 @@ const AddBooking = () => {
               type="text"
               placeholder="Adult"
               name="adult"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.adult}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -189,7 +204,7 @@ const AddBooking = () => {
               type="text"
               placeholder="Children"
               name="children"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.children}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -204,7 +219,7 @@ const AddBooking = () => {
           <div className="flex flex-col gap-3">
             <select
               name="paymentMethod"
-              className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
               value={formik.values.paymentMethod}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -230,7 +245,7 @@ const AddBooking = () => {
                 type="text"
                 placeholder="Transaction ID"
                 name="trxID"
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
                 value={formik.values.trxID}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -247,7 +262,7 @@ const AddBooking = () => {
               type="text"
               placeholder="Discount"
               name="discount"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.discount}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

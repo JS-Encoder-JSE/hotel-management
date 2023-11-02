@@ -1,17 +1,19 @@
 import React from "react";
-import useAuth from "../hooks/useAuth.js";
+import { useSelector } from "react-redux";
 import UserDashBoard from "../components/UserDashBoard/UserDashBoard.jsx";
 
 const DashboardRoot = () => {
-  const { user } = useAuth();
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  return user.status === "admin" ? (
-    <UserDashBoard />
-  ) : user.status === "owner" ? (
-    <UserDashBoard />
-  ) : (
-    <UserDashBoard />
-  );
+  return !isUserLoading ? (
+    user?.role === "admin" ? (
+      <UserDashBoard />
+    ) : user?.role === "owner" ? (
+      <UserDashBoard />
+    ) : (
+      <UserDashBoard />
+    )
+  ) : null;
 };
 
 export default DashboardRoot;

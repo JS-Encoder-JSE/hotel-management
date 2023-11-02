@@ -1,6 +1,5 @@
 import React from "react";
 import { useFormik } from "formik";
-import RoomLists from "../../components/room/RoomLists.jsx";
 import BookingLists from "../../components/room/BookingLists.jsx";
 import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
@@ -30,21 +29,30 @@ const ManageBooking = () => {
             <option value="suspended">Suspended</option>
           </select>
         </div>
-        <div className={`relative sm:min-w-[20rem]`}>
-          <input
-            type="text"
-            placeholder="Search by name..."
-            name="search"
-            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-            value={formik.values.search}
-            onChange={formik.handleChange}
-          />
+        <div className={`flex gap-1.5`}>
           <button
-            type="button"
-            className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+            onClick={() => window.ab_modal.showModal()}
           >
-            <FaSearch />
+            <FaPlus />
+            <span>Add Booking</span>
           </button>
+          <div className={`relative sm:min-w-[20rem]`}>
+            <input
+              type="text"
+              placeholder="Search by phone number..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+            />
+            <button
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
         </div>
       </div>
       <BookingLists />
