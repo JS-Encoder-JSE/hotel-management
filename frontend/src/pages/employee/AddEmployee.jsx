@@ -3,6 +3,10 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaPlusCircle, FaUpload } from "react-icons/fa";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import {useAddRoomMutation} from "../../redux/room/roomAPI.js";
+import {useUploadMutation} from "../../redux/baseAPI.js";
+import {useAddEmployeeMutation} from "../../redux/employee/employeeAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -18,6 +22,9 @@ const validationSchema = yup.object({
 });
 
 const AddEmployee = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [addEmployee] = useAddEmployeeMutation();
+  const [upload] = useUploadMutation();
   const [userImgPrev, setUserImgPrev] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -33,8 +40,37 @@ const AddEmployee = () => {
       userImg: null,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
+
+      const obj = {...values};
+      const formData = new FormData();
+
+      for (let i = 0; i < values.photos.length; i++) {
+        const photoName = values.photos[i].name.substring(
+            0,
+            values.photos[i].name.lastIndexOf("."),
+        );
+
+        formData.append(photoName, values.photos[i]);
+      }
+
+      delete obj.photos;
+      await upload(formData).then(
+          (result) => (obj.images = result.data.imageUrls),
+      );
+
+      const response = await addEmployee(obj);
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+        setUserImgPrev(null);
+      }
+
+      setLoading(false);
     },
   });
 

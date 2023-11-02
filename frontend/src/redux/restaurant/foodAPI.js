@@ -32,6 +32,16 @@ const foodAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["food"],
     }),
+    updateFood: build.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `foods/update-food/${id}`,
+          method: "patch",
+          body: data,
+        };
+      },
+      invalidatesTags: ["food"],
+    }),
   }),
 });
 
@@ -40,4 +50,5 @@ export const {
   useFoodsQuery,
   useAddFoodMutation,
   useDeleteFoodMutation,
+  useUpdateFoodMutation,
 } = foodAPI;

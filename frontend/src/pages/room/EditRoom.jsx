@@ -11,8 +11,13 @@ import {
 } from "react-icons/md";
 import { TbReplaceFilled } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRoomQuery } from "../../redux/room/roomAPI.js";
+import {
+  useRoomQuery,
+  useUpdateRoomMutation,
+} from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
+import toast from "react-hot-toast";
+import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -30,8 +35,11 @@ const validationSchema = yup.object({
 const EditRoom = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { isLoading, data: room } = useRoomQuery(id);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [updateRoom] = useUpdateRoomMutation();
+  const [uploadSingle] = useUploadSingleMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -44,8 +52,39 @@ const EditRoom = () => {
       description: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      setLoading(true);
+
+      const obj = { ...values };
+      const images = [...selectedImages];
+
+      for (let i = 0; i < images.length; i++) {
+        if (typeof images[i] !== "string") {
+          const formData = new FormData();
+          const photoName = images[i].name.substring(
+            0,
+            images[i].name.lastIndexOf("."),
+          );
+
+          formData.append(photoName, images[i]);
+          await uploadSingle(formData).then((result) =>
+            images.splice(i, 1, result.data.imageUrl),
+          );
+        }
+      }
+
+      delete obj.photos;
+      obj.images = images;
+
+      const response = await updateRoom({ id, obj });
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
+
+      setLoading(false);
     },
   });
 
@@ -57,10 +96,11 @@ const EditRoom = () => {
     const dataTransfer = new DataTransfer();
 
     for (const file of tempImgs) {
-      dataTransfer.items.add(file);
+      if (typeof file !== "string") {
+        dataTransfer.items.add(file);
+      }
     }
 
-    formik.setFieldValue("photos", dataTransfer.files);
     setSelectedImages(tempImgs);
   };
 
@@ -70,18 +110,16 @@ const EditRoom = () => {
 
     const dataTransfer = new DataTransfer();
 
-    for (const file of updatedImages) {
-      dataTransfer.items.add(file);
-    }
+    dataTransfer.items.add(updatedImages[idx]);
+    updatedImages.splice(idx, 1, dataTransfer.files[0]);
 
-    formik.setFieldValue("photos", dataTransfer.files);
     setSelectedImages(updatedImages);
   };
 
   useEffect(() => {
     if (formik.values.photos) {
       const selectedImagesArray = Array.from(formik.values.photos);
-      setSelectedImages(selectedImagesArray);
+      setSelectedImages([...selectedImages, ...selectedImagesArray]);
     }
   }, [formik.values.photos]);
 
@@ -293,8 +331,8 @@ const EditRoom = () => {
           <div className={`flex space-x-1.5`}>
             <div className="flex flex-col gap-3 w-full">
               <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                {formik.values.photos ? (
-                  <span>{formik.values.photos.length + " files"}</span>
+                {selectedImages?.length ? (
+                  <span>{selectedImages?.length + " files"}</span>
                 ) : (
                   <span className={`flex items-baseline space-x-1.5`}>
                     <FaUpload />
@@ -341,7 +379,13 @@ const EditRoom = () => {
               type="submit"
               className=" btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
             >
-              Update
+              <span>Update</span>
+              {loading ? (
+                <span
+                  className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                  role="status"
+                ></span>
+              ) : null}
             </button>
           </div>
         </form>

@@ -36,6 +36,16 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["room"],
     }),
+    updateRoom: build.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `rooms/update-room/${id}`,
+          method: "patch",
+          body: data,
+        };
+      },
+      invalidatesTags: ["room"],
+    }),
     addBooking: build.mutation({
       query: (data) => {
         return {
@@ -54,5 +64,6 @@ export const {
   useRoomsQuery,
   useAddRoomMutation,
   useDeleteRoomMutation,
+  useUpdateRoomMutation,
   useAddBookingMutation,
 } = roomAPI;
