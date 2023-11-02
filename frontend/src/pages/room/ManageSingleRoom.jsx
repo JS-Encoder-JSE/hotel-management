@@ -28,7 +28,7 @@ const ManageSingleRoom = () => {
           <div className={`grid grid-cols-1 lg:grid-cols-3 gap-10 !mt-5`}>
             <RoomThumbsSlider images={room?.data?.images} />
             <div className={`lg:col-span-2`}>
-              <h2 className="card-title">{room?.data?.roomNumber}</h2>
+              <h2 className="card-title">Room - {room?.data?.roomNumber}</h2>
 
               {/* Room Table */}
               <div className={`mt-4`}>
@@ -89,13 +89,13 @@ const ManageSingleRoom = () => {
                 {room?.data?.status === "Available" ? (
                   <>
                     <button
-                      className={`btn btn-md bg-orange-400 hover:bg-orange-600 text-white !border-orange-400 rounded normal-case min-w-[2rem]`}
+                      className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem]`}
                       onClick={() => window.ab_modal.showModal()}
                     >
                       Booking
                     </button>
                     <button
-                      className={`btn btn-md bg-sky-400 hover:bg-transparent text-white font-bold hover:text-sky-400 !border-sky-400 rounded normal-case min-w-[2rem] `}
+                      className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
                       onClick={() => navigate("/dashboard/checkin")}
                     >
                       CheckIn

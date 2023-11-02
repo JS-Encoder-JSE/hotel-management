@@ -10,6 +10,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import { useAddLicenseMutation } from "../../redux/admin/sls/slsAPI.js";
+import toast from "react-hot-toast";
+import { useUploadMutation } from "../../redux/baseAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -33,7 +36,10 @@ const validationSchema = yup.object({
 });
 
 const AdminNewLicense = () => {
+  const [isLoading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [addLicense] = useAddLicenseMutation();
+  const [upload] = useUploadMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -52,11 +58,81 @@ const AdminNewLicense = () => {
       tradeLicense: null,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
+
+      const obj = { ...values };
+      const {
+        name: owner_name,
+        address,
+        phoneNumber: phone_no,
+        email,
+        billInformation: bill_info,
+        fromDate: from_date,
+        toDate: to_date,
+        status,
+        numberOfHotel: hotel_limit,
+        paymentMethod: payment_method,
+        trxID: transection_id,
+      } = obj;
+      const formData = new FormData();
+      const formData_2 = new FormData();
+
+      for (let i = 0; i < values.utility.length; i++) {
+        const photoName = values.utility[i].name.substring(
+          0,
+          values.utility[i].name.lastIndexOf("."),
+        );
+
+        formData.append(photoName, values.utility[i]);
+      }
+
+      await upload(formData).then(
+        (result) => (obj.utilities_img = result.data.imageUrls),
+      );
+
+      for (let i = 0; i < values.tradeLicense.length; i++) {
+        const photoName = values.tradeLicense[i].name.substring(
+          0,
+          values.tradeLicense[i].name.lastIndexOf("."),
+        );
+
+        formData_2.append(photoName, values.tradeLicense[i]);
+      }
+
+      await upload(formData_2).then(
+        (result) => (obj.trade_license_img = result.data.imageUrls),
+      );
+
+      const response = await addLicense({
+        owner_name,
+        address,
+        phone_no,
+        email,
+        bill_info,
+        from_date,
+        to_date,
+        status,
+        hotel_limit,
+        payment_method,
+        transection_id,
+        utilities_img: obj.utilities_img,
+        trade_license_img: obj.trade_license_img,
+      });
+      console.log(response);
+      // if (response?.error) {
+      //   toast.error(response.error.data.message);
+      // } else {
+      //   toast.success(response.data.message);
+      //   formikHelpers.resetForm();
+      //   setSelectedImages([]);
+      // }
+
+      setLoading(false);
     },
   });
-  // image delate
+
+  // image delete
   const handleDelete = (idx) => {
     const tempImgs = [
       ...selectedImages.slice(0, idx),
@@ -453,7 +529,13 @@ const AdminNewLicense = () => {
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
-          Add
+          <span>Add</span>
+          {isLoading ? (
+            <span
+              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+              role="status"
+            ></span>
+          ) : null}
         </button>
       </form>
     </div>
