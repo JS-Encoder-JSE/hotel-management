@@ -5,7 +5,7 @@ const inventoryAPI = baseAPI.injectEndpoints({
     inventory: build.query({
       query: ({ cp, filter, search }) =>
         `item/get-items?page=${++cp}${filter ? `&stock=${filter}` : ""}${
-          search ? `&name=${search}` : ""
+          search ? `&search=${search}` : ""
         }`,
       providesTags: ["inventory"],
     }),

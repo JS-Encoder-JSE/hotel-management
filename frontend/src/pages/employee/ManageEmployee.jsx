@@ -67,19 +67,7 @@ const ManageEmployee = () => {
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-      <div className={`flex justify-between gap-4`}>
-        <div>
-          <select
-            name="filter"
-            className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
-            value={formik.values.filter}
-            onChange={formik.handleChange}
-          >
-            <option value="all">All</option>
-            <option value="available">Waiter</option>
-            <option value="booked">Housekeeper</option>
-          </select>
-        </div>
+      <div className={`flex justify-end gap-4`}>
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"

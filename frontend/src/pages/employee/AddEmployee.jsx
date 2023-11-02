@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { FaPlusCircle, FaUpload } from "react-icons/fa";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import {useAddRoomMutation} from "../../redux/room/roomAPI.js";
-import {useUploadMutation} from "../../redux/baseAPI.js";
+import {useUploadMutation, useUploadSingleMutation} from "../../redux/baseAPI.js";
 import {useAddEmployeeMutation} from "../../redux/employee/employeeAPI.js";
 import toast from "react-hot-toast";
 
@@ -24,7 +24,7 @@ const validationSchema = yup.object({
 const AddEmployee = () => {
   const [isLoading, setLoading] = useState(false);
   const [addEmployee] = useAddEmployeeMutation();
-  const [upload] = useUploadMutation();
+  const [uploadSingle] = useUploadSingleMutation();
   const [userImgPrev, setUserImgPrev] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -45,23 +45,20 @@ const AddEmployee = () => {
 
       const obj = {...values};
       const formData = new FormData();
+      const photoName = values.userImg.name.substring(
+          0,
+          values.userImg.name.lastIndexOf("."),
+      );
 
-      for (let i = 0; i < values.photos.length; i++) {
-        const photoName = values.photos[i].name.substring(
-            0,
-            values.photos[i].name.lastIndexOf("."),
-        );
+      formData.append(photoName, values.userImg);
 
-        formData.append(photoName, values.photos[i]);
-      }
-
-      delete obj.photos;
-      await upload(formData).then(
-          (result) => (obj.images = result.data.imageUrls),
+      delete obj.userImg;
+      await uploadSingle(formData).then(
+          (result) => (obj.images = result.data.imageUrl),
       );
 
       const response = await addEmployee(obj);
-
+console.log(response)
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -286,7 +283,13 @@ const AddEmployee = () => {
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
-          Add
+          <span>Add</span>
+          {isLoading ? (
+              <span
+                  className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                  role="status"
+              ></span>
+          ) : null}
         </button>
       </form>
     </div>

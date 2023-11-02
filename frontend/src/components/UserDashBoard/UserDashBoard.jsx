@@ -16,6 +16,7 @@ import TodaysBooking from "./TodaysBooking";
 import NextBooking from "./NextBooking";
 import { useSelector } from "react-redux";
 import { TbCurrencyTaka } from "react-icons/tb";
+import {GrCurrency} from "react-icons/gr";
 
 const UserDashBoard = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -35,9 +36,9 @@ const UserDashBoard = () => {
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
+          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
             {/* <FaDollarSign /> */}
-            <TbCurrencyTaka />
+            <GrCurrency className={`db-currency`} />
           </div>
           <h6 className="text-xs text-slate-400">TOTAL AMOUNT</h6>
           <p className="text-2xl font-semibold mb-5">299m</p>
