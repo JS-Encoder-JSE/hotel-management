@@ -81,7 +81,6 @@ export const getBooking = async (req, res) => {
 export const getBookingById = async (req, res) => {
     try {
         const bookingId = req.params.bookingId; // Assuming you pass the booking ID as a query parameter
-
         const booking = await Booking.findById(bookingId);
     
         if (!booking) {

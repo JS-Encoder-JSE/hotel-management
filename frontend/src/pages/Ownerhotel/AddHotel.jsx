@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { FaEyeSlash } from "react-icons/fa";
+
 
 
 // form validation
@@ -12,6 +14,7 @@ const validationSchema = yup.object({
   license: yup.string().required("License Number is required"),
   branchName: yup.string().required("Branch Name is required"),
   manager: yup.string().required("Manager Name is required"),
+  password: yup.string().required("password is required"),
 });
 
 const AddHotel = () => {
@@ -25,7 +28,8 @@ const AddHotel = () => {
       phoneNumber: "",
       license: "",
       branchName: "",
-      manager: ""
+      manager: "",
+      password:""
 
     },
     validationSchema,
@@ -33,6 +37,7 @@ const AddHotel = () => {
       console.log(values);
     },
   });
+
   return (
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
@@ -151,6 +156,7 @@ const AddHotel = () => {
                 </small>
               ) : null}
             </div>
+
             {/*Hotel Branch box */}
             <div className="flex flex-col gap-3">
               <input
@@ -192,6 +198,28 @@ const AddHotel = () => {
                 </small>
               ) : null}
             </div>
+
+           {/* password */}
+                    <div className="flex flex-col gap-3">
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.password && Boolean(formik.errors.password) ? (
+                <small className="text-red-600">
+                  {formik.touched.password && formik.errors.password}
+                </small>
+              ) : null}
+            </div> 
+             
+         
+   
+
 
             {/* submit button */}
             <div className=" col-span-full text-end mb-5 ">

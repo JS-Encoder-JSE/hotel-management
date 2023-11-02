@@ -3,6 +3,10 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaPlusCircle, FaUpload } from "react-icons/fa";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import {useAddRoomMutation} from "../../redux/room/roomAPI.js";
+import {useUploadMutation, useUploadSingleMutation} from "../../redux/baseAPI.js";
+import {useAddEmployeeMutation} from "../../redux/employee/employeeAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -18,6 +22,9 @@ const validationSchema = yup.object({
 });
 
 const AddEmployee = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [addEmployee] = useAddEmployeeMutation();
+  const [uploadSingle] = useUploadSingleMutation();
   const [userImgPrev, setUserImgPrev] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -33,8 +40,34 @@ const AddEmployee = () => {
       userImg: null,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
+
+      const obj = {...values};
+      const formData = new FormData();
+      const photoName = values.userImg.name.substring(
+          0,
+          values.userImg.name.lastIndexOf("."),
+      );
+
+      formData.append(photoName, values.userImg);
+
+      delete obj.userImg;
+      await uploadSingle(formData).then(
+          (result) => (obj.images = result.data.imageUrl),
+      );
+
+      const response = await addEmployee(obj);
+console.log(response)
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+        setUserImgPrev(null);
+      }
+
+      setLoading(false);
     },
   });
 
@@ -250,7 +283,13 @@ const AddEmployee = () => {
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
-          Add
+          <span>Add</span>
+          {isLoading ? (
+              <span
+                  className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                  role="status"
+              ></span>
+          ) : null}
         </button>
       </form>
     </div>

@@ -38,10 +38,28 @@ router.post('/upload', checkToken, (req, res) => {
   });
 });
 
-router.get('/uploads/:filename', checkToken, (req, res) => {
+// single image upload 
+router.post('/single-upload', checkToken, (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        error: err.message
+      });
+    }
+    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.files[0].filename}`
+  
+    res.status(200).json({
+      success: true,
+      imageUrl: imageUrl
+    });
+  });
+});
+
+// get image
+router.get('/uploads/:filename', (req, res) => {
   const filename = req.params.filename;
   const filePath = path.join(path.join(path.dirname(fileURLToPath(import.meta.url)), '../uploads', filename));
-
   res.sendFile(filePath, (err) => {
     if (err) {
       console.log(err);

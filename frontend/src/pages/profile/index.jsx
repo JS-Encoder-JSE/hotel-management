@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
+  const { user } = useSelector((store) => store.authSlice);
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -96,6 +98,12 @@ const Profile = () => {
           <label className={`min-w-[4rem]`}>Address: </label>
           <p className="text-slate-600">Motijheel, Dhaka</p>
         </div>
+        {user?.role === "owner" ? (
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+            <label className={`min-w-[4rem]`}>License: </label>
+            <p className="text-slate-600">SDGFE-876WA-CVBNI</p>
+          </div>
+        ) : null}
       </div>
     </div>
   );

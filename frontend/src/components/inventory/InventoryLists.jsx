@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaDoorOpen,
   FaEdit,
@@ -7,67 +7,106 @@ import {
   FaPlusCircle,
   FaTrash,
 } from "react-icons/fa";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import { useDeleteRoomMutation } from "../../redux/room/roomAPI.js";
+import Swal from "sweetalert2";
+import { useDeleteInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
 
-const InventoryLists = () => {
-  const navigate = useNavigate()
+const InventoryLists = ({ setCurrentPage, lists }) => {
+  const navigate = useNavigate();
+  const [deleteInventory] = useDeleteInventoryMutation();
   const [itemsPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
 
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Item will be delete.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#35bef0",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Deleted!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          deleteInventory(id);
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (lists) setPageCount(lists.totalPages);
+  }, [lists]);
+
   return (
     <div>
-    <div className="overflow-x-auto border">
-      <table className="table">
-        <thead>
-          <tr className={`text-lg`}>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Stock</th>
-            <th>Use</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[...Array(10)].map((_, idx) => {
-            return (
-              <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                <td>
-                  <div className="flex items-center space-x-3">
-                    <div>
-                      <div className="font-bold">Hart Hagerty</div>
+      <div className="overflow-x-auto border">
+        <table className="table">
+          <thead>
+            <tr className={`text-lg`}>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Stock</th>
+              <th>Use</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lists?.docs?.map((list, idx) => {
+              const { _id, name, description, quantity, stock, use } = list;
+
+              return (
+                <tr
+                  key={_id}
+                  className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                >
+                  <td>
+                    <div className="flex items-center space-x-3">
+                      <div>
+                        <div className="font-bold">{name}</div>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td>20</td>
-                <td>12</td>
-                <td>8</td>
-                <td className={`space-x-1.5`}>
-                  <span
-                    className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                    title={`Edit`}
-                    onClick={() => navigate(`/dashboard/edit-inventory/${idx}`)}
-                  >
-                    <FaEdit />
-                  </span>
-                  <span
-                    className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                    title={`Delete`}
-                  >
-                    <FaTrash />
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                  </td>
+                  <td>{quantity}</td>
+                  <td>{stock}</td>
+                  <td>{use}</td>
+                  <td className={`space-x-1.5`}>
+                    <span
+                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                      title={`Edit`}
+                      onClick={() =>
+                        navigate(`/dashboard/edit-inventory/${_id}`)
+                      }
+                    >
+                      <FaEdit />
+                    </span>
+                    <span
+                      className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                      title={`Delete`}
+                      onClick={() => handleDelete(_id)}
+                    >
+                      <FaTrash />
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <div className="flex justify-center mt-10">
         <ReactPaginate
           containerClassName="join rounded-none"

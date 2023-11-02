@@ -1,12 +1,8 @@
 import baseAPI from "../baseAPI.js";
 
-const roomAPI = baseAPI.injectEndpoints({
+const hotelsAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
-    roomNumbers: build.query({
-      query: () => `rooms/get-room?only_for_room=true`,
-      providesTags: ["room"],
-    }),
-    rooms: build.query({
+    hotels: build.query({
       query: ({ cp, filter, search }) =>
         `rooms/get-room?page=${++cp}${filter ? `&status=${filter}` : ""}${
           search ? `&roomNumber=${search}` : ""
@@ -36,16 +32,6 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["room"],
     }),
-    updateRoom: build.mutation({
-      query: ({ id, data }) => {
-        return {
-          url: `rooms/update-room/${id}`,
-          method: "patch",
-          body: data,
-        };
-      },
-      invalidatesTags: ["room"],
-    }),
     addBooking: build.mutation({
       query: (data) => {
         return {
@@ -59,11 +45,9 @@ const roomAPI = baseAPI.injectEndpoints({
 });
 
 export const {
-  useRoomNumbersQuery,
   useRoomQuery,
   useRoomsQuery,
   useAddRoomMutation,
   useDeleteRoomMutation,
-  useUpdateRoomMutation,
   useAddBookingMutation,
 } = roomAPI;
