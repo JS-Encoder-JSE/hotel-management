@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaPlusCircle } from "react-icons/fa";
+import { useAddInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -18,6 +20,7 @@ const validationSchema = yup.object({
 });
 
 const AddInventory = () => {
+  const [addInventory] = useAddInventoryMutation();
   const formik = useFormik({
     initialValues: {
       itemName: "",
@@ -25,8 +28,26 @@ const AddInventory = () => {
       ItemQuantity: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      const obj = { ...values };
+      const {
+        itemName: name,
+        itemDescription: description,
+        ItemQuantity: quantity,
+      } = obj;
+
+      const response = await addInventory({
+        name,
+        description,
+        quantity,
+      });
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+      }
     },
   });
 

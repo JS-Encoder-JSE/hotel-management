@@ -2,6 +2,10 @@ import baseAPI from "../baseAPI.js";
 
 const roomAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
+    roomNumbers: build.query({
+      query: () => `rooms/get-room?only_for_room=true`,
+      providesTags: ["room"],
+    }),
     rooms: build.query({
       query: ({ cp, filter, search }) =>
         `rooms/get-room?page=${++cp}${filter ? `&status=${filter}` : ""}${
@@ -45,6 +49,7 @@ const roomAPI = baseAPI.injectEndpoints({
 });
 
 export const {
+  useRoomNumbersQuery,
   useRoomQuery,
   useRoomsQuery,
   useAddRoomMutation,
