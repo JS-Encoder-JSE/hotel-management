@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const addOwner = async (req, res) => {
   try {
-    const { username, password, maxHotels } = req.body;
+    const { username, name, password, maxHotels } = req.body;
 
     // Check if a user with the same username already exists
     const existingUser = await User.findOne({ username });
@@ -14,6 +14,7 @@ export const addOwner = async (req, res) => {
 
     // Create a new owner user
     const owner = new User({
+      name,
       username,
       password,
       role: "owner",
@@ -32,6 +33,7 @@ export const addManager = async (req, res) => {
   try {
     const {
       username,
+      name,
       password,
       assignedHotelId,
       address,
@@ -39,6 +41,7 @@ export const addManager = async (req, res) => {
       phone_no,
       salary,
       joining_date,
+      images,
     } = req.body;
 
     // Check if a user with the same username already exists
@@ -50,6 +53,7 @@ export const addManager = async (req, res) => {
     // Create a new manager user
     const manager = new User({
       username,
+      name,
       password,
       role: "manager",
       assignedHotel: assignedHotelId,
@@ -58,6 +62,7 @@ export const addManager = async (req, res) => {
       phone_no,
       salary,
       joining_date,
+      images,
     });
 
     await manager.save();
@@ -65,6 +70,74 @@ export const addManager = async (req, res) => {
     // Update the assigned hotel to include the manager
     await Hotel.findByIdAndUpdate(assignedHotelId, {
       $push: { managers: manager._id },
+    });
+
+    res.status(201).json({
+      message: "Manager added and assigned to the hotel successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const addEmployee = async (req, res) => {
+  try {
+    const {
+      username,
+      name,
+      password,
+      designation,
+      shift,
+      assignedHotelId,
+      address,
+      email,
+      phone_no,
+      salary,
+      joining_date,
+      images,
+    } = req.body;
+    const { userId } = req.user;
+
+    const manager = await User.findById(userId);
+
+    if (!manager) {
+      return res.status(403).json({ message: "You are not a manager" });
+    }
+    if (!manager.assignedHotelId === assignedHotelId) {
+      return res
+        .status(403)
+        .json({
+          message: "You have no permission to add employee in this hotel",
+        });
+    }
+    // Check if a user with the same username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    // Create a new manager user
+    const employee = new User({
+      username,
+      name,
+      password,
+      designation,
+      shift,
+      role: "employee",
+      assignedHotel: assignedHotelId,
+      address,
+      email,
+      phone_no,
+      salary,
+      joining_date,
+      images,
+    });
+
+    await employee.save();
+
+    // Update the assigned hotel to include the manager
+    await Hotel.findByIdAndUpdate(assignedHotelId, {
+      $push: { managers: employee._id },
     });
 
     res.status(201).json({
@@ -216,3 +289,71 @@ export const getManagerById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// export const getUserByHotel = async (req, res) => {
+//   try {
+//     const {userId} = req.user;
+//     const { hotel_id, role, page, limit, search, status } = req.query;
+
+//     const user = await User.findById(userId);
+
+//     if (!user.assignedHotelId === hotel_id) {
+//       return res.status(403).json({ message:"You have no permission to get info"});
+//     }
+//     const query = { assignedHotelId: hotel_id };
+//     if (role) {
+//       query.role = role;
+//     }
+//     // if (filter === "Waiter" || filter === "House_Keeper") {
+//     //   query.designation = filter;
+//     // }
+//     if (status) {
+//       query.status = status;
+//     }
+//     if (search) {
+//       query.name = { $regex: search, $options: "i" };
+//     }
+
+//     const options = {
+//       page: parseInt(page, 10),
+//       limit: parseInt(limit, 10),
+//     };
+//     const items = await User.paginate(query, options);
+//     res.status(200).json(items);
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to retrieve items" });
+//   }
+// };
+// export const getUserByHotel = async (req, res) => {
+//   try {
+//     const { userId } = req.user;
+//     const { hotel_id, role, page, limit, search, status } = req.query;
+
+//     const user = await User.findById(userId);
+
+//     if (!user.assignedHotel.includes(hotel_id)) {
+//       return res.status(403).json({ message: "You have no permission to get info" });
+//     }
+
+//     const query = { assignedHotel: hotel_id };
+//     if (role) {
+//       query.role = role;
+//     }
+//     if (status) {
+//       query.status = status;
+//     }
+//     if (search) {
+//       query.name = { $regex: search, $options: "i" };
+//     }
+
+//     const options = {
+//       page: parseInt(page, 10),
+//       limit: parseInt(limit, 10),
+//     };
+
+//     const items = await User.paginate(query, options);
+//     res.status(200).json(items);
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to retrieve items" });
+//   }
+// };

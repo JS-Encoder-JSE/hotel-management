@@ -10,6 +10,7 @@ import uploadRoute from "./routes/upload.js";
 import userRoute from "./routes/users.route.js";
 import itemRoute from "./routes/Manager/item.route.js";
 import employeeRoute from "./routes/Manager/employee.route.js";
+import licenseRoute from "./routes/Admin/license.route.js";
 import { fileURLToPath } from "url";
 // Manager Routes
 import roomRoute from "./routes/Manager/room.routs.js";
@@ -48,6 +49,7 @@ app.use("/foods", foodRoute);
 app.use("/booking", bookingRoute);
 app.use("/item", itemRoute);
 app.use("/employee", employeeRoute);
+app.use("/license", licenseRoute);
 
 app.use("/", uploadRoute);
 

@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
   password: {
     type: String,
     required: true,
@@ -15,6 +19,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["owner", "manager", "admin", "subadmin"],
     required: true,
+  },
+  designation: {
+    type: String,
+    required: false,
+  },
+  shift: {
+    type: String,
+    required: true,
+    enum: ["Day", "Night"],
   },
   status: {
     type: String,
@@ -46,10 +59,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  assignedHotel: {
+  assignedHotel: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Hotel",
-  },
+  }],
   images: {
     type: Array,
     required: false,
