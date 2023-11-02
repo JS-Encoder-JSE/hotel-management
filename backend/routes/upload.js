@@ -47,7 +47,7 @@ router.post('/single-upload', checkToken, (req, res) => {
         error: err.message
       });
     }
-    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${files[0].filename}`
+    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.files[0].filename}`
   
     res.status(200).json({
       success: true,
