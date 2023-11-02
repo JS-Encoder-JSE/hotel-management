@@ -51,6 +51,11 @@ const licenseSchema = new mongoose.Schema({
     required: true,
     enum: ["Cash", "Card", "Mobile_Banking"],
   },
+  transection_id : {
+    type: String,
+    required: false,
+    default: "",
+  },
   utilities_img: {
     type: Array,
     required: false,

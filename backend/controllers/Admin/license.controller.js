@@ -16,11 +16,14 @@ export const addLicense = async (req, res) => {
       status,
       hotel_limit,
       payment_method,
+      transection_id,
       utilities_img,
       trade_license_img,
     } = req.body;
+
     const { userId } = req.user;
     const user = await User.findById(userId);
+    console.log(user);
     if (!user.role === "admin" || !user.role === "subadmin") {
       return res
         .status(403)
@@ -38,15 +41,16 @@ export const addLicense = async (req, res) => {
       status,
       hotel_limit,
       payment_method,
+      transection_id,
       utilities_img,
       trade_license_img,
     });
-
+    console.log("aise");
     // Save the new license to the database
     const savedLicense = await newLicense.save();
-
+    console.log("saved");
     res.status(201).json(savedLicense); // Return the saved license as a response
   } catch (error) {
-    res.status(500).json({ error: "Failed to create and add a license" });
+    res.status(500).json({ error: "Failed to add a license" });
   }
 };
