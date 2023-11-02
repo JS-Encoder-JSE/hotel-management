@@ -19,7 +19,6 @@ const validationSchema = yup.object({
 
 const AddHotel = () => {
   const [hotelLimit, setHotelLimit] = useState(0)
-  const [showPass, setShowPass] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -39,9 +38,6 @@ const AddHotel = () => {
     },
   });
 
-  const handleShowPass = () => {
-    setShowPass(!showPass);
-  };
   return (
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
@@ -204,7 +200,7 @@ const AddHotel = () => {
             </div>
 
            {/* password */}
-                    {/* <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3">
               <input
                 type="password"
                 placeholder="Password"
@@ -219,39 +215,10 @@ const AddHotel = () => {
                   {formik.touched.password && formik.errors.password}
                 </small>
               ) : null}
-            </div>  */}
-              <div>
+            </div> 
+             
          
-          <div className="absolute">
-            <input
-              type={showPass ? "text" : "password"}
-              placeholder="Enter Password"
-              name="password"
-              className="input input-md input-bordered bg-transparent rounded max-w-xs w-96 border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.password &&
-            Boolean(formik.errors.password) ? (
-              <small className="text-red-600">
-                {formik.touched.password && formik.errors.password}
-              </small>
-            ) : null}
-
-            {!showPass ? (
-              <FaEyeSlash
-                onClick={handleShowPass}
-                className="absolute right-0 top-4 text-black text-lg mr-3 cursor-pointer"
-              />
-            ) : (
-              <FaEye
-                onClick={handleShowPass}
-                className="absolute right-0 top-4 text-black text-lg mr-3 cursor-pointer"
-              />
-            )}
-          </div>
-        </div>
+   
 
 
             {/* submit button */}
