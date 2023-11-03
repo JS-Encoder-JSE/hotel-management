@@ -55,8 +55,11 @@ const validationSchema = yup.object({
     .required("Amount is required")
     .positive("Amount must be a positive number")
     .integer("Amount must be an integer"),
-  utility: yup.mixed().required("Utilities are required"),
-  tradeLicense: yup.mixed().required("Trade licenses are required"),
+  documentsType: yup.string().required("Type of documents are required"),
+  documents: yup.mixed().when(["documentsType"], ([documentsType], schema) => {
+    if (documentsType) return schema.required(`${documentsType} are required`);
+    else return schema;
+  }),
 });
 
 const AdminNewLicense = () => {
@@ -71,10 +74,10 @@ const AdminNewLicense = () => {
     initialValues: {
       name: "",
       username: "",
-      address: "",
-      phoneNumber: "",
-      email: "",
       password: "",
+      address: "",
+      email: "",
+      phoneNumber: "",
       billInformation: "",
       fromDate: "",
       toDate: "",
@@ -82,9 +85,9 @@ const AdminNewLicense = () => {
       paymentMethod: "",
       trxID: "",
       amount: "",
-      utility: null,
-      tradeLicense: null,
       remarks: "",
+      documentsType: "",
+      documents: null,
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -92,59 +95,69 @@ const AdminNewLicense = () => {
 
       const obj = { ...values };
       const {
-        name: owner_name,
+        name,
+        username,
+        password,
         address,
-        phoneNumber: phone_no,
         email,
+        phoneNumber: phone_no,
         billInformation: bill_info,
-        fromDate: from_date,
-        toDate: to_date,
-        numberOfHotel: hotel_limit,
+        fromDate: bill_from,
+        toDate: bill_to,
+        numberOfHotel: maxHotels,
         paymentMethod: payment_method,
-        trxID: transection_id,
+        trxID: tran_id,
+        amount,
+        remarks: remark,
+        documentsType,
+        documents,
       } = obj;
       const formData = new FormData();
-      const formData_2 = new FormData();
 
-      for (let i = 0; i < values.utility.length; i++) {
-        const photoName = values.utility[i].name.substring(
+      for (let i = 0; i < values.documents.length; i++) {
+        const photoName = values.documents[i].name.substring(
           0,
-          values.utility[i].name.lastIndexOf("."),
+          values.documents[i].name.lastIndexOf("."),
         );
 
-        formData.append(photoName, values.utility[i]);
+        formData.append(photoName, values.documents[i]);
       }
 
-      await upload(formData).then(
-        (result) => (obj.utilities_img = result.data.imageUrls),
-      );
+      await upload(formData).then((result) => {
+        let title;
 
-      for (let i = 0; i < values.tradeLicense.length; i++) {
-        const photoName = values.tradeLicense[i].name.substring(
-          0,
-          values.tradeLicense[i].name.lastIndexOf("."),
-        );
+        switch (documentsType) {
+          case "Utilities":
+            title = "utilities";
+            break;
+          case "Trade Licences":
+            title = "trade_lic_img";
+            break;
+          case "Pan Card":
+            title = "pancard";
+        }
 
-        formData_2.append(photoName, values.tradeLicense[i]);
-      }
-
-      await upload(formData_2).then(
-        (result) => (obj.trade_license_img = result.data.imageUrls),
-      );
+        obj.images = {
+          [title]: result.data.imageUrls,
+        };
+      });
 
       const response = await addLicense({
-        owner_name,
+        name,
+        username,
+        password,
         address,
-        phone_no,
         email,
+        phone_no,
         bill_info,
-        from_date,
-        to_date,
-        hotel_limit,
+        bill_from,
+        bill_to,
+        maxHotels,
         payment_method,
-        transection_id,
-        utilities_img: obj.utilities_img,
-        trade_license_img: obj.trade_license_img,
+        tran_id,
+        amount,
+        remark,
+        images: obj.images,
       });
       console.log(response);
       // if (response?.error) {
@@ -159,7 +172,6 @@ const AdminNewLicense = () => {
     },
   });
 
-  // image delete
   const handleDelete = (idx) => {
     const tempImgs = [
       ...selectedImages.slice(0, idx),
@@ -171,12 +183,10 @@ const AdminNewLicense = () => {
       dataTransfer.items.add(file);
     }
 
-    formik.setFieldValue("utility", dataTransfer.files);
-    formik.setFieldValue("tradeLicense", dataTransfer.files);
+    formik.setFieldValue("documents", dataTransfer.files);
     setSelectedImages(tempImgs);
   };
 
-  // handle change
   const handleChange = (idx, newFile) => {
     const updatedImages = [...selectedImages];
     updatedImages[idx] = newFile;
@@ -187,21 +197,16 @@ const AdminNewLicense = () => {
       dataTransfer.items.add(file);
     }
 
-    formik.setFieldValue("utility", dataTransfer.files);
-    formik.setFieldValue("tradeLicense", dataTransfer.files);
+    formik.setFieldValue("documents", dataTransfer.files);
     setSelectedImages(updatedImages);
   };
 
   useEffect(() => {
-    if (formik.values.utility) {
-      const selectedImagesArray = Array.from(formik.values.utility);
-      setSelectedImages([...selectedImagesArray, ...selectedImages]);
+    if (formik.values.documents) {
+      const selectedImagesArray = Array.from(formik.values.documents);
+      setSelectedImages(selectedImagesArray);
     }
-    if (formik.values.tradeLicense) {
-      const selectedImagesArray = Array.from(formik.values.tradeLicense);
-      setSelectedImages([...selectedImagesArray, ...selectedImages]);
-    }
-  }, [formik.values.utility, formik.values.tradeLicense]);
+  }, [formik.values.documents]);
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -238,7 +243,7 @@ const AdminNewLicense = () => {
             >
               {selectedImages.length ? (
                 selectedImages.map((image, idx) => (
-                  <SwiperSlide>
+                  <SwiperSlide key={idx}>
                     <div className={`relative`}>
                       <div className={`absolute top-3 right-3 space-x-1.5`}>
                         <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
@@ -346,7 +351,13 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
         {/*Password box */}
-        <div className="col-span-full flex flex-col gap-3">
+        <div
+          className={`flex flex-col gap-3 ${
+            formik.values.paymentMethod || formik.values.documentsType
+              ? "col-span-full"
+              : ""
+          }`}
+        >
           <div className={`relative`}>
             <input
               type={showPass ? "text" : "password"}
@@ -380,7 +391,13 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
         {/*Billing Information box */}
-        <div className="flex flex-col gap-3">
+        <div
+          className={`flex flex-col gap-3 ${
+            formik.values.paymentMethod && formik.values.documentsType
+              ? "col-span-full"
+              : ""
+          }`}
+        >
           <input
             type="text"
             placeholder="Bill Information"
@@ -402,7 +419,7 @@ const AdminNewLicense = () => {
           <DatePicker
             dateFormat="dd/MM/yyyy"
             name="fromDate"
-            placeholderText={`Billing From`}
+            placeholderText={`From`}
             selected={formik.values.fromDate}
             className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
             onChange={(date) => formik.setFieldValue("fromDate", date)}
@@ -419,7 +436,7 @@ const AdminNewLicense = () => {
           <DatePicker
             dateFormat="dd/MM/yyyy"
             name="toDate"
-            placeholderText={`Billing To`}
+            placeholderText={`To`}
             selected={formik.values.toDate}
             className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
             onChange={(date) => formik.setFieldValue("toDate", date)}
@@ -450,11 +467,7 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
         {/* payment method box */}
-        <div
-          className={`${
-            formik.values.paymentMethod ? "col-span-full" : ""
-          } flex flex-col gap-3`}
-        >
+        <div className={`flex flex-col gap-3`}>
           <select
             name="paymentMethod"
             className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
@@ -465,9 +478,9 @@ const AdminNewLicense = () => {
             <option value="" selected disabled>
               Payment Method
             </option>
-            <option value="cash">Cash</option>
-            <option value="card">Card</option>
-            <option value="mfs">Mobile Banking</option>
+            <option value="Cash">Cash</option>
+            <option value="Card">Card</option>
+            <option value="Mobile_Banking">Mobile Banking</option>
           </select>
           {formik.touched.paymentMethod &&
           Boolean(formik.errors.paymentMethod) ? (
@@ -477,7 +490,7 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
         {formik.values.paymentMethod &&
-        formik.values.paymentMethod === "cash" ? (
+        formik.values.paymentMethod === "Cash" ? (
           <div className="flex flex-col gap-3">
             <input
               type="text"
@@ -486,15 +499,10 @@ const AdminNewLicense = () => {
               value={`Khalid Mahmud`}
               readOnly
             />
-            {formik.touched.trxID && Boolean(formik.errors.trxID) ? (
-              <small className="text-red-600">
-                {formik.touched.trxID && formik.errors.trxID}
-              </small>
-            ) : null}
           </div>
         ) : null}
         {formik.values.paymentMethod &&
-        formik.values.paymentMethod !== "cash" ? (
+        formik.values.paymentMethod !== "Cash" ? (
           <div className="flex flex-col gap-3">
             <input
               type="text"
@@ -529,69 +537,61 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-        {/* utility */}
-        <div className={`flex space-x-1.5`}>
-          <div className="flex flex-col gap-3 w-full">
-            <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-              {formik.values.utility ? (
-                <span>{formik.values.utility.length + " files"}</span>
-              ) : (
-                <span className={`flex items-baseline space-x-1.5`}>
-                  <FaUpload />
-                  <span>Choose Utilities</span>
-                </span>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                name="utility"
-                className="absolute left-0 top-0  overflow-hidden h-0"
-                onChange={(e) =>
-                  formik.setFieldValue("utility", e.currentTarget.files)
-                }
-                onBlur={formik.handleBlur}
-              />
-            </label>
-            {formik.touched.utility && Boolean(formik.errors.utility) ? (
-              <small className="text-red-600">
-                {formik.touched.utility && formik.errors.utility}
-              </small>
-            ) : null}
-          </div>
+        {/* documents type box */}
+        <div className={`flex flex-col gap-3`}>
+          <select
+            name="documentsType"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+            value={formik.values.documentsType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Type of Documents
+            </option>
+            <option value="Utilities">Utilities</option>
+            <option value="Trade Licences">Trade Licences</option>
+            <option value="Pan Card">Pan Card</option>
+          </select>
+          {formik.touched.documentsType &&
+          Boolean(formik.errors.documentsType) ? (
+            <small className="text-red-600">
+              {formik.touched.documentsType && formik.errors.documentsType}
+            </small>
+          ) : null}
         </div>
-        {/* Trade License */}
-        <div className={`flex space-x-1.5`}>
-          <div className="flex flex-col gap-3 w-full">
-            <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-              {formik.values.tradeLicense ? (
-                <span>{formik.values.tradeLicense.length + " files"}</span>
-              ) : (
-                <span className={`flex items-baseline space-x-1.5`}>
-                  <FaUpload />
-                  <span>Choose Trade License</span>
-                </span>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                name="tradeLicense"
-                className="absolute left-0 top-0  overflow-hidden h-0"
-                onChange={(e) => {
-                  formik.setFieldValue("tradeLicense", e.currentTarget.files);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            </label>
-            {formik.touched.tradeLicense &&
-            Boolean(formik.errors.tradeLicense) ? (
-              <small className="text-red-600">
-                {formik.touched.tradeLicense && formik.errors.tradeLicense}
-              </small>
-            ) : null}
+        {/* documents box */}
+        {formik.values.documentsType ? (
+          <div className={`flex space-x-1.5`}>
+            <div className="flex flex-col gap-3 w-full">
+              <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+                {formik.values.documents ? (
+                  <span>{formik.values.documents.length + " files"}</span>
+                ) : (
+                  <span className={`flex items-baseline space-x-1.5`}>
+                    <FaUpload />
+                    <span>Choose {formik.values.documentsType}</span>
+                  </span>
+                )}
+                <input
+                  type="file"
+                  multiple
+                  name="documents"
+                  className="absolute left-0 top-0  overflow-hidden h-0"
+                  onChange={(e) =>
+                    formik.setFieldValue("documents", e.currentTarget.files)
+                  }
+                  onBlur={formik.handleBlur}
+                />
+              </label>
+              {formik.touched.documents && Boolean(formik.errors.documents) ? (
+                <small className="text-red-600">
+                  {formik.touched.documents && formik.errors.documents}
+                </small>
+              ) : null}
+            </div>
           </div>
-        </div>
+        ) : null}
         {/* Hotel Address box */}
         <div className="flex flex-col gap-3">
           <textarea

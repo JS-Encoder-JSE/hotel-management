@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
@@ -33,7 +33,8 @@ const AdminOwnerList = () => {
   const [ownersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
-  const [status, setStatus] = useState(null)
+  const [status, setStatus] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -48,9 +49,9 @@ const AdminOwnerList = () => {
 
   useEffect(() => {
     if (status) {
-      window.ol_modal.showModal()
+      window.ol_modal.showModal();
     }
-  }, [status]);
+  }, [modalOpen]);
 
   return (
     <div>
@@ -130,7 +131,10 @@ const AdminOwnerList = () => {
                       </span>
                       <span
                         className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case`}
-                        onClick={() => setStatus(item.status)}
+                        onClick={() => {
+                          setStatus(item.status);
+                          setModalOpen(!modalOpen);
+                        }}
                       >
                         <AiFillSetting />
                       </span>
@@ -141,28 +145,32 @@ const AdminOwnerList = () => {
             </tbody>
           </table>
         </div>
+        <div className="flex justify-center mt-10">
+          <ReactPaginate
+            containerClassName="join rounded-none"
+            pageLinkClassName="join-item btn btn-md bg-transparent"
+            activeLinkClassName="btn-active !bg-green-slimy text-white"
+            disabledLinkClassName="btn-disabled"
+            previousLinkClassName="join-item btn btn-md bg-transparent"
+            nextLinkClassName="join-item btn btn-md bg-transparent"
+            breakLinkClassName="join-item btn btn-md bg-transparent"
+            previousLabel="<"
+            nextLabel=">"
+            breakLabel="..."
+            pageCount={pageCount}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageClick}
+            renderOnZeroPageCount={null}
+          />
+        </div>
         <Modal id={`ol_modal`}>
-          <OwnerSettings status={status} />
+          <OwnerSettings
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            status={status}
+          />
         </Modal>
-      </div>
-      <div className="flex justify-center mt-10">
-        <ReactPaginate
-          containerClassName="join rounded-none"
-          pageLinkClassName="join-item btn btn-md bg-transparent"
-          activeLinkClassName="btn-active !bg-green-slimy text-white"
-          disabledLinkClassName="btn-disabled"
-          previousLinkClassName="join-item btn btn-md bg-transparent"
-          nextLinkClassName="join-item btn btn-md bg-transparent"
-          breakLinkClassName="join-item btn btn-md bg-transparent"
-          previousLabel="<"
-          nextLabel=">"
-          breakLabel="..."
-          pageCount={pageCount}
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={2}
-          onPageChange={handlePageClick}
-          renderOnZeroPageCount={null}
-        />
       </div>
     </div>
   );

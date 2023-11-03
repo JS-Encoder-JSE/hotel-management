@@ -15,7 +15,7 @@ const validationSchema = yup.object({
   toDate: yup.string().required("To date is required"),
 });
 
-const OwnerSettings = ({ status }) => {
+const OwnerSettings = ({ modalOpen, setModalOpen, status }) => {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -36,7 +36,10 @@ const OwnerSettings = ({ status }) => {
       <form method="dialog">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={() => formik.handleReset()}
+          onClick={() => {
+            formik.handleReset();
+            setModalOpen(!modalOpen);
+          }}
         >
           ✕
         </button>
@@ -116,8 +119,8 @@ const OwnerSettings = ({ status }) => {
                 ) : null}
               </div>
               <button
-                  type={"submit"}
-                  className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                type={"submit"}
+                className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
                 Confirm
               </button>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 
@@ -40,7 +40,7 @@ const HotelLimitEdit = () => {
             <h1 className="btn btn-sm bg-white input-bordered border-gray-500 rounded">
               {user}
             </h1>
-          {/* increment */}
+            {/* increment */}
             <button
               onClick={increment}
               className="btn btn-sm bg-white input-bordered border-gray-500 rounded"
@@ -49,9 +49,7 @@ const HotelLimitEdit = () => {
             </button>
           </div>
           <div>
-            <button
-                className="btn btn-sm bg-white input-bordered border-gray-500 rounded normal-case"
-            >
+            <button className="btn btn-sm bg-white input-bordered border-gray-500 rounded normal-case">
               Save
             </button>
           </div>
@@ -59,35 +57,33 @@ const HotelLimitEdit = () => {
         <div className="overflow-x-auto">
           <table className="table border">
             <thead>
-            <tr>
-              <th>Sl</th>
-              <th>Hotel Name</th>
-              <th>Hotel Email</th>
-              <th>Action</th>
-            </tr>
+              <tr>
+                <th>Sl</th>
+                <th>Hotel Name</th>
+                <th>Hotel Branch</th>
+                <th>Action</th>
+              </tr>
             </thead>
             <tbody>
-            {[...Array(5)].map((_, idx) => {
-              return (
-                  <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                  >
+              {[...Array(5)].map((_, idx) => {
+                return (
+                  <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                     <th> {++idx}</th>
                     <td className="font-bold">Jon Doe</td>
-                    <td>jondoe@gmail.com</td>
+                    <td>Motijheel</td>
                     <td className={`space-x-1.5`}>
-                        <span
-                            className={`btn btn-sm bg-transparent hover:bg-red-500 text-red-500 hover:text-white !border-red-500 rounded normal-case ms-2`}
-                            onClick={() =>
-                                navigate(`/dashboard/adminowner-view/${idx}`)
-                            }
-                        >
-                          <MdDelete />
-                        </span>
+                      <span
+                        className={`btn btn-sm bg-transparent hover:bg-red-500 text-red-500 hover:text-white !border-red-500 rounded normal-case ms-2`}
+                        onClick={() =>
+                          navigate(`/dashboard/adminowner-view/${idx}`)
+                        }
+                      >
+                        <MdDelete />
+                      </span>
                     </td>
                   </tr>
-              );
-            })}
+                );
+              })}
             </tbody>
           </table>
         </div>

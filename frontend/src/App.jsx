@@ -62,7 +62,6 @@ import ReportView from "./pages/report/ReportView.jsx";
 import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
 import OwnerProfile from "./pages/Admin/OwnerProfile.jsx";
-import OwnerChangePass from "./pages/Admin/OwnerChangePass.jsx";
 import SuspendList from "./pages/Admin/SuspendList.jsx";
 import ExpiredList from "./pages/Admin/ExpiredList.jsx";
 import AddBar from "./pages/bar/AddBar.jsx";
@@ -462,18 +461,10 @@ const App = () => {
               ),
             },
             {
-              path: "sub-admin-profile/:id",
-              element: (
-                <AdminRoute>
-                  <SubAdminProfile />
-                </AdminRoute>
-              ),
-            },
-            {
               path: "sub-admin-profile/:id/edit",
               element: (
                 <AdminRoute>
-                  <SubAdminChangePass />
+                  <SubAdminProfile />
                 </AdminRoute>
               ),
             },

@@ -1,13 +1,13 @@
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
-import OwnerSettings from "./OwnerSettings.jsx";
 import Modal from "../Modal.jsx";
 import HotelLimitEdit from "../../pages/Admin/HotelLimitEdit.jsx";
+import HotelList from "./HotelList.jsx";
+import TransactionHistory from "./TransactionHistory.jsx";
+import StatusHistory from "./StatusHistory.jsx";
 
 const AdminOwnerView = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const AdminOwnerView = () => {
 
   return (
     <>
-      <div>
+      <div className={`space-y-10`}>
         <div className="card w-full bg-white shadow-xl p-5">
           <div>
             <span
@@ -61,214 +61,13 @@ const AdminOwnerView = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/*owner Table start */}
-
-      <div className="card w-full bg-white shadow-xl mt-10">
-        <div className="card-body">
-          <h1 className="text-2xl text-center ">Hotel List</h1>
-          <div className="overflow-x-auto mt-10">
-            <table className="table border">
-              <thead>
-                <tr>
-                  <th>Sl</th>
-                  <th>Hotel Name</th>
-                  <th>Hotel Email</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...Array(5)].map((_, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th> {++idx}</th>
-                      <td className="font-bold">Jon Doe</td>
-                      <td>jondoe@gmail.com</td>
-                      <td className={`space-x-1.5`}>
-                        <span
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() =>
-                            navigate(`/dashboard/adminowner-view/${idx}`)
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="flex justify-center mt-10">
-              <ReactPaginate
-                containerClassName="join rounded-none"
-                pageLinkClassName="join-item btn btn-md bg-transparent"
-                activeLinkClassName="btn-active !bg-green-slimy text-white"
-                disabledLinkClassName="btn-disabled"
-                previousLinkClassName="join-item btn btn-md bg-transparent"
-                nextLinkClassName="join-item btn btn-md bg-transparent"
-                breakLinkClassName="join-item btn btn-md bg-transparent"
-                previousLabel="<"
-                nextLabel=">"
-                breakLabel="..."
-                pageCount={pageCount}
-                pageRangeDisplayed={2}
-                marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
-                renderOnZeroPageCount={null}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/*owner Table End */}
-
-      {/*transaction Table start */}
-
-      <div className="card w-full bg-white shadow-xl mt-10">
-        <div className="card-body">
-          <h1 className="text-2xl text-center ">Transaction History</h1>
-          <div className="overflow-x-auto mt-10">
-            <table className="table border">
-              <thead>
-                <tr>
-                  <th>Sl</th>
-                  <th>Date</th>
-                  <th>Transaction Id</th>
-                  <th>Payment Method</th>
-                  <th>License Duration</th>
-                  <th>Amount</th>
-                  <th>Payment For</th>
-                  {/*<th>Action</th>*/}
-                </tr>
-              </thead>
-              <tbody>
-                {[...Array(5)].map((_, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>{new Date().toLocaleDateString()}</td>
-                      <td>DSER-HGYT-GHTY-54564</td>
-                      <td>Cash</td>
-                      <td>{new Date().toLocaleDateString()} - {new Date().toLocaleDateString()}</td>
-                      <td>25000</td>
-                      <td>Renew</td>
-                      {/*<td className={`space-x-1.5`}>*/}
-                      {/*  <span*/}
-                      {/*    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}*/}
-                      {/*    onClick={() =>*/}
-                      {/*      navigate(`/dashboard/adminowner-view/${idx}`)*/}
-                      {/*    }*/}
-                      {/*  >*/}
-                      {/*    <FaEye />*/}
-                      {/*  </span>*/}
-                      {/*</td>*/}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="flex justify-center mt-10">
-              <ReactPaginate
-                containerClassName="join rounded-none"
-                pageLinkClassName="join-item btn btn-md bg-transparent"
-                activeLinkClassName="btn-active !bg-green-slimy text-white"
-                disabledLinkClassName="btn-disabled"
-                previousLinkClassName="join-item btn btn-md bg-transparent"
-                nextLinkClassName="join-item btn btn-md bg-transparent"
-                breakLinkClassName="join-item btn btn-md bg-transparent"
-                previousLabel="<"
-                nextLabel=">"
-                breakLabel="..."
-                pageCount={pageCount}
-                pageRangeDisplayed={2}
-                marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
-                renderOnZeroPageCount={null}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/*transaction Table End */}
-
-      {/*consider Table start */}
-
-      <div className="card w-full bg-white shadow-xl mt-10">
-        <div className="card-body">
-          <h1 className="text-2xl text-center ">Status History</h1>
-          <div className="overflow-x-auto mt-10">
-            <table className="table border">
-              <thead>
-                <tr>
-                  <th>Sl</th>
-                  <th>Date</th>
-                  <th>License Duration</th>
-                  <th>Previous Status</th>
-                  <th>Updated Status</th>
-                  <th>Remarks</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...Array(5)].map((_, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th> {++idx}</th>
-                      <td>{new Date().toLocaleDateString()}</td>
-                      <td>{new Date().toLocaleDateString()} - {new Date().toLocaleDateString()}</td>
-                      <td>Active</td>
-                      <td>Suspend</td>
-                      <td>Consider 7 days</td>
-                      {/*<td className={`space-x-1.5`}>*/}
-                      {/*  <span*/}
-                      {/*    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}*/}
-                      {/*    onClick={() =>*/}
-                      {/*      navigate(`/dashboard/adminowner-view/${idx}`)*/}
-                      {/*    }*/}
-                      {/*  >*/}
-                      {/*    <FaEye />*/}
-                      {/*  </span>*/}
-                      {/*</td>*/}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="flex justify-center mt-10">
-              <ReactPaginate
-                containerClassName="join rounded-none"
-                pageLinkClassName="join-item btn btn-md bg-transparent"
-                activeLinkClassName="btn-active !bg-green-slimy text-white"
-                disabledLinkClassName="btn-disabled"
-                previousLinkClassName="join-item btn btn-md bg-transparent"
-                nextLinkClassName="join-item btn btn-md bg-transparent"
-                breakLinkClassName="join-item btn btn-md bg-transparent"
-                previousLabel="<"
-                nextLabel=">"
-                breakLabel="..."
-                pageCount={pageCount}
-                pageRangeDisplayed={2}
-                marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
-                renderOnZeroPageCount={null}
-              />
-            </div>
-          </div>
-        </div>
+        <HotelList />
+        <TransactionHistory />
+        <StatusHistory />
       </div>
       <Modal id={`hle_modal`}>
         <HotelLimitEdit />
       </Modal>
-      {/*consider Table End */}
     </>
   );
 };

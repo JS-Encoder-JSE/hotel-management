@@ -5,7 +5,7 @@ const slsAPI = baseAPI.injectEndpoints({
     addLicense: build.mutation({
       query: (data) => {
         return {
-          url: "license/add-license",
+          url: "users/add-license",
           method: "post",
           body: data,
         };

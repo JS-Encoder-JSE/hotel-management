@@ -2,19 +2,28 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
-  name: yup.string().required("Sub Admin Name is required"),
-  address: yup.string().required("Sub Admin Address is required"),
-  email: yup.string().required("Sub Admin Email is required"),
-  phoneNumber: yup.string().required("Sub Admin Phone Number size is required"),
-  salary: yup.string().required("Sub Admin Salary size is required"),
+  name: yup.string().required("Name is required"),
+  address: yup.string().required("Address is required"),
+  email: yup
+      .string()
+      .email("Enter a valid email")
+      .required("Email is required"),
+  phoneNumber: yup.string().required("Phone Number is required"),
+  salary: yup
+      .number()
+      .required("Salary is required")
+      .positive("Salary must be a positive number")
+      .integer("Salary must be an integer"),
 });
 
 const SubAdminProfile = () => {
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
+  const [showPass, setShowPass] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -22,6 +31,7 @@ const SubAdminProfile = () => {
       email: "",
       phoneNumber: "",
       address: "",
+      password: "",
       salary: "",
     },
     validationSchema,
@@ -50,15 +60,6 @@ const SubAdminProfile = () => {
             />
           )}
         </div>
-        <div className={`text-end`}>
-          <button
-            type="button"
-            className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded-md normal-case"
-            onClick={() => navigate("edit")}
-          >
-            Change Password
-          </button>
-        </div>
       </div>
 
       <form
@@ -67,7 +68,7 @@ const SubAdminProfile = () => {
       >
         {/* name box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-16 break-words`}>Name: </label>
+          <label className={`w-24 break-words`}>Name: </label>
           <div className="flex flex-col w-full space-y-2">
             <input
               type="text"
@@ -87,7 +88,7 @@ const SubAdminProfile = () => {
         </div>
         {/* Email box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-16 break-words`}>Email: </label>
+          <label className={`w-24 break-words`}>Email: </label>
           <div className="flex flex-col w-full space-y-2">
             <input
               type="email"
@@ -107,10 +108,10 @@ const SubAdminProfile = () => {
         </div>
         {/* Phone box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-16 break-words`}>Phone: </label>
+          <label className={`w-24 break-words`}>Phone: </label>
           <div className="flex flex-col w-full space-y-2">
             <input
-              type="number"
+              type="text"
               placeholder="0123324434435"
               name="phoneNumber"
               className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -128,18 +129,16 @@ const SubAdminProfile = () => {
         </div>
         {/* Address box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-16 break-words`}>Address: </label>
+          <label className={`w-24 break-words`}>Address: </label>
           <div className="flex flex-col w-full space-y-2">
-            <input
-              type="text"
-              placeholder="Dhaka, Banglamotor"
+            <textarea
+              placeholder="Address"
               name="address"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
               value={formik.values.address}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-
             {formik.touched.address && Boolean(formik.errors.address) ? (
               <small className="text-red-600">
                 {formik.touched.address && formik.errors.address}
@@ -147,37 +146,71 @@ const SubAdminProfile = () => {
             ) : null}
           </div>
         </div>
-        {/* Salary box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-16 break-words`}>Salary : </label>
+          <label className={`w-24 break-words`}>Password: </label>
+          <div className="relative flex flex-col w-full">
+            <input
+              type={showPass ? "text" : "password"}
+              placeholder="New Password"
+              name="password"
+              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {showPass ? (
+              <span
+                className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                onClick={() => setShowPass(false)}
+              >
+                <FaEyeSlash />
+              </span>
+            ) : (
+              <span
+                className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                onClick={() => setShowPass(true)}
+              >
+                <FaEye />
+              </span>
+            )}
+
+            {formik.touched.password && Boolean(formik.errors.password) ? (
+              <small className="text-red-600 mt-2">
+                {formik.touched.password && formik.errors.password}
+              </small>
+            ) : null}
+          </div>
+        </div>
+        {/* salary box */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+          <label className={`w-24 break-words`}>Salary: </label>
           <div className="flex flex-col w-full space-y-2">
             <input
-              type="number"
-              placeholder="20,000"
+              type="text"
+              placeholder="20000"
               name="salary"
-              className="hide-number-arrow-input input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
               value={formik.values.salary}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-
-            {formik.touched.salary && Boolean(formik.errors.salary) ? (
+            {formik.touched.salary &&
+            Boolean(formik.errors.salary) ? (
               <small className="text-red-600">
                 {formik.touched.salary && formik.errors.salary}
               </small>
             ) : null}
           </div>
         </div>
-        {/* Joining Date box */}
+        {/* Joining date box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-16 break-words`}>Joining Date : </label>
-          <div className="flex flex-col w-full">
+          <label className={`w-24 break-words`}>Joining Date: </label>
+          <div className="flex flex-col w-full space-y-2">
             <input
               type="text"
-              name="salary"
-              disabled
-              className="hide-number-arrow-input input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value="20/10/23"
+              placeholder="1/2/23"
+              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy input-disabled"
+              readOnly
             />
           </div>
         </div>

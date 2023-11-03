@@ -30,8 +30,8 @@ const ExpiredList = () => {
             <tr>
               <th>Sl</th>
               <th>Client Name</th>
-              <th>Email</th>
-              <th>Status</th>
+              <th>Client Email</th>
+              <th>Client Status</th>
               <th>Action</th>
             </tr>
           </thead>

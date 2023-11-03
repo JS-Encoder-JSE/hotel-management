@@ -6,10 +6,13 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
-  name: yup.string().required("Sub Admin Name is required"),
-  address: yup.string().required("Sub Admin Address is required"),
-  email: yup.string().required("Sub Admin Email is required"),
-  phoneNumber: yup.string().required("Sub Admin Phone Number size is required"),
+  name: yup.string().required("Name is required"),
+  address: yup.string().required("Address is required"),
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  phoneNumber: yup.string().required("Phone number is required"),
 });
 
 const OwnerProfile = () => {

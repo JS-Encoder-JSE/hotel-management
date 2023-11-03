@@ -94,21 +94,21 @@ const AdminSBItems = ({ handleSBItems }) => {
           </li>
         </ul>
       </li>
-      <li>
-        <NavLink
-            to={`/dashboard/suspend-lock-list`}
-            className={({ isActive }) =>
-                "flex p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
-                (isActive ? " bg-gray-300" : "")
-            }
-            end
-        >
-          <span className={`w-5`}>
-            <MdOutlineLockClock />
-          </span>
-          <span className={`-mt-0.5`}>Suspend & Lock List</span>
-        </NavLink>
-      </li>
+      {/*<li>*/}
+      {/*  <NavLink*/}
+      {/*      to={`/dashboard/suspend-lock-list`}*/}
+      {/*      className={({ isActive }) =>*/}
+      {/*          "flex p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +*/}
+      {/*          (isActive ? " bg-gray-300" : "")*/}
+      {/*      }*/}
+      {/*      end*/}
+      {/*  >*/}
+      {/*    <span className={`w-5`}>*/}
+      {/*      <MdOutlineLockClock />*/}
+      {/*    </span>*/}
+      {/*    <span className={`-mt-0.5`}>Suspend & Lock List</span>*/}
+      {/*  </NavLink>*/}
+      {/*</li>*/}
       {!subAdmin && (
         <li className={`group p-2`}>
           <div
@@ -119,7 +119,7 @@ const AdminSBItems = ({ handleSBItems }) => {
               <span className={`w-5`}>
                 <MdOutlineKitchen />
               </span>
-              <span className={`-mt-0.5`}>Sub Admin Section</span>
+              <span className={`-mt-0.5`}>Sub Admin Management</span>
             </div>
             <span className={`group-[.active]:hidden`}>
               <MdKeyboardArrowDown />
