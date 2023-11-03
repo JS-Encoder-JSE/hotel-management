@@ -65,6 +65,8 @@ import OwnerProfile from "./pages/Admin/OwnerProfile.jsx";
 import OwnerChangePass from "./pages/Admin/OwnerChangePass.jsx";
 import SuspendList from "./pages/Admin/SuspendList.jsx";
 import ExpiredList from "./pages/Admin/ExpiredList.jsx";
+import AddBar from "./pages/bar/AddBar.jsx";
+import BarItemList from "./pages/bar/BarItemList.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -268,6 +270,22 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <AddOrder />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-bar",
+              element: (
+                <ManagerRoute>
+                  <AddBar />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "baritem-list",
+              element: (
+                <ManagerRoute>
+                  <BarItemList />
                 </ManagerRoute>
               ),
             },

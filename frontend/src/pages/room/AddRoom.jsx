@@ -222,7 +222,7 @@ const AddRoom = () => {
                   <option value="Standard">Standard</option>
                   <option value="Deluxe">Deluxe</option>
                   <option value="Suite">Suite</option>
-                  <option value="General">General</option>
+                  <option value="PresidentSuite">President suite</option>
                 </select>
                 {formik.touched.category && Boolean(formik.errors.category) ? (
                   <small className="text-red-600">
@@ -303,9 +303,9 @@ const AddRoom = () => {
                   <option value="" selected disabled>
                     Bed Size
                   </option>
-                  <option value="SM">SM</option>
-                  <option value="LG">LG</option>
-                  <option value="XL">XL</option>
+                  <option value="SingleBedSize">Single</option>
+                  <option value="DoubleBedSize">Double</option>
+                  <option value="KingBedSize">King</option>
                 </select>
                 {formik.touched.bedSize && Boolean(formik.errors.bedSize) ? (
                   <small className="text-red-600">

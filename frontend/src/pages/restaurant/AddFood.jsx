@@ -219,7 +219,7 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
-        {/* age box */}
+        {/* Quantity box */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
@@ -236,7 +236,29 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
-        {/* adult box */}
+        <div className="flex flex-col gap-3">
+                <select
+                  name="quantity"
+                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                  value={formik.values.quantity}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="" selected disabled>
+                  Quantity
+                  </option>
+                  <option value="SetMenu1">1:1</option>
+                  <option value="SetMenu2">1:2</option>
+                  <option value="SetMenu3">1:3</option>
+                </select>
+                {formik.touched.bedSize && Boolean(formik.errors.bedSize) ? (
+                  <small className="text-red-600">
+                    {formik.touched.bedSize && formik.errors.bedSize}
+                  </small>
+                ) : null}
+              </div>
+
+        {/* Price box */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
@@ -283,6 +305,7 @@ const AddFood = () => {
             ) : null}
           </div>
         </div>
+        {/* Description */}
         <div className="col-span-full flex flex-col gap-3">
           <textarea
             placeholder="Description"

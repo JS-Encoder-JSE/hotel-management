@@ -17,11 +17,13 @@ import { useRoomsQuery } from "../../redux/room/roomAPI.js";
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   mobile: yup.string().required("Mobile number is required"),
-  age: yup
-    .number()
-    .required("Age is required")
-    .positive("Age must be a positive number")
-    .integer("Age must be an integer"),
+  emergencyNumber: yup.string().required("Emergency Number  is required"),
+  address: yup.string().required("Address  is required"),
+  // age: yup
+  //   .number()
+  //   .required("Age is required")
+  //   .positive("Age must be a positive number")
+  //   .integer("Age must be an integer"),
   adult: yup
     .number()
     .required("Adult is required")
@@ -50,6 +52,7 @@ const validationSchema = yup.object({
   documents: yup.mixed().required("Documents are required"),
   fromDate: yup.string().required("From Date is required"),
   toDate: yup.string().required("To Date is required"),
+  nationality: yup.string().required("Nationality is required"),
 });
 
 const CheckIn = () => {
@@ -61,7 +64,8 @@ const CheckIn = () => {
     initialValues: {
       name: "",
       mobile: "",
-      age: "",
+      emergencyNumber: "",
+      address: "",
       adult: "",
       children: "",
       paymentMethod: "",
@@ -69,6 +73,7 @@ const CheckIn = () => {
       discount: "",
       fromDate: "",
       toDate: "",
+      nationality: "",
       documents: null,
     },
     validationSchema,
@@ -247,20 +252,37 @@ const CheckIn = () => {
             </small>
           ) : null}
         </div>
-        {/* age box */}
+        {/* emergency Number  box */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Age"
-            name="age"
+            placeholder="Emergency Number"
+            name="emergencyNumber  "
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-            value={formik.values.age}
+            value={formik.values.emergencyNumber }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.age && Boolean(formik.errors.age) ? (
+          {formik.touched.emergencyNumber  && Boolean(formik.errors.emergencyNumber ) ? (
             <small className="text-red-600">
-              {formik.touched.age && formik.errors.age}
+              {formik.touched.emergencyNumber  && formik.errors.emergencyNumber }
+            </small>
+          ) : null}
+        </div>
+        {/* Address   box */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Address"
+            name="address  "
+            className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+            value={formik.values.address }
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.address  && Boolean(formik.errors.address ) ? (
+            <small className="text-red-600">
+              {formik.touched.address  && formik.errors.address }
             </small>
           ) : null}
         </div>
@@ -397,6 +419,23 @@ const CheckIn = () => {
             </small>
           ) : null}
         </div>
+           {/* Nationality box */}
+           <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Nationality"
+              name="nationality"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.nationality}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.nationality && Boolean(formik.errors.nationality) ? (
+              <small className="text-red-600">
+                {formik.touched.nationality && formik.errors.nationality}
+              </small>
+            ) : null}
+          </div>
         {/* documents */}
         <div className={`flex space-x-1.5`}>
           <div className="flex flex-col gap-3 w-full">

@@ -4,13 +4,14 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
-import { fileURLToPath } from "url";
-import employeeRoute from "./routes/Manager/employee.route.js";
 import foodRoute from "./routes/Manager/food.route.js";
-import itemRoute from "./routes/Manager/item.route.js";
 import hotelsRoute from "./routes/hotels.route.js";
 import uploadRoute from "./routes/upload.js";
 import userRoute from "./routes/users.route.js";
+import itemRoute from "./routes/Manager/item.route.js";
+// import employeeRoute from "./routes/Manager/employee.route.js";
+import licenseRoute from "./routes/Admin/license.route.js";
+import { fileURLToPath } from "url";
 // Manager Routes
 import bookingRoute from "./routes/Manager/booking.route.js";
 import roomRoute from "./routes/Manager/room.routs.js";
@@ -39,7 +40,8 @@ app.use("/rooms", roomRoute);
 app.use("/foods", foodRoute);
 app.use("/booking", bookingRoute);
 app.use("/item", itemRoute);
-app.use("/employee", employeeRoute);
+// app.use("/employee", employeeRoute);
+app.use("/license", licenseRoute);
 
 app.use("/", uploadRoute);
 

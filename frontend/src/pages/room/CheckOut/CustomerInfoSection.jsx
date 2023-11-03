@@ -12,9 +12,9 @@ const CustomerInfoSection = () => {
           <p>Email ID</p>
           <p>Mobile No</p>
           <p>Address</p>
-          <p>Time Format</p>
+          {/* <p>Time Format</p> */}
           <p>Booking Time</p>
-          <p>Booking Source</p>
+          {/* <p>Booking Source</p> */}
         </div>
         <div className="col-span-3 space-y-3">
           <p>Tajkir _ Rion</p>
@@ -22,19 +22,19 @@ const CustomerInfoSection = () => {
           <p>dev.tajkir@gmail.com</p>
           <p>0123456789101</p>
           <p>Banglamotor, Dhaka</p>
-          <p>24 hrs</p>
+          {/* <p>24 hrs</p> */}
           <input
             type="text"
             disabled
             placeholder="Instant"
             className="pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block"
           />
-          <input
+          {/* <input
             type="text"
             disabled
             placeholder="JS Encoder"
             className="pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block"
-          />
+          /> */}
         </div>
       </div>
     </section>

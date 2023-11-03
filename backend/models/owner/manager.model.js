@@ -1,51 +1,40 @@
 // import mongoose from "mongoose";
 // import mongoosePaginate from "mongoose-paginate-v2";
-
-// const employeeSchema = new mongoose.Schema({
+// const managerSchema = new mongoose.Schema({
 //   name: {
 //     type: String,
 //     required: true,
 //   },
-//   designation: {
+//   address: {
 //     type: String,
 //     required: false,
-//     enum: ["Waiter", "House_Keeper"],
 //   },
-//   shift: {
+//   email: {
 //     type: String,
-//     required: true,
-//     enum: ["Day", "Night"],
+//     required: false,
 //   },
-//   sallary: {
+//   phone_no: {
 //     type: Number,
 //     required: false,
 //     default: 0,
 //   },
-//   street_address: {
+//   salary: {
 //     type: String,
 //     required: false,
 //   },
-//   state: {
-//     type: String,
-//     required: false,
-//   },
-//   city: {
-//     type: String,
-//     required: false,
-//   },
-//   zip: {
+//   joining_date: {
 //     type: String,
 //     required: false,
 //   },
 //   images: {
-//     type: Array,
+//     type: String,
 //     required: false,
 //   },
 // });
 
 // // Apply the mongoose-paginate-v2 plugin to your schema
-// employeeSchema.plugin(mongoosePaginate);
+// managerSchema.plugin(mongoosePaginate);
 
-// const Employee = mongoose.model("Employee", employeeSchema);
+// const Manager = mongoose.model("Hotel", managerSchema);
 
-// export default Employee;
+// export default Manager;
