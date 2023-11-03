@@ -61,6 +61,8 @@ import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 import ReportView from "./pages/report/ReportView.jsx";
 import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
+import AddBar from "./pages/bar/AddBar.jsx";
+import BarItemList from "./pages/bar/BarItemList.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -264,6 +266,22 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <AddOrder />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-bar",
+              element: (
+                <ManagerRoute>
+                  <AddBar />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "baritem-list",
+              element: (
+                <ManagerRoute>
+                  <BarItemList />
                 </ManagerRoute>
               ),
             },

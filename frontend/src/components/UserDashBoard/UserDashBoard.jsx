@@ -15,7 +15,7 @@ import CustomerList from "./CustomerList";
 import TodaysBooking from "./TodaysBooking";
 import NextBooking from "./NextBooking";
 import { useSelector } from "react-redux";
-import { TbCurrencyTaka } from "react-icons/tb";
+import { GiCoins } from "react-icons/gi";
 import {GrCurrency} from "react-icons/gr";
 
 const UserDashBoard = () => {
@@ -38,7 +38,7 @@ const UserDashBoard = () => {
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
             {/* <FaDollarSign /> */}
-            <GrCurrency className={`db-currency`} />
+            <GiCoins className={`db-currency text-white`} />
           </div>
           <h6 className="text-xs text-slate-400">TOTAL AMOUNT</h6>
           <p className="text-2xl font-semibold mb-5">299m</p>

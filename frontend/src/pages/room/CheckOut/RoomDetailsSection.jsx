@@ -24,7 +24,7 @@ const RoomDetailsSection = ({ selectedRooms }) => {
               {selectedRooms.map((room, index) => (
                 <div key={index}>
                   <p className="font-semibold">{room.label}</p>
-                  <p className="text-xs text-slate-400 font-light">VIP Guest</p>
+                  {/* <p className="text-xs text-slate-400 font-light">VIP Guest</p> */}
                   <hr className="my-2" />
                 </div>
               ))}
@@ -70,7 +70,7 @@ const RoomDetailsSection = ({ selectedRooms }) => {
                       ($) Tot.Rent
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Tax
+                      ($) VAT/GST
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
                       ($) Tot.Amt

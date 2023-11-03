@@ -15,8 +15,8 @@ const ManageBooking = () => {
 
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl`}>
-      <div className={`flex justify-between gap-4`}>
-        <div>
+      <div className={`flex justify-end gap-4`}>
+        {/* <div>
           <select
             name="filter"
             className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
@@ -28,8 +28,8 @@ const ManageBooking = () => {
             <option value="deactive">deActive</option>
             <option value="suspended">Suspended</option>
           </select>
-        </div>
-        <div className={`flex gap-1.5`}>
+        </div> */}
+        <div className={`flex gap-1.5 `}>
           <button
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
             onClick={() => window.ab_modal.showModal()}

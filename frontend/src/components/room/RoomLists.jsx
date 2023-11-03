@@ -50,6 +50,7 @@ const RoomLists = ({ setCurrentPage, rooms }) => {
           <thead>
             <tr className={`text-lg`}>
               <th>Name</th>
+              <th>Category</th>
               <th>Price</th>
               <th>Capacity</th>
               <th>Status</th>
@@ -92,6 +93,7 @@ const RoomLists = ({ setCurrentPage, rooms }) => {
                       </div>
                     </div>
                   </td>
+                  <td>{category}</td>
                   <td>{price}</td>
                   <td>{capacity}</td>
                   <td>

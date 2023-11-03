@@ -8,12 +8,14 @@ import toast from "react-hot-toast";
 // form validation
 const validationSchema = yup.object({
   guestName: yup.string().required("Name is required"),
+  address: yup.string().required("Address is required"),
   mobileNumber: yup.string().required("Mobile number is required"),
-  age: yup
-    .number()
-    .required("Age is required")
-    .positive("Age must be a positive number")
-    .integer("Age must be an integer"),
+  emergencyNumber: yup.string().required("Emergency Number is required"),
+  // age: yup
+  //   .number()
+  //   .required("Age is required")
+  //   .positive("Age must be a positive number")
+  //   .integer("Age must be an integer"),
   adult: yup
     .number()
     .required("Adult is required")
@@ -34,6 +36,7 @@ const validationSchema = yup.object({
   }),
   fromDate: yup.string().required("From Date is required"),
   toDate: yup.string().required("To Date is required"),
+  nationality: yup.string().required("Nationality Date is required"),
   // discount: yup.number().when(["discount"], ([discount], schema) => {
   //   if (discount)
   //     return schema
@@ -52,8 +55,9 @@ const AddBooking = () => {
     initialValues: {
       rooms: null,
       guestName: "",
+      address:"",
       mobileNumber: "",
-      age: "",
+      emergencyNumber: "",
       adult: "",
       children: "",
       paymentMethod: "",
@@ -61,6 +65,7 @@ const AddBooking = () => {
       discount: "",
       fromDate: "",
       toDate: "",
+      nationality: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -130,7 +135,7 @@ console.log(response)
               }}
             />
           </div>
-          {/* name box */}
+          {/* Guest box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
@@ -144,6 +149,23 @@ console.log(response)
             {formik.touched.guestName && Boolean(formik.errors.guestName) ? (
               <small className="text-red-600">
                 {formik.touched.guestName && formik.errors.guestName}
+              </small>
+            ) : null}
+          </div>
+          {/* Adsress box */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Address"
+              name="address"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.address && Boolean(formik.errors.address) ? (
+              <small className="text-red-600">
+                {formik.touched.address && formik.errors.address}
               </small>
             ) : null}
           </div>
@@ -164,20 +186,20 @@ console.log(response)
               </small>
             ) : null}
           </div>
-          {/* age box */}
+          {/* emergency  box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
-              placeholder="Age"
-              name="age"
+              placeholder="Emergency Number"
+              name="emergencyNumber"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.age}
+              value={formik.values.emergencyNumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.age && Boolean(formik.errors.age) ? (
+            {formik.touched.emergencyNumber && Boolean(formik.errors.emergencyNumber) ? (
               <small className="text-red-600">
-                {formik.touched.age && formik.errors.age}
+                {formik.touched.emergencyNumber && formik.errors.emergencyNumber}
               </small>
             ) : null}
           </div>
@@ -311,6 +333,24 @@ console.log(response)
             {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
               <small className="text-red-600">
                 {formik.touched.toDate && formik.errors.toDate}
+              </small>
+            ) : null}
+          </div>
+
+           {/* Nationality box */}
+           <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Nationality"
+              name="nationality"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.nationality}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.nationality && Boolean(formik.errors.nationality) ? (
+              <small className="text-red-600">
+                {formik.touched.nationality && formik.errors.nationality}
               </small>
             ) : null}
           </div>
