@@ -266,7 +266,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
       </li>
       <li>
         <NavLink
-          to={`/dashboard/report`}
+          to={`/dashboard/life-style`}
           className={({ isActive }) =>
             "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
             (isActive ? " bg-gray-300" : "")

@@ -63,6 +63,7 @@ import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
 import AddBar from "./pages/bar/AddBar.jsx";
 import BarItemList from "./pages/bar/BarItemList.jsx";
+import LifeStyles from "./pages/LifeStyles/LifeStyles.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -282,6 +283,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <BarItemList />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "life-style",
+              element: (
+                <ManagerRoute>
+                  <LifeStyles />
                 </ManagerRoute>
               ),
             },
