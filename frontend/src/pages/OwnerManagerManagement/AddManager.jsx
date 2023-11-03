@@ -7,11 +7,13 @@ import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Manager Name is required"),
+  userName: yup.string().required("User Name is required"),
+  password: yup.string().required("Password is required"),
   address: yup.string().required("Manager Address is required"),
   email: yup.string().required("Manager Email is required"),
   phoneNumber: yup.string().required("Manager Phone Number size is required"),
   salary: yup.string().required("Manager Salary is required"),
-  joinningdate: yup.string().required("Manager Joining Date is required"),
+  joiningdate: yup.string().required("Manager Joining Date is required"),
 });
 
 const AddManager = () => {
@@ -19,11 +21,13 @@ const AddManager = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
+      userName: "",
+      password: "",
       address: "",
       email: "",
       phoneNumber: "",
       salary: "",
-      joinningdate: "",
+      joiningdate: "",
       userImg: null,
     },
     validationSchema,
@@ -67,14 +71,14 @@ const AddManager = () => {
             <div className="flex flex-col gap-3">
               <label>
                 {" "}
-                Manager Name <span>*</span>
+                 Name <span>*</span>
               </label>
               <input
                 type="text"
                 placeholder="Manager Name"
                 name="name"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.price}
+                value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -84,11 +88,53 @@ const AddManager = () => {
                 </small>
               ) : null}
             </div>
+            {/* User Name box */}
+            <div className="flex flex-col gap-3">
+              <label>
+                {" "}
+                 User Name <span>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="User Name"
+                name="userName"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.userName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.userName && Boolean(formik.errors.userName) ? (
+                <small className="text-red-600">
+                  {formik.touched.userName && formik.errors.userName}
+                </small>
+              ) : null}
+            </div>
+            {/* User Password box */}
+            <div className="flex flex-col gap-3">
+              <label>
+                {" "}
+                 Password <span>*</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.password && Boolean(formik.errors.password) ? (
+                <small className="text-red-600">
+                  {formik.touched.password && formik.errors.password}
+                </small>
+              ) : null}
+            </div>
             {/* Manager Address box */}
             <div className="flex flex-col gap-3">
               <label>
                 {" "}
-                Manager Address <span>*</span>
+                 Address <span>*</span>
               </label>
               <input
                 type="text"
@@ -110,7 +156,7 @@ const AddManager = () => {
             <div className="flex flex-col gap-3">
               <label>
                 {" "}
-                Manager Email <span>*</span>
+                 Email <span>*</span>
               </label>
               <input
                 type="email"
@@ -132,7 +178,7 @@ const AddManager = () => {
             <div className="flex flex-col gap-3">
               <label>
                 {" "}
-                Manager Phone Number <span>*</span>
+                 Phone Number <span>*</span>
               </label>
               <input
                 type="number"
@@ -155,14 +201,14 @@ const AddManager = () => {
             <div className="flex flex-col gap-3">
               <label>
                 {" "}
-                Manager Salary <span>*</span>
+                 Salary <span>*</span>
               </label>
               <input
                 type="number"
                 placeholder="Manager Salary"
                 name="salary"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.joinningdate}
+                value={formik.values.salary}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -191,10 +237,10 @@ const AddManager = () => {
                 }}
                 onFocus={(e) => (e.target.type = "date")}
               />
-              {formik.touched.joinningdate &&
-              Boolean(formik.errors.joinningdate) ? (
+              {formik.touched.joiningdate &&
+              Boolean(formik.errors.joiningdate) ? (
                 <small className="text-red-600">
-                  {formik.touched.joinningdate && formik.errors.joinningdate}
+                  {formik.touched.joiningdate && formik.errors.joiningdate}
                 </small>
               ) : null}
             </div>

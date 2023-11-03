@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEye, FaRegEdit, FaStreetView } from "react-icons/fa";
+import { FaEye, FaRegEdit, FaSearch, FaStreetView } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
@@ -18,6 +18,7 @@ const ManagerList = () => {
     initialValues: {
       entries: "",
       search: "",
+      filter: "",
       startDate: "",
       endDate: "",
     },
@@ -30,7 +31,44 @@ const ManagerList = () => {
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-        <h3 className={`text-xl font-semibold text-center`}>Manager List </h3>
+        <h3 className={`text-xl font-semibold text-center mb-5`}>Manager List </h3>
+       
+        <div className={`flex justify-between space-x-1.5`}>
+        <div className="flex flex-col gap-3">
+          <select
+            name="filter"
+            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+            value={formik.values.filter}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="deactive">deActive</option>
+          </select>
+          {formik.touched.filter && Boolean(formik.errors.filter) ? (
+            <small className="text-red-600">
+              {formik.touched.filter && formik.errors.filter}
+            </small>
+          ) : null}
+        </div>
+            <div className={`relative sm:min-w-[20rem]`}>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+            />
+            <button
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
+            </div>
         <hr className={`my-5`} />
         <div className={`space-y-10`}>
           <div className="overflow-x-auto">

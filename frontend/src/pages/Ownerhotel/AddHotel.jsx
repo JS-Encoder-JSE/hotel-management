@@ -8,12 +8,14 @@ import { FaEyeSlash } from "react-icons/fa";
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Hotel Name is required"),
+  userId: yup.string().required("Maneger User Id is required"),
   address: yup.string().required("Hotel Address is required"),
   email: yup.string().required("Hotel Email is required"),
   phoneNumber: yup.string().required("Phone Number size is required"),
   license: yup.string().required("License Number is required"),
   branchName: yup.string().required("Branch Name is required"),
   manager: yup.string().required("Manager Name is required"),
+  shiftManager: yup.string().required("shift is required"),
   password: yup.string().required("password is required"),
 });
 
@@ -23,12 +25,14 @@ const AddHotel = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
+      userId: "",
       address: "",
       email: "",
       phoneNumber: "",
       license: "",
       branchName: "",
       manager: "",
+      shiftManager: "",
       password:""
 
     },
@@ -74,7 +78,7 @@ const AddHotel = () => {
                 type="text"
                 placeholder="Hotel Name"
                 name="name"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
                 value={formik.values.price}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -85,13 +89,30 @@ const AddHotel = () => {
                 </small>
               ) : null}
             </div>
+            {/* Manager User Id box */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Manager User Id"
+                name="userId"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
+                value={formik.values.userId}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.userId && Boolean(formik.errors.userId) ? (
+                <small className="text-red-600">
+                  {formik.touched.userId && formik.errors.userId}
+                </small>
+              ) : null}
+            </div>
             {/* Hotel Address box */}
             <div className="flex flex-col gap-3">
               <input
                 type="text"
                 placeholder="Hotel Address "
                 name="address"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
                 value={formik.values.price}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -107,9 +128,9 @@ const AddHotel = () => {
             <div className="flex flex-col gap-3">
               <input
                 type="email"
-                placeholder="Hotel Email @ "
+                placeholder="Hotel Email "
                 name="email"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
                 value={formik.values.price}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -121,13 +142,31 @@ const AddHotel = () => {
               ) : null}
             </div>
 
+              {/*Hotel Branch box */}
+              <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Hotel Branch Name"
+                name="branchName"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
+                value={formik.values.branchName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.branchName && Boolean(formik.errors.branchName) ? (
+                <small className="text-red-600">
+                  {formik.touched.branchName && formik.errors.branchName}
+                </small>
+              ) : null}
+            </div>
+
             {/*Phone Number  box */}
             <div className="flex flex-col gap-3">
               <input
                 type="number"
-                placeholder="Hotel Phone Number #"
+                placeholder="Hotel Phone Number"
                 name="phoneNumber"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
                 value={formik.values.phoneNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -143,9 +182,9 @@ const AddHotel = () => {
             <div className="flex flex-col gap-3">
               <input
                 type="text"
-                placeholder="Hotel License"
+                placeholder="Hotel License Number"
                 name="license"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
                 value={formik.values.license}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -157,29 +196,11 @@ const AddHotel = () => {
               ) : null}
             </div>
 
-            {/*Hotel Branch box */}
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                placeholder="Hotel Branch Name"
-                name="branchName"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-                value={formik.values.branchName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.branchName && Boolean(formik.errors.branchName) ? (
-                <small className="text-red-600">
-                  {formik.touched.branchName && formik.errors.branchName}
-                </small>
-              ) : null}
-            </div>
-
             {/* Manager box */}
             <div className="flex flex-col gap-3">
               <select
                 name="manager"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
                 value={formik.values.manager}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -198,6 +219,29 @@ const AddHotel = () => {
                 </small>
               ) : null}
             </div>
+            {/* Manager Shift box */}
+            <div className="flex flex-col gap-3">
+              <select
+                name="shiftManager"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
+                value={formik.values.shiftManager}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" selected disabled>
+                  shift
+                </option>
+                <option value="shiftManager4">General Shift</option>
+                <option value="shiftManager1">shift A</option>
+                <option value="shiftManager2">shift B</option>
+                <option value="shiftManager3">shift C</option>
+              </select>
+              {formik.touched.shiftManager && Boolean(formik.errors.shiftManager) ? (
+                <small className="text-red-600">
+                  {formik.touched.shiftManager && formik.errors.shiftManager}
+                </small>
+              ) : null}
+            </div>
 
            {/* password */}
                     <div className="flex flex-col gap-3">
@@ -205,7 +249,7 @@ const AddHotel = () => {
                 type="password"
                 placeholder="Password"
                 name="password"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -225,7 +269,7 @@ const AddHotel = () => {
             <div className=" col-span-full text-end mb-5 ">
               <button
                 type="submit"
-                className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs px-9 h-auto md:me-12"
+                className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case  px-9 h-auto md:me-12"
               >
                 Add
               </button>

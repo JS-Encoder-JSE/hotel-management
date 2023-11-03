@@ -7,6 +7,7 @@ import {
   FaRegCalendarAlt,
 } from "react-icons/fa";
 import { MdAutorenew } from "react-icons/md";
+import { BsFillSendCheckFill } from "react-icons/bs";
 import CustomerReservation from "./CustomerReservation";
 import BookingChart from "./BookingChart";
 import ReservationChart from "./ReservationChart";
@@ -58,6 +59,16 @@ const UserDashBoard = () => {
           </div>
           <h6 className="text-xs text-slate-400">
             TOTAL {userHotel ? "CHECK IN" : "RENEW"}
+          </h6>
+          <p className="text-2xl font-semibold mb-5">750</p>
+          <hr />
+        </div>
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mt-3">
+          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
+            {userHotel ? <BsFillSendCheckFill /> : <MdAutorenew />}
+          </div>
+          <h6 className="text-xs text-slate-400">
+            TOTAL {userHotel ? "CHECK Out" : "RENEW"}
           </h6>
           <p className="text-2xl font-semibold mb-5">750</p>
           <hr />
