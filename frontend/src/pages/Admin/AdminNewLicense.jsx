@@ -39,7 +39,6 @@ const validationSchema = yup.object({
   billInformation: yup.string().required("Client Bill Information is required"),
   fromDate: yup.string().required("From Date is required"),
   toDate: yup.string().required("To Date is required"),
-  status: yup.string().required("status is required"),
   numberOfHotel: yup
     .number()
     .required("Number Of Hotels are required")
@@ -79,13 +78,13 @@ const AdminNewLicense = () => {
       billInformation: "",
       fromDate: "",
       toDate: "",
-      status: "",
       numberOfHotel: "",
       paymentMethod: "",
       trxID: "",
       amount: "",
       utility: null,
       tradeLicense: null,
+      remarks: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -100,7 +99,6 @@ const AdminNewLicense = () => {
         billInformation: bill_info,
         fromDate: from_date,
         toDate: to_date,
-        status,
         numberOfHotel: hotel_limit,
         paymentMethod: payment_method,
         trxID: transection_id,
@@ -142,7 +140,6 @@ const AdminNewLicense = () => {
         bill_info,
         from_date,
         to_date,
-        status,
         hotel_limit,
         payment_method,
         transection_id,
@@ -218,66 +215,68 @@ const AdminNewLicense = () => {
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
-        <div className={`relative col-span-full`}>
-          <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
-            <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
-              <MdOutlineKeyboardArrowLeft />
+        {selectedImages.length ? (
+          <div className={`relative col-span-full`}>
+            <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+              <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                <MdOutlineKeyboardArrowLeft />
+              </div>
+              <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                <MdOutlineKeyboardArrowRight />
+              </div>
             </div>
-            <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
-              <MdOutlineKeyboardArrowRight />
-            </div>
-          </div>
-          <Swiper
-            modules={[Navigation]}
-            navigation={{
-              enabled: true,
-              prevEl: ".swiper-er-button-prev",
-              nextEl: ".swiper-er-button-next",
-              disabledClass: "swiper-er-button-disabled",
-            }}
-            slidesPerView={1}
-            spaceBetween={50}
-          >
-            {selectedImages.length ? (
-              selectedImages.map((image, idx) => (
-                <SwiperSlide>
-                  <div className={`relative`}>
-                    <div className={`absolute top-3 right-3 space-x-1.5`}>
-                      <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
-                        <TbReplaceFilled />
-                        <input
-                          type="file"
-                          className="absolute left-0 top-0  overflow-hidden h-0"
-                          onChange={(e) =>
-                            handleChange(idx, e.currentTarget.files[0])
-                          }
-                        />
-                      </label>
-                      <button
-                        className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                        onClick={() => handleDelete(idx)}
-                      >
-                        <FaTrash />
-                      </button>
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                enabled: true,
+                prevEl: ".swiper-er-button-prev",
+                nextEl: ".swiper-er-button-next",
+                disabledClass: "swiper-er-button-disabled",
+              }}
+              slidesPerView={1}
+              spaceBetween={50}
+            >
+              {selectedImages.length ? (
+                selectedImages.map((image, idx) => (
+                  <SwiperSlide>
+                    <div className={`relative`}>
+                      <div className={`absolute top-3 right-3 space-x-1.5`}>
+                        <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                          <TbReplaceFilled />
+                          <input
+                            type="file"
+                            className="absolute left-0 top-0  overflow-hidden h-0"
+                            onChange={(e) =>
+                              handleChange(idx, e.currentTarget.files[0])
+                            }
+                          />
+                        </label>
+                        <button
+                          className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                          onClick={() => handleDelete(idx)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                      <img
+                        key={idx}
+                        src={URL.createObjectURL(image)}
+                        alt=""
+                        className={`w-full h-96 object-cover rounded`}
+                      />
                     </div>
-                    <img
-                      key={idx}
-                      src={URL.createObjectURL(image)}
-                      alt=""
-                      className={`w-full h-96 object-cover rounded`}
-                    />
-                  </div>
-                </SwiperSlide>
-              ))
-            ) : (
-              <img
-                src={imgPlaceHolder}
-                alt=""
-                className={`w-full h-96 object-cover rounded`}
-              />
-            )}
-          </Swiper>
-        </div>
+                  </SwiperSlide>
+                ))
+              ) : (
+                <img
+                  src={imgPlaceHolder}
+                  alt=""
+                  className={`w-full h-96 object-cover rounded`}
+                />
+              )}
+            </Swiper>
+          </div>
+        ) : null}
         {/*Client name box */}
         <div className="flex flex-col gap-3">
           <input
@@ -347,7 +346,7 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
         {/*Password box */}
-        <div className="flex flex-col gap-3">
+        <div className="col-span-full flex flex-col gap-3">
           <div className={`relative`}>
             <input
               type={showPass ? "text" : "password"}
@@ -432,29 +431,6 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-        {/* Status box */}
-        <div className="flex flex-col gap-3">
-          <select
-            name="status"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
-            value={formik.values.designation}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Status
-            </option>
-            <option value="Active">Active</option>
-            <option value="Deactivate">Deactivate</option>
-            <option value="Suspend">Suspend</option>
-          </select>
-          {formik.touched.status && Boolean(formik.errors.status) ? (
-            <small className="text-red-600">
-              {formik.touched.status && formik.errors.status}
-            </small>
-          ) : null}
-        </div>
-
         {/*Number Of Hotels box */}
         <div className="flex flex-col gap-3">
           <input
@@ -474,7 +450,11 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
         {/* payment method box */}
-        <div className="flex flex-col gap-3">
+        <div
+          className={`${
+            formik.values.paymentMethod ? "col-span-full" : ""
+          } flex flex-col gap-3`}
+        >
           <select
             name="paymentMethod"
             className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
@@ -613,7 +593,7 @@ const AdminNewLicense = () => {
           </div>
         </div>
         {/* Hotel Address box */}
-        <div className="col-span-full flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <textarea
             placeholder="Address"
             name="address"
@@ -625,6 +605,23 @@ const AdminNewLicense = () => {
           {formik.touched.address && Boolean(formik.errors.address) ? (
             <small className="text-red-600">
               {formik.touched.address && formik.errors.address}
+            </small>
+          ) : null}
+        </div>
+
+        {/* Remarks box */}
+        <div className="flex flex-col gap-3">
+          <textarea
+            placeholder="Remarks"
+            name="remarks"
+            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+            value={formik.values.remarks}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.remarks && Boolean(formik.errors.remarks) ? (
+            <small className="text-red-600">
+              {formik.touched.remarks && formik.errors.remarks}
             </small>
           ) : null}
         </div>

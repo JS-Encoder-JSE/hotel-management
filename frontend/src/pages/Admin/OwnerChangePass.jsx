@@ -72,35 +72,7 @@ const OwnerChangePass = () => {
       >
         <div>
           <h3 className={`font-semibold`}>New Password</h3>
-          <div className="relative">
-            <input
-              type={showPass ? "text" : "password"}
-              placeholder="Enter New Password"
-              name="newPassword"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.newPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.newPassword &&
-            Boolean(formik.errors.newPassword) ? (
-              <small className="text-red-600">
-                {formik.touched.newPassword && formik.errors.newPassword}
-              </small>
-            ) : null}
 
-            {!showPass ? (
-              <FaEyeSlash
-                onClick={handleShowPass}
-                className="absolute right-0 top-4 text-green-slimy text-lg mr-3 cursor-pointer"
-              />
-            ) : (
-              <FaEye
-                onClick={handleShowPass}
-                className="absolute right-0 top-4 text-green-slimy text-lg mr-3 cursor-pointer"
-              />
-            )}
-          </div>
         </div>
 
         <div>

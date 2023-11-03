@@ -139,8 +139,11 @@ const AdminOwnerView = () => {
                   <th>Sl</th>
                   <th>Date</th>
                   <th>Transaction Id</th>
+                  <th>Payment Method</th>
+                  <th>License Duration</th>
                   <th>Amount</th>
-                  <th>Action</th>
+                  <th>Payment For</th>
+                  {/*<th>Action</th>*/}
                 </tr>
               </thead>
               <tbody>
@@ -149,20 +152,23 @@ const AdminOwnerView = () => {
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
-                      <th> {++idx}</th>
-                      <td className="font-bold">12-10-2023</td>
+                      <th>{++idx}</th>
+                      <td>{new Date().toLocaleDateString()}</td>
                       <td>DSER-HGYT-GHTY-54564</td>
-                      <td>$25000</td>
-                      <td className={`space-x-1.5`}>
-                        <span
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() =>
-                            navigate(`/dashboard/adminowner-view/${idx}`)
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                      </td>
+                      <td>Cash</td>
+                      <td>{new Date().toLocaleDateString()} - {new Date().toLocaleDateString()}</td>
+                      <td>25000</td>
+                      <td>Renew</td>
+                      {/*<td className={`space-x-1.5`}>*/}
+                      {/*  <span*/}
+                      {/*    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}*/}
+                      {/*    onClick={() =>*/}
+                      {/*      navigate(`/dashboard/adminowner-view/${idx}`)*/}
+                      {/*    }*/}
+                      {/*  >*/}
+                      {/*    <FaEye />*/}
+                      {/*  </span>*/}
+                      {/*</td>*/}
                     </tr>
                   );
                 })}
@@ -197,16 +203,17 @@ const AdminOwnerView = () => {
 
       <div className="card w-full bg-white shadow-xl mt-10">
         <div className="card-body">
-          <h1 className="text-2xl text-center ">Consider History</h1>
+          <h1 className="text-2xl text-center ">Status History</h1>
           <div className="overflow-x-auto mt-10">
             <table className="table border">
               <thead>
                 <tr>
                   <th>Sl</th>
                   <th>Date</th>
-                  <th>Transaction Id</th>
-                  <th>Amount</th>
-                  <th>Action</th>
+                  <th>License Duration</th>
+                  <th>Previous Status</th>
+                  <th>Updated Status</th>
+                  <th>Remarks</th>
                 </tr>
               </thead>
               <tbody>
@@ -216,19 +223,21 @@ const AdminOwnerView = () => {
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th> {++idx}</th>
-                      <td className="font-bold">12-10-2023</td>
-                      <td>DSER-HGYT-GHTY-54564</td>
-                      <td>$25000</td>
-                      <td className={`space-x-1.5`}>
-                        <span
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() =>
-                            navigate(`/dashboard/adminowner-view/${idx}`)
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                      </td>
+                      <td>{new Date().toLocaleDateString()}</td>
+                      <td>{new Date().toLocaleDateString()} - {new Date().toLocaleDateString()}</td>
+                      <td>Active</td>
+                      <td>Suspend</td>
+                      <td>Consider 7 days</td>
+                      {/*<td className={`space-x-1.5`}>*/}
+                      {/*  <span*/}
+                      {/*    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}*/}
+                      {/*    onClick={() =>*/}
+                      {/*      navigate(`/dashboard/adminowner-view/${idx}`)*/}
+                      {/*    }*/}
+                      {/*  >*/}
+                      {/*    <FaEye />*/}
+                      {/*  </span>*/}
+                      {/*</td>*/}
                     </tr>
                   );
                 })}

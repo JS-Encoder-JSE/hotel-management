@@ -63,6 +63,8 @@ import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
 import OwnerProfile from "./pages/Admin/OwnerProfile.jsx";
 import OwnerChangePass from "./pages/Admin/OwnerChangePass.jsx";
+import SuspendList from "./pages/Admin/SuspendList.jsx";
+import ExpiredList from "./pages/Admin/ExpiredList.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -345,11 +347,19 @@ const App = () => {
               ),
             },
             {
-              path: "renew-list",
+              path: "suspend-list",
               element: (
                 <AdminRoute>
-                  <RenewList />
+                  <SuspendList />
                 </AdminRoute>
+              ),
+            },
+            {
+              path: "expired-list",
+              element: (
+                  <AdminRoute>
+                    <ExpiredList />
+                  </AdminRoute>
               ),
             },
 
@@ -386,18 +396,10 @@ const App = () => {
               ),
             },
             {
-              path: "owner-profile/:id",
-              element: (
-                  <AdminRoute>
-                    <OwnerProfile />
-                  </AdminRoute>
-              ),
-            },
-            {
               path: "owner-profile/:id/edit",
               element: (
                   <AdminRoute>
-                    <OwnerChangePass />
+                    <OwnerProfile />
                   </AdminRoute>
               ),
             },
