@@ -1,6 +1,75 @@
 import User from "../models/user.model.js";
 import Hotel from "../models/hotel.model.js";
 import jwt from "jsonwebtoken";
+import TransactionLog from "../models/transactionlog.model.js";
+
+// Create a function to handle user creation
+export const addUser = async (req, res) => {
+  try {
+    // Extract user data from the request body
+    const {
+      username,
+      name,
+      password,
+      role,
+      designation,
+      shift,
+      status,
+      address,
+      email,
+      phone_no,
+      bill_info,
+      salary,
+      joining_date,
+      maxHotels,
+      assignedHotel,
+      trade_lic_img,
+      utilities_img,
+      images,
+    } = req.body;
+
+    // Check if a user with the same username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    // Create a new user instance
+    const newUser = new User({
+      username,
+      name,
+      password,
+      role,
+      designation,
+      shift,
+      status,
+      address,
+      email,
+      phone_no,
+      bill_info,
+      salary,
+      joining_date,
+      maxHotels,
+      assignedHotel,
+      trade_lic_img,
+      utilities_img,
+      images,
+    });
+
+    // Save the user to the database
+    await newUser.save();
+
+    // Respond with a success message or the created user object
+    res
+      .status(201)
+      .json({ message: "User created successfully", user: newUser });
+  } catch (error) {
+    // Handle any errors that occur during user creation
+    res
+      .status(500)
+      .json({ error: "User creation failed", message: error.message });
+  }
+};
 
 export const addOwner = async (req, res) => {
   try {
@@ -104,11 +173,9 @@ export const addEmployee = async (req, res) => {
       return res.status(403).json({ message: "You are not a manager" });
     }
     if (!manager.assignedHotelId === assignedHotelId) {
-      return res
-        .status(403)
-        .json({
-          message: "You have no permission to add employee in this hotel",
-        });
+      return res.status(403).json({
+        message: "You have no permission to add employee in this hotel",
+      });
     }
     // Check if a user with the same username already exists
     const existingUser = await User.findOne({ username });
@@ -357,3 +424,154 @@ export const getManagerById = async (req, res) => {
 //     res.status(500).json({ error: "Failed to retrieve items" });
 //   }
 // };
+
+// Create and add a new license to the database
+// export const addLicense = async (req, res) => {
+//   try {
+//     const {
+//       username,
+//       name,
+//       password,
+//       address,
+//       email,
+//       phone_no,
+//       bill_info,
+//       bill_from,
+//       bill_to,
+//       maxHotels,
+//       payment_method,
+//       tran_id,
+//       amount,
+//       remark,
+//       utilities_img,
+//       trade_lic_img,
+//     } = req.body;
+
+//     const { userId } = req.user;
+//     const parent = await User.findById(userId);
+//     console.log(parent);
+//     if (!parent.role === "admin" || !parent.role === "subadmin") {
+//       return res
+//         .status(403)
+//         .json({ message: "You have no permisssion to create license" });
+//     }
+//     // Check if a user with the same username already exists
+//     const existingUser = await User.findOne({ username });
+//     if (existingUser) {
+//       return res.status(400).json({ message: "Username already exists" });
+//     }
+//     const newOwner = new User({
+//       name,
+//       username,
+//       password,
+//       role:"owner",
+//       status: "Active",
+//       address,
+//       email,
+//       phone_no,
+//       bill_info,
+//       bill_from,
+//       bill_to,
+//       maxHotels,
+//       utilities_img,
+//       trade_lic_img,
+//     });
+//     console.log("aise");
+//     // Save the new license to the database
+//     const savedOwner = await newOwner.save();
+//     console.log("savedowner");
+//     const newTransectionLog = new TransactionLog({
+//       tran_id,
+//       payment_method,
+//       from: savedOwner.username,
+//       to: parent.username,
+//       amount,
+//       payment_for: "Purchase",
+//       remark,
+//     });
+//     await newTransectionLog.save();
+//     res.status(201).json({ massage: "Successfully added license" }); // Return the saved license as a response
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to add a license" });
+//   }
+// };
+
+export const addLicense = async (req, res) => {
+  try {
+    const {
+      username,
+      name,
+      password,
+      address,
+      email,
+      phone_no,
+      bill_info,
+      bill_from,
+      bill_to,
+      maxHotels,
+      payment_method,
+      tran_id,
+      amount,
+      remark,
+      // utilities_img,
+      // trade_lic_img,
+      images,
+    } = req.body;
+
+    const { userId } = req.user;
+    const parent = await User.findById(userId);
+
+    if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to create a license" });
+    }
+
+    // Check if a user with the same username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    // Create a new owner user
+    const newOwner = new User({
+      name,
+      username,
+      password,
+      role: "owner",
+      status: "Active",
+      address,
+      email,
+      phone_no,
+      bill_info,
+      bill_from,
+      bill_to,
+      maxHotels,
+      // utilities_img,
+      // trade_lic_img,
+      images,
+    });
+
+    // Save the new owner user to the database
+    const savedOwner = await newOwner.save();
+
+    // Create a new transaction log entry
+    const newTransactionLog = new TransactionLog({
+      tran_id,
+      payment_method,
+      from: savedOwner.username,
+      to: parent.username,
+      amount,
+      payment_for: "Purchase",
+      remark,
+    });
+
+    // Save the transaction log entry to the database
+    await newTransactionLog.save();
+    
+    res.status(201).json({ message: "Successfully added license" }); // Return a success message
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to add a license" });
+  }
+};

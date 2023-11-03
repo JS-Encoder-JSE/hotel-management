@@ -1,73 +1,115 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import mongoosePaginate from "mongoose-paginate-v2";
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: ["owner", "manager", "admin", "subadmin"],
-    required: true,
-  },
-  designation: {
-    type: String,
-    required: false,
-  },
-  shift: {
-    type: String,
-    required: true,
-    enum: ["Day", "Night"],
-  },
-  status: {
-    type: String,
-    enum: ["Active", "Deactive", "Suspended"],
-    required: false,
-  },
-  address: {
-    type: String,
-    required: false,
-  },
-  email: {
-    type: String,
-    required: false,
-  },
-  phone_no: {
-    type: Number,
-    required: false,
-  },
-  salary: {
-    type: String,
-    required: false,
-  },
-  joining_date: {
-    type: String,
-    required: false,
-  },
-  // Add other user-related fields here
-  maxHotels: {
-    type: Number,
-    default: 0,
-  },
-  assignedHotel: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hotel",
-  }],
-  images: {
-    type: Array,
-    required: false,
-  }
+const ImageSchema = new mongoose.Schema({
+  trade_lic_img: { type: Array, required: false, default: "" },
+  utilities: { type: Array, required: false, default: "" },
+  pancard: { type: Array, required: false, default: "" },
 });
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["owner", "manager", "admin", "subadmin"],
+      required: true,
+    },
+    designation: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    shift: {
+      type: String,
+      required: false,
+      enum: ["Day", "Night"],
+      default: "Day",
+    },
+    status: {
+      type: String,
+      enum: ["Active", "Deactive", "Suspended"],
+      required: false,
+      default: "Active",
+    },
+    address: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    email: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    phone_no: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    bill_info: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    bill_from: {
+      type: Date,
+      required: false,
+      default: Date.now,
+    },
+    bill_to: {
+      type: Date,
+      required: false,
+      default: Date.now,
+    },
+    salary: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    joining_date: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    maxHotels: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    assignedHotel: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hotel",
+        required: false,
+        default: null,
+      },
+    ],
+    trade_lic_img: {
+      type: Array,
+      required: false,
+      default: [],
+    },
+    utilities_img: {
+      type: Array,
+      required: false,
+      default: [],
+    },
+    images: ImageSchema,
+  },
+  { timestamps: true }
+);
 // Apply the mongoose-paginate-v2 plugin to your schema
 userSchema.plugin(mongoosePaginate);
 
