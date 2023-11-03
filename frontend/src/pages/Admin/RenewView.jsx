@@ -33,7 +33,7 @@ const RenewView = () => {
             <h6> Renew Date :12-10-2023 </h6>
             <h6> Expire Date : 14-10-2023</h6>
             <h6> Remaining Days: 15 Days</h6>
-            <h6>Status : Active</h6>
+            <h6>Status : Expired</h6>
           </div>
         </div>
       </div>

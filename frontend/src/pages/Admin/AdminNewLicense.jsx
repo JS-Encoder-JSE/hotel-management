@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
+import {
+  FaEye,
+  FaEyeSlash,
+  FaPlusCircle,
+  FaTrash,
+  FaUpload,
+} from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -12,27 +18,46 @@ import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useAddLicenseMutation } from "../../redux/admin/sls/slsAPI.js";
 import toast from "react-hot-toast";
+import DatePicker from "react-datepicker";
 import { useUploadMutation } from "../../redux/baseAPI.js";
+import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Client Name is required"),
+  username: yup.string().required("Client username is required"),
+  password: yup
+    .string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
   address: yup.string().required("Hotel Adress is required"),
   phoneNumber: yup.string().required("Client Phone Number is required"),
-  email: yup.string().required("Client Email is required"),
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
   billInformation: yup.string().required("Client Bill Information is required"),
   fromDate: yup.string().required("From Date is required"),
   toDate: yup.string().required("To Date is required"),
   status: yup.string().required("status is required"),
-  numberOfHotel: yup.string().required("Number Of Hotels is required"),
+  numberOfHotel: yup
+    .number()
+    .required("Number Of Hotels are required")
+    .positive("Number Of Hotels must be a positive number")
+    .integer("Number Of Hotels must be an integer"),
   paymentMethod: yup.string().required("Payment method is required"),
   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
     if (paymentMethod !== "cash")
       return schema.required("Transaction ID is required");
     else return schema;
   }),
-  utility: yup.mixed().required("Documents are required"),
-  tradeLicense: yup.mixed().required("Documents are required"),
+  amount: yup
+    .number()
+    .required("Amount is required")
+    .positive("Amount must be a positive number")
+    .integer("Amount must be an integer"),
+  utility: yup.mixed().required("Utilities are required"),
+  tradeLicense: yup.mixed().required("Trade licenses are required"),
 });
 
 const AdminNewLicense = () => {
@@ -40,13 +65,17 @@ const AdminNewLicense = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [addLicense] = useAddLicenseMutation();
   const [upload] = useUploadMutation();
+  const { user } = useSelector((store) => store.authSlice);
+  const [showPass, setShowPass] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       name: "",
+      username: "",
       address: "",
       phoneNumber: "",
       email: "",
+      password: "",
       billInformation: "",
       fromDate: "",
       toDate: "",
@@ -54,6 +83,7 @@ const AdminNewLicense = () => {
       numberOfHotel: "",
       paymentMethod: "",
       trxID: "",
+      amount: "",
       utility: null,
       tradeLicense: null,
     },
@@ -149,7 +179,7 @@ const AdminNewLicense = () => {
     setSelectedImages(tempImgs);
   };
 
-  // handlechange
+  // handle change
   const handleChange = (idx, newFile) => {
     const updatedImages = [...selectedImages];
     updatedImages[idx] = newFile;
@@ -182,7 +212,7 @@ const AdminNewLicense = () => {
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
         <FaPlusCircle />
-        <span>New License Add</span>
+        <span>New License</span>
       </h3>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
@@ -265,27 +295,27 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-        {/* Hotel Address box */}
+        {/*Client username box */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Hotel Address"
-            name="address"
+            placeholder="Client Username"
+            name="username"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.address}
+            value={formik.values.username}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.address && Boolean(formik.errors.address) ? (
+          {formik.touched.username && Boolean(formik.errors.username) ? (
             <small className="text-red-600">
-              {formik.touched.address && formik.errors.address}
+              {formik.touched.username && formik.errors.username}
             </small>
           ) : null}
         </div>
         {/*Phone Number box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Client Phone Number"
             name="phoneNumber"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -302,7 +332,7 @@ const AdminNewLicense = () => {
         {/*Email box */}
         <div className="flex flex-col gap-3">
           <input
-            type="email"
+            type="text"
             placeholder="Client Email"
             name="email"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -313,6 +343,40 @@ const AdminNewLicense = () => {
           {formik.touched.email && Boolean(formik.errors.email) ? (
             <small className="text-red-600">
               {formik.touched.email && formik.errors.email}
+            </small>
+          ) : null}
+        </div>
+        {/*Password box */}
+        <div className="flex flex-col gap-3">
+          <div className={`relative`}>
+            <input
+              type={showPass ? "text" : "password"}
+              placeholder="Client Password"
+              name="password"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {showPass ? (
+              <span
+                className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                onClick={() => setShowPass(false)}
+              >
+                <FaEyeSlash />
+              </span>
+            ) : (
+              <span
+                className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                onClick={() => setShowPass(true)}
+              >
+                <FaEye />
+              </span>
+            )}
+          </div>
+          {formik.touched.password && Boolean(formik.errors.password) ? (
+            <small className="text-red-600">
+              {formik.touched.password && formik.errors.password}
             </small>
           ) : null}
         </div>
@@ -336,18 +400,14 @@ const AdminNewLicense = () => {
         </div>
         {/*Billing From box */}
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="From  MM/DD/YYY"
+          <DatePicker
+            dateFormat="dd/MM/yyyy"
             name="fromDate"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.fromDate}
-            onChange={formik.handleChange}
-            onBlur={(e) => {
-              e.target.type = "text";
-              formik.handleBlur;
-            }}
-            onFocus={(e) => (e.target.type = "date")}
+            placeholderText={`Billing From`}
+            selected={formik.values.fromDate}
+            className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+            onChange={(date) => formik.setFieldValue("fromDate", date)}
+            onBlur={formik.handleBlur}
           />
           {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
             <small className="text-red-600">
@@ -357,18 +417,14 @@ const AdminNewLicense = () => {
         </div>
         {/*Billing To box */}
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="To  MM/DD/YYY"
+          <DatePicker
+            dateFormat="dd/MM/yyyy"
             name="toDate"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.toDate}
-            onChange={formik.handleChange}
-            onBlur={(e) => {
-              e.target.type = "text";
-              formik.handleBlur;
-            }}
-            onFocus={(e) => (e.target.type = "date")}
+            placeholderText={`Billing To`}
+            selected={formik.values.toDate}
+            className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+            onChange={(date) => formik.setFieldValue("toDate", date)}
+            onBlur={formik.handleBlur}
           />
           {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
             <small className="text-red-600">
@@ -389,8 +445,8 @@ const AdminNewLicense = () => {
               Status
             </option>
             <option value="Active">Active</option>
-            <option value="Deactive">Deactive</option>
-            <option value="Suspended">Suspended</option>
+            <option value="Deactivate">Deactivate</option>
+            <option value="Suspend">Suspend</option>
           </select>
           {formik.touched.status && Boolean(formik.errors.status) ? (
             <small className="text-red-600">
@@ -402,7 +458,7 @@ const AdminNewLicense = () => {
         {/*Number Of Hotels box */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="Hotel Limit"
             name="numberOfHotel"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -441,6 +497,23 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
         {formik.values.paymentMethod &&
+        formik.values.paymentMethod === "cash" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              name=""
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 input-disabled"
+              value={`Khalid Mahmud`}
+              readOnly
+            />
+            {formik.touched.trxID && Boolean(formik.errors.trxID) ? (
+              <small className="text-red-600">
+                {formik.touched.trxID && formik.errors.trxID}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
+        {formik.values.paymentMethod &&
         formik.values.paymentMethod !== "cash" ? (
           <div className="flex flex-col gap-3">
             <input
@@ -459,7 +532,23 @@ const AdminNewLicense = () => {
             ) : null}
           </div>
         ) : null}
-
+        {/* Amount box */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Amount"
+            name="amount"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.amount}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.amount && Boolean(formik.errors.amount) ? (
+            <small className="text-red-600">
+              {formik.touched.amount && formik.errors.amount}
+            </small>
+          ) : null}
+        </div>
         {/* utility */}
         <div className={`flex space-x-1.5`}>
           <div className="flex flex-col gap-3 w-full">
@@ -522,6 +611,22 @@ const AdminNewLicense = () => {
               </small>
             ) : null}
           </div>
+        </div>
+        {/* Hotel Address box */}
+        <div className="col-span-full flex flex-col gap-3">
+          <textarea
+            placeholder="Address"
+            name="address"
+            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+            value={formik.values.address}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.address && Boolean(formik.errors.address) ? (
+            <small className="text-red-600">
+              {formik.touched.address && formik.errors.address}
+            </small>
+          ) : null}
         </div>
 
         {/* submit button */}

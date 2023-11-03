@@ -1,28 +1,19 @@
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
-import { GrView } from "react-icons/gr";
+import { FaEye } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
+import OwnerSettings from "./OwnerSettings.jsx";
+import Modal from "../Modal.jsx";
+import HotelLimitEdit from "../../pages/Admin/HotelLimitEdit.jsx";
 
 const AdminOwnerView = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(5);
   const [roomsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
-
-  const increament = () => {
-    setUser(user + 1);
-  };
-  const decrement = () => {
-    if (user > 0) {
-      setUser(user - 1);
-    } else {
-      setUser(0);
-    }
-  };
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -56,109 +47,16 @@ const AdminOwnerView = () => {
               <h6> Purchase Date :12-10-2023 </h6>
               <h6> Renew Date :12-10-2023 </h6>
               <h6> Expire Date : 14-10-2023</h6>
-              <h6> Remaing Days: 15 Days</h6>
+              <h6> Remaining Days: 15 Days</h6>
               <h6>Status : Active</h6>
-              <div className="flex ">
-                <div>
-                  <h6>Number Of Hotels : 05</h6>
-                </div>
-
-                {/* modal */}
-                <div>
-                  <button
-                    className=" ms-2  "
-                    onClick={() =>
-                      document.getElementById("my_modal_3").showModal()
-                    }
-                  >
-                    <FaEdit />
-                  </button>
-                  <dialog id="my_modal_3" className="modal ">
-                    <div className="modal-box bg-white max-w-[700px]">
-                      <div>
-                        <form method="dialog">
-                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                            ✕
-                          </button>
-                        </form>
-                        {/* Modal  Table information Start */}
-                        <div className="card w-full bg-white shadow-xl mt-10 p-3 ">
-                          <div className="flex gap-5 mt-2">
-                            <h2 className="mt-1">Number Of Hotels :</h2>
-                            <div>
-                              {/* decrement */}
-                              <button
-                                onClick={decrement}
-                                className=" p-2 rounded bg-white-400 border border-gray-400 px-5"
-                              >
-                                <AiOutlineMinus />
-                              </button>
-                            </div>
-                            <div>
-                              <h1 className=" py-1 rounded bg-white-400 border border-gray-400 px-7 ">
-                                {user}
-                              </h1>
-                            </div>
-                            {/* increment */}
-                            <div>
-                              <button
-                                onClick={increament}
-                                className=" p-2 rounded bg-white-400 border border-gray-400 px-5 "
-                              >
-                                <AiOutlinePlus />
-                              </button>
-                            </div>
-                          </div>
-                          <div className="card-body">
-                            <div className="overflow-x-auto mt-10">
-                              <table className="table border">
-                                <thead>
-                                  <tr>
-                                    <th>Sl</th>
-                                    <th>Hotel Name</th>
-                                    <th>Hotel Email</th>
-                                    <th>Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {[...Array(5)].map((_, idx) => {
-                                    return (
-                                      <tr
-                                        className={
-                                          idx % 2 === 0
-                                            ? "bg-gray-100 hover"
-                                            : "hover"
-                                        }
-                                      >
-                                        <th> {++idx}</th>
-                                        <td className="font-bold">Jon Doe</td>
-                                        <td>jondoe@gmail.com</td>
-                                        <td className={`space-x-1.5`}>
-                                          <span
-                                            className={`btn btn-sm bg-transparent hover:bg-red-500 text-red-500 hover:text-white !border-red-500 rounded normal-case ms-2`}
-                                            onClick={() =>
-                                              navigate(
-                                                `/dashboard/adminowner-view/${idx}`
-                                              )
-                                            }
-                                          >
-                                            <MdDelete />
-                                          </span>
-                                        </td>
-                                      </tr>
-                                    );
-                                  })}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                        {/* Modal  Table information End */}
-                      </div>
-                    </div>
-                  </dialog>
-                </div>
-                {/* modal */}
+              <div className="flex gap-1.5">
+                <h6>Number Of Hotels : 05</h6>
+                <span
+                  className={`cursor-pointer`}
+                  onClick={() => window.hle_modal.showModal()}
+                >
+                  <FaEdit />
+                </span>
               </div>
             </div>
           </div>
@@ -169,7 +67,7 @@ const AdminOwnerView = () => {
 
       <div className="card w-full bg-white shadow-xl mt-10">
         <div className="card-body">
-          <h1 className="text-2xl text-center ">Owner Hotel List</h1>
+          <h1 className="text-2xl text-center ">Hotel List</h1>
           <div className="overflow-x-auto mt-10">
             <table className="table border">
               <thead>
@@ -196,7 +94,7 @@ const AdminOwnerView = () => {
                             navigate(`/dashboard/adminowner-view/${idx}`)
                           }
                         >
-                          <GrView />
+                          <FaEye />
                         </span>
                       </td>
                     </tr>
@@ -233,14 +131,14 @@ const AdminOwnerView = () => {
 
       <div className="card w-full bg-white shadow-xl mt-10">
         <div className="card-body">
-          <h1 className="text-2xl text-center ">Owner transaction History</h1>
+          <h1 className="text-2xl text-center ">Transaction History</h1>
           <div className="overflow-x-auto mt-10">
             <table className="table border">
               <thead>
                 <tr>
                   <th>Sl</th>
                   <th>Date</th>
-                  <th>Transacion Id</th>
+                  <th>Transaction Id</th>
                   <th>Amount</th>
                   <th>Action</th>
                 </tr>
@@ -262,7 +160,7 @@ const AdminOwnerView = () => {
                             navigate(`/dashboard/adminowner-view/${idx}`)
                           }
                         >
-                          <GrView />
+                          <FaEye />
                         </span>
                       </td>
                     </tr>
@@ -294,6 +192,74 @@ const AdminOwnerView = () => {
       </div>
 
       {/*transaction Table End */}
+
+      {/*consider Table start */}
+
+      <div className="card w-full bg-white shadow-xl mt-10">
+        <div className="card-body">
+          <h1 className="text-2xl text-center ">Consider History</h1>
+          <div className="overflow-x-auto mt-10">
+            <table className="table border">
+              <thead>
+                <tr>
+                  <th>Sl</th>
+                  <th>Date</th>
+                  <th>Transaction Id</th>
+                  <th>Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...Array(5)].map((_, idx) => {
+                  return (
+                    <tr
+                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                    >
+                      <th> {++idx}</th>
+                      <td className="font-bold">12-10-2023</td>
+                      <td>DSER-HGYT-GHTY-54564</td>
+                      <td>$25000</td>
+                      <td className={`space-x-1.5`}>
+                        <span
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                          onClick={() =>
+                            navigate(`/dashboard/adminowner-view/${idx}`)
+                          }
+                        >
+                          <FaEye />
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <div className="flex justify-center mt-10">
+              <ReactPaginate
+                containerClassName="join rounded-none"
+                pageLinkClassName="join-item btn btn-md bg-transparent"
+                activeLinkClassName="btn-active !bg-green-slimy text-white"
+                disabledLinkClassName="btn-disabled"
+                previousLinkClassName="join-item btn btn-md bg-transparent"
+                nextLinkClassName="join-item btn btn-md bg-transparent"
+                breakLinkClassName="join-item btn btn-md bg-transparent"
+                previousLabel="<"
+                nextLabel=">"
+                breakLabel="..."
+                pageCount={pageCount}
+                pageRangeDisplayed={2}
+                marginPagesDisplayed={2}
+                onPageChange={handlePageClick}
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <Modal id={`hle_modal`}>
+        <HotelLimitEdit />
+      </Modal>
+      {/*consider Table End */}
     </>
   );
 };

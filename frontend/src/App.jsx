@@ -61,6 +61,8 @@ import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 import ReportView from "./pages/report/ReportView.jsx";
 import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
+import OwnerProfile from "./pages/Admin/OwnerProfile.jsx";
+import OwnerChangePass from "./pages/Admin/OwnerChangePass.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -381,6 +383,22 @@ const App = () => {
                 <AdminRoute>
                   <AdminOwnerView />
                 </AdminRoute>
+              ),
+            },
+            {
+              path: "owner-profile/:id",
+              element: (
+                  <AdminRoute>
+                    <OwnerProfile />
+                  </AdminRoute>
+              ),
+            },
+            {
+              path: "owner-profile/:id/edit",
+              element: (
+                  <AdminRoute>
+                    <OwnerChangePass />
+                  </AdminRoute>
               ),
             },
             {

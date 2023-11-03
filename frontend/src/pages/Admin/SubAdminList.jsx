@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { FaRegEdit } from "react-icons/fa";
-import { GrView } from "react-icons/gr";
+import {FaEye, FaRegEdit} from "react-icons/fa";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
@@ -59,7 +58,7 @@ const SubAdminList = () => {
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                           >
-                            <GrView />
+                            <FaEye />
                           </span>
                         </Link>
                         <Link to={`/dashboard/sub-admin-profile/${idx}`}>

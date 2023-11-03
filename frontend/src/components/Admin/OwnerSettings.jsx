@@ -49,9 +49,9 @@ const OwnerSettings = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
-              <option value="active">Active</option>
-              <option value="suspended">Suspended</option>
-              <option value="locked">Locked</option>
+              <option value="" selected disabled>Active</option>
+              <option value="Deactivate">Deactivate</option>
+              <option value="Suspended">Suspended</option>
             </select>
           </div>
           <div className="flex flex-col gap-3">
