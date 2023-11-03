@@ -61,6 +61,9 @@ import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 import ReportView from "./pages/report/ReportView.jsx";
 import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
+import OwnerProfile from "./pages/Admin/OwnerProfile.jsx";
+import SuspendList from "./pages/Admin/SuspendList.jsx";
+import ExpiredList from "./pages/Admin/ExpiredList.jsx";
 import AddBar from "./pages/bar/AddBar.jsx";
 import BarItemList from "./pages/bar/BarItemList.jsx";
 
@@ -361,11 +364,19 @@ const App = () => {
               ),
             },
             {
-              path: "renew-list",
+              path: "suspend-list",
               element: (
                 <AdminRoute>
-                  <RenewList />
+                  <SuspendList />
                 </AdminRoute>
+              ),
+            },
+            {
+              path: "expired-list",
+              element: (
+                  <AdminRoute>
+                    <ExpiredList />
+                  </AdminRoute>
               ),
             },
 
@@ -399,6 +410,14 @@ const App = () => {
                 <AdminRoute>
                   <AdminOwnerView />
                 </AdminRoute>
+              ),
+            },
+            {
+              path: "owner-profile/:id/edit",
+              element: (
+                  <AdminRoute>
+                    <OwnerProfile />
+                  </AdminRoute>
               ),
             },
             {
@@ -442,18 +461,10 @@ const App = () => {
               ),
             },
             {
-              path: "sub-admin-profile/:id",
-              element: (
-                <AdminRoute>
-                  <SubAdminProfile />
-                </AdminRoute>
-              ),
-            },
-            {
               path: "sub-admin-profile/:id/edit",
               element: (
                 <AdminRoute>
-                  <SubAdminChangePass />
+                  <SubAdminProfile />
                 </AdminRoute>
               ),
             },

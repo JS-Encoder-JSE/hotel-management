@@ -9,18 +9,13 @@ const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   address: yup.string().required("Address is required"),
   email: yup
-      .string()
-      .email("Enter a valid email")
-      .required("Email is required"),
-  phoneNumber: yup.string().required("Phone Number is required"),
-  salary: yup
-      .number()
-      .required("Salary is required")
-      .positive("Salary must be a positive number")
-      .integer("Salary must be an integer"),
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  phoneNumber: yup.string().required("Phone number is required"),
 });
 
-const SubAdminProfile = () => {
+const OwnerProfile = () => {
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
   const [showPass, setShowPass] = useState(false);
@@ -32,7 +27,6 @@ const SubAdminProfile = () => {
       phoneNumber: "",
       address: "",
       password: "",
-      salary: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -181,39 +175,6 @@ const SubAdminProfile = () => {
             ) : null}
           </div>
         </div>
-        {/* salary box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Salary: </label>
-          <div className="flex flex-col w-full space-y-2">
-            <input
-              type="text"
-              placeholder="20000"
-              name="salary"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.salary}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.salary &&
-            Boolean(formik.errors.salary) ? (
-              <small className="text-red-600">
-                {formik.touched.salary && formik.errors.salary}
-              </small>
-            ) : null}
-          </div>
-        </div>
-        {/* Joining date box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Joining Date: </label>
-          <div className="flex flex-col w-full space-y-2">
-            <input
-              type="text"
-              placeholder="1/2/23"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy input-disabled"
-              readOnly
-            />
-          </div>
-        </div>
         {/* submit button */}
         <div className="flex justify-end">
           <button
@@ -228,4 +189,4 @@ const SubAdminProfile = () => {
   );
 };
 
-export default SubAdminProfile;
+export default OwnerProfile;

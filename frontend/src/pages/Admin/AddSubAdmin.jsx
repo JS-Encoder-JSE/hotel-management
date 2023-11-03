@@ -1,26 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import DatePicker from "react-datepicker";
+import { FaEye, FaEyeSlash, FaTrash, FaUpload } from "react-icons/fa";
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { TbReplaceFilled } from "react-icons/tb";
+import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 
 // form validation
 const validationSchema = yup.object({
-  name: yup.string().required("Sub Admin Name is required"),
-  address: yup.string().required("Sub Admin Address is required"),
-  email: yup.string().required("Sub Admin Email is required"),
-  phoneNumber: yup.string().required("Sub Admin Phone Number size is required"),
-  salary: yup.string().required("Sub Admin Salary is required"),
-  joiningdate: yup.string().required("Sub Admin Joining Date is required"),
+  name: yup.string().required("Name is required"),
+  username: yup.string().required("Username is required"),
+  phoneNumber: yup.string().required("Phone is required"),
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
+  address: yup.string().required("Address is required"),
+  salary: yup
+    .number()
+    .required("Salary is required")
+    .positive("Salary must be a positive number")
+    .integer("Salary must be an integer"),
+  joiningDate: yup.string().required("Joining date is required"),
+  documentsType: yup.string().required("Type of documents are required"),
+  documents: yup.mixed().when(["documentsType"], ([documentsType], schema) => {
+    if (documentsType) return schema.required(`${documentsType} are required`);
+    else return schema;
+  }),
 });
 
 const AddSubAdmin = () => {
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
     initialValues: {
       name: "",
-      address: "",
-      email: "",
+      username: "",
       phoneNumber: "",
+      email: "",
+      password: "",
+      address: "",
       salary: "",
-      joiningdate: "",
+      joiningDate: "",
+      documentsType: "",
+      documents: null,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -28,31 +61,125 @@ const AddSubAdmin = () => {
     },
   });
 
+  const handleDelete = (idx) => {
+    const tempImgs = [
+      ...selectedImages.slice(0, idx),
+      ...selectedImages.slice(idx + 1),
+    ];
+    const dataTransfer = new DataTransfer();
+
+    for (const file of tempImgs) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("documents", dataTransfer.files);
+    setSelectedImages(tempImgs);
+  };
+
+  const handleChange = (idx, newFile) => {
+    const updatedImages = [...selectedImages];
+    updatedImages[idx] = newFile;
+
+    const dataTransfer = new DataTransfer();
+
+    for (const file of updatedImages) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("documents", dataTransfer.files);
+    setSelectedImages(updatedImages);
+  };
+
+  useEffect(() => {
+    if (formik.values.documents) {
+      const selectedImagesArray = Array.from(formik.values.documents);
+      setSelectedImages(selectedImagesArray);
+    }
+  }, [formik.values.documents]);
+
   return (
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
-          <h2 className={`text-3xl max-w-xs`}>Add Sub Admin</h2>
+          <h2 className={`text-3xl`}>Add Sub Admin</h2>
           <hr className={`my-5`} />
         </div>
 
-        <div className="max-auto">
+        <div className="max-auto pb-5">
           <form
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
             onSubmit={formik.handleSubmit}
           >
+            {selectedImages.length ? (
+              <div className={`relative col-span-full`}>
+                <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+                  <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                    <MdOutlineKeyboardArrowLeft />
+                  </div>
+                  <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                    <MdOutlineKeyboardArrowRight />
+                  </div>
+                </div>
+                <Swiper
+                  modules={[Navigation]}
+                  navigation={{
+                    enabled: true,
+                    prevEl: ".swiper-er-button-prev",
+                    nextEl: ".swiper-er-button-next",
+                    disabledClass: "swiper-er-button-disabled",
+                  }}
+                  slidesPerView={1}
+                  spaceBetween={50}
+                >
+                  {selectedImages.length ? (
+                    selectedImages.map((image, idx) => (
+                      <SwiperSlide key={idx}>
+                        <div className={`relative`}>
+                          <div className={`absolute top-3 right-3 space-x-1.5`}>
+                            <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                              <TbReplaceFilled />
+                              <input
+                                type="file"
+                                className="absolute left-0 top-0  overflow-hidden h-0"
+                                onChange={(e) =>
+                                  handleChange(idx, e.currentTarget.files[0])
+                                }
+                              />
+                            </label>
+                            <button
+                              className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                              onClick={() => handleDelete(idx)}
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                          <img
+                            key={idx}
+                            src={URL.createObjectURL(image)}
+                            alt=""
+                            className={`w-full h-96 object-cover rounded`}
+                          />
+                        </div>
+                      </SwiperSlide>
+                    ))
+                  ) : (
+                    <img
+                      src={imgPlaceHolder}
+                      alt=""
+                      className={`w-full h-96 object-cover rounded`}
+                    />
+                  )}
+                </Swiper>
+              </div>
+            ) : null}
             {/* Sub Admin Name box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                Sub Admin Name <span>*</span>
-              </label>
               <input
                 type="text"
-                placeholder="Sub Admin Name"
+                placeholder="Name"
                 name="name"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-                value={formik.values.price}
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -62,61 +189,30 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
-            {/* Sub Admin Address box */}
+            {/* Sub Admin UserName box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                Sub Admin Address <span>*</span>
-              </label>
               <input
                 type="text"
-                placeholder="Sub Admin Address "
-                name="address"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-                value={formik.values.price}
+                placeholder="Username"
+                name="username"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.username}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-
-              {formik.touched.address && Boolean(formik.errors.address) ? (
+              {formik.touched.username && Boolean(formik.errors.username) ? (
                 <small className="text-red-600">
-                  {formik.touched.address && formik.errors.address}
+                  {formik.touched.username && formik.errors.username}
                 </small>
               ) : null}
             </div>
-            {/*Sub Admin Email box */}
-            <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                Sub Admin Email <span>*</span>
-              </label>
-              <input
-                type="email"
-                placeholder="Sub Admin Email @ "
-                name="email"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-                value={formik.values.price}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.email && Boolean(formik.errors.email) ? (
-                <small className="text-red-600">
-                  {formik.touched.email && formik.errors.email}
-                </small>
-              ) : null}
-            </div>
-
             {/*Sub Admin Phone Number  box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                Sub Admin Phone Number <span>*</span>
-              </label>
               <input
-                type="number"
-                placeholder="Sub Admin Phone Number #"
+                type="text"
+                placeholder="Phone Number"
                 name="phoneNumber"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.phoneNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -128,19 +224,142 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
+            {/*Sub Admin Email box */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Email"
+                name="email"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.email && Boolean(formik.errors.email) ? (
+                <small className="text-red-600">
+                  {formik.touched.email && formik.errors.email}
+                </small>
+              ) : null}
+            </div>
+            {/* Sub Admin Password box */}
+            <div
+              className={`flex flex-col gap-3 ${
+                formik.values.documentsType ? "col-span-full" : ""
+              }`}
+            >
+              <div className={`relative`}>
+                <input
+                  type={showPass ? "text" : "password"}
+                  placeholder="New Password"
+                  name="password"
+                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {showPass ? (
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                    onClick={() => setShowPass(false)}
+                  >
+                    <FaEyeSlash />
+                  </span>
+                ) : (
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                    onClick={() => setShowPass(true)}
+                  >
+                    <FaEye />
+                  </span>
+                )}
+              </div>
+              {formik.touched.password && Boolean(formik.errors.password) ? (
+                <small className="text-red-600">
+                  {formik.touched.password && formik.errors.password}
+                </small>
+              ) : null}
+            </div>
+            {/* documents type box */}
+            <div className={`flex flex-col gap-3`}>
+              <select
+                name="documentsType"
+                className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+                value={formik.values.documentsType}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" selected disabled>
+                  Type of Documents
+                </option>
+                <option value="NID">NID</option>
+                <option value="Passport">Passport</option>
+                <option value="Driving License">Driving License</option>
+              </select>
+              {formik.touched.documentsType &&
+              Boolean(formik.errors.documentsType) ? (
+                <small className="text-red-600">
+                  {formik.touched.documentsType && formik.errors.documentsType}
+                </small>
+              ) : null}
+            </div>
+            {/* documents box */}
+            {formik.values.documentsType ? (
+              <div className={`flex space-x-1.5`}>
+                <div className="flex flex-col gap-3 w-full">
+                  <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+                    {formik.values.documents ? (
+                      <span>{formik.values.documents.length + " files"}</span>
+                    ) : (
+                      <span className={`flex items-baseline space-x-1.5`}>
+                        <FaUpload />
+                        <span>Choose {formik.values.documentsType}</span>
+                      </span>
+                    )}
+                    <input
+                      type="file"
+                      multiple
+                      name="documents"
+                      className="absolute left-0 top-0  overflow-hidden h-0"
+                      onChange={(e) =>
+                        formik.setFieldValue("documents", e.currentTarget.files)
+                      }
+                      onBlur={formik.handleBlur}
+                    />
+                  </label>
+                  {formik.touched.documents &&
+                  Boolean(formik.errors.documents) ? (
+                    <small className="text-red-600">
+                      {formik.touched.documents && formik.errors.documents}
+                    </small>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+            {/* Sub Admin Address box */}
+            <div className="col-span-full flex flex-col gap-3">
+              <textarea
+                placeholder="Address"
+                name="address"
+                className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+                value={formik.values.address}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.address && Boolean(formik.errors.address) ? (
+                <small className="text-red-600">
+                  {formik.touched.address && formik.errors.address}
+                </small>
+              ) : null}
+            </div>
 
             {/*Sub Admin salary  box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                Sub Admin Salary <span>*</span>
-              </label>
               <input
-                type="number"
-                placeholder="Sub Admin Salary"
+                type="text"
+                placeholder="Salary"
                 name="salary"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-                value={formik.values.joiningdate}
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.salary}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -152,36 +371,28 @@ const AddSubAdmin = () => {
             </div>
             {/*Sub Admin Joining Date  box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                Joining Date <span>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="From  MM/DD/YYY"
-                name="joiningdate"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy max-w-xs"
-                value={formik.values.joiningdate}
-                onChange={formik.handleChange}
-                onBlur={(e) => {
-                  e.target.type = "text";
-                  formik.handleBlur;
-                }}
-                onFocus={(e) => (e.target.type = "date")}
+              <DatePicker
+                dateFormat="dd/MM/yyyy"
+                name="joiningDate"
+                placeholderText={`Joining Date`}
+                selected={formik.values.joiningDate}
+                className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+                onChange={(date) => formik.setFieldValue("joiningDate", date)}
+                onBlur={formik.handleBlur}
               />
-              {formik.touched.joiningdate &&
-              Boolean(formik.errors.joiningdate) ? (
+              {formik.touched.joiningDate &&
+              Boolean(formik.errors.joiningDate) ? (
                 <small className="text-red-600">
-                  {formik.touched.joiningdate && formik.errors.joiningdate}
+                  {formik.touched.joiningDate && formik.errors.joiningDate}
                 </small>
               ) : null}
             </div>
 
             {/* submit button */}
-            <div className=" col-span-full text-end mb-5 ">
+            <div className="col-span-full text-end">
               <button
                 type="submit"
-                className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs px-9 h-auto md:me-12"
+                className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
               >
                 Add
               </button>

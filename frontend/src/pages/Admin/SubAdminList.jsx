@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { FaRegEdit } from "react-icons/fa";
-import { GrView } from "react-icons/gr";
+import { FaEye, FaRegEdit, FaSearch } from "react-icons/fa";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
@@ -17,17 +16,34 @@ const SubAdminList = () => {
 
   const formik = useFormik({
     initialValues: {
-      entries: "",
       search: "",
-      startDate: "",
-      endDate: "",
     },
   });
 
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-        <h3 className={`text-xl font-semibold text-center`}>Sub Admin List </h3>
+        <div className={`flex flex-col sm:flex-row justify-between items-center gap-5`}>
+          <h3 className={`text-xl font-semibold text-center`}>
+            Sub Admin List
+          </h3>
+          <div className={`relative sm:min-w-[20rem]`}>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+            />
+            <button
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
+        </div>
         <hr className={`my-5`} />
         <div className={`space-y-10`}>
           <div className="overflow-x-auto">
@@ -35,9 +51,9 @@ const SubAdminList = () => {
               <thead>
                 <tr>
                   <th>SL</th>
-                  <th>Sub Admin Name</th>
+                  <th>Name</th>
                   {/* <th>Sub Admin Address</th> */}
-                  <th>Sub Admin Email</th>
+                  <th>Email</th>
                   <th>Phone Number</th>
                   {/* <th>Salary</th> */}
                   <th>Action</th>
@@ -57,14 +73,14 @@ const SubAdminList = () => {
                       <td className={`space-x-1.5`}>
                         <Link to={`/dashboard/sub-admin-list-view/${idx}`}>
                           <span
-                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                           >
-                            <GrView />
+                            <FaEye />
                           </span>
                         </Link>
-                        <Link to={`/dashboard/sub-admin-profile/${idx}`}>
+                        <Link to={`/dashboard/sub-admin-profile/${idx}/edit`}>
                           <span
-                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                           >
                             <FaRegEdit />
                           </span>

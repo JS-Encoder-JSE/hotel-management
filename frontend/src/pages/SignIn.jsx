@@ -13,7 +13,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const validationSchema = yup.object({
   username: yup
     .string()
-    .email("Enter a valid username")
     .required("Username is required"),
   password: yup
     .string()
