@@ -353,7 +353,13 @@ const AdminNewLicense = () => {
         {/*Password box */}
         <div
           className={`flex flex-col gap-3 ${
-            formik.values.paymentMethod || formik.values.documentsType
+            ((formik.values.paymentMethod &&
+              formik.values.paymentMethod !== "Cash") ||
+              formik.values.documentsType) &&
+            !(
+              formik.values.paymentMethod !== "Cash" &&
+              formik.values.documentsType
+            )
               ? "col-span-full"
               : ""
           }`}
@@ -391,13 +397,7 @@ const AdminNewLicense = () => {
           ) : null}
         </div>
         {/*Billing Information box */}
-        <div
-          className={`flex flex-col gap-3 ${
-            formik.values.paymentMethod && formik.values.documentsType
-              ? "col-span-full"
-              : ""
-          }`}
-        >
+        <div className={`flex flex-col gap-3`}>
           <input
             type="text"
             placeholder="Bill Information"
@@ -489,18 +489,6 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-        {formik.values.paymentMethod &&
-        formik.values.paymentMethod === "Cash" ? (
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              name=""
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 input-disabled"
-              value={`Khalid Mahmud`}
-              readOnly
-            />
-          </div>
-        ) : null}
         {formik.values.paymentMethod &&
         formik.values.paymentMethod !== "Cash" ? (
           <div className="flex flex-col gap-3">
