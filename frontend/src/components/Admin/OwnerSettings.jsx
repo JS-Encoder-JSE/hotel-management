@@ -11,6 +11,8 @@ const validationSchema = yup.object({
     if (status !== "active") return schema.required("Remarks is required");
     else return schema;
   }),
+  fromDate: yup.string().required("From date is required"),
+  toDate: yup.string().required("To date is required"),
 });
 
 const OwnerSettings = ({ status }) => {
@@ -113,6 +115,12 @@ const OwnerSettings = ({ status }) => {
                   </small>
                 ) : null}
               </div>
+              <button
+                  type={"submit"}
+                  className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              >
+                Confirm
+              </button>
             </>
           ) : null}
           {formik.values.status === "Suspend" ? (
@@ -153,7 +161,7 @@ const OwnerSettings = ({ status }) => {
                 <DatePicker
                   dateFormat="dd/MM/yyyy"
                   name="fromDate"
-                  placeholderText={`Billing From`}
+                  placeholderText={`From`}
                   selected={formik.values.fromDate}
                   className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
                   onChange={(date) => formik.setFieldValue("fromDate", date)}
@@ -170,7 +178,7 @@ const OwnerSettings = ({ status }) => {
                 <DatePicker
                   dateFormat="dd/MM/yyyy"
                   name="toDate"
-                  placeholderText={`Billing To`}
+                  placeholderText={`To`}
                   selected={formik.values.toDate}
                   className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
                   onChange={(date) => formik.setFieldValue("toDate", date)}
