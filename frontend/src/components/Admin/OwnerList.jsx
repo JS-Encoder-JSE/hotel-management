@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { FaEye } from "react-icons/fa";
+import { FaUserAltSlash, FaUserLock } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
-import {useNavigate} from "react-router-dom";
 
-const HotelList = () => {
-  const navigate = useNavigate()
-  const [hotelsPerPage] = useState(10);
+const OwnerList = () => {
+  const [ownersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -16,15 +14,14 @@ const HotelList = () => {
   return (
     <div className="card w-full bg-white shadow-xl">
       <div className="card-body">
-        <h1 className="text-2xl text-center ">Hotel List</h1>
+        <h1 className="text-2xl text-center ">Owner List</h1>
         <div className="overflow-x-auto mt-10">
           <table className="table border">
             <thead>
               <tr>
                 <th>Sl</th>
-                <th>Hotel Name</th>
-                <th>Hotel Email</th>
-                <th>Hotel Branch</th>
+                <th>Name</th>
+                <th>Email</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -32,25 +29,23 @@ const HotelList = () => {
               {[...Array(5)].map((_, idx) => {
                 return (
                   <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                    <th> {++idx}</th>
-                    <td>Sonargaon Pacific</td>
-                    <td>sg.pacific@gmail.com</td>
-                    <td>Mohakhali</td>
-                    <td className={`space-x-1.5`}>
-                      <span
-                        className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                        onClick={() =>
-                          navigate(`/dashboard/adminowner-view/${idx}`)
-                        }
-                      >
-                        <FaEye />
-                      </span>
+                    <th>{++idx}</th>
+                    <td>Jon Doe</td>
+                    <td>jondoe@gmail.com</td>
+                    <td className="flex gap-3">
+                      <button type="button" title="suspend owner">
+                        <FaUserAltSlash className="hover:text-green-slimy duration-300 text-lg" />
+                      </button>
+                      <button type="button" title="lock owner">
+                        <FaUserLock className="hover:text-green-slimy duration-300 text-lg" />
+                      </button>
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+          <h6 className="m-5">Total: 5</h6>
           <div className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
@@ -76,4 +71,4 @@ const HotelList = () => {
   );
 };
 
-export default HotelList;
+export default OwnerList;
