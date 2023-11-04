@@ -21,46 +21,7 @@ import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { useSelector } from "react-redux";
-
-// form validation
-const validationSchema = yup.object({
-  name: yup.string().required("Client Name is required"),
-  username: yup.string().required("Client username is required"),
-  password: yup
-    .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
-  address: yup.string().required("Hotel Adress is required"),
-  phoneNumber: yup.string().required("Client Phone Number is required"),
-  email: yup
-    .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  billInformation: yup.string().required("Client Bill Information is required"),
-  fromDate: yup.string().required("From Date is required"),
-  toDate: yup.string().required("To Date is required"),
-  numberOfHotel: yup
-    .number()
-    .required("Number Of Hotels are required")
-    .positive("Number Of Hotels must be a positive number")
-    .integer("Number Of Hotels must be an integer"),
-  paymentMethod: yup.string().required("Payment method is required"),
-  trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-    if (paymentMethod !== "cash")
-      return schema.required("Transaction ID is required");
-    else return schema;
-  }),
-  amount: yup
-    .number()
-    .required("Amount is required")
-    .positive("Amount must be a positive number")
-    .integer("Amount must be an integer"),
-  documentsType: yup.string().required("Type of documents are required"),
-  documents: yup.mixed().when(["documentsType"], ([documentsType], schema) => {
-    if (documentsType) return schema.required(`${documentsType} are required`);
-    else return schema;
-  }),
-});
+import { validationSchema } from "../../components/Yup/AdminNewLicenseVal.jsx";
 
 const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
@@ -159,14 +120,14 @@ const AdminNewLicense = () => {
         remark,
         images: obj.images,
       });
-      console.log(response);
-      // if (response?.error) {
-      //   toast.error(response.error.data.message);
-      // } else {
-      //   toast.success(response.data.message);
-      //   formikHelpers.resetForm();
-      //   setSelectedImages([]);
-      // }
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+        setSelectedImages([]);
+      }
 
       setLoading(false);
     },

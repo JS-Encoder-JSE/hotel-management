@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CreateReport from "../pdf/CreateReport.jsx";
 import { FaFileDownload } from "react-icons/fa";
+import DatePicker from "react-datepicker";
 
 const TransactionHistory = () => {
   const formik = useFormik({
@@ -26,22 +27,24 @@ const TransactionHistory = () => {
       <div className="card-body space-y-10">
         <h1 className="text-2xl text-center ">Transaction History</h1>
         <div className="flex justify-between">
-          <div className={`space-x-3`}>
-            <span>From</span>
-            <input
-              type="date"
-              name={`startDate`}
-              className={`input input-sm input-bordered rounded focus:outline-none`}
-              value={formik.values.startDate}
-              onChange={formik.handleChange}
+          <div className={`flex gap-3`}>
+            <DatePicker
+                dateFormat="dd/MM/yyyy"
+                name="startDate"
+                placeholderText={`From`}
+                selected={formik.values.startDate}
+                className={`input input-sm input-bordered rounded focus:outline-none`}
+                onChange={(date) => formik.setFieldValue("startDate", date)}
+                onBlur={formik.handleBlur}
             />
-            <span>To</span>
-            <input
-              type="date"
-              name={`endDate`}
-              className={`input input-sm input-bordered rounded focus:outline-none`}
-              value={formik.values.endDate}
-              onChange={formik.handleChange}
+            <DatePicker
+                dateFormat="dd/MM/yyyy"
+                name="endDate"
+                placeholderText={`To`}
+                selected={formik.values.endDate}
+                className={`input input-sm input-bordered rounded focus:outline-none`}
+                onChange={(date) => formik.setFieldValue("endDate", date)}
+                onBlur={formik.handleBlur}
             />
             <button
               type={"button"}

@@ -1,44 +1,55 @@
 import React from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
 import { FaArrowLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
-
-// form validation
-const validationSchema = yup.object({
-  fromDate: yup.string().required("From Date is required"),
-  toDate: yup.string().required("To Date is required"),
-  status: yup.string().required("Status is required"),
-  paymentMethod: yup.string().required("Payment method is required"),
-  trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-    if (paymentMethod !== "cash")
-      return schema.required("Transaction ID is required");
-    else return schema;
-  }),
-  amount: yup
-    .number()
-    .required("Amount is required")
-    .positive("Amount must be a positive number")
-    .integer("Amount must be an integer"),
-});
+import { validationSchema } from "../../components/Yup/EditRenewVal.jsx";
+import { useRenewLicenseMutation } from "../../redux/admin/sls/slsAPI.js";
+import toast from "react-hot-toast";
 
 const EditRenew = () => {
+  const { id: user_id } = useParams();
   const navigate = useNavigate();
+  const [renewLicense, { isLoading }] = useRenewLicenseMutation();
 
   const formik = useFormik({
     initialValues: {
       fromDate: "",
       toDate: "",
-      status: "",
+      // status: "",
       paymentMethod: "",
       trxID: "",
       amount: "",
-      paymentFor: "",
+      // paymentFor: "",
+      remarks: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const obj = { ...values };
+      const {
+        fromDate: bill_from,
+        toDate: bill_to,
+        paymentMethod: payment_method,
+        trxID: tran_id,
+        amount,
+        remarks: remark,
+      } = obj;
+
+      const response = await renewLicense({
+        user_id,
+        bill_from,
+        bill_to,
+        payment_method,
+        tran_id,
+        amount,
+        remark,
+      });
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
     },
   });
 
@@ -60,7 +71,14 @@ const EditRenew = () => {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* payment method box */}
-          <div className="flex flex-col gap-3">
+          <div
+            className={`flex flex-col gap-3 ${
+              formik.values.paymentMethod &&
+              formik.values.paymentMethod !== "Cash"
+                ? "col-span-full"
+                : ""
+            }`}
+          >
             <select
               name="paymentMethod"
               className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
@@ -71,9 +89,9 @@ const EditRenew = () => {
               <option value="" selected disabled>
                 Payment Method
               </option>
-              <option value="cash">Cash</option>
-              <option value="card">Card</option>
-              <option value="mfs">Mobile Banking</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Mobile_Banking">Mobile Banking</option>
             </select>
             {formik.touched.paymentMethod &&
             Boolean(formik.errors.paymentMethod) ? (
@@ -83,24 +101,7 @@ const EditRenew = () => {
             ) : null}
           </div>
           {formik.values.paymentMethod &&
-          formik.values.paymentMethod === "cash" ? (
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                name=""
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 input-disabled"
-                value={`Khalid Mahmud`}
-                readOnly
-              />
-              {formik.touched.trxID && Boolean(formik.errors.trxID) ? (
-                <small className="text-red-600">
-                  {formik.touched.trxID && formik.errors.trxID}
-                </small>
-              ) : null}
-            </div>
-          ) : null}
-          {formik.values.paymentMethod &&
-          formik.values.paymentMethod !== "cash" ? (
+          formik.values.paymentMethod !== "Cash" ? (
             <div className="flex flex-col gap-3">
               <input
                 type="text"
@@ -170,53 +171,73 @@ const EditRenew = () => {
             ) : null}
           </div>
           {/* Payment For */}
-          <div className="flex flex-col gap-3">
-            <select
-                name="paymentFor"
-                className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
-                value={formik.values.paymentFor}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                Payment For
-              </option>
-              <option value="Renew">Renew</option>
-            </select>
-            {formik.touched.status && Boolean(formik.errors.status) ? (
-                <small className="text-red-600">
-                  {formik.touched.status && formik.errors.status}
-                </small>
-            ) : null}
-          </div>
+          {/*<div className="flex flex-col gap-3">*/}
+          {/*  <select*/}
+          {/*    name="paymentFor"*/}
+          {/*    className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"*/}
+          {/*    value={formik.values.paymentFor}*/}
+          {/*    onChange={formik.handleChange}*/}
+          {/*    onBlur={formik.handleBlur}*/}
+          {/*  >*/}
+          {/*    <option value="" selected disabled>*/}
+          {/*      Payment For*/}
+          {/*    </option>*/}
+          {/*    <option value="Renew">Renew</option>*/}
+          {/*  </select>*/}
+          {/*  {formik.touched.paymentFor && Boolean(formik.errors.paymentFor) ? (*/}
+          {/*    <small className="text-red-600">*/}
+          {/*      {formik.touched.paymentFor && formik.errors.paymentFor}*/}
+          {/*    </small>*/}
+          {/*  ) : null}*/}
+          {/*</div>*/}
           {/* Status box */}
-          <div className="flex flex-col gap-3">
-            <select
-              name="status"
-              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
-              value={formik.values.status}
+          {/*<div className="flex flex-col gap-3">*/}
+          {/*  <select*/}
+          {/*    name="status"*/}
+          {/*    className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"*/}
+          {/*    value={formik.values.status}*/}
+          {/*    onChange={formik.handleChange}*/}
+          {/*    onBlur={formik.handleBlur}*/}
+          {/*  >*/}
+          {/*    <option value="" selected disabled>*/}
+          {/*      Status*/}
+          {/*    </option>*/}
+          {/*    <option value="Active">Active</option>*/}
+          {/*  </select>*/}
+          {/*  {formik.touched.status && Boolean(formik.errors.status) ? (*/}
+          {/*    <small className="text-red-600">*/}
+          {/*      {formik.touched.status && formik.errors.status}*/}
+          {/*    </small>*/}
+          {/*  ) : null}*/}
+          {/*</div>*/}
+          {/* Remarks box */}
+          <div className="flex flex-col gap-3 col-span-full">
+            <textarea
+              placeholder="Remarks"
+              name="remarks"
+              className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+              value={formik.values.remarks}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                Status
-              </option>
-              <option value="Active">Active</option>
-            </select>
-            {formik.touched.status && Boolean(formik.errors.status) ? (
+            />
+            {formik.touched.remarks && Boolean(formik.errors.remarks) ? (
               <small className="text-red-600">
-                {formik.touched.status && formik.errors.status}
+                {formik.touched.remarks && formik.errors.remarks}
               </small>
             ) : null}
           </div>
           {/* submit button */}
           <button
             type="submit"
-            className={`${
-              !formik.values.paymentMethod ? "col-span-full" : ""
-            } btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+            className={`col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
           >
-            Update
+            <span>Update</span>
+            {isLoading ? (
+              <span
+                className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                role="status"
+              ></span>
+            ) : null}
           </button>
         </div>
       </form>
