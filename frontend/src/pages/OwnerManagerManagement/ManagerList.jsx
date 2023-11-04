@@ -43,8 +43,9 @@ const ManagerList = () => {
             onBlur={formik.handleBlur}
           >
             <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="deactive">deActive</option>
+            <option value="induty">In Duty</option>
+            <option value="transfer">Transfer</option>
+            <option value="resign">Resign</option>
           </select>
           {formik.touched.filter && Boolean(formik.errors.filter) ? (
             <small className="text-red-600">
@@ -80,8 +81,8 @@ const ManagerList = () => {
                   {/* <th>Manager Address</th> */}
                   <th>Manager Email</th>
                   <th>Phone Number</th>
+                  <th>Branch Name</th>
                   <th>Status</th>
-                  {/* <th>Salary</th> */}
                   <th>Action</th>
                 </tr>
               </thead>
@@ -94,9 +95,9 @@ const ManagerList = () => {
                     >
                       <th>{++idx}</th>
                       <td>Jon Doe</td>
-                      {/* <td>Kolkata</td> */}
                       <td>jondoe@gmail.com</td>
                       <td>+99801111</td>
+                      <td>Kolkata</td>
                       <td>Active</td>
                       {/* <td>$25000</td> */}
                       <td className={`space-x-1.5`}>

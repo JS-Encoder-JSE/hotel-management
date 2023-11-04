@@ -35,6 +35,14 @@ const UserDashBoard = () => {
           </h6>
           <p className="text-2xl font-semibold mb-5">0</p>
           <hr />
+
+          <div>
+          <h6 className="text-xs text-slate-400">
+            TOTAL {userHotel ? "CHECK OUT" : "RENEW"}
+          </h6>
+          <p className="text-2xl font-semibold mb-5">750</p>
+          </div>
+
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
@@ -63,7 +71,7 @@ const UserDashBoard = () => {
           <p className="text-2xl font-semibold mb-5">750</p>
           <hr />
         </div>
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mt-3">
+        {/* <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mt-3">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
             {userHotel ? <BsFillSendCheckFill /> : <MdAutorenew />}
           </div>
@@ -72,7 +80,7 @@ const UserDashBoard = () => {
           </h6>
           <p className="text-2xl font-semibold mb-5">750</p>
           <hr />
-        </div>
+        </div> */}
       </section>
 
       <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">

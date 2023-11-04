@@ -24,9 +24,6 @@ import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
 import MonitorFinance from "./pages/MonitorFinance/MonitorFinance.jsx";
 import SalesProfitReport from "./pages/report/SalesProfitReport.jsx";
-
-// import SalesProfitReport from "./pages/SalesProfitReport.jsx";
-
 import ManageBooking from "./pages/room/ManageBooking.jsx";
 import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
 import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
@@ -63,6 +60,7 @@ import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
 import AddBar from "./pages/bar/AddBar.jsx";
 import BarItemList from "./pages/bar/BarItemList.jsx";
+import HotelListView from "./pages/Ownerhotel/HotelListView.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -299,6 +297,14 @@ const App = () => {
               element: (
                 <OwnerRoute>
                   <HotelLists />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "hotelList-view/:id",
+              element: (
+                <OwnerRoute>
+                  <HotelListView />
                 </OwnerRoute>
               ),
             },

@@ -5,8 +5,15 @@ import * as yup from "yup";
 // form validation
 const validationSchema = yup.object({
   password: yup.string().required("Password is required"),
-  remarks: yup.string().when(["status"], ([status], schema) => {
-    if (status !== "active") return schema.required("Feedback is required");
+  status: yup.string().required("Status is required"),
+  branchName: yup.string().when(["status"], ([status], schema) => {
+    if (status == "transfer")
+      return schema.required("Branch Name is required");
+    else return schema;
+  }),
+  remarks: yup.string().when(["status"], ([status],
+     schema) => {
+    if (status !== "induty") return schema.required("Feedback is required");
     else return schema;
   }),
 });
@@ -15,6 +22,7 @@ const StatusSettings = () => {
   const formik = useFormik({
     initialValues: {
       status: "",
+      branchName:"",
       password: "",
       remarks: "",
     },
@@ -41,7 +49,7 @@ const StatusSettings = () => {
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             <select
               name="status"
               className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
@@ -53,7 +61,50 @@ const StatusSettings = () => {
               <option value="suspended">Suspended</option>
               <option value="locked">Locked</option>
             </select>
+          </div> */}
+               <div className="flex flex-col gap-3">
+          <select
+            name="status"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+            value={formik.values.status}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Status
+            </option>
+            <option value="induty">InDuty</option>
+            <option value="transfer">Transfer</option>
+            <option value="resign">Resign</option>
+          </select>
+          {formik.touched.status &&
+          Boolean(formik.errors.status) ? (
+            <small className="text-red-600">
+              {formik.touched.status && formik.errors.status}
+            </small>
+          ) : null}
+        </div>
+        {formik.values.status &&
+        formik.values.status == "transfer" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Branch Name"
+              name="branchName"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.branchName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.branchName && Boolean(formik.errors.branchName) ? (
+              <small className="text-red-600">
+                {formik.touched.branchName && formik.errors.branchName}
+              </small>
+            ) : null}
           </div>
+        ) : null}
+
+        {/* password box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
@@ -70,6 +121,8 @@ const StatusSettings = () => {
               </small>
             ) : null}
           </div>
+
+          {/* remark box */}
           <div className="flex flex-col gap-3">
             <textarea
               placeholder="Remarks"

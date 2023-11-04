@@ -21,16 +21,16 @@ const ManagerListView = () => {
         <h1 className="text-2xl text-center ">Manager Information</h1>
         <div className="card-body grid md:grid-cols-2 gap-4">
           <div className="">
-            <h2 className="card-title mb-3">Manager Infomation </h2>
-            <h6>Manger Name : Jon Doe</h6>
-            <h6>Manger Address : Kolkata</h6>
-            <h6>Manger Number : +98812554</h6>
-            <h6>Manger Email : jondoe@gmail.com</h6>
+            <h2 className="card-title mb-3"> Infomation </h2>
+            <h6> Name : Jon Doe</h6>
+            <h6> Address : Kolkata</h6>
+            <h6> Number : +98812554</h6>
+            <h6> Email : jondoe@gmail.com</h6>
           </div>
           <div className="">
-            <h2 className="card-title mb-3">Manager Other Information </h2>
-            <h6> Manager Joint Date :12-10-2023 </h6>
-            <h6> Manager Salary :12-10-2023 </h6>
+            <h2 className="card-title mb-3"> Other Information </h2>
+            <h6>  Joint Date :12-10-2023 </h6>
+            <h6>  Salary :12-10-2023 </h6>
             <h6 className={`flex space-x-1.5`}>
               <span>Status : Active</span>
               <span className={`cursor-pointer hover:text-green-slimy`} onClick={() => window.ol_modal.showModal()}><FaEdit /></span>

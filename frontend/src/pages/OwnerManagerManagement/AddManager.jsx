@@ -14,6 +14,22 @@ const validationSchema = yup.object({
   phoneNumber: yup.string().required("Manager Phone Number size is required"),
   salary: yup.string().required("Manager Salary is required"),
   joiningdate: yup.string().required("Manager Joining Date is required"),
+  documents: yup.string().required("Status is required"),
+  drivingL: yup.string().when(["documents"], ([documents], schema) => {
+    if (documents == "drivingL")
+      return schema.required("Branch Name is required");
+    else return schema;
+  }),
+  nid: yup.string().when(["documents"], ([documents], schema) => {
+    if (documents == "nid")
+      return schema.required("Branch Name is required");
+    else return schema;
+  }),
+  passport: yup.string().when(["documents"], ([documents], schema) => {
+    if (documents == "passport")
+      return schema.required("Branch Name is required");
+    else return schema;
+  }),
 });
 
 const AddManager = () => {
@@ -29,6 +45,11 @@ const AddManager = () => {
       salary: "",
       joiningdate: "",
       userImg: null,
+      drivingImg: null,
+      nidImg: null,
+      passportImg: null,
+      documents: "",
+      
     },
     validationSchema,
     onSubmit: (values) => {
@@ -60,6 +81,7 @@ const AddManager = () => {
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
             onSubmit={formik.handleSubmit}
           >
+            {/* image */}
             <div className={`col-span-full`}>
               <img
                 src={userImgPrev || imgPlaceHolder}
@@ -67,15 +89,12 @@ const AddManager = () => {
                 alt=""
               />
             </div>
+            
             {/* manager Name box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                 Name <span>*</span>
-              </label>
               <input
                 type="text"
-                placeholder="Manager Name"
+                placeholder="Name"
                 name="name"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.name}
@@ -90,10 +109,6 @@ const AddManager = () => {
             </div>
             {/* User Name box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                 User Name <span>*</span>
-              </label>
               <input
                 type="text"
                 placeholder="User Name"
@@ -111,12 +126,8 @@ const AddManager = () => {
             </div>
             {/* User Password box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                 Password <span>*</span>
-              </label>
               <input
-                type="password"
+                type="text"
                 placeholder="Password"
                 name="password"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -132,16 +143,13 @@ const AddManager = () => {
             </div>
             {/* Manager Address box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                 Address <span>*</span>
-              </label>
+
               <input
                 type="text"
-                placeholder="Manager Address "
+                placeholder="Address "
                 name="address"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.price}
+                value={formik.values.address}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -154,16 +162,13 @@ const AddManager = () => {
             </div>
             {/*Manager Email box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                 Email <span>*</span>
-              </label>
+            
               <input
                 type="email"
-                placeholder="Manager Email @ "
+                placeholder=" Email "
                 name="email"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.price}
+                value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -176,13 +181,10 @@ const AddManager = () => {
 
             {/*Manager Phone Number  box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                 Phone Number <span>*</span>
-              </label>
+          
               <input
                 type="number"
-                placeholder="Manager Phone Number #"
+                placeholder="Phone Number"
                 name="phoneNumber"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.phoneNumber}
@@ -199,13 +201,10 @@ const AddManager = () => {
 
             {/*Manager salary  box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                 Salary <span>*</span>
-              </label>
+            
               <input
                 type="number"
-                placeholder="Manager Salary"
+                placeholder="Salary"
                 name="salary"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.salary}
@@ -220,13 +219,10 @@ const AddManager = () => {
             </div>
             {/*Manager Joining Date  box */}
             <div className="flex flex-col gap-3">
-              <label>
-                {" "}
-                Joining Date <span>*</span>
-              </label>
+            
               <input
                 type="text"
-                placeholder="From  MM/DD/YYY"
+                placeholder="Joining Date"
                 name="joiningdate"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.joiningdate}
@@ -244,6 +240,146 @@ const AddManager = () => {
                 </small>
               ) : null}
             </div>
+
+{/* documents */}
+
+<div className="flex flex-col gap-3">
+          <select
+            name="documents"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+            value={formik.values.documents}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected >
+              Type Of Documents
+            </option>
+            <option value="drivingL">Driving License</option>
+            <option value="nid">NID</option>
+            <option value="passport">Passport</option>
+          </select>
+          {formik.touched.documents &&
+          Boolean(formik.errors.documents) ? (
+            <small className="text-red-600">
+              {formik.touched.documents && formik.errors.documents}
+            </small>
+          ) : null}
+        </div>
+
+        {/* Driving License photo */}
+        {formik.values.documents &&
+        formik.values.documents == "drivingL" ? (
+          <div className="flex flex-col gap-3">
+          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
+            {formik.values.drivingImg ? (
+              formik.values.drivingImg.name.substring(
+                0,
+                formik.values.drivingImg.name.lastIndexOf(".")
+              )
+            ) : (
+              <span
+                className={`flex justify-center items-baseline space-x-1.5`}
+              >
+                <FaUpload />
+                <span>Driving License</span>
+              </span>
+            )}
+            <input
+              type="file"
+              name="drivingImg"
+              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+              accept="image/*"
+              onChange={(e) =>
+                formik.setFieldValue("drivingImg", e.currentTarget.files[0])
+              }
+              onBlur={formik.handleBlur}
+             
+            />
+          </label>
+          {formik.touched.drivingImg && Boolean(formik.errors.drivingImg) ? (
+            <small className="text-red-600">
+              {formik.touched.drivingImg && formik.errors.drivingImg}
+            </small>
+          ) : null}
+        </div>
+        ) : null}
+
+        {/* NID photo */}
+        {formik.values.documents &&
+        formik.values.documents == "nid" ? (
+          <div className=" flex flex-col gap-3">
+          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
+            {formik.values.nidImg ? (
+              formik.values.nidImg.name.substring(
+                0,
+                formik.values.nidImg.name.lastIndexOf(".")
+              )
+            ) : (
+              <span
+                className={`flex justify-center items-baseline space-x-1.5`}
+              >
+                <FaUpload />
+                <span>NID</span>
+              </span>
+            )}
+            <input
+              type="file"
+              name="nidImg"
+              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+              accept="image/*"
+              onChange={(e) =>
+                formik.setFieldValue("nidImg", e.currentTarget.files[0])
+              }
+              onBlur={formik.handleBlur}
+             
+            />
+          </label>
+          {formik.touched.nidImg && Boolean(formik.errors.nidImg) ? (
+            <small className="text-red-600">
+              {formik.touched.nidImg && formik.errors.nidImg}
+            </small>
+          ) : null}
+        </div>
+        ) : null}
+        {/* passport */}
+        {formik.values.documents &&
+        formik.values.documents == "passport" ? (
+          <div className=" flex flex-col gap-3">
+          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
+            {formik.values.passportImg ? (
+              formik.values.passportImg.name.substring(
+                0,
+                formik.values.passportImg.name.lastIndexOf(".")
+              )
+            ) : (
+              <span
+                className={`flex justify-center items-baseline space-x-1.5`}
+              >
+                <FaUpload />
+                <span>Passport</span>
+              </span>
+            )}
+            <input
+              type="file"
+              name="passportImg"
+              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+              accept="image/*"
+              onChange={(e) =>
+                formik.setFieldValue("passportImg", e.currentTarget.files[0])
+              }
+              onBlur={formik.handleBlur}
+             
+            />
+          </label>
+          {formik.touched.passportImg && Boolean(formik.errors.passportImg) ? (
+            <small className="text-red-600">
+              {formik.touched.passportImg && formik.errors.passportImg}
+            </small>
+          ) : null}
+        </div>
+        ) : null}
+
+
             {/* user image box */}
             <div className="col-span-full flex flex-col gap-3">
               <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
@@ -257,7 +393,7 @@ const AddManager = () => {
                     className={`flex justify-center items-baseline space-x-1.5`}
                   >
                     <FaUpload />
-                    <span>Choose photo</span>
+                    <span>Choose profile Photo</span>
                   </span>
                 )}
                 <input
@@ -269,6 +405,7 @@ const AddManager = () => {
                     formik.setFieldValue("userImg", e.currentTarget.files[0])
                   }
                   onBlur={formik.handleBlur}
+                 
                 />
               </label>
               {formik.touched.userImg && Boolean(formik.errors.userImg) ? (
@@ -277,6 +414,36 @@ const AddManager = () => {
                 </small>
               ) : null}
             </div>
+              {/* <div className={`flex space-x-1.5`}>
+          <div className="flex flex-col gap-3 w-full">
+            <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+              {formik.values.utility ? (
+                <span>{formik.values.utility.length + " files"}</span>
+              ) : (
+                <span className={`flex items-baseline space-x-1.5`}>
+                  <FaUpload />
+                  <span>Choose Utilities</span>
+                </span>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                name="utility"
+                className="absolute left-0 top-0  overflow-hidden h-0"
+                onChange={(e) =>
+                  formik.setFieldValue("utility", e.currentTarget.files)
+                }
+                onBlur={formik.handleBlur}
+              />
+            </label>
+            {formik.touched.utility && Boolean(formik.errors.utility) ? (
+              <small className="text-red-600">
+                {formik.touched.utility && formik.errors.utility}
+              </small>
+            ) : null}
+          </div>
+        </div> */}
 
             {/* submit button */}
             <div className=" col-span-full text-end mb-5 ">
