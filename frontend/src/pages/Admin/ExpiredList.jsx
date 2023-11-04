@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaEye, FaTrash } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
 import { MdAutorenew, MdOutlineAutorenew, MdUpdate } from "react-icons/md";
 
@@ -10,96 +10,155 @@ import { RxCross2 } from "react-icons/rx";
 import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
 import Modal from "../../components/Modal.jsx";
 import ExpiredSettings from "../../components/Admin/ExpiredSettings.jsx";
+import { useFormik } from "formik";
+import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
+import { Rings } from "react-loader-spinner";
 
 const ExpiredList = () => {
   const navigate = useNavigate();
   const [renewPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
+  const [keyword, setKeyword] = useState(null);
+  const formik = useFormik({
+    initialValues: {
+      search: "",
+    },
+    onSubmit: (values) => {
+      setKeyword(values.search);
+    },
+  });
+
+  const { isLoading, data: owners } = useOwnerListQuery({
+    cp: currentPage,
+    filter: "Expired",
+    search: keyword,
+  });
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
 
+  useEffect(() => {
+    if (owners) setPageCount(owners.totalPages);
+  }, [owners]);
+
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-      <div className={`text-2xl text-center`}>Expired List</div>
-      <div className="overflow-x-auto">
-        <table className="table border">
-          <thead>
-            <tr>
-              <th>Sl</th>
-              <th>Client Name</th>
-              <th>Client Email</th>
-              <th>Client Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[...Array(2)].map((_, idx) => {
-              return (
-                <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                  <th>{++idx}</th>
-                  <td>
-                    <div className="flex items-center space-x-3">
-                      <div className="avatar"></div>
-                      <div>
-                        <div className="font-bold">Jon Doe</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>JonDoe@gmail.com</td>
-                  <td>Expired</td>
-                  <td className={`space-x-1.5`}>
-                    <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
-                      onClick={() => navigate(`/dashboard/edit-renew/${idx}`)}
-                      title={`Active`}
-                    >
-                      <MdAutorenew />
-                    </span>
-                    <span
-                      className={`btn btn-sm bg-transparent hover:bg-red-600 text-red-600 hover:text-white !border-red-600 rounded normal-case mb-2 ms-2`}
-                      title={`Suspend`}
-                      onClick={() => window.ol_modal.showModal()}
-                    >
-                      <MdUpdate />
-                    </span>
-                    <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
-                      onClick={() => navigate(`/dashboard/renew-view/${idx}`)}
-                    >
-                      <FaEye />
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <Modal id={`ol_modal`}>
-          <ExpiredSettings />
-        </Modal>
+      <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
+        <div className={`text-2xl text-center`}>Expired List</div>
+        <div className={`relative sm:min-w-[20rem]`}>
+          <input
+            type="text"
+            placeholder="Search by name..."
+            name="search"
+            className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+            value={formik.values.search}
+            onChange={formik.handleChange}
+          />
+          <button
+            onClick={() => formik.handleSubmit()}
+            type="button"
+            className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          >
+            <FaSearch />
+          </button>
+        </div>
       </div>
-      <div className="flex justify-center mt-10">
-        <ReactPaginate
-          containerClassName="join rounded-none"
-          pageLinkClassName="join-item btn btn-md bg-transparent"
-          activeLinkClassName="btn-active !bg-green-slimy text-white"
-          disabledLinkClassName="btn-disabled"
-          previousLinkClassName="join-item btn btn-md bg-transparent"
-          nextLinkClassName="join-item btn btn-md bg-transparent"
-          breakLinkClassName="join-item btn btn-md bg-transparent"
-          previousLabel="<"
-          nextLabel=">"
-          breakLabel="..."
-          pageCount={pageCount}
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={2}
-          onPageChange={handlePageClick}
-          renderOnZeroPageCount={null}
+      {!isLoading ? (
+        owners.docs.length ? (
+          <>
+            <div className="overflow-x-auto">
+              <table className="table border">
+                <thead>
+                  <tr>
+                    <th>Sl</th>
+                    <th>Client Username</th>
+                    <th>Client Name</th>
+                    <th>Client Email</th>
+                    <th>Client Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {owners?.docs?.map((owner, idx) => {
+                    return (
+                      <tr
+                        className={
+                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                        }
+                      >
+                        <th>{++idx}</th>
+                        <td>{owner?.username}</td>
+                        <td>{owner?.name}</td>
+                        <td>{owner?.email}</td>
+                        <td>{owner?.status}</td>
+                        <td className={`space-x-1.5`}>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
+                            onClick={() =>
+                              navigate(`/dashboard/edit-renew/${owner?._id}`)
+                            }
+                            title={`Active`}
+                          >
+                            <MdAutorenew />
+                          </span>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-red-600 text-red-600 hover:text-white !border-red-600 rounded normal-case mb-2 ms-2`}
+                            title={`Suspend`}
+                            onClick={() => window.ol_modal.showModal()}
+                          >
+                            <MdUpdate />
+                          </span>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
+                            onClick={() =>
+                              navigate(`/dashboard/renew-view/${owner?._id}`)
+                            }
+                          >
+                            <FaEye />
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <Modal id={`ol_modal`}>
+                <ExpiredSettings />
+              </Modal>
+            </div>
+            <div className="flex justify-center mt-10">
+              <ReactPaginate
+                containerClassName="join rounded-none"
+                pageLinkClassName="join-item btn btn-md bg-transparent"
+                activeLinkClassName="btn-active !bg-green-slimy text-white"
+                disabledLinkClassName="btn-disabled"
+                previousLinkClassName="join-item btn btn-md bg-transparent"
+                nextLinkClassName="join-item btn btn-md bg-transparent"
+                breakLinkClassName="join-item btn btn-md bg-transparent"
+                previousLabel="<"
+                nextLabel=">"
+                breakLabel="..."
+                pageCount={pageCount}
+                pageRangeDisplayed={2}
+                marginPagesDisplayed={2}
+                onPageChange={handlePageClick}
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          </>
+        ) : (
+          <h3>No data!</h3>
+        )
+      ) : (
+        <Rings
+          width="50"
+          height="50"
+          color="#37a000"
+          wrapperClass="justify-center"
         />
-      </div>
+      )}
     </div>
   );
 };

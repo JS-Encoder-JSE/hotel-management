@@ -9,6 +9,7 @@ import {
   FaUpload,
 } from "react-icons/fa";
 import {
+  MdAttachFile,
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
@@ -26,6 +27,7 @@ import { validationSchema } from "../../components/Yup/AdminNewLicenseVal.jsx";
 const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [images, setImages] = useState({});
   const [addLicense] = useAddLicenseMutation();
   const [upload] = useUploadMutation();
   const { user } = useSelector((store) => store.authSlice);
@@ -165,7 +167,17 @@ const AdminNewLicense = () => {
   useEffect(() => {
     if (formik.values.documents) {
       const selectedImagesArray = Array.from(formik.values.documents);
-      setSelectedImages(selectedImagesArray);
+      setSelectedImages([...selectedImages, ...selectedImagesArray]);
+    }
+  }, [formik.values.documents]);
+
+  useEffect(() => {
+    if (formik.values.documents) {
+      const selectedImagesArray = Array.from(formik.values.documents);
+      setImages({
+        ...images,
+        [formik.values.documentsType]: selectedImagesArray,
+      });
     }
   }, [formik.values.documents]);
 
@@ -574,13 +586,27 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-
+        <div className={`col-span-full space-y-1.5`}>
+          <span>Attachment</span>
+          <ul className={`list-disc list-inside`}>
+            {Object.entries(images).map(([key, value]) => {
+              return (
+                <li>
+                  <span className={`inline-flex gap-0.5 items-center`}>
+                    <MdAttachFile />
+                    <span>{key}</span>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         {/* submit button */}
         <button
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
-          <span>Add</span>
+          <span>Create License</span>
           {isLoading ? (
             <span
               className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"

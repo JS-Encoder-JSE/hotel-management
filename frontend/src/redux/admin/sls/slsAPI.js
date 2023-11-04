@@ -10,6 +10,7 @@ const slsAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
+      invalidatesTags: ["owner"],
     }),
     renewLicense: build.mutation({
       query: (data) => {
@@ -19,6 +20,7 @@ const slsAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
+      invalidatesTags: ["owner"],
     }),
     updateLicenseStatus: build.mutation({
       query: (data) => {
@@ -28,6 +30,7 @@ const slsAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
+      invalidatesTags: ["owner"],
     }),
   }),
 });
