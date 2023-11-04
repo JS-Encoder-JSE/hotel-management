@@ -905,3 +905,50 @@ export const getOwnersByAdmin = async (req, res) => {
     res.status(500).json({ error: "Failed to retrieve items" });
   }
 };
+
+export const updateUserField = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { user_id, field, value } = req.body;
+
+    const parent = await User.findById(userId);
+
+    if (!parent) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the user making the request has permission to update fields based on hierarchy
+    const hierarchy = {
+      admin: ["subadmin", "owner", "manager", "employee"],
+      subadmin: ["owner", "manager", "employee"],
+      owner: ["manager", "employee"],
+      manager: ["employee"],
+    };
+
+    if (!hierarchy[parent.role]) {
+      return res.status(403).json({ message: "You have no permission to update fields" });
+    }
+
+    const user = await User.findById(user_id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the user's role allows them to update the specified field
+    if (!hierarchy[parent.role].includes(user.role)) {
+      return res.status(403).json({ message: "You have no permission to update this field for the user" });
+    }
+
+    // Update the user's field with the new value
+    user[field] = value;
+
+    // Save the updated user document
+    await user.save();
+
+    res.status(200).json({ message: "User field updated successfully", user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to update user field" });
+  }
+};

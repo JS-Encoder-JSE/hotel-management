@@ -13,6 +13,7 @@ import {
   updateStatus,
   renewLicense,
   getOwnersByAdmin,
+  updateUserField,
 } from "../controllers/users.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
@@ -23,6 +24,7 @@ router.post("/add-user", addUser);
 router.post("/add-owner", checkToken, addOwner);
 router.post("/add-license", checkToken, addLicense);
 router.patch("/update-status", checkToken, updateStatus);
+router.patch("/update-field", checkToken, updateUserField);
 router.patch("/renew-license", checkToken, renewLicense);
 
 router.post("/login", login);
