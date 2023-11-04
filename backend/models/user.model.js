@@ -115,8 +115,6 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-// Apply the mongoose-paginate-v2 plugin to your schema
-userSchema.plugin(mongoosePaginate);
 
 // Hash the user's password before saving it to the database
 userSchema.pre("save", async function (next) {
@@ -140,6 +138,8 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
     throw error;
   }
 };
+// Apply the mongoose-paginate-v2 plugin to your schema
+userSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model("User", userSchema);
 

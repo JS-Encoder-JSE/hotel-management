@@ -12,6 +12,7 @@ import {
   addUser,
   updateStatus,
   renewLicense,
+  getOwnersByAdmin,
 } from "../controllers/users.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
@@ -30,5 +31,6 @@ router.post("/add-manager", checkToken, addManager);
 router.get("/get-manager-by-id/:managerId", checkToken, getManagerById);
 router.get("/get-managers-by-owner", checkToken, getManagersByOwner);
 router.get("/get-owners", checkToken, getOwners);
+router.get("/get-owners-by-admin", checkToken, getOwnersByAdmin);
 
 export default router;

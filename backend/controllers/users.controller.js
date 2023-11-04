@@ -807,11 +807,9 @@ export const updateStatus = async (req, res) => {
     const parent = await User.findById(loginUserId);
 
     if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
-      return res
-        .status(403)
-        .json({
-          message: "You have no permission to update the user's status",
-        });
+      return res.status(403).json({
+        message: "You have no permission to update the user's status",
+      });
     }
 
     // Check if the provided status is valid
@@ -857,5 +855,45 @@ export const updateStatus = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to update user status" });
+  }
+};
+
+export const getOwnersByAdmin = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { page = 1, limit = 10, search, filter } = req.query;
+
+    const parent = await User.findById(userId);
+    if (!parent) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (!parent.role === "admin") {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to get info" });
+    }
+
+    const query = { role: "owner" };
+
+    if (!["Active", "Deactive", "Suspended"].includes(filter)) {
+      query.status = filter;
+    }
+
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: "i" } }
+      ];
+    }    
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const users = await User.paginate(query, options);
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve items" });
   }
 };
