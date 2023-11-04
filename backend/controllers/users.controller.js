@@ -8,7 +8,7 @@ import StatusLog from "../models/statuslog.model.js";
 // Create a function to handle user creation
 export const addUser = async (req, res) => {
   try {
-    const {userId} = req.user;
+    const { userId } = req.user;
     // Extract user data from the request body
     const {
       username,
@@ -49,7 +49,7 @@ export const addUser = async (req, res) => {
     if (!hierarchy[parent.role]) {
       return res
         .status(403)
-        .json({ message: "You have no permission to create ",role });
+        .json({ message: "You have no permission to create ", role });
     }
 
     // Create a new user instance
@@ -895,7 +895,9 @@ export const getOwnersByAdmin = async (req, res) => {
 
     const query = { role: "owner" };
 
-    if (["Active", "Deactive", "Suspended"].includes(filter)) {
+    if (
+      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
+    ) {
       query.status = filter;
     }
 
