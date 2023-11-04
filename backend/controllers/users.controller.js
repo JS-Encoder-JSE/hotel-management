@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import Hotel from "../models/hotel.model.js";
-import jwt from "jsonwebtoken";
 import TransactionLog from "../models/transactionlog.model.js";
+import StatusLog from "../models/statuslog.model.js";
 
 // Create a function to handle user creation
 export const addUser = async (req, res) => {
@@ -65,9 +67,90 @@ export const addUser = async (req, res) => {
       .json({ message: "User created successfully", user: newUser });
   } catch (error) {
     // Handle any errors that occur during user creation
+    console.error(error);
     res
       .status(500)
       .json({ error: "User creation failed", message: error.message });
+  }
+};
+
+export const addLicense = async (req, res) => {
+  try {
+    const {
+      username,
+      name,
+      password,
+      address,
+      email,
+      phone_no,
+      bill_info,
+      bill_from,
+      bill_to,
+      maxHotels,
+      payment_method,
+      tran_id,
+      amount,
+      remark,
+      // utilities_img,
+      // trade_lic_img,
+      images,
+    } = req.body;
+
+    const { userId } = req.user;
+    const parent = await User.findById(userId);
+
+    if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to create a license" });
+    }
+
+    // Check if a user with the same username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    // Create a new owner user
+    const newOwner = new User({
+      name,
+      username,
+      password,
+      role: "owner",
+      status: "Active",
+      address,
+      email,
+      phone_no,
+      bill_info,
+      bill_from,
+      bill_to,
+      maxHotels,
+      // utilities_img,
+      // trade_lic_img,
+      images,
+    });
+
+    // Save the new owner user to the database
+    const savedOwner = await newOwner.save();
+
+    // Create a new transaction log entry
+    const newTransactionLog = new TransactionLog({
+      tran_id,
+      payment_method,
+      from: savedOwner.username,
+      to: parent.username,
+      amount,
+      payment_for: "Purchase",
+      remark,
+    });
+
+    // Save the transaction log entry to the database
+    await newTransactionLog.save();
+
+    res.status(201).json({ message: "Successfully added license" }); // Return a success message
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to add a license" });
   }
 };
 
@@ -495,83 +578,284 @@ export const getManagerById = async (req, res) => {
 //     res.status(500).json({ error: "Failed to add a license" });
 //   }
 // };
+// export const renewLicense = async (req, res) => {
+//   try {
+//     const loginUserId = req.user.userId; // Assuming userId is part of the URL
+//     const {
+//       user_id,
+//       tran_id,
+//       status,
+//       payment_method,
+//       amount,
+//       bill_from,
+//       bill_to,
+//       remark,
+//     } = req.body;
 
-export const addLicense = async (req, res) => {
+//     // Check if the provided status is valid
+//     if (!status === "Active") {
+//       return res.status(400).json({ message: "Invalid status value" });
+//     }
+//     const parent = await User.findById(loginUserId);
+
+//     if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
+//       return res
+//         .status(403)
+//         .json({ message: "You have no permission to create a license" });
+//     }
+
+//     // Find the user by their ID
+//     const user = await User.findById(user_id);
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     if (!["Expired", "Suspended"].includes(user.status)) {
+//       return res
+//         .status(400)
+//         .json({ message: "This Licese is not Expired or Suspended" });
+//     }
+
+//     // Create a new StatusLog instance
+//     const newStatusLog = new StatusLog({
+//       changed_from: parent.username,
+//       changed_for: user.username,
+//       pre_status: user.status,
+//       updated_status: status,
+//       remark: remark,
+//     });
+//     await newStatusLog.save();
+
+//     const newTransactionLog = new TransactionLog({
+//       tran_id:tran_id,
+//       payment_method:payment_method,
+//       from:user.username,
+//       to: parent.username,
+//       amount: amount,
+//       payment_for: "Renew",
+//       remark:remark,
+//     });
+//     await newTransactionLog.save();
+
+//     // Update the user's status
+//     user.status = status;
+//     user.bill_from = bill_from;
+//     user.bill_to = bill_to;
+
+//     // Save the updated user document
+//     await user.save();
+
+//     res.status(200).json({ message: "User status updated successfully", user });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Failed to update user status" });
+//   }
+// };
+
+export const renewLicense = async (req, res) => {
   try {
+    const loginUserId = req.user.userId; // Assuming userId is part of the URL
     const {
-      username,
-      name,
-      password,
-      address,
-      email,
-      phone_no,
-      bill_info,
+      user_id,
+      tran_id,
+      payment_method,
+      amount,
       bill_from,
       bill_to,
-      maxHotels,
-      payment_method,
-      tran_id,
-      amount,
       remark,
-      // utilities_img,
-      // trade_lic_img,
-      images,
     } = req.body;
 
-    const { userId } = req.user;
-    const parent = await User.findById(userId);
+    const parent = await User.findById(loginUserId);
 
     if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
       return res
         .status(403)
-        .json({ message: "You have no permission to create a license" });
+        .json({ message: "You have no permission to renew a license" });
     }
 
-    // Check if a user with the same username already exists
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).json({ message: "Username already exists" });
+    const user = await User.findById(user_id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (!user.role === "owner") {
+      return res.status(403).json({ message: "This user isn't a owner" });
     }
 
-    // Create a new owner user
-    const newOwner = new User({
-      name,
-      username,
-      password,
-      role: "owner",
-      status: "Active",
-      address,
-      email,
-      phone_no,
-      bill_info,
-      bill_from,
-      bill_to,
-      maxHotels,
-      // utilities_img,
-      // trade_lic_img,
-      images,
+    if (!["Expired", "Suspended"].includes(user.status)) {
+      return res
+        .status(400)
+        .json({ message: "This license is not Expired or Suspended" });
+    }
+
+    // Create a new StatusLog instance
+    const newStatusLog = new StatusLog({
+      changed_from: parent.username,
+      changed_for: user.username,
+      pre_status: user.status,
+      updated_status: "Active",
+      remark: remark,
     });
 
-    // Save the new owner user to the database
-    const savedOwner = await newOwner.save();
-
-    // Create a new transaction log entry
+    // Create a new TransactionLog instance
     const newTransactionLog = new TransactionLog({
       tran_id,
       payment_method,
-      from: savedOwner.username,
+      from: user.username,
       to: parent.username,
       amount,
-      payment_for: "Purchase",
+      payment_for: "Renew",
       remark,
     });
 
-    // Save the transaction log entry to the database
-    await newTransactionLog.save();
-    
-    res.status(201).json({ message: "Successfully added license" }); // Return a success message
+    // Use a transaction to ensure data consistency
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      await newStatusLog.save({ session });
+      await newTransactionLog.save({ session });
+
+      // Update the user's status
+      user.status = "Active";
+      user.bill_from = bill_from;
+      user.bill_to = bill_to;
+
+      await user.save({ session });
+
+      await session.commitTransaction();
+      session.endSession();
+
+      res.status(200).json({ message: "License renew successfully" });
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+
+      console.error(error);
+      res.status(500).json({ error: "Failed to update user status" });
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to add a license" });
+    res.status(500).json({ error: "Failed to update user status" });
+  }
+};
+
+// export const updateStatus = async (req, res) => {
+//   try {
+//     const loginUserId = req.user.userId; // Assuming userId is part of the URL
+//     const { user_id, status, extended_time, remark } = req.body;
+
+//     const parent = await User.findById(loginUserId);
+
+//     if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
+//       return res
+//         .status(403)
+//         .json({ message: "You have no permission to create a license" });
+//     }
+//     // Check if the provided status is valid
+//     if (!["Active", "Deactive", "Suspended"].includes(status)) {
+//       return res.status(400).json({ message: "Invalid status value" });
+//     }
+
+//     // Find the user by their ID
+//     const user = await User.findById(user_id);
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     // Create a new StatusLog instance
+//     const newStatusLog = new StatusLog({
+//       changed_from: parent.username,
+//       changed_for: user.username,
+//       pre_status: user.status,
+//       updated_status: status,
+//       remark: remark,
+//     });
+//     await newStatusLog.save();
+
+//     if (status === "Suspended" && extended_time) {
+//       if (!user.status === "Expired") {
+//         return res.status(400).json({ message: "Invalid status value" });
+//       }
+//       user.extended_time = extended_time;
+//     }
+//     if (status === "Active") {
+//       if (!user.status === "Deactive") {
+//         return res.status(400).json({ message: "Invalid status value" });
+//       }
+//     }
+//     // Update the user's status
+//     user.status = status;
+
+//     // Save the updated user document
+//     await user.save();
+
+//     res.status(200).json({ message: "User status updated successfully", user });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Failed to update user status" });
+//   }
+// };
+
+export const updateStatus = async (req, res) => {
+  try {
+    const loginUserId = req.user.userId; // Assuming userId is part of the URL
+    const { user_id, status, extended_time, remark } = req.body;
+
+    const parent = await User.findById(loginUserId);
+
+    if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
+      return res
+        .status(403)
+        .json({
+          message: "You have no permission to update the user's status",
+        });
+    }
+
+    // Check if the provided status is valid
+    if (!["Active", "Deactive", "Suspended"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    // Find the user by their ID
+    const user = await User.findById(user_id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Create a new StatusLog instance
+    const newStatusLog = new StatusLog({
+      changed_from: parent.username,
+      changed_for: user.username,
+      pre_status: user.status,
+      updated_status: status,
+      remark: remark,
+    });
+    await newStatusLog.save();
+
+    if (status === "Suspended" && extended_time) {
+      if (user.status !== "Expired") {
+        return res.status(400).json({ message: "Invalid status value" });
+      }
+      user.extended_time = extended_time;
+    } else if (status === "Active") {
+      if (user.status !== "Deactive") {
+        return res.status(400).json({ message: "Invalid status value" });
+      }
+    }
+
+    // Update the user's status
+    user.status = status;
+
+    // Save the updated user document
+    await user.save();
+
+    res.status(200).json({ message: "User status updated successfully", user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to update user status" });
   }
 };

@@ -6,6 +6,10 @@ const ImageSchema = new mongoose.Schema({
   utilities: { type: Array, required: false, default: "" },
   pancard: { type: Array, required: false, default: "" },
 });
+const ExtendedTimeSchema = new mongoose.Schema({
+  from: { type: Date, required: true },
+  to: { type: Date, required: true },
+});
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -39,7 +43,7 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Deactive", "Suspended"],
+      enum: ["Active", "Deactive", "Suspended", "Expired"],
       required: false,
       default: "Active",
     },
@@ -73,6 +77,7 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: Date.now,
     },
+    extended_time: [ExtendedTimeSchema],
     salary: {
       type: String,
       required: false,

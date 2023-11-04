@@ -27,6 +27,7 @@ const transactionlogSchema = new mongoose.Schema(
     payment_for: {
       type: String,
       required: false,
+      enum: ["Renew", "Purchase"],
     },
     remark: {
       type: String,
@@ -39,6 +40,6 @@ const transactionlogSchema = new mongoose.Schema(
 // Apply the mongoose-paginate-v2 plugin to your schema
 transactionlogSchema.plugin(mongoosePaginate);
 
-const TransactionLog = mongoose.model("Transaction", transactionlogSchema);
+const TransactionLog = mongoose.model("TransactionLog", transactionlogSchema);
 
 export default TransactionLog;

@@ -1,32 +1,24 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-const transactionlogSchema = new mongoose.Schema(
+const statuslogSchema = new mongoose.Schema(
   {
-    tran_id: {
+    changed_from: {
       type: String,
       required: false,
     },
-    payment_method: {
-      type: String,
-      required: true,
-      enum: ["Cash","Card","Mobile_Banking"]
-    },
-    from: {
-      type: String,
-      required: true,
-    },
-    to: {
-      type: String,
-      required: true,
-    },
-    amount: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    payment_for: {
+    changed_for: {
       type: String,
       required: false,
+    },
+    pre_status: {
+      type: String,
+      required: false,
+      enum: ["Active", "Deactive", "Suspended", "Expired"],
+    },
+    updated_status: {
+      type: String,
+      required: false,
+      enum: ["Active", "Deactive", "Suspended", "Expired"],
     },
     remark: {
       type: String,
@@ -37,8 +29,8 @@ const transactionlogSchema = new mongoose.Schema(
 );
 
 // Apply the mongoose-paginate-v2 plugin to your schema
-transactionlogSchema.plugin(mongoosePaginate);
+statuslogSchema.plugin(mongoosePaginate);
 
-const TransactionLog = mongoose.model("Transaction", transactionlogSchema);
+const StatusLog = mongoose.model("StatusLog", statuslogSchema);
 
-export default TransactionLog;
+export default StatusLog;
