@@ -17,7 +17,7 @@ const validationSchema = yup.object({
   toDate: yup.string().required("To date is required"),
 });
 
-const OwnerSettings = ({ modalOpen, setModalOpen, status }) => {
+const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
   const navigate = useNavigate();
   const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();
   const formik = useFormik({
@@ -34,7 +34,7 @@ const OwnerSettings = ({ modalOpen, setModalOpen, status }) => {
       const { status, remarks: remark, fromDate: from, toDate: to } = obj;
 
       const response = await updateLicenseStatus({
-        // user_id,
+        user_id: owner?.id,
         status,
         extended_time: [
           {
@@ -82,15 +82,15 @@ const OwnerSettings = ({ modalOpen, setModalOpen, status }) => {
               onBlur={formik.handleBlur}
             >
               <option value="" selected disabled>
-                {status}
+                {owner?.status}
               </option>
-              {status === "Active" ? (
+              {owner?.status === "Active" ? (
                 <option value="Deactivate">Deactivate</option>
               ) : null}
-              {status === "Suspend" ? (
+              {owner?.status === "Suspend" ? (
                 <option value="Renew">Renew</option>
               ) : null}
-              {status === "Expired" ? (
+              {owner?.status === "Expired" ? (
                 <>
                   <option value="Active">Active</option>
                   <option value="Suspend">Suspend</option>
@@ -101,7 +101,7 @@ const OwnerSettings = ({ modalOpen, setModalOpen, status }) => {
           {formik.values.status === "Active" ||
           formik.values.status === "Renew" ? (
             <Link
-              to={`/dashboard/edit-renew/1`}
+              to={`/dashboard/edit-renew/${owner?.id}`}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
               Go to Renew

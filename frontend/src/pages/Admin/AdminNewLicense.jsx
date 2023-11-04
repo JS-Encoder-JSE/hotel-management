@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
 import {
   FaEye,
   FaEyeSlash,
@@ -9,6 +8,7 @@ import {
   FaUpload,
 } from "react-icons/fa";
 import {
+  MdAttachFile,
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
@@ -26,6 +26,7 @@ import { validationSchema } from "../../components/Yup/AdminNewLicenseVal.jsx";
 const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [images, setImages] = useState({});
   const [addLicense] = useAddLicenseMutation();
   const [upload] = useUploadMutation();
   const { user } = useSelector((store) => store.authSlice);
@@ -133,39 +134,32 @@ const AdminNewLicense = () => {
     },
   });
 
-  const handleDelete = (idx) => {
-    const tempImgs = [
-      ...selectedImages.slice(0, idx),
-      ...selectedImages.slice(idx + 1),
-    ];
-    const dataTransfer = new DataTransfer();
-
-    for (const file of tempImgs) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(tempImgs);
+  const handleDelete = (key, idx) => {
+    images[key] = [...images[key].slice(0, idx), ...images[key].slice(idx + 1)];
   };
 
-  const handleChange = (idx, newFile) => {
-    const updatedImages = [...selectedImages];
-    updatedImages[idx] = newFile;
+  const handleChange = (key, idx, newFile) => {
+    if (images[key]) {
+      const updatedImages = [...images[key]];
+      updatedImages[idx] = newFile;
 
-    const dataTransfer = new DataTransfer();
-
-    for (const file of updatedImages) {
-      dataTransfer.items.add(file);
+      images[key] = updatedImages;
+      setImages({ ...images });
     }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(updatedImages);
   };
+
+  useEffect(() => {
+    const arr = [].concat(...Object.values(images));
+    setSelectedImages(arr);
+  }, [images]);
 
   useEffect(() => {
     if (formik.values.documents) {
       const selectedImagesArray = Array.from(formik.values.documents);
-      setSelectedImages(selectedImagesArray);
+      setImages({
+        ...images,
+        [formik.values.documentsType]: selectedImagesArray,
+      });
     }
   }, [formik.values.documents]);
 
@@ -202,43 +196,43 @@ const AdminNewLicense = () => {
               slidesPerView={1}
               spaceBetween={50}
             >
-              {selectedImages.length ? (
-                selectedImages.map((image, idx) => (
-                  <SwiperSlide key={idx}>
-                    <div className={`relative`}>
-                      <div className={`absolute top-3 right-3 space-x-1.5`}>
-                        <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
-                          <TbReplaceFilled />
-                          <input
-                            type="file"
-                            className="absolute left-0 top-0  overflow-hidden h-0"
-                            onChange={(e) =>
-                              handleChange(idx, e.currentTarget.files[0])
-                            }
+              {Object.keys(images).map((key) =>
+                images[key].length
+                  ? images[key].map((image, idx) => (
+                      <SwiperSlide key={idx}>
+                        <div className={`relative`}>
+                          <div className={`absolute top-3 right-3 space-x-1.5`}>
+                            <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                              <TbReplaceFilled />
+                              <input
+                                type="file"
+                                className="absolute left-0 top-0  overflow-hidden h-0"
+                                onChange={(e) =>
+                                  handleChange(
+                                    key,
+                                    idx,
+                                    e.currentTarget.files[0],
+                                  )
+                                }
+                              />
+                            </label>
+                            <button
+                              className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                              onClick={() => handleDelete(key, idx)}
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                          <img
+                            key={idx}
+                            src={URL.createObjectURL(image)}
+                            alt=""
+                            className={`w-full h-96 object-cover rounded`}
                           />
-                        </label>
-                        <button
-                          className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                          onClick={() => handleDelete(idx)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                      <img
-                        key={idx}
-                        src={URL.createObjectURL(image)}
-                        alt=""
-                        className={`w-full h-96 object-cover rounded`}
-                      />
-                    </div>
-                  </SwiperSlide>
-                ))
-              ) : (
-                <img
-                  src={imgPlaceHolder}
-                  alt=""
-                  className={`w-full h-96 object-cover rounded`}
-                />
+                        </div>
+                      </SwiperSlide>
+                    ))
+                  : null,
               )}
             </Swiper>
           </div>
@@ -574,13 +568,29 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-
+        {selectedImages.length ? (
+          <div className={`col-span-full space-y-1.5`}>
+            <span>Attachment</span>
+            <ul className={`list-disc list-inside`}>
+              {Object.entries(images).map(([key, value]) => {
+                return value.length ? (
+                  <li>
+                    <span className={`inline-flex gap-0.5 items-center`}>
+                      <MdAttachFile />
+                      <span>{key}</span>
+                    </span>
+                  </li>
+                ) : null;
+              })}
+            </ul>
+          </div>
+        ) : null}
         {/* submit button */}
         <button
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
-          <span>Add</span>
+          <span>Create License</span>
           {isLoading ? (
             <span
               className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
