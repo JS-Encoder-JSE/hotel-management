@@ -20,7 +20,7 @@ import { checkToken } from "../middlewares/checkToken.js";
 const router = Router();
 
 router.post("/create-superuser", createSuperUser);
-router.post("/add-user", addUser);
+router.post("/add-user", checkToken, addUser);
 router.post("/add-owner", checkToken, addOwner);
 router.post("/add-license", checkToken, addLicense);
 router.patch("/update-status", checkToken, updateStatus);

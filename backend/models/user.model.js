@@ -2,9 +2,13 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import mongoosePaginate from "mongoose-paginate-v2";
 const ImageSchema = new mongoose.Schema({
+  driving_lic_img: { type: Array, required: false, default: "" },
   trade_lic_img: { type: Array, required: false, default: "" },
+  profile_img: { type: String, required: false, default: "" },
   utilities: { type: Array, required: false, default: "" },
+  passport: { type: Array, required: false, default: "" },
   pancard: { type: Array, required: false, default: "" },
+  nid: { type: Array, required: false, default: "" },
 });
 const ExtendedTimeSchema = new mongoose.Schema({
   from: { type: Date, required: true },
@@ -27,7 +31,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["owner", "manager", "admin", "subadmin","employee"],
+      enum: ["owner", "manager", "admin", "subadmin", "employee"],
       required: true,
     },
     designation: {
@@ -101,16 +105,6 @@ const userSchema = new mongoose.Schema(
         default: null,
       },
     ],
-    trade_lic_img: {
-      type: Array,
-      required: false,
-      default: [],
-    },
-    utilities_img: {
-      type: Array,
-      required: false,
-      default: [],
-    },
     images: ImageSchema,
   },
   { timestamps: true }

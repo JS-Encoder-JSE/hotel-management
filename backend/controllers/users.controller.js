@@ -8,6 +8,7 @@ import StatusLog from "../models/statuslog.model.js";
 // Create a function to handle user creation
 export const addUser = async (req, res) => {
   try {
+    const {userId} = req.user;
     // Extract user data from the request body
     const {
       username,
@@ -20,20 +21,35 @@ export const addUser = async (req, res) => {
       address,
       email,
       phone_no,
-      bill_info,
       salary,
       joining_date,
-      maxHotels,
       assignedHotel,
-      trade_lic_img,
-      utilities_img,
       images,
     } = req.body;
+
+    const parent = await User.findById(userId);
+
+    if (!parent) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     // Check if a user with the same username already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: "Username already exists" });
+    }
+    // Check if the user making the request has permission to update fields based on hierarchy
+    const hierarchy = {
+      admin: ["subadmin", "owner", "manager", "employee"],
+      subadmin: ["owner", "manager", "employee"],
+      owner: ["manager", "employee"],
+      manager: ["employee"],
+    };
+
+    if (!hierarchy[parent.role]) {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to create ",role });
     }
 
     // Create a new user instance
@@ -48,13 +64,9 @@ export const addUser = async (req, res) => {
       address,
       email,
       phone_no,
-      bill_info,
       salary,
       joining_date,
-      maxHotels,
       assignedHotel,
-      trade_lic_img,
-      utilities_img,
       images,
     });
 
@@ -926,7 +938,9 @@ export const updateUserField = async (req, res) => {
     };
 
     if (!hierarchy[parent.role]) {
-      return res.status(403).json({ message: "You have no permission to update fields" });
+      return res
+        .status(403)
+        .json({ message: "You have no permission to update fields" });
     }
 
     const user = await User.findById(user_id);
@@ -937,7 +951,9 @@ export const updateUserField = async (req, res) => {
 
     // Check if the user's role allows them to update the specified field
     if (!hierarchy[parent.role].includes(user.role)) {
-      return res.status(403).json({ message: "You have no permission to update this field for the user" });
+      return res.status(403).json({
+        message: "You have no permission to update this field for the user",
+      });
     }
 
     // Update the user's field with the new value
