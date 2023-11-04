@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import {FaEye, FaFileDownload} from "react-icons/fa";
+import { FaEye, FaFileDownload } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
-import {PDFDownloadLink} from "@react-pdf/renderer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import CreateReport from "../pdf/CreateReport.jsx";
-import {useFormik} from "formik";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
 
 const StatusHistory = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       startDate: "",
@@ -26,37 +29,39 @@ const StatusHistory = () => {
       <div className="card-body space-y-10">
         <h1 className="text-2xl text-center ">Status History</h1>
         <div className="flex justify-between">
-          <div className={`space-x-3`}>
-            <span>From</span>
-            <input
-                type="date"
-                name={`startDate`}
-                className={`input input-sm input-bordered rounded focus:outline-none`}
-                value={formik.values.startDate}
-                onChange={formik.handleChange}
+          <div className={`flex gap-3`}>
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="startDate"
+              placeholderText={`From`}
+              selected={formik.values.startDate}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              onChange={(date) => formik.setFieldValue("startDate", date)}
+              onBlur={formik.handleBlur}
             />
-            <span>To</span>
-            <input
-                type="date"
-                name={`endDate`}
-                className={`input input-sm input-bordered rounded focus:outline-none`}
-                value={formik.values.endDate}
-                onChange={formik.handleChange}
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="endDate"
+              placeholderText={`To`}
+              selected={formik.values.endDate}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              onChange={(date) => formik.setFieldValue("endDate", date)}
+              onBlur={formik.handleBlur}
             />
             <button
-                type={"button"}
-                className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+              type={"button"}
+              className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
               Search
             </button>
           </div>
           <button
-              type={"button"}
-              className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            type={"button"}
+            className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
           >
             <PDFDownloadLink
-                document={<CreateReport />}
-                fileName={`${new Date().toLocaleDateString()}.pdf`}
+              document={<CreateReport />}
+              fileName={`${new Date().toLocaleDateString()}.pdf`}
             >
               <span className={`flex gap-1.5`}>
                 <span className={`mt-0.5`}>PDF</span>

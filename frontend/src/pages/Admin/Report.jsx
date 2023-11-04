@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
-
+import DatePicker from "react-datepicker";
 
 const Report = () => {
   const navigate = useNavigate();
@@ -19,18 +19,18 @@ const Report = () => {
     setCurrentPage(page);
   };
 
-
   const options = [
-    {value: 'all', label: 'All'},
-    {value: 'total-renew', label: 'Total-Renew'},
-    {value: 'total-sale', label: 'Total-Sale'},
-    {value: 'total-expired', label: 'Total-Expired'},
-  ]  
+    { value: "all", label: "All" },
+    { value: "total-renew", label: "Total-Renew" },
+    { value: "total-sale", label: "Total-Sale" },
+    { value: "total-expired", label: "Total-Expired" },
+  ];
 
   const formik = useFormik({
     initialValues: {
       entries: "",
       search: "",
+      filter: "",
       startDate: "",
       endDate: "",
     },
@@ -56,22 +56,24 @@ const Report = () => {
         <h3 className={`text-xl font-semibold`}>Search Report</h3>
         <hr className={`my-5`} />
         <div className="flex justify-between">
-          <div className={`space-x-3`}>
-            <span>From</span>
-            <input
-              type="date"
-              name={`startDate`}
+          <div className={`flex gap-3`}>
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="startDate"
+              placeholderText={`From`}
+              selected={formik.values.startDate}
               className={`input input-sm input-bordered rounded focus:outline-none`}
-              value={formik.values.startDate}
-              onChange={formik.handleChange}
+              onChange={(date) => formik.setFieldValue("startDate", date)}
+              onBlur={formik.handleBlur}
             />
-            <span>To</span>
-            <input
-              type="date"
-              name={`endDate`}
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="endDate"
+              placeholderText={`To`}
+              selected={formik.values.endDate}
               className={`input input-sm input-bordered rounded focus:outline-none`}
-              value={formik.values.endDate}
-              onChange={formik.handleChange}
+              onChange={(date) => formik.setFieldValue("endDate", date)}
+              onBlur={formik.handleBlur}
             />
             <button
               type={"button"}
@@ -79,6 +81,22 @@ const Report = () => {
             >
               Search
             </button>
+          </div>
+          <div>
+            <select
+                name="filter"
+                className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+                value={formik.values.filter}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                All
+              </option>
+              <option value="Sale">Sale</option>
+              <option value="Renew">Renew</option>
+              <option value="Expired">Expired</option>
+            </select>
           </div>
           <div className="w-[200px]">
             <Select
@@ -133,22 +151,22 @@ const Report = () => {
               </button>
             </div>
             <div className={`flex items-center space-x-1.5`}>
-            <div className={`relative sm:min-w-[20rem]`}>
-            <input
-              type="text"
-              placeholder="Search by name..."
-              name="search"
-              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-              value={formik.values.search}
-              onChange={formik.handleChange}
-            />
-            <button
-              type="button"
-              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-            >
-              <FaSearch />
-            </button>
-          </div>
+              <div className={`relative sm:min-w-[20rem]`}>
+                <input
+                  type="text"
+                  placeholder="Search by name..."
+                  name="search"
+                  className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+                  value={formik.values.search}
+                  onChange={formik.handleChange}
+                />
+                <button
+                  type="button"
+                  className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                >
+                  <FaSearch />
+                </button>
+              </div>
             </div>
           </div>
           <div className="overflow-x-auto">

@@ -11,7 +11,29 @@ const slsAPI = baseAPI.injectEndpoints({
         };
       },
     }),
+    renewLicense: build.mutation({
+      query: (data) => {
+        return {
+          url: "users/renew-license",
+          method: "patch",
+          body: data,
+        };
+      },
+    }),
+    updateLicenseStatus: build.mutation({
+      query: (data) => {
+        return {
+          url: "users/update-status",
+          method: "patch",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useAddLicenseMutation } = slsAPI;
+export const {
+  useAddLicenseMutation,
+  useRenewLicenseMutation,
+  useUpdateLicenseStatusMutation,
+} = slsAPI;

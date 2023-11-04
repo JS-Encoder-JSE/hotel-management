@@ -9,6 +9,7 @@ import {
   MdOutlineLockClock,
   MdOutlineMeetingRoom,
 } from "react-icons/md";
+import { FaPeopleGroup } from "react-icons/fa6";
 
 const AdminSBItems = ({ handleSBItems }) => {
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
@@ -26,6 +27,21 @@ const AdminSBItems = ({ handleSBItems }) => {
 
   return (
     <>
+      <li>
+        <NavLink
+          to={`/dashboard/adminowner-list`}
+          className={({ isActive }) =>
+            "flex p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
+            (isActive ? " bg-gray-300" : "")
+          }
+          end
+        >
+          <span className={`w-5`}>
+            <FaPeopleGroup />
+          </span>
+          <span className={`-mt-0.5`}>Owner List</span>
+        </NavLink>
+      </li>
       <li className={`group p-2`}>
         <div
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
@@ -57,41 +73,31 @@ const AdminSBItems = ({ handleSBItems }) => {
             </NavLink>
           </li>
           {!subAdmin && (
-              <>
-            <li>
-              <NavLink
-                to={`/dashboard/suspend-list`}
-                className={({ isActive }) =>
-                  "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                  (isActive ? " bg-gray-300" : "")
-                }
-              >
-                Suspend List
-              </NavLink>
-            </li>
-            <li>
-            <NavLink
-            to={`/dashboard/expired-list`}
-          className={({ isActive }) =>
-              "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-              (isActive ? " bg-gray-300" : "")
-          }
-        >
-          Expired List
-        </NavLink>
-      </li></>
+            <>
+              <li>
+                <NavLink
+                  to={`/dashboard/suspend-list`}
+                  className={({ isActive }) =>
+                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                    (isActive ? " bg-gray-300" : "")
+                  }
+                >
+                  Suspend List
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to={`/dashboard/expired-list`}
+                  className={({ isActive }) =>
+                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                    (isActive ? " bg-gray-300" : "")
+                  }
+                >
+                  Expired List
+                </NavLink>
+              </li>
+            </>
           )}
-          <li>
-            <NavLink
-              to={`/dashboard/adminowner-list`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Owner List
-            </NavLink>
-          </li>
         </ul>
       </li>
       {/*<li>*/}

@@ -2,6 +2,8 @@ import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
+import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -13,6 +15,7 @@ const validationSchema = yup.object({
 });
 
 const ExpiredSettings = () => {
+  const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();
   const formik = useFormik({
     initialValues: {
       status: "",
@@ -22,8 +25,27 @@ const ExpiredSettings = () => {
       toDate: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const obj = { ...values };
+      const { status, remarks: remark, fromDate: from, toDate: to } = obj;
+
+      const response = await updateLicenseStatus({
+        // user_id,
+        status,
+        extended_time: [
+          {
+            from,
+            to,
+          },
+        ],
+        remark,
+      });
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
     },
   });
 
@@ -127,7 +149,13 @@ const ExpiredSettings = () => {
             type={"submit"}
             className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
           >
-            Confirm
+            <span>Confirm</span>
+            {isLoading ? (
+              <span
+                className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                role="status"
+              ></span>
+            ) : null}
           </button>
         </form>
       </div>
