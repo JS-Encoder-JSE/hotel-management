@@ -13,12 +13,12 @@ const statuslogSchema = new mongoose.Schema(
     pre_status: {
       type: String,
       required: false,
-      enum: ["Active", "Deactive", "Suspended", "Expired"],
+      enum: ["Active", "Deactive", "Suspended", "Expired", "Deleted"],
     },
     updated_status: {
       type: String,
       required: false,
-      enum: ["Active", "Deactive", "Suspended", "Expired"],
+      enum: ["Active", "Deactive", "Suspended", "Expired", "Deleted"],
     },
     remark: {
       type: String,

@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["owner", "manager", "admin", "subadmin"],
+      enum: ["owner", "manager", "admin", "subadmin","employee"],
       required: true,
     },
     designation: {
@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Deactive", "Suspended", "Expired"],
+      enum: ["Active", "Deactive", "Suspended", "Expired", "Deleted"],
       required: false,
       default: "Active",
     },

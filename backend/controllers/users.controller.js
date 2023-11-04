@@ -804,24 +804,32 @@ export const updateStatus = async (req, res) => {
     const loginUserId = req.user.userId; // Assuming userId is part of the URL
     const { user_id, status, extended_time, remark } = req.body;
 
-    const parent = await User.findById(loginUserId);
-
-    if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
-      return res.status(403).json({
-        message: "You have no permission to update the user's status",
-      });
-    }
-
-    // Check if the provided status is valid
-    if (!["Active", "Deactive", "Suspended"].includes(status)) {
-      return res.status(400).json({ message: "Invalid status value" });
-    }
-
     // Find the user by their ID
     const user = await User.findById(user_id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    const hierarchy = {
+      admin: ["subadmin", "owner", "manager", "employee"],
+      subadmin: ["owner", "manager", "employee"],
+      owner: ["manager", "employee"],
+      manager: ["employee"],
+    };
+
+    // Check if the login user's role allows them to update the target user's status
+    const parent = await User.findById(loginUserId);
+    const allowedRoles = hierarchy[parent.role];
+    if (!allowedRoles.includes(user.role)) {
+      return res.status(403).json({
+        message: "You have no permission to update the status of this user",
+      });
+    }
+
+    // Check if the provided status is valid
+    if (!["Active", "Deactive", "Suspended", "Deleted"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
     }
 
     // Create a new StatusLog instance
@@ -840,7 +848,7 @@ export const updateStatus = async (req, res) => {
       }
       user.extended_time = extended_time;
     } else if (status === "Active") {
-      if (user.status !== "Deactive") {
+      if (user.status !== "Deactive" && user.status !== "Deleted") {
         return res.status(400).json({ message: "Invalid status value" });
       }
     }
@@ -875,16 +883,16 @@ export const getOwnersByAdmin = async (req, res) => {
 
     const query = { role: "owner" };
 
-    if (!["Active", "Deactive", "Suspended"].includes(filter)) {
+    if (["Active", "Deactive", "Suspended"].includes(filter)) {
       query.status = filter;
     }
 
     if (search) {
       query.$or = [
         { username: { $regex: search, $options: "i" } },
-        { name: { $regex: search, $options: "i" } }
+        { name: { $regex: search, $options: "i" } },
       ];
-    }    
+    }
 
     const options = {
       page: parseInt(page, 10),
