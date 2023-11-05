@@ -24,18 +24,13 @@ import EditEmployee from "./pages/employee/EditEmployee.jsx";
 import ManageEmployee from "./pages/employee/ManageEmployee.jsx";
 import MonitorFinance from "./pages/MonitorFinance/MonitorFinance.jsx";
 import SalesProfitReport from "./pages/report/SalesProfitReport.jsx";
-
-// import SalesProfitReport from "./pages/SalesProfitReport.jsx";
-
 import ManageBooking from "./pages/room/ManageBooking.jsx";
 import ManagerEdit from "./components/ManagerEdit/ManagerEdit.jsx";
 import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
 import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
 import UserDashBoard from "./components/UserDashBoard/UserDashBoard.jsx";
 import BookingView from "./pages/room/BookingView.jsx";
-
 import CheckPDF from "./pages/CheckPDF.jsx";
-
 import AddManager from "./pages/OwnerManagerManagement/AddManager.jsx";
 import ManagerList from "./pages/OwnerManagerManagement/ManagerList.jsx";
 import AddHotel from "./pages/Ownerhotel/AddHotel.jsx";
@@ -57,14 +52,16 @@ import SubAdminList from "./pages/Admin/SubAdminList.jsx";
 import SubAdminListView from "./pages/Admin/SubAdminListView.jsx";
 import SubAdminProfile from "./pages/Admin/SubAdminProfile.jsx";
 import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
-
 import ReportView from "./pages/report/ReportView.jsx";
 import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
 import AddBar from "./pages/bar/AddBar.jsx";
 import BarItemList from "./pages/bar/BarItemList.jsx";
-import LifeStyles from "./pages/LifeStyles/LifeStyles.jsx";
 import BarItemView from "./pages/bar/BarItemView.jsx";
+import EditBar from "./pages/bar/EditBar.jsx";
+import AddLifeStyle from "./pages/LifeStyle/AddLifeStyle.jsx";
+import LifeStyleList from "./pages/LifeStyle/LifeStyleList.jsx";
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -288,7 +285,7 @@ const App = () => {
               ),
             },
             {
-              path: "baritemlist-view",
+              path: "barItem-listView/:id",
               element: (
                 <ManagerRoute>
                   <BarItemView />
@@ -296,10 +293,26 @@ const App = () => {
               ),
             },
             {
-              path: "life-style",
+              path: "edit-bar/:id",
               element: (
                 <ManagerRoute>
-                  <LifeStyles />
+                  <EditBar />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-lifestyle",
+              element: (
+                <ManagerRoute>
+                  <AddLifeStyle />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "lifestyle-list",
+              element: (
+                <ManagerRoute>
+                  <LifeStyleList />
                 </ManagerRoute>
               ),
             },

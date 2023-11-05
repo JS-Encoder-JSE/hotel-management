@@ -264,19 +264,46 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>
         </ul>
       </li>
-      <li>
-        <NavLink
-          to={`/dashboard/life-style`}
-          className={({ isActive }) =>
-            "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
-            (isActive ? " bg-gray-300" : "")
-          }
+      <li className={`group p-2`}>
+        <div
+          onClick={(e) => handleSBItems(e)}
+          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
         >
           <div className={`flex space-x-1.5`}>
             <SiMomenteo />
-            <span>Lifestyle</span>
+            <span className={`-mt-0.5`}>Life Style</span>
           </div>
-        </NavLink>
+          <span className={`group-[.active]:hidden`}>
+            <MdKeyboardArrowDown />
+          </span>
+          <span className={`hidden group-[.active]:inline`}>
+            <MdKeyboardArrowUp />
+          </span>
+        </div>
+        <ul className={`group-[.active]:block hidden`}>
+          <li>
+            <NavLink
+              to={`/dashboard/add-lifestyle`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Add Life Style
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/lifestyle-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Life Style List
+            </NavLink>
+          </li>
+        </ul>
       </li>
       <li>
         <NavLink

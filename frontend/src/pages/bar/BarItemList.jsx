@@ -54,13 +54,13 @@ const BarItemList = () => {
                   <td className={`space-x-1.5`}>
                     <span
                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
-                      onClick={() => navigate(`/dashboard/baritemlist-view/${idx}`)}
+                      onClick={() => navigate(`/dashboard/barItem-listView/${idx}`)}
                     >
                       <FaWineGlass />
                     </span>
                     <span
                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
-                      onClick={() => navigate(`/dashboard/renew-view/${idx}`)}
+                      onClick={() => navigate(`/dashboard/edit-bar/${idx}`)}
                     >
                       <FaEdit />
                     </span>
