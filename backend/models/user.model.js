@@ -23,8 +23,8 @@ const userSchema = new mongoose.Schema(
     },
     parent_id: {
       type: mongoose.Schema.Types.ObjectId,
-      required:false,
-      default:null
+      required: false,
+      default: null,
     },
     name: {
       type: String,
@@ -67,6 +67,16 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     phone_no: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    paid_amount: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    total_paid_amount: {
       type: Number,
       required: false,
       default: 0,

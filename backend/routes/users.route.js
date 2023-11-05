@@ -16,6 +16,7 @@ import {
   updateUserField,
   getUsers,
   getUserById,
+  updateUser,
 } from "../controllers/users.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
@@ -28,6 +29,7 @@ router.post("/add-license", checkToken, addLicense);
 router.patch("/update-status", checkToken, updateStatus);
 router.patch("/update-field", checkToken, updateUserField);
 router.patch("/renew-license", checkToken, renewLicense);
+router.patch("/update-user/:user_id", checkToken, updateUser);
 
 router.post("/login", login);
 router.get("/get-login-user", checkToken, getLoginUser);
