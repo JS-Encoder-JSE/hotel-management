@@ -1,129 +1,161 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 import { useFormik } from "formik";
-import * as yup from "yup";
-
-// form validation
-const validationSchema = yup.object({
-
-    manager: yup.string().required("manager is required"),
-    shiftManager: yup.string().required("Shift Manager is required"),
-//   branchName: yup.string().when(["status"], ([status], schema) => {
-//     if (status == "transfer")
-//       return schema.required("Branch Name is required");
-//     else return schema;
-//   }),
-//   remarks: yup.string().when(["status"], ([status],
-//      schema) => {
-//     if (status !== "induty") return schema.required("Feedback is required");
-//     else return schema;
-//   }),
-});
+import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 
 const ChangeShift = () => {
+  const animatedComponents = makeAnimated();
+
+  const [paymentList, setPaymentList] = useState(1);
+  const [selectCashPayment, setSelectCashPayment] = useState(true);
+  const [checkoutBtn, setCheckoutBtn] = useState(true);
+  const [remainAmount, setRemainAmount] = useState(5493.0);
+  const [collectedAmount, setCollectedAmount] = useState(0);
+  const [changeAmount, setChangeAmount] = useState(collectedAmount);
+
   const formik = useFormik({
     initialValues: {
-        manager:"",
-        shiftManager: ""
-    },
-    validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+      startDate: "",
     },
   });
 
-  return (
-    <>
-      <form method="dialog">
-        <button
-          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={() => formik.handleReset()}
-        >
-          ✕
-        </button>
-      </form>
-      <div>
-        <h3 className={`text-2xl font-semibold mb-3`}>Change Shift</h3>
-        <hr />
-        <form
-          className="form-control grid grid-cols-1 gap-4 mt-5"
-          onSubmit={formik.handleSubmit}
-        >
-       {/* Manager box */}
-       <div className="flex flex-col gap-3">
-              <select
-                name="manager"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
-                value={formik.values.manager}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  Manager
-                </option>
-                <option value="jobber">Jobber</option>
-                <option value="kuddush">Kuddush</option>
-                <option value="akber">Akber</option>
-                <option value="josim">josim</option>
-              </select>
-              {formik.touched.manager && Boolean(formik.errors.manager) ? (
-                <small className="text-red-600">
-                  {formik.touched.manager && formik.errors.manager}
-                </small>
-              ) : null}
-            </div>
-            {/* Manager Shift box */}
-            <div className="flex flex-col gap-3">
-              <select
-                name="shiftManager"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
-                value={formik.values.shiftManager}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  shift
-                </option>
-                {/* <option value="shiftManager4">General Shift</option> */}
-                <option value="morning">Morning</option>
-                <option value="day">Day</option>
-                <option value="night">Night</option>
-              </select>
-              {formik.touched.shiftManager &&
-              Boolean(formik.errors.shiftManager) ? (
-                <small className="text-red-600">
-                  {formik.touched.shiftManager && formik.errors.shiftManager}
-                </small>
-              ) : null}
-            </div>
-        {formik.values.status &&
-        formik.values.status == "transfer" ? (
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Branch Name"
-              name="branchName"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.branchName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.branchName && Boolean(formik.errors.branchName) ? (
-              <small className="text-red-600">
-                {formik.touched.branchName && formik.errors.branchName}
-              </small>
-            ) : null}
-          </div>
-        ) : null}
+  const paymentModeList = [
+    { value: "null", label: "Jobber" },
+    { value: "akber", label: "Akber" },
+    { value: "josim", label: "Josim" },
+    { value: "namir", label: "Namir " },
+  ];
 
-          <button
-            type={"submit"}
-            className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-          >
-            Update
-          </button>
-        </form>
+  // BackDoor -----> After adding more than 1 payment method all filed are using same state...
+  const handlePaymentMode = (e) => {
+    let value = e.value;
+
+    if (value === "Mobile Banking") {
+      setSelectCashPayment(false);
+    } else if (value === "Cash Payment" || value === "null") {
+      setSelectCashPayment(true);
+    } else {
+      setSelectCashPayment(false);
+    }
+  };
+
+  const handleAmount = (e) => {
+    const parseValue = parseFloat(e.target.value);
+    const fixedValue = parseValue.toFixed(2);
+    const value = parseFloat(fixedValue);
+    setCollectedAmount(value);
+    setChangeAmount(value - remainAmount);
+
+    if (value >= remainAmount) {
+      setCheckoutBtn(false);
+    } else {
+      setCheckoutBtn(true);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
+
+  return (
+    <section>
+      <div className="grid lg:grid-cols-2 gap-5">
+        {/* Left Side */}
+        <div className="bg-white rounded">
+        
+
+{/* bill statement */}
+          <h3 className="p-5 text-xl mt-5">Change Shift</h3>
+          <hr />
+          <div className="grid grid-cols-7 gap-2 p-5">
+            <div className="col-span-4 space-y-5">
+              <div className="border-b border-black/20 py-1 mb-5">
+                Manager
+              </div>
+              {[...Array(paymentList)].map((_, index) => (
+                <React.Fragment key={index}>
+                  <div>
+                    <Select
+                      components={animatedComponents}
+                      options={paymentModeList}
+                      onKeyDown={handleKeyDown}
+                      onChange={handlePaymentMode}
+                      placeholder="Manage Name"
+                      className={`text-xs ${selectCashPayment && "mb-[70px]"}`}
+                    />
+                  </div>
+                  <div>
+                    {!selectCashPayment && (
+                      <input
+                        type="number"
+                        required
+                        placeholder="Transaction ID"
+                        className={`hide-number-arrow-input input-hide_Arrows w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500`}
+                      />
+                    )}
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="col-span-2 space-y-5">
+              <div className="border-b border-black/20 py-1 mb-5">Amount</div>
+              {[...Array(paymentList)].map((_, index) => (
+                <React.Fragment key={index}>
+                  <div>
+                    <input
+                      type="number"
+                      required
+                      placeholder="Amount"
+                      onChange={handleAmount}
+                      className={`w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500 hide-number-arrow-input`}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="date"
+                      name={`startDate`}
+                      className={`input input-sm input-bordered rounded focus:outline-none w-full mt-1`}
+                      value={formik.values.startDate}
+                      onChange={formik.handleChange}
+                    />
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="col-span-1 text-center">
+              <div className="border-b border-black/20 py-1 mb-5">Action</div>
+              {[...Array(paymentList)].map((_, index) => (
+                <button
+                  key={index}
+                  disabled={paymentList === 1}
+                  onClick={() => setPaymentList((prev) => prev - 1)}
+                  className={`mb-20 ${
+                    paymentList === 1 && "opacity-40"
+                  } border border-green-slimy hover:bg-green-slimy text-green-slimy hover:text-white duration-300 text-xl p-1 rounded w-fit`}
+                >
+                  <AiOutlineCloseCircle />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-5 flex justify-end">
+            <button
+              onClick={() => setPaymentList((prev) => prev + 1)}
+              disabled={paymentList === 3}
+              className={`border border-green-slimy hover:bg-green-slimy text-3xl text-green-slimy hover:text-white duration-300 rounded ${
+                paymentList === 3 && "opacity-40"
+              }`}
+            >
+              <AiOutlinePlus />
+            </button>
+          </div>
+        </div>
       </div>
-    </>
+    </section>
   );
 };
 

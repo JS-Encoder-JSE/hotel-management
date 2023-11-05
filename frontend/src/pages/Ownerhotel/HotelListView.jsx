@@ -20,7 +20,7 @@ const HotelListView = () => {
           </span>
         </div>
 
-        <h1 className="text-2xl text-center ">Hotel - Information</h1>
+        <h1 className="text-2xl text-center ">Hotel - information</h1>
         <div className="card-body grid md:grid-cols-2 gap-4">
           <div className="">
             <h2 className="card-title mb-3">Hotel Description </h2>
@@ -30,7 +30,7 @@ const HotelListView = () => {
             <h6> Email : jondoe@gmail.com</h6>
           </div>
           <div className="">
-            <h2 className="card-title mb-3">Other Information </h2>
+            <h2 className="card-title mb-3">Other information </h2>
             <h6> Branch Name : Branch 1 </h6>
             <h6> Hotel License Number :GH-DHF-DJ-2354546</h6>
             <h6>Manager Name : Manager 1</h6>

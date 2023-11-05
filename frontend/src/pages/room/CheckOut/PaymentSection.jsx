@@ -99,6 +99,7 @@ const PaymentSection = () => {
             </div>
           </div>
 
+{/* bill statement */}
           <h3 className="p-5 text-xl mt-5">Bill Statement</h3>
           <hr />
           <div className="grid grid-cols-7 gap-2 p-5">
