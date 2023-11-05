@@ -1007,7 +1007,7 @@ export const getUsers = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const query = { parent_id: userId, role:role };
+    const query = { parent_id: userId, role: role };
 
     if (
       ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
@@ -1062,7 +1062,7 @@ export const getUserById = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const user = await User.findById(user_id);
+    const user = await User.findById(user_id).select("-password"); // Exclude the 'password' field
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -1087,7 +1087,7 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json(user);
+    return res.status(200).json({ message: "Update user successful" });
   } catch (error) {
     console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
