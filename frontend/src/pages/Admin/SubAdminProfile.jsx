@@ -42,6 +42,7 @@ const SubAdminProfile = () => {
       address: "",
       password: "",
       salary: "",
+      emergency_contact:''
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -53,6 +54,7 @@ const SubAdminProfile = () => {
         password,
         address,
         salary,
+        emergency_contact
       } = obj;
       let response;
 
@@ -64,6 +66,7 @@ const SubAdminProfile = () => {
           email,
           password,
           address,
+          emergency_contact,
           salary,
         });
       } else {
@@ -73,6 +76,7 @@ const SubAdminProfile = () => {
           phone_no,
           email,
           address,
+          emergency_contact,
           salary,
         });
       }
@@ -181,6 +185,28 @@ const SubAdminProfile = () => {
               ) : null}
             </div>
           </div>
+{/* emergency contact  */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Emergency Contact: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                type="text"
+                name="emergency_contact"
+                className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.emergency_contact}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.emergency_contact &&
+              Boolean(formik.errors.emergency_contact) ? (
+                <small className="text-red-600">
+                  {formik.touched.emergency_contact && formik.errors.emergency_contact}
+                </small>
+              ) : null}
+            </div>
+          </div>
+
+
           {/* Address box */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
             <label className={`w-24 break-words`}>Address: </label>

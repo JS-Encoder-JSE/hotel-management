@@ -79,6 +79,8 @@ const TransactionHistory = () => {
                 <th>License Duration</th>
                 <th>Amount</th>
                 <th>Payment For</th>
+                <th>Deposit By</th>
+
                 {/*<th>Action</th>*/}
               </tr>
             </thead>
@@ -96,6 +98,7 @@ const TransactionHistory = () => {
                     </td>
                     <td>25000</td>
                     <td>Renew</td>
+                    <td>John Doe</td>
                     {/*<td className={`space-x-1.5`}>*/}
                     {/*  <span*/}
                     {/*    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}*/}

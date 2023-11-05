@@ -11,6 +11,8 @@ import SubAdminReport from "./SubAdminReport";
 import ReactPaginate from "react-paginate";
 import OwnerList from "../../components/Admin/OwnerList.jsx";
 import SuspendedOwner from "../../components/Admin/SuspendedOwner.jsx";
+import TransactionHistory from "../../components/Admin/TransactionHistory";
+import StatusHistory from "../../components/Admin/StatusHistory";
 
 const SubAdminListView = () => {
   const navigate = useNavigate();
@@ -49,6 +51,7 @@ const SubAdminListView = () => {
             <h6>Name : Jon Doe</h6>
             <h6>Address : Kolkata</h6>
             <h6>Phone : +98812554</h6>
+            <h6>Emergency Contact : +98812554</h6>
             <h6>Email : jondoe@gmail.com</h6>
           </div>
           <div className="">
@@ -60,7 +63,9 @@ const SubAdminListView = () => {
         </div>
       </div>
       <OwnerList />
-      <SuspendedOwner />
+      <TransactionHistory />
+        <StatusHistory />
+      {/* <SuspendedOwner /> */}
       <SubAdminReport />
     </div>
   );
