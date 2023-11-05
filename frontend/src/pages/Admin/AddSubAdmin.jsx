@@ -20,6 +20,7 @@ const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   username: yup.string().required("Username is required"),
   phoneNumber: yup.string().required("Phone is required"),
+  emergency_contact:yup.string().required("Emergency contact is required"),
   email: yup
     .string()
     .email("Enter a valid email")
@@ -54,6 +55,7 @@ const AddSubAdmin = () => {
       username: "",
       phoneNumber: "",
       email: "",
+      emergency_contact:'',
       password: "",
       address: "",
       salary: "",
@@ -63,6 +65,7 @@ const AddSubAdmin = () => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
+  
       setLoading(true);
 
       const formData = new FormData();
@@ -72,6 +75,7 @@ const AddSubAdmin = () => {
         username,
         phoneNumber: phone_no,
         email,
+        emergency_contact,
         password,
         address,
         salary,
@@ -113,6 +117,7 @@ const AddSubAdmin = () => {
         username,
         role: "subadmin",
         phone_no,
+        emergency_contact,
         email,
         password,
         address,
@@ -296,6 +301,23 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
+                 {/*Emergency Contact*/}
+                 <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Emergency Contact"
+                name="emergency_contact"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.emergency_contact}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.emergency_contact && Boolean(formik.errors.emergency_contact) ? (
+                <small className="text-red-600">
+                  {formik.touched.emergency_contact && formik.errors.emergency_contact}
+                </small>
+              ) : null}
+            </div>
             {/*Sub Admin Email box */}
             <div className="flex flex-col gap-3">
               <input
@@ -313,6 +335,9 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
+
+         
+
             {/* Sub Admin Password box */}
             <div
               className={`flex flex-col gap-3 ${
@@ -374,6 +399,7 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
+
             {/* documents box */}
             {formik.values.documentsType ? (
               <div className={`flex space-x-1.5`}>
@@ -407,6 +433,7 @@ const AddSubAdmin = () => {
                 </div>
               </div>
             ) : null}
+
             {/* Sub Admin Address box */}
             <div className="col-span-full flex flex-col gap-3">
               <textarea
@@ -458,8 +485,10 @@ const AddSubAdmin = () => {
                   {formik.touched.joiningDate && formik.errors.joiningDate}
                 </small>
               ) : null}
+
             </div>
 
+          
             {/* submit button */}
             <div className="col-span-full text-end">
               <button

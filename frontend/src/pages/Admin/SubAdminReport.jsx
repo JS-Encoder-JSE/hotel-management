@@ -131,7 +131,7 @@ const SubAdminReport = () => {
                   <th>Check In</th>
                   <th>Check Out</th>
                   <th>Paid Amount</th>
-                  <th>Action</th>
+                  {/* <th>Action</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -150,7 +150,7 @@ const SubAdminReport = () => {
                         2023-10-21 <br /> 10:00:00
                       </td>
                       <td>25000</td>
-                      <td className={`space-x-1.5`}>
+                      {/* <td className={`space-x-1.5`}>
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                           onClick={() =>
@@ -159,7 +159,7 @@ const SubAdminReport = () => {
                         >
                           <FaEye />
                         </span>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}

@@ -11,7 +11,7 @@ import { Rings } from "react-loader-spinner";
 import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
 import Swal from "sweetalert2";
 
-const AdminOwnerList = () => {
+const AdminOwnerList = ({title}) => {
   const [keyword, setKeyword] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -83,7 +83,9 @@ const AdminOwnerList = () => {
 
   return (
     <div>
+      
       <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
+        {title && <h1 className="text-center text-2xl">{title}</h1>}
         <div className={`flex justify-between gap-4`}>
           <div>
             <select

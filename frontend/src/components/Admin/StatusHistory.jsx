@@ -80,6 +80,8 @@ const StatusHistory = () => {
                 <th>Previous Status</th>
                 <th>Updated Status</th>
                 <th>Remarks</th>
+                <th>Issue By</th>
+
               </tr>
             </thead>
             <tbody>
@@ -95,16 +97,8 @@ const StatusHistory = () => {
                     <td>Active</td>
                     <td>Suspend</td>
                     <td>Consider 7 days</td>
-                    <td className={`space-x-1.5`}>
-                      <span
-                        className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                        onClick={() =>
-                          navigate(`/dashboard/adminowner-view/${idx}`)
-                        }
-                      >
-                        <FaEye />
-                      </span>
-                    </td>
+                    <td>John Carry</td>
+
                   </tr>
                 );
               })}
