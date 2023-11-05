@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import { useGetStatuslogsQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
+import { data } from "autoprefixer";
 
 const StatusHistory = () => {
 
@@ -44,7 +45,7 @@ console.log({statusHistory})
               placeholderText={`From`}
               selected={formik.values.startDate}
               className={`input input-sm input-bordered rounded focus:outline-none`}
-              onChange={(date) => formik.setFieldValue("startDate", date)}
+              onChange={(date) => { formik.setFieldValue("startDate", date); setToDate(date)}}
               onBlur={formik.handleBlur}
             />
             <DatePicker
@@ -53,7 +54,7 @@ console.log({statusHistory})
               placeholderText={`To`}
               selected={formik.values.endDate}
               className={`input input-sm input-bordered rounded focus:outline-none`}
-              onChange={(date) => formik.setFieldValue("endDate", date)}
+              onChange={(date) => { formik.setFieldValue("endDate", date); setFromData(date)}}
               onBlur={formik.handleBlur}
             />
             <button
@@ -84,28 +85,31 @@ console.log({statusHistory})
               <tr>
                 <th>Sl</th>
                 <th>Date</th>
-                <th>License Duration</th>
+                {/* <th>License Duration</th> */}
                 <th>Previous Status</th>
                 <th>Updated Status</th>
                 <th>Remarks</th>
                 <th>Issue By</th>
+                <th>Extended Time</th>
+
 
               </tr>
             </thead>
             <tbody>
-              {[...Array(5)].map((_, idx) => {
+              {statusHistory?.docs?.map((item, idx) => {
                 return (
                   <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                     <th> {++idx}</th>
-                    <td>{new Date().toLocaleDateString()}</td>
-                    <td>
+                    <td>{new Date(item?.createdAt).toLocaleDateString()}</td>
+                    {/* <td>
                       {new Date().toLocaleDateString()} -{" "}
                       {new Date().toLocaleDateString()}
-                    </td>
-                    <td>Active</td>
-                    <td>Suspend</td>
-                    <td>Consider 7 days</td>
-                    <td>John Carry</td>
+                    </td> */}
+                    <td>{item?.pre_status}</td>
+                    <td>{item?.updated_status}</td>
+                    <td>{item?.remark}</td>
+                    <td>{item?.changed_from}</td>
+                    <td>{''}</td>
 
                   </tr>
                 );
@@ -124,7 +128,7 @@ console.log({statusHistory})
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={1}
+              pageCount={statusHistory?.totalPages}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
