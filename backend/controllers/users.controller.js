@@ -21,6 +21,7 @@ export const addUser = async (req, res) => {
       address,
       email,
       phone_no,
+      emergency_contact,
       salary,
       joining_date,
       assignedHotel,
@@ -65,6 +66,7 @@ export const addUser = async (req, res) => {
       address,
       email,
       phone_no,
+      emergency_contact,
       salary,
       joining_date,
       assignedHotel,
@@ -96,6 +98,7 @@ export const addLicense = async (req, res) => {
       address,
       email,
       phone_no,
+      emergency_contact,
       bill_info,
       bill_from,
       bill_to,
@@ -135,6 +138,7 @@ export const addLicense = async (req, res) => {
       address,
       email,
       phone_no,
+      emergency_contact,
       bill_info,
       bill_from,
       bill_to,
@@ -1003,7 +1007,7 @@ export const getUsers = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const query = { parent_id: userId };
+    const query = { parent_id: userId, role:role };
 
     if (
       ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)

@@ -71,6 +71,11 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    emergency_contact: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
     paid_amount: {
       type: Number,
       required: false,
