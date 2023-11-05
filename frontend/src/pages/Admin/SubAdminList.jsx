@@ -4,9 +4,10 @@ import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
-import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
-import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
-import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import {useUpdateLicenseStatusMutation} from "../../redux/admin/sls/slsAPI.js";
+import {useOwnerListQuery} from "../../redux/admin/ownerlist/ownerListAPI.js";
+import {useGetUsersQuery} from "../../redux/admin/subadmin/subadminAPI.js";
+import store from "../../redux/store.js";
 import { Rings } from "react-loader-spinner";
 import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
 import Modal from "../../components/Modal.jsx";
@@ -31,11 +32,14 @@ const SubAdminList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const parentId = store.getState().authSlice.user._id
+  console.log(parentId)
   const { isLoading, data: subadmins } = useGetUsersQuery({
     cp: currentPage,
     filter: formik.values.filter,
     search: keyword,
     role: "subadmin",
+    parentId
   });
 
   const handlePageClick = ({ selected: page }) => {

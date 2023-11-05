@@ -4,10 +4,13 @@ import ReactPaginate from "react-paginate";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CreateReport from "../pdf/CreateReport.jsx";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import { useGetStatuslogsQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
 
 const StatusHistory = () => {
+
+  
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -19,10 +22,15 @@ const StatusHistory = () => {
   const [historyPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
-
+  const { id } = useParams()
+  	const [fromDate, setFromData] = useState("");
+	const [toDate, setToDate] = useState("");
+	const searchParams = { id, fromDate, toDate ,cp:currentPage};
+  const {data:statusHistory,error,isLoading}= useGetStatuslogsQuery(searchParams)
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
+console.log({statusHistory})
 
   return (
     <div className="card w-full bg-white shadow-xl">
@@ -116,7 +124,7 @@ const StatusHistory = () => {
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={pageCount}
+              pageCount={1}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}

@@ -6,7 +6,7 @@ import {
   FaUserCheck,
   FaUserLock,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SubAdminReport from "./SubAdminReport";
 import ReactPaginate from "react-paginate";
 import OwnerList from "../../components/Admin/OwnerList.jsx";
@@ -14,13 +14,17 @@ import SuspendedOwner from "../../components/Admin/SuspendedOwner.jsx";
 import TransactionHistory from "../../components/Admin/TransactionHistory";
 import StatusHistory from "../../components/Admin/StatusHistory";
 import AdminOwnerList from "./AdminOwnerList";
+import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI";
 
 const SubAdminListView = () => {
   const navigate = useNavigate();
   const [roomsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
+  const {id} = useParams()
 
+  const { data: userData, error, isLoading } = useGetUserQuery(id)
+  console.log(userData)
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
@@ -49,17 +53,17 @@ const SubAdminListView = () => {
         <div className="card-body grid md:grid-cols-2 gap-4">
           <div className="">
             <h2 className="card-title mb-3">Sub Admin Information </h2>
-            <h6>Name : Jon Doe</h6>
-            <h6>Address : Kolkata</h6>
-            <h6>Phone : +98812554</h6>
-            <h6>Emergency Contact : +98812554</h6>
-            <h6>Email : jondoe@gmail.com</h6>
+            <h6>Name : { userData?.name}</h6>
+            <h6>Address : {userData?.address}</h6>
+            <h6>Phone : {userData?.phone_no}</h6>
+            <h6>Emergency Contact : {userData?.emergency_contact}</h6>
+            <h6>Email : {userData?.email}</h6>
           </div>
           <div className="">
             <h2 className="card-title mb-3">Other Information </h2>
-            <h6>Joining Date : 12-10-2023 </h6>
-            <h6>Salary : 20,000 </h6>
-            <h6>Status : Active</h6>
+            <h6>Joining Date : {userData?.joining_date} </h6>
+            <h6>Salary : {userData?.salary} </h6>
+            <h6>Status : { userData?.status}</h6>
           </div>
         </div>
       </div>
