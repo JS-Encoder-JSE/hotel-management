@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
@@ -23,8 +23,8 @@ const HotelLists = () => {
 
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-10`}>
-      <div className={`flex justify-between gap-4`}>
-        <div>
+      <div className={`flex justify-end gap-4`}>
+        {/* <div>
           <select
             name="filter"
             className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
@@ -36,7 +36,7 @@ const HotelLists = () => {
             <option value="deactive">deActive</option>
             <option value="suspended">Suspended</option>
           </select>
-        </div>
+        </div> */}
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"
@@ -59,22 +59,13 @@ const HotelLists = () => {
           <thead>
             <tr>
               <th>Sl</th>
-              <th>Hotel Name</th>
-              <th>
-                Hotel <br /> Address
-              </th>
-              <th className="text-center">
-                Hotel <br /> Email
-              </th>
-              <th>
-                Phone <br /> Number
-              </th>
+              <th>Name</th>
+              <th>Branch Name</th>
+              {/* <th> Address </th> */}
+              {/* <th className="text-center">Email</th> */}
+              <th>Phone Number</th>
               {/* <th>License <br /> Number</th> */}
-              <th>
-                {" "}
-                Branch <br /> Name
-              </th>
-              <th> Manager</th>
+              {/* <th> Manager</th> */}
               <th>Action</th>
             </tr>
           </thead>
@@ -84,13 +75,21 @@ const HotelLists = () => {
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <th> {++idx}</th>
                   <td className="font-bold">Jon Doe</td>
-                  <td>Kolkata</td>
-                  <td>jondoe@gmail.com</td>
+                  <td>Branch 1</td>
+                  {/* <td>Kolkata</td> */}
+                  {/* <td>jondoe@gmail.com</td> */}
                   <td>+98825456</td>
                   {/* <td>123456</td> */}
-                  <td>Branch 1</td>
-                  <td>Manager 1</td>
+                  {/* <td>Manager 1</td> */}
                   <td className={`space-x-1.5`}>
+                  <span
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                          onClick={() =>
+                            navigate(`/dashboard/hotelList-view/${idx}`)
+                          }
+                        >
+                          <FaEye />
+                        </span>
                     <span
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                       onClick={() => navigate(`/dashboard/hotel-edit/${idx}`)}
