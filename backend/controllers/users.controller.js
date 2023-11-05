@@ -390,7 +390,7 @@ export const getLoginUser = async (req, res) => {
 
 export const getOwners = async (req, res) => {
   try {
-    // Find all users with the role 'owner'
+    // Find all user with the role 'owner'
     const owners = await User.find({ role: "owner" });
 
     res.json(owners);
@@ -426,7 +426,7 @@ export const getManagersByOwner = async (req, res) => {
       page: parseInt(page, 10),
       limit: parseInt(limit, 10),
     };
-    // Find all users with the role 'manager' and assigned to the owner's hotels
+    // Find all user with the role 'manager' and assigned to the owner's hotels
     const managers = await User.paginate(query, options);
 
     res.status(200).json(managers);

@@ -1,29 +1,38 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  useGetUserQuery,
+  useUpdateUserMutation,
+} from "../../redux/admin/subadmin/subadminAPI.js";
+import { Rings } from "react-loader-spinner";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   address: yup.string().required("Address is required"),
   email: yup
-      .string()
-      .email("Enter a valid email")
-      .required("Email is required"),
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
   phoneNumber: yup.string().required("Phone Number is required"),
   salary: yup
-      .number()
-      .required("Salary is required")
-      .positive("Salary must be a positive number")
-      .integer("Salary must be an integer"),
+    .number()
+    .required("Salary is required")
+    .positive("Salary must be a positive number")
+    .integer("Salary must be an integer"),
 });
 
 const SubAdminProfile = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
   const [showPass, setShowPass] = useState(false);
+  const { isLoading, data: user } = useGetUserQuery(id);
+  const [updateUser, { isLoading: isFetching }] = useUpdateUserMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -35,10 +44,58 @@ const SubAdminProfile = () => {
       salary: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const obj = { ...values };
+      const {
+        name,
+        phoneNumber: phone_no,
+        email,
+        password,
+        address,
+        salary,
+      } = obj;
+      let response;
+
+      if (password) {
+        response = await updateUser({
+          user_id: id,
+          name,
+          phone_no,
+          email,
+          password,
+          address,
+          salary,
+        });
+      } else {
+        response = await updateUser({
+          user_id: id,
+          name,
+          phone_no,
+          email,
+          address,
+          salary,
+        });
+      }
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
     },
   });
+
+  useEffect(() => {
+    if (user) {
+      formik.setValues({
+        name: user?.name,
+        email: user?.email,
+        phoneNumber: user?.phone_no,
+        address: user?.address,
+        salary: user?.salary,
+      });
+    }
+  }, [user]);
 
   return (
     <div
@@ -61,169 +118,177 @@ const SubAdminProfile = () => {
           )}
         </div>
       </div>
+      {!isLoading ? (
+        <form
+          className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto mt-14"
+          onSubmit={formik.handleSubmit}
+        >
+          {/* name box */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Name: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                type="text"
+                name="name"
+                className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.name && Boolean(formik.errors.name) ? (
+                <small className="text-red-600">
+                  {formik.touched.name && formik.errors.name}
+                </small>
+              ) : null}
+            </div>
+          </div>
+          {/* Email box */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Email: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                type="email"
+                name="email"
+                className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.email && Boolean(formik.errors.email) ? (
+                <small className="text-red-600">
+                  {formik.touched.email && formik.errors.email}
+                </small>
+              ) : null}
+            </div>
+          </div>
+          {/* Phone box */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Phone: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                type="text"
+                name="phoneNumber"
+                className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.phoneNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.phoneNumber &&
+              Boolean(formik.errors.phoneNumber) ? (
+                <small className="text-red-600">
+                  {formik.touched.phoneNumber && formik.errors.phoneNumber}
+                </small>
+              ) : null}
+            </div>
+          </div>
+          {/* Address box */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Address: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <textarea
+                name="address"
+                className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+                value={formik.values.address}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.address && Boolean(formik.errors.address) ? (
+                <small className="text-red-600">
+                  {formik.touched.address && formik.errors.address}
+                </small>
+              ) : null}
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Password: </label>
+            <div className="relative flex flex-col w-full">
+              <input
+                type={showPass ? "text" : "password"}
+                placeholder="New Password"
+                name="password"
+                className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {showPass ? (
+                <span
+                  className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                  onClick={() => setShowPass(false)}
+                >
+                  <FaEyeSlash />
+                </span>
+              ) : (
+                <span
+                  className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                  onClick={() => setShowPass(true)}
+                >
+                  <FaEye />
+                </span>
+              )}
 
-      <form
-        className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto mt-14"
-        onSubmit={formik.handleSubmit}
-      >
-        {/* name box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Name: </label>
-          <div className="flex flex-col w-full space-y-2">
-            <input
-              type="text"
-              placeholder="Rion"
-              name="name"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.name && Boolean(formik.errors.name) ? (
-              <small className="text-red-600">
-                {formik.touched.name && formik.errors.name}
-              </small>
-            ) : null}
+              {formik.touched.password && Boolean(formik.errors.password) ? (
+                <small className="text-red-600 mt-2">
+                  {formik.touched.password && formik.errors.password}
+                </small>
+              ) : null}
+            </div>
           </div>
-        </div>
-        {/* Email box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Email: </label>
-          <div className="flex flex-col w-full space-y-2">
-            <input
-              type="email"
-              placeholder="rion@email.com"
-              name="email"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.email && Boolean(formik.errors.email) ? (
-              <small className="text-red-600">
-                {formik.touched.email && formik.errors.email}
-              </small>
-            ) : null}
+          {/* salary box */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Salary: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                type="text"
+                name="salary"
+                className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.salary}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.salary && Boolean(formik.errors.salary) ? (
+                <small className="text-red-600">
+                  {formik.touched.salary && formik.errors.salary}
+                </small>
+              ) : null}
+            </div>
           </div>
-        </div>
-        {/* Phone box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Phone: </label>
-          <div className="flex flex-col w-full space-y-2">
-            <input
-              type="text"
-              placeholder="0123324434435"
-              name="phoneNumber"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.phoneNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.phoneNumber &&
-            Boolean(formik.errors.phoneNumber) ? (
-              <small className="text-red-600">
-                {formik.touched.phoneNumber && formik.errors.phoneNumber}
-              </small>
-            ) : null}
+          {/* Joining date box */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Joining Date: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                type="text"
+                placeholder={new Date(user?.joining_date).toLocaleDateString()}
+                className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy input-disabled"
+                readOnly
+              />
+            </div>
           </div>
-        </div>
-        {/* Address box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Address: </label>
-          <div className="flex flex-col w-full space-y-2">
-            <textarea
-              placeholder="Address"
-              name="address"
-              className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
-              value={formik.values.address}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.address && Boolean(formik.errors.address) ? (
-              <small className="text-red-600">
-                {formik.touched.address && formik.errors.address}
-              </small>
-            ) : null}
+          {/* submit button */}
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="btn w-fit bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs h-auto"
+            >
+              <span>Update Information</span>
+              {isFetching ? (
+                <span
+                  className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                  role="status"
+                ></span>
+              ) : null}
+            </button>
           </div>
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Password: </label>
-          <div className="relative flex flex-col w-full">
-            <input
-              type={showPass ? "text" : "password"}
-              placeholder="New Password"
-              name="password"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {showPass ? (
-              <span
-                className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
-                onClick={() => setShowPass(false)}
-              >
-                <FaEyeSlash />
-              </span>
-            ) : (
-              <span
-                className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
-                onClick={() => setShowPass(true)}
-              >
-                <FaEye />
-              </span>
-            )}
-
-            {formik.touched.password && Boolean(formik.errors.password) ? (
-              <small className="text-red-600 mt-2">
-                {formik.touched.password && formik.errors.password}
-              </small>
-            ) : null}
-          </div>
-        </div>
-        {/* salary box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Salary: </label>
-          <div className="flex flex-col w-full space-y-2">
-            <input
-              type="text"
-              placeholder="20000"
-              name="salary"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.salary}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.salary &&
-            Boolean(formik.errors.salary) ? (
-              <small className="text-red-600">
-                {formik.touched.salary && formik.errors.salary}
-              </small>
-            ) : null}
-          </div>
-        </div>
-        {/* Joining date box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-          <label className={`w-24 break-words`}>Joining Date: </label>
-          <div className="flex flex-col w-full space-y-2">
-            <input
-              type="text"
-              placeholder="1/2/23"
-              className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy input-disabled"
-              readOnly
-            />
-          </div>
-        </div>
-        {/* submit button */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="btn w-fit bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs h-auto"
-          >
-            Update Information
-          </button>
-        </div>
-      </form>
+        </form>
+      ) : (
+        <Rings
+          width="50"
+          height="50"
+          color="#37a000"
+          wrapperClass="justify-center mt-14"
+        />
+      )}
     </div>
   );
 };

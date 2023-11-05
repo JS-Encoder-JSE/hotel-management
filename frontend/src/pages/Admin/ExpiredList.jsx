@@ -39,6 +39,12 @@ const ExpiredList = () => {
     setCurrentPage(page);
   };
 
+  const pressEnter = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      formik.handleSubmit();
+    }
+  };
+
   useEffect(() => {
     if (owners) setPageCount(owners.totalPages);
   }, [owners]);
@@ -58,6 +64,7 @@ const ExpiredList = () => {
             onKeyUp={(e) => {
               e.target.value === "" ? formik.handleSubmit() : null;
             }}
+            onKeyDown={(e) => pressEnter(e)}
           />
           <button
             onClick={() => formik.handleSubmit()}

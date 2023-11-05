@@ -11,8 +11,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
-import {useAddSubAdminMutation} from "../../redux/admin/subadmin/subadminAPI.js";
+import { useAddSubAdminMutation } from "../../redux/admin/subadmin/subadminAPI.js";
 import toast from "react-hot-toast";
+import { useUploadMutation } from "../../redux/baseAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -43,7 +44,8 @@ const validationSchema = yup.object({
 
 const AddSubAdmin = () => {
   const [isLoading, setLoading] = useState(false);
-  const [addSubAdmin] = useAddSubAdminMutation()
+  const [upload] = useUploadMutation();
+  const [addSubAdmin] = useAddSubAdminMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
@@ -63,7 +65,8 @@ const AddSubAdmin = () => {
     onSubmit: async (values, formikHelpers) => {
       setLoading(true);
 
-      const obj = {...values};
+      const formData = new FormData();
+      const obj = { ...values };
       const {
         name,
         username,
@@ -77,7 +80,46 @@ const AddSubAdmin = () => {
         documents,
       } = obj;
 
-      const response = await addSubAdmin();
+      for (let i = 0; i < documents.length; i++) {
+        const photoName = documents[i].name.substring(
+          0,
+          documents[i].name.lastIndexOf("."),
+        );
+
+        formData.append(photoName, documents[i]);
+      }
+
+      await upload(formData).then((result) => {
+        let title;
+
+        switch (documentsType) {
+          case "NID":
+            title = "nid";
+            break;
+          case "Passport":
+            title = "passport";
+            break;
+          case "Driving License":
+            title = "driving_lic_img";
+        }
+
+        obj.images = {
+          [title]: result.data.imageUrls,
+        };
+      });
+
+      const response = await addSubAdmin({
+        name,
+        username,
+        role: "subadmin",
+        phone_no,
+        email,
+        password,
+        address,
+        salary,
+        joining_date,
+        images: obj.images,
+      });
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -424,7 +466,13 @@ const AddSubAdmin = () => {
                 type="submit"
                 className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
               >
-                Add
+                <span>Add</span>
+                {isLoading ? (
+                  <span
+                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                    role="status"
+                  ></span>
+                ) : null}
               </button>
             </div>
           </form>

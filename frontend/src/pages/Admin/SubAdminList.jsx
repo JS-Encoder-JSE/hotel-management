@@ -1,24 +1,46 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { FaEye, FaRegEdit, FaSearch } from "react-icons/fa";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import {useUpdateLicenseStatusMutation} from "../../redux/admin/sls/slsAPI.js";
+import {useOwnerListQuery} from "../../redux/admin/ownerlist/ownerListAPI.js";
+import {useGetUsersQuery} from "../../redux/admin/subadmin/subadminAPI.js";
 
 const SubAdminList = () => {
+  const [keyword, setKeyword] = useState(null);
+  const formik = useFormik({
+    initialValues: {
+      search: "",
+      filter: "",
+    },
+    onSubmit: (values) => {
+      setKeyword(values.search);
+    },
+  });
+  const [updateLicenseStatus] = useUpdateLicenseStatusMutation();
+
+  const navigate = useNavigate();
   const [subAdminPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
+  const [owner, setOwner] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { isLoading, data: subadmins } = useGetUsersQuery({
+    cp: currentPage,
+    filter: formik.values.filter,
+    search: keyword,
+    role: "subadmin"
+  });
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
 
-  const formik = useFormik({
-    initialValues: {
-      search: "",
-    },
-  });
+  useEffect(() => {
+    if (subadmins) setPageCount(subadmins.totalPages);
+  }, [subadmins]);
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -35,8 +57,12 @@ const SubAdminList = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
             />
             <button
+                onClick={() => formik.handleSubmit()}
               type="button"
               className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
@@ -60,25 +86,25 @@ const SubAdminList = () => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {subadmins?.docs?.map((sa, idx) => {
                   return (
                     <tr
                       key={idx}
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>Jon Doe</td>
-                      <td>jondoe@gmail.com</td>
-                      <td>+99801111</td>
+                      <td>{sa?.name}</td>
+                      <td>{sa?.email}</td>
+                      <td>{sa?.phone_no}</td>
                       <td className={`space-x-1.5`}>
-                        <Link to={`/dashboard/sub-admin-list-view/${idx}`}>
+                        <Link to={`/dashboard/sub-admin-list-view/${sa?._id}`}>
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                           >
                             <FaEye />
                           </span>
                         </Link>
-                        <Link to={`/dashboard/sub-admin-profile/${idx}/edit`}>
+                        <Link to={`/dashboard/sub-admin-profile/${sa?._id}/edit`}>
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                           >

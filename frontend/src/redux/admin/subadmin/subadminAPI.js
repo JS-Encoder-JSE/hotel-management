@@ -12,7 +12,33 @@ const slsAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["subadmin"],
     }),
+    getUser: build.query({
+      query: (id) => `users/get-user-by-id/${id}`,
+      providesTags: ["subadmin"],
+    }),
+    updateUser: build.mutation({
+      query: (data) => {
+        return {
+          url: "users/update-field",
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["subadmin"],
+    }),
+    getUsers: build.query({
+      query: ({ cp, filter, search, role }) =>
+        `users/get-users?page=${++cp}${filter ? `&filter=${filter}` : ""}${
+          search ? `&search=${search}` : ""
+        }${role ? `&role=${role}` : ""}`,
+      providesTags: ["owner"],
+    }),
   }),
 });
 
-export const { useAddSubAdminMutation } = slsAPI;
+export const {
+  useAddSubAdminMutation,
+  useGetUserQuery,
+  useGetUsersQuery,
+  useUpdateUserMutation,
+} = slsAPI;

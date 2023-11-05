@@ -50,9 +50,9 @@ export const validationSchema = yup.object({
     .required("Amount is required")
     .positive("Amount must be a positive number")
     .integer("Amount must be an integer"),
-  documentsType: yup.string().required("Type of documents are required"),
-  documents: yup.mixed().when(["documentsType"], ([documentsType], schema) => {
-    if (documentsType) return schema.required(`${documentsType} are required`);
-    else return schema;
-  }),
+  // documentsType: yup.string().required("Type of documents are required"),
+  // documents: yup.mixed().when(["documentsType"], ([documentsType], schema) => {
+  //   if (documentsType) return schema.required(`${documentsType} are required`);
+  //   else return schema;
+  // }),
 });
