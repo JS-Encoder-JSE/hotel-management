@@ -17,8 +17,8 @@ import { useRoomsQuery } from "../../redux/room/roomAPI.js";
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   mobile: yup.string().required("Mobile number is required"),
-  emergencyNumber: yup.string().required("Emergency Number  is required"),
-  address: yup.string().required("Address  is required"),
+  emergencyNumber: yup.string().required("Emergency Number number is required"),
+  address: yup.string().required("Address Number number is required"),
   // age: yup
   //   .number()
   //   .required("Age is required")
@@ -64,8 +64,6 @@ const CheckIn = () => {
     initialValues: {
       name: "",
       mobile: "",
-      emergencyNumber: "",
-      address: "",
       adult: "",
       children: "",
       paymentMethod: "",
@@ -75,6 +73,8 @@ const CheckIn = () => {
       toDate: "",
       nationality: "",
       documents: null,
+      emergencyNumber: "",
+      address: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -257,15 +257,15 @@ const CheckIn = () => {
           <input
             type="text"
             placeholder="Emergency Number"
-            name="emergencyNumber  "
+            name="emergencyNumber"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-            value={formik.values.emergencyNumber }
+            value={formik.values.emergencyNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.emergencyNumber  && Boolean(formik.errors.emergencyNumber ) ? (
+          {formik.touched.emergencyNumber && Boolean(formik.errors.emergencyNumber) ? (
             <small className="text-red-600">
-              {formik.touched.emergencyNumber  && formik.errors.emergencyNumber }
+              {formik.touched.emergencyNumber && formik.errors.emergencyNumber}
             </small>
           ) : null}
         </div>
@@ -274,15 +274,15 @@ const CheckIn = () => {
           <input
             type="text"
             placeholder="Address"
-            name="address  "
+            name="address"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-            value={formik.values.address }
+            value={formik.values.address}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.address  && Boolean(formik.errors.address ) ? (
+          {formik.touched.address && Boolean(formik.errors.address) ? (
             <small className="text-red-600">
-              {formik.touched.address  && formik.errors.address }
+              {formik.touched.address && formik.errors.address}
             </small>
           ) : null}
         </div>

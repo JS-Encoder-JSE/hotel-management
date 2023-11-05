@@ -30,8 +30,10 @@ const BookingLists = () => {
             <tr className={`text-lg`}>
               <th>Name</th>
               <th>Phone</th>
-              <th>Amount</th>
-              <th>Booking Date</th>
+              <th>Booking <br /> Amount</th>
+              <th>Booking <br /> Date</th>
+              <th>From</th>
+              <th>To</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -52,6 +54,8 @@ const BookingLists = () => {
                   <td>
                     27-08-23 <br /> 10.00.00
                   </td>
+                  <td>12-11-23</td>
+                  <td>14-10-23</td>
                   <td className={`space-x-1.5`}>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
@@ -60,16 +64,30 @@ const BookingLists = () => {
                     >
                       <FaEye />
                     </span>
-                    <span
+                    {/* <span
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                      title={`Check In`}
+                      title={`chekin`}
+                    
                     >
                       <FaDoorOpen />
+                    </span> */}
+                    <span>
+                     
+<button    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`} onClick={()=>document.getElementById('my_modal_3').showModal()}><FaDoorOpen /></button>
+<dialog id="my_modal_3" className="modal">
+  <div className="modal-box">
+    <form method="dialog">
+      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h2>dflkjlfj;osdj</h2>
+  </div>
+</dialog>
                     </span>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                       title={`Edit`}
                       onClick={() => window.eb_modal.showModal()}
+                      
                     >
                       <FaEdit />
                     </span>
@@ -88,6 +106,7 @@ const BookingLists = () => {
         <Modal id={`eb_modal`}>
           <EditBooking />
         </Modal>
+      
       </div>
       <div className="flex justify-center mt-10">
         <ReactPaginate
