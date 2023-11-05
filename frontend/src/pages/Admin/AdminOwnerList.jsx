@@ -76,7 +76,7 @@ const AdminOwnerList = () => {
   }, [owners]);
 
   useEffect(() => {
-    if (owner) {
+    if (owner && modalOpen) {
       window.ol_modal.showModal();
     }
   }, [modalOpen]);

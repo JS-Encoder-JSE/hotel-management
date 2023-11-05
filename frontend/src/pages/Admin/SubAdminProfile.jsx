@@ -58,22 +58,26 @@ const SubAdminProfile = () => {
 
       if (password) {
         response = await updateUser({
-          user_id: id,
-          name,
-          phone_no,
-          email,
-          password,
-          address,
-          salary,
+          id,
+          data: {
+            name,
+            phone_no,
+            email,
+            password,
+            address,
+            salary,
+          },
         });
       } else {
         response = await updateUser({
-          user_id: id,
-          name,
-          phone_no,
-          email,
-          address,
-          salary,
+          id,
+          data: {
+            name,
+            phone_no,
+            email,
+            address,
+            salary,
+          },
         });
       }
 
