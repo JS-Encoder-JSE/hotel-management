@@ -1,35 +1,40 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaPlusCircle } from "react-icons/fa";
-import { useAddInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
+import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
+import { FaPencil } from "react-icons/fa6";
+import {useNavigate, useParams} from "react-router-dom";
+import {useUpdateInventoryMutation} from "../../redux/inventory/inventoryAPI.js";
 import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
-  brandName: yup.string().required("Brand Name is required"),
+    brandName: yup.string().required("Brand Name is required"),
+      surveyorQuantity: yup
+      .number()
+      .required("Quantity is required")
+      .positive("Quantity must be a positive number")
+      .integer("Quantity must be an integer"),
+      ItemPrice: yup.string().required("Price is required"),
+      typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
   itemDescription: yup
     .string()
     .required("Description is required")
     .min(20, "Description at least 20 characters length"),
-    surveyorQuantity: yup
-    .number()
-    .required("Quantity is required")
-    .positive("Quantity must be a positive number")
-    .integer("Quantity must be an integer"),
-    ItemPrice: yup.string().required("Price is required"),
-    typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
+  
 });
 
-const AddBar = () => {
+const EditBar = () => {
+  const {id} = useParams()
+  const navigate = useNavigate();
+  const [updateInventory] = useUpdateInventoryMutation()
   const formik = useFormik({
     initialValues: {
-      brandName: "",
-      typeOfAlcohol: "",
-      itemDescription: "",
-      surveyorQuantity: "",
-      ItemPrice: "",
-     
+        brandName: "",
+        typeOfAlcohol: "",
+        itemDescription: "",
+        surveyorQuantity: "",
+        ItemPrice: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -39,12 +44,21 @@ const AddBar = () => {
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
-      <h3
-        className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
+      <div
+        className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
       >
-        <FaPlusCircle />
-        <span>Add Item Bar</span>
-      </h3>
+        <h3 className={`flex text-2xl text-white space-x-1.5`}>
+          <FaPencil />
+          <span>Edit Bar</span>
+        </h3>
+        <div
+          className={`flex hover:text-white hover:bg-transparent border border-white items-center space-x-1.5 bg-white text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+          <span>Back</span>
+        </div>
+      </div>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
@@ -145,7 +159,7 @@ const AddBar = () => {
             type="submit"
             className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
           >
-            Add
+           Update
           </button>
         </div>
       </form>
@@ -153,4 +167,4 @@ const AddBar = () => {
   );
 };
 
-export default AddBar;
+export default EditBar;

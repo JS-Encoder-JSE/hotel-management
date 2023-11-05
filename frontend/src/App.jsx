@@ -30,9 +30,7 @@ import HotelEdit from "./components/HotelEdit/HotelEdit.jsx";
 import CheckOut from "./pages/room/CheckOut/CheckOut.jsx";
 import UserDashBoard from "./components/UserDashBoard/UserDashBoard.jsx";
 import BookingView from "./pages/room/BookingView.jsx";
-
 import CheckPDF from "./pages/CheckPDF.jsx";
-
 import AddManager from "./pages/OwnerManagerManagement/AddManager.jsx";
 import ManagerList from "./pages/OwnerManagerManagement/ManagerList.jsx";
 import AddHotel from "./pages/Ownerhotel/AddHotel.jsx";
@@ -54,7 +52,6 @@ import SubAdminList from "./pages/Admin/SubAdminList.jsx";
 import SubAdminListView from "./pages/Admin/SubAdminListView.jsx";
 import SubAdminProfile from "./pages/Admin/SubAdminProfile.jsx";
 import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
-
 import ReportView from "./pages/report/ReportView.jsx";
 import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
@@ -63,7 +60,12 @@ import SuspendList from "./pages/Admin/SuspendList.jsx";
 import ExpiredList from "./pages/Admin/ExpiredList.jsx";
 import AddBar from "./pages/bar/AddBar.jsx";
 import BarItemList from "./pages/bar/BarItemList.jsx";
+import BarItemView from "./pages/bar/BarItemView.jsx";
+import EditBar from "./pages/bar/EditBar.jsx";
+import AddLifeStyle from "./pages/LifeStyle/AddLifeStyle.jsx";
+import LifeStyleList from "./pages/LifeStyle/LifeStyleList.jsx";
 import HotelListView from "./pages/Ownerhotel/HotelListView.jsx";
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -283,6 +285,38 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <BarItemList />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "barItem-listView/:id",
+              element: (
+                <ManagerRoute>
+                  <BarItemView />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "edit-bar/:id",
+              element: (
+                <ManagerRoute>
+                  <EditBar />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-lifestyle",
+              element: (
+                <ManagerRoute>
+                  <AddLifeStyle />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "lifestyle-list",
+              element: (
+                <ManagerRoute>
+                  <LifeStyleList />
                 </ManagerRoute>
               ),
             },

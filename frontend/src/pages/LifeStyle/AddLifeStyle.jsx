@@ -21,7 +21,7 @@ const validationSchema = yup.object({
     typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
 });
 
-const AddBar = () => {
+const AddLifeStyle = () => {
   const formik = useFormik({
     initialValues: {
       brandName: "",
@@ -43,26 +43,61 @@ const AddBar = () => {
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
         <FaPlusCircle />
-        <span>Add Item Bar</span>
+        <span>Add Life Style </span>
       </h3>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
-        {/* Brand Name */}
+        {/* swimming Name */}
         <div className="flex flex-col gap-5">
           <input
             type="text"
-            placeholder="Brand Name"
-            name="brandName"
+            placeholder="swimming"
+            name="swimmingName"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.brandName}
+            value={formik.values.swimmingName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.brandName && Boolean(formik.errors.brandName) ? (
+          {formik.touched.swimmingName && Boolean(formik.errors.swimmingName) ? (
             <small className="text-red-600">
-              {formik.touched.brandName && formik.errors.brandName}
+              {formik.touched.swimmingName && formik.errors.swimmingName}
+            </small>
+          ) : null}
+        </div>
+        {/* Gym */}
+        <div className="flex flex-col gap-5">
+          <input
+            type="text"
+            placeholder="Gym"
+            name="gymName"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.gymName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.gymName && Boolean(formik.errors.gymName) ? (
+            <small className="text-red-600">
+              {formik.touched.gymName && formik.errors.gymName}
+            </small>
+          ) : null}
+        </div>
+
+        {/* Spa  */}
+        <div className="flex flex-col gap-5">
+          <input
+            type="text"
+            placeholder="Spa"
+            name="spaName"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.spaName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.spaName && Boolean(formik.errors.spaName) ? (
+            <small className="text-red-600">
+              {formik.touched.spaName && formik.errors.spaName}
             </small>
           ) : null}
         </div>
@@ -153,4 +188,4 @@ const AddBar = () => {
   );
 };
 
-export default AddBar;
+export default AddLifeStyle;

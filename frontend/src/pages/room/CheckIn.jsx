@@ -17,8 +17,8 @@ import { useRoomsQuery } from "../../redux/room/roomAPI.js";
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   mobile: yup.string().required("Mobile number is required"),
-  emergencyNumber: yup.string().required("Emergency Number  is required"),
-  address: yup.string().required("Address  is required"),
+  emergencyNumber: yup.string().required("Emergency Number number is required"),
+  address: yup.string().required("Address Number number is required"),
   // age: yup
   //   .number()
   //   .required("Age is required")
@@ -39,6 +39,13 @@ const validationSchema = yup.object({
   paymentMethod: yup.string().required("Payment method is required"),
   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
     if (paymentMethod !== "cash")
+      return schema.required("Transaction ID is required");
+    else return schema;
+  }),
+
+  documentsType: yup.string().required("Document Number is required"),
+  documentsNumber: yup.string().when(["documentsType"], ([documentsType], schema) => {
+    if (documentsType !== "nid")
       return schema.required("Transaction ID is required");
     else return schema;
   }),
@@ -64,17 +71,18 @@ const CheckIn = () => {
     initialValues: {
       name: "",
       mobile: "",
-      emergencyNumber: "",
-      address: "",
       adult: "",
       children: "",
       paymentMethod: "",
-      trxID: "",
+      documentsNumber: "",
       discount: "",
       fromDate: "",
       toDate: "",
       nationality: "",
       documents: null,
+      emergencyNumber: "",
+      address: "",
+      documentsType: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -257,15 +265,15 @@ const CheckIn = () => {
           <input
             type="text"
             placeholder="Emergency Number"
-            name="emergencyNumber  "
+            name="emergencyNumber"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-            value={formik.values.emergencyNumber }
+            value={formik.values.emergencyNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.emergencyNumber  && Boolean(formik.errors.emergencyNumber ) ? (
+          {formik.touched.emergencyNumber && Boolean(formik.errors.emergencyNumber) ? (
             <small className="text-red-600">
-              {formik.touched.emergencyNumber  && formik.errors.emergencyNumber }
+              {formik.touched.emergencyNumber && formik.errors.emergencyNumber}
             </small>
           ) : null}
         </div>
@@ -274,15 +282,15 @@ const CheckIn = () => {
           <input
             type="text"
             placeholder="Address"
-            name="address  "
+            name="address"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-            value={formik.values.address }
+            value={formik.values.address}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.address  && Boolean(formik.errors.address ) ? (
+          {formik.touched.address && Boolean(formik.errors.address) ? (
             <small className="text-red-600">
-              {formik.touched.address  && formik.errors.address }
+              {formik.touched.address && formik.errors.address}
             </small>
           ) : null}
         </div>
@@ -362,6 +370,9 @@ const CheckIn = () => {
             ) : null}
           </div>
         ) : null}
+   
+
+        {/* discount box */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
@@ -419,6 +430,49 @@ const CheckIn = () => {
             </small>
           ) : null}
         </div>
+             {/* type Of Documents  box */}
+             <div className="flex flex-col gap-3">
+          <select
+            name="documentsType"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+            value={formik.values.documentsType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Type Of Documents
+            </option>
+            <option value="adarCard">Adar Card</option>
+            <option value="passport">Passport</option>
+            <option value="drivingLicense">Driving Licence</option>
+            <option value="nid">NID</option>
+          </select>
+          {formik.touched.documentsType &&
+          Boolean(formik.errors.documentsType) ? (
+            <small className="text-red-600">
+              {formik.touched.documentsType && formik.errors.documentsType}
+            </small>
+          ) : null}
+        </div>
+        {formik.values.documentsType &&
+        formik.values.documentsType !== "nid" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Documents Number"
+              name="documentsNumber"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.documentsNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.documentsNumber && Boolean(formik.errors.documentsNumber) ? (
+              <small className="text-red-600">
+                {formik.touched.documentsNumber && formik.errors.documentsNumber}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
            {/* Nationality box */}
            <div className="flex flex-col gap-3">
             <input
