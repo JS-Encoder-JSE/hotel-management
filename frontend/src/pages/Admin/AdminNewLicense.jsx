@@ -71,38 +71,39 @@ const AdminNewLicense = () => {
         trxID: tran_id,
         amount,
         remarks: remark,
-        documentsType,
-        documents,
       } = obj;
-      const formData = new FormData();
+      const tempImages = {
+        trade_lic_img: [],
+        utilities: [],
+        pancard: [],
+      };
 
-      for (let i = 0; i < values.documents.length; i++) {
-        const photoName = values.documents[i].name.substring(
-          0,
-          values.documents[i].name.lastIndexOf("."),
-        );
+      for (const propertyName in images) {
+        const formData = new FormData();
+        const array = images[propertyName];
 
-        formData.append(photoName, values.documents[i]);
-      }
+        for (let i = 0; i < array.length; i++) {
+          const photoName = array[i].name.substring(
+            0,
+            array[i].name.lastIndexOf("."),
+          );
 
-      await upload(formData).then((result) => {
-        let title;
-
-        switch (documentsType) {
-          case "Utilities":
-            title = "utilities";
-            break;
-          case "Trade Licences":
-            title = "trade_lic_img";
-            break;
-          case "Pan Card":
-            title = "pancard";
+          formData.append(photoName, array[i]);
         }
 
-        obj.images = {
-          [title]: result.data.imageUrls,
-        };
-      });
+        await upload(formData).then((result) => {
+          switch (propertyName) {
+            case "Utilities":
+              tempImages.utilities = result.data.imageUrls;
+              break;
+            case "Trade Licences":
+              tempImages.trade_lic_img = result.data.imageUrls;
+              break;
+            case "Pan Card":
+              tempImages.pancard = result.data.imageUrls;
+          }
+        });
+      }
 
       const response = await addLicense({
         name,
@@ -119,7 +120,7 @@ const AdminNewLicense = () => {
         tran_id,
         amount,
         remark,
-        images: obj.images,
+        images: tempImages,
       });
 
       if (response?.error) {
@@ -127,7 +128,7 @@ const AdminNewLicense = () => {
       } else {
         toast.success(response.data.message);
         formikHelpers.resetForm();
-        setSelectedImages([]);
+        setImages([]);
       }
 
       setLoading(false);
