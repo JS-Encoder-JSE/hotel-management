@@ -6,7 +6,7 @@ const slsAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "users/add-license",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },
@@ -16,7 +16,7 @@ const slsAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "users/renew-license",
-          method: "patch",
+          method: "PATCH",
           body: data,
         };
       },
@@ -26,7 +26,7 @@ const slsAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "users/update-status",
-          method: "patch",
+          method: "PATCH",
           body: data,
         };
       },

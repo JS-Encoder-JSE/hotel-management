@@ -8,13 +8,18 @@ import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
-  password: yup.string().required("Password is required"),
   remarks: yup.string().when(["status"], ([status], schema) => {
     if (status !== "active") return schema.required("Remarks is required");
     else return schema;
   }),
-  fromDate: yup.string().required("From date is required"),
-  toDate: yup.string().required("To date is required"),
+  fromDate: yup.string().when(["status"], ([status], schema) => {
+    if (status === "Suspend") return schema.required("From date is required");
+    else return schema;
+  }),
+  toDate: yup.string().when(["status"], ([status], schema) => {
+    if (status === "Suspend") return schema.required("To date is required");
+    else return schema;
+  }),
 });
 
 const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
@@ -23,7 +28,6 @@ const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
   const formik = useFormik({
     initialValues: {
       status: "",
-      password: "",
       remarks: "",
       fromDate: "",
       toDate: "",
@@ -85,21 +89,23 @@ const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
                 {owner?.status}
               </option>
               {owner?.status === "Active" ? (
-                <option value="Deactivate">Deactivate</option>
+                <option value="Deactive">Deactivate</option>
               ) : null}
-              {owner?.status === "Suspend" ? (
+              {owner?.status === "Deactive" ? (
+                <option value="Active">Activate</option>
+              ) : null}
+              {owner?.status === "Suspended" ? (
                 <option value="Renew">Renew</option>
               ) : null}
               {owner?.status === "Expired" ? (
                 <>
                   <option value="Active">Active</option>
-                  <option value="Suspend">Suspend</option>
+                  <option value="Suspended">Suspend</option>
                 </>
               ) : null}
             </select>
           </div>
-          {formik.values.status === "Active" ||
-          formik.values.status === "Renew" ? (
+          {formik.values.status === "Renew" ? (
             <Link
               to={`/dashboard/edit-renew/${owner?.id}`}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
@@ -107,24 +113,9 @@ const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
               Go to Renew
             </Link>
           ) : null}
-          {formik.values.status === "Deactivate" ? (
+          {formik.values.status === "Active" ||
+          formik.values.status === "Deactive" ? (
             <>
-              <div className="flex flex-col gap-3">
-                <input
-                  type="text"
-                  placeholder="Enter password"
-                  name="password"
-                  className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.password && Boolean(formik.errors.password) ? (
-                  <small className="text-red-600">
-                    {formik.touched.password && formik.errors.password}
-                  </small>
-                ) : null}
-              </div>
               <div className="flex flex-col gap-3">
                 <textarea
                   placeholder="Remarks"
@@ -144,28 +135,18 @@ const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
                 type={"submit"}
                 className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
-                Confirm
+                <span>Confirm</span>
+                {isLoading ? (
+                  <span
+                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                    role="status"
+                  ></span>
+                ) : null}
               </button>
             </>
           ) : null}
-          {formik.values.status === "Suspend" ? (
+          {formik.values.status === "Suspended" ? (
             <>
-              <div className="flex flex-col gap-3">
-                <input
-                  type="text"
-                  placeholder="Enter password"
-                  name="password"
-                  className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.password && Boolean(formik.errors.password) ? (
-                  <small className="text-red-600">
-                    {formik.touched.password && formik.errors.password}
-                  </small>
-                ) : null}
-              </div>
               <div className="flex flex-col gap-3">
                 <textarea
                   placeholder="Remarks"

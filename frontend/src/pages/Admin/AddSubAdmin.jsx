@@ -11,6 +11,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import {useAddSubAdminMutation} from "../../redux/admin/subadmin/subadminAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -40,6 +42,8 @@ const validationSchema = yup.object({
 });
 
 const AddSubAdmin = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [addSubAdmin] = useAddSubAdminMutation()
   const [selectedImages, setSelectedImages] = useState([]);
   const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
@@ -56,8 +60,34 @@ const AddSubAdmin = () => {
       documents: null,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
+
+      const obj = {...values};
+      const {
+        name,
+        username,
+        phoneNumber: phone_no,
+        email,
+        password,
+        address,
+        salary,
+        joiningDate: joining_date,
+        documentsType,
+        documents,
+      } = obj;
+
+      const response = await addSubAdmin();
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+        setSelectedImages([]);
+      }
+
+      setLoading(false);
     },
   });
 

@@ -8,6 +8,8 @@ import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
 import ReactPaginate from "react-paginate";
 import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
 import { Rings } from "react-loader-spinner";
+import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
+import Swal from "sweetalert2";
 
 const AdminOwnerList = () => {
   const [keyword, setKeyword] = useState(null);
@@ -20,6 +22,7 @@ const AdminOwnerList = () => {
       setKeyword(values.search);
     },
   });
+  const [updateLicenseStatus] = useUpdateLicenseStatusMutation();
 
   const navigate = useNavigate();
   const [ownersPerPage] = useState(10);
@@ -35,6 +38,31 @@ const AdminOwnerList = () => {
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
+  };
+
+  const handleDelete = (owner) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Owner will be delete.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#35bef0",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Deleted!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          const { user_id, status } = owner;
+          updateLicenseStatus({ user_id, status });
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -145,6 +173,12 @@ const AdminOwnerList = () => {
                             </Link>
                             <span
                               className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                              onClick={() =>
+                                handleDelete({
+                                  user_id: owner?._id,
+                                  status: "Deleted",
+                                })
+                              }
                             >
                               <FaTrash />
                             </span>

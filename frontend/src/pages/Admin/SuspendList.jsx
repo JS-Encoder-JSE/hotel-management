@@ -51,6 +51,9 @@ const SuspendList = () => {
             className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.search}
             onChange={formik.handleChange}
+            onKeyUp={(e) => {
+              e.target.value === "" ? formik.handleSubmit() : null;
+            }}
           />
           <button
               onClick={() => formik.handleSubmit()}

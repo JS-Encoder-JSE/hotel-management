@@ -31,6 +31,7 @@ const AdminNewLicense = () => {
   const [upload] = useUploadMutation();
   const { user } = useSelector((store) => store.authSlice);
   const [showPass, setShowPass] = useState(false);
+  const [docTypeCount, setDocTypeCount] = useState(1);
 
   const formik = useFormik({
     initialValues: {
@@ -309,13 +310,8 @@ const AdminNewLicense = () => {
         {/*Password box */}
         <div
           className={`flex flex-col gap-3 ${
-            ((formik.values.paymentMethod &&
-              formik.values.paymentMethod !== "Cash") ||
-              formik.values.documentsType) &&
-            !(
-              formik.values.paymentMethod !== "Cash" &&
-              formik.values.documentsType
-            )
+            (!formik.values.paymentMethod && !formik.values.documentsType) ||
+            formik.values.paymentMethod === "Cash"
               ? "col-span-full"
               : ""
           }`}
@@ -481,61 +477,6 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-        {/* documents type box */}
-        <div className={`flex flex-col gap-3`}>
-          <select
-            name="documentsType"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-            value={formik.values.documentsType}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Type of Documents
-            </option>
-            <option value="Utilities">Utilities</option>
-            <option value="Trade Licences">Trade Licences</option>
-            <option value="Pan Card">Pan Card</option>
-          </select>
-          {formik.touched.documentsType &&
-          Boolean(formik.errors.documentsType) ? (
-            <small className="text-red-600">
-              {formik.touched.documentsType && formik.errors.documentsType}
-            </small>
-          ) : null}
-        </div>
-        {/* documents box */}
-        {formik.values.documentsType ? (
-          <div className={`flex space-x-1.5`}>
-            <div className="flex flex-col gap-3 w-full">
-              <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                {formik.values.documents ? (
-                  <span>{formik.values.documents.length + " files"}</span>
-                ) : (
-                  <span className={`flex items-baseline space-x-1.5`}>
-                    <FaUpload />
-                    <span>Choose {formik.values.documentsType}</span>
-                  </span>
-                )}
-                <input
-                  type="file"
-                  multiple
-                  name="documents"
-                  className="absolute left-0 top-0  overflow-hidden h-0"
-                  onChange={(e) =>
-                    formik.setFieldValue("documents", e.currentTarget.files)
-                  }
-                  onBlur={formik.handleBlur}
-                />
-              </label>
-              {formik.touched.documents && Boolean(formik.errors.documents) ? (
-                <small className="text-red-600">
-                  {formik.touched.documents && formik.errors.documents}
-                </small>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
         {/* Hotel Address box */}
         <div className="flex flex-col gap-3">
           <textarea
@@ -586,6 +527,79 @@ const AdminNewLicense = () => {
             </ul>
           </div>
         ) : null}
+        {[...Array(docTypeCount)].map((_, idx) => {
+          return (
+            <>
+              <div
+                className={`flex flex-col gap-3 ${
+                  (!formik.values.paymentMethod &&
+                    !formik.values.documentsType) ||
+                  (formik.values.paymentMethod !== "Cash" &&
+                    !formik.values.documentsType)
+                    ? "col-span-full"
+                    : ""
+                }`}
+              >
+                <select
+                  name="documentsType"
+                  className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+                  value={formik.values.documentsType}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="" selected disabled>
+                    Type of Documents
+                  </option>
+                  <option value="Utilities">Utilities</option>
+                  <option value="Trade Licences">Trade Licences</option>
+                  <option value="Pan Card">Pan Card</option>
+                </select>
+                {formik.touched.documentsType &&
+                Boolean(formik.errors.documentsType) ? (
+                  <small className="text-red-600">
+                    {formik.touched.documentsType &&
+                      formik.errors.documentsType}
+                  </small>
+                ) : null}
+              </div>
+              {formik.values.documentsType ? (
+                <div className={`flex space-x-1.5`}>
+                  <div className="flex flex-col gap-3 w-full">
+                    <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+                      {formik.values.documents ? (
+                        <span>{formik.values.documents.length + " files"}</span>
+                      ) : (
+                        <span className={`flex items-baseline space-x-1.5`}>
+                          <FaUpload />
+                          <span>Choose {formik.values.documentsType}</span>
+                        </span>
+                      )}
+                      <input
+                        type="file"
+                        multiple
+                        name="documents"
+                        className="absolute left-0 top-0  overflow-hidden h-0"
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            "documents",
+                            e.currentTarget.files,
+                          )
+                        }
+                        onBlur={formik.handleBlur}
+                      />
+                    </label>
+                    {formik.touched.documents &&
+                    Boolean(formik.errors.documents) ? (
+                      <small className="text-red-600">
+                        {formik.touched.documents && formik.errors.documents}
+                      </small>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+            </>
+          );
+        })}
         {/* submit button */}
         <button
           type="submit"
