@@ -124,7 +124,7 @@ const SubAdminList = () => {
         <hr className={`my-5`} />
         <div className={`space-y-10`}>
           {!isLoading ? (
-            subadmins?.docs?.length ? (
+            subadmins.docs.length ? (
               <>
                 <div className="overflow-x-auto">
                   <table className="table">

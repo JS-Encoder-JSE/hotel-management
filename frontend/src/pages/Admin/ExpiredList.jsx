@@ -20,8 +20,6 @@ const ExpiredList = () => {
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [keyword, setKeyword] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -50,12 +48,6 @@ const ExpiredList = () => {
   useEffect(() => {
     if (owners) setPageCount(owners.totalPages);
   }, [owners]);
-
-  useEffect(() => {
-    if (owner && modalOpen) {
-      window.ol_modal.showModal();
-    }
-  }, [modalOpen]);
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
@@ -124,13 +116,7 @@ const ExpiredList = () => {
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-red-600 text-red-600 hover:text-white !border-red-600 rounded normal-case mb-2 ms-2`}
                             title={`Suspend`}
-                            onClick={() => {
-                              setOwner({
-                                id: owner?._id,
-                                status: owner?.status,
-                              });
-                              setModalOpen(!modalOpen);
-                            }}
+                            onClick={() => window.ol_modal.showModal()}
                           >
                             <MdUpdate />
                           </span>
@@ -149,9 +135,7 @@ const ExpiredList = () => {
                 </tbody>
               </table>
               <Modal id={`ol_modal`}>
-                <ExpiredSettings modalOpen={modalOpen}
-                                 setModalOpen={setModalOpen}
-                                 owner={owner} />
+                <ExpiredSettings />
               </Modal>
             </div>
             <div className="flex justify-center mt-10">

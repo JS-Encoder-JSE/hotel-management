@@ -83,6 +83,7 @@ const AdminOwnerList = ({title}) => {
 
   return (
     <div>
+      
       <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
         {title && <h1 className="text-center text-2xl">{title}</h1>}
         <div className={`flex justify-between gap-4`}>
