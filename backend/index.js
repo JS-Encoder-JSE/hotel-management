@@ -33,7 +33,7 @@ db.once("open", () => {
 });
 
 // routes
-app.use("/user", userRoute);
+app.use("/users", userRoute);
 app.use("/hotels", hotelsRoute);
 app.use("/rooms", roomRoute);
 app.use("/foods", foodRoute);
