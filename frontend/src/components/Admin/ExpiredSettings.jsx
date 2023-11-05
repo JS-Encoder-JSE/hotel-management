@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
@@ -14,7 +14,8 @@ const validationSchema = yup.object({
   toDate: yup.string().required("To date is required"),
 });
 
-const ExpiredSettings = () => {
+const ExpiredSettings = ({ modalOpen, setModalOpen, owner }) => {
+  const closeRef = useRef(null);
   const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();
   const formik = useFormik({
     initialValues: {
@@ -30,7 +31,7 @@ const ExpiredSettings = () => {
       const { status, remarks: remark, fromDate: from, toDate: to } = obj;
 
       const response = await updateLicenseStatus({
-        // user_id,
+        user_id: owner?.id,
         status,
         extended_time: [
           {
@@ -44,6 +45,7 @@ const ExpiredSettings = () => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
+        closeRef.current.click();
         toast.success(response.data.message);
       }
     },
@@ -53,6 +55,7 @@ const ExpiredSettings = () => {
     <>
       <form method="dialog">
         <button
+          ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           onClick={() => formik.handleReset()}
         >

@@ -27,10 +27,10 @@ const slsAPI = baseAPI.injectEndpoints({
       invalidatesTags: ["subadmin"],
     }),
     getUsers: build.query({
-      query: ({ cp, filter, search, role }) =>
+      query: ({ cp, filter, search, role,parentId }) =>
         `users/get-users?page=${++cp}${filter ? `&filter=${filter}` : ""}${
           search ? `&search=${search}` : ""
-        }${role ? `&role=${role}` : ""}`,
+        }${role ? `&role=${role}` : ""}&user_id=${parentId}`,
       providesTags: ["owner"],
     }),
   }),
