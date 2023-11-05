@@ -4,7 +4,7 @@ import makeAnimated from "react-select/animated";
 import { useFormik } from "formik";
 import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 
-const PaymentSection = () => {
+const ChangeShift = () => {
   const animatedComponents = makeAnimated();
 
   const [paymentList, setPaymentList] = useState(1);
@@ -21,10 +21,10 @@ const PaymentSection = () => {
   });
 
   const paymentModeList = [
-    { value: "null", label: "Choose Payment Mode" },
-    { value: "Mobile Banking", label: "Mobile Banking" },
-    { value: "Cash Payment", label: "Cash Payment" },
-    { value: "Card Payment", label: "Card Payment" },
+    { value: "null", label: "Jobber" },
+    { value: "akber", label: "Akber" },
+    { value: "josim", label: "Josim" },
+    { value: "namir", label: "Namir " },
   ];
 
   // BackDoor -----> After adding more than 1 payment method all filed are using same state...
@@ -65,47 +65,15 @@ const PaymentSection = () => {
       <div className="grid lg:grid-cols-2 gap-5">
         {/* Left Side */}
         <div className="bg-white rounded">
-          <h3 className="p-5 text-xl">Credit</h3>
-          <hr />
-          <div className="p-5 grid grid-cols-3 gap-5 text-sm font-semibold">
-            <div className="space-y-5">
-              <p>Type</p>
-              <p>($) Credit Amt.</p>
-              <p>Remarks</p>
-            </div>
-            <div className="col-span-2 space-y-5">
-              <div>
-                <select
-                  // onChange={handleDiscount}
-                  className="border-b outline-none text-xs font-light w-full py-1"
-                >
-                  <option value="null">No Credit</option>
-                  <option value="offer">Admin</option>
-                  <option value="md Guest">Regular Customer</option>
-                </select>
-              </div>
-              <div>
-                <input
-                  type="number"
-                  className="w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500"
-                />
-              </div>
-              <div>
-                <textarea
-                  type="text"
-                  className="border focus:border-green-slimy rounded-md p-2 bg-transparent outline-none w-full"
-                ></textarea>
-              </div>
-            </div>
-          </div>
+        
 
 {/* bill statement */}
-          <h3 className="p-5 text-xl mt-5">Bill Statement</h3>
+          <h3 className="p-5 text-xl mt-5">Change Shift</h3>
           <hr />
           <div className="grid grid-cols-7 gap-2 p-5">
             <div className="col-span-4 space-y-5">
               <div className="border-b border-black/20 py-1 mb-5">
-                Payment Mode
+                Manager
               </div>
               {[...Array(paymentList)].map((_, index) => (
                 <React.Fragment key={index}>
@@ -115,7 +83,7 @@ const PaymentSection = () => {
                       options={paymentModeList}
                       onKeyDown={handleKeyDown}
                       onChange={handlePaymentMode}
-                      placeholder="Choose Payment Mode"
+                      placeholder="Manage Name"
                       className={`text-xs ${selectCashPayment && "mb-[70px]"}`}
                     />
                   </div>
@@ -186,81 +154,9 @@ const PaymentSection = () => {
             </button>
           </div>
         </div>
-
-        {/* Right Side */}
-        <div className="bg-white rounded">
-          <h3 className="p-5 text-xl">Special Discount</h3>
-          <hr />
-          <div className="p-5 grid grid-cols-3 gap-5 text-sm font-semibold">
-            <div className="space-y-5">
-              <p>Type</p>
-              <p>($) Credit Amt.</p>
-              <p>Remarks</p>
-            </div>
-            <div className="col-span-2 space-y-5">
-              <div>
-                <select
-                  // onChange={handleDiscount}
-                  className="border-b outline-none text-xs font-light w-full py-1"
-                >
-                  <option value="null">No Credit</option>
-                  <option value="offer">Admin</option>
-                  <option value="md Guest">Regular Customer</option>
-                </select>
-              </div>
-              <div>
-                <input
-                  type="number"
-                  className="w-full outline-none border focus:border-green-slimy rounded mr-1 p-1 text-slate-500"
-                />
-              </div>
-              <div>
-                <textarea
-                  type="text"
-                  className="border focus:border-green-slimy rounded-md p-2 bg-transparent outline-none w-full"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-
-          <h3 className="p-5 text-xl mt-5">Balance Details</h3>
-          <hr />
-
-          <div className="p-5 grid grid-cols-3 items-center text-sm font-semibold">
-            <div className="space-y-3">
-              <p>Remain Amt.</p>
-              <p>Collected Amt.</p>
-              <p>Change Amt.</p>
-            </div>
-            <div className="col-span-2 space-y-3">
-              <p>$ {remainAmount.toFixed(2)}</p>
-              <p>$ {collectedAmount.toFixed(2)}</p>
-              <p>
-                ${" "}
-                {collectedAmount > remainAmount
-                  ? changeAmount.toFixed(2)
-                  : "0.00"}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-end gap-2 mt-5">
-        <button className="p-2 bg-[#28a745] text-xl text-white duration-300 rounded active:scale-90">
-          Print
-        </button>
-        <button
-          disabled={checkoutBtn}
-          className={`p-2 bg-[#64bece] text-xl text-white duration-300 rounded active:scale-90 ${
-            checkoutBtn && "opacity-40 active:scale-100"
-          }`}
-        >
-          Checkout
-        </button>
       </div>
     </section>
   );
 };
 
-export default PaymentSection;
+export default ChangeShift;
