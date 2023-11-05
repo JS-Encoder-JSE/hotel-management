@@ -55,4 +55,7 @@ export const validationSchema = yup.object({
   //   if (documentsType) return schema.required(`${documentsType} are required`);
   //   else return schema;
   // }),
+  utilities: yup.string().required("Utilities are required"),
+  tradeLicenses: yup.string().required("Trade licenses are required"),
+  panCard: yup.string().required("Pan card are required"),
 });
