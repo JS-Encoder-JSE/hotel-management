@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import {useUpdateLicenseStatusMutation} from "../../redux/admin/sls/slsAPI.js";
 import {useOwnerListQuery} from "../../redux/admin/ownerlist/ownerListAPI.js";
 import {useGetUsersQuery} from "../../redux/admin/subadmin/subadminAPI.js";
+import store from "../../redux/store.js";
 
 const SubAdminList = () => {
   const [keyword, setKeyword] = useState(null);
@@ -27,11 +28,14 @@ const SubAdminList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const parentId = store.getState().authSlice.user._id
+  console.log(parentId)
   const { isLoading, data: subadmins } = useGetUsersQuery({
     cp: currentPage,
     filter: formik.values.filter,
     search: keyword,
-    role: "subadmin"
+    role: "subadmin",
+    parentId
   });
 
   const handlePageClick = ({ selected: page }) => {

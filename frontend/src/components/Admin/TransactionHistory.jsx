@@ -35,7 +35,7 @@ const TransactionHistory = () => {
 	const { id } = useParams();
 	const [fromDate, setFromData] = useState("");
 	const [toDate, setToDate] = useState("");
-	const searchParams = { id: "65451c80dd95504ee1047f0b", fromDate, toDate ,cp:currentPage};
+	const searchParams = { id, fromDate, toDate ,cp:currentPage};
 	const { data, error, isLoading, isSuccess } =
 		useGetTransactionlogsQuery(searchParams);
 	// 65451c80dd95504ee1047f0b
