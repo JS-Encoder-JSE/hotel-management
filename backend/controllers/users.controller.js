@@ -54,6 +54,7 @@ export const addUser = async (req, res) => {
 
     // Create a new user instance
     const newUser = new User({
+      parent_id: userId,
       username,
       name,
       password,
@@ -125,6 +126,7 @@ export const addLicense = async (req, res) => {
 
     // Create a new owner user
     const newOwner = new User({
+      parent_id: userId,
       name,
       username,
       password,
@@ -968,5 +970,60 @@ export const updateUserField = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to update user field" });
+  }
+};
+
+export const getUsers = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { role, page = 1, limit = 10, search, filter } = req.query;
+
+    const parent = await User.findById(userId);
+
+    if (!parent) {
+      return res.status(404).json({ message: "Parent not found" });
+    }
+
+    // Check if the user making the request has permission to get user information
+    const hierarchy = {
+      admin: ["subadmin", "owner", "manager", "employee"],
+      subadmin: ["owner", "manager", "employee"],
+      owner: ["manager", "employee"],
+      manager: ["employee"],
+    };
+
+    if (!hierarchy[parent.role]) {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to get user information" });
+    }
+
+    const query = { parent_id: userId };
+
+    if (
+      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
+    ) {
+      query.status = filter;
+    }
+
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    // Use Mongoose pagination to retrieve users
+    const users = await User.paginate(query, options);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to retrieve users" });
   }
 };

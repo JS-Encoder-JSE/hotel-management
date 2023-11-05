@@ -14,6 +14,7 @@ import {
   renewLicense,
   getOwnersByAdmin,
   updateUserField,
+  getUsers,
 } from "../controllers/users.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
@@ -34,5 +35,6 @@ router.get("/get-manager-by-id/:managerId", checkToken, getManagerById);
 router.get("/get-managers-by-owner", checkToken, getManagersByOwner);
 router.get("/get-owners", checkToken, getOwners);
 router.get("/get-owners-by-admin", checkToken, getOwnersByAdmin);
+router.get("/get-users", checkToken, getUsers);
 
 export default router;

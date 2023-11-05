@@ -10,6 +10,11 @@ const statuslogSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    extended_time: {
+      type: Object,
+      required: false,
+      default: null,
+    },
     pre_status: {
       type: String,
       required: false,

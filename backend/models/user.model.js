@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    parent_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required:false,
+      default:null
+    },
     name: {
       type: String,
       required: true,
