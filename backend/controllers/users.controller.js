@@ -21,6 +21,7 @@ export const addUser = async (req, res) => {
       address,
       email,
       phone_no,
+      emergency_contact,
       salary,
       joining_date,
       assignedHotel,
@@ -65,6 +66,7 @@ export const addUser = async (req, res) => {
       address,
       email,
       phone_no,
+      emergency_contact,
       salary,
       joining_date,
       assignedHotel,
@@ -96,6 +98,7 @@ export const addLicense = async (req, res) => {
       address,
       email,
       phone_no,
+      emergency_contact,
       bill_info,
       bill_from,
       bill_to,
@@ -135,6 +138,7 @@ export const addLicense = async (req, res) => {
       address,
       email,
       phone_no,
+      emergency_contact,
       bill_info,
       bill_from,
       bill_to,
@@ -151,6 +155,8 @@ export const addLicense = async (req, res) => {
     const newTransactionLog = new TransactionLog({
       tran_id,
       payment_method,
+      bill_from,
+      bill_to,
       from: savedOwner.username,
       to: parent.username,
       amount,
@@ -376,6 +382,7 @@ export const getLoginUser = async (req, res) => {
     const { userId } = req.user;
     console.log(req.user);
     const user = await User.findById(userId);
+    console.log(user);
     const { password, ...rest } = user._doc;
     res.status(200).json({
       success: true,
@@ -716,6 +723,8 @@ export const renewLicense = async (req, res) => {
     const newTransactionLog = new TransactionLog({
       tran_id,
       payment_method,
+      bill_from,
+      bill_to,
       from: user.username,
       to: parent.username,
       amount,
@@ -998,7 +1007,7 @@ export const getUsers = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const query = { parent_id: userId };
+    const query = { parent_id: userId, role:role };
 
     if (
       ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
@@ -1063,5 +1072,79 @@ export const getUserById = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to retrieve user information" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const user_id = req.params.user_id; // Assuming you get the user ID from the request parameters
+    const updates = req.body; // Assuming you receive the updates in the request body
+
+    // Find the user by ID and update the fields provided in the request body
+    const user = await User.findByIdAndUpdate(user_id, updates, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getReport = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { from, to, page = 1, limit = 10, search, filter } = req.query;
+
+    const parent = await User.findById(userId);
+
+    if (!parent) {
+      return res.status(404).json({ message: "Parent not found" });
+    }
+
+    // Check if the user making the request has permission to get user information
+    const hierarchy = {
+      admin: ["subadmin", "owner", "manager", "employee"],
+      subadmin: ["owner", "manager", "employee"],
+      owner: ["manager", "employee"],
+      manager: ["employee"],
+    };
+
+    if (!hierarchy[parent.role]) {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to get user information" });
+    }
+
+    const query = { parent_id: userId };
+
+    if (
+      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
+    ) {
+      query.status = filter;
+    }
+
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    // Use Mongoose pagination to retrieve users
+    const users = await User.paginate(query, options);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to retrieve users" });
   }
 };

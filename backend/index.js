@@ -8,6 +8,7 @@ import foodRoute from "./routes/Manager/food.route.js";
 import hotelsRoute from "./routes/hotels.route.js";
 import uploadRoute from "./routes/upload.js";
 import userRoute from "./routes/users.route.js";
+import transactionRoute from "./routes/transaction.route.js";
 import itemRoute from "./routes/Manager/item.route.js";
 // import employeeRoute from "./routes/Manager/employee.route.js";
 import { fileURLToPath } from "url";
@@ -33,7 +34,8 @@ db.once("open", () => {
 });
 
 // routes
-app.use("/user", userRoute);
+app.use("/users", userRoute);
+app.use("/transactions", transactionRoute);
 app.use("/hotels", hotelsRoute);
 app.use("/rooms", roomRoute);
 app.use("/foods", foodRoute);

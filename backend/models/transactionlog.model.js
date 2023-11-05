@@ -11,6 +11,14 @@ const transactionlogSchema = new mongoose.Schema(
       required: true,
       enum: ["Cash", "Card", "Mobile_Banking"],
     },
+    bill_from: {
+      type: Date,
+      required: true,
+    },
+    bill_to: {
+      type: Date,
+      required: true,
+    },
     from: {
       type: String,
       required: true,
