@@ -360,7 +360,7 @@ export const login = async (req, res) => {
 
     // Compare the provided password with the hashed password
     const isPasswordValid = await user.comparePassword(password);
-
+    console.log(isPasswordValid);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
@@ -856,16 +856,28 @@ export const updateStatus = async (req, res) => {
       return res.status(400).json({ message: "Invalid status value" });
     }
 
-    // Create a new StatusLog instance
-    const newStatusLog = new StatusLog({
-      changed_from: parent.username,
-      changed_for: user.username,
-      extended_time: extended_time[0],
-      pre_status: user.status,
-      updated_status: status,
-      remark: remark,
-    });
-    await newStatusLog.save();
+    if (extended_time) {
+      // Create a new StatusLog instance
+      const newStatusLog = new StatusLog({
+        changed_from: parent.username,
+        changed_for: user.username,
+        extended_time: extended_time[0],
+        pre_status: user.status,
+        updated_status: status,
+        remark: remark||"",
+      });
+      await newStatusLog.save();
+    } else {
+      // Create a new StatusLog instance
+      const newStatusLog = new StatusLog({
+        changed_from: parent.username,
+        changed_for: user.username,
+        pre_status: user.status,
+        updated_status: status,
+        remark: remark||"",
+      });
+      await newStatusLog.save();
+    }
 
     if (status === "Suspended" && extended_time) {
       if (user.status !== "Expired") {
