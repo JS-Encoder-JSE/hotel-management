@@ -12,9 +12,9 @@ const router = Router();
 // router.post('/', );
 // router.post("/", );
 // router.post("/",);
-// router.post("/users/add-manager", checkToken, addManager);
-// router.get("/users/get-manager-by-id/:managerId", checkToken, getManagerById);
-// router.get("/users/get-managers-by-owner", checkToken, getManagersByOwner);
-// router.get("/users/get-owners", checkToken, getOwners);
+// router.post("/user/add-manager", checkToken, addManager);
+// router.get("/user/get-manager-by-id/:managerId", checkToken, getManagerById);
+// router.get("/user/get-managers-by-owner", checkToken, getManagersByOwner);
+// router.get("/user/get-owners", checkToken, getOwners);
 
 export default router;

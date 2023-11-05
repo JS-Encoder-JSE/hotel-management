@@ -8,9 +8,10 @@ import foodRoute from "./routes/Manager/food.route.js";
 import hotelsRoute from "./routes/hotels.route.js";
 import uploadRoute from "./routes/upload.js";
 import userRoute from "./routes/users.route.js";
+import transactionRoute from "./routes/transaction.route.js";
+import statusRoute from "./routes/status.route.js"
 import itemRoute from "./routes/Manager/item.route.js";
 // import employeeRoute from "./routes/Manager/employee.route.js";
-import licenseRoute from "./routes/Admin/license.route.js";
 import { fileURLToPath } from "url";
 // Manager Routes
 import bookingRoute from "./routes/Manager/booking.route.js";
@@ -35,13 +36,14 @@ db.once("open", () => {
 
 // routes
 app.use("/users", userRoute);
+app.use("/transactions", transactionRoute);
+app.use("/status", statusRoute);
 app.use("/hotels", hotelsRoute);
 app.use("/rooms", roomRoute);
 app.use("/foods", foodRoute);
 app.use("/booking", bookingRoute);
 app.use("/item", itemRoute);
 // app.use("/employee", employeeRoute);
-app.use("/license", licenseRoute);
 
 app.use("/", uploadRoute);
 

@@ -6,6 +6,7 @@ import * as XLSX from "xlsx";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import DatePicker from "react-datepicker";
 
 const SubAdminReport = () => {
   const navigate = useNavigate();
@@ -39,22 +40,24 @@ const SubAdminReport = () => {
       <div className={`bg-white px-10 py-5 rounded`}>
         <h3 className={`text-xl font-semibold`}>Search Report</h3>
         <hr className={`my-5`} />
-        <div className={`space-x-3`}>
-          <span>From</span>
-          <input
-            type="date"
-            name={`startDate`}
+        <div className={`flex gap-3`}>
+          <DatePicker
+            dateFormat="dd/MM/yyyy"
+            name="startDate"
+            placeholderText={`From`}
+            selected={formik.values.startDate}
             className={`input input-sm input-bordered rounded focus:outline-none`}
-            value={formik.values.startDate}
-            onChange={formik.handleChange}
+            onChange={(date) => formik.setFieldValue("startDate", date)}
+            onBlur={formik.handleBlur}
           />
-          <span>To</span>
-          <input
-            type="date"
-            name={`endDate`}
+          <DatePicker
+            dateFormat="dd/MM/yyyy"
+            name="endDate"
+            placeholderText={`To`}
+            selected={formik.values.endDate}
             className={`input input-sm input-bordered rounded focus:outline-none`}
-            value={formik.values.endDate}
-            onChange={formik.handleChange}
+            onChange={(date) => formik.setFieldValue("endDate", date)}
+            onBlur={formik.handleBlur}
           />
           <button
             type={"button"}
@@ -128,7 +131,7 @@ const SubAdminReport = () => {
                   <th>Check In</th>
                   <th>Check Out</th>
                   <th>Paid Amount</th>
-                  <th>Action</th>
+                  {/* <th>Action</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -147,14 +150,16 @@ const SubAdminReport = () => {
                         2023-10-21 <br /> 10:00:00
                       </td>
                       <td>25000</td>
-                      <td className={`space-x-1.5`}>
+                      {/* <td className={`space-x-1.5`}>
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                          onClick={() => navigate(`/dashboard/sub-admin-list-view/${idx}`)}
+                          onClick={() =>
+                            navigate(`/dashboard/sub-admin-list-view/${idx}`)
+                          }
                         >
                           <FaEye />
                         </span>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}

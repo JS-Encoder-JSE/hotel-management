@@ -55,12 +55,16 @@ import SubAdminChangePass from "./pages/Admin/SubAdminChangePass.jsx";
 import ReportView from "./pages/report/ReportView.jsx";
 import Report from "./pages/Admin/Report.jsx";
 import Error from "./Error.jsx";
+import OwnerProfile from "./pages/Admin/OwnerProfile.jsx";
+import SuspendList from "./pages/Admin/SuspendList.jsx";
+import ExpiredList from "./pages/Admin/ExpiredList.jsx";
 import AddBar from "./pages/bar/AddBar.jsx";
 import BarItemList from "./pages/bar/BarItemList.jsx";
 import BarItemView from "./pages/bar/BarItemView.jsx";
 import EditBar from "./pages/bar/EditBar.jsx";
 import AddLifeStyle from "./pages/LifeStyle/AddLifeStyle.jsx";
 import LifeStyleList from "./pages/LifeStyle/LifeStyleList.jsx";
+import HotelListView from "./pages/Ownerhotel/HotelListView.jsx";
 
 
 const App = () => {
@@ -334,6 +338,14 @@ const App = () => {
               ),
             },
             {
+              path: "hotelList-view/:id",
+              element: (
+                <OwnerRoute>
+                  <HotelListView />
+                </OwnerRoute>
+              ),
+            },
+            {
               path: "hotel-edit/:id",
               element: (
                 <OwnerRoute>
@@ -392,11 +404,19 @@ const App = () => {
               ),
             },
             {
-              path: "renew-list",
+              path: "suspend-list",
               element: (
                 <AdminRoute>
-                  <RenewList />
+                  <SuspendList />
                 </AdminRoute>
+              ),
+            },
+            {
+              path: "expired-list",
+              element: (
+                  <AdminRoute>
+                    <ExpiredList />
+                  </AdminRoute>
               ),
             },
 
@@ -430,6 +450,14 @@ const App = () => {
                 <AdminRoute>
                   <AdminOwnerView />
                 </AdminRoute>
+              ),
+            },
+            {
+              path: "owner-profile/:id/edit",
+              element: (
+                  <AdminRoute>
+                    <OwnerProfile />
+                  </AdminRoute>
               ),
             },
             {
@@ -473,18 +501,10 @@ const App = () => {
               ),
             },
             {
-              path: "sub-admin-profile/:id",
-              element: (
-                <AdminRoute>
-                  <SubAdminProfile />
-                </AdminRoute>
-              ),
-            },
-            {
               path: "sub-admin-profile/:id/edit",
               element: (
                 <AdminRoute>
-                  <SubAdminChangePass />
+                  <SubAdminProfile />
                 </AdminRoute>
               ),
             },

@@ -13,7 +13,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const validationSchema = yup.object({
   username: yup
     .string()
-    .email("Enter a valid username")
     .required("Username is required"),
   password: yup
     .string()
@@ -71,7 +70,7 @@ const SignIn = () => {
           <h1
             className={`relative text-4xl font-black text-green-slimy text-center`}
           >
-            Hotel Management Application
+            Hotel Management System
           </h1>
           {/* sign in card */}
           <div className="card w-full sm:max-w-lg sm:mx-auto bg-white shadow-2xl mt-16">
