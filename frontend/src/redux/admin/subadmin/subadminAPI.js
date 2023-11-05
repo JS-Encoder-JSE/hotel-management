@@ -17,9 +17,9 @@ const slsAPI = baseAPI.injectEndpoints({
       providesTags: ["subadmin"],
     }),
     updateUser: build.mutation({
-      query: (data) => {
+      query: ({id, data }) => {
         return {
-          url: "users/update-field",
+          url: `users/update-user/${id}`,
           method: "PATCH",
           body: data,
         };

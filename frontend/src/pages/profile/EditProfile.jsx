@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useUpdateUserMutation } from "../../redux/admin/subadmin/subadminAPI.js";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
-  currentPassword: yup.string().required("Current password is required"),
   newPassword: yup
     .string()
     .min(8, "Password should be of minimum 8 characters length")
@@ -14,23 +16,38 @@ const validationSchema = yup.object({
   confirmPassword: yup
     .string()
     .min(8, "Password should be of minimum 8 characters length")
-    .required("Confirm password is required"),
+    .required("Confirm password is required")
+    .oneOf([yup.ref("newPassword")], "Passwords must match"),
 });
 
 const EditProfile = () => {
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
   const [showPass, setShowPass] = useState(false);
+  const [updateUser, { isLoading: isFetching }] = useUpdateUserMutation();
+  const { user } = useSelector((store) => store.authSlice);
 
   const formik = useFormik({
     initialValues: {
-      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const obj = { ...values };
+      const { newPassword } = obj;
+      const response = await updateUser({
+        id: user._id,
+        data: {
+          password: newPassword,
+        },
+      });
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
     },
   });
 
@@ -72,40 +89,6 @@ const EditProfile = () => {
         className="form-control grid grid-cols-1 gap-4 mt-14"
         onSubmit={formik.handleSubmit}
       >
-        <div>
-          <h3 className={`font-semibold`}>Current Password</h3>
-          <div className="relative">
-            <input
-              type={showPass ? "text" : "password"}
-              placeholder="Enter Current Password"
-              name="currentPassword"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.currentPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.currentPassword &&
-            Boolean(formik.errors.currentPassword) ? (
-              <small className="text-red-600">
-                {formik.touched.currentPassword &&
-                  formik.errors.currentPassword}
-              </small>
-            ) : null}
-
-            {!showPass ? (
-              <FaEyeSlash
-                onClick={handleShowPass}
-                className="absolute right-0 top-4 text-green-slimy text-lg mr-3 cursor-pointer"
-              />
-            ) : (
-              <FaEye
-                onClick={handleShowPass}
-                className="absolute right-0 top-4 text-green-slimy text-lg mr-3 cursor-pointer"
-              />
-            )}
-          </div>
-        </div>
-
         <div>
           <h3 className={`font-semibold`}>New Password</h3>
           <div className="relative">
@@ -177,7 +160,13 @@ const EditProfile = () => {
           type={"submit"}
           className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
-          Update Password
+          <span>Update Password</span>
+          {isFetching ? (
+            <span
+              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+              role="status"
+            ></span>
+          ) : null}
         </button>
       </form>
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import {FaArrowLeft, FaEye, FaEyeSlash} from "react-icons/fa";
 import {
   useGetUserQuery,
   useUpdateUserMutation,
@@ -24,6 +24,13 @@ const validationSchema = yup.object({
     .required("Salary is required")
     .positive("Salary must be a positive number")
     .integer("Salary must be an integer"),
+  password: yup
+      .string()
+      .min(8, "Password should be of minimum 8 characters length")
+      .when([], {
+        is: password => password && password.length > 0,
+        then: yup.string().required("Password is required"),
+      }),
 });
 
 const SubAdminProfile = () => {
@@ -60,24 +67,26 @@ const SubAdminProfile = () => {
 
       if (password) {
         response = await updateUser({
-          user_id: id,
-          name,
-          phone_no,
-          email,
-          password,
-          address,
-          emergency_contact,
-          salary,
+          id,
+          data: {
+            name,
+            phone_no,
+            email,
+            password,
+            address,
+            salary,
+          },
         });
       } else {
         response = await updateUser({
-          user_id: id,
-          name,
-          phone_no,
-          email,
-          address,
-          emergency_contact,
-          salary,
+          id,
+          data: {
+            name,
+            phone_no,
+            email,
+            address,
+            salary,
+          },
         });
       }
 
@@ -106,6 +115,14 @@ const SubAdminProfile = () => {
       className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
     >
       <div>
+        <div>
+          <span
+              className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+              onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft />
+          </span>
+        </div>
         <div className="absolute -top-16 break-words inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
           {imagePreview ? (
             <img

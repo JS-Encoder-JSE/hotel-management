@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
 import Hotel from "../models/hotel.model.js";
 import TransactionLog from "../models/transactionlog.model.js";
@@ -859,6 +860,7 @@ export const updateStatus = async (req, res) => {
     const newStatusLog = new StatusLog({
       changed_from: parent.username,
       changed_for: user.username,
+      extended_time: extended_time[0],
       pre_status: user.status,
       updated_status: status,
       remark: remark,
@@ -984,10 +986,9 @@ export const updateUserField = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const { userId } = req.user;
-    const { role, page = 1, limit = 10, search, filter } = req.query;
+    const { user_id, role, page = 1, limit = 10, search, filter } = req.query;
 
-    const parent = await User.findById(userId);
+    const parent = await User.findById(user_id);
 
     if (!parent) {
       return res.status(404).json({ message: "Parent not found" });
@@ -1007,7 +1008,7 @@ export const getUsers = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const query = { parent_id: userId, role:role };
+    const query = { parent_id: user_id, role: role };
 
     if (
       ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
@@ -1062,7 +1063,7 @@ export const getUserById = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const user = await User.findById(user_id);
+    const user = await User.findById(user_id).select("-password"); // Exclude the 'password' field
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -1080,6 +1081,12 @@ export const updateUser = async (req, res) => {
     const user_id = req.params.user_id; // Assuming you get the user ID from the request parameters
     const updates = req.body; // Assuming you receive the updates in the request body
 
+    // If the updates include a new password, hash it before updating
+    if (updates.password) {
+      const hashedPassword = await bcrypt.hash(updates.password, 10);
+      updates.password = hashedPassword;
+    }
+
     // Find the user by ID and update the fields provided in the request body
     const user = await User.findByIdAndUpdate(user_id, updates, { new: true });
 
@@ -1087,7 +1094,7 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json(user);
+    return res.status(200).json({ message: "Update user successful" });
   } catch (error) {
     console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
