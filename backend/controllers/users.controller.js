@@ -1027,3 +1027,41 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ error: "Failed to retrieve users" });
   }
 };
+
+export const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { user_id } = req.params;
+
+    const parent = await User.findById(userId);
+
+    if (!parent) {
+      return res.status(404).json({ message: "Parent not found" });
+    }
+
+    // Check if the user making the request has permission to get user information
+    const hierarchy = {
+      admin: ["subadmin", "owner", "manager", "employee"],
+      subadmin: ["owner", "manager", "employee"],
+      owner: ["manager", "employee"],
+      manager: ["employee"],
+    };
+
+    if (!hierarchy[parent.role]) {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to get user information" });
+    }
+
+    const user = await User.findById(user_id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to retrieve user information" });
+  }
+};
