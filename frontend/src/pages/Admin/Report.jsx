@@ -74,16 +74,16 @@ const Report = () => {
           </div>
         </div>
         <hr className={`my-5`} />
-        <div className={`space-y-10`}>
-          <div className={`flex flex-wrap gap-3 justify-between`}>
+        <div className={`flex flex-col gap-5`}>
+          <div className={`flex justify-between`}>
             <div className={`space-x-1.5`}>
               <span>Show</span>
               <select
-                name="entries"
-                className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-                value={formik.values.entries}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                  name="entries"
+                  className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+                  value={formik.values.entries}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
               >
                 <option value={10}>10</option>
                 <option value={25}>25</option>
@@ -91,8 +91,24 @@ const Report = () => {
               </select>
               <span>entries</span>
             </div>
-            <div className={`flex gap-3`}>
-              <DatePicker
+            <div>
+              <select
+                  name="filter"
+                  className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+                  value={formik.values.filter}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+              >
+                <option value="" selected disabled>
+                  All
+                </option>
+                <option value="Sale">Sale</option>
+                <option value="Renew">Renew</option>
+              </select>
+            </div>
+          </div>
+          <div className={`flex gap-3`}>
+            <DatePicker
                 dateFormat="dd/MM/yyyy"
                 name="startDate"
                 placeholderText={`From`}
@@ -100,8 +116,8 @@ const Report = () => {
                 className={`input input-sm input-bordered rounded focus:outline-none`}
                 onChange={(date) => formik.setFieldValue("startDate", date)}
                 onBlur={formik.handleBlur}
-              />
-              <DatePicker
+            />
+            <DatePicker
                 dateFormat="dd/MM/yyyy"
                 name="endDate"
                 placeholderText={`To`}
@@ -109,48 +125,32 @@ const Report = () => {
                 className={`input input-sm input-bordered rounded focus:outline-none`}
                 onChange={(date) => formik.setFieldValue("endDate", date)}
                 onBlur={formik.handleBlur}
-              />
-              <button
+            />
+            <button
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-              >
-                Apply Filter
-              </button>
-            </div>
-            <div className={`flex items-center space-x-1.5`}>
-              <div className={`relative sm:min-w-[20rem]`}>
-                <input
-                  type="text"
-                  placeholder="Search by name..."
-                  name="search"
-                  className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-                  value={formik.values.search}
-                  onChange={formik.handleChange}
-                />
-                <button
-                  type="button"
-                  className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                >
-                  <FaSearch />
-                </button>
-              </div>
-              <div>
-                <select
-                  name="filter"
-                  className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-                  value={formik.values.filter}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="" selected disabled>
-                    All
-                  </option>
-                  <option value="Sale">Sale</option>
-                  <option value="Renew">Renew</option>
-                </select>
-              </div>
-            </div>
+            >
+              Apply Filter
+            </button>
           </div>
+          <div className={`relative max-w-xs`}>
+            <input
+                type="text"
+                placeholder="Search by name..."
+                name="search"
+                className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+                value={formik.values.search}
+                onChange={formik.handleChange}
+            />
+            <button
+                type="button"
+                className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
+        </div>
+        <div className={`space-y-10 mt-10`}>
           <div className="overflow-x-auto">
             <table className="table">
               <thead>

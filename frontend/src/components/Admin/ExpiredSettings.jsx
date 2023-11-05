@@ -8,13 +8,12 @@ import toast from "react-hot-toast";
 // form validation
 const validationSchema = yup.object({
   status: yup.string().required("Status is required"),
-  password: yup.string().required("Password is required"),
   remarks: yup.string().required("Remarks is required"),
   fromDate: yup.string().required("From date is required"),
   toDate: yup.string().required("To date is required"),
 });
 
-const ExpiredSettings = ({ modalOpen, setModalOpen, owner }) => {
+const ExpiredSettings = ({ owner }) => {
   const closeRef = useRef(null);
   const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();
   const formik = useFormik({
@@ -83,21 +82,6 @@ const ExpiredSettings = ({ modalOpen, setModalOpen, owner }) => {
               <option value="Suspended">Suspended</option>
             </select>
           </div>
-          <div className="flex flex-col gap-3">
-            <textarea
-              placeholder="Remarks"
-              name="remarks"
-              className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
-              value={formik.values.remarks}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.remarks && Boolean(formik.errors.remarks) ? (
-              <small className="text-red-600">
-                {formik.touched.remarks && formik.errors.remarks}
-              </small>
-            ) : null}
-          </div>
           {/* From box */}
           <div className="flex flex-col gap-3">
             <DatePicker
@@ -133,18 +117,17 @@ const ExpiredSettings = ({ modalOpen, setModalOpen, owner }) => {
             ) : null}
           </div>
           <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Enter password"
-              name="password"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.password}
+            <textarea
+              placeholder="Remarks"
+              name="remarks"
+              className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+              value={formik.values.remarks}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.password && Boolean(formik.errors.password) ? (
+            {formik.touched.remarks && Boolean(formik.errors.remarks) ? (
               <small className="text-red-600">
-                {formik.touched.password && formik.errors.password}
+                {formik.touched.remarks && formik.errors.remarks}
               </small>
             ) : null}
           </div>

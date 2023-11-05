@@ -17,7 +17,7 @@ const foodAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "foods/add-food",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },
@@ -27,7 +27,7 @@ const foodAPI = baseAPI.injectEndpoints({
       query: (id) => {
         return {
           url: `foods/delete-food/${id}`,
-          method: "delete",
+          method: "DELETE",
         };
       },
       invalidatesTags: ["food"],
@@ -36,7 +36,7 @@ const foodAPI = baseAPI.injectEndpoints({
       query: ({ id, data }) => {
         return {
           url: `foods/update-food/${id}`,
-          method: "patch",
+          method: "PATCH",
           body: data,
         };
       },
