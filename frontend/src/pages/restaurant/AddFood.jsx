@@ -17,13 +17,12 @@ import toast from "react-hot-toast";
 // form validation
 const validationSchema = yup.object({
   foodName: yup.string().required("Food name is required"),
-  // quantity: yup.number().when(["quantity"], ([quantity], schema) => {
-  //   if (quantity)
-  //     return schema
-  //       .positive("Quantity must be a positive number")
-  //       .integer("Quantity must be an integer");
-  //   else return schema;
-  // }),
+    quantity: yup
+  .number()
+  .required("quantity is required")
+  .positive("quantity must be a positive number")
+  .integer("quantity must be an integer"),
+  
   price: yup
     .number()
     .required("Price is required")
@@ -48,6 +47,7 @@ const AddFood = () => {
       price: "",
       description: "",
       photos: null,
+      surveyorQuantity: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -238,22 +238,23 @@ const AddFood = () => {
         </div>
         <div className="flex flex-col gap-3">
                 <select
-                  name="quantity"
+                  name="surveyorQuantity"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.quantity}
+                  value={formik.values.surveyorQuantity}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
                   <option value="" selected disabled>
-                  Quantity
+                   Surveyor Quantity
                   </option>
                   <option value="SetMenu1">1:1</option>
-                  <option value="SetMenu2">1:2</option>
-                  <option value="SetMenu3">1:3</option>
+                  <option value="SetMenu2">2:1</option>
+                  <option value="SetMenu3">3:1</option>
+                  <option value="SetMenu4">4:1</option>
                 </select>
-                {formik.touched.bedSize && Boolean(formik.errors.bedSize) ? (
+                {formik.touched.surveyorQuantity && Boolean(formik.errors.surveyorQuantity) ? (
                   <small className="text-red-600">
-                    {formik.touched.bedSize && formik.errors.bedSize}
+                    {formik.touched.surveyorQuantity && formik.errors.surveyorQuantity}
                   </small>
                 ) : null}
               </div>

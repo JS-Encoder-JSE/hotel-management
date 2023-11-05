@@ -114,6 +114,7 @@ const FoodInventory = () => {
                 <tr>
                   <th>Name</th>
                   <th>Status</th>
+                  <th>Quantity</th>
                   <th>Sell</th>
                   <th>Price</th>
                   <th>Action</th>

@@ -40,6 +40,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
           </div>
         )}
       </td>
+      <td>0</td>
       <td>{food?.price}</td>
       <th>
         {!isAdd ? (

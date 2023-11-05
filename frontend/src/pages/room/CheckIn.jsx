@@ -42,6 +42,13 @@ const validationSchema = yup.object({
       return schema.required("Transaction ID is required");
     else return schema;
   }),
+
+  documentsType: yup.string().required("Document Number is required"),
+  documentsNumber: yup.string().when(["documentsType"], ([documentsType], schema) => {
+    if (documentsType !== "nid")
+      return schema.required("Transaction ID is required");
+    else return schema;
+  }),
   // discount: yup.number().when(["discount"], ([discount], schema) => {
   //   if (discount)
   //     return schema
@@ -67,7 +74,7 @@ const CheckIn = () => {
       adult: "",
       children: "",
       paymentMethod: "",
-      trxID: "",
+      documentsNumber: "",
       discount: "",
       fromDate: "",
       toDate: "",
@@ -75,6 +82,7 @@ const CheckIn = () => {
       documents: null,
       emergencyNumber: "",
       address: "",
+      documentsType: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -362,6 +370,9 @@ const CheckIn = () => {
             ) : null}
           </div>
         ) : null}
+   
+
+        {/* discount box */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
@@ -419,6 +430,49 @@ const CheckIn = () => {
             </small>
           ) : null}
         </div>
+             {/* type Of Documents  box */}
+             <div className="flex flex-col gap-3">
+          <select
+            name="documentsType"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+            value={formik.values.documentsType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Type Of Documents
+            </option>
+            <option value="adarCard">Adar Card</option>
+            <option value="passport">Passport</option>
+            <option value="drivingLicense">Driving Licence</option>
+            <option value="nid">NID</option>
+          </select>
+          {formik.touched.documentsType &&
+          Boolean(formik.errors.documentsType) ? (
+            <small className="text-red-600">
+              {formik.touched.documentsType && formik.errors.documentsType}
+            </small>
+          ) : null}
+        </div>
+        {formik.values.documentsType &&
+        formik.values.documentsType !== "nid" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Documents Number"
+              name="documentsNumber"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.documentsNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.documentsNumber && Boolean(formik.errors.documentsNumber) ? (
+              <small className="text-red-600">
+                {formik.touched.documentsNumber && formik.errors.documentsNumber}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
            {/* Nationality box */}
            <div className="flex flex-col gap-3">
             <input

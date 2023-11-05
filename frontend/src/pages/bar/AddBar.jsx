@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
-  itemName: yup.string().required("Name is required"),
+  brandName: yup.string().required("Brand Name is required"),
   itemDescription: yup
     .string()
     .required("Description is required")
@@ -24,7 +24,7 @@ const validationSchema = yup.object({
 const AddBar = () => {
   const formik = useFormik({
     initialValues: {
-      itemName: "",
+      brandName: "",
       itemDescription: "",
       ItemQuantity: "",
       ItemPrice: "",
@@ -52,16 +52,35 @@ const AddBar = () => {
         <div className="flex flex-col gap-5">
           <input
             type="text"
-            placeholder="Item Name"
-            name="itemName"
+            placeholder="Brand Name"
+            name="brandName"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.itemName}
+            value={formik.values.brandName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.itemName && Boolean(formik.errors.itemName) ? (
+          {formik.touched.brandName && Boolean(formik.errors.brandName) ? (
             <small className="text-red-600">
-              {formik.touched.itemName && formik.errors.itemName}
+              {formik.touched.brandName && formik.errors.brandName}
+            </small>
+          ) : null}
+        </div>
+
+        {/* Type Of Alcohol Pack */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Type Of Alcohol"
+            name="ItemPack"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.ItemPack}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.ItemPack &&
+          Boolean(formik.errors.ItemPack) ? (
+            <small className="text-red-600">
+              {formik.touched.ItemPack && formik.errors.ItemPack}
             </small>
           ) : null}
         </div>
@@ -69,7 +88,7 @@ const AddBar = () => {
         <div className="flex flex-col gap-3">
           <input
             type="number"
-            placeholder="Item Quantity"
+            placeholder="surveyor Quantity"
             name="ItemQuantity"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.ItemQuantity}
@@ -101,24 +120,7 @@ const AddBar = () => {
             </small>
           ) : null}
         </div>
-        {/* Item Pack */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Item Pack"
-            name="ItemPack"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.ItemPack}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.ItemPack &&
-          Boolean(formik.errors.ItemPack) ? (
-            <small className="text-red-600">
-              {formik.touched.ItemPack && formik.errors.ItemPack}
-            </small>
-          ) : null}
-        </div>
+        
         {/* item Description */}
         <div className="col-span-full flex flex-col gap-3">
           <textarea

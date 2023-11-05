@@ -44,6 +44,7 @@ const FoodLists = () => {
           <tr className={`text-lg`}>
             <th>Name</th>
             <th>Status</th>
+            <th>Surveyor <br /> Quantity</th>
             <th>Price</th>
             <th>Action</th>
           </tr>
