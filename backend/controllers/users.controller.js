@@ -151,6 +151,8 @@ export const addLicense = async (req, res) => {
     const newTransactionLog = new TransactionLog({
       tran_id,
       payment_method,
+      bill_from,
+      bill_to,
       from: savedOwner.username,
       to: parent.username,
       amount,
@@ -717,6 +719,8 @@ export const renewLicense = async (req, res) => {
     const newTransactionLog = new TransactionLog({
       tran_id,
       payment_method,
+      bill_from,
+      bill_to,
       from: user.username,
       to: parent.username,
       amount,
