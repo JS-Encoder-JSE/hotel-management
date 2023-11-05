@@ -12,23 +12,24 @@ const validationSchema = yup.object({
     .string()
     .required("Description is required")
     .min(20, "Description at least 20 characters length"),
-  ItemQuantity: yup
+    surveyorQuantity: yup
     .number()
     .required("Quantity is required")
     .positive("Quantity must be a positive number")
     .integer("Quantity must be an integer"),
     ItemPrice: yup.string().required("Price is required"),
-    ItemPack: yup.string().required("Item Pack is required"),
+    typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
 });
 
 const AddBar = () => {
   const formik = useFormik({
     initialValues: {
       brandName: "",
+      typeOfAlcohol: "",
       itemDescription: "",
-      ItemQuantity: "",
+      surveyorQuantity: "",
       ItemPrice: "",
-      ItemPack: "",
+     
     },
     validationSchema,
     onSubmit: (values) => {
@@ -48,7 +49,7 @@ const AddBar = () => {
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
-        {/* Item Name */}
+        {/* Brand Name */}
         <div className="flex flex-col gap-5">
           <input
             type="text"
@@ -71,16 +72,16 @@ const AddBar = () => {
           <input
             type="text"
             placeholder="Type Of Alcohol"
-            name="ItemPack"
+            name="typeOfAlcohol"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.ItemPack}
+            value={formik.values.typeOfAlcohol}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.ItemPack &&
-          Boolean(formik.errors.ItemPack) ? (
+          {formik.touched.typeOfAlcohol &&
+          Boolean(formik.errors.typeOfAlcohol) ? (
             <small className="text-red-600">
-              {formik.touched.ItemPack && formik.errors.ItemPack}
+              {formik.touched.typeOfAlcohol && formik.errors.typeOfAlcohol}
             </small>
           ) : null}
         </div>
@@ -89,16 +90,16 @@ const AddBar = () => {
           <input
             type="number"
             placeholder="surveyor Quantity"
-            name="ItemQuantity"
+            name="surveyorQuantity"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.ItemQuantity}
+            value={formik.values.surveyorQuantity}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.ItemQuantity &&
-          Boolean(formik.errors.ItemQuantity) ? (
+          {formik.touched.surveyorQuantity &&
+          Boolean(formik.errors.surveyorQuantity) ? (
             <small className="text-red-600">
-              {formik.touched.ItemQuantity && formik.errors.ItemQuantity}
+              {formik.touched.surveyorQuantity && formik.errors.surveyorQuantity}
             </small>
           ) : null}
         </div>

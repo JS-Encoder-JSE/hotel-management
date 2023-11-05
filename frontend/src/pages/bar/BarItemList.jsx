@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { FaWineGlass } from "react-icons/fa";
+import { FaWineGlass,FaEdit } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
-import { MdOutlineAutorenew } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
 import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
@@ -20,17 +20,17 @@ const BarItemList = () => {
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
       <div className={`text-2xl text-center`}>
-    Renew List
+    Bar Item List
       </div>
       <div className="overflow-x-auto">
         <table className="table border">
           <thead>
             <tr>
               <th>Sl</th>
-              <th>Item Name</th>
-              <th>Item Quantity</th>
+              <th>Brand Name</th>
+              <th>Type Of <br /> Alcohol</th>
+              <th>Surveyor <br /> Quantity</th>
               <th>Price</th>
-              <th>Item Pack</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -44,25 +44,31 @@ const BarItemList = () => {
                       <div className="avatar">
                       </div>
                       <div>
-                        <div className="font-bold">votkha</div>
+                        <div className="font-bold">Carew & co</div>
                       </div>
                     </div>
                   </td>
-                  <td>2 ML</td>
-                  <td>2000</td>
-                  <td>2</td>
+                  <td>Votkha</td>
+                  <td>3 Pack</td>
+                  <td>1500</td>
                   <td className={`space-x-1.5`}>
+                    <span
+                     className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
+                      onClick={() => navigate(`/dashboard/baritemlist-view/${idx}`)}
+                    >
+                      <FaWineGlass />
+                    </span>
                     <span
                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
                       onClick={() => navigate(`/dashboard/renew-view/${idx}`)}
                     >
-                      <GrView />
+                      <FaEdit />
                     </span>
                     <span
-                      className={`btn btn-sm bg-green-600 hover:bg-transparent text-white hover:text-green-600 !border-green-600 rounded normal-case`}
+                      className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                       onClick={() => navigate(`/dashboard/edit-renew/${idx}`)}
                     >
-                      <FaWineGlass />
+                      <MdDelete />
                     </span>
                   </td>
                 </tr>

@@ -259,7 +259,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              All Items
+              Bar Item List
             </NavLink>
           </li>
         </ul>
