@@ -13,6 +13,7 @@ import OwnerList from "../../components/Admin/OwnerList.jsx";
 import SuspendedOwner from "../../components/Admin/SuspendedOwner.jsx";
 import TransactionHistory from "../../components/Admin/TransactionHistory";
 import StatusHistory from "../../components/Admin/StatusHistory";
+import AdminOwnerList from "./AdminOwnerList";
 
 const SubAdminListView = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const SubAdminListView = () => {
           </div>
         </div>
       </div>
-      <OwnerList />
+      <AdminOwnerList title={'Owner List'} />
       <TransactionHistory />
         <StatusHistory />
       {/* <SuspendedOwner /> */}
