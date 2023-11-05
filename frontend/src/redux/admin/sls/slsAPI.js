@@ -6,28 +6,31 @@ const slsAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "users/add-license",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },
+      invalidatesTags: ["owner"],
     }),
     renewLicense: build.mutation({
       query: (data) => {
         return {
           url: "users/renew-license",
-          method: "patch",
+          method: "PATCH",
           body: data,
         };
       },
+      invalidatesTags: ["owner"],
     }),
     updateLicenseStatus: build.mutation({
       query: (data) => {
         return {
           url: "users/update-status",
-          method: "patch",
+          method: "PATCH",
           body: data,
         };
       },
+      invalidatesTags: ["owner"],
     }),
   }),
 });

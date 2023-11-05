@@ -19,13 +19,6 @@ const Report = () => {
     setCurrentPage(page);
   };
 
-  const options = [
-    { value: "all", label: "All" },
-    { value: "total-renew", label: "Total-Renew" },
-    { value: "total-sale", label: "Total-Sale" },
-    { value: "total-expired", label: "Total-Expired" },
-  ];
-
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -85,7 +78,7 @@ const Report = () => {
           <div>
             <select
                 name="filter"
-                className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+                className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
                 value={formik.values.filter}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -97,14 +90,6 @@ const Report = () => {
               <option value="Renew">Renew</option>
               <option value="Expired">Expired</option>
             </select>
-          </div>
-          <div className="w-[200px]">
-            <Select
-              options={options}
-              placeholder="Filter"
-              // onChange={(e) => handleSearchRoom(e)}
-              onKeyDown={handleKeyDown}
-            />
           </div>
         </div>
       </div>

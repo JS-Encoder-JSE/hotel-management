@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
 import {
   FaEye,
   FaEyeSlash,
@@ -9,6 +8,7 @@ import {
   FaUpload,
 } from "react-icons/fa";
 import {
+  MdAttachFile,
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
@@ -26,10 +26,12 @@ import { validationSchema } from "../../components/Yup/AdminNewLicenseVal.jsx";
 const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [images, setImages] = useState({});
   const [addLicense] = useAddLicenseMutation();
   const [upload] = useUploadMutation();
   const { user } = useSelector((store) => store.authSlice);
   const [showPass, setShowPass] = useState(false);
+  const [docTypeCount, setDocTypeCount] = useState(1);
 
   const formik = useFormik({
     initialValues: {
@@ -70,38 +72,39 @@ const AdminNewLicense = () => {
         trxID: tran_id,
         amount,
         remarks: remark,
-        documentsType,
-        documents,
       } = obj;
-      const formData = new FormData();
+      const tempImages = {
+        trade_lic_img: [],
+        utilities: [],
+        pancard: [],
+      };
 
-      for (let i = 0; i < values.documents.length; i++) {
-        const photoName = values.documents[i].name.substring(
-          0,
-          values.documents[i].name.lastIndexOf("."),
-        );
+      for (const propertyName in images) {
+        const formData = new FormData();
+        const array = images[propertyName];
 
-        formData.append(photoName, values.documents[i]);
-      }
+        for (let i = 0; i < array.length; i++) {
+          const photoName = array[i].name.substring(
+            0,
+            array[i].name.lastIndexOf("."),
+          );
 
-      await upload(formData).then((result) => {
-        let title;
-
-        switch (documentsType) {
-          case "Utilities":
-            title = "utilities";
-            break;
-          case "Trade Licences":
-            title = "trade_lic_img";
-            break;
-          case "Pan Card":
-            title = "pancard";
+          formData.append(photoName, array[i]);
         }
 
-        obj.images = {
-          [title]: result.data.imageUrls,
-        };
-      });
+        await upload(formData).then((result) => {
+          switch (propertyName) {
+            case "Utilities":
+              tempImages.utilities = result.data.imageUrls;
+              break;
+            case "Trade Licences":
+              tempImages.trade_lic_img = result.data.imageUrls;
+              break;
+            case "Pan Card":
+              tempImages.pancard = result.data.imageUrls;
+          }
+        });
+      }
 
       const response = await addLicense({
         name,
@@ -118,7 +121,7 @@ const AdminNewLicense = () => {
         tran_id,
         amount,
         remark,
-        images: obj.images,
+        images: tempImages,
       });
 
       if (response?.error) {
@@ -126,46 +129,39 @@ const AdminNewLicense = () => {
       } else {
         toast.success(response.data.message);
         formikHelpers.resetForm();
-        setSelectedImages([]);
+        setImages([]);
       }
 
       setLoading(false);
     },
   });
 
-  const handleDelete = (idx) => {
-    const tempImgs = [
-      ...selectedImages.slice(0, idx),
-      ...selectedImages.slice(idx + 1),
-    ];
-    const dataTransfer = new DataTransfer();
-
-    for (const file of tempImgs) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(tempImgs);
+  const handleDelete = (key, idx) => {
+    images[key] = [...images[key].slice(0, idx), ...images[key].slice(idx + 1)];
   };
 
-  const handleChange = (idx, newFile) => {
-    const updatedImages = [...selectedImages];
-    updatedImages[idx] = newFile;
+  const handleChange = (key, idx, newFile) => {
+    if (images[key]) {
+      const updatedImages = [...images[key]];
+      updatedImages[idx] = newFile;
 
-    const dataTransfer = new DataTransfer();
-
-    for (const file of updatedImages) {
-      dataTransfer.items.add(file);
+      images[key] = updatedImages;
+      setImages({ ...images });
     }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(updatedImages);
   };
+
+  useEffect(() => {
+    const arr = [].concat(...Object.values(images));
+    setSelectedImages(arr);
+  }, [images]);
 
   useEffect(() => {
     if (formik.values.documents) {
       const selectedImagesArray = Array.from(formik.values.documents);
-      setSelectedImages(selectedImagesArray);
+      setImages({
+        ...images,
+        [formik.values.documentsType]: selectedImagesArray,
+      });
     }
   }, [formik.values.documents]);
 
@@ -202,43 +198,43 @@ const AdminNewLicense = () => {
               slidesPerView={1}
               spaceBetween={50}
             >
-              {selectedImages.length ? (
-                selectedImages.map((image, idx) => (
-                  <SwiperSlide key={idx}>
-                    <div className={`relative`}>
-                      <div className={`absolute top-3 right-3 space-x-1.5`}>
-                        <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
-                          <TbReplaceFilled />
-                          <input
-                            type="file"
-                            className="absolute left-0 top-0  overflow-hidden h-0"
-                            onChange={(e) =>
-                              handleChange(idx, e.currentTarget.files[0])
-                            }
+              {Object.keys(images).map((key) =>
+                images[key].length
+                  ? images[key].map((image, idx) => (
+                      <SwiperSlide key={idx}>
+                        <div className={`relative`}>
+                          <div className={`absolute top-3 right-3 space-x-1.5`}>
+                            <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                              <TbReplaceFilled />
+                              <input
+                                type="file"
+                                className="absolute left-0 top-0  overflow-hidden h-0"
+                                onChange={(e) =>
+                                  handleChange(
+                                    key,
+                                    idx,
+                                    e.currentTarget.files[0],
+                                  )
+                                }
+                              />
+                            </label>
+                            <button
+                              className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                              onClick={() => handleDelete(key, idx)}
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                          <img
+                            key={idx}
+                            src={URL.createObjectURL(image)}
+                            alt=""
+                            className={`w-full h-96 object-cover rounded`}
                           />
-                        </label>
-                        <button
-                          className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                          onClick={() => handleDelete(idx)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                      <img
-                        key={idx}
-                        src={URL.createObjectURL(image)}
-                        alt=""
-                        className={`w-full h-96 object-cover rounded`}
-                      />
-                    </div>
-                  </SwiperSlide>
-                ))
-              ) : (
-                <img
-                  src={imgPlaceHolder}
-                  alt=""
-                  className={`w-full h-96 object-cover rounded`}
-                />
+                        </div>
+                      </SwiperSlide>
+                    ))
+                  : null,
               )}
             </Swiper>
           </div>
@@ -314,13 +310,8 @@ const AdminNewLicense = () => {
         {/*Password box */}
         <div
           className={`flex flex-col gap-3 ${
-            ((formik.values.paymentMethod &&
-              formik.values.paymentMethod !== "Cash") ||
-              formik.values.documentsType) &&
-            !(
-              formik.values.paymentMethod !== "Cash" &&
-              formik.values.documentsType
-            )
+            (!formik.values.paymentMethod && !formik.values.documentsType) ||
+            formik.values.paymentMethod === "Cash"
               ? "col-span-full"
               : ""
           }`}
@@ -486,61 +477,6 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-        {/* documents type box */}
-        <div className={`flex flex-col gap-3`}>
-          <select
-            name="documentsType"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-            value={formik.values.documentsType}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Type of Documents
-            </option>
-            <option value="Utilities">Utilities</option>
-            <option value="Trade Licences">Trade Licences</option>
-            <option value="Pan Card">Pan Card</option>
-          </select>
-          {formik.touched.documentsType &&
-          Boolean(formik.errors.documentsType) ? (
-            <small className="text-red-600">
-              {formik.touched.documentsType && formik.errors.documentsType}
-            </small>
-          ) : null}
-        </div>
-        {/* documents box */}
-        {formik.values.documentsType ? (
-          <div className={`flex space-x-1.5`}>
-            <div className="flex flex-col gap-3 w-full">
-              <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                {formik.values.documents ? (
-                  <span>{formik.values.documents.length + " files"}</span>
-                ) : (
-                  <span className={`flex items-baseline space-x-1.5`}>
-                    <FaUpload />
-                    <span>Choose {formik.values.documentsType}</span>
-                  </span>
-                )}
-                <input
-                  type="file"
-                  multiple
-                  name="documents"
-                  className="absolute left-0 top-0  overflow-hidden h-0"
-                  onChange={(e) =>
-                    formik.setFieldValue("documents", e.currentTarget.files)
-                  }
-                  onBlur={formik.handleBlur}
-                />
-              </label>
-              {formik.touched.documents && Boolean(formik.errors.documents) ? (
-                <small className="text-red-600">
-                  {formik.touched.documents && formik.errors.documents}
-                </small>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
         {/* Hotel Address box */}
         <div className="flex flex-col gap-3">
           <textarea
@@ -574,13 +510,102 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
-
+        {selectedImages.length ? (
+          <div className={`col-span-full space-y-1.5`}>
+            <span>Attachment</span>
+            <ul className={`list-disc list-inside`}>
+              {Object.entries(images).map(([key, value]) => {
+                return value.length ? (
+                  <li>
+                    <span className={`inline-flex gap-0.5 items-center`}>
+                      <MdAttachFile />
+                      <span>{key}</span>
+                    </span>
+                  </li>
+                ) : null;
+              })}
+            </ul>
+          </div>
+        ) : null}
+        {[...Array(docTypeCount)].map((_, idx) => {
+          return (
+            <>
+              <div
+                className={`flex flex-col gap-3 ${
+                  (!formik.values.paymentMethod &&
+                    !formik.values.documentsType) ||
+                  (formik.values.paymentMethod !== "Cash" &&
+                    !formik.values.documentsType)
+                    ? "col-span-full"
+                    : ""
+                }`}
+              >
+                <select
+                  name="documentsType"
+                  className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+                  value={formik.values.documentsType}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="" selected disabled>
+                    Type of Documents
+                  </option>
+                  <option value="Utilities">Utilities</option>
+                  <option value="Trade Licences">Trade Licences</option>
+                  <option value="Pan Card">Pan Card</option>
+                </select>
+                {formik.touched.documentsType &&
+                Boolean(formik.errors.documentsType) ? (
+                  <small className="text-red-600">
+                    {formik.touched.documentsType &&
+                      formik.errors.documentsType}
+                  </small>
+                ) : null}
+              </div>
+              {formik.values.documentsType ? (
+                <div className={`flex space-x-1.5`}>
+                  <div className="flex flex-col gap-3 w-full">
+                    <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+                      {formik.values.documents ? (
+                        <span>{formik.values.documents.length + " files"}</span>
+                      ) : (
+                        <span className={`flex items-baseline space-x-1.5`}>
+                          <FaUpload />
+                          <span>Choose {formik.values.documentsType}</span>
+                        </span>
+                      )}
+                      <input
+                        type="file"
+                        multiple
+                        name="documents"
+                        className="absolute left-0 top-0  overflow-hidden h-0"
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            "documents",
+                            e.currentTarget.files,
+                          )
+                        }
+                        onBlur={formik.handleBlur}
+                      />
+                    </label>
+                    {formik.touched.documents &&
+                    Boolean(formik.errors.documents) ? (
+                      <small className="text-red-600">
+                        {formik.touched.documents && formik.errors.documents}
+                      </small>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+            </>
+          );
+        })}
         {/* submit button */}
         <button
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
-          <span>Add</span>
+          <span>Create License</span>
           {isLoading ? (
             <span
               className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"

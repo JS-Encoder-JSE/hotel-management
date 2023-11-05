@@ -45,6 +45,8 @@ const EditRenew = () => {
         remark,
       });
 
+      console.log(response)
+
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
