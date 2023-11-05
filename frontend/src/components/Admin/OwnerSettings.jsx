@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
@@ -24,6 +24,7 @@ const validationSchema = yup.object({
 
 const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
   const navigate = useNavigate();
+  const closeRef = useRef(null);
   const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();
   const formik = useFormik({
     initialValues: {
@@ -52,6 +53,7 @@ const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
+        closeRef.current.click();
         toast.success(response.data.message);
       }
     },
@@ -61,13 +63,13 @@ const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
     <>
       <form method="dialog">
         <button
+          ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           onClick={() => {
             formik.handleReset();
-            setModalOpen(!modalOpen);
           }}
         >
-          ✕
+          x
         </button>
       </form>
       <div>
@@ -91,7 +93,7 @@ const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
               {owner?.status === "Active" ? (
                 <option value="Deactive">Deactivate</option>
               ) : null}
-              {owner?.status === "Deactive" ? (
+              {owner?.status === "Deleted" || owner?.status === "Deactive" ? (
                 <option value="Active">Activate</option>
               ) : null}
               {owner?.status === "Suspended" ? (

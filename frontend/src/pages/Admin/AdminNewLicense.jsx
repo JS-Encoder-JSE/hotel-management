@@ -49,8 +49,12 @@ const AdminNewLicense = () => {
       trxID: "",
       amount: "",
       remarks: "",
-      documentsType: "",
-      documents: null,
+      documentsType1: "",
+      documents1: null,
+      documentsType2: "",
+      documents2: null,
+      documentsType3: "",
+      documents3: null,
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -530,20 +534,11 @@ const AdminNewLicense = () => {
         {[...Array(docTypeCount)].map((_, idx) => {
           return (
             <>
-              <div
-                className={`flex flex-col gap-3 ${
-                  (!formik.values.paymentMethod &&
-                    !formik.values.documentsType) ||
-                  (formik.values.paymentMethod !== "Cash" &&
-                    !formik.values.documentsType)
-                    ? "col-span-full"
-                    : ""
-                }`}
-              >
+              <div className={`flex flex-col gap-3`}>
                 <select
-                  name="documentsType"
+                  name={`documentsType${++idx}`}
                   className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-                  value={formik.values.documentsType}
+                  value={`${formik.values.documentsType}${++idx}`}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
@@ -554,46 +549,51 @@ const AdminNewLicense = () => {
                   <option value="Trade Licences">Trade Licences</option>
                   <option value="Pan Card">Pan Card</option>
                 </select>
-                {formik.touched.documentsType &&
-                Boolean(formik.errors.documentsType) ? (
-                  <small className="text-red-600">
-                    {formik.touched.documentsType &&
-                      formik.errors.documentsType}
-                  </small>
-                ) : null}
+                {/*{formik.touched.documentsType &&*/}
+                {/*Boolean(formik.errors.documentsType) ? (*/}
+                {/*  <small className="text-red-600">*/}
+                {/*    {formik.touched.documentsType &&*/}
+                {/*      formik.errors.documentsType}*/}
+                {/*  </small>*/}
+                {/*) : null}*/}
               </div>
-              {formik.values.documentsType ? (
+              {`${formik.values.documentsType}${++idx}` ? (
                 <div className={`flex space-x-1.5`}>
                   <div className="flex flex-col gap-3 w-full">
                     <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                      {formik.values.documents ? (
-                        <span>{formik.values.documents.length + " files"}</span>
+                      {`${formik.values.documentsType}${++idx}` ? (
+                        <span>
+                          {`${formik.values.documentsType}${++idx}`.length +
+                            " files"}
+                        </span>
                       ) : (
                         <span className={`flex items-baseline space-x-1.5`}>
                           <FaUpload />
-                          <span>Choose {formik.values.documentsType}</span>
+                          <span>
+                            Choose `${formik.values.documentsType}${++idx}`
+                          </span>
                         </span>
                       )}
                       <input
                         type="file"
                         multiple
-                        name="documents"
+                        name={`documents${++idx}`}
                         className="absolute left-0 top-0  overflow-hidden h-0"
                         onChange={(e) =>
                           formik.setFieldValue(
-                            "documents",
+                            `documents${++idx}`,
                             e.currentTarget.files,
                           )
                         }
                         onBlur={formik.handleBlur}
                       />
                     </label>
-                    {formik.touched.documents &&
-                    Boolean(formik.errors.documents) ? (
-                      <small className="text-red-600">
-                        {formik.touched.documents && formik.errors.documents}
-                      </small>
-                    ) : null}
+                    {/*{formik.touched.documents &&*/}
+                    {/*Boolean(formik.errors.documents) ? (*/}
+                    {/*  <small className="text-red-600">*/}
+                    {/*    {formik.touched.documents && formik.errors.documents}*/}
+                    {/*  </small>*/}
+                    {/*) : null}*/}
                   </div>
                 </div>
               ) : null}
