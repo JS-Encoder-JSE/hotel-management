@@ -8,7 +8,8 @@ import { Rings } from "react-loader-spinner";
 
 const RenewView = () => {
   const { id } = useParams();
-	const { isLoading, data } = useGetUserQuery(id);
+  const { isLoading, data } = useGetUserQuery(id);
+  
 	const navigate = useNavigate();
   function calculateDays(date1, date2) {
     const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
@@ -22,7 +23,9 @@ const RenewView = () => {
     const differenceInDays = Math.floor(differenceInMilliseconds / oneDay);
 
     return differenceInDays;
-}
+  }
+  
+  const bill_to =!isLoading&& data?.status === "Suspended" ?data?.extended_time[0]?.to:data?.bill_to
 	return (
 		<div>
 			<div className="card w-full bg-white shadow-xl p-5">
@@ -56,7 +59,7 @@ const RenewView = () => {
 									{" "}
 									License Key :{" "}
 									{new Date(
-										data?.bill_to
+										bill_to
 									).toLocaleDateString()}
 								</h6>
 								<h6>
@@ -84,6 +87,9 @@ const RenewView = () => {
 									{" "}
 									Remaining Days:{" "}
 									{calculateDays(
+										data?.bill_from,
+										Date.now()
+									)<0?0:calculateDays(
 										data?.bill_from,
 										Date.now()
 									)}{" "}

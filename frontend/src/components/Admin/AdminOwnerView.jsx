@@ -66,7 +66,7 @@ const AdminOwnerView = () => {
               <h6> Purchase Date :{new Date(data?.createdAt).toLocaleDateString()} </h6>
               <h6> Renew Date :{ new Date(data?.renew_date).toLocaleDateString()} </h6>
               <h6> Expire Date : { new Date(data?.bill_to).toLocaleDateString()}</h6>
-              <h6> Remaining Days: {calculateDays(data?.bill_from, Date.now())} Days</h6>
+              <h6> Remaining Days: {calculateDays(data?.bill_to, Date.now())} Days</h6>
               <h6 className="capitalize">Status : {data?.status}</h6>
               <div className="flex gap-1.5">
                 <h6>Number Of Hotels : {data?.maxHotels}</h6>
