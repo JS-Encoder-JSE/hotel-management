@@ -6,8 +6,10 @@ import Modal from "../../components/Modal.jsx";
 // import AddBooking from "../../components/room/AddBooking.jsx";
 import AddBookingSwimming from "../../components/LifeStyle/AddBookingSwimming.jsx";
 import SwimmingLists from "../../components/LifeStyle/SwimmingLists.jsx";
+import GymLits from "../../components/Gym/GymLits.jsx";
+import AddBookingGym from "../../components/Gym/AddBookingGym.jsx";
 
-const SwimmingBooking = () => {
+const GymBooking = () => {
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -37,7 +39,7 @@ const SwimmingBooking = () => {
             onClick={() => window.ab_modal.showModal()}
           >
             <FaPlus />
-            <span>Swimming Pool Booking</span>
+            <span>Gym Booking</span>
           </button>
           <div className={`relative sm:min-w-[20rem]`}>
             <input
@@ -57,12 +59,12 @@ const SwimmingBooking = () => {
           </div>
         </div>
       </div>
-      <SwimmingLists />
+      <GymLits />
       <Modal id={`ab_modal`}>
-        <AddBookingSwimming />
+        <AddBookingGym />
       </Modal>
     </div>
   );
 };
 
-export default SwimmingBooking;
+export default GymBooking;

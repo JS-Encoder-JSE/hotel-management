@@ -25,10 +25,16 @@ const validationSchema = yup.object({
     .positive("Item Price must be a positive number"),
     fromDate: yup.string().required("From Date is required"),
     hourOfSwimmingPool: yup.string().required(" Hour Of SwimmingPool is required"),
+    documentsType: yup.string().required("Document Number is required"),
+    documentsNumber: yup.string().when(["documentsType"], ([documentsType], schema) => {
+      if (documentsType !== "normalPackage")
+        return schema.required("Transaction ID is required");
+      else return schema;
+    }),
 
 });
 
-const AddBookingSwimming = () => {
+const AddBookingGym = () => {
   const { isLoading, data: rooms } = useRoomsQuery();
   const [addBooking] = useAddBookingMutation();
   const [selectedRooms, setSelectedRooms] = useState([]);
@@ -129,19 +135,81 @@ console.log(response)
           <div className="flex flex-col gap-3">
             <input
               type="text"
-              placeholder="Guest name"
-              name="guestName"
+              placeholder="name"
+              name="providerName"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.guestName}
+              value={formik.values.providerName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.guestName && Boolean(formik.errors.guestName) ? (
+            {formik.touched.providerName && Boolean(formik.errors.providerName) ? (
               <small className="text-red-600">
-                {formik.touched.guestName && formik.errors.guestName}
+                {formik.touched.providerName && formik.errors.providerName}
               </small>
             ) : null}
           </div>
+
+          <div className="flex flex-col gap-3">
+          <select
+            name="documentsType"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+            value={formik.values.documentsType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Membership Subscription
+            </option>
+            <option value="normalPackage">Normal Package</option>
+            <option value="singlePackage">single Package</option>
+            <option value="couplePackage">Couple Package</option>
+            <option value="familypackage">Family package</option>
+          </select>
+          {formik.touched.documentsType &&
+          Boolean(formik.errors.documentsType) ? (
+            <small className="text-red-600">
+              {formik.touched.documentsType && formik.errors.documentsType}
+            </small>
+          ) : null}
+        </div>
+        {formik.values.documentsType &&
+        formik.values.documentsType !== "normalPackage" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Package Price"
+              name="packagePrice"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.packagePrice}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.packagePrice && Boolean(formik.errors.packagePrice) ? (
+              <small className="text-red-600">
+                {formik.touched.packagePrice && formik.errors.packagePrice}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
+
+              {/* Price */}
+              <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Price"
+            name="ItemPrice"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.ItemPrice}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.ItemPrice &&
+          Boolean(formik.errors.ItemPrice) ? (
+            <small className="text-red-600">
+              {formik.touched.ItemPrice && formik.errors.ItemPrice}
+            </small>
+          ) : null}
+        </div>
           {/* Status */}
          <div className="flex flex-col gap-3">
                 <select
@@ -152,12 +220,12 @@ console.log(response)
                   onBlur={formik.handleBlur}
                 >
                   <option value="" selected disabled>
-                    Status
+                  Attendance Tracking
                   </option>
-                  <option value=" Active">Active</option>
-                  <option value="InActive">InActive </option>
-                  <option value="Bookded"> Bookded</option>
-                  <option value="UnderMaintenence">Under Maintenence</option>
+                  <option value=" daily">Daily</option>
+                  <option value="weekly">weekly </option>
+                  <option value="monthly">Monthly</option>
+                  
                 </select>
                 {formik.touched.status && Boolean(formik.errors.status) ? (
                   <small className="text-red-600">
@@ -166,7 +234,7 @@ console.log(response)
                 ) : null}
               </div>
                  {/* select Pool Name */}
-              <div className="flex flex-col gap-3">
+              {/* <div className="flex flex-col gap-3">
                 <select
                   name="poolSelect"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -186,7 +254,7 @@ console.log(response)
                     {formik.touched.poolSelect && formik.errors.poolSelect}
                   </small>
                 ) : null}
-              </div>
+              </div> */}
                 {/* Capacity*/}
         <div className="flex flex-col gap-3">
           <input
@@ -205,24 +273,7 @@ console.log(response)
             </small>
           ) : null}
         </div>
-            {/* Price */}
-              <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Price"
-            name="ItemPrice"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.ItemPrice}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.ItemPrice &&
-          Boolean(formik.errors.ItemPrice) ? (
-            <small className="text-red-600">
-              {formik.touched.ItemPrice && formik.errors.ItemPrice}
-            </small>
-          ) : null}
-        </div>
+      
        
           {/* From */}
           <div className="flex flex-col gap-3">
@@ -245,11 +296,32 @@ console.log(response)
               </small>
             ) : null}
           </div>
+          {/* FrToom */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="To  MM/DD/YYY"
+              name="toDate"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.toDate}
+              onChange={formik.handleChange}
+              onBlur={(e) => {
+                e.target.type = "text";
+                formik.handleBlur;
+              }}
+              onFocus={(e) => (e.target.type = "date")}
+            />
+            {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
+              <small className="text-red-600">
+                {formik.touched.toDate && formik.errors.toDate}
+              </small>
+            ) : null}
+          </div>
         {/* Hour of swimming */}
   <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Hour Of Swimming Pool"
+            placeholder="Hour Of Gym"
             name="hourOfSwimmingPool"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.hourOfSwimmingPool}
@@ -279,4 +351,4 @@ console.log(response)
   );
 };
 
-export default AddBookingSwimming;
+export default AddBookingGym;

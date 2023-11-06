@@ -69,6 +69,9 @@ import SwimmingPoolLIstView from "./pages/LifeStyle/SwimmingPoolLIstView.jsx";
 import OrderBar from "./pages/bar/OrderBar.jsx";
 import SwimmingBooking from "./pages/LifeStyle/SwimmingBooking.jsx";
 import EditSwimming from "./components/LifeStyle/EditSwimming.jsx";
+import GymBooking from "./pages/Gym/GymBooking.jsx";
+import AddGym from "./pages/Gym/AddGym.jsx";
+import GymList from "./pages/Gym/GymList.jsx";
 
 
 const App = () => {
@@ -353,6 +356,30 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <SwimmingPoolLIstView />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-gym",
+              element: (
+                <ManagerRoute>
+                  <AddGym />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "gym-booking",
+              element: (
+                <ManagerRoute>
+                  <GymBooking />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "gym-list",
+              element: (
+                <ManagerRoute>
+                  <GymList />
                 </ManagerRoute>
               ),
             },

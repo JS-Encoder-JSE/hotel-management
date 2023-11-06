@@ -8,6 +8,8 @@ import {
   MdOutlineInventory2,
   MdOutlineKitchen,
   MdOutlineMeetingRoom,
+  MdPool,
+  MdOutlineSportsGymnastics
 } from "react-icons/md";
 import { FaGlassMartini } from "react-icons/fa";
 import { SiMomenteo } from "react-icons/si";
@@ -282,8 +284,8 @@ const ManagerSbItems = ({ handleSBItems }) => {
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
         >
           <div className={`flex space-x-1.5`}>
-            <SiMomenteo />
-            <span className={`-mt-0.5`}>Life Style</span>
+            <MdPool />
+            <span className={`-mt-0.5`}>Swimming Pool</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
@@ -326,6 +328,60 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Swimming Pool List
             </NavLink>
           </li>
+         
+        </ul>
+      </li>
+      <li className={`group p-2`}>
+        <div
+          onClick={(e) => handleSBItems(e)}
+          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+        >
+          <div className={`flex space-x-1.5`}>
+            <MdOutlineSportsGymnastics />
+            <span className={`-mt-0.5`}>Gym</span>
+          </div>
+          <span className={`group-[.active]:hidden`}>
+            <MdKeyboardArrowDown />
+          </span>
+          <span className={`hidden group-[.active]:inline`}>
+            <MdKeyboardArrowUp />
+          </span>
+        </div>
+        <ul className={`group-[.active]:block hidden`}>
+          <li>
+            <NavLink
+              to={`/dashboard/add-gym`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+             Add Gym
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/gym-booking`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Gym Booking
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/gym-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Gym List
+            </NavLink>
+          </li>
+         
         </ul>
       </li>
       <li>
