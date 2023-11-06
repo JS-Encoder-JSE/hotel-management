@@ -6,26 +6,6 @@ import { useSelector } from "react-redux";
 const Profile = () => {
   const { user } = useSelector((store) => store.authSlice);
   const navigate = useNavigate();
-  const [imagePreview, setImagePreview] = useState(null);
-
-  const handleUploadImg = () => {
-    // Trigger the file input when the button is clicked
-    const fileInput = document.getElementById("fileInput");
-    fileInput.click();
-  };
-
-  // Handle the image selection
-  const handleImageUpload = (event) => {
-    const selectedImage = event.target.files[0];
-    if (selectedImage) {
-      // Read the selected image and set it as the preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target.result);
-      };
-      reader.readAsDataURL(selectedImage);
-    }
-  };
 
   return (
     <div
@@ -33,39 +13,13 @@ const Profile = () => {
     >
       <div>
         <div
-          onClick={handleUploadImg}
-          className="group absolute -top-16 inset-x-1/2 -translate-x-1/2 cursor-pointer border-4 border-green-slimy rounded-full h-32 w-32"
+          className="absolute -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32"
         >
-          {imagePreview ? (
-            <img
-              src={imagePreview}
-              alt=""
-              className="object-cover object-top h-full w-full rounded-full"
-            />
-          ) : (
-            <img
+          <img
               src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
               alt=""
               className="object-cover h-full w-full rounded-full"
-            />
-          )}
-
-          {/* On image hover to replace the image */}
-          <div className="opacity-0 group-hover:opacity-100 duration-300 bg-white/50 rounded-full absolute w-full h-full top-0">
-            <button
-              type="button"
-              className="absolute -bottom-1 -right-1 text-xl text-green-slimy"
-            >
-              <FaCamera />
-              <input
-                type="file"
-                accept="image/*"
-                id="fileInput"
-                className="hidden"
-                onChange={handleImageUpload}
-              />
-            </button>
-          </div>
+          />
         </div>
         <div className={`text-end`}>
           <button
@@ -81,27 +35,27 @@ const Profile = () => {
         {/* name box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
           <label className={`min-w-[4rem]`}>Name: </label>
-          <p className="text-slate-600">S.M. Khalid Mahmud</p>
+          <p className="text-slate-600">{user?.name}</p>
         </div>
         {/* Email box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
           <label className={`min-w-[4rem]`}>Email: </label>
-          <p className="text-slate-600">email@xyz.com</p>
+          <p className="text-slate-600">{user?.email}</p>
         </div>
         {/* Phone box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
           <label className={`min-w-[4rem]`}>Phone: </label>
-          <p className="text-slate-600">01715738573</p>
+          <p className="text-slate-600">{user?.phone_no}</p>
         </div>
         {/* Address box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
           <label className={`min-w-[4rem]`}>Address: </label>
-          <p className="text-slate-600">Motijheel, Dhaka</p>
+          <p className="text-slate-600">{user?.address}</p>
         </div>
         {user?.role === "owner" ? (
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
             <label className={`min-w-[4rem]`}>License: </label>
-            <p className="text-slate-600">SDGFE-876WA-CVBNI</p>
+            <p className="text-slate-600">-</p>
           </div>
         ) : null}
       </div>

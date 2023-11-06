@@ -31,7 +31,7 @@ const baseAPI = createApi({
       query: (data) => {
         return {
           url: "upload",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },
@@ -40,7 +40,7 @@ const baseAPI = createApi({
       query: (data) => {
         return {
           url: "single-upload",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },

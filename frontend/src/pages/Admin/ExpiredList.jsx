@@ -54,6 +54,7 @@ const ExpiredList = () => {
   useEffect(() => {
     if (owner && modalOpen) {
       window.ol_modal.showModal();
+      setModalOpen(false);
     }
   }, [modalOpen]);
 
@@ -129,7 +130,7 @@ const ExpiredList = () => {
                                 id: owner?._id,
                                 status: owner?.status,
                               });
-                              setModalOpen(!modalOpen);
+                              setModalOpen(true);
                             }}
                           >
                             <MdUpdate />
@@ -149,9 +150,7 @@ const ExpiredList = () => {
                 </tbody>
               </table>
               <Modal id={`ol_modal`}>
-                <ExpiredSettings modalOpen={modalOpen}
-                                 setModalOpen={setModalOpen}
-                                 owner={owner} />
+                <ExpiredSettings owner={owner} />
               </Modal>
             </div>
             <div className="flex justify-center mt-10">

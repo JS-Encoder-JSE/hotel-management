@@ -22,7 +22,7 @@ const validationSchema = yup.object({
   }),
 });
 
-const OwnerSettings = ({ modalOpen, setModalOpen, owner }) => {
+const OwnerSettings = ({ owner }) => {
   const navigate = useNavigate();
   const closeRef = useRef(null);
   const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();

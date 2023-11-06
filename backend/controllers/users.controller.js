@@ -91,6 +91,9 @@ export const addUser = async (req, res) => {
 };
 
 export const addLicense = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const {
       username,
@@ -108,8 +111,6 @@ export const addLicense = async (req, res) => {
       tran_id,
       amount,
       remark,
-      // utilities_img,
-      // trade_lic_img,
       images,
     } = req.body;
 
@@ -144,13 +145,11 @@ export const addLicense = async (req, res) => {
       bill_from,
       bill_to,
       maxHotels,
-      // utilities_img,
-      // trade_lic_img,
       images,
     });
 
     // Save the new owner user to the database
-    const savedOwner = await newOwner.save();
+    const savedOwner = await newOwner.save({ session });
 
     // Create a new transaction log entry
     const newTransactionLog = new TransactionLog({
@@ -166,10 +165,29 @@ export const addLicense = async (req, res) => {
     });
 
     // Save the transaction log entry to the database
-    await newTransactionLog.save();
+    await newTransactionLog.save({ session });
 
-    res.status(201).json({ message: "Successfully added license" }); // Return a success message
+    // Create a new report object with the data provided in the request body
+    const newReport = new Report({
+      username,
+      phone_no,
+      status: "sold",
+      bill_from,
+      bill_to,
+      deposit_to: parent.username,
+      deposit_by: username,
+      hotel_limit: maxHotels,
+      paid_amount: amount,
+    });
+
+    await newReport.save({ session });
+
+    await session.commitTransaction();
+
+    res.status(201).json({ message: "Successfully added license" });
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     console.error(error);
     res.status(500).json({ error: "Failed to add a license" });
   }
@@ -733,6 +751,19 @@ export const renewLicense = async (req, res) => {
       remark,
     });
 
+    // Create a new report object with the data provided in the request body
+    const newReport = new Report({
+      username,
+      phone_no,
+      status: "sold",
+      bill_from,
+      bill_to,
+      deposit_to: parent.username,
+      deposit_by: username,
+      hotel_limit: maxHotels,
+      paid_amount: amount,
+    });
+
     // Use a transaction to ensure data consistency
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -740,6 +771,7 @@ export const renewLicense = async (req, res) => {
     try {
       await newStatusLog.save({ session });
       await newTransactionLog.save({ session });
+      await newReport.save({ session });
 
       // Update the user's status
       user.status = "Active";
@@ -864,7 +896,7 @@ export const updateStatus = async (req, res) => {
         extended_time: extended_time[0],
         pre_status: user.status,
         updated_status: status,
-        remark: remark||"",
+        remark: remark || "",
       });
       await newStatusLog.save();
     } else {
@@ -874,7 +906,7 @@ export const updateStatus = async (req, res) => {
         changed_for: user.username,
         pre_status: user.status,
         updated_status: status,
-        remark: remark||"",
+        remark: remark || "",
       });
       await newStatusLog.save();
     }
@@ -1116,7 +1148,14 @@ export const updateUser = async (req, res) => {
 export const getReport = async (req, res) => {
   try {
     const { userId } = req.user;
-    const { from, to, page = 1, limit = 10, search, filter } = req.query;
+    const {
+      fromDate,
+      toDate,
+      page = 1,
+      limit = 10,
+      search,
+      filter,
+    } = req.query;
 
     const parent = await User.findById(userId);
 

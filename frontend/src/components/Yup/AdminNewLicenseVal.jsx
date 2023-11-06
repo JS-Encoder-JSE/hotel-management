@@ -27,6 +27,13 @@ export const validationSchema = yup.object({
       /^(\+\d+|\d+)$/,
       "Client phone must start with a '+' or be numeric",
     ),
+  emerContact: yup
+    .string()
+    .required("Emergency contact is required")
+    .matches(
+      /^(\+\d+|\d+)$/,
+      "Emergency contact must start with a '+' or be numeric",
+    ),
   email: yup
     .string()
     .email("Enter a valid email")

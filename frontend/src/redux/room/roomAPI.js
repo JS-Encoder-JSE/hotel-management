@@ -21,7 +21,7 @@ const roomAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "rooms/add-room",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },
@@ -31,7 +31,7 @@ const roomAPI = baseAPI.injectEndpoints({
       query: (id) => {
         return {
           url: `rooms/delete-room/${id}`,
-          method: "delete",
+          method: "DELETE",
         };
       },
       invalidatesTags: ["room"],
@@ -40,7 +40,7 @@ const roomAPI = baseAPI.injectEndpoints({
       query: ({ id, data }) => {
         return {
           url: `rooms/update-room/${id}`,
-          method: "patch",
+          method: "PATCH",
           body: data,
         };
       },
@@ -50,7 +50,7 @@ const roomAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "booking/add-booking",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },

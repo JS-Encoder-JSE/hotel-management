@@ -8,7 +8,6 @@ import {
   FaUpload,
 } from "react-icons/fa";
 import {
-  MdAttachFile,
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
@@ -41,6 +40,7 @@ const AdminNewLicense = () => {
       address: "",
       email: "",
       phoneNumber: "",
+      emerContact: "",
       billInformation: "",
       fromDate: "",
       toDate: "",
@@ -65,6 +65,7 @@ const AdminNewLicense = () => {
         address,
         email,
         phoneNumber: phone_no,
+        emerContact: emergency_contact,
         billInformation: bill_info,
         fromDate: bill_from,
         toDate: bill_to,
@@ -131,6 +132,7 @@ const AdminNewLicense = () => {
         address,
         email,
         phone_no,
+        emergency_contact,
         bill_info,
         bill_from,
         bill_to,
@@ -386,6 +388,22 @@ const AdminNewLicense = () => {
             </small>
           ) : null}
         </div>
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Emergency Contact"
+            name="emerContact"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.emerContact}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.emerContact && Boolean(formik.errors.emerContact) ? (
+            <small className="text-red-600">
+              {formik.touched.emerContact && formik.errors.emerContact}
+            </small>
+          ) : null}
+        </div>
         {/*Billing Information box */}
         <div className={`flex flex-col gap-3`}>
           <input
@@ -552,7 +570,9 @@ const AdminNewLicense = () => {
           <div className="flex flex-col gap-3 w-full">
             <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
               {formik.values.utilities ? (
-                <span>{"Utilities " + formik.values.utilities.length + " files"}</span>
+                <span>
+                  {"Utilities " + formik.values.utilities.length + " files"}
+                </span>
               ) : (
                 <span className={`flex items-baseline space-x-1.5`}>
                   <FaUpload />
@@ -582,7 +602,11 @@ const AdminNewLicense = () => {
           <div className="flex flex-col gap-3 w-full">
             <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
               {formik.values.tradeLicenses ? (
-                <span>{"Trade Licenses " + formik.values.tradeLicenses.length + " files"}</span>
+                <span>
+                  {"Trade Licenses " +
+                    formik.values.tradeLicenses.length +
+                    " files"}
+                </span>
               ) : (
                 <span className={`flex items-baseline space-x-1.5`}>
                   <FaUpload />
@@ -613,7 +637,9 @@ const AdminNewLicense = () => {
           <div className="flex flex-col gap-3 w-full">
             <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
               {formik.values.panCard ? (
-                <span>{"Pan card " + formik.values.panCard.length + " files"}</span>
+                <span>
+                  {"Pan card " + formik.values.panCard.length + " files"}
+                </span>
               ) : (
                 <span className={`flex items-baseline space-x-1.5`}>
                   <FaUpload />

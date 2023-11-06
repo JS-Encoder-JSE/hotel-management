@@ -17,7 +17,7 @@ const hotelsAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "rooms/add-room",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },
@@ -27,7 +27,7 @@ const hotelsAPI = baseAPI.injectEndpoints({
       query: (id) => {
         return {
           url: `rooms/delete-room/${id}`,
-          method: "delete",
+          method: "DELETE",
         };
       },
       invalidatesTags: ["room"],
@@ -36,7 +36,7 @@ const hotelsAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "booking/add-booking",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },

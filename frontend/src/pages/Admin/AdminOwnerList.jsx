@@ -11,7 +11,7 @@ import { Rings } from "react-loader-spinner";
 import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
 import Swal from "sweetalert2";
 
-const AdminOwnerList = ({title}) => {
+const AdminOwnerList = ({ title }) => {
   const [keyword, setKeyword] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -78,6 +78,7 @@ const AdminOwnerList = ({title}) => {
   useEffect(() => {
     if (owner && modalOpen) {
       window.ol_modal.showModal();
+      setModalOpen(false)
     }
   }, [modalOpen]);
 
@@ -179,17 +180,19 @@ const AdminOwnerList = ({title}) => {
                                 <FaRegEdit />
                               </span>
                             </Link>
-                            <span
-                              className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                              onClick={() =>
-                                handleDelete({
-                                  user_id: owner?._id,
-                                  status: "Deleted",
-                                })
-                              }
-                            >
-                              <FaTrash />
-                            </span>
+                            {owner?.status !== "Deleted" ? (
+                              <span
+                                className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                                onClick={() =>
+                                  handleDelete({
+                                    user_id: owner?._id,
+                                    status: "Deleted",
+                                  })
+                                }
+                              >
+                                <FaTrash />
+                              </span>
+                            ) : null}
                             <span
                               className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case`}
                               onClick={() => {
@@ -197,7 +200,7 @@ const AdminOwnerList = ({title}) => {
                                   id: owner?._id,
                                   status: owner?.status,
                                 });
-                                setModalOpen(!modalOpen);
+                                setModalOpen(true);
                               }}
                             >
                               <AiFillSetting />
@@ -230,8 +233,6 @@ const AdminOwnerList = ({title}) => {
               </div>
               <Modal id={`ol_modal`}>
                 <OwnerSettings
-                  modalOpen={modalOpen}
-                  setModalOpen={setModalOpen}
                   owner={owner}
                 />
               </Modal>

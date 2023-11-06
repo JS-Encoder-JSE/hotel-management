@@ -13,7 +13,7 @@ const employeeAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "employee/add-employee",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },
@@ -23,7 +23,7 @@ const employeeAPI = baseAPI.injectEndpoints({
       query: (id) => {
         return {
           url: `employee/delete-employee/${id}`,
-          method: "delete",
+          method: "DELETE",
         };
       },
       invalidatesTags: ["employee"],
@@ -32,7 +32,7 @@ const employeeAPI = baseAPI.injectEndpoints({
       query: ({ id, data }) => {
         return {
           url: `employee/update-employee/${id}`,
-          method: "patch",
+          method: "PATCH",
           body: data,
         };
       },

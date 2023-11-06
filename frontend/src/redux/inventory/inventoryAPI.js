@@ -13,7 +13,7 @@ const inventoryAPI = baseAPI.injectEndpoints({
       query: (data) => {
         return {
           url: "item/add-item",
-          method: "post",
+          method: "POST",
           body: data,
         };
       },
@@ -23,7 +23,7 @@ const inventoryAPI = baseAPI.injectEndpoints({
       query: (id) => {
         return {
           url: `item/delete-item/${id}`,
-          method: "delete",
+          method: "DELETE",
         };
       },
       invalidatesTags: ["inventory"],
@@ -32,7 +32,7 @@ const inventoryAPI = baseAPI.injectEndpoints({
       query: ({ id, data }) => {
         return {
           url: `item/update-item/${id}`,
-          method: "patch",
+          method: "PATCH",
           body: data,
         };
       },

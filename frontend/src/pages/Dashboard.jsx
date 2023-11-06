@@ -26,7 +26,9 @@ const Dashboard = () => {
   return (
     <>
       <section className={`py-10`}>
-        <div className={`grid grid-cols-1 md:grid-cols-[18rem_auto]`}>
+        <div
+          className={`grid grid-cols-1 md:grid-cols-[18rem_calc(100%_-_18rem)]`}
+        >
           <div
             className={`md:self-start fixed md:sticky top-0 ${
               isHbMenu ? "-left-96" : "left-0"
