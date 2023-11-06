@@ -179,6 +179,7 @@ export const addLicense = async (req, res) => {
       deposit_by: username,
       hotel_limit: maxHotels,
       paid_amount: amount,
+      payment_type: payment_method,
     });
 
     await newReport.save({ session });
@@ -761,6 +762,7 @@ export const renewLicense = async (req, res) => {
       deposit_by: user.username,
       hotel_limit: user.maxHotels,
       paid_amount: amount,
+      payment_type: payment_method,
     });
 
     // Use a transaction to ensure data consistency
@@ -776,6 +778,7 @@ export const renewLicense = async (req, res) => {
       user.status = "Active";
       user.bill_from = bill_from;
       user.bill_to = bill_to;
+      user.last_renew = new Date().toISOString();
 
       await user.save({ session });
 
