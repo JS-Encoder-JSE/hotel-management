@@ -9,7 +9,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const findFoodIdx = order.foods.findIndex((item) => item.id === food.id);
+    const findFoodIdx = order.foods.findIndex((item) => item._id === food._id);
 
     if (findFoodIdx !== -1) setAdd(true);
     else setAdd(false);

@@ -13,10 +13,10 @@ const hotelsAPI = baseAPI.injectEndpoints({
       query: (id) => `rooms/get-room-by-id/${id}`,
       providesTags: ["room"],
     }),
-    addRoom: build.mutation({
+    addHotel: build.mutation({
       query: (data) => {
         return {
-          url: "rooms/add-room",
+          url: "hotels/add-hotel",
           method: "POST",
           body: data,
         };
@@ -47,7 +47,7 @@ const hotelsAPI = baseAPI.injectEndpoints({
 export const {
   useRoomQuery,
   useRoomsQuery,
-  useAddRoomMutation,
+  useAddHotelMutation,
   useDeleteRoomMutation,
   useAddBookingMutation,
-} = roomAPI;
+} = hotelsAPI;

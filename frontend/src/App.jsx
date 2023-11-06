@@ -65,6 +65,7 @@ import EditBar from "./pages/bar/EditBar.jsx";
 import AddLifeStyle from "./pages/LifeStyle/AddLifeStyle.jsx";
 import LifeStyleList from "./pages/LifeStyle/LifeStyleList.jsx";
 import HotelListView from "./pages/Ownerhotel/HotelListView.jsx";
+import LicenseHistory from "./pages/owner/LicenseHistory.jsx";
 
 
 const App = () => {
@@ -383,6 +384,14 @@ const App = () => {
                 <OwnerRoute>
                   <ManagerEdit />
                 </OwnerRoute>
+              ),
+            },
+            {
+              path: "license-history",
+              element: (
+                  <OwnerRoute>
+                    <LicenseHistory />
+                  </OwnerRoute>
               ),
             },
             {
