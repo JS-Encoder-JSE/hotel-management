@@ -7,6 +7,8 @@ import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
 import Modal from "../../components/Modal.jsx";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
 import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import {useAddHotelMutation} from "../../redux/Owner/hotelsAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -21,7 +23,7 @@ const AddHotel = () => {
   const { user } = useSelector((store) => store.authSlice);
   const [hotelLimit, setHotelLimit] = useState(0);
   const [count, setCount] = useState(1);
-  const [managersRev, setManagersRev] = useState([]);
+  const [addHotel] = useAddHotelMutation()
   const { isLoading, data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
@@ -37,29 +39,50 @@ const AddHotel = () => {
       email: "",
       phoneNumber: "",
       branchName: "",
-      // manager1: "",
-      // shift1: "",
-      // manager2: "",
-      // shift2: "",
-      // manager3: "",
-      // shift3: ""
+      manager1: "",
+      shift1: "",
+      manager2: "",
+      shift2: "",
+      manager3: "",
+      shift3: ""
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      const obj = {...values}
+      const {name,
+        address,
+        email,
+        phoneNumber: phone_no,
+        branchName: branch_name,
+        manager1,
+        shift1,
+        manager2,
+        shift2,
+        manager3,
+        shift3
+      } = obj
+
+      const response = await addHotel({
+        owner_id: user?._id,
+        address,
+        email,
+        phone_no,
+       branch_name,
+        managers: [
+            manager1 ? {...JSON.parse(manager1), shift: shift1} : {},
+            manager2 ? {...JSON.parse(manager2), shift: shift2} : {},
+            manager3 ? {...JSON.parse(manager3), shift: shift3} : {}
+        ]
+      })
+console.log(response)
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+      }
     },
   });
-
-  useEffect(() => {
-    if (managers) {
-      const data = managers.docs.map((manager) => ({
-        _id: manager._id,
-        name: manager.name,
-      }));
-
-      setManagersRev(data);
-    }
-  }, [managers]);
 
   return (
     <div className={`space-y-10`}>
@@ -201,7 +224,7 @@ const AddHotel = () => {
       </div>
       <Modal id={`ol_modal`}>
         <HotelAsManager
-          managersRev={managersRev}
+          managers={managers?.docs}
           formik={formik}
           count={count}
           setCount={setCount}

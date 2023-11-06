@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
 import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
+import {MdOutlineClear} from "react-icons/md";
 
 // form validation
 const validationSchema = yup.object({
@@ -23,7 +24,7 @@ const validationSchema = yup.object({
   }),
 });
 
-const HotelAsManager = ({ formik, count, setCount, managersRev }) => {
+const HotelAsManager = ({ formik, count, setCount, managers }) => {
   return (
     <>
       <form method="dialog">
@@ -54,8 +55,8 @@ const HotelAsManager = ({ formik, count, setCount, managersRev }) => {
                       <option value="" selected disabled>
                         Manager
                       </option>
-                      {managersRev.map((elem) => (
-                        <option value={elem._id}>{elem?.name}</option>
+                      {managers?.map((elem) => (
+                        <option value={JSON.stringify(elem)}>{elem?.name}</option>
                       ))}
                     </select>
                   </div>
@@ -77,8 +78,7 @@ const HotelAsManager = ({ formik, count, setCount, managersRev }) => {
                       <option value="Night">Night</option>
                     </select>
                   </div>
-                  {dyn !== 1 &&
-                  (formik.values[managerTitle] || formik.values[shiftTitle]) ? (
+                  {dyn !== 1 ? (
                     <div
                       className={`absolute right-0 top-1/2 -translate-y-1/2 inline-flex w-6 h-6 items-center justify-center text-red-600 hover:text-green-slimy cursor-pointer transition-colors duration-500 -mr-7`}
                       onClick={() => {
@@ -88,7 +88,7 @@ const HotelAsManager = ({ formik, count, setCount, managersRev }) => {
                         });
                       }}
                     >
-                      <FaTrash />
+                      <MdOutlineClear />
                     </div>
                   ) : null}
                 </div>

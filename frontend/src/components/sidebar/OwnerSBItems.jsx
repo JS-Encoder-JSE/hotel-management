@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {
+  MdHistory,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdManageAccounts,
@@ -106,13 +107,17 @@ const OwnerSBItems = ({ handleSBItems }) => {
         </NavLink>
       </li>
       <li className={`group p-2`}>
-        <div
-          onClick={(e) => handleSBItems(e)}
-          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-        ></div>
-        <ul className={`group-[.active]:block hidden`}></ul>
+        <NavLink
+            to={`/dashboard/license-history`}
+            className={({ isActive }) =>
+                "p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 flex space-x-1.5 cursor-pointer" +
+                (isActive ? " bg-gray-300" : "")
+            }
+        >
+          <MdHistory />
+          <span className={`-mt-0.5`}>License History</span>
+        </NavLink>
       </li>
-      
     </>
   );
 };

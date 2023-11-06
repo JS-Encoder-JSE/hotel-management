@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaTrash, FaUpload } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaTrash, FaUpload } from "react-icons/fa";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import toast from "react-hot-toast";
 import {
@@ -52,6 +52,7 @@ const AddManager = () => {
   const [uploadSingle] = useUploadSingleMutation();
   const [addSubAdmin] = useAddSubAdminMutation();
   const [selectedImages, setSelectedImages] = useState([]);
+  const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -139,7 +140,7 @@ const AddManager = () => {
         joining_date,
         images: obj.images,
       });
-      console.log(response);
+
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -152,41 +153,48 @@ const AddManager = () => {
     },
   });
 
-  const handleDelete = (idx) => {
-    const tempImgs = [
-      ...selectedImages.slice(0, idx),
-      ...selectedImages.slice(idx + 1),
-    ];
-    const dataTransfer = new DataTransfer();
-
-    for (const file of tempImgs) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(tempImgs);
-  };
-
-  const handleChange = (idx, newFile) => {
-    const updatedImages = [...selectedImages];
-    updatedImages[idx] = newFile;
-
-    const dataTransfer = new DataTransfer();
-
-    for (const file of updatedImages) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(updatedImages);
-  };
+  // const handleDelete = (idx) => {
+  //   const tempImgs = [
+  //     ...selectedImages.slice(0, idx),
+  //     ...selectedImages.slice(idx + 1),
+  //   ];
+  //   const dataTransfer = new DataTransfer();
+  //
+  //   for (const file of tempImgs) {
+  //     dataTransfer.items.add(file);
+  //   }
+  //
+  //   formik.setFieldValue("documents", dataTransfer.files);
+  //   setSelectedImages(tempImgs);
+  // };
+  //
+  // const handleChange = (idx, newFile) => {
+  //   const updatedImages = [...selectedImages];
+  //   updatedImages[idx] = newFile;
+  //
+  //   const dataTransfer = new DataTransfer();
+  //
+  //   for (const file of updatedImages) {
+  //     dataTransfer.items.add(file);
+  //   }
+  //
+  //   formik.setFieldValue("documents", dataTransfer.files);
+  //   setSelectedImages(updatedImages);
+  // };
 
   useEffect(() => {
-    if (formik.values.documents) {
-      const selectedImagesArray = Array.from(formik.values.documents);
-      setSelectedImages(selectedImagesArray);
+    if (formik.values.documents || formik.values.userImg) {
+      const selectedImagesArray = formik.values.documents
+        ? Array.from(formik.values.documents)
+        : [];
+
+      if (formik.values.userImg) {
+        setSelectedImages([...selectedImagesArray, formik.values.userImg]);
+      } else {
+        setSelectedImages([...selectedImagesArray]);
+      }
     }
-  }, [formik.values.documents]);
+  }, [formik.values.documents, formik.values.userImg]);
 
   return (
     <div className={`space-y-10`}>
@@ -226,26 +234,26 @@ const AddManager = () => {
                     ? selectedImages?.map((image, idx) => (
                         <SwiperSlide key={idx}>
                           <div className={`relative`}>
-                            <div
-                              className={`absolute top-3 right-3 space-x-1.5`}
-                            >
-                              <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
-                                <TbReplaceFilled />
-                                <input
-                                  type="file"
-                                  className="absolute left-0 top-0  overflow-hidden h-0"
-                                  onChange={(e) =>
-                                    handleChange(idx, e.currentTarget.files[0])
-                                  }
-                                />
-                              </label>
-                              <button
-                                className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                                onClick={() => handleDelete(idx)}
-                              >
-                                <FaTrash />
-                              </button>
-                            </div>
+                            {/*<div*/}
+                            {/*  className={`absolute top-3 right-3 space-x-1.5`}*/}
+                            {/*>*/}
+                            {/*  <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">*/}
+                            {/*    <TbReplaceFilled />*/}
+                            {/*    <input*/}
+                            {/*      type="file"*/}
+                            {/*      className="absolute left-0 top-0  overflow-hidden h-0"*/}
+                            {/*      onChange={(e) =>*/}
+                            {/*        handleChange(idx, e.currentTarget.files[0])*/}
+                            {/*      }*/}
+                            {/*    />*/}
+                            {/*  </label>*/}
+                            {/*  <button*/}
+                            {/*    className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"*/}
+                            {/*    onClick={() => handleDelete(idx)}*/}
+                            {/*  >*/}
+                            {/*    <FaTrash />*/}
+                            {/*  </button>*/}
+                            {/*</div>*/}
                             <img
                               key={idx}
                               src={URL.createObjectURL(image)}
@@ -294,16 +302,33 @@ const AddManager = () => {
               ) : null}
             </div>
             {/* User Password box */}
-            <div className="flex flex-col gap-3">
-              <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
+            <div className={`flex flex-col gap-3`}>
+              <div className={`relative`}>
+                <input
+                  type={showPass ? "text" : "password"}
+                  placeholder="New Password"
+                  name="password"
+                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {showPass ? (
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                    onClick={() => setShowPass(false)}
+                  >
+                    <FaEyeSlash />
+                  </span>
+                ) : (
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                    onClick={() => setShowPass(true)}
+                  >
+                    <FaEye />
+                  </span>
+                )}
+              </div>
               {formik.touched.password && Boolean(formik.errors.password) ? (
                 <small className="text-red-600">
                   {formik.touched.password && formik.errors.password}
@@ -478,10 +503,10 @@ const AddManager = () => {
             <div className="col-span-full flex flex-col gap-3">
               <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
                 {formik.values.userImg ? (
-                  formik.values.userImg.name.substring(
+                  `Profile Image: ${formik.values.userImg.name.substring(
                     0,
                     formik.values.userImg.name.lastIndexOf("."),
-                  )
+                  )}`
                 ) : (
                   <span
                     className={`flex justify-center items-baseline space-x-1.5`}
