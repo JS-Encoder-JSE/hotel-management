@@ -57,7 +57,7 @@ const AdminOwnerView = () => {
               <h6>Client Name : {data?.name}</h6>
               <h6>Hotel Address : { data?.address}</h6>
               <h6>Contact Number : {data?.phone_no}</h6>
-              <h6>Emergency Contact{data?.emergency_contact}</h6>
+              <h6>Emergency Contact: {data?.emergency_contact}</h6>
               <h6>Client Email : {data?.email}</h6>
             </div>
             <div className="">
@@ -70,12 +70,12 @@ const AdminOwnerView = () => {
               <h6 className="capitalize">Status : {data?.status}</h6>
               <div className="flex gap-1.5">
                 <h6>Number Of Hotels : {data?.maxHotels}</h6>
-                <span
+                {/* <span
                   className={`cursor-pointer`}
                   onClick={() => window.hle_modal.showModal()}
                 >
                   <FaEdit />
-                </span>
+                </span> */}
               </div>
             </div>
           </div>
