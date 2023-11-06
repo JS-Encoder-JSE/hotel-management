@@ -389,6 +389,7 @@ const CheckIn = () => {
             </small>
           ) : null}
         </div>
+        {/* From Date */}
         <div className="flex flex-col gap-3">
           <input
             type="text"

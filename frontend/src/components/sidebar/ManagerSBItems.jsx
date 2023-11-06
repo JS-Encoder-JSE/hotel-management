@@ -253,6 +253,18 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
+              to={`/dashboard/bar-order`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Add Order Bar
+            </NavLink>
+          </li>
+          
+          <li>
+            <NavLink
               to={`/dashboard/baritem-list`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
@@ -283,24 +295,35 @@ const ManagerSbItems = ({ handleSBItems }) => {
         <ul className={`group-[.active]:block hidden`}>
           <li>
             <NavLink
-              to={`/dashboard/add-lifestyle`}
+              to={`/dashboard/add-swimming-pool`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Life Style
+             Add Swimming Pool
             </NavLink>
           </li>
           <li>
             <NavLink
-              to={`/dashboard/lifestyle-list`}
+              to={`/dashboard/swimming-booking`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Life Style List
+              Swimming Booking
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/swimming-pool-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Swimming Pool List
             </NavLink>
           </li>
         </ul>
