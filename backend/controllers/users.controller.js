@@ -400,13 +400,11 @@ export const getLoginUser = async (req, res) => {
   try {
     // If you want to exclude sensitive information like password
     const { userId } = req.user;
-    console.log(req.user);
-    const user = await User.findById(userId);
-    console.log(user);
-    const { password, ...rest } = user._doc;
+    const user = await User.findById(userId).select("-password");
+
     res.status(200).json({
       success: true,
-      data: rest,
+      data: user,
       message: "Logged in user retrieved successfully",
     });
   } catch (error) {
