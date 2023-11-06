@@ -33,9 +33,8 @@ const TransactionHistory = () => {
 	const [pageCount, setPageCount] = useState(10);
 	const [currentPage, setCurrentPage] = useState(0);
 	const { id } = useParams();
-	const [fromDate, setFromData] = useState("");
-	const [toDate, setToDate] = useState("");
-	const searchParams = { id, fromDate, toDate ,cp:currentPage};
+
+	const [searchParams,setSearchParams] = useState({ id, fromDate:'', toDate:'' ,cp:currentPage});
 	const { data, error, isLoading, isSuccess } =
 		useGetTransactionlogsQuery(searchParams);
 	// 65451c80dd95504ee1047f0b
@@ -57,7 +56,7 @@ const TransactionHistory = () => {
 							selected={formik.values.startDate}
 							className={`input input-sm input-bordered rounded focus:outline-none`}
 							onChange={(date) => {
-								setFromData(date);
+							
 								return formik.setFieldValue("startDate", date);
 							}}
 							onBlur={formik.handleBlur}
@@ -69,13 +68,18 @@ const TransactionHistory = () => {
 							selected={formik.values.endDate}
 							className={`input input-sm input-bordered rounded focus:outline-none`}
 							onChange={(date) => {
-								setToDate(date);
+				
 								return formik.setFieldValue("endDate", date);
 							}}
 							onBlur={formik.handleBlur}
 						/>
 						<button
 							type={"button"}
+							onClick={()=>	setSearchParams((p) => ({
+								...p,
+								fromDate: formik.values.startDate,
+								toDate: formik.values.endDate,
+							}))}
 							className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case">
 							Search
 						</button>
