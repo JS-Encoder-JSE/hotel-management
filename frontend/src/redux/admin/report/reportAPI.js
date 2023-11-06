@@ -6,7 +6,7 @@ const reportAPI = baseAPI.injectEndpoints({
       query: ({ cp, filter, search, uid ,toDate,fromDate}) =>
         `reports/get-report?page=${++cp}${
           filter ? `&filter=${filter}` : ""
-        }${search ? `&search=${search}` : ""}${uid ? `&user_id=${uid}` : ""}&toDate=${toDate}&fromDate=${fromDate}`,
+        }${search ? `&search=${search}` : ""}${uid ? `&user_id=${uid}` : ""}&toDate=${toDate||''}&fromDate=${fromDate||''}`,
     }),
   }),
 });

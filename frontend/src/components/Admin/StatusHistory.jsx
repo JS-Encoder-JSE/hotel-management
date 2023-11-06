@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaFileDownload } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -19,8 +19,8 @@ const StatusHistory = () => {
 	});
 	console.log({ formik });
 	const [historyPerPage] = useState(10);
-	const [pageCount, setPageCount] = useState(10);
-	const [currentPage, setCurrentPage] = useState(0);
+	const [pageCount, setPageCount] = useState(1);
+	const [currentPage, setCurrentPage] = useState(1);
 	const { id } = useParams();
 	const [fromDate, setFromData] = useState("");
 	const [toDate, setToDate] = useState("");
@@ -43,10 +43,14 @@ const StatusHistory = () => {
 	const handleSearch = () => {
 		setSearchParams((p) => ({
 			...p,
-			fromDate: formik.values.startDate,
-			toDate: formik.values.endDate,
+			fromDate: formik.values.startDate||'',
+			toDate: formik.values.endDate||'',
 		}));
 	};
+	useEffect(() => {
+		if (statusHistory) setPageCount(statusHistory.totalPages);
+	  }, [statusHistory]);
+	
 	return (
 		<div className="card w-full bg-white shadow-xl">
 			<div className="card-body space-y-10">

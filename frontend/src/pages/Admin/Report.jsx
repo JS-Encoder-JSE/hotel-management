@@ -28,7 +28,7 @@ const Report = () => {
 		initialValues: {
 			entries: "",
 			search: "",
-			filter: "All",
+			filter: "",
 			startDate: "",
 			endDate: "",
 		},
@@ -54,9 +54,9 @@ const Report = () => {
 	};
 
 	useEffect(() => {
-		if (reports) setPageCount(reports.totalPages);
+		if (reports) setPageCount(reports?.totalPages);
 	}, [reports]);
-	console.log(reports);
+	// console.log(reports);
 	useEffect(() => {
 		if (reports) {
 			const total = reports.docs.reduce(
@@ -83,7 +83,10 @@ const Report = () => {
 			return null;
 		}
 	}
-
+  
+	useEffect(() => {
+		setSearchParams(p=>({...p,filter:formik.values.filter}))
+	},[formik.values.filter])
 	return (
 		<div className={`px-5 space-y-5`}>
 			<div className={`bg-white px-10 py-5 rounded`}>
@@ -138,12 +141,12 @@ const Report = () => {
 								value={formik.values.filter}
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}>
-								<option value="" selected>
+								<option value="All" selected>
 									All
 								</option>
-								<option value="Sale">Sale</option>
+								<option value="Sold">Sold</option>
 								<option value="Renew">Renew</option>
-								<option value="Expired">Expired</option>
+								{/* <option value="Expired">Expired</option> */}
 							</select>
 						</div>
 					</div>
@@ -277,7 +280,7 @@ const Report = () => {
 																	report?.paid_amount
 																}
 															</td>
-															<td>Cash</td>
+															<td></td>
 														</tr>
 													);
 												}
