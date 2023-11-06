@@ -19,9 +19,7 @@ const validationSchema = yup.object({
 
 const HotelEdit = () => {
   const { user } = useSelector((store) => store.authSlice);
-  const [hotelLimit, setHotelLimit] = useState(0);
-  const [count, setCount] = useState(1);
-  const [managersRev, setManagersRev] = useState([]);
+  const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
   const { isLoading, data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
@@ -37,12 +35,6 @@ const HotelEdit = () => {
       email: "",
       phoneNumber: "",
       branchName: "",
-      // manager1: "",
-      // shift1: "",
-      // manager2: "",
-      // shift2: "",
-      // manager3: "",
-      // shift3: ""
     },
     validationSchema,
     onSubmit: (values) => {
@@ -50,16 +42,22 @@ const HotelEdit = () => {
     },
   });
 
-  useEffect(() => {
-    if (managers) {
-      const data = managers.docs.map((manager) => ({
-        _id: manager._id,
-        name: manager.name,
-      }));
+  const handleChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...managerList];
+    list[index][name] = value;
+    setManagerList(list);
+  };
 
-      setManagersRev(data);
-    }
-  }, [managers]);
+  const handleRemove = (index) => {
+    const list = [...managerList];
+    list.splice(index, 1);
+    setManagerList(list);
+  };
+
+  const handleAdd = () => {
+    setManagerList([...managerList, { manager: "", shift: "" }]);
+  };
 
   return (
       <div className={`space-y-10`}>
@@ -186,10 +184,11 @@ const HotelEdit = () => {
         </div>
         <Modal id={`ol_modal`}>
           <HotelAsManager
-              managersRev={managersRev}
-              formik={formik}
-              count={count}
-              setCount={setCount}
+              managers={managers?.docs}
+              managerList={managerList}
+              handleAdd={handleAdd}
+              handleRemove={handleRemove}
+              handleChange={handleChange}
           />
         </Modal>
       </div>
