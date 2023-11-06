@@ -67,14 +67,19 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     phone_no: {
-      type: Number,
+      type: String,
       required: false,
-      default: 0,
+      default: "",
     },
     emergency_contact: {
-      type: Number,
+      type: String,
       required: false,
-      default: 0,
+      default: "",
+    },
+    last_renew: {
+      type: Date,
+      required: false,
+      default: null,
     },
     paid_amount: {
       type: Number,

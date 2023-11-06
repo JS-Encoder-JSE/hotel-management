@@ -7,9 +7,9 @@ const reportSchema = new mongoose.Schema(
       require: true,
     },
     phone_no: {
-      type: Number,
+      type: String,
       required: false,
-      default: 0,
+      default: "",
     },
     status: {
       type: String,
@@ -47,6 +47,11 @@ const reportSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    payment_type: {
+      type: String,
+      required:true,
+      enum: ["Cash", "Card", "Mobile_Banking"]
+    }
   },
   { timestamps: true }
 );
