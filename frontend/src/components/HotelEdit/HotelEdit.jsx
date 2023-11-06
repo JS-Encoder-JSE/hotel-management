@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required(" Name is required"),
-  branchName: yup.string().required(" Branch Name is required"),
   address: yup.string().required(" Address is required"),
   email: yup.string().required(" Email is required"),
   phoneNumber: yup.string().required("Phone Number size is required"),
@@ -26,8 +25,6 @@ const HotelEdit = () => {
       address: "",
       email: "",
       phoneNumber:"",
-      license: "",
-      branchName:"",
       manager:"",
       shiftManager:"",
      

@@ -9,7 +9,8 @@ import hotelsRoute from "./routes/hotels.route.js";
 import uploadRoute from "./routes/upload.js";
 import userRoute from "./routes/users.route.js";
 import transactionRoute from "./routes/transaction.route.js";
-import statusRoute from "./routes/status.route.js"
+import statusRoute from "./routes/status.route.js";
+import reportRoute from "./routes/report.route.js";
 import itemRoute from "./routes/Manager/item.route.js";
 // import employeeRoute from "./routes/Manager/employee.route.js";
 import { fileURLToPath } from "url";
@@ -38,6 +39,7 @@ db.once("open", () => {
 app.use("/users", userRoute);
 app.use("/transactions", transactionRoute);
 app.use("/status", statusRoute);
+app.use("/reports", reportRoute);
 app.use("/hotels", hotelsRoute);
 app.use("/rooms", roomRoute);
 app.use("/foods", foodRoute);

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FaEye, FaRegEdit, FaSearch } from "react-icons/fa";
+import { FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
-import {useUpdateLicenseStatusMutation} from "../../redux/admin/sls/slsAPI.js";
-import {useOwnerListQuery} from "../../redux/admin/ownerlist/ownerListAPI.js";
-import {useGetUsersQuery} from "../../redux/admin/subadmin/subadminAPI.js";
+import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
+import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
+import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import store from "../../redux/store.js";
 import { Rings } from "react-loader-spinner";
 import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
@@ -32,14 +32,14 @@ const SubAdminList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const parentId = store.getState().authSlice.user._id
-  console.log(parentId)
+  const parentId = store.getState().authSlice.user._id;
+  console.log(parentId);
   const { isLoading, data: subadmins } = useGetUsersQuery({
     cp: currentPage,
     filter: formik.values.filter,
     search: keyword,
     role: "subadmin",
-    parentId
+    parentId,
   });
 
   const handlePageClick = ({ selected: page }) => {
@@ -49,7 +49,7 @@ const SubAdminList = () => {
   const handleDelete = (owner) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "Owner will be delete.",
+      text: "Sub admin will be delete.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#35bef0",
@@ -71,6 +71,12 @@ const SubAdminList = () => {
     });
   };
 
+  const pressEnter = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      formik.handleSubmit();
+    }
+  };
+
   useEffect(() => {
     if (subadmins) setPageCount(subadmins.totalPages);
   }, [subadmins]);
@@ -78,6 +84,7 @@ const SubAdminList = () => {
   useEffect(() => {
     if (subadmins && modalOpen) {
       window.ol_modal.showModal();
+      setModalOpen(false);
     }
   }, [modalOpen]);
 
@@ -101,6 +108,7 @@ const SubAdminList = () => {
                 <option value="">All</option>
                 <option value="Active">Active</option>
                 <option value="Deactive">Deactivate</option>
+                <option value="Deleted">Deleted</option>
               </select>
             </div>
             <div className={`relative sm:min-w-[20rem]`}>
@@ -114,11 +122,13 @@ const SubAdminList = () => {
                 onKeyUp={(e) => {
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}
+                onKeyDown={(e) => pressEnter(e)}
               />
               <button
-                onClick={() => formik.handleSubmit()}
                 type="button"
                 className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                onClick={() => formik.handleSubmit()}
+
               >
                 <FaSearch />
               </button>
@@ -160,7 +170,7 @@ const SubAdminList = () => {
                             <td>{sa?.phone_no}</td>
                             <td>{sa?.emergency_contact}</td>
                             <td>{sa?.status}</td>
-                            <td className={`space-x-1.5`}>
+                            <td className={`flex flex-wrap gap-1.5`}>
                               <Link
                                 to={`/dashboard/sub-admin-list-view/${sa?._id}`}
                               >
@@ -179,17 +189,19 @@ const SubAdminList = () => {
                                   <FaRegEdit />
                                 </span>
                               </Link>
-                              <span
-                                className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                                onClick={() =>
-                                  handleDelete({
-                                    user_id: sa?._id,
-                                    status: "Deleted",
-                                  })
-                                }
-                              >
-                                <AiTwotoneDelete />
-                              </span>
+                              {sa?.status !== "Deleted" ? (
+                                <span
+                                  className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                                  onClick={() =>
+                                    handleDelete({
+                                      user_id: sa?._id,
+                                      status: "Deleted",
+                                    })
+                                  }
+                                >
+                                  <FaTrash />
+                                </span>
+                              ) : null}
                               <span
                                 className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case`}
                                 onClick={() => {
@@ -197,7 +209,7 @@ const SubAdminList = () => {
                                     id: sa?._id,
                                     status: sa?.status,
                                   });
-                                  setModalOpen(!modalOpen);
+                                  setModalOpen(true);
                                 }}
                               >
                                 <AiFillSetting />
@@ -229,11 +241,7 @@ const SubAdminList = () => {
                   />
                 </div>
                 <Modal id={`ol_modal`}>
-                  <OwnerSettings
-                    modalOpen={modalOpen}
-                    setModalOpen={setModalOpen}
-                    owner={owner}
-                  />
+                  <OwnerSettings owner={owner} />
                 </Modal>
               </>
             ) : (
