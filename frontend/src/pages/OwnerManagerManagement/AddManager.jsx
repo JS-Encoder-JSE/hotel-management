@@ -16,18 +16,29 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
+import DatePicker from "react-datepicker";
 
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   userName: yup.string().required("Username is required"),
-  password: yup.string().required("Password is required"),
   address: yup.string().required("Address is required"),
-  email: yup.string().required("Email is required"),
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
   phoneNumber: yup.string().required("Phone Number is required"),
   emergency_contact: yup.string().required("Emergency contact is required"),
-  salary: yup.string().required("Salary is required"),
-  joiningdate: yup.string().required("Joining Date is required"),
+  salary: yup
+    .number()
+    .required("Salary is required")
+    .positive("Salary must be a positive number")
+    .integer("Salary must be an integer"),
+  joiningDate: yup.string().required("Joining Date is required"),
   documentsType: yup.string().required("Documents type is required"),
   documents: yup.string().when(["documentsType"], ([documentsType], schema) => {
     if (documentsType) return schema.required(`${documentsType} is required`);
@@ -51,7 +62,7 @@ const AddManager = () => {
       phoneNumber: "",
       emergency_contact: "",
       salary: "",
-      joiningdate: "",
+      joiningDate: "",
       userImg: null,
       documentsType: "",
       documents: null,
@@ -72,7 +83,7 @@ const AddManager = () => {
         password,
         address,
         salary,
-        joiningdate: joining_date,
+        joiningDate: joining_date,
         documentsType,
         documents,
         userImg,
@@ -116,6 +127,7 @@ const AddManager = () => {
       );
 
       const response = await addSubAdmin({
+        role: "manager",
         name,
         username,
         phone_no,
@@ -127,13 +139,13 @@ const AddManager = () => {
         joining_date,
         images: obj.images,
       });
-console.log(response)
+      console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
         toast.success(response.data.message);
         formikHelpers.resetForm();
-        setUserImgPrev(null);
+        setSelectedImages([]);
       }
 
       setLoading(false);
@@ -189,60 +201,64 @@ console.log(response)
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
             onSubmit={formik.handleSubmit}
           >
-            <div className={`relative col-span-full`}>
-              <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
-                <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
-                  <MdOutlineKeyboardArrowLeft />
+            {selectedImages?.length ? (
+              <div className={`relative col-span-full`}>
+                <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+                  <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                    <MdOutlineKeyboardArrowLeft />
+                  </div>
+                  <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                    <MdOutlineKeyboardArrowRight />
+                  </div>
                 </div>
-                <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
-                  <MdOutlineKeyboardArrowRight />
-                </div>
-              </div>
-              <Swiper
-                modules={[Navigation]}
-                navigation={{
-                  enabled: true,
-                  prevEl: ".swiper-er-button-prev",
-                  nextEl: ".swiper-er-button-next",
-                  disabledClass: "swiper-er-button-disabled",
-                }}
-                slidesPerView={1}
-                spaceBetween={50}
-              >
-                {selectedImages.length ? (
-                  selectedImages?.map((image, idx) => (
-                    <SwiperSlide key={idx}>
-                      <div className={`relative`}>
-                        <div className={`absolute top-3 right-3 space-x-1.5`}>
-                          <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
-                            <TbReplaceFilled />
-                            <input
-                              type="file"
-                              className="absolute left-0 top-0  overflow-hidden h-0"
-                              onChange={(e) =>
-                                handleChange(idx, e.currentTarget.files[0])
-                              }
+                <Swiper
+                  modules={[Navigation]}
+                  navigation={{
+                    enabled: true,
+                    prevEl: ".swiper-er-button-prev",
+                    nextEl: ".swiper-er-button-next",
+                    disabledClass: "swiper-er-button-disabled",
+                  }}
+                  slidesPerView={1}
+                  spaceBetween={50}
+                >
+                  {selectedImages.length
+                    ? selectedImages?.map((image, idx) => (
+                        <SwiperSlide key={idx}>
+                          <div className={`relative`}>
+                            <div
+                              className={`absolute top-3 right-3 space-x-1.5`}
+                            >
+                              <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                                <TbReplaceFilled />
+                                <input
+                                  type="file"
+                                  className="absolute left-0 top-0  overflow-hidden h-0"
+                                  onChange={(e) =>
+                                    handleChange(idx, e.currentTarget.files[0])
+                                  }
+                                />
+                              </label>
+                              <button
+                                className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                                onClick={() => handleDelete(idx)}
+                              >
+                                <FaTrash />
+                              </button>
+                            </div>
+                            <img
+                              key={idx}
+                              src={URL.createObjectURL(image)}
+                              alt=""
+                              className={`w-full h-96 object-cover rounded`}
                             />
-                          </label>
-                          <button
-                            className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                            onClick={() => handleDelete(idx)}
-                          >
-                            <FaTrash />
-                          </button>
-                        </div>
-                        <img
-                          key={idx}
-                          src={URL.createObjectURL(image)}
-                          alt=""
-                          className={`w-full h-96 object-cover rounded`}
-                        />
-                      </div>
-                    </SwiperSlide>
-                  ))
-                ) : null}
-              </Swiper>
-            </div>
+                          </div>
+                        </SwiperSlide>
+                      ))
+                    : null}
+                </Swiper>
+              </div>
+            ) : null}
             {/* manager Name box */}
             <div className="flex flex-col gap-3">
               <input
@@ -280,7 +296,7 @@ console.log(response)
             {/* User Password box */}
             <div className="flex flex-col gap-3">
               <input
-                type="text"
+                type="password"
                 placeholder="Password"
                 name="password"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -298,7 +314,7 @@ console.log(response)
             <div className="flex flex-col gap-3">
               <input
                 type="text"
-                placeholder="Address "
+                placeholder="Address"
                 name="address"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.address}
@@ -315,8 +331,8 @@ console.log(response)
             {/*Manager Email box */}
             <div className="flex flex-col gap-3">
               <input
-                type="email"
-                placeholder=" Email "
+                type="text"
+                placeholder="Email "
                 name="email"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.email}
@@ -333,7 +349,7 @@ console.log(response)
             {/*Manager Phone Number  box */}
             <div className="flex flex-col gap-3">
               <input
-                type="number"
+                type="text"
                 placeholder="Phone Number"
                 name="phoneNumber"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -369,7 +385,7 @@ console.log(response)
             {/*Manager salary  box */}
             <div className="flex flex-col gap-3">
               <input
-                type="number"
+                type="text"
                 placeholder="Salary"
                 name="salary"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -385,23 +401,19 @@ console.log(response)
             </div>
             {/*Manager Joining Date  box */}
             <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                placeholder="Joining Date"
-                name="joiningdate"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.joiningdate}
-                onChange={formik.handleChange}
-                onBlur={(e) => {
-                  e.target.type = "text";
-                  formik.handleBlur;
-                }}
-                onFocus={(e) => (e.target.type = "date")}
+              <DatePicker
+                dateFormat="dd/MM/yyyy"
+                name="joiningDate"
+                placeholderText={`Joining Date`}
+                selected={formik.values.joiningDate}
+                className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+                onChange={(date) => formik.setFieldValue("joiningDate", date)}
+                onBlur={formik.handleBlur}
               />
-              {formik.touched.joiningdate &&
-              Boolean(formik.errors.joiningdate) ? (
+              {formik.touched.joiningDate &&
+              Boolean(formik.errors.joiningDate) ? (
                 <small className="text-red-600">
-                  {formik.touched.joiningdate && formik.errors.joiningdate}
+                  {formik.touched.joiningDate && formik.errors.joiningDate}
                 </small>
               ) : null}
             </div>
