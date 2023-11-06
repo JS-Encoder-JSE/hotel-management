@@ -38,7 +38,6 @@ const TransactionHistory = () => {
 	const { data, error, isLoading, isSuccess } =
 		useGetTransactionlogsQuery(searchParams);
 	// 65451c80dd95504ee1047f0b
-	console.log(isSuccess && { data });
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);
 	};

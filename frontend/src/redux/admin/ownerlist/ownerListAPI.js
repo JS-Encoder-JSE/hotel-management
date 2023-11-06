@@ -11,7 +11,7 @@ const ownerListAPI = baseAPI.injectEndpoints({
 		}),
 		getTransactionlogs: build.query({
 			query: ({ id, fromDate, toDate, cp }) =>
-				`/transactions/get-transactionlogs?user_id=${id}&fromDate=${fromDate}&toDate=${toDate}&page=${++cp}`,
+				`/transactions/get-transactionlogs?user_id=${id}&fromDate=${fromDate||''}&toDate=${toDate||''}&page=${++cp}`,
 			providesTags: ["transaction_log"],
 		}),
 		getStatuslogs: build.query({
