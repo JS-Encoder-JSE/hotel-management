@@ -69,10 +69,36 @@ const AdminSBItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              New License
+              New License 
             </NavLink>
           </li>
-          {!subAdmin && (
+          {!subAdmin || (
+            <>
+              <li>
+                <NavLink
+                  to={`/dashboard/suspend-list`}
+                  className={({ isActive }) =>
+                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                    (isActive ? " bg-gray-300" : "")
+                  }
+                >
+                  Suspend List
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to={`/dashboard/expired-list`}
+                  className={({ isActive }) =>
+                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                    (isActive ? " bg-gray-300" : "")
+                  }
+                >
+                  Expired List
+                </NavLink>
+              </li>
+            </>
+          )}
+          {subAdmin || (
             <>
               <li>
                 <NavLink
