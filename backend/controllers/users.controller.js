@@ -5,6 +5,7 @@ import User from "../models/user.model.js";
 import Hotel from "../models/hotel.model.js";
 import TransactionLog from "../models/transactionlog.model.js";
 import StatusLog from "../models/statuslog.model.js";
+import Report from "../models/report.model.js";
 
 // Create a function to handle user creation
 export const addUser = async (req, res) => {
@@ -171,7 +172,7 @@ export const addLicense = async (req, res) => {
     const newReport = new Report({
       username,
       phone_no,
-      status: "sold",
+      status: "Sold",
       bill_from,
       bill_to,
       deposit_to: parent.username,
@@ -189,7 +190,7 @@ export const addLicense = async (req, res) => {
     await session.abortTransaction();
     session.endSession();
     console.error(error);
-    res.status(500).json({ error: "Failed to add a license" });
+    res.status(500).json({ message: "Failed to add a license" });
   }
 };
 
@@ -399,13 +400,11 @@ export const getLoginUser = async (req, res) => {
   try {
     // If you want to exclude sensitive information like password
     const { userId } = req.user;
-    console.log(req.user);
-    const user = await User.findById(userId);
-    console.log(user);
-    const { password, ...rest } = user._doc;
+    const user = await User.findById(userId).select("-password");
+
     res.status(200).json({
       success: true,
-      data: rest,
+      data: user,
       message: "Logged in user retrieved successfully",
     });
   } catch (error) {
@@ -753,14 +752,14 @@ export const renewLicense = async (req, res) => {
 
     // Create a new report object with the data provided in the request body
     const newReport = new Report({
-      username,
-      phone_no,
-      status: "sold",
+      username: user.username,
+      phone_no: user.phone_no,
+      status: "Renew",
       bill_from,
       bill_to,
       deposit_to: parent.username,
-      deposit_by: username,
-      hotel_limit: maxHotels,
+      deposit_by: user.username,
+      hotel_limit: user.maxHotels,
       paid_amount: amount,
     });
 
@@ -789,11 +788,11 @@ export const renewLicense = async (req, res) => {
       session.endSession();
 
       console.error(error);
-      res.status(500).json({ error: "Failed to update user status" });
+      res.status(500).json({ message: "Failed to update user status" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to update user status" });
+    res.status(500).json({ message: "Failed to update user status" });
   }
 };
 
@@ -1142,67 +1141,5 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const getReport = async (req, res) => {
-  try {
-    const { userId } = req.user;
-    const {
-      fromDate,
-      toDate,
-      page = 1,
-      limit = 10,
-      search,
-      filter,
-    } = req.query;
-
-    const parent = await User.findById(userId);
-
-    if (!parent) {
-      return res.status(404).json({ message: "Parent not found" });
-    }
-
-    // Check if the user making the request has permission to get user information
-    const hierarchy = {
-      admin: ["subadmin", "owner", "manager", "employee"],
-      subadmin: ["owner", "manager", "employee"],
-      owner: ["manager", "employee"],
-      manager: ["employee"],
-    };
-
-    if (!hierarchy[parent.role]) {
-      return res
-        .status(403)
-        .json({ message: "You have no permission to get user information" });
-    }
-
-    const query = { parent_id: userId };
-
-    if (
-      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
-    ) {
-      query.status = filter;
-    }
-
-    if (search) {
-      query.$or = [
-        { username: { $regex: search, $options: "i" } },
-        { name: { $regex: search, $options: "i" } },
-      ];
-    }
-
-    const options = {
-      page: parseInt(page, 10),
-      limit: parseInt(limit, 10),
-    };
-
-    // Use Mongoose pagination to retrieve users
-    const users = await User.paginate(query, options);
-
-    res.status(200).json(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to retrieve users" });
   }
 };
