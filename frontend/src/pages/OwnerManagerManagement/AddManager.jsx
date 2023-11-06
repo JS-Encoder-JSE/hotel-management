@@ -1,39 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaUpload } from "react-icons/fa";
+import { FaTrash, FaUpload } from "react-icons/fa";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import toast from "react-hot-toast";
+import {
+  useUploadMutation,
+  useUploadSingleMutation,
+} from "../../redux/baseAPI.js";
+import { useAddSubAdminMutation } from "../../redux/admin/subadmin/subadminAPI.js";
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { TbReplaceFilled } from "react-icons/tb";
 
 // form validation
 const validationSchema = yup.object({
-  name: yup.string().required("Manager Name is required"),
-  userName: yup.string().required("User Name is required"),
+  name: yup.string().required("Name is required"),
+  userName: yup.string().required("Username is required"),
   password: yup.string().required("Password is required"),
-  address: yup.string().required("Manager Address is required"),
-  email: yup.string().required("Manager Email is required"),
-  phoneNumber: yup.string().required("Manager Phone Number size is required"),
-  salary: yup.string().required("Manager Salary is required"),
-  joiningdate: yup.string().required("Manager Joining Date is required"),
-  documents: yup.string().required("Status is required"),
-  drivingL: yup.string().when(["documents"], ([documents], schema) => {
-    if (documents == "drivingL")
-      return schema.required("Branch Name is required");
-    else return schema;
-  }),
-  nid: yup.string().when(["documents"], ([documents], schema) => {
-    if (documents == "nid")
-      return schema.required("Branch Name is required");
-    else return schema;
-  }),
-  passport: yup.string().when(["documents"], ([documents], schema) => {
-    if (documents == "passport")
-      return schema.required("Branch Name is required");
+  address: yup.string().required("Address is required"),
+  email: yup.string().required("Email is required"),
+  phoneNumber: yup.string().required("Phone Number is required"),
+  emergency_contact: yup.string().required("Emergency contact is required"),
+  salary: yup.string().required("Salary is required"),
+  joiningdate: yup.string().required("Joining Date is required"),
+  documentsType: yup.string().required("Documents type is required"),
+  documents: yup.string().when(["documentsType"], ([documentsType], schema) => {
+    if (documentsType) return schema.required(`${documentsType} is required`);
     else return schema;
   }),
 });
 
 const AddManager = () => {
-  const [userImgPrev, setUserImgPrev] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  const [upload] = useUploadMutation();
+  const [uploadSingle] = useUploadSingleMutation();
+  const [addSubAdmin] = useAddSubAdminMutation();
+  const [selectedImages, setSelectedImages] = useState([]);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -42,31 +49,132 @@ const AddManager = () => {
       address: "",
       email: "",
       phoneNumber: "",
+      emergency_contact: "",
       salary: "",
       joiningdate: "",
       userImg: null,
-      drivingImg: null,
-      nidImg: null,
-      passportImg: null,
-      documents: "",
-      
+      documentsType: "",
+      documents: null,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
+
+      const formData = new FormData();
+      const formData2 = new FormData();
+      const obj = { ...values };
+      const {
+        name,
+        userName: username,
+        phoneNumber: phone_no,
+        email,
+        emergency_contact,
+        password,
+        address,
+        salary,
+        joiningdate: joining_date,
+        documentsType,
+        documents,
+        userImg,
+      } = obj;
+
+      for (let i = 0; i < documents.length; i++) {
+        const photoName = documents[i].name.substring(
+          0,
+          documents[i].name.lastIndexOf("."),
+        );
+
+        formData.append(photoName, documents[i]);
+      }
+
+      await upload(formData).then((result) => {
+        let title;
+
+        switch (documentsType) {
+          case "NID":
+            title = "nid";
+            break;
+          case "Passport":
+            title = "passport";
+            break;
+          case "Driving License":
+            title = "driving_lic_img";
+        }
+
+        obj.images = {
+          [title]: result.data.imageUrls,
+        };
+      });
+
+      formData2.append(
+        userImg.name.substring(0, userImg.name.lastIndexOf(".")),
+        userImg,
+      );
+
+      await uploadSingle(formData2).then(
+        (result) => (obj.images.profile_img = result.data.imageUrl),
+      );
+
+      const response = await addSubAdmin({
+        name,
+        username,
+        phone_no,
+        email,
+        emergency_contact,
+        password,
+        address,
+        salary,
+        joining_date,
+        images: obj.images,
+      });
+console.log(response)
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+        setUserImgPrev(null);
+      }
+
+      setLoading(false);
     },
   });
 
-  useEffect(() => {
-    if (formik.values.userImg) {
-      const reader = new FileReader();
+  const handleDelete = (idx) => {
+    const tempImgs = [
+      ...selectedImages.slice(0, idx),
+      ...selectedImages.slice(idx + 1),
+    ];
+    const dataTransfer = new DataTransfer();
 
-      reader.onload = () => setUserImgPrev(reader.result);
-      reader.readAsDataURL(formik.values.userImg);
-    } else {
-      setUserImgPrev(null);
+    for (const file of tempImgs) {
+      dataTransfer.items.add(file);
     }
-  }, [formik.values.userImg]);
+
+    formik.setFieldValue("documents", dataTransfer.files);
+    setSelectedImages(tempImgs);
+  };
+
+  const handleChange = (idx, newFile) => {
+    const updatedImages = [...selectedImages];
+    updatedImages[idx] = newFile;
+
+    const dataTransfer = new DataTransfer();
+
+    for (const file of updatedImages) {
+      dataTransfer.items.add(file);
+    }
+
+    formik.setFieldValue("documents", dataTransfer.files);
+    setSelectedImages(updatedImages);
+  };
+
+  useEffect(() => {
+    if (formik.values.documents) {
+      const selectedImagesArray = Array.from(formik.values.documents);
+      setSelectedImages(selectedImagesArray);
+    }
+  }, [formik.values.documents]);
 
   return (
     <div className={`space-y-10`}>
@@ -81,15 +189,60 @@ const AddManager = () => {
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
             onSubmit={formik.handleSubmit}
           >
-            {/* image */}
-            <div className={`col-span-full`}>
-              <img
-                src={userImgPrev || imgPlaceHolder}
-                className={`h-96 w-full object-cover rounded`}
-                alt=""
-              />
+            <div className={`relative col-span-full`}>
+              <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+                <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                  <MdOutlineKeyboardArrowLeft />
+                </div>
+                <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                  <MdOutlineKeyboardArrowRight />
+                </div>
+              </div>
+              <Swiper
+                modules={[Navigation]}
+                navigation={{
+                  enabled: true,
+                  prevEl: ".swiper-er-button-prev",
+                  nextEl: ".swiper-er-button-next",
+                  disabledClass: "swiper-er-button-disabled",
+                }}
+                slidesPerView={1}
+                spaceBetween={50}
+              >
+                {selectedImages.length ? (
+                  selectedImages?.map((image, idx) => (
+                    <SwiperSlide key={idx}>
+                      <div className={`relative`}>
+                        <div className={`absolute top-3 right-3 space-x-1.5`}>
+                          <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                            <TbReplaceFilled />
+                            <input
+                              type="file"
+                              className="absolute left-0 top-0  overflow-hidden h-0"
+                              onChange={(e) =>
+                                handleChange(idx, e.currentTarget.files[0])
+                              }
+                            />
+                          </label>
+                          <button
+                            className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                            onClick={() => handleDelete(idx)}
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                        <img
+                          key={idx}
+                          src={URL.createObjectURL(image)}
+                          alt=""
+                          className={`w-full h-96 object-cover rounded`}
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))
+                ) : null}
+              </Swiper>
             </div>
-            
             {/* manager Name box */}
             <div className="flex flex-col gap-3">
               <input
@@ -143,7 +296,6 @@ const AddManager = () => {
             </div>
             {/* Manager Address box */}
             <div className="flex flex-col gap-3">
-
               <input
                 type="text"
                 placeholder="Address "
@@ -162,7 +314,6 @@ const AddManager = () => {
             </div>
             {/*Manager Email box */}
             <div className="flex flex-col gap-3">
-            
               <input
                 type="email"
                 placeholder=" Email "
@@ -181,7 +332,6 @@ const AddManager = () => {
 
             {/*Manager Phone Number  box */}
             <div className="flex flex-col gap-3">
-          
               <input
                 type="number"
                 placeholder="Phone Number"
@@ -198,10 +348,26 @@ const AddManager = () => {
                 </small>
               ) : null}
             </div>
-
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Emergency Contact"
+                name="emergency_contact"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.emergency_contact}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.emergency_contact &&
+              Boolean(formik.errors.emergency_contact) ? (
+                <small className="text-red-600">
+                  {formik.touched.emergency_contact &&
+                    formik.errors.emergency_contact}
+                </small>
+              ) : null}
+            </div>
             {/*Manager salary  box */}
             <div className="flex flex-col gap-3">
-            
               <input
                 type="number"
                 placeholder="Salary"
@@ -219,7 +385,6 @@ const AddManager = () => {
             </div>
             {/*Manager Joining Date  box */}
             <div className="flex flex-col gap-3">
-            
               <input
                 type="text"
                 placeholder="Joining Date"
@@ -241,152 +406,69 @@ const AddManager = () => {
               ) : null}
             </div>
 
-{/* documents */}
-
-<div className="flex flex-col gap-3">
-          <select
-            name="documents"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-            value={formik.values.documents}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected >
-              Type Of Documents
-            </option>
-            <option value="drivingL">Driving License</option>
-            <option value="nid">NID</option>
-            <option value="passport">Passport</option>
-          </select>
-          {formik.touched.documents &&
-          Boolean(formik.errors.documents) ? (
-            <small className="text-red-600">
-              {formik.touched.documents && formik.errors.documents}
-            </small>
-          ) : null}
-        </div>
-
-        {/* Driving License photo */}
-        {formik.values.documents &&
-        formik.values.documents == "drivingL" ? (
-          <div className="flex flex-col gap-3">
-          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
-            {formik.values.drivingImg ? (
-              formik.values.drivingImg.name.substring(
-                0,
-                formik.values.drivingImg.name.lastIndexOf(".")
-              )
-            ) : (
-              <span
-                className={`flex justify-center items-baseline space-x-1.5`}
+            {/* documents type */}
+            <div className="flex flex-col gap-3">
+              <select
+                name="documentsType"
+                className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+                value={formik.values.documentsType}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               >
-                <FaUpload />
-                <span>Driving License</span>
-              </span>
-            )}
-            <input
-              type="file"
-              name="drivingImg"
-              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
-              accept="image/*"
-              onChange={(e) =>
-                formik.setFieldValue("drivingImg", e.currentTarget.files[0])
-              }
-              onBlur={formik.handleBlur}
-             
-            />
-          </label>
-          {formik.touched.drivingImg && Boolean(formik.errors.drivingImg) ? (
-            <small className="text-red-600">
-              {formik.touched.drivingImg && formik.errors.drivingImg}
-            </small>
-          ) : null}
-        </div>
-        ) : null}
-
-        {/* NID photo */}
-        {formik.values.documents &&
-        formik.values.documents == "nid" ? (
-          <div className=" flex flex-col gap-3">
-          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
-            {formik.values.nidImg ? (
-              formik.values.nidImg.name.substring(
-                0,
-                formik.values.nidImg.name.lastIndexOf(".")
-              )
-            ) : (
-              <span
-                className={`flex justify-center items-baseline space-x-1.5`}
-              >
-                <FaUpload />
-                <span>NID</span>
-              </span>
-            )}
-            <input
-              type="file"
-              name="nidImg"
-              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
-              accept="image/*"
-              onChange={(e) =>
-                formik.setFieldValue("nidImg", e.currentTarget.files[0])
-              }
-              onBlur={formik.handleBlur}
-             
-            />
-          </label>
-          {formik.touched.nidImg && Boolean(formik.errors.nidImg) ? (
-            <small className="text-red-600">
-              {formik.touched.nidImg && formik.errors.nidImg}
-            </small>
-          ) : null}
-        </div>
-        ) : null}
-        {/* passport */}
-        {formik.values.documents &&
-        formik.values.documents == "passport" ? (
-          <div className=" flex flex-col gap-3">
-          <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
-            {formik.values.passportImg ? (
-              formik.values.passportImg.name.substring(
-                0,
-                formik.values.passportImg.name.lastIndexOf(".")
-              )
-            ) : (
-              <span
-                className={`flex justify-center items-baseline space-x-1.5`}
-              >
-                <FaUpload />
-                <span>Passport</span>
-              </span>
-            )}
-            <input
-              type="file"
-              name="passportImg"
-              className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
-              accept="image/*"
-              onChange={(e) =>
-                formik.setFieldValue("passportImg", e.currentTarget.files[0])
-              }
-              onBlur={formik.handleBlur}
-             
-            />
-          </label>
-          {formik.touched.passportImg && Boolean(formik.errors.passportImg) ? (
-            <small className="text-red-600">
-              {formik.touched.passportImg && formik.errors.passportImg}
-            </small>
-          ) : null}
-        </div>
-        ) : null}
-
-
+                <option value="" selected>
+                  Type Of Documents
+                </option>
+                <option value="Driving License">Driving License</option>
+                <option value="NID">NID</option>
+                <option value="Passport">Passport</option>
+              </select>
+              {formik.touched.documentsType &&
+              Boolean(formik.errors.documentsType) ? (
+                <small className="text-red-600">
+                  {formik.touched.documentsType && formik.errors.documentsType}
+                </small>
+              ) : null}
+            </div>
+            {/* Documents */}
+            {formik.values.documentsType ? (
+              <div className={`flex space-x-1.5`}>
+                <div className="flex flex-col gap-3 w-full">
+                  <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+                    {formik.values.documents ? (
+                      <span>{formik.values.documents.length + " files"}</span>
+                    ) : (
+                      <span className={`flex items-baseline space-x-1.5`}>
+                        <FaUpload />
+                        <span>Choose {formik.values.documentsType}</span>
+                      </span>
+                    )}
+                    <input
+                      type="file"
+                      multiple
+                      name="documents"
+                      className="absolute left-0 top-0  overflow-hidden h-0"
+                      onChange={(e) =>
+                        formik.setFieldValue("documents", e.currentTarget.files)
+                      }
+                      onBlur={formik.handleBlur}
+                    />
+                  </label>
+                  {formik.touched.documents &&
+                  Boolean(formik.errors.documents) ? (
+                    <small className="text-red-600">
+                      {formik.touched.documents && formik.errors.documents}
+                    </small>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
             {/* user image box */}
             <div className="col-span-full flex flex-col gap-3">
               <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
                 {formik.values.userImg ? (
                   formik.values.userImg.name.substring(
                     0,
-                    formik.values.userImg.name.lastIndexOf(".")
+                    formik.values.userImg.name.lastIndexOf("."),
                   )
                 ) : (
                   <span
@@ -405,7 +487,6 @@ const AddManager = () => {
                     formik.setFieldValue("userImg", e.currentTarget.files[0])
                   }
                   onBlur={formik.handleBlur}
-                 
                 />
               </label>
               {formik.touched.userImg && Boolean(formik.errors.userImg) ? (
@@ -414,7 +495,7 @@ const AddManager = () => {
                 </small>
               ) : null}
             </div>
-              {/* <div className={`flex space-x-1.5`}>
+            {/* <div className={`flex space-x-1.5`}>
           <div className="flex flex-col gap-3 w-full">
             <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
               {formik.values.utility ? (
@@ -451,7 +532,13 @@ const AddManager = () => {
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
               >
-                Add
+                <span>Add</span>
+                {isLoading ? (
+                  <span
+                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                    role="status"
+                  ></span>
+                ) : null}
               </button>
             </div>
           </form>
