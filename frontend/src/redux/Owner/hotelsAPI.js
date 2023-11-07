@@ -3,10 +3,10 @@ import baseAPI from "../baseAPI.js";
 const hotelsAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
     hotels: build.query({
-      query: ({ cp, search }) =>
-        `hotels/get-hotels?page=${++cp}${
-          search ? `&search=${search}` : ""
-        }`,
+      query: ({ cp, search, uid, pid }) =>
+        `hotels/get-hotels?page=${++cp}${search ? `&search=${search}` : ""}${
+          uid ? `&user_id=${uid}` : ""
+        }${pid ? `&parent_id=${pid}` : ""}`,
       // providesTags: ["room"],
     }),
     room: build.query({

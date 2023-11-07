@@ -1,8 +1,6 @@
-import { FaArrowLeft, FaEdit } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState } from "react";
-import ReactPaginate from "react-paginate";
 import Modal from "../Modal.jsx";
 import HotelLimitEdit from "../../pages/Admin/HotelLimitEdit.jsx";
 import HotelList from "./HotelList.jsx";
@@ -16,9 +14,9 @@ const AdminOwnerView = () => {
   const [roomsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
-  const user_id= store?.getState()?.authSlice?.user?._id
-  const {id}= useParams()
-  const { data, isLoading, error } = useGetUserQuery(id)
+  const user_id = store?.getState()?.authSlice?.user?._id;
+  const { id } = useParams();
+  const { data, isLoading, error } = useGetUserQuery(id);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -33,10 +31,8 @@ const AdminOwnerView = () => {
     const differenceInMilliseconds = Math.abs(firstDate - secondDate);
 
     // Convert the difference to days
-    const differenceInDays = Math.floor(differenceInMilliseconds / oneDay);
-
-    return differenceInDays;
-}
+    return Math.floor(differenceInMilliseconds / oneDay);
+  }
 
   return (
     <>
@@ -55,18 +51,37 @@ const AdminOwnerView = () => {
             <div className="">
               <h2 className="card-title mb-3">Client Information </h2>
               <h6>Client Name : {data?.name}</h6>
-              <h6>Hotel Address : { data?.address}</h6>
+              <h6>Hotel Address : {data?.address}</h6>
               <h6>Contact Number : {data?.phone_no}</h6>
               <h6>Emergency Contact: {data?.emergency_contact}</h6>
               <h6>Client Email : {data?.email}</h6>
             </div>
             <div className="">
               <h2 className="card-title mb-3">License Information </h2>
-              <h6> License Key : { new Date(data?.bill_to).toLocaleDateString()}</h6>
-              <h6> Purchase Date :{new Date(data?.createdAt).toLocaleDateString()} </h6>
-              <h6> Renew Date :{ new Date(data?.renew_date).toLocaleDateString()} </h6>
-              <h6> Expire Date : { new Date(data?.bill_to).toLocaleDateString()}</h6>
-              <h6> Remaining Days: {calculateDays(data?.bill_to, Date.now())} Days</h6>
+              <h6>
+                {" "}
+                License Key : {new Date(data?.bill_to).toLocaleDateString()}
+              </h6>
+              <h6>
+                {" "}
+                Purchase Date :{new Date(
+                  data?.createdAt,
+                ).toLocaleDateString()}{" "}
+              </h6>
+              <h6>
+                {" "}
+                Renew Date :{new Date(
+                  data?.renew_date,
+                ).toLocaleDateString()}{" "}
+              </h6>
+              <h6>
+                {" "}
+                Expire Date : {new Date(data?.bill_to).toLocaleDateString()}
+              </h6>
+              <h6>
+                {" "}
+                Remaining Days: {calculateDays(data?.bill_to, Date.now())} Days
+              </h6>
               <h6 className="capitalize">Status : {data?.status}</h6>
               <div className="flex gap-1.5">
                 <h6>Number Of Hotels : {data?.maxHotels}</h6>
@@ -86,7 +101,7 @@ const AdminOwnerView = () => {
         <StatusHistory />
       </div>
       <Modal id={`hle_modal`}>
-        <HotelLimitEdit hotels={data?.maxHotels } />
+        <HotelLimitEdit hotels={data?.maxHotels} />
       </Modal>
     </>
   );
