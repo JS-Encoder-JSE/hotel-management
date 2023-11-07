@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import {FaArrowLeft, FaEye, FaEyeSlash} from "react-icons/fa";
-import {
-  useGetUserQuery,
-  useUpdateUserMutation,
-} from "../../redux/admin/subadmin/subadminAPI.js";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Rings } from "react-loader-spinner";
+import { useNavigate, useParams } from "react-router-dom";
+import * as yup from "yup";
+import {
+    useGetUserQuery,
+    useUpdateUserMutation,
+} from "../../redux/admin/subadmin/subadminAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -124,7 +124,7 @@ const OwnerProfile = () => {
       </div>
 
       {!isLoading ? (
-        <form
+        <form autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto mt-14"
           onSubmit={formik.handleSubmit}
         >

@@ -132,7 +132,7 @@ export const addHotel = async (req, res) => {
       await manager.save();
     }
 
-    res.status(201).json(savedHotel); // Respond with the created hotel data
+    res.status(201).json({ message: "Successfully added hotel" }); // Respond with the created hotel data
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to add a new hotel" });
@@ -140,20 +140,25 @@ export const addHotel = async (req, res) => {
 };
 export const getHotels = async (req, res) => {
   try {
-    const { userId } = req.user;
-    const { page = 1, limit = 10, search } = req.query;
+    const { parent_id,user_id, page = 1, limit = 10, search } = req.query;
 
-    const parent = await User.findById(userId);
-    if (!parent) {
+    const owner = await User.findById(user_id);
+    if (!owner) {
       return res.status(404).json({ message: "Owner not found" });
     }
-    if (!parent.role === "Owner") {
-      return res
-        .status(403)
-        .json({ message: "You have no permission to get info" });
+    if (parent_id) {
+      const parent = await User.findById(parent_id);
+      if (!parent) {
+        return res.status(404).json({ message: "Parent not found" });
+      }
+      if (!["admin", "subadmin"].includes(parent.role)) {
+        return res
+          .status(403)
+          .json({ message: "You have no permission to get info" });
+      }
     }
 
-    const query = { owner_id: userId };
+    const query = { owner_id: user_id };
 
     if (search) {
       query.$or = [

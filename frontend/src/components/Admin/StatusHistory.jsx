@@ -8,52 +8,54 @@ import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import { useGetStatuslogsQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
 import { data } from "autoprefixer";
+import { GrPowerReset } from "react-icons/gr";
 
 const StatusHistory = () => {
 	const navigate = useNavigate();
-	const formik = useFormik({
-		initialValues: {
-			startDate: "",
-			endDate: "",
-		},
-	});
-	console.log({ formik });
+
 	const [historyPerPage] = useState(10);
 	const [pageCount, setPageCount] = useState(1);
 	const [currentPage, setCurrentPage] = useState(0);
 	const { id } = useParams();
-	const [fromDate, setFromData] = useState("");
-	const [toDate, setToDate] = useState("");
+	const [forcePage,setForcePage]= useState(null)
 	const [searchParams, setSearchParams] = useState({
 		id,
 		fromDate: "",
 		toDate: "",
 	});
-	console.log(currentPage)
-	console.log({ searchParams });
+
+	const formik = useFormik({
+		initialValues: {
+			startDate: "",
+			endDate: "",
+		},
+		onSubmit: (values) => {
+			setSearchParams((p) => ({
+				...p,
+				fromDate: values.startDate || "",
+				toDate: values.endDate || "",
+			}));
+		},
+		onReset: (values) => {
+			setCurrentPage(0)
+			setForcePage(0)
+		}
+	});
+	
 	const {
 		data: statusHistory,
 		error,
 		isLoading,
-	} = useGetStatuslogsQuery({...searchParams,cp:currentPage});
+	} = useGetStatuslogsQuery({ ...searchParams, cp: currentPage });
+
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);
+		setForcePage(page)
 	};
-	console.log({ statusHistory });
-	const handleSearch = () => {
-		setSearchParams((p) => ({
-			...p,
-			fromDate: formik.values.startDate||'',
-			toDate: formik.values.endDate||'',
-		}));
-	};
+
 	useEffect(() => {
 		if (statusHistory) setPageCount(statusHistory.totalPages);
-	  }, [statusHistory]);
-	 
-	useEffect(() => {
-		
-	},[])
+	}, [statusHistory]);
 	return (
 		<div className="card w-full bg-white shadow-xl">
 			<div className="card-body space-y-10">
@@ -86,7 +88,17 @@ const StatusHistory = () => {
 						/>
 						<button
 							type={"button"}
-							onClick={handleSearch}
+							onClick={() => {
+								formik.resetForm();
+								formik.handleSubmit();
+								
+							}}
+							className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case">
+							<GrPowerReset className="text-green-slimy" />
+						</button>
+						<button
+							type={"button"}
+							onClick={formik.handleSubmit}
 							className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case">
 							Search
 						</button>
@@ -141,7 +153,7 @@ const StatusHistory = () => {
 										<td>{item?.updated_status}</td>
 										<td>{item?.remark}</td>
 										<td>{item?.changed_from}</td>
-										<td>{""}</td>
+										<td>{item?.extended_time===null?'null':item?.extended_time?.to}</td>
 									</tr>
 								);
 							})}
@@ -159,11 +171,12 @@ const StatusHistory = () => {
 							previousLabel="<"
 							nextLabel=">"
 							breakLabel="..."
-							pageCount={statusHistory?.totalPages}
+							pageCount={pageCount}
 							pageRangeDisplayed={2}
 							marginPagesDisplayed={2}
 							onPageChange={handlePageClick}
 							renderOnZeroPageCount={null}
+							forcePage={forcePage}
 						/>
 					</div>
 				</div>

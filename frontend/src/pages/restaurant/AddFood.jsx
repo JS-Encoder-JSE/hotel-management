@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
+    MdOutlineKeyboardArrowLeft,
+    MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { useAddFoodMutation } from "../../redux/restaurant/foodAPI.js";
-import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -138,7 +138,7 @@ const AddFood = () => {
           <span>Add Food</span>
         </h3>
       </div>
-      <form
+      <form autoComplete="off"
         className="form-control grid grid-cols-1 gap-4 mt-5"
         onSubmit={formik.handleSubmit}
       >

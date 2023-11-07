@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import {
-  FaDoorOpen,
-  FaEdit,
-  FaEye,
-  FaFileInvoice,
-  FaPlusCircle,
-  FaTrash,
+    FaDoorOpen,
+    FaEdit,
+    FaEye,
+    FaTrash
 } from "react-icons/fa";
+import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Modal.jsx";
 import EditBooking from "./EditBooking.jsx";
-import ReactPaginate from "react-paginate";
 
 const BookingLists = () => {
   const navigate = useNavigate();
@@ -76,7 +74,7 @@ const BookingLists = () => {
 <button    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`} onClick={()=>document.getElementById('my_modal_3').showModal()}><FaDoorOpen /></button>
 <dialog id="my_modal_3" className="modal">
   <div className="modal-box">
-    <form method="dialog">
+    <form autoComplete="off" method="dialog">
       <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </form>
     <h2>dflkjlfj;osdj</h2>

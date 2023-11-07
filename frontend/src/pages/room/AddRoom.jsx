@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
 import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
+    MdOutlineKeyboardArrowLeft,
+    MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import * as yup from "yup";
+import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { useAddRoomMutation } from "../../redux/room/roomAPI.js";
-import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 
 // form validation
 const validationSchema = yup.object({
@@ -143,7 +143,7 @@ const AddRoom = () => {
                 <span>Add Room</span>
               </h3>
             </div>
-            <form
+            <form autoComplete="off"
               className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
               onSubmit={formik.handleSubmit}
             >

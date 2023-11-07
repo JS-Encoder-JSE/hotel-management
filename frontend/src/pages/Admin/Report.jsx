@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
 import { useGetReportQuery } from "../../redux/admin/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
+import { GrPowerReset } from "react-icons/gr";
 
 const Report = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -19,6 +20,11 @@ const Report = () => {
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [searchParams, setSearchParams] = useState({
+    fromDate: "",
+    toDate: "",
+    search: "",
+  });
   const [PDF, setPDF] = useState([]);
 
   const handlePageClick = ({ selected: page }) => {
@@ -33,15 +39,22 @@ const Report = () => {
       startDate: "",
       endDate: "",
     },
+    onSubmit: (values) => {
+      console.log(values);
+      setSearchParams((p) => ({
+        ...p,
+        toDate: values.endDate,
+        fromDate: values.startDate,
+        search: values.search,
+      }));
+    },
   });
 
-  const [searchParams, setSearchParams] = useState({
-    fromDate: "",
-    toDate: "",
-    search: "",
-  });
-
-  const { isLoading, data: reports } = useGetReportQuery({
+  const {
+    isLoading,
+    data: reports,
+    refetch,
+  } = useGetReportQuery({
     ...searchParams,
     cp: currentPage,
     uid: user._id,
@@ -71,6 +84,21 @@ const Report = () => {
     }
   }, [reports]);
 
+  useEffect(() => {
+    if (reports) {
+      const data = reports?.docs?.map((item) => ({
+        Username: item.username,
+        Phone: item.phone_no,
+        "Purchase Date": new Date(item.bill_from).toLocaleDateString(),
+        "Expire Date": new Date(item.bill_to).toLocaleDateString(),
+        "Deposit By": item.deposit_by,
+        "Paid Amount": item.paid_amount,
+      }));
+
+      setPDF(data);
+    }
+  }, [reports]);
+
   function extractTimeOrDate(inputString, identifier) {
     try {
       const extractedDateTime = new Date(inputString);
@@ -87,20 +115,11 @@ const Report = () => {
     }
   }
 
-  useEffect(() => {
-    if (reports) {
-      const data = reports?.docs?.map((item) => ({
-        Username: item.username,
-        Phone: item.phone_no,
-        "Purchase Date": new Date(item.bill_from).toLocaleDateString(),
-        "Expire Date": new Date(item.bill_to).toLocaleDateString(),
-        "Deposit By": item.deposit_by,
-        "Paid Amount": item.paid_amount,
-      }));
-
-      setPDF(data);
+  const pressEnter = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      formik.handleSubmit();
     }
-  }, [reports]);
+  };
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -178,6 +197,10 @@ const Report = () => {
               className={`input input-sm input-bordered rounded focus:outline-none`}
               onChange={(date) => formik.setFieldValue("startDate", date)}
               onBlur={formik.handleBlur}
+              onKeyUp={(e) => {
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
+              onKeyDown={(e) => pressEnter(e)}
             />
             <DatePicker
               dateFormat="dd/MM/yyyy"
@@ -187,16 +210,24 @@ const Report = () => {
               className={`input input-sm input-bordered rounded focus:outline-none`}
               onChange={(date) => formik.setFieldValue("endDate", date)}
               onBlur={formik.handleBlur}
+              onKeyUp={(e) => {
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
+              onKeyDown={(e) => pressEnter(e)}
             />
             <button
               type={"button"}
               onClick={() => {
-                setSearchParams((p) => ({
-                  ...p,
-                  toDate: formik.values.endDate,
-                  fromDate: formik.values.startDate,
-                }));
+                formik.resetForm();
+                formik.handleSubmit();
               }}
+              className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+            >
+              <GrPowerReset className="text-green-slimy" />
+            </button>
+            <button
+              type={"button"}
+              onClick={formik.handleSubmit}
               className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
               Apply Filter
@@ -210,14 +241,13 @@ const Report = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
+              onKeyDown={(e) => pressEnter(e)}
             />
             <button
-              onClick={() => {
-                setSearchParams((p) => ({
-                  ...p,
-                  search: formik.values.search,
-                }));
-              }}
+              onClick={formik.handleSubmit}
               type="button"
               className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
@@ -267,7 +297,7 @@ const Report = () => {
                             <td>{report?.deposit_by}</td>
                             <td>{report?.hotel_limit}</td>
                             <td>{report?.paid_amount}</td>
-                            <td></td>
+                            <td>{report?.status}</td>
                           </tr>
                         );
                       })}

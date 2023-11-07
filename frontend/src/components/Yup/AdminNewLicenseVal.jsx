@@ -39,13 +39,14 @@ export const validationSchema = yup.object({
     .email("Enter a valid email")
     .required("Client email is required"),
   billInformation: yup.string().required("Client bill info is required"),
-  fromDate: yup.string().required("From Date is required"),
-  toDate: yup.string().required("To Date is required"),
+  fromDate: yup.date().required("From Date is required"),
+  toDate: yup.date().required("To Date is required"),
   numberOfHotel: yup
     .number()
     .required("Hotel limits are required")
     .positive("Hotel limits must be a positive number")
     .integer("Hotel limits must be an integer"),
+  
   paymentMethod: yup.string().required("Payment method is required"),
   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
     if (paymentMethod !== "Cash")

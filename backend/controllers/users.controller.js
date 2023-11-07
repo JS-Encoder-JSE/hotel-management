@@ -1109,11 +1109,14 @@ export const getUserById = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const user = await User.findById(user_id).select("-password"); // Exclude the 'password' field
+    const user = await User.findById(user_id).select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    // Populate the assignedHotel array with full hotel details
+    await user.populate("assignedHotel").execPopulate();
 
     res.status(200).json(user);
   } catch (error) {

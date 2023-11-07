@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { FaArrowLeft, FaEye, FaEyeSlash, FaUpload } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
-import { TbReplaceFilled } from "react-icons/tb";
-import imgPlaceHolder from "../../assets/img-placeholder.jpg";
-import DatePicker from "react-datepicker";
-import {
-  useGetUserQuery,
-  useUpdateUserMutation,
-} from "../../redux/admin/subadmin/subadminAPI.js";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useUploadSingleMutation } from "../../redux/baseAPI.js";
+import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa";
+import { TbReplaceFilled } from "react-icons/tb";
 import { Rings } from "react-loader-spinner";
+import { useNavigate, useParams } from "react-router-dom";
+import * as yup from "yup";
+import {
+    useGetUserQuery,
+    useUpdateUserMutation,
+} from "../../redux/admin/subadmin/subadminAPI.js";
+import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
@@ -163,7 +161,7 @@ const ManagerEdit = () => {
 
         <div className="max-auto">
           {!isLoading ? (
-            <form
+            <form autoComplete="off"
               className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
               onSubmit={formik.handleSubmit}
             >

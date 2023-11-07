@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash, FaTrash, FaUpload } from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useAddSubAdminMutation } from "../../redux/admin/subadmin/subadminAPI.js";
-import toast from "react-hot-toast";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 
 // form validation
@@ -183,7 +183,8 @@ const AddSubAdmin = () => {
         </div>
 
         <div className="max-auto pb-5">
-          <form
+          <form autoComplete="off"
+           
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
             onSubmit={formik.handleSubmit}
           >
@@ -340,9 +341,7 @@ const AddSubAdmin = () => {
 
             {/* Sub Admin Password box */}
             <div
-              className={`flex flex-col gap-3 ${
-                formik.values.documentsType ? "col-span-full" : ""
-              }`}
+              className={`flex flex-col gap-3 `}
             >
               <div className={`relative`}>
                 <input
@@ -376,63 +375,9 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
-            {/* documents type box */}
-            <div className={`flex flex-col gap-3`}>
-              <select
-                name="documentsType"
-                className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-                value={formik.values.documentsType}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  Type of Documents
-                </option>
-                <option value="NID">NID</option>
-                <option value="Passport">Passport</option>
-                <option value="Driving License">Driving License</option>
-              </select>
-              {formik.touched.documentsType &&
-              Boolean(formik.errors.documentsType) ? (
-                <small className="text-red-600">
-                  {formik.touched.documentsType && formik.errors.documentsType}
-                </small>
-              ) : null}
-            </div>
+         
 
-            {/* documents box */}
-            {formik.values.documentsType ? (
-              <div className={`flex space-x-1.5`}>
-                <div className="flex flex-col gap-3 w-full">
-                  <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                    {formik.values.documents ? (
-                      <span>{formik.values.documents.length + " files"}</span>
-                    ) : (
-                      <span className={`flex items-baseline space-x-1.5`}>
-                        <FaUpload />
-                        <span>Choose {formik.values.documentsType}</span>
-                      </span>
-                    )}
-                    <input
-                      type="file"
-                      multiple
-                      name="documents"
-                      className="absolute left-0 top-0  overflow-hidden h-0"
-                      onChange={(e) =>
-                        formik.setFieldValue("documents", e.currentTarget.files)
-                      }
-                      onBlur={formik.handleBlur}
-                    />
-                  </label>
-                  {formik.touched.documents &&
-                  Boolean(formik.errors.documents) ? (
-                    <small className="text-red-600">
-                      {formik.touched.documents && formik.errors.documents}
-                    </small>
-                  ) : null}
-                </div>
-              </div>
-            ) : null}
+        
 
             {/* Sub Admin Address box */}
             <div className="col-span-full flex flex-col gap-3">
@@ -486,6 +431,63 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
+               {/* documents type box */}
+               <div className={`flex flex-col gap-3`}>
+              <select
+                name="documentsType"
+                className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+                value={formik.values.documentsType}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" selected disabled>
+                  Type of Documents
+                </option>
+                <option value="NID">NID</option>
+                <option value="Passport">Passport</option>
+                <option value="Driving License">Driving License</option>
+              </select>
+              {formik.touched.documentsType &&
+              Boolean(formik.errors.documentsType) ? (
+                <small className="text-red-600">
+                  {formik.touched.documentsType && formik.errors.documentsType}
+                </small>
+              ) : null}
+            </div>
+
+                {/* documents box */}
+                {formik.values.documentsType ? (
+              <div className={`flex space-x-1.5`}>
+                <div className="flex flex-col gap-3 w-full">
+                  <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+                    {formik.values.documents ? (
+                      <span>{formik.values.documents.length + " files"}</span>
+                    ) : (
+                      <span className={`flex items-baseline space-x-1.5`}>
+                        <FaUpload />
+                        <span>Choose {formik.values.documentsType}</span>
+                      </span>
+                    )}
+                    <input
+                      type="file"
+                      multiple
+                      name="documents"
+                      className="absolute left-0 top-0  overflow-hidden h-0"
+                      onChange={(e) =>
+                        formik.setFieldValue("documents", e.currentTarget.files)
+                      }
+                      onBlur={formik.handleBlur}
+                    />
+                  </label>
+                  {formik.touched.documents &&
+                  Boolean(formik.errors.documents) ? (
+                    <small className="text-red-600">
+                      {formik.touched.documents && formik.errors.documents}
+                    </small>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
 
           
             {/* submit button */}

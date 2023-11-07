@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
+import React, { useState } from "react";
 import * as yup from "yup";
 import {FaArrowLeft, FaEyeSlash} from "react-icons/fa";
 import { useSelector } from "react-redux";
-import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
 import Modal from "../../components/Modal.jsx";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
 import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
@@ -80,7 +79,7 @@ const HotelEdit = () => {
           </div>
 
           <div className="max-auto">
-            <form
+            <form autoComplete="off"
                 className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10"
                 onSubmit={formik.handleSubmit}
             >

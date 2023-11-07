@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useUpdateUserMutation } from "../../redux/admin/subadmin/subadminAPI.js";
-import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
@@ -85,7 +85,7 @@ const EditProfile = () => {
           </button>
         </div>
       </div>
-      <form
+      <form autoComplete="off"
         className="form-control grid grid-cols-1 gap-4 mt-14"
         onSubmit={formik.handleSubmit}
       >
