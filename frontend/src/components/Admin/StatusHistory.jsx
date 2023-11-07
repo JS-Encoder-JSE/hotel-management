@@ -56,8 +56,6 @@ const StatusHistory = () => {
 	useEffect(() => {
 		if (statusHistory) setPageCount(statusHistory.totalPages);
 	}, [statusHistory]);
-
- console.log({statusHistory})
 	return (
 		<div className="card w-full bg-white shadow-xl">
 			<div className="card-body space-y-10">

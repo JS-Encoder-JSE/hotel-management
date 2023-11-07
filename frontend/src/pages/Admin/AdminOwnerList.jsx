@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AiFillSetting } from "react-icons/ai";
 import Modal from "../../components/Modal.jsx";
 import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
@@ -12,6 +12,7 @@ import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js"
 
 import Swal from "sweetalert2";
 import store from "../../redux/store.js";
+import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 const AdminOwnerList = ({ title }) => {
   const { user } = store.getState().authSlice
   
@@ -33,10 +34,14 @@ const AdminOwnerList = ({ title }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const { isLoading, data: owners } = useOwnerListQuery({
+  const { id } = useParams()
+  console.log(id)
+  const { isLoading, data: owners } = useGetUsersQuery({
     cp: currentPage,
-    filter: formik.values.filter,
+    filter: "Suspended",
     search: keyword,
+    role:'owner',
+    parentId:id
   });
 
   const handlePageClick = ({ selected: page }) => {
