@@ -1,12 +1,51 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { FaArrowLeft, FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal";
 import ChangeShift from "../OwnerManagerManagement/ChangeShift";
+import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
+import {useGetUsersQuery} from "../../redux/admin/subadmin/subadminAPI.js";
 
 
 const HotelListView = () => {
   const navigate = useNavigate();
+  const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
+  const [showManagers, setShowManagers] = useState([]);
+  const [save, setSave] = useState(false);
+
+  const handleChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...managerList];
+    list[index][name] = value;
+    setManagerList(list);
+  };
+
+  const handleRemove = (index) => {
+    const list = [...managerList];
+    list.splice(index, 1);
+    setManagerList(list);
+  };
+
+  const handleAdd = () => {
+    setManagerList([...managerList, { manager: "", shift: "" }]);
+  };
+
+  useEffect(() => {
+    if (save) {
+      const tempList = [
+        ...managerList
+            .map((elem) => ({
+              ...(elem.manager ? JSON.parse(elem.manager) : {}),
+              shift: elem.shift,
+            }))
+            .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+      ];
+
+      setShowManagers(tempList);
+      setSave(false);
+    }
+  }, [save]);
+
   return (
     <div>
       <div className="card w-full bg-white shadow-xl p-5">
@@ -81,7 +120,14 @@ const HotelListView = () => {
             >Change Shift</button>
             </h6>
             <Modal id={`ol_modal`}>
-             <ChangeShift/>
+              <HotelAsManager
+                  setSave={setSave}
+                  managers={[]}
+                  managerList={managerList}
+                  handleAdd={handleAdd}
+                  handleRemove={handleRemove}
+                  handleChange={handleChange}
+              />
             </Modal>
         </div>
       </div>

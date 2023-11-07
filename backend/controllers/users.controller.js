@@ -1115,8 +1115,8 @@ export const getUserById = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Populate the assignedHotel array with full hotel details
-    await user.populate("assignedHotel").execPopulate();
+    // Use the populate() method to populate the 'assignedHotel' field
+    await User.populate(user, { path: "assignedHotel" });
 
     res.status(200).json(user);
   } catch (error) {
@@ -1124,6 +1124,7 @@ export const getUserById = async (req, res) => {
     res.status(500).json({ error: "Failed to retrieve user information" });
   }
 };
+
 
 export const updateUser = async (req, res) => {
   try {
