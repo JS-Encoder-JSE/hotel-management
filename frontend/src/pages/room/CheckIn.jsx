@@ -12,6 +12,7 @@ import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import Select from "react-select";
 import { useRoomsQuery } from "../../redux/room/roomAPI.js";
+import DatePicker from "react-datepicker";
 
 // form validation
 const validationSchema = yup.object({
@@ -44,11 +45,13 @@ const validationSchema = yup.object({
   }),
 
   documentsType: yup.string().required("Document Number is required"),
-  documentsNumber: yup.string().when(["documentsType"], ([documentsType], schema) => {
-    if (documentsType !== "nid")
-      return schema.required("Transaction ID is required");
-    else return schema;
-  }),
+  documentsNumber: yup
+    .string()
+    .when(["documentsType"], ([documentsType], schema) => {
+      if (documentsType !== "nid")
+        return schema.required("Transaction ID is required");
+      else return schema;
+    }),
   // discount: yup.number().when(["discount"], ([discount], schema) => {
   //   if (discount)
   //     return schema
@@ -83,6 +86,7 @@ const CheckIn = () => {
       emergencyNumber: "",
       address: "",
       documentsType: "",
+      trxID: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -271,7 +275,8 @@ const CheckIn = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.emergencyNumber && Boolean(formik.errors.emergencyNumber) ? (
+          {formik.touched.emergencyNumber &&
+          Boolean(formik.errors.emergencyNumber) ? (
             <small className="text-red-600">
               {formik.touched.emergencyNumber && formik.errors.emergencyNumber}
             </small>
@@ -340,9 +345,9 @@ const CheckIn = () => {
             <option value="" selected disabled>
               Payment Method
             </option>
-            <option value="cash">Cash</option>
-            <option value="card">Card</option>
-            <option value="mfs">Mobile Banking</option>
+            <option value="Cash">Cash</option>
+            <option value="Card">Card</option>
+            <option value="Mobile_Banking">Mobile Banking</option>
           </select>
           {formik.touched.paymentMethod &&
           Boolean(formik.errors.paymentMethod) ? (
@@ -370,8 +375,6 @@ const CheckIn = () => {
             ) : null}
           </div>
         ) : null}
-   
-
         {/* discount box */}
         <div className="flex flex-col gap-3">
           <input
@@ -391,18 +394,14 @@ const CheckIn = () => {
         </div>
         {/* From Date */}
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="From  MM/DD/YYY"
+          <DatePicker
+            dateFormat="dd/MM/yyyy"
             name="fromDate"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.fromDate}
-            onChange={formik.handleChange}
-            onBlur={(e) => {
-              e.target.type = "text";
-              formik.handleBlur;
-            }}
-            onFocus={(e) => (e.target.type = "date")}
+            placeholderText={`From`}
+            selected={formik.values.fromDate}
+            className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+            onChange={(date) => formik.setFieldValue("joiningDate", date)}
+            onBlur={formik.handleBlur}
           />
           {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
             <small className="text-red-600">
@@ -410,20 +409,16 @@ const CheckIn = () => {
             </small>
           ) : null}
         </div>
-        {/*Billing To box */}
+        {/* Billing To box */}
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="To  MM/DD/YYY"
+          <DatePicker
+            dateFormat="dd/MM/yyyy"
             name="toDate"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.toDate}
-            onChange={formik.handleChange}
-            onBlur={(e) => {
-              e.target.type = "text";
-              formik.handleBlur;
-            }}
-            onFocus={(e) => (e.target.type = "date")}
+            placeholderText={`To`}
+            selected={formik.values.toDate}
+            className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+            onChange={(date) => formik.setFieldValue("joiningDate", date)}
+            onBlur={formik.handleBlur}
           />
           {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
             <small className="text-red-600">
@@ -431,8 +426,8 @@ const CheckIn = () => {
             </small>
           ) : null}
         </div>
-             {/* type Of Documents  box */}
-             <div className="flex flex-col gap-3">
+        {/* type Of Documents  box */}
+        <div className="flex flex-col gap-3">
           <select
             name="documentsType"
             className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
@@ -467,30 +462,32 @@ const CheckIn = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.documentsNumber && Boolean(formik.errors.documentsNumber) ? (
+            {formik.touched.documentsNumber &&
+            Boolean(formik.errors.documentsNumber) ? (
               <small className="text-red-600">
-                {formik.touched.documentsNumber && formik.errors.documentsNumber}
+                {formik.touched.documentsNumber &&
+                  formik.errors.documentsNumber}
               </small>
             ) : null}
           </div>
         ) : null}
-           {/* Nationality box */}
-           <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Nationality"
-              name="nationality"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.nationality}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.nationality && Boolean(formik.errors.nationality) ? (
-              <small className="text-red-600">
-                {formik.touched.nationality && formik.errors.nationality}
-              </small>
-            ) : null}
-          </div>
+        {/* Nationality box */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Nationality"
+            name="nationality"
+            className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+            value={formik.values.nationality}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.nationality && Boolean(formik.errors.nationality) ? (
+            <small className="text-red-600">
+              {formik.touched.nationality && formik.errors.nationality}
+            </small>
+          ) : null}
+        </div>
         {/* documents */}
         <div className={`flex space-x-1.5`}>
           <div className="flex flex-col gap-3 w-full">

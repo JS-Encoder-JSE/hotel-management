@@ -9,9 +9,12 @@ import ReactPaginate from "react-paginate";
 import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
 import { Rings } from "react-loader-spinner";
 import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
-import Swal from "sweetalert2";
 
+import Swal from "sweetalert2";
+import store from "../../redux/store.js";
 const AdminOwnerList = ({ title }) => {
+  const { user } = store.getState().authSlice
+  
   const [keyword, setKeyword] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -180,7 +183,7 @@ const AdminOwnerList = ({ title }) => {
                                 <FaRegEdit />
                               </span>
                             </Link>
-                            {owner?.status !== "Deleted" ? (
+                            {owner?.status !== "Deleted" && user?.role !== 'subadmin' ? (
                               <span
                                 className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                                 onClick={() =>

@@ -13,6 +13,8 @@ import ExpiredSettings from "../../components/Admin/ExpiredSettings.jsx";
 import { useFormik } from "formik";
 import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
 import { Rings } from "react-loader-spinner";
+import store from "../../redux/store.js";
+import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 
 const ExpiredList = () => {
   const navigate = useNavigate();
@@ -31,10 +33,13 @@ const ExpiredList = () => {
     },
   });
 
-  const { isLoading, data: owners } = useOwnerListQuery({
+  const {user}= store.getState().authSlice
+  const { isLoading, data: owners } = useGetUsersQuery({
     cp: currentPage,
     filter: "Expired",
     search: keyword,
+    role:'owner',
+    parentId:user._id
   });
 
   const handlePageClick = ({ selected: page }) => {

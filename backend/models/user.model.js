@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
     shift: {
       type: String,
       required: false,
-      enum: ["Day", "Night"],
+      enum: ["Morning","Day", "Night"],
       default: "Day",
     },
     status: {
@@ -67,14 +67,19 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     phone_no: {
-      type: Number,
+      type: String,
       required: false,
-      default: 0,
+      default: "",
     },
     emergency_contact: {
-      type: Number,
+      type: String,
       required: false,
-      default: 0,
+      default: "",
+    },
+    last_renew: {
+      type: Date,
+      required: false,
+      default: null,
     },
     paid_amount: {
       type: Number,

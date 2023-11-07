@@ -8,6 +8,8 @@ import ReactPaginate from "react-paginate";
 import { useFormik } from "formik";
 import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
 import { Rings } from "react-loader-spinner";
+import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import store from "../../redux/store.js";
 
 const SuspendList = () => {
   const navigate = useNavigate();
@@ -24,11 +26,13 @@ const SuspendList = () => {
       setKeyword(values.search);
     },
   });
-
-  const { isLoading, data: owners } = useOwnerListQuery({
+const {user}= store.getState().authSlice
+  const { isLoading, data: owners } = useGetUsersQuery({
     cp: currentPage,
     filter: "Suspended",
     search: keyword,
+    role:'owner',
+    parentId:user._id
   });
 
   const handlePageClick = ({ selected: page }) => {

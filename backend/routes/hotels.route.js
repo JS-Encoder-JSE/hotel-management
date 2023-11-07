@@ -1,20 +1,12 @@
 ﻿import { Router } from "express";
-import {
+// import {
 
-} from "../controllers/hotel.controller.js";
+// } from "../controllers/hotel.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
+import { addHotel } from "../controllers/hotel.controller.js";
 
 const router = Router();
 
-// add room 
-// router.post('/',checkToken,addRoom);
-
-// router.post('/', );
-// router.post("/", );
-// router.post("/",);
-// router.post("/user/add-manager", checkToken, addManager);
-// router.get("/user/get-manager-by-id/:managerId", checkToken, getManagerById);
-// router.get("/user/get-managers-by-owner", checkToken, getManagersByOwner);
-// router.get("/user/get-owners", checkToken, getOwners);
+router.post("/add-hotel", checkToken, addHotel);
 
 export default router;

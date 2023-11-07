@@ -72,6 +72,8 @@ import EditSwimming from "./components/LifeStyle/EditSwimming.jsx";
 import GymBooking from "./pages/Gym/GymBooking.jsx";
 import AddGym from "./pages/Gym/AddGym.jsx";
 import GymList from "./pages/Gym/GymList.jsx";
+import LicenseHistory from "./pages/owner/LicenseHistory.jsx";
+
 
 
 const App = () => {
@@ -446,6 +448,14 @@ const App = () => {
                 <OwnerRoute>
                   <ManagerEdit />
                 </OwnerRoute>
+              ),
+            },
+            {
+              path: "license-history",
+              element: (
+                  <OwnerRoute>
+                    <LicenseHistory />
+                  </OwnerRoute>
               ),
             },
             {
