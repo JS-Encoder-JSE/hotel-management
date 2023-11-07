@@ -23,6 +23,7 @@ const AddHotel = () => {
   const { user } = useSelector((store) => store.authSlice);
   const [addHotel] = useAddHotelMutation();
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
+  const [showManagers, setShowManagers] = useState([]);
   const { isLoading, data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
@@ -30,6 +31,7 @@ const AddHotel = () => {
     role: "manager",
     parentId: user?._id,
   });
+  const [save, setSave] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -56,14 +58,7 @@ const AddHotel = () => {
         email,
         phone_no,
         branch_name,
-        managers: [
-          ...managerList
-            .map((elem) => ({
-              ...(elem.manager ? JSON.parse(elem.manager) : {}),
-              shift: elem.shift,
-            }))
-            .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
-        ],
+        managers: showManagers,
       });
 
       if (response?.error) {
@@ -91,6 +86,22 @@ const AddHotel = () => {
   const handleAdd = () => {
     setManagerList([...managerList, { manager: "", shift: "" }]);
   };
+
+  useEffect(() => {
+    if (save) {
+      const tempList = [
+        ...managerList
+          .map((elem) => ({
+            ...(elem.manager ? JSON.parse(elem.manager) : {}),
+            shift: elem.shift,
+          }))
+          .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+      ];
+
+      setShowManagers(tempList);
+      setSave(false);
+    }
+  }, [save]);
 
   return (
     <div className={`space-y-10`}>
@@ -218,6 +229,18 @@ const AddHotel = () => {
             >
               Assign Manager
             </button>
+            {showManagers.length ? (
+              <div className={`col-span-full`}>
+                <h3>Assigned Manager</h3>
+                <ul className={`list-disc list-inside`}>
+                  {showManagers?.map((elem) => (
+                    <li>
+                      {elem.name} - {elem.shift}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             {/* submit button */}
             <div className="flex flex-col gap-3 col-span-full text-end">
               <button
@@ -232,6 +255,7 @@ const AddHotel = () => {
       </div>
       <Modal id={`ol_modal`}>
         <HotelAsManager
+          setSave={setSave}
           managers={managers?.docs}
           managerList={managerList}
           handleAdd={handleAdd}

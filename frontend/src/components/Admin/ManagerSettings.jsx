@@ -20,23 +20,25 @@ const ManagerSettings = ({ owner }) => {
   const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();
   const formik = useFormik({
     initialValues: {
-      status: "",
       remarks: "",
-      fromDate: "",
-      toDate: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       const obj = { ...values };
-      const { status, remarks: remark, fromDate: from, toDate: to } = obj;
+      const { remarks: remark } = obj;
 
       const response = await updateLicenseStatus({
         user_id: owner?.id,
-        status,
+        status:
+          owner?.status === "Deactive" || owner?.status === "Deleted"
+            ? "Active"
+            : owner?.status === "Active"
+            ? "Deactive"
+            : null,
         extended_time: [
           {
-            from,
-            to,
+            from: "",
+            to: "",
           },
         ],
         remark,
@@ -65,7 +67,14 @@ const ManagerSettings = ({ owner }) => {
         </button>
       </form>
       <div>
-        <h3 className={`text-2xl font-semibold mb-3`}>Change Status</h3>
+        <h3 className={`text-2xl font-semibold mb-3`}>
+          Change Status to{" "}
+          {owner?.status === "Deactive" || owner?.status === "Deleted"
+            ? "In Duty"
+            : owner?.status === "Active"
+            ? "Resign"
+            : null}
+        </h3>
         <hr />
         <form
           className="form-control grid grid-cols-1 gap-4 mt-5"
