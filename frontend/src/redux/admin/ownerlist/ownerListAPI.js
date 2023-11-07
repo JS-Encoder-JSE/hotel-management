@@ -1,6 +1,12 @@
 import baseAPI from "../../baseAPI.js";
+import store from "../../store.js";
+// const { user } = store.getState().authSlice
+
 const queryForAdmin = ({ cp, filter, search, role, parentId }) => {
-	if (parentId) {
+	const { user } = store.getState().authSlice
+	if (parentId || user?.role === 'subadmin') {
+		user.role === 'subadmin' && (parentId = user._id)
+		
 		return `users/get-users?page=${++cp}${
 			filter ? `&filter=${filter}` : ""
 		}${search ? `&search=${search}` : ""}${
