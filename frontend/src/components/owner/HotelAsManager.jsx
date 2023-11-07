@@ -1,5 +1,6 @@
 import React from "react";
 import { MdOutlineClear } from "react-icons/md";
+import {FaTrash} from "react-icons/fa";
 
 const HotelAsManager = ({
   managerList,
@@ -7,6 +8,7 @@ const HotelAsManager = ({
   handleAdd,
   handleRemove,
   handleChange,
+  setSave,
 }) => {
   return (
     <>
@@ -62,19 +64,31 @@ const HotelAsManager = ({
                       className={`absolute right-0 top-1/2 -translate-y-1/2 inline-flex w-6 h-6 items-center justify-center text-red-600 hover:text-green-slimy cursor-pointer transition-colors duration-500 -mr-7`}
                       onClick={() => handleRemove(idx)}
                     >
-                      <MdOutlineClear />
+                      <FaTrash />
                     </div>
                   )}
                 </div>
-                {managerList.length - 1 === idx && managerList.length < 3 && (
-                  <button
-                    type="button"
-                    onClick={handleAdd}
-                    className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-fit"
-                  >
-                    Add more
-                  </button>
-                )}
+                <div className={`flex justify-between`}>
+                  {managerList.length - 1 === idx ? (
+                    <form method="dialog">
+                      <button
+                        className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-fit"
+                        onClick={() => setSave(true)}
+                      >
+                        Save
+                      </button>
+                    </form>
+                  ) : null}
+                  {managerList.length - 1 === idx && managerList.length < 3 && (
+                    <button
+                      type="button"
+                      onClick={handleAdd}
+                      className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-fit"
+                    >
+                      Add more
+                    </button>
+                  )}
+                </div>
               </>
             );
           })}

@@ -37,7 +37,7 @@ const ManagerListView = () => {
             {!isLoading ? (
               <>
                 <div>
-                  <div className="group absolute -top-5 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
+                  <div className="group absolute -top-5 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32 overflow-hidden">
                     <img src={userData?.images?.profile_img} alt="" />
                   </div>
                 </div>
@@ -64,7 +64,14 @@ const ManagerListView = () => {
                       {new Date(userData?.joining_date).toLocaleDateString()}
                     </h6>
                     <h6> Salary : {userData?.salary}</h6>
-                    <h6>Status : {userData?.status}</h6>
+                    <h6>
+                      Status :{" "}
+                      {userData?.status === "Active"
+                        ? "In Duty"
+                        : userData?.status === "Deactive"
+                        ? "Resign"
+                        : "Deleted"}
+                    </h6>
                   </div>
                   <div>
                     <h2 className="card-title mb-3">

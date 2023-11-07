@@ -138,7 +138,41 @@ export const addHotel = async (req, res) => {
     res.status(500).json({ message: "Failed to add a new hotel" });
   }
 };
+export const getHotels = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { page = 1, limit = 10, search } = req.query;
 
+    const parent = await User.findById(userId);
+    if (!parent) {
+      return res.status(404).json({ message: "Owner not found" });
+    }
+    if (!parent.role === "Owner") {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to get info" });
+    }
+
+    const query = { owner_id: userId };
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { branch_name: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const hotels = await Hotel.paginate(query, options);
+    res.status(200).json(hotels);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve hotels" });
+  }
+};
 // Controller to update a hotel by ID
 export const updateHotel = async (req, res) => {
   try {

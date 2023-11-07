@@ -95,9 +95,7 @@ const ManagerList = () => {
         <div
           className={`flex flex-col sm:flex-row justify-between items-center gap-5`}
         >
-          <h3 className={`text-xl font-semibold text-center`}>
-            Manager List
-          </h3>
+          <h3 className={`text-xl font-semibold text-center`}>Manager List</h3>
           <div className={`flex felx-wrap gap-3`}>
             <div>
               <select
@@ -107,8 +105,8 @@ const ManagerList = () => {
                 onChange={formik.handleChange}
               >
                 <option value="">All</option>
-                <option value="">In Duty</option>
-                <option value="">Resign</option>
+                <option value="Active">In Duty</option>
+                <option value="Deactive">Resign</option>
                 <option value="Deleted">Deleted</option>
               </select>
             </div>
@@ -173,7 +171,13 @@ const ManagerList = () => {
                             <td>{sa?.phone_no}</td>
                             <td>{sa?.emergency_contact}</td>
                             <td>-</td>
-                            <td>{sa?.status}</td>
+                            <td>
+                              {sa?.status === "Active"
+                                ? "In Duty"
+                                : sa?.status === "Deactive"
+                                ? "Resign"
+                                : "Deleted"}
+                            </td>
                             <td className={`flex flex-wrap gap-1.5`}>
                               <Link
                                 to={`/dashboard/managerList-view/${sa?._id}`}
@@ -184,9 +188,7 @@ const ManagerList = () => {
                                   <FaEye />
                                 </span>
                               </Link>
-                              <Link
-                                to={`/dashboard/manager-edit/${sa?._id}`}
-                              >
+                              <Link to={`/dashboard/manager-edit/${sa?._id}`}>
                                 <span
                                   className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                                 >
