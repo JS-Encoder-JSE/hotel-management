@@ -1,17 +1,29 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
 import ChangeShift from "../OwnerManagerManagement/ChangeShift";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
-import {useGetUsersQuery} from "../../redux/admin/subadmin/subadminAPI.js";
-
+import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import { useHotelQuery } from "../../redux/Owner/hotelsAPI.js";
+import { Rings } from "react-loader-spinner";
+import { useSelector } from "react-redux";
 
 const HotelListView = () => {
+  const { id } = useParams();
+  const { user } = useSelector((store) => store.authSlice);
   const navigate = useNavigate();
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
   const [showManagers, setShowManagers] = useState([]);
   const [save, setSave] = useState(false);
+  const { isLoading, data: hotel } = useHotelQuery(id);
+  const { data: managers } = useGetUsersQuery({
+    cp: 0,
+    filter: "",
+    search: "",
+    role: "manager",
+    parentId: user._id,
+  });
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -34,17 +46,29 @@ const HotelListView = () => {
     if (save) {
       const tempList = [
         ...managerList
-            .map((elem) => ({
-              ...(elem.manager ? JSON.parse(elem.manager) : {}),
-              shift: elem.shift,
-            }))
-            .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+          .map((elem) => ({
+            ...(elem.manager ? JSON.parse(elem.manager) : {}),
+            shift: elem.shift,
+          }))
+          .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
       ];
 
       setShowManagers(tempList);
       setSave(false);
     }
   }, [save]);
+
+  useEffect(() => {
+    if (hotel) {
+      const tempArr = hotel.managers.map((elem) => ({
+        manager: JSON.stringify(elem),
+        shift: elem.shift,
+      }));
+
+      setManagerList(tempArr);
+      setSave(true);
+    }
+  }, [hotel]);
 
   return (
     <div>
@@ -58,77 +82,89 @@ const HotelListView = () => {
             <FaArrowLeft />
           </span>
         </div>
-
-        <h1 className="text-2xl text-center ">Hotel - information</h1>
-        <div className="card-body grid md:grid-cols-2 gap-4">
-          <div className="">
-            <h2 className="card-title mb-3">Hotel Description </h2>
-            <h6> Name : Jon Doe</h6>
-            <h6> Address : Kolkata</h6>
-            <h6> Number : +98812554</h6>
-            <h6> Email : jondoe@gmail.com</h6>
-          </div>
-          <div className="">
-            <h2 className="card-title mb-3">Other information </h2>
-            <h6> Branch Name : Branch 1 </h6>
-            <h6> Hotel License Number :GH-DHF-DJ-2354546</h6>
-            <h6>Manager Name : Manager 1</h6>
-            <h6>Shift : Mornig</h6>
-            {/* <h6 className={`flex space-x-1.5`}>
-              <span>Status : Active</span>
-              <span className={`cursor-pointer hover:text-green-slimy`} onClick={() => window.ol_modal.showModal()}><FaEdit /></span>
-            </h6> */}
-          </div>
-        </div>
+        {!isLoading ? (
+          <>
+            <h1 className="text-2xl text-center ">Hotel - information</h1>
+            <div className="card-body grid md:grid-cols-2 gap-4">
+              <div className="">
+                <h2 className="card-title mb-3">Hotel Description </h2>
+                <h6> Name : {hotel?.name}</h6>
+                <h6> Address : {hotel?.address}</h6>
+                <h6> Number : {hotel?.phone_no}</h6>
+                <h6> Email : {hotel?.email}</h6>
+              </div>
+            </div>
+          </>
+        ) : (
+          <Rings
+            width="50"
+            height="50"
+            color="#37a000"
+            wrapperClass="justify-center"
+          />
+        )}
       </div>
       {/* <Modal id={`ol_modal`}>
         <StatusSettings />
       </Modal> */}
       <div className="card w-full bg-white shadow-xl p-5 mt-8">
         <div className="card-body">
-          <h1 className="text-center text-2xl mb-4">Assign Manager</h1>
-          <div className="overflow-x-auto">
-            <table className="table border">
-              <thead>
-                <tr>
-                  <th>Sl</th>
-                  <th>Manager Name</th>
-                  <th>Shift</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...Array(5)].map((_, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th> {++idx}</th>
-                      <td className="font-bold">Jon Doe</td>
-                      <td>Morning</td>
-                    
+          <h1 className="text-center text-2xl mb-4">Assigned Manager</h1>
+          {!isLoading ? (
+            <>
+              <div className="overflow-x-auto">
+                <table className="table border">
+                  <thead>
+                    <tr>
+                      <th>Sl</th>
+                      <th>Manager Name</th>
+                      <th>Shift</th>
                     </tr>
-              
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-             <h6 className={`flex space-x-1.5 justify-end`}>
-            <button
-            className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
-            onClick={() => window.ol_modal.showModal()}
-            >Change Shift</button>
-            </h6>
-            <Modal id={`ol_modal`}>
-              <HotelAsManager
+                  </thead>
+                  <tbody>
+                    {hotel?.managers?.map((elem, idx) => {
+                      return (
+                        <tr
+                          className={
+                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                          }
+                        >
+                          <th> {++idx}</th>
+                          <td>{elem?.name}</td>
+                          <td>{elem?.shift}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <h6 className={`flex space-x-1.5 justify-end`}>
+                <button
+                  className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
+                  onClick={() => window.ol_modal.showModal()}
+                >
+                  Change Shift
+                </button>
+              </h6>
+              <Modal id={`ol_modal`}>
+                <HotelAsManager
                   setSave={setSave}
-                  managers={[]}
+                  managers={managers?.docs}
                   managerList={managerList}
                   handleAdd={handleAdd}
                   handleRemove={handleRemove}
                   handleChange={handleChange}
-              />
-            </Modal>
+                />
+              </Modal>
+            </>
+          ) : (
+            <Rings
+              width="50"
+              height="50"
+              color="#37a000"
+              wrapperClass="justify-center"
+            />
+          )}
         </div>
       </div>
     </div>

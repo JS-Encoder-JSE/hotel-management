@@ -9,9 +9,9 @@ const hotelsAPI = baseAPI.injectEndpoints({
         }${pid ? `&parent_id=${pid}` : ""}`,
       // providesTags: ["room"],
     }),
-    room: build.query({
-      query: (id) => `rooms/get-room-by-id/${id}`,
-      providesTags: ["room"],
+    hotel: build.query({
+      query: (id) => `hotels/get-hotel-by-id/${id}`,
+      // providesTags: ["room"],
     }),
     addHotel: build.mutation({
       query: (data) => {
@@ -32,11 +32,11 @@ const hotelsAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["room"],
     }),
-    addBooking: build.mutation({
-      query: (data) => {
+    updateHotel: build.mutation({
+      query: ({id, data }) => {
         return {
-          url: "booking/add-booking",
-          method: "POST",
+          url: `hotels/update-hotel/${id}`,
+          method: "PATCH",
           body: data,
         };
       },
@@ -45,9 +45,9 @@ const hotelsAPI = baseAPI.injectEndpoints({
 });
 
 export const {
-  useRoomQuery,
+  useHotelQuery,
   useHotelsQuery,
   useAddHotelMutation,
   useDeleteRoomMutation,
-  useAddBookingMutation,
+  useUpdateHotelMutation,
 } = hotelsAPI;

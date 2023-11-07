@@ -3,16 +3,21 @@ import { FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
-import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
+import {
+  useHotelsQuery,
+  useUpdateHotelMutation,
+} from "../../redux/Owner/hotelsAPI.js";
 import { Rings } from "react-loader-spinner";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const HotelLists = () => {
-  const {user} = useSelector(store => store.authSlice)
+  const { user } = useSelector((store) => store.authSlice);
   const navigate = useNavigate();
   const [hotelsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
+  const [updateHotel] = useUpdateHotelMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -24,8 +29,32 @@ const HotelLists = () => {
     cp: currentPage,
     search: formik.values.search,
     uid: user._id,
-    pid: ""
+    pid: "",
   });
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Hotel will be delete.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#35bef0",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Deleted!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          updateHotel({ id, data: { status: "Deleted" } });
+        });
+      }
+    });
+  };
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -111,6 +140,7 @@ const HotelLists = () => {
                         {/* <td>Kolkata</td> */}
                         {/* <td>jondoe@gmail.com</td> */}
                         <td>{hotel?.phone_no}</td>
+                        <td>{hotel?.status}</td>
                         {/* <td>123456</td> */}
                         {/* <td>Manager 1</td> */}
                         <td className={`space-x-1.5`}>
@@ -132,11 +162,14 @@ const HotelLists = () => {
                           >
                             <FaEdit />
                           </span>
-                          <span
-                            className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case mt-2`}
-                          >
-                            <FaTrash />
-                          </span>
+                          {hotel?.status !== "Deleted" ? (
+                            <span
+                              className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case mt-2`}
+                              onClick={() => handleDelete(hotel?._id)}
+                            >
+                              <FaTrash />
+                            </span>
+                          ) : null}
                         </td>
                       </tr>
                     );
