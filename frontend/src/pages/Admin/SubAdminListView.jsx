@@ -7,7 +7,7 @@ import {
 	FaUserLock,
 } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import SubAdminReport from "./SubAdminReport";
+// import SubAdminReport from "./SubAdminReport";
 import ReactPaginate from "react-paginate";
 import OwnerList from "../../components/Admin/OwnerList.jsx";
 import SuspendedOwner from "../../components/Admin/SuspendedOwner.jsx";
@@ -15,6 +15,7 @@ import TransactionHistory from "../../components/Admin/TransactionHistory";
 import StatusHistory from "../../components/Admin/StatusHistory";
 import AdminOwnerList from "./AdminOwnerList";
 import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI";
+import Report from "./Report.jsx";
 
 const SubAdminListView = () => {
 	const navigate = useNavigate();
@@ -74,7 +75,7 @@ const SubAdminListView = () => {
 			<TransactionHistory />
 			<StatusHistory />
 			{/* <SuspendedOwner /> */}
-			<SubAdminReport />
+			<Report />
 		</div>
 	);
 };

@@ -33,7 +33,6 @@ const SubAdminList = () => {
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const parentId = store.getState().authSlice.user._id;
-  console.log(parentId);
   const { isLoading, data: subadmins } = useGetUsersQuery({
     cp: currentPage,
     filter: formik.values.filter,
@@ -145,6 +144,7 @@ const SubAdminList = () => {
                     <thead>
                       <tr>
                         <th>SL</th>
+                        <th>Username</th>
                         <th>Name</th>
                         {/* <th>Sub Admin Address</th> */}
                         <th>Email</th>
@@ -165,6 +165,7 @@ const SubAdminList = () => {
                             }
                           >
                             <th>{++idx}</th>
+                            <td>{sa?.username}</td>
                             <td>{sa?.name}</td>
                             <td>{sa?.email}</td>
                             <td>{sa?.phone_no}</td>

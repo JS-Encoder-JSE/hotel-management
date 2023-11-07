@@ -46,14 +46,14 @@ const AdminOwnerList = ({ title }) => {
 	// });
 
 	// get owner for subadmin
-	const { isLoading, data: owners } = useOwnerListQuery({
+	const { isLoading, data: owners,refetch } = useOwnerListQuery({
 		cp: currentPage,
 		filter: formik.values.filter,
 		search: keyword,
 		role: "owner",
 		parentId: id,
 	});
-
+useEffect(()=>{refetch()},[])
 
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);
