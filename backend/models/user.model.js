@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
     shift: {
       type: String,
       required: false,
-      enum: ["Morning","Day", "Night"],
+      enum: ["Morning", "Day", "Night"],
       default: "Day",
     },
     status: {

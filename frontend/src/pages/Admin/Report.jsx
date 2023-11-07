@@ -38,12 +38,14 @@ const Report = () => {
 		fromDate: "",
 		toDate: "",
 		search: "",
+	});
+	
+	const { isLoading, data: reports } = useGetReportQuery({
+		...searchParams,
 		cp: currentPage,
 		uid: user._id,
 		filter: formik.values.filter,
-  });
-  console.log(searchParams)
-	const { isLoading, data: reports } = useGetReportQuery(searchParams);
+	});
 
 	const exportExcel = async (data, name) => {
 		const ws = XLSX.utils.json_to_sheet(data);
@@ -83,10 +85,6 @@ const Report = () => {
 			return null;
 		}
 	}
-  
-	useEffect(() => {
-		setSearchParams(p=>({...p,filter:formik.values.filter}))
-	},[formik.values.filter])
 	return (
 		<div className={`px-5 space-y-5`}>
 			<div className={`bg-white px-10 py-5 rounded`}>
@@ -195,8 +193,13 @@ const Report = () => {
 							value={formik.values.search}
 							onChange={formik.handleChange}
 						/>
-            <button
-              onClick={()=>{setSearchParams(p=>({...p,search:formik.values.search}))}}
+						<button
+							onClick={() => {
+								setSearchParams((p) => ({
+									...p,
+									search: formik.values.search,
+								}));
+							}}
 							type="button"
 							className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
 							<FaSearch />
