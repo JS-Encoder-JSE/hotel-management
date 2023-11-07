@@ -1,12 +1,19 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
-import {FaArrowLeft, FaEyeSlash} from "react-icons/fa";
+import { FaArrowLeft, FaEyeSlash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import Modal from "../../components/Modal.jsx";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
 import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useHotelQuery,
+  useUpdateHotelMutation,
+} from "../../redux/Owner/hotelsAPI.js";
+import { Rings } from "react-loader-spinner";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 // form validation
 const validationSchema = yup.object({
@@ -18,10 +25,16 @@ const validationSchema = yup.object({
 });
 
 const HotelEdit = () => {
-  const navigate = useNavigate()
+  const [save, setSave] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [updateHotel] = useUpdateHotelMutation();
+  const [showManagers, setShowManagers] = useState([]);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { isLoading: isFetching, data: hotel } = useHotelQuery(id);
   const { user } = useSelector((store) => store.authSlice);
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
-  const { isLoading, data: managers } = useGetUsersQuery({
+  const { data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
     search: "",
@@ -38,8 +51,37 @@ const HotelEdit = () => {
       branchName: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      setLoading(true);
+
+      const obj = { ...values };
+      const {
+        name,
+        address,
+        email,
+        phoneNumber: phone_no,
+        branchName: branch_name,
+      } = obj;
+
+      const response = await updateHotel({
+        id,
+        data: {
+          name,
+          address,
+          email,
+          phone_no,
+          branch_name,
+          managers: showManagers,
+        },
+      });
+      console.log(response);
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
+
+      setLoading(false);
     },
   });
 
@@ -60,32 +102,72 @@ const HotelEdit = () => {
     setManagerList([...managerList, { manager: "", shift: "" }]);
   };
 
-  return (
-      <div className={`space-y-10`}>
-        <div className="card bg-white shadow-xl">
-          <div className="card-body p-4">
-            <div className="text-2xl flex items-center gap-1.5">
-              <div>
-          <span
-              className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
-              onClick={() => navigate(-1)}
-          >
-            <FaArrowLeft />
-          </span>
-              </div>
-              <h2>Edit Hotel</h2>
-            </div>
-            <hr className={`my-5`} />
-          </div>
+  useEffect(() => {
+    if (save) {
+      console.log("save");
+      const tempList = [
+        ...managerList
+          .map((elem) => ({
+            ...(elem.manager ? JSON.parse(elem.manager) : {}),
+            shift: elem.shift,
+          }))
+          .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+      ];
 
-          <div className="max-auto">
-            <form autoComplete="off"
+      setShowManagers(tempList);
+      setSave(false);
+    }
+  }, [save]);
+
+  useEffect(() => {
+    if (hotel) {
+      formik.setValues({
+        name: hotel.name,
+        address: hotel.address,
+        email: hotel.email,
+        phoneNumber: hotel.phone_no,
+        branchName: hotel.branch_name,
+      });
+
+      const tempArr = hotel.managers.map((elem) => ({
+        manager: JSON.stringify(elem),
+        shift: elem.shift,
+      }));
+
+      setManagerList(tempArr);
+      setSave(true);
+    }
+  }, [hotel]);
+
+  return (
+    <div className={`space-y-10`}>
+      <div className="card bg-white shadow-xl">
+        <div className="card-body p-4">
+          <div className="text-2xl flex items-center gap-1.5">
+            <div>
+              <span
+                className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+                onClick={() => navigate(-1)}
+              >
+                <FaArrowLeft />
+              </span>
+            </div>
+            <h2>Edit Hotel</h2>
+          </div>
+          <hr className={`my-5`} />
+        </div>
+
+        {!isFetching ? (
+          <>
+            <div className="max-auto">
+              <form
+                autoComplete="off"
                 className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10"
                 onSubmit={formik.handleSubmit}
-            >
-              {/* Hotel Name box */}
-              <div className="flex flex-col gap-3">
-                <input
+              >
+                {/* Hotel Name box */}
+                <div className="flex flex-col gap-3">
+                  <input
                     type="text"
                     placeholder="Name"
                     name="name"
@@ -93,16 +175,16 @@ const HotelEdit = () => {
                     value={formik.values.name}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                />
-                {formik.touched.name && Boolean(formik.errors.name) ? (
+                  />
+                  {formik.touched.name && Boolean(formik.errors.name) ? (
                     <small className="text-red-600">
                       {formik.touched.name && formik.errors.name}
                     </small>
-                ) : null}
-              </div>
-              {/*Hotel Branch box */}
-              <div className="flex flex-col gap-3">
-                <input
+                  ) : null}
+                </div>
+                {/*Hotel Branch box */}
+                <div className="flex flex-col gap-3">
+                  <input
                     type="text"
                     placeholder="Branch Name"
                     name="branchName"
@@ -110,17 +192,17 @@ const HotelEdit = () => {
                     value={formik.values.branchName}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                />
-                {formik.touched.branchName &&
-                Boolean(formik.errors.branchName) ? (
+                  />
+                  {formik.touched.branchName &&
+                  Boolean(formik.errors.branchName) ? (
                     <small className="text-red-600">
                       {formik.touched.branchName && formik.errors.branchName}
                     </small>
-                ) : null}
-              </div>
-              {/* Hotel Address box */}
-              <div className="flex flex-col gap-3">
-                <input
+                  ) : null}
+                </div>
+                {/* Hotel Address box */}
+                <div className="flex flex-col gap-3">
+                  <input
                     type="text"
                     placeholder="Address"
                     name="address"
@@ -128,17 +210,17 @@ const HotelEdit = () => {
                     value={formik.values.address}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                />
+                  />
 
-                {formik.touched.address && Boolean(formik.errors.address) ? (
+                  {formik.touched.address && Boolean(formik.errors.address) ? (
                     <small className="text-red-600">
                       {formik.touched.address && formik.errors.address}
                     </small>
-                ) : null}
-              </div>
-              {/* Email box */}
-              <div className="flex flex-col gap-3">
-                <input
+                  ) : null}
+                </div>
+                {/* Email box */}
+                <div className="flex flex-col gap-3">
+                  <input
                     type="text"
                     placeholder="Email "
                     name="email"
@@ -146,17 +228,17 @@ const HotelEdit = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                />
-                {formik.touched.email && Boolean(formik.errors.email) ? (
+                  />
+                  {formik.touched.email && Boolean(formik.errors.email) ? (
                     <small className="text-red-600">
                       {formik.touched.email && formik.errors.email}
                     </small>
-                ) : null}
-              </div>
+                  ) : null}
+                </div>
 
-              {/*Phone Number  box */}
-              <div className="flex flex-col gap-3">
-                <input
+                {/*Phone Number  box */}
+                <div className="flex flex-col gap-3">
+                  <input
                     type="text"
                     placeholder="Phone Number"
                     name="phoneNumber"
@@ -164,43 +246,71 @@ const HotelEdit = () => {
                     value={formik.values.phoneNumber}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                />
-                {formik.touched.phoneNumber &&
-                Boolean(formik.errors.phoneNumber) ? (
+                  />
+                  {formik.touched.phoneNumber &&
+                  Boolean(formik.errors.phoneNumber) ? (
                     <small className="text-red-600">
                       {formik.touched.phoneNumber && formik.errors.phoneNumber}
                     </small>
-                ) : null}
-              </div>
-              <button
+                  ) : null}
+                </div>
+                <button
                   type="button"
                   className="btn btn-md bg-transparent border-gray-500/50 rounded focus:outline-none focus:border-green-slimy normal-case"
                   onClick={() => window.ol_modal.showModal()}
-              >
-                Assign Manager
-              </button>
-              {/* submit button */}
-              <div className="flex flex-col gap-3 col-span-full text-end">
-                <button
+                >
+                  Assign Manager
+                </button>
+                {showManagers.length ? (
+                  <div className={`col-span-full`}>
+                    <h3>Assigned Manager</h3>
+                    <ul className={`list-disc list-inside`}>
+                      {showManagers?.map((elem) => (
+                        <li>
+                          {elem.name} - {elem.shift}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {/* submit button */}
+                <div className="flex flex-col gap-3 col-span-full text-end">
+                  <button
                     type="submit"
                     className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                >
-                  Update Hotel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <Modal id={`ol_modal`}>
-          <HotelAsManager
-              managers={managers?.docs}
-              managerList={managerList}
-              handleAdd={handleAdd}
-              handleRemove={handleRemove}
-              handleChange={handleChange}
+                  >
+                    <span>Update Hotel</span>
+                    {isLoading ? (
+                      <span
+                        className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                        role="status"
+                      ></span>
+                    ) : null}
+                  </button>
+                </div>
+              </form>
+            </div>
+            <Modal id={`ol_modal`}>
+              <HotelAsManager
+                setSave={setSave}
+                managers={managers?.docs}
+                managerList={managerList}
+                handleAdd={handleAdd}
+                handleRemove={handleRemove}
+                handleChange={handleChange}
+              />
+            </Modal>
+          </>
+        ) : (
+          <Rings
+            width="50"
+            height="50"
+            color="#37a000"
+            wrapperClass="justify-center"
           />
-        </Modal>
+        )}
       </div>
+    </div>
   );
 };
 
