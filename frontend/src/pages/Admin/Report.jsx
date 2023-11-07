@@ -13,326 +13,309 @@ import { useGetReportQuery } from "../../redux/admin/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
 
 const Report = () => {
-	const { user } = useSelector((store) => store.authSlice);
-	const navigate = useNavigate();
-	const [reportsPerPage] = useState(10);
-	const [pageCount, setPageCount] = useState(1);
-	const [currentPage, setCurrentPage] = useState(0);
-	const [totalAmount, setTotalAmount] = useState(0);
+  const { user } = useSelector((store) => store.authSlice);
+  const navigate = useNavigate();
+  const [reportsPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [PDF, setPDF] = useState([]);
 
-	const handlePageClick = ({ selected: page }) => {
-		setCurrentPage(page);
-	};
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
 
-	const formik = useFormik({
-		initialValues: {
-			entries: "",
-			search: "",
-			filter: "",
-			startDate: "",
-			endDate: "",
-		},
-	});
+  const formik = useFormik({
+    initialValues: {
+      entries: "",
+      search: "",
+      filter: "",
+      startDate: "",
+      endDate: "",
+    },
+  });
 
-	const [searchParams, setSearchParams] = useState({
-		fromDate: "",
-		toDate: "",
-		search: "",
-	});
-	
-	const { isLoading, data: reports } = useGetReportQuery({
-		...searchParams,
-		cp: currentPage,
-		uid: user._id,
-		filter: formik.values.filter,
-	});
+  const [searchParams, setSearchParams] = useState({
+    fromDate: "",
+    toDate: "",
+    search: "",
+  });
 
-	const exportExcel = async (data, name) => {
-		const ws = XLSX.utils.json_to_sheet(data);
-		const wb = XLSX.utils.book_new();
-		XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+  const { isLoading, data: reports } = useGetReportQuery({
+    ...searchParams,
+    cp: currentPage,
+    uid: user._id,
+    filter: formik.values.filter,
+  });
 
-		XLSX.writeFile(wb, `${name}.xlsx`);
-	};
+  const exportExcel = async (data, name) => {
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
-	useEffect(() => {
-		if (reports) setPageCount(reports?.totalPages);
-	}, [reports]);
-	// console.log(reports);
-	useEffect(() => {
-		if (reports) {
-			const total = reports.docs.reduce(
-				(total, current) => total + current.paid_amount,
-				0
-			);
+    XLSX.writeFile(wb, `${name}.xlsx`);
+  };
 
-			setTotalAmount(total);
-		}
-	}, [reports]);
+  useEffect(() => {
+    if (reports) setPageCount(reports?.totalPages);
+  }, [reports]);
+  // console.log(reports);
+  useEffect(() => {
+    if (reports) {
+      const total = reports.docs.reduce(
+        (total, current) => total + current.paid_amount,
+        0,
+      );
 
-	function extractTimeOrDate(inputString, identifier) {
-		try {
-			const extractedDateTime = new Date(inputString);
+      setTotalAmount(total);
+    }
+  }, [reports]);
 
-			if (identifier === "time") {
-				return extractedDateTime.toTimeString().split(" ")[0];
-			} else if (identifier === "date") {
-				return extractedDateTime.toISOString().split("T")[0];
-			} else {
-				throw new Error("Invalid identifier. Use 'time' or 'date'.");
-			}
-		} catch (error) {
-			return null;
-		}
-	}
-	return (
-		<div className={`px-5 space-y-5`}>
-			<div className={`bg-white px-10 py-5 rounded`}>
-				<div className={`flex flex-wrap gap-1.5 justify-between`}>
-					<h3 className={`text-xl font-semibold`}>All Report</h3>
-					<div className="flex gap-1.5">
-						<div className={`flex gap-1.5`}>
-							<button
-								type={"button"}
-								className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-								onClick={() =>
-									exportExcel(
-										[{ name: "test", age: 12 }],
-										"testexcel"
-									)
-								}>
-								CSV
-							</button>
-							<button
-								type={"button"}
-								className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-								<PDFDownloadLink
-									document={<CreateReport />}
-									fileName={`${new Date().toLocaleDateString()}.pdf`}>
-									PDF
-								</PDFDownloadLink>
-							</button>
-						</div>
-					</div>
-				</div>
-				<hr className={`my-5`} />
-				<div className={`flex flex-col gap-5`}>
-					<div className={`flex justify-between`}>
-						<div className={`space-x-1.5`}>
-							<span>Show</span>
-							<select
-								name="entries"
-								className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-								value={formik.values.entries}
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}>
-								<option value={10}>10</option>
-								<option value={25}>25</option>
-								<option value={50}>50</option>
-							</select>
-							<span>entries</span>
-						</div>
-						<div>
-							<select
-								name="filter"
-								className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-								value={formik.values.filter}
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}>
-								<option value="All" selected>
-									All
-								</option>
-								<option value="Sold">Sold</option>
-								<option value="Renew">Renew</option>
-								{/* <option value="Expired">Expired</option> */}
-							</select>
-						</div>
-					</div>
-					<div className={`flex gap-3`}>
-						<DatePicker
-							dateFormat="dd/MM/yyyy"
-							name="startDate"
-							placeholderText={`From`}
-							selected={formik.values.startDate}
-							className={`input input-sm input-bordered rounded focus:outline-none`}
-							onChange={(date) =>
-								formik.setFieldValue("startDate", date)
-							}
-							onBlur={formik.handleBlur}
-						/>
-						<DatePicker
-							dateFormat="dd/MM/yyyy"
-							name="endDate"
-							placeholderText={`To`}
-							selected={formik.values.endDate}
-							className={`input input-sm input-bordered rounded focus:outline-none`}
-							onChange={(date) =>
-								formik.setFieldValue("endDate", date)
-							}
-							onBlur={formik.handleBlur}
-						/>
-						<button
-							type={"button"}
-							onClick={() => {
-								setSearchParams((p) => ({
-									...p,
-									toDate: formik.values.endDate,
-									fromDate: formik.values.startDate,
-								}));
-							}}
-							className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case">
-							Apply Filter
-						</button>
-					</div>
-					<div className={`relative max-w-xs`}>
-						<input
-							type="text"
-							placeholder="Search by name..."
-							name="search"
-							className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-							value={formik.values.search}
-							onChange={formik.handleChange}
-						/>
-						<button
-							onClick={() => {
-								setSearchParams((p) => ({
-									...p,
-									search: formik.values.search,
-								}));
-							}}
-							type="button"
-							className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-							<FaSearch />
-						</button>
-					</div>
-				</div>
-				<div className={`space-y-10 mt-10`}>
-					{!isLoading ? (
-						reports?.docs?.length ? (
-							<>
-								<div className="overflow-x-auto">
-									<table className="table">
-										<thead>
-											<tr>
-												<th>SL</th>
-												<th>Name</th>
-												<th>Phone Number</th>
-												<th>Purchase Date</th>
-												<th>Expired Date</th>
-												<th>Deposit By</th>
-												<th>Hotel Limits</th>
-												<th>Paid Amount</th>
-												<th>Payment Type</th>
-											</tr>
-										</thead>
-										<tbody>
-											{reports?.docs?.map(
-												(report, idx) => {
-													return (
-														<tr
-															className={
-																idx % 2 === 0
-																	? "bg-gray-100 hover"
-																	: "hover"
-															}>
-															<th>{++idx}</th>
-															<td>
-																{
-																	report?.username
-																}
-															</td>
-															<td>
-																{
-																	report?.phone_no
-																}
-															</td>
-															<td>
-																{extractTimeOrDate(
-																	report?.bill_from,
-																	"date"
-																)}
-																<br />{" "}
-																{extractTimeOrDate(
-																	report.bill_from,
-																	"time"
-																)}
-															</td>
-															<td>
-																{extractTimeOrDate(
-																	report?.bill_to,
-																	"date"
-																)}
-																<br />{" "}
-																{extractTimeOrDate(
-																	report.bill_to,
-																	"time"
-																)}
-															</td>
-															<td>
-																{
-																	report?.deposit_by
-																}
-															</td>
-															<td>
-																{
-																	report?.hotel_limit
-																}
-															</td>
-															<td>
-																{
-																	report?.paid_amount
-																}
-															</td>
-															<td></td>
-														</tr>
-													);
-												}
-											)}
-										</tbody>
-										<tfoot className={`text-sm`}>
-											<tr>
-												<td colSpan={6}></td>
-												<td>Total</td>
-												<td>{totalAmount}</td>
-											</tr>
-										</tfoot>
-									</table>
-								</div>
-								<div className="flex justify-center mt-10">
-									<ReactPaginate
-										containerClassName="join rounded-none"
-										pageLinkClassName="join-item btn btn-md bg-transparent"
-										activeLinkClassName="btn-active !bg-green-slimy text-white"
-										disabledLinkClassName="btn-disabled"
-										previousLinkClassName="join-item btn btn-md bg-transparent"
-										nextLinkClassName="join-item btn btn-md bg-transparent"
-										breakLinkClassName="join-item btn btn-md bg-transparent"
-										previousLabel="<"
-										nextLabel=">"
-										breakLabel="..."
-										pageCount={reports?.totalPages}
-										pageRangeDisplayed={2}
-										marginPagesDisplayed={2}
-										onPageChange={handlePageClick}
-										renderOnZeroPageCount={null}
-									/>
-								</div>
-							</>
-						) : (
-							<h3>No data!</h3>
-						)
-					) : (
-						<Rings
-							width="50"
-							height="50"
-							color="#37a000"
-							wrapperClass="justify-center"
-						/>
-					)}
-				</div>
-			</div>
-		</div>
-	);
+  function extractTimeOrDate(inputString, identifier) {
+    try {
+      const extractedDateTime = new Date(inputString);
+
+      if (identifier === "time") {
+        return extractedDateTime.toTimeString().split(" ")[0];
+      } else if (identifier === "date") {
+        return extractedDateTime.toISOString().split("T")[0];
+      } else {
+        throw new Error("Invalid identifier. Use 'time' or 'date'.");
+      }
+    } catch (error) {
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    if (reports) {
+      const data = reports?.docs?.map((item) => ({
+        Username: item.username,
+        Phone: item.phone_no,
+        "Purchase Date": new Date(item.bill_from).toLocaleDateString(),
+        "Expire Date": new Date(item.bill_to).toLocaleDateString(),
+        "Deposit By": item.deposit_by,
+        "Paid Amount": item.paid_amount,
+      }));
+
+      setPDF(data);
+    }
+  }, [reports]);
+
+  return (
+    <div className={`px-5 space-y-5`}>
+      <div className={`bg-white px-10 py-5 rounded`}>
+        <div className={`flex flex-wrap gap-1.5 justify-between`}>
+          <h3 className={`text-xl font-semibold`}>All Report</h3>
+          <div className="flex gap-1.5">
+            <div className={`flex gap-1.5`}>
+              <button
+                type={"button"}
+                className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+                onClick={() =>
+                  exportExcel([{ name: "test", age: 12 }], "testexcel")
+                }
+              >
+                CSV
+              </button>
+              {PDF.length ? (
+                <button
+                  type={"button"}
+                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                >
+                  <PDFDownloadLink
+                    document={<CreateReport values={PDF} />}
+                    fileName={`${new Date().toLocaleDateString()}.pdf`}
+                  >
+                    PDF
+                  </PDFDownloadLink>
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </div>
+        <hr className={`my-5`} />
+        <div className={`flex flex-col gap-5`}>
+          <div className={`flex justify-between`}>
+            <div className={`space-x-1.5`}>
+              <span>Show</span>
+              <select
+                name="entries"
+                className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+                value={formik.values.entries}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+              </select>
+              <span>entries</span>
+            </div>
+            <div>
+              <select
+                name="filter"
+                className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+                value={formik.values.filter}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="All" selected>
+                  All
+                </option>
+                <option value="Sold">Sold</option>
+                <option value="Renew">Renew</option>
+                {/* <option value="Expired">Expired</option> */}
+              </select>
+            </div>
+          </div>
+          <div className={`flex gap-3`}>
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="startDate"
+              placeholderText={`From`}
+              selected={formik.values.startDate}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              onChange={(date) => formik.setFieldValue("startDate", date)}
+              onBlur={formik.handleBlur}
+            />
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="endDate"
+              placeholderText={`To`}
+              selected={formik.values.endDate}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              onChange={(date) => formik.setFieldValue("endDate", date)}
+              onBlur={formik.handleBlur}
+            />
+            <button
+              type={"button"}
+              onClick={() => {
+                setSearchParams((p) => ({
+                  ...p,
+                  toDate: formik.values.endDate,
+                  fromDate: formik.values.startDate,
+                }));
+              }}
+              className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+            >
+              Apply Filter
+            </button>
+          </div>
+          <div className={`relative max-w-xs`}>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+            />
+            <button
+              onClick={() => {
+                setSearchParams((p) => ({
+                  ...p,
+                  search: formik.values.search,
+                }));
+              }}
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
+        </div>
+        <div className={`space-y-10 mt-10`}>
+          {!isLoading ? (
+            reports?.docs?.length ? (
+              <>
+                <div className="overflow-x-auto">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>SL</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Purchase Date</th>
+                        <th>Expired Date</th>
+                        <th>Deposit By</th>
+                        <th>Hotel Limits</th>
+                        <th>Paid Amount</th>
+                        <th>Payment Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reports?.docs?.map((report, idx) => {
+                        return (
+                          <tr
+                            className={
+                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                            }
+                          >
+                            <th>{++idx}</th>
+                            <td>{report?.username}</td>
+                            <td>{report?.phone_no}</td>
+                            <td>
+                              {extractTimeOrDate(report?.bill_from, "date")}
+                              <br />{" "}
+                              {extractTimeOrDate(report.bill_from, "time")}
+                            </td>
+                            <td>
+                              {extractTimeOrDate(report?.bill_to, "date")}
+                              <br /> {extractTimeOrDate(report.bill_to, "time")}
+                            </td>
+                            <td>{report?.deposit_by}</td>
+                            <td>{report?.hotel_limit}</td>
+                            <td>{report?.paid_amount}</td>
+                            <td></td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                    <tfoot className={`text-sm`}>
+                      <tr>
+                        <td colSpan={6}></td>
+                        <td>Total</td>
+                        <td>{totalAmount}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div className="flex justify-center mt-10">
+                  <ReactPaginate
+                    containerClassName="join rounded-none"
+                    pageLinkClassName="join-item btn btn-md bg-transparent"
+                    activeLinkClassName="btn-active !bg-green-slimy text-white"
+                    disabledLinkClassName="btn-disabled"
+                    previousLinkClassName="join-item btn btn-md bg-transparent"
+                    nextLinkClassName="join-item btn btn-md bg-transparent"
+                    breakLinkClassName="join-item btn btn-md bg-transparent"
+                    previousLabel="<"
+                    nextLabel=">"
+                    breakLabel="..."
+                    pageCount={reports?.totalPages}
+                    pageRangeDisplayed={2}
+                    marginPagesDisplayed={2}
+                    onPageChange={handlePageClick}
+                    renderOnZeroPageCount={null}
+                  />
+                </div>
+              </>
+            ) : (
+              <h3>No data!</h3>
+            )
+          ) : (
+            <Rings
+              width="50"
+              height="50"
+              color="#37a000"
+              wrapperClass="justify-center"
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Report;

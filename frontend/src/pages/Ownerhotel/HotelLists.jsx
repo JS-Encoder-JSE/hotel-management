@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 import { Rings } from "react-loader-spinner";
+import {useSelector} from "react-redux";
 
 const HotelLists = () => {
+  const {user} = useSelector(store => store.authSlice)
   const navigate = useNavigate();
   const [hotelsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
@@ -21,6 +23,8 @@ const HotelLists = () => {
   const { isLoading, data: hotels } = useHotelsQuery({
     cp: currentPage,
     search: formik.values.search,
+    uid: user._id,
+    pid: ""
   });
 
   const handlePageClick = ({ selected: page }) => {
