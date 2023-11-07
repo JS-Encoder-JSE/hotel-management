@@ -96,6 +96,12 @@ const hotelSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  status: {
+    type: String,
+    required: false,
+    enum: ["Active", "Deactive", "Deleted"],
+    default: "Active",
+  },
   address: {
     type: String,
     required: false,
