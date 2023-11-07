@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
 import { useGetReportQuery } from "../../redux/admin/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
-
+import {GrPowerReset} from 'react-icons/gr'
 const Report = () => {
 	const { user } = useSelector((store) => store.authSlice);
 	const navigate = useNavigate();
@@ -19,6 +19,11 @@ const Report = () => {
 	const [pageCount, setPageCount] = useState(1);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [totalAmount, setTotalAmount] = useState(0);
+	const [searchParams, setSearchParams] = useState({
+		fromDate: "",
+		toDate: "",
+		search: "",
+	});
 
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);
@@ -32,21 +37,26 @@ const Report = () => {
 			startDate: "",
 			endDate: "",
 		},
+		onSubmit: (values) => {
+			console.log(values)
+			setSearchParams((p) => ({
+				...p,
+				toDate: values.endDate,
+				fromDate: values.startDate,
+				search:values.search
+			}));
+		  },
 	});
 
-	const [searchParams, setSearchParams] = useState({
-		fromDate: "",
-		toDate: "",
-		search: "",
-	});
+
 	
-	const { isLoading, data: reports } = useGetReportQuery({
+	const { isLoading, data: reports ,refetch} = useGetReportQuery({
 		...searchParams,
 		cp: currentPage,
 		uid: user._id,
 		filter: formik.values.filter,
 	});
-
+	
 	const exportExcel = async (data, name) => {
 		const ws = XLSX.utils.json_to_sheet(data);
 		const wb = XLSX.utils.book_new();
@@ -85,6 +95,14 @@ const Report = () => {
 			return null;
 		}
 	}
+
+	const pressEnter = (e) => {
+		if (e.key === "Enter" || e.keyCode === 13) {
+		  formik.handleSubmit();
+		}
+	};
+	
+	console.log({reports})
 	return (
 		<div className={`px-5 space-y-5`}>
 			<div className={`bg-white px-10 py-5 rounded`}>
@@ -159,6 +177,10 @@ const Report = () => {
 								formik.setFieldValue("startDate", date)
 							}
 							onBlur={formik.handleBlur}
+							onKeyUp={(e) => {
+								e.target.value === "" ? formik.handleSubmit() : null;
+							  }}
+							  onKeyDown={(e) => pressEnter(e)}
 						/>
 						<DatePicker
 							dateFormat="dd/MM/yyyy"
@@ -170,19 +192,24 @@ const Report = () => {
 								formik.setFieldValue("endDate", date)
 							}
 							onBlur={formik.handleBlur}
+							onKeyUp={(e) => {
+								e.target.value === "" ? formik.handleSubmit() : null;
+							  }}
+							  onKeyDown={(e) => pressEnter(e)}
 						/>
+							<button
+							type={"button"}
+							onClick={() => { formik.resetForm(); formik.handleSubmit()}}
+							className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case">
+							<GrPowerReset className="text-green-slimy"/>
+						</button>
 						<button
 							type={"button"}
-							onClick={() => {
-								setSearchParams((p) => ({
-									...p,
-									toDate: formik.values.endDate,
-									fromDate: formik.values.startDate,
-								}));
-							}}
+							onClick={formik.handleSubmit}
 							className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case">
 							Apply Filter
 						</button>
+					
 					</div>
 					<div className={`relative max-w-xs`}>
 						<input
@@ -192,14 +219,13 @@ const Report = () => {
 							className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
 							value={formik.values.search}
 							onChange={formik.handleChange}
+							onKeyUp={(e) => {
+								e.target.value === "" ? formik.handleSubmit() : null;
+							  }}
+							  onKeyDown={(e) => pressEnter(e)}
 						/>
 						<button
-							onClick={() => {
-								setSearchParams((p) => ({
-									...p,
-									search: formik.values.search,
-								}));
-							}}
+							onClick={formik.handleSubmit}
 							type="button"
 							className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
 							<FaSearch />
@@ -283,7 +309,7 @@ const Report = () => {
 																	report?.paid_amount
 																}
 															</td>
-															<td></td>
+															<td>{ 	report?.status}</td>
 														</tr>
 													);
 												}
