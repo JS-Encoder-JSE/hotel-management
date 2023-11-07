@@ -23,7 +23,7 @@ const SwimmingPoolList = () => {
 
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-10`}>
-        <h1 className={`text-center text-2xl`}>Swimming Pool List</h1>
+      <h1 className={`text-center text-2xl`}>Swimming Pool List</h1>
       <div className={`flex justify-between gap-4`}>
         <div>
           <select
@@ -34,9 +34,9 @@ const SwimmingPoolList = () => {
           >
             <option value="all">All</option>
             <option value=" Active">Active</option>
-                  <option value="InActive">InActive </option>
-                  <option value="Bookded"> Bookded</option>
-                  <option value="UnderMaintenence">Under Maintenence</option>
+            <option value="InActive">InActive </option>
+            <option value="Bookded"> Bookded</option>
+            <option value="UnderMaintenence">Under Maintenence</option>
           </select>
         </div>
         <div className={`relative sm:min-w-[20rem]`}>
@@ -61,16 +61,19 @@ const SwimmingPoolList = () => {
           <thead>
             <tr>
               <th>Sl</th>
-              <th>Room <br /> Number</th>
-              <th>Guest <br /> Name</th>
-              <th>Pool <br /> Name</th>
-              <th>Type OF <br />Name</th>
-              <th>Capacity</th>
-              <th>Hour OF <br />Swimming</th>
-              <th>Price</th>
-              <th>From <br />Date</th>
-              
+              <th>
+                Pool <br /> Name
+              </th>
+              <th>
+                Type OF <br />
+                Name
+              </th>
               <th>Status</th>
+              <th>Members</th>
+              <th>
+                Per Person <br />
+                Price
+              </th>
               <th>Action</th>
             </tr>
           </thead>
@@ -79,26 +82,22 @@ const SwimmingPoolList = () => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <th> {++idx}</th>
-                  <td>101</td>
-                  <td>Jamir </td>
                   <td>Neptune Pool</td>
-                  <td>Comercial Pool</td>
-                  <td>05</td>
-                  <td>2 Hour</td>
-                  <td>1000</td>
-                  <td>14-10-23</td>
-                 
-                  
+                  <td>
+                    Comercial Swimming <br /> Pool
+                  </td>
                   <td>Active</td>
+                  <td>02</td>
+                  <td>200</td>
                   <td className={`space-x-1.5`}>
-                  <span
+                    {/* <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
                             navigate(`/dashboard/swimming-pool-list/${idx}`)
                           }
                         >
                           <FaEye />
-                        </span>
+                        </span> */}
                     <span
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                       onClick={() => navigate(`/dashboard/hotel-edit/${idx}`)}

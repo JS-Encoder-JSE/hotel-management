@@ -261,7 +261,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Order Bar
+              Order Bar Item
             </NavLink>
           </li>
           
@@ -348,7 +348,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </span>
         </div>
         <ul className={`group-[.active]:block hidden`}>
-          <li>
+          {/* <li>
             <NavLink
               to={`/dashboard/add-gym`}
               className={({ isActive }) =>
@@ -358,7 +358,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
              Add Gym
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink
               to={`/dashboard/gym-booking`}
@@ -370,7 +370,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Gym Booking
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               to={`/dashboard/gym-list`}
               className={({ isActive }) =>
@@ -380,7 +380,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Gym List
             </NavLink>
-          </li>
+          </li> */}
          
         </ul>
       </li>

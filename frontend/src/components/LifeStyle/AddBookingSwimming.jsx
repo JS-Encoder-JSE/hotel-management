@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import Select from "react-select";
 import {useAddBookingMutation, useRoomsQuery} from "../../redux/room/roomAPI.js";
-import toast from "react-hot-toast";
+
 
 // form validation
 const validationSchema = yup.object({
@@ -15,7 +14,7 @@ const validationSchema = yup.object({
   guestName: yup.string().required("Name is required"),
   status: yup.string().required("Status is required"),
   poolSelect: yup.string().required("pool Select is required"),
-  capacity: yup
+  members: yup
     .number()
     .required("capacity Number is required")
     .positive("capacity must be a positive number"),
@@ -39,7 +38,7 @@ const AddBookingSwimming = () => {
       guestName: "",
       status:"",
       poolSelect: "",
-      capacity: "",
+      members: "",
       ItemPrice: "",
       fromDate: "",
       hourOfSwimmingPool: "",
@@ -187,21 +186,21 @@ console.log(response)
                   </small>
                 ) : null}
               </div>
-                {/* Capacity*/}
+                {/* Members*/}
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Capacity"
-            name="capacity"
+            placeholder="Members"
+            name="members"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.capacity}
+            value={formik.values.members}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.capacity &&
-          Boolean(formik.errors.capacity) ? (
+          {formik.touched.members &&
+          Boolean(formik.errors.members) ? (
             <small className="text-red-600">
-              {formik.touched.capacity && formik.errors.capacity}
+              {formik.touched.members && formik.errors.members}
             </small>
           ) : null}
         </div>
@@ -225,7 +224,7 @@ console.log(response)
         </div>
        
           {/* From */}
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             <input
               type="text"
               placeholder="From  MM/DD/YYY"
@@ -244,9 +243,9 @@ console.log(response)
                 {formik.touched.fromDate && formik.errors.fromDate}
               </small>
             ) : null}
-          </div>
+          </div> */}
         {/* Hour of swimming */}
-  <div className="flex flex-col gap-3">
+  {/* <div className="flex flex-col gap-3">
           <input
             type="text"
             placeholder="Hour Of Swimming Pool"
@@ -262,7 +261,7 @@ console.log(response)
               {formik.touched.hourOfSwimmingPool && formik.errors.hourOfSwimmingPool}
             </small>
           ) : null}
-        </div>
+        </div> */}
 
           {/* button */}
           <div className={`flex justify-between`}>

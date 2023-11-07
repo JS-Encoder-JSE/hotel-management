@@ -17,8 +17,19 @@ const validationSchema = yup.object({
     .required("Quantity is required")
     .positive("Quantity must be a positive number")
     .integer("Quantity must be an integer"),
+    totalQuantity: yup
+    .number()
+    .required("Total Quantity is required")
+    .positive("Total Quantity must be a positive number")
+    .integer("Total Quantity must be an integer"),
+    weightPerBottle: yup
+    .number()
+    .required("weightPerBottle is required")
+    .positive("weightPerBottle must be a positive number")
+    .integer("weightPerBottle must be an integer"),
     ItemPrice: yup.string().required("Price is required"),
     typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
+    status: yup.string().required("Type Of Alcohol is required"),
 });
 
 const AddBar = () => {
@@ -28,7 +39,10 @@ const AddBar = () => {
       typeOfAlcohol: "",
       itemDescription: "",
       surveyorQuantity: "",
+      totalQuantity: "",
+      weightPerBottle: "",
       ItemPrice: "",
+      status: "",
      
     },
     validationSchema,
@@ -85,6 +99,29 @@ const AddBar = () => {
             </small>
           ) : null}
         </div>
+              {/* Status */}
+              <div className="flex flex-col gap-3">
+                <select
+                  name="status"
+                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="" selected disabled>
+                    Status
+                  </option>
+                  <option value=" Active">Active</option>
+                  <option value="InActive">InActive </option>
+                  <option value="Bookded"> Bookded</option>
+                  <option value="UnderMaintenence">Under Maintenence</option>
+                </select>
+                {formik.touched.status && Boolean(formik.errors.status) ? (
+                  <small className="text-red-600">
+                    {formik.touched.status && formik.errors.status}
+                  </small>
+                ) : null}
+              </div>
         {/* Item Quantity */}
         <div className="flex flex-col gap-3">
           <input
@@ -103,11 +140,29 @@ const AddBar = () => {
             </small>
           ) : null}
         </div>
+        {/* Total Quantity */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Total Quantity"
+            name="totalQuantity"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.totalQuantity}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.totalQuantity &&
+          Boolean(formik.errors.totalQuantity) ? (
+            <small className="text-red-600">
+              {formik.touched.totalQuantity && formik.errors.totalQuantity}
+            </small>
+          ) : null}
+        </div>
         {/* Item Price */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Item Price"
+            placeholder=" Price"
             name="ItemPrice"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.ItemPrice}
@@ -118,6 +173,24 @@ const AddBar = () => {
           Boolean(formik.errors.ItemPrice) ? (
             <small className="text-red-600">
               {formik.touched.ItemPrice && formik.errors.ItemPrice}
+            </small>
+          ) : null}
+        </div>
+        {/* Weight Price */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder=" Weight Per Bottle"
+            name="weightPerBottle"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.weightPerBottle}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.weightPerBottle &&
+          Boolean(formik.errors.weightPerBottle) ? (
+            <small className="text-red-600">
+              {formik.touched.weightPerBottle && formik.errors.weightPerBottle}
             </small>
           ) : null}
         </div>

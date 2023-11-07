@@ -7,23 +7,24 @@ import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
-  guestName: yup.string().required("Guest Name  is required"),
-  roomNumber: yup
-    .number()
-    .required("Room number is required")
-    .positive("Room number must be a positive")
-    .integer("Room number must be an integer"),
+  // guestName: yup.string().required("Guest Name  is required"),
+  // roomNumber: yup
+  //   .number()
+  //   .required("Room number is required")
+  //   .positive("Room number must be a positive")
+  //   .integer("Room number must be an integer"),
     poolName: yup.string().required("Pool Name  is required"),
     typeOfName: yup.string().required("Type Of Name  is required"),
-    capacity: yup
+    status: yup.string().required("Status is required"),
+    members: yup
     .number()
     .required("Capacity is required")
     .positive("Capacity must be a positive"),
-    ItemPrice: yup
+    perPersonPrice: yup
     .number()
-    .required("Price is required")
-    .positive("Price must be a positive number")
-    .integer("Price must be an integer"),
+    .required("Per Perso Price is required")
+    .positive("Per Person Price must be a positive number")
+    .integer("Per Person Price must be an integer"),
   poolDetails: yup
     .string()
     .required("Description is required"),
@@ -34,13 +35,14 @@ const validationSchema = yup.object({
 const AddSwimmingPool = () => {
   const formik = useFormik({
     initialValues: {
-      guestName: "",
-      roomNumber: "",
+      // guestName: "",
+      // roomNumber: "",
       poolName: "",
       typeOfName: "",
-      capacity: "",
+      status:"",
+      members: "",
+      perPersonPrice: "",
       poolDetails: "",
-      ItemPrice: "",
      
     },
     validationSchema,
@@ -62,7 +64,7 @@ const AddSwimmingPool = () => {
         onSubmit={formik.handleSubmit}
       >
         {/*Guest Name box */}
-        <div className="flex flex-col gap-5">
+        {/* <div className="flex flex-col gap-5">
           <input
             type="text"
             placeholder="Guest Name"
@@ -77,9 +79,9 @@ const AddSwimmingPool = () => {
               {formik.touched.guestName && formik.errors.guestName}
             </small>
           ) : null}
-        </div>
+        </div> */}
         {/*Room Number box */}
-        <div className="flex flex-col gap-5">
+        {/* <div className="flex flex-col gap-5">
           <input
             type="text"
             placeholder="Room Number"
@@ -94,7 +96,7 @@ const AddSwimmingPool = () => {
               {formik.touched.roomNumber && formik.errors.roomNumber}
             </small>
           ) : null}
-        </div>
+        </div> */}
         {/* Pool Name  */}
         <div className="flex flex-col gap-5">
           <input
@@ -128,7 +130,7 @@ const AddSwimmingPool = () => {
                   <option value="ResidentialSwimmingPools">Residential Swimming Pools</option>
                   <option value="CompetitionPools">Competition Pools</option>
                   <option value="IndoorSwimmingPools"> Indoor Swimming Pools</option>
-                  <option value="OutdoorPools">Outdoor Pools </option>
+                 
                 </select>
                 {formik.touched.typeOfName && Boolean(formik.errors.typeOfName) ? (
                   <small className="text-red-600">
@@ -136,8 +138,8 @@ const AddSwimmingPool = () => {
                   </small>
                 ) : null}
               </div>
-        {/* Status */}
-        {/* <div className="flex flex-col gap-3">
+              {/* Status */}
+         <div className="flex flex-col gap-3">
                 <select
                   name="status"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -158,7 +160,8 @@ const AddSwimmingPool = () => {
                     {formik.touched.status && formik.errors.status}
                   </small>
                 ) : null}
-              </div> */}
+              </div>
+        
         {/* Pool Name Select */}
         {/* <div className="flex flex-col gap-3">
                 <select
@@ -187,17 +190,17 @@ const AddSwimmingPool = () => {
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Capacity"
-            name="capacity"
+            placeholder="Members"
+            name="members"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.capacity}
+            value={formik.values.members}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.capacity &&
-          Boolean(formik.errors.capacity) ? (
+          {formik.touched.members &&
+          Boolean(formik.errors.members) ? (
             <small className="text-red-600">
-              {formik.touched.capacity && formik.errors.capacity}
+              {formik.touched.members && formik.errors.members}
             </small>
           ) : null}
         </div>
@@ -206,17 +209,17 @@ const AddSwimmingPool = () => {
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Price"
-            name="ItemPrice"
+            placeholder="Per Person Price"
+            name="perPersonPrice"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.ItemPrice}
+            value={formik.values.perPersonPrice}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.ItemPrice &&
-          Boolean(formik.errors.ItemPrice) ? (
+          {formik.touched.perPersonPrice &&
+          Boolean(formik.errors.perPersonPrice) ? (
             <small className="text-red-600">
-              {formik.touched.ItemPrice && formik.errors.ItemPrice}
+              {formik.touched.perPersonPrice && formik.errors.perPersonPrice}
             </small>
           ) : null}
         </div>

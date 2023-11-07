@@ -133,7 +133,8 @@ const SalesProfitReport = () => {
                   <th>Check In</th>
                   <th>Check Out</th>
                   <th>Paid Amount</th>
-                  <th>Action</th>
+                  <th>Deposite By</th>
+                  {/* <th>Action</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -152,13 +153,14 @@ const SalesProfitReport = () => {
                         2023-10-21 <br /> 10:00:00
                       </td>
                       <td>25000</td>
+                      <td>25000</td>
                       <td className={`space-x-1.5`}>
-                        <span
+                        {/* <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                           onClick={() => navigate("view")}
                         >
                           <FaEye />
-                        </span>
+                        </span> */}
                       </td>
                     </tr>
                   );
