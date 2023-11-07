@@ -34,9 +34,9 @@ const TransactionHistory = () => {
 	const [currentPage, setCurrentPage] = useState(0);
 	const { id } = useParams();
 
-	const [searchParams,setSearchParams] = useState({ id, fromDate:'', toDate:'' ,cp:currentPage});
+	const [searchParams,setSearchParams] = useState({ id, fromDate:'', toDate:''});
 	const { data, error, isLoading, isSuccess } =
-		useGetTransactionlogsQuery(searchParams);
+		useGetTransactionlogsQuery({...searchParams,cp:currentPage});
 	// 65451c80dd95504ee1047f0b
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);

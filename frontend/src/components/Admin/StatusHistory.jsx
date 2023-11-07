@@ -20,7 +20,7 @@ const StatusHistory = () => {
 	console.log({ formik });
 	const [historyPerPage] = useState(10);
 	const [pageCount, setPageCount] = useState(1);
-	const [currentPage, setCurrentPage] = useState(1);
+	const [currentPage, setCurrentPage] = useState(0);
 	const { id } = useParams();
 	const [fromDate, setFromData] = useState("");
 	const [toDate, setToDate] = useState("");
@@ -28,14 +28,14 @@ const StatusHistory = () => {
 		id,
 		fromDate: "",
 		toDate: "",
-		cp: currentPage,
 	});
+	console.log(currentPage)
 	console.log({ searchParams });
 	const {
 		data: statusHistory,
 		error,
 		isLoading,
-	} = useGetStatuslogsQuery(searchParams);
+	} = useGetStatuslogsQuery({...searchParams,cp:currentPage});
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);
 	};
@@ -50,7 +50,10 @@ const StatusHistory = () => {
 	useEffect(() => {
 		if (statusHistory) setPageCount(statusHistory.totalPages);
 	  }, [statusHistory]);
-	
+	 
+	useEffect(() => {
+		
+	},[])
 	return (
 		<div className="card w-full bg-white shadow-xl">
 			<div className="card-body space-y-10">
