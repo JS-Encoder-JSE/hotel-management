@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaEyeSlash } from "react-icons/fa";
+import {FaArrowLeft, FaEyeSlash} from "react-icons/fa";
 import { useSelector } from "react-redux";
 import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
 import Modal from "../../components/Modal.jsx";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
 import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import {useNavigate} from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -18,6 +19,7 @@ const validationSchema = yup.object({
 });
 
 const HotelEdit = () => {
+  const navigate = useNavigate()
   const { user } = useSelector((store) => store.authSlice);
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
   const { isLoading, data: managers } = useGetUsersQuery({
@@ -63,7 +65,15 @@ const HotelEdit = () => {
       <div className={`space-y-10`}>
         <div className="card bg-white shadow-xl">
           <div className="card-body p-4">
-            <div className="text-2xl md:flex justify-between items-center">
+            <div className="text-2xl flex items-center gap-1.5">
+              <div>
+          <span
+              className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+              onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft />
+          </span>
+              </div>
               <h2>Edit Hotel</h2>
             </div>
             <hr className={`my-5`} />

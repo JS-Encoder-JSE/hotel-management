@@ -19,7 +19,7 @@ const AdminOwnerView = () => {
   const user_id= store?.getState()?.authSlice?.user?._id
   const {id}= useParams()
   const { data, isLoading, error } = useGetUserQuery(id)
-  console.log({data})
+
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };

@@ -20,11 +20,12 @@ const validationSchema = yup.object({
 });
 
 const AddHotel = () => {
+  const [isLoading, setLoading] = useState(false);
   const { user } = useSelector((store) => store.authSlice);
   const [addHotel] = useAddHotelMutation();
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
   const [showManagers, setShowManagers] = useState([]);
-  const { isLoading, data: managers } = useGetUsersQuery({
+  const { data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
     search: "",
@@ -43,6 +44,8 @@ const AddHotel = () => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
+
       const obj = { ...values };
       const {
         name,
@@ -54,6 +57,7 @@ const AddHotel = () => {
 
       const response = await addHotel({
         owner_id: user?._id,
+        name,
         address,
         email,
         phone_no,
@@ -66,7 +70,11 @@ const AddHotel = () => {
       } else {
         toast.success(response.data.message);
         formikHelpers.resetForm();
+        setManagerList([{ manager: "", shift: "" }]);
+        setSave(true);
       }
+
+      setLoading(false);
     },
   });
 
@@ -247,7 +255,13 @@ const AddHotel = () => {
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
-                Create Hotel
+                <span>Create Hotel</span>
+                {isLoading ? (
+                  <span
+                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                    role="status"
+                  ></span>
+                ) : null}
               </button>
             </div>
           </form>

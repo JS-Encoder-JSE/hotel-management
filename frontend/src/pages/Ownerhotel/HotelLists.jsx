@@ -76,7 +76,7 @@ const HotelLists = () => {
         </div>
       </div>
       {!isLoading ? (
-        hotels?.length ? (
+        hotels?.docs?.length ? (
           <>
             <div className="overflow-x-auto">
               <table className="table border">
@@ -94,7 +94,7 @@ const HotelLists = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {hotels?.data?.map((hotel, idx) => {
+                  {hotels?.docs?.map((hotel, idx) => {
                     return (
                       <tr
                         className={
