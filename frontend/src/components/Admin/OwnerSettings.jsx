@@ -1,10 +1,10 @@
-import React, { useRef } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
+import React, { useRef } from "react";
 import DatePicker from "react-datepicker";
-import { Link, useNavigate } from "react-router-dom";
-import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
 import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -61,7 +61,7 @@ const OwnerSettings = ({ owner }) => {
 
   return (
     <>
-      <form method="dialog">
+      <form autoComplete="off" method="dialog">
         <button
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -75,7 +75,7 @@ const OwnerSettings = ({ owner }) => {
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Change Status</h3>
         <hr />
-        <form
+        <form autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >

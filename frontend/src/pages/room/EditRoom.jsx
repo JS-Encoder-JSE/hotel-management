@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import { useFormik } from "formik";
-import * as yup from "yup";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaArrowLeft, FaTrash, FaUpload } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
+    MdOutlineKeyboardArrowLeft,
+    MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 import { TbReplaceFilled } from "react-icons/tb";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  useRoomQuery,
-  useUpdateRoomMutation,
-} from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import * as yup from "yup";
 import { useUploadSingleMutation } from "../../redux/baseAPI.js";
+import {
+    useRoomQuery,
+    useUpdateRoomMutation,
+} from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -157,7 +157,7 @@ const EditRoom = () => {
         </div>
       </div>
       {!isLoading ? (
-        <form
+        <form autoComplete="off"
           className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
           onSubmit={formik.handleSubmit}
         >

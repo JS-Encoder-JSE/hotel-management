@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { FaPlusCircle, FaUpload } from "react-icons/fa";
-import imgPlaceHolder from "../../assets/img-placeholder.jpg";
-import {useAddRoomMutation} from "../../redux/room/roomAPI.js";
-import {useUploadMutation, useUploadSingleMutation} from "../../redux/baseAPI.js";
-import {useAddEmployeeMutation} from "../../redux/employee/employeeAPI.js";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { FaPlusCircle, FaUpload } from "react-icons/fa";
+import * as yup from "yup";
+import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import { useUploadSingleMutation } from "../../redux/baseAPI.js";
+import { useAddEmployeeMutation } from "../../redux/employee/employeeAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -90,7 +89,7 @@ console.log(response)
         <FaPlusCircle />
         <span>Add Employee</span>
       </h3>
-      <form
+      <form autoComplete="off"
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >

@@ -1,11 +1,11 @@
-import React from "react";
 import { useFormik } from "formik";
+import React from "react";
+import DatePicker from "react-datepicker";
+import toast from "react-hot-toast";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import DatePicker from "react-datepicker";
 import { validationSchema } from "../../components/Yup/EditRenewVal.jsx";
 import { useRenewLicenseMutation } from "../../redux/admin/sls/slsAPI.js";
-import toast from "react-hot-toast";
 
 const EditRenew = () => {
   const { id: user_id } = useParams();
@@ -68,7 +68,7 @@ const EditRenew = () => {
       </div>
       <h1 className="text-2xl text-center capitalize">License Renew</h1>
       <hr />
-      <form
+      <form autoComplete="off"
         className="form-control max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >

@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { FaEyeSlash } from "react-icons/fa";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
+import * as yup from "yup";
 import Modal from "../../components/Modal.jsx";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
-import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import { useAddHotelMutation } from "../../redux/Owner/hotelsAPI.js";
-import toast from "react-hot-toast";
+import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -118,7 +116,7 @@ const AddHotel = () => {
         </div>
 
         <div className="max-auto">
-          <form
+          <form autoComplete="off"
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10"
             onSubmit={formik.handleSubmit}
           >

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
-import { useParams } from "react-router-dom";
-import { useUpdateUserMutation } from "../../redux/admin/subadmin/subadminAPI";
-import Swal from "sweetalert2";
-import toast, { Toaster } from "react-hot-toast";
 import { Rings } from "react-loader-spinner";
+import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useUpdateUserMutation } from "../../redux/admin/subadmin/subadminAPI";
 const HotelLimitEdit = ({ hotels }) => {
 	const [updateUser, { isLoading, error, isError, isSuccess }] =
 		useUpdateUserMutation();
@@ -41,7 +41,7 @@ const HotelLimitEdit = ({ hotels }) => {
 	return (
 		<>
 			<Toaster />
-			<form method="dialog">
+			<form autoComplete="off" method="dialog">
 				<button
 					ref={closeRef}
 					className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"

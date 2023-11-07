@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import COIBarItem from "./COIBarItem";
 
 
@@ -9,7 +8,7 @@ const ConfirmOrderBar = ({formik}) => {
 
   return (
     <>
-      <form method="dialog">
+      <form autoComplete="off" method="dialog">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
         >

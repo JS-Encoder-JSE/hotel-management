@@ -1,9 +1,9 @@
-import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { FaPlusCircle } from "react-icons/fa";
-import { useAddInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
+import React from "react";
 import toast from "react-hot-toast";
+import { FaPlusCircle } from "react-icons/fa";
+import * as yup from "yup";
+import { useAddInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -59,7 +59,7 @@ const AddInventory = () => {
         <FaPlusCircle />
         <span>Add Item</span>
       </h3>
-      <form
+      <form autoComplete="off"
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
