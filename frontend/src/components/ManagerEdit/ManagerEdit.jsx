@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaArrowLeft, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaEyeSlash, FaUpload } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { TbReplaceFilled } from "react-icons/tb";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
@@ -44,6 +44,7 @@ const ManagerEdit = () => {
   const navigate = useNavigate();
   const [updateUser, { isLoading: isFetching }] = useUpdateUserMutation();
   const [uploadSingle] = useUploadSingleMutation();
+  const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -209,16 +210,33 @@ const ManagerEdit = () => {
                 ) : null}
               </div>
               {/* User Password box */}
-              <div className="flex flex-col gap-3">
-                <input
-                  type="password"
-                  placeholder="New Password"
-                  name="password"
-                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
+              <div className={`flex flex-col gap-3`}>
+                <div className={`relative`}>
+                  <input
+                    type={showPass ? "text" : "password"}
+                    placeholder="New Password"
+                    name="password"
+                    className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {showPass ? (
+                    <span
+                      className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                      onClick={() => setShowPass(false)}
+                    >
+                      <FaEyeSlash />
+                    </span>
+                  ) : (
+                    <span
+                      className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                      onClick={() => setShowPass(true)}
+                    >
+                      <FaEye />
+                    </span>
+                  )}
+                </div>
                 {formik.touched.password && Boolean(formik.errors.password) ? (
                   <small className="text-red-600">
                     {formik.touched.password && formik.errors.password}

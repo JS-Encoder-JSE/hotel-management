@@ -62,9 +62,18 @@ import AddBar from "./pages/bar/AddBar.jsx";
 import BarItemList from "./pages/bar/BarItemList.jsx";
 import BarItemView from "./pages/bar/BarItemView.jsx";
 import EditBar from "./pages/bar/EditBar.jsx";
-import AddLifeStyle from "./pages/LifeStyle/AddLifeStyle.jsx";
-import LifeStyleList from "./pages/LifeStyle/LifeStyleList.jsx";
 import HotelListView from "./pages/Ownerhotel/HotelListView.jsx";
+import AddSwimmingPool from "./pages/LifeStyle/AddSwimmingPool.jsx";
+import SwimmingPoolList from "./pages/LifeStyle/SwimmingPoolList.jsx";
+import SwimmingPoolLIstView from "./pages/LifeStyle/SwimmingPoolLIstView.jsx";
+import OrderBar from "./pages/bar/OrderBar.jsx";
+import SwimmingBooking from "./pages/LifeStyle/SwimmingBooking.jsx";
+import EditSwimming from "./components/LifeStyle/EditSwimming.jsx";
+import GymBooking from "./pages/Gym/GymBooking.jsx";
+import AddGym from "./pages/Gym/AddGym.jsx";
+import GymList from "./pages/Gym/GymList.jsx";
+import LicenseHistory from "./pages/owner/LicenseHistory.jsx";
+
 
 
 const App = () => {
@@ -281,6 +290,14 @@ const App = () => {
               ),
             },
             {
+              path: "bar-order",
+              element: (
+                <ManagerRoute>
+                  <OrderBar />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "baritem-list",
               element: (
                 <ManagerRoute>
@@ -305,18 +322,66 @@ const App = () => {
               ),
             },
             {
-              path: "add-lifestyle",
+              path: "add-swimming-pool",
               element: (
                 <ManagerRoute>
-                  <AddLifeStyle />
+                  <AddSwimmingPool />
                 </ManagerRoute>
               ),
             },
             {
-              path: "lifestyle-list",
+              path: "swimming-booking",
               element: (
                 <ManagerRoute>
-                  <LifeStyleList />
+                  <SwimmingBooking />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "swimming-edit/:id",
+              element: (
+                <ManagerRoute>
+                  <EditSwimming />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "swimming-pool-list",
+              element: (
+                <ManagerRoute>
+                  <SwimmingPoolList />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "swimming-pool-list/:id",
+              element: (
+                <ManagerRoute>
+                  <SwimmingPoolLIstView />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-gym",
+              element: (
+                <ManagerRoute>
+                  <AddGym />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "gym-booking",
+              element: (
+                <ManagerRoute>
+                  <GymBooking />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "gym-list",
+              element: (
+                <ManagerRoute>
+                  <GymList />
                 </ManagerRoute>
               ),
             },
@@ -383,6 +448,14 @@ const App = () => {
                 <OwnerRoute>
                   <ManagerEdit />
                 </OwnerRoute>
+              ),
+            },
+            {
+              path: "license-history",
+              element: (
+                  <OwnerRoute>
+                    <LicenseHistory />
+                  </OwnerRoute>
               ),
             },
             {

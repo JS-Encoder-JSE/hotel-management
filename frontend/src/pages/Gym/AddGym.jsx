@@ -21,7 +21,7 @@ const validationSchema = yup.object({
     typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
 });
 
-const AddLifeStyle = () => {
+const AddGym = () => {
   const formik = useFormik({
     initialValues: {
       brandName: "",
@@ -43,61 +43,109 @@ const AddLifeStyle = () => {
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
         <FaPlusCircle />
-        <span>Add Life Style </span>
+        <span>Add Gym</span>
       </h3>
       <form
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
-        {/* swimming Name */}
+        {/* Brand Name */}
         <div className="flex flex-col gap-5">
           <input
             type="text"
-            placeholder="swimming"
-            name="swimmingName"
+            placeholder="Name"
+            name="name"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.swimmingName}
+            value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.swimmingName && Boolean(formik.errors.swimmingName) ? (
+          {formik.touched.name && Boolean(formik.errors.name) ? (
             <small className="text-red-600">
-              {formik.touched.swimmingName && formik.errors.swimmingName}
-            </small>
-          ) : null}
-        </div>
-        {/* Gym */}
-        <div className="flex flex-col gap-5">
-          <input
-            type="text"
-            placeholder="Gym"
-            name="gymName"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.gymName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.gymName && Boolean(formik.errors.gymName) ? (
-            <small className="text-red-600">
-              {formik.touched.gymName && formik.errors.gymName}
+              {formik.touched.name && formik.errors.name}
             </small>
           ) : null}
         </div>
 
-        {/* Spa  */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-3">
+                <select
+                  name="category"
+                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                  value={formik.values.category}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="" selected disabled>
+                    Category
+                  </option>
+                  <option value="yoga">Yoga</option>
+                  <option value="aerobics">Aerobics</option>
+                  <option value="crossfit">Crossfit</option>
+                  <option value="hit"> Hiit</option>
+                </select>
+                {formik.touched.category && Boolean(formik.errors.category) ? (
+                  <small className="text-red-600">
+                    {formik.touched.category && formik.errors.category}
+                  </small>
+                ) : null}
+              </div>
+              <div className="flex flex-col gap-3">
+          <select
+            name="documentsType"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+            value={formik.values.documentsType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Membership Subscription
+            </option>
+            <option value="normalPackage">Normal Package</option>
+            <option value="singlePackage">single Package</option>
+            <option value="couplePackage">Couple Package</option>
+            <option value="familypackage">Family package</option>
+          </select>
+          {formik.touched.documentsType &&
+          Boolean(formik.errors.documentsType) ? (
+            <small className="text-red-600">
+              {formik.touched.documentsType && formik.errors.documentsType}
+            </small>
+          ) : null}
+        </div>
+        {formik.values.documentsType &&
+        formik.values.documentsType !== "normalPackage" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Package Price"
+              name="packagePrice"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.packagePrice}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.packagePrice && Boolean(formik.errors.packagePrice) ? (
+              <small className="text-red-600">
+                {formik.touched.packagePrice && formik.errors.packagePrice}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
+         {/* Item Price */}
+         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Spa"
-            name="spaName"
+            placeholder="Price"
+            name="ItemPrice"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.spaName}
+            value={formik.values.ItemPrice}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.spaName && Boolean(formik.errors.spaName) ? (
+          {formik.touched.ItemPrice &&
+          Boolean(formik.errors.ItemPrice) ? (
             <small className="text-red-600">
-              {formik.touched.spaName && formik.errors.spaName}
+              {formik.touched.ItemPrice && formik.errors.ItemPrice}
             </small>
           ) : null}
         </div>
@@ -160,7 +208,7 @@ const AddLifeStyle = () => {
         {/* item Description */}
         <div className="col-span-full flex flex-col gap-3">
           <textarea
-            placeholder="Item Description"
+            placeholder="Description"
             name="itemDescription"
             className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
             value={formik.values.itemDescription}
@@ -188,4 +236,4 @@ const AddLifeStyle = () => {
   );
 };
 
-export default AddLifeStyle;
+export default AddGym;

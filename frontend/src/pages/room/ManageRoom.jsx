@@ -24,6 +24,12 @@ const ManageRoom = () => {
     search: keyword,
   });
 
+  const pressEnter = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      formik.handleSubmit();
+    }
+  };
+
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
       <div className={`flex justify-between gap-4`}>
@@ -48,6 +54,10 @@ const ManageRoom = () => {
             className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.search}
             onChange={formik.handleChange}
+            onKeyUp={(e) => {
+              e.target.value === "" ? formik.handleSubmit() : null;
+            }}
+            onKeyDown={(e) => pressEnter(e)}
           />
           <button
             type="button"
@@ -59,7 +69,11 @@ const ManageRoom = () => {
         </div>
       </div>
       {!isLoading ? (
-        <RoomLists setCurrentPage={setCurrentPage} rooms={rooms} />
+        rooms?.data?.length ? (
+          <RoomLists setCurrentPage={setCurrentPage} rooms={rooms} />
+        ) : (
+          <h3>No data!</h3>
+        )
       ) : (
         <Rings
           width="50"

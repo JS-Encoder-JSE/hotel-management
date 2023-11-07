@@ -146,6 +146,7 @@ const ManagerList = () => {
                       <tr>
                         <th>SL</th>
                         <th>Name</th>
+                        <th>Username</th>
                         {/* <th>Sub Admin Address</th> */}
                         <th>Email</th>
                         <th>Phone Number</th>
@@ -167,6 +168,7 @@ const ManagerList = () => {
                           >
                             <th>{++idx}</th>
                             <td>{sa?.name}</td>
+                            <td>{sa?.username}</td>
                             <td>{sa?.email}</td>
                             <td>{sa?.phone_no}</td>
                             <td>{sa?.emergency_contact}</td>
