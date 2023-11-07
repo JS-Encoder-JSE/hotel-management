@@ -178,6 +178,22 @@ export const getHotels = async (req, res) => {
     res.status(500).json({ error: "Failed to retrieve hotels" });
   }
 };
+export const getHotelById = async (req, res) => {
+  try {
+    const { hotel_id } = req.params;
+
+    const hotel = await Hotel.findById(hotel_id);
+
+    if (!hotel) {
+      return res.status(404).json({ message: 'Hotel not found' });
+    }
+
+    res.status(200).json(hotel);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to retrieve hotel information' });
+  }
+};
 // Controller to update a hotel by ID
 export const updateHotel = async (req, res) => {
   try {
