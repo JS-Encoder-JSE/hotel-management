@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaPlusCircle } from "react-icons/fa";
-import { useAddInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
-import toast from "react-hot-toast";
+
 
 // form validation
 const validationSchema = yup.object({
@@ -33,6 +32,7 @@ const validationSchema = yup.object({
 });
 
 const AddBar = () => {
+
   const formik = useFormik({
     initialValues: {
       brandName: "",
@@ -50,6 +50,7 @@ const AddBar = () => {
         console.log(values);
       },
   });
+
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -194,6 +195,8 @@ const AddBar = () => {
             </small>
           ) : null}
         </div>
+
+     
         
         {/* item Description */}
         <div className="col-span-full flex flex-col gap-3">
@@ -222,6 +225,7 @@ const AddBar = () => {
           </button>
         </div>
       </form>
+   
     </div>
   );
 };
