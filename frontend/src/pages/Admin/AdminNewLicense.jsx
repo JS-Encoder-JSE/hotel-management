@@ -186,7 +186,6 @@ const AdminNewLicense = () => {
 	useEffect(() => {
 		if (formik.values.utilities) {
 			const selectedUtilitiesArray = Array.from(formik.values.utilities);
-
 			setSelectedImages([...selectedImages, ...selectedUtilitiesArray]);
 		}
 	}, [formik.values.utilities]);
@@ -485,7 +484,7 @@ const AdminNewLicense = () => {
 				{/*Number Of Hotels box */}
 				<div className="flex flex-col gap-3">
 					<input
-						type="text"
+						type="number"
 						placeholder="Hotel Limit"
 						name="numberOfHotel"
 						className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
