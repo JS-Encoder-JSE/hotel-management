@@ -89,28 +89,66 @@ const AddGym = () => {
                   </small>
                 ) : null}
               </div>
-        <div className="flex flex-col gap-3">
-                <select
-                  name="category"
-                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.category}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="" selected disabled>
-                   Membership Subscription
-                  </option>
-                  <option value="singlePackage">single Package</option>
-                  <option value="couplePackage">Couple Package</option>
-                  <option value="familyPackage">Family Package</option>
-                  
-                </select>
-                {formik.touched.category && Boolean(formik.errors.category) ? (
-                  <small className="text-red-600">
-                    {formik.touched.category && formik.errors.category}
-                  </small>
-                ) : null}
-              </div>
+              <div className="flex flex-col gap-3">
+          <select
+            name="documentsType"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+            value={formik.values.documentsType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Membership Subscription
+            </option>
+            <option value="normalPackage">Normal Package</option>
+            <option value="singlePackage">single Package</option>
+            <option value="couplePackage">Couple Package</option>
+            <option value="familypackage">Family package</option>
+          </select>
+          {formik.touched.documentsType &&
+          Boolean(formik.errors.documentsType) ? (
+            <small className="text-red-600">
+              {formik.touched.documentsType && formik.errors.documentsType}
+            </small>
+          ) : null}
+        </div>
+        {formik.values.documentsType &&
+        formik.values.documentsType !== "normalPackage" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Package Price"
+              name="packagePrice"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.packagePrice}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.packagePrice && Boolean(formik.errors.packagePrice) ? (
+              <small className="text-red-600">
+                {formik.touched.packagePrice && formik.errors.packagePrice}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
+         {/* Item Price */}
+         <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Price"
+            name="ItemPrice"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.ItemPrice}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.ItemPrice &&
+          Boolean(formik.errors.ItemPrice) ? (
+            <small className="text-red-600">
+              {formik.touched.ItemPrice && formik.errors.ItemPrice}
+            </small>
+          ) : null}
+        </div>
 
         {/* Type Of Alcohol Pack */}
         <div className="flex flex-col gap-3">
@@ -170,7 +208,7 @@ const AddGym = () => {
         {/* item Description */}
         <div className="col-span-full flex flex-col gap-3">
           <textarea
-            placeholder="Item Description"
+            placeholder="Description"
             name="itemDescription"
             className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
             value={formik.values.itemDescription}

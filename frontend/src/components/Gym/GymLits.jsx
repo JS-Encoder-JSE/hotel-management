@@ -48,8 +48,8 @@ const GymLits = () => {
                   <td>
                     <div className="flex items-center space-x-3">
                       <div>
-                        <div className="font-bold">Jobbar</div>
-                        <div className="text-sm opacity-50">Rooms: 101</div>
+                        <div className="font-bold">jasim</div>
+                        <div className="text-sm opacity-50">Rooms:201</div>
                       </div>
                     </div>
                   </td>
