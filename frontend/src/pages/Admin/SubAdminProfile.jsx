@@ -75,6 +75,7 @@ const SubAdminProfile = () => {
             password,
             address,
             salary,
+            emergency_contact
           },
         });
       } else {
@@ -86,6 +87,7 @@ const SubAdminProfile = () => {
             email,
             address,
             salary,
+            emergency_contact
           },
         });
       }
@@ -106,6 +108,7 @@ const SubAdminProfile = () => {
         phoneNumber: user?.phone_no,
         address: user?.address,
         salary: user?.salary,
+        emergency_contact:user?.emergency_contact
       });
     }
   }, [user]);
