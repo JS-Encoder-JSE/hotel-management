@@ -194,6 +194,23 @@ export const getHotelById = async (req, res) => {
     res.status(500).json({ error: "Failed to retrieve hotel information" });
   }
 };
+export const getHotelsByManagerId = async (req, res) => {
+  try {
+    const { manager_id } = req.params; // Assuming managerId is in the URL parameters
+
+    // Use Mongoose to find hotels that have a manager with the specified ID
+    const hotels = await Hotel.find({ 'managers._id': manager_id });
+
+    if (!hotels || hotels.length === 0) {
+      return res.status(404).json({ message: 'No hotels found for this manager ID' });
+    }
+
+    res.status(200).json(hotels);
+  } catch (error) {
+    console.error('Error fetching hotels by manager ID:', error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 // Controller to update a hotel by ID
 export const updateHotel = async (req, res) => {
   try {
