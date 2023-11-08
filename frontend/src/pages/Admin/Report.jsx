@@ -54,11 +54,21 @@ const Report = () => {
     },
   });
 
-  const { isLoading, data: reports } = useGetAllReportQuery({
-    ...searchParams,
-    cp: currentPage,
-    filter: formik.values.filter,
-  });
+  const { isLoading, data: reports } =
+    !id && user.role === "admin"
+      ? useGetAllReportQuery({
+          ...searchParams,
+          cp: currentPage,
+          filter: formik.values.filter,
+          limit: formik.values.entries,
+        })
+      : useGetReportQuery({
+          ...searchParams,
+          cp: currentPage,
+          uid: id || user._id,
+          filter: formik.values.filter,
+          limit: formik.values.entries,
+        });
 
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);

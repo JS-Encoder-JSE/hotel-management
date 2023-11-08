@@ -30,11 +30,20 @@ const SuspendList = () => {
     },
   });
   const { user } = store.getState().authSlice;
-  const { isLoading, data: owners } = useGetOwnByAdminQuery({
-    cp: currentPage,
-    filter: "Suspended",
-    search: keyword,
-  });
+  const { isLoading, data: owners } =
+    user.role === "admin"
+      ? useGetOwnByAdminQuery({
+          cp: currentPage,
+          filter: "Suspended",
+          search: keyword,
+        })
+      : useGetUsersQuery({
+          cp: currentPage,
+          filter: "Suspended",
+          search: keyword,
+          role: "owner",
+          parentId: user._id,
+        });
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
