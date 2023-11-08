@@ -16,7 +16,7 @@ import itemRoute from "./routes/Manager/item.route.js";
 import { fileURLToPath } from "url";
 // Manager Routes
 import bookingRoute from "./routes/Manager/booking.route.js";
-import roomRoute from "./routes/Manager/room.routs.js";
+import roomRoute from "./routes/Manager/room.route.js";
 
 dotenv.config();
 const app = express();

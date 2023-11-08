@@ -1,15 +1,19 @@
 ﻿import mongoose from "mongoose";
-
+import mongoosePaginate from "mongoose-paginate-v2";
 const roomSchema = new mongoose.Schema({
+  hotel_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   category: {
     type: String,
-    enum: ["Standard", "Deluxe", "Suite", "President-Suite"],  // Add other category options as needed
-    default: "Standard",
+    enum: ["Standard", "Deluxe", "Suite", "President_Suite"], // Add other category options as needed
+    required: true,
   },
   type: {
     type: String,
-    enum: ["Single", "Double"],  // Add other type options as needed
-    default: "Single",
+    enum: ["Single", "Double", "Twin"], // Add other type options as needed
+    required: true,
   },
   capacity: {
     type: Number,
@@ -29,32 +33,30 @@ const roomSchema = new mongoose.Schema({
     required: true,
   },
   roomNumber: {
-    type: Number,
+    type: String,
     required: true,
   },
   images: {
-    type:Array,
+    type: Array,
     required: false,
   },
   description: {
     type: String,
     required: true,
   },
-  air_conditioned:{
+  air_conditioned: {
     type: Boolean,
-    required: true,
+    required: false,
+    default: false,
   },
   status: {
     type: String,
     default: "Available",
-    enum: ["Available", "Booked", "CheckedIn"],
+    enum: ["Available", "Booked", "CheckedIn", "Deleted"],
   },
-  hotel_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    require:true
-  }
 });
-
+// Apply the mongoose-paginate-v2 plugin to your schema
+roomSchema.plugin(mongoosePaginate);
 const Room = mongoose.model("Room", roomSchema);
 
 export default Room;
