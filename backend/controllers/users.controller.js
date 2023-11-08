@@ -420,10 +420,17 @@ export const getOwners = async (req, res) => {
   try {
     // Find all user with the role 'owner'
     const owners = await User.find({ role: "owner" });
-
+    if (!owners) {
+      return res.status(404).json({ message: "Owners not found" });
+    }
     res.json(owners);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res
+      .status(500)
+      .json({
+        error: error.message,
+        message: "Failed to retrieve user information",
+      });
   }
 };
 
@@ -1121,10 +1128,9 @@ export const getUserById = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to retrieve user information" });
+    res.status(500).json({ message: "Failed to retrieve user information" });
   }
 };
-
 
 export const updateUser = async (req, res) => {
   try {
