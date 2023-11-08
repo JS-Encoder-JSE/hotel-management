@@ -16,4 +16,14 @@ export const validationSchema = yup.object({
     .required("Amount is required")
     .positive("Amount must be a positive number")
     .integer("Amount must be an integer"),
+  remarks: yup
+      .string()
+      .matches(
+          /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+          "Remarks must start with a character and can include characters and numbers",
+      )
+      .when([], {
+        is: (remarks) => remarks && remarks.length > 0,
+        then: yup.string().required("Remarks is required"),
+      }),
 });

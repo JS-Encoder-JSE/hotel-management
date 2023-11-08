@@ -45,7 +45,8 @@ const Header = ({
           {Math.floor(
             Math.abs(new Date(user?.bill_from) - new Date()) /
               (24 * 60 * 60 * 1000),
-          ) <= 30 ? (
+          ) <= 30 &&
+          (user.role === "owner" || user.role === "manager") ? (
             <h3
               className={`flex gap-1.5 text-xl font-bold animate-pulse text-yellow-500 ml-6`}
             >
@@ -55,7 +56,7 @@ const Header = ({
               <span className={`-mt-0.5`}>
                 Your license will expire in{" "}
                 {Math.floor(
-                  Math.abs(new Date(user?.bill_from) - new Date()) /
+                  Math.abs(new Date(user?.bill_to) - new Date()) /
                     (24 * 60 * 60 * 1000),
                 )}{" "}
                 days

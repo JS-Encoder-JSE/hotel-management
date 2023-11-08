@@ -7,11 +7,12 @@ const hotelsAPI = baseAPI.injectEndpoints({
         `hotels/get-hotels?page=${++cp}${search ? `&search=${search}` : ""}${
           uid ? `&user_id=${uid}` : ""
         }${pid ? `&parent_id=${pid}` : ""}`,
-      // providesTags: ["room"],
+      providesTags: ["hotels"],
     }),
     hotel: build.query({
       query: (id) => `hotels/get-hotel-by-id/${id}`,
       // providesTags: ["room"],
+      providesTags: ["hotels"],
     }),
     addHotel: build.mutation({
       query: (data) => {
@@ -40,6 +41,7 @@ const hotelsAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
+      invalidatesTags: ["hotels"]
     }),
   }),
 });

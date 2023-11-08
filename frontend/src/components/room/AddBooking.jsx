@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import * as yup from "yup";
 import { useAddBookingMutation, useRoomsQuery } from "../../redux/room/roomAPI.js";
+import DatePicker from "react-datepicker";
 
 // form validation
 const validationSchema = yup.object({
@@ -296,43 +297,35 @@ console.log(response)
           </div>
           {/* Date */}
           <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="From  MM/DD/YYY"
-              name="fromDate"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.fromDate}
-              onChange={formik.handleChange}
-              onBlur={(e) => {
-                e.target.type = "text";
-                formik.handleBlur;
-              }}
-              onFocus={(e) => (e.target.type = "date")}
+            <DatePicker
+                dateFormat="dd/MM/yyyy"
+                name="fromDate"
+                placeholderText={`From`}
+                selected={formik.values.fromDate}
+                className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+                onChange={(date) => formik.setFieldValue("fromDate", date)}
+                onBlur={formik.handleBlur}
             />
             {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
-              <small className="text-red-600">
-                {formik.touched.fromDate && formik.errors.fromDate}
-              </small>
+                <small className="text-red-600">
+                  {formik.touched.fromDate && formik.errors.fromDate}
+                </small>
             ) : null}
           </div>
           <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="To  MM/DD/YYY"
-              name="toDate"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.toDate}
-              onChange={formik.handleChange}
-              onBlur={(e) => {
-                e.target.type = "text";
-                formik.handleBlur;
-              }}
-              onFocus={(e) => (e.target.type = "date")}
+            <DatePicker
+                dateFormat="dd/MM/yyyy"
+                name="toDate"
+                placeholderText={`To`}
+                selected={formik.values.toDate}
+                className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+                onChange={(date) => formik.setFieldValue("toDate", date)}
+                onBlur={formik.handleBlur}
             />
             {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
-              <small className="text-red-600">
-                {formik.touched.toDate && formik.errors.toDate}
-              </small>
+                <small className="text-red-600">
+                  {formik.touched.toDate && formik.errors.toDate}
+                </small>
             ) : null}
           </div>
 

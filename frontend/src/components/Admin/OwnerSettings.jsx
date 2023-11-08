@@ -9,8 +9,17 @@ import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js"
 // form validation
 const validationSchema = yup.object({
   remarks: yup.string().when(["status"], ([status], schema) => {
-    if (status !== "active") return schema.required("Remarks is required");
-    else return schema;
+    if (status !== "active") {
+      return schema
+        .matches(
+          /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+          "Remarks must start with a character and can include characters and numbers",
+        )
+        .when([], {
+          is: (remarks) => remarks && remarks.length > 0,
+          then: yup.string().required("Remarks is required"),
+        });
+    } else return schema;
   }),
   fromDate: yup.string().when(["status"], ([status], schema) => {
     if (status === "Suspend") return schema.required("From date is required");
@@ -75,7 +84,8 @@ const OwnerSettings = ({ owner }) => {
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Change Status</h3>
         <hr />
-        <form autoComplete="off"
+        <form
+          autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >

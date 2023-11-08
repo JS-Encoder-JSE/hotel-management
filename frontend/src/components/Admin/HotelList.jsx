@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Rings } from "react-loader-spinner";
 import { useFormik } from "formik";
 import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 
 const HotelList = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [hotelsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
 
   const { isLoading, data: hotels } = useHotelsQuery({
+    uid: id,
+    pid: "",
     cp: currentPage,
     search: "",
   });
@@ -100,7 +103,7 @@ const HotelList = () => {
               </div>
             </>
           ) : (
-            <h3>No data!</h3>
+            <h3 className={`text-center mt-10`}>No data found!</h3>
           )
         ) : (
           <Rings

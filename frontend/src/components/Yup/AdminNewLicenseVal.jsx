@@ -19,7 +19,13 @@ export const validationSchema = yup.object({
     .string()
     .min(8, "Password should be of minimum 8 characters length")
     .required("Client password is required"),
-  address: yup.string().required("Client address is required"),
+  address: yup
+    .string()
+    .required("Client address is required")
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+      "Client address must start with a character and can include characters and numbers",
+    ),
   phoneNumber: yup
     .string()
     .required("Client phone is required")
@@ -46,7 +52,7 @@ export const validationSchema = yup.object({
     .required("Hotel limits are required")
     .positive("Hotel limits must be a positive number")
     .integer("Hotel limits must be an integer"),
-  
+
   paymentMethod: yup.string().required("Payment method is required"),
   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
     if (paymentMethod !== "Cash")
@@ -66,4 +72,14 @@ export const validationSchema = yup.object({
   utilities: yup.string().required("Utilities are required"),
   tradeLicenses: yup.string().required("Trade licenses are required"),
   panCard: yup.string().required("Pan card are required"),
+  remarks: yup
+    .string()
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+      "Remarks must start with a character and can include characters and numbers",
+    )
+    .when([], {
+      is: (remarks) => remarks && remarks.length > 0,
+      then: yup.string().required("Remarks is required"),
+    }),
 });

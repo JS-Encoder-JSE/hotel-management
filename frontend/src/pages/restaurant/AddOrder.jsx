@@ -1,66 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import * as yup from "yup";
+import React from "react";
 import FoodLists from "../../components/restaurant/FoodLists.jsx";
 import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/restaurant/ConfirmOrder.jsx";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
-import { setOrder } from "../../redux/add-order/addOrderSlice.js";
-import {useRoomNumbersQuery, useRoomsQuery} from "../../redux/room/roomAPI.js";
-
-// form validation
-const validationSchema = yup.object({
-  roomNumber: yup.string().required("Room number is required"),
-});
+import { useFormik } from "formik";
 
 const AddOrder = () => {
-  const { isLoading, data: rooms } = useRoomNumbersQuery();
-  const { order } = useSelector((store) => store.addOrderSlice);
-  const [roomNo,setRoomNo]= useState()
-  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
-      roomNumber: {},
-      
+      search: "",
     },
-    validationSchema,
     onSubmit: () => {
       console.log(order);
     },
   });
-
-  useEffect(() => {
-    if (formik.values.roomNumber)
-      dispatch(setOrder({ ...order, roomNumber: formik.values.roomNumber }));
-  }, [formik.values.roomNumber]);
+  const { order } = useSelector((store) => store.addOrderSlice);
 
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
-      <div
-        className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
-      >
-        <div className="flex flex-col gap-3">
-          <select
-            name="roomNumber"
-            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-            value={formik.values.roomNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Room Number
-            </option>
-            {rooms?.data?.map((room) => (
-              <option key={room?._id} value={[room._id,room.roomNumber]}>{room?.roomNumber}</option>
-            ))}
-          </select>
-          {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
-            <small className="text-red-600">
-              {formik.touched.roomNumber && formik.errors.roomNumber}
-            </small>
-          ) : null}
-        </div>
+      <div className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-end`}>
         <div className={`flex space-x-1.5`}>
           <button
             onClick={() => window.fp_modal.showModal()}
@@ -91,7 +50,7 @@ const AddOrder = () => {
       </div>
       <FoodLists />
       <Modal id={`fp_modal`}>
-        <ConfirmOrder formik={formik} />
+        <ConfirmOrder />
       </Modal>
     </div>
   );

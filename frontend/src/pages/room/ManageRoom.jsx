@@ -4,8 +4,10 @@ import RoomLists from "../../components/room/RoomLists.jsx";
 import { FaSearch } from "react-icons/fa";
 import { useRoomsQuery } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
+import { useSelector } from "react-redux";
 
 const ManageRoom = () => {
+  const { user } = useSelector((store) => store.authSlice);
   const [keyword, setKeyword] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -19,6 +21,7 @@ const ManageRoom = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const { isLoading, data: rooms } = useRoomsQuery({
+    id: user?.assignedHotel,
     cp: currentPage,
     filter: formik.values.filter,
     search: keyword,
@@ -69,7 +72,7 @@ const ManageRoom = () => {
         </div>
       </div>
       {!isLoading ? (
-        rooms?.data?.length ? (
+        rooms?.data?.docs?.length ? (
           <RoomLists setCurrentPage={setCurrentPage} rooms={rooms} />
         ) : (
           <h3>No data!</h3>
