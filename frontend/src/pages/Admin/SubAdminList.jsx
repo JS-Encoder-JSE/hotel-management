@@ -127,7 +127,6 @@ const SubAdminList = () => {
                 type="button"
                 className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                 onClick={() => formik.handleSubmit()}
-
               >
                 <FaSearch />
               </button>
@@ -144,8 +143,8 @@ const SubAdminList = () => {
                     <thead>
                       <tr>
                         <th>SL</th>
-                        <th>Username</th>
                         <th>Name</th>
+                        <th>Username</th>
                         {/* <th>Sub Admin Address</th> */}
                         <th>Email</th>
                         <th>Phone Number</th>
@@ -156,69 +155,81 @@ const SubAdminList = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {subadmins?.docs?.map((sa, idx) => {
-                        return (
-                          <tr
-                            key={idx}
-                            className={
-                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                            }
-                          >
-                            <th>{++idx}</th>
-                            <td>{sa?.username}</td>
-                            <td>{sa?.name}</td>
-                            <td>{sa?.email}</td>
-                            <td>{sa?.phone_no}</td>
-                            <td>{sa?.emergency_contact}</td>
-                            <td>{sa?.status}</td>
-                            <td className={`flex flex-wrap gap-1.5`}>
-                              <Link
-                                to={`/dashboard/sub-admin-list-view/${sa?._id}`}
-                              >
-                                <span
-                                  className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                      {[...subadmins?.docs]
+                        ?.sort((a, b) => a.name - b.name)
+                        ?.map((sa, idx) => {
+                          return (
+                            <tr
+                              key={idx}
+                              className={
+                                idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                              }
+                            >
+                              <th>{++idx}</th>
+                              <td>{sa?.name}</td>
+                              <td>{sa?.username}</td>
+                              <td>{sa?.email}</td>
+                              <td>{sa?.phone_no}</td>
+                              <td>{sa?.emergency_contact}</td>
+                              <td>
+                                {sa?.status === "Active" ? (
+                                  <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                                    Active
+                                  </div>
+                                ) : (
+                                  <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                                    Deactive
+                                  </div>
+                                )}
+                              </td>
+                              <td className={`flex flex-wrap gap-1.5`}>
+                                <Link
+                                  to={`/dashboard/sub-admin-list-view/${sa?._id}`}
                                 >
-                                  <FaEye />
-                                </span>
-                              </Link>
-                              <Link
-                                to={`/dashboard/sub-admin-profile/${sa?._id}/edit`}
-                              >
-                                <span
-                                  className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                                  <span
+                                    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                                  >
+                                    <FaEye />
+                                  </span>
+                                </Link>
+                                <Link
+                                  to={`/dashboard/sub-admin-profile/${sa?._id}/edit`}
                                 >
-                                  <FaRegEdit />
-                                </span>
-                              </Link>
-                              {sa?.status !== "Deleted" ? (
+                                  <span
+                                    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                                  >
+                                    <FaRegEdit />
+                                  </span>
+                                </Link>
+                                {sa?.status !== "Deleted" ? (
+                                  <span
+                                    className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                                    onClick={() =>
+                                      handleDelete({
+                                        user_id: sa?._id,
+                                        status: "Deleted",
+                                      })
+                                    }
+                                  >
+                                    <FaTrash />
+                                  </span>
+                                ) : null}
                                 <span
-                                  className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                                  onClick={() =>
-                                    handleDelete({
-                                      user_id: sa?._id,
-                                      status: "Deleted",
-                                    })
-                                  }
+                                  className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case`}
+                                  onClick={() => {
+                                    setOwner({
+                                      id: sa?._id,
+                                      status: sa?.status,
+                                    });
+                                    setModalOpen(true);
+                                  }}
                                 >
-                                  <FaTrash />
+                                  <AiFillSetting />
                                 </span>
-                              ) : null}
-                              <span
-                                className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case`}
-                                onClick={() => {
-                                  setOwner({
-                                    id: sa?._id,
-                                    status: sa?.status,
-                                  });
-                                  setModalOpen(true);
-                                }}
-                              >
-                                <AiFillSetting />
-                              </span>
-                            </td>
-                          </tr>
-                        );
-                      })}
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </div>

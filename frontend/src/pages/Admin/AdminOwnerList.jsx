@@ -157,8 +157,8 @@ const AdminOwnerList = ({ title }) => {
                   <thead>
                     <tr>
                       <th>Sl</th>
-                      <th>Username</th>
                       <th>Name</th>
+                      <th>Username</th>
                       <th>Email</th>
                       <th>Status</th>
                       <th>Duration</th>
@@ -166,7 +166,7 @@ const AdminOwnerList = ({ title }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {owners?.docs?.map((owner, idx) => {
+                    {[...owners?.docs]?.sort((a, b) => a.name - b.name)?.map((owner, idx) => {
                       return (
                         <tr
                           className={
@@ -174,10 +174,18 @@ const AdminOwnerList = ({ title }) => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>{owner?.username}</td>
                           <td>{owner?.name}</td>
+                          <td>{owner?.username}</td>
                           <td>{owner?.email}</td>
-                          <td>{owner?.status}</td>
+                          <td>{owner?.status === "Active" ? (
+                              <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                                Active
+                              </div>
+                          ) : (
+                              <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                                Deactive
+                              </div>
+                          )}</td>
                           <td>
                             {`${new Date(
                               owner?.bill_from,
