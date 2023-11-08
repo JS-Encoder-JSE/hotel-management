@@ -7,6 +7,7 @@ import Modal from "../../components/Modal.jsx";
 import RoomBookingEdit from "../../components/room/RoomBookingEdit.jsx";
 import { useRoomQuery } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
+import AddBooking from "../../components/room/AddBooking.jsx";
 
 const ManageSingleRoom = () => {
   const { id } = useParams();
@@ -132,7 +133,7 @@ const ManageSingleRoom = () => {
           </div>
           {/* Modal Booking */}
           <Modal id={`ab_modal`}>
-            <RoomBookingEdit />
+            <AddBooking />
           </Modal>
         </>
       ) : (

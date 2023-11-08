@@ -33,13 +33,13 @@ const ExpiredList = () => {
     },
   });
 
-  const {user}= store.getState().authSlice
+  const { user } = store.getState().authSlice;
   const { isLoading, data: owners } = useGetUsersQuery({
     cp: currentPage,
     filter: "Expired",
     search: keyword,
-    role:'owner',
-    parentId:user._id
+    role: "owner",
+    parentId: user._id,
   });
 
   const handlePageClick = ({ selected: page }) => {
@@ -97,61 +97,73 @@ const ExpiredList = () => {
                 <thead>
                   <tr>
                     <th>Sl</th>
-                    <th>Client Username</th>
                     <th>Client Name</th>
+                    <th>Client Username</th>
                     <th>Client Email</th>
                     <th>Client Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {owners?.docs?.map((owner, idx) => {
-                    return (
-                      <tr
-                        className={
-                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                        }
-                      >
-                        <th>{++idx}</th>
-                        <td>{owner?.username}</td>
-                        <td>{owner?.name}</td>
-                        <td>{owner?.email}</td>
-                        <td>{owner?.status}</td>
-                        <td className={`space-x-1.5`}>
-                          <span
-                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
-                            onClick={() =>
-                              navigate(`/dashboard/edit-renew/${owner?._id}`)
-                            }
-                            title={`Active`}
-                          >
-                            <MdAutorenew />
-                          </span>
-                          <span
-                            className={`btn btn-sm bg-transparent hover:bg-red-600 text-red-600 hover:text-white !border-red-600 rounded normal-case mb-2 ms-2`}
-                            title={`Suspend`}
-                            onClick={() => {
-                              setOwner({
-                                id: owner?._id,
-                                status: owner?.status,
-                              });
-                              setModalOpen(true);
-                            }}
-                          >
-                            <MdUpdate />
-                          </span>
-                          <span
-                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
-                            onClick={() =>
-                              navigate(`/dashboard/renew-view/${owner?._id}`)
-                            }
-                          >
-                            <FaEye />
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {[...owners?.docs]
+                    ?.sort((a, b) => a.name - b.name)
+                    ?.map((owner, idx) => {
+                      return (
+                        <tr
+                          className={
+                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                          }
+                        >
+                          <th>{++idx}</th>
+                          <td>{owner?.name}</td>
+                          <td>{owner?.username}</td>
+                          <td>{owner?.email}</td>
+                          <td>
+                            {owner?.status === "Active" ? (
+                              <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                                Active
+                              </div>
+                            ) : (
+                              <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                                Deactive
+                              </div>
+                            )}
+                          </td>
+                          <td className={`space-x-1.5`}>
+                            <span
+                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
+                              onClick={() =>
+                                navigate(`/dashboard/edit-renew/${owner?._id}`)
+                              }
+                              title={`Active`}
+                            >
+                              <MdAutorenew />
+                            </span>
+                            <span
+                              className={`btn btn-sm bg-transparent hover:bg-red-600 text-red-600 hover:text-white !border-red-600 rounded normal-case mb-2 ms-2`}
+                              title={`Suspend`}
+                              onClick={() => {
+                                setOwner({
+                                  id: owner?._id,
+                                  status: owner?.status,
+                                });
+                                setModalOpen(true);
+                              }}
+                            >
+                              <MdUpdate />
+                            </span>
+                            <span
+                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
+                              onClick={() =>
+                                navigate(`/dashboard/renew-view/${owner?._id}`)
+                              }
+                            >
+                              <FaEye />
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
               <Modal id={`ol_modal`}>
@@ -179,7 +191,7 @@ const ExpiredList = () => {
             </div>
           </>
         ) : (
-          <h3>No data!</h3>
+          <h3 className={`mt-10 text-center`}>No data found!</h3>
         )
       ) : (
         <Rings

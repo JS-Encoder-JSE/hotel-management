@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
@@ -108,7 +108,7 @@ const AddHotel = () => {
       setSave(false);
     }
   }, [save]);
-
+  console.log(user);
   return (
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
@@ -116,11 +116,11 @@ const AddHotel = () => {
           <div className="text-2xl md:flex justify-between items-center">
             <h2>Add Hotel</h2>
             <h2 className="shadow-lg bg-slate-100 px-4 py-2 rounded-md text-green-slimy inline-block space-x-1.5">
-              {user?.maxHotels >= 1 ? (
+              {user?.maxHotels - user?.assignedHotel.length >= 1 ? (
                 <>
                   <span>You can add</span>
                   <span className="text-green-slimy font-bold">
-                    {` ${user?.maxHotels - 1}`}
+                    {` ${user?.maxHotels - user?.assignedHotel.length}`}
                   </span>
                   <span>hotels.</span>
                 </>
@@ -135,7 +135,8 @@ const AddHotel = () => {
         </div>
 
         <div className="max-auto">
-          <form autoComplete="off"
+          <form
+            autoComplete="off"
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10"
             onSubmit={formik.handleSubmit}
           >
@@ -252,6 +253,7 @@ const AddHotel = () => {
               <button
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                disabled={user?.maxHotels - user?.assignedHotel.length === 0}
               >
                 <span>Create Hotel</span>
                 {isLoading ? (

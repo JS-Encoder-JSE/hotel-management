@@ -8,7 +8,16 @@ import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js"
 // form validation
 const validationSchema = yup.object({
   status: yup.string().required("Status is required"),
-  remarks: yup.string().required("Remarks is required"),
+  remarks: yup
+      .string()
+      .matches(
+          /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+          "Remarks must start with a character and can include characters and numbers",
+      )
+      .when([], {
+        is: (remarks) => remarks && remarks.length > 0,
+        then: yup.string().required("Remarks is required"),
+      }),
   fromDate: yup.string().required("From date is required"),
   toDate: yup.string().required("To date is required"),
 });

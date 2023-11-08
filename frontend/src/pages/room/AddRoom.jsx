@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
 import {
-    MdOutlineKeyboardArrowLeft,
-    MdOutlineKeyboardArrowRight,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 import { TbReplaceFilled } from "react-icons/tb";
 import { Navigation } from "swiper/modules";
@@ -13,6 +13,7 @@ import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { useAddRoomMutation } from "../../redux/room/roomAPI.js";
+import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
@@ -43,6 +44,7 @@ const validationSchema = yup.object({
 });
 
 const AddRoom = () => {
+  const { user } = useSelector((store) => store.authSlice);
   const [isLoading, setLoading] = useState(false);
   const [addRoom] = useAddRoomMutation();
   const [upload] = useUploadMutation();
@@ -58,6 +60,7 @@ const AddRoom = () => {
       roomNumber: "",
       photos: null,
       description: "",
+      ac: false,
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -75,7 +78,10 @@ const AddRoom = () => {
         formData.append(photoName, values.photos[i]);
       }
 
+      obj.hotel_id = user.assignedHotel;
+      obj.air_conditioned = obj.ac;
       delete obj.photos;
+      delete obj.ac;
       await upload(formData).then(
         (result) => (obj.images = result.data.imageUrls),
       );
@@ -143,7 +149,8 @@ const AddRoom = () => {
                 <span>Add Room</span>
               </h3>
             </div>
-            <form autoComplete="off"
+            <form
+              autoComplete="off"
               className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
               onSubmit={formik.handleSubmit}
             >
@@ -251,6 +258,18 @@ const AddRoom = () => {
                     {formik.touched.type && formik.errors.type}
                   </small>
                 ) : null}
+              </div>
+              <div className="flex flex-col gap-3">
+                <label className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy space-x-1.5 flex items-center">
+                  <input
+                    type="checkbox"
+                    name="ac"
+                    className="checkbox checkbox-sm"
+                    checked={formik.values.ac}
+                    onChange={formik.handleChange}
+                  />
+                  <span className="label-text">AC?</span>
+                </label>
               </div>
               {/* capacity box */}
               <div className="flex flex-col gap-3">

@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
-import ChangeShift from "../OwnerManagerManagement/ChangeShift";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
 import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
-import { useHotelQuery } from "../../redux/Owner/hotelsAPI.js";
+import {
+  useHotelQuery,
+  useUpdateHotelMutation,
+} from "../../redux/Owner/hotelsAPI.js";
 import { Rings } from "react-loader-spinner";
 import { useSelector } from "react-redux";
+import { useFormik } from "formik";
+import toast from "react-hot-toast";
+import ChangeShift from "../../components/owner/ChangeShift.jsx";
 
 const HotelListView = () => {
   const { id } = useParams();
@@ -23,6 +28,32 @@ const HotelListView = () => {
     search: "",
     role: "manager",
     parentId: user._id,
+  });
+  const [updateHotel] = useUpdateHotelMutation();
+
+  const formik = useFormik({
+    initialValues: {},
+    onSubmit: async () => {
+      const response = await updateHotel({
+        id,
+        data: {
+          managers: [
+            ...managerList
+                .map((elem) => ({
+                  ...(elem.manager ? JSON.parse(elem.manager) : {}),
+                  shift: elem.shift,
+                }))
+                .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+          ],
+        },
+      });
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
+    },
   });
 
   const handleChange = (e, index) => {
@@ -147,7 +178,8 @@ const HotelListView = () => {
                 </button>
               </h6>
               <Modal id={`ol_modal`}>
-                <HotelAsManager
+                <ChangeShift
+                    formik={formik}
                   setSave={setSave}
                   managers={managers?.docs}
                   managerList={managerList}

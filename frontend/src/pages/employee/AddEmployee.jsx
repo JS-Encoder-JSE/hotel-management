@@ -5,10 +5,12 @@ import { FaPlusCircle, FaUpload } from "react-icons/fa";
 import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useUploadSingleMutation } from "../../redux/baseAPI.js";
+
 import { useAddEmployeeMutation } from "../../redux/employee/employeeAPI.js";
 
 // form validation
 const validationSchema = yup.object({
+  username: yup.string().required("Userame is required"),
   name: yup.string().required("Name is required"),
   userName: yup.string().required("User Name is required"),
   designation: yup.string().required("Designation is required"),
@@ -22,12 +24,15 @@ const validationSchema = yup.object({
 });
 
 const AddEmployee = () => {
+  const [selectedImages, setSelectedImages] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [addEmployee] = useAddEmployeeMutation();
   const [uploadSingle] = useUploadSingleMutation();
   const [userImgPrev, setUserImgPrev] = useState(null);
+
   const formik = useFormik({
     initialValues: {
+      username:'',
       name: "",
       userName: "",
       designation: "",
@@ -36,6 +41,8 @@ const AddEmployee = () => {
       salary: "",
       address: "",
       userImg: null,
+      documentsType: "",
+      documents: null,
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -69,16 +76,17 @@ const AddEmployee = () => {
     },
   });
 
+
   useEffect(() => {
     if (formik.values.userImg) {
       const reader = new FileReader();
-
       reader.onload = () => setUserImgPrev(reader.result);
       reader.readAsDataURL(formik.values.userImg);
     } else {
       setUserImgPrev(null);
     }
   }, [formik.values.userImg]);
+  
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -100,6 +108,25 @@ const AddEmployee = () => {
             alt=""
           />
         </div>
+
+             {/* username box */}
+             <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Username"
+            name="username"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.username && Boolean(formik.errors.username) ? (
+            <small className="text-red-600">
+              {formik.touched.username && formik.errors.username}
+            </small>
+          ) : null}
+        </div>
+
         {/* name box */}
         <div className="flex flex-col gap-3">
           <input
@@ -172,6 +199,7 @@ const AddEmployee = () => {
             </small>
           ) : null}
         </div>
+
         {/* salary box */}
         <div className="flex flex-col gap-3">
           <input
@@ -189,24 +217,9 @@ const AddEmployee = () => {
             </small>
           ) : null}
         </div>
-        {/* street box */}
-        <div className="col-span-full flex flex-col gap-3">
-          <textarea
-            placeholder="Address"
-            name="address"
-            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
-            value={formik.values.address}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.address && Boolean(formik.errors.address) ? (
-            <small className="text-red-600">
-              {formik.touched.address && formik.errors.address}
-            </small>
-          ) : null}
-        </div>
-        {/* user image box */}
-        <div className="col-span-full flex flex-col gap-3">
+        
+           {/* user image box */}
+           <div className=" flex flex-col gap-3">
           <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
             {formik.values.userImg ? (
               formik.values.userImg.name.substring(
@@ -218,7 +231,7 @@ const AddEmployee = () => {
                 className={`flex justify-center items-baseline space-x-1.5`}
               >
                 <FaUpload />
-                <span>Choose Profile</span>
+                <span>Choose Profile Photo</span>
               </span>
             )}
             <input
@@ -238,6 +251,27 @@ const AddEmployee = () => {
             </small>
           ) : null}
         </div>
+
+
+        {/* street box */}
+        <div className="col-span-full flex flex-col gap-3">
+          <textarea
+            placeholder="Address"
+            name="address"
+            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+            value={formik.values.address}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.address && Boolean(formik.errors.address) ? (
+            <small className="text-red-600">
+              {formik.touched.address && formik.errors.address}
+            </small>
+          ) : null}
+        </div>
+     
+        
+     
         {/* submit button */}
         <button
           type="submit"
