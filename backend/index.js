@@ -43,8 +43,8 @@ app.use("/reports", reportRoute);
 app.use("/hotels", hotelsRoute);
 app.use("/rooms", roomRoute);
 app.use("/foods", foodRoute);
-app.use("/booking", bookingRoute);
-app.use("/item", itemRoute);
+app.use("/bookings", bookingRoute);
+app.use("/items", itemRoute);
 // app.use("/employee", employeeRoute);
 
 app.use("/", uploadRoute);
