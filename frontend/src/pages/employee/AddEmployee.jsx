@@ -144,6 +144,7 @@ const AddEmployee = () => {
             </small>
           ) : null}
         </div>
+        
         {/*user name box */}
         <div className="flex flex-col gap-3">
           <input
