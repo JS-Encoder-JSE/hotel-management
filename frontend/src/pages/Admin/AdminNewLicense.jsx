@@ -249,7 +249,7 @@ const AdminNewLicense = () => {
 												<div className={`relative`}>
 													<div
 														className={`absolute top-3 right-3 space-x-1.5`}>
-														<label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+														{/* <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
 															<TbReplaceFilled />
 															<input
 																type="file"
@@ -263,7 +263,7 @@ const AdminNewLicense = () => {
 																	)
 																}
 															/>
-														</label>
+														</label> */}
 														<button
 															className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
 															onClick={() =>
