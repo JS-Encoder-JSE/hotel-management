@@ -7,39 +7,48 @@ import { FaFileDownload } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import { useGetTransactionlogsQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
 import { useParams } from "react-router-dom";
-// {
-//   "_id": "6545890058ff38af84f0f4f3",
-//   "tran_id": "transaction456",
-//   "payment_method": "Card",
-//   "from": "owner1",
-//   "to": "admin1",
-//   "amount": 100,
-//   "payment_for": "Renew",
-//   "remark": "License renewal for user123",
-//   "createdAt": "2023-11-03T23:57:53.034Z",
-//   "updatedAt": "2023-11-03T23:57:53.034Z",
-//   "__v": 0
-// }
+import { GrPowerReset } from "react-icons/gr";
+
 const TransactionHistory = () => {
+	const [historyPerPage] = useState(10);
+	const [pageCount, setPageCount] = useState(10);
+	const [currentPage, setCurrentPage] = useState(0);
+	const { id } = useParams();
+	const [forcePage,setForcePage]= useState(null)
+	const [searchParams, setSearchParams] = useState({
+		id,
+		fromDate: "",
+		toDate: "",
+	});
 
 	const formik = useFormik({
 		initialValues: {
 			startDate: "",
 			endDate: "",
 		},
+		onSubmit: (values) => {
+			setSearchParams((p) => ({
+				...p,
+				fromDate: formik.values.startDate,
+				toDate: formik.values.endDate,
+			}))
+		},
+		onReset: () => {
+			setCurrentPage(0);
+			setForcePage(0)
+		}
 	});
 
-	const [historyPerPage] = useState(10);
-	const [pageCount, setPageCount] = useState(10);
-	const [currentPage, setCurrentPage] = useState(0);
-	const { id } = useParams();
 
-	const [searchParams,setSearchParams] = useState({ id, fromDate:'', toDate:'' ,cp:currentPage});
-	const { data, error, isLoading, isSuccess } =
-		useGetTransactionlogsQuery(searchParams);
+
+	const { data, error, isLoading, isSuccess } = useGetTransactionlogsQuery({
+		...searchParams,
+		cp: currentPage,
+	});
 	// 65451c80dd95504ee1047f0b
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);
+		setForcePage(page)
 	};
 
 	return (
@@ -55,7 +64,6 @@ const TransactionHistory = () => {
 							selected={formik.values.startDate}
 							className={`input input-sm input-bordered rounded focus:outline-none`}
 							onChange={(date) => {
-							
 								return formik.setFieldValue("startDate", date);
 							}}
 							onBlur={formik.handleBlur}
@@ -67,18 +75,22 @@ const TransactionHistory = () => {
 							selected={formik.values.endDate}
 							className={`input input-sm input-bordered rounded focus:outline-none`}
 							onChange={(date) => {
-				
 								return formik.setFieldValue("endDate", date);
 							}}
 							onBlur={formik.handleBlur}
 						/>
 						<button
 							type={"button"}
-							onClick={()=>	setSearchParams((p) => ({
-								...p,
-								fromDate: formik.values.startDate,
-								toDate: formik.values.endDate,
-							}))}
+							onClick={() => {
+								formik.resetForm();
+								formik.handleSubmit();
+							}}
+							className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case">
+							<GrPowerReset className="text-green-slimy" />
+						</button>
+						<button
+							type={"button"}
+							onClick={formik.handleSubmit}
 							className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case">
 							Search
 						</button>
@@ -165,6 +177,7 @@ const TransactionHistory = () => {
 							marginPagesDisplayed={2}
 							onPageChange={handlePageClick}
 							renderOnZeroPageCount={null}
+							forcePage={forcePage}
 						/>
 					</div>
 				</div>

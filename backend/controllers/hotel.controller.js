@@ -132,17 +132,72 @@ export const addHotel = async (req, res) => {
       await manager.save();
     }
 
-    res.status(201).json(savedHotel); // Respond with the created hotel data
+    res.status(201).json({ message: "Successfully added hotel" }); // Respond with the created hotel data
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to add a new hotel" });
   }
 };
+export const getHotels = async (req, res) => {
+  try {
+    const { parent_id, user_id, page = 1, limit = 10, search } = req.query;
 
+    const owner = await User.findById(user_id);
+    if (!owner) {
+      return res.status(404).json({ message: "Owner not found" });
+    }
+    if (parent_id) {
+      const parent = await User.findById(parent_id);
+      if (!parent) {
+        return res.status(404).json({ message: "Parent not found" });
+      }
+      if (!["admin", "subadmin"].includes(parent.role)) {
+        return res
+          .status(403)
+          .json({ message: "You have no permission to get info" });
+      }
+    }
+
+    const query = { owner_id: user_id };
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { branch_name: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const hotels = await Hotel.paginate(query, options);
+    res.status(200).json(hotels);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve hotels" });
+  }
+};
+export const getHotelById = async (req, res) => {
+  try {
+    const { hotel_id } = req.params;
+
+    const hotel = await Hotel.findById(hotel_id);
+
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    res.status(200).json(hotel);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to retrieve hotel information" });
+  }
+};
 // Controller to update a hotel by ID
 export const updateHotel = async (req, res) => {
   try {
-    const hotelId = req.params.id; // Assuming you pass the hotel ID in the URL
+    const hotel_id = req.params.hotel_id; // Assuming you pass the hotel ID in the URL
     const updateFields = req.body; // Fields to be updated
 
     // Ensure at least one field is being updated
@@ -152,17 +207,17 @@ export const updateHotel = async (req, res) => {
 
     // Use the `findByIdAndUpdate` method to update the hotel by ID
     const updatedHotel = await Hotel.findByIdAndUpdate(
-      hotelId,
+      hotel_id,
       { $set: updateFields }, // Use $set to update only the provided fields
       { new: true }
     );
-
     if (!updatedHotel) {
       return res.status(404).json({ message: "Hotel not found" });
     }
 
-    res.status(200).json(updatedHotel);
+    res.status(200).json({ message: "Successfully updated hotel" });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Failed to update hotel" });
   }
 };

@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { FaEyeSlash } from "react-icons/fa";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
+import * as yup from "yup";
 import Modal from "../../components/Modal.jsx";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
-import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import { useAddHotelMutation } from "../../redux/Owner/hotelsAPI.js";
-import toast from "react-hot-toast";
+import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -20,16 +18,19 @@ const validationSchema = yup.object({
 });
 
 const AddHotel = () => {
+  const [isLoading, setLoading] = useState(false);
   const { user } = useSelector((store) => store.authSlice);
   const [addHotel] = useAddHotelMutation();
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
-  const { isLoading, data: managers } = useGetUsersQuery({
+  const [showManagers, setShowManagers] = useState([]);
+  const { data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
     search: "",
     role: "manager",
     parentId: user?._id,
   });
+  const [save, setSave] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -41,6 +42,8 @@ const AddHotel = () => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
+
       const obj = { ...values };
       const {
         name,
@@ -52,18 +55,12 @@ const AddHotel = () => {
 
       const response = await addHotel({
         owner_id: user?._id,
+        name,
         address,
         email,
         phone_no,
         branch_name,
-        managers: [
-          ...managerList
-            .map((elem) => ({
-              ...(elem.manager ? JSON.parse(elem.manager) : {}),
-              shift: elem.shift,
-            }))
-            .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
-        ],
+        managers: showManagers,
       });
 
       if (response?.error) {
@@ -71,7 +68,11 @@ const AddHotel = () => {
       } else {
         toast.success(response.data.message);
         formikHelpers.resetForm();
+        setManagerList([{ manager: "", shift: "" }]);
+        setSave(true);
       }
+
+      setLoading(false);
     },
   });
 
@@ -91,6 +92,22 @@ const AddHotel = () => {
   const handleAdd = () => {
     setManagerList([...managerList, { manager: "", shift: "" }]);
   };
+
+  useEffect(() => {
+    if (save) {
+      const tempList = [
+        ...managerList
+          .map((elem) => ({
+            ...(elem.manager ? JSON.parse(elem.manager) : {}),
+            shift: elem.shift,
+          }))
+          .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+      ];
+
+      setShowManagers(tempList);
+      setSave(false);
+    }
+  }, [save]);
 
   return (
     <div className={`space-y-10`}>
@@ -118,7 +135,7 @@ const AddHotel = () => {
         </div>
 
         <div className="max-auto">
-          <form
+          <form autoComplete="off"
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10"
             onSubmit={formik.handleSubmit}
           >
@@ -218,13 +235,31 @@ const AddHotel = () => {
             >
               Assign Manager
             </button>
+            {showManagers.length ? (
+              <div className={`col-span-full`}>
+                <h3>Assigned Manager</h3>
+                <ul className={`list-disc list-inside`}>
+                  {showManagers?.map((elem) => (
+                    <li>
+                      {elem.name} - {elem.shift}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             {/* submit button */}
             <div className="flex flex-col gap-3 col-span-full text-end">
               <button
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
-                Create Hotel
+                <span>Create Hotel</span>
+                {isLoading ? (
+                  <span
+                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                    role="status"
+                  ></span>
+                ) : null}
               </button>
             </div>
           </form>
@@ -232,6 +267,7 @@ const AddHotel = () => {
       </div>
       <Modal id={`ol_modal`}>
         <HotelAsManager
+          setSave={setSave}
           managers={managers?.docs}
           managerList={managerList}
           handleAdd={handleAdd}

@@ -6,8 +6,9 @@ import {
 } from "react-icons/ai";
 import profile from "../../src/assets/profile.jpeg";
 import { Link } from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {signOut} from "../redux/auth/authSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "../redux/auth/authSlice.js";
+import { GrLicense } from "react-icons/gr";
 
 const Header = ({
   isFullscreen,
@@ -16,7 +17,8 @@ const Header = ({
   isHbMenu,
   setHbMenu,
 }) => {
-  const dispatch = useDispatch()
+  const { user } = useSelector((store) => store.authSlice);
+  const dispatch = useDispatch();
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -27,50 +29,78 @@ const Header = ({
 
   return (
     <div>
-      <div className="navbar bg-white">
-        <div className="flex-1">
-          <div className="dropdown">
-            <label
-              tabIndex={0}
-              className="md:hidden btn btn-ghost btn-circle"
-              onClick={() => setHbMenu(!isHbMenu)}
-            >
-              <AiOutlineMenu></AiOutlineMenu>
-            </label>
+      <div className="navbar bg-white justify-between">
+        <div>
+          <div>
+            <div className="dropdown">
+              <label
+                tabIndex={0}
+                className="md:hidden btn btn-ghost btn-circle"
+                onClick={() => setHbMenu(!isHbMenu)}
+              >
+                <AiOutlineMenu></AiOutlineMenu>
+              </label>
+            </div>
           </div>
-        </div>
-        <label
-          tabIndex={0}
-          className="btn btn-ghost btn-circle text-2xl mr-3"
-          onClick={isFullscreen ? exitFullscreen : enterFullscreen}
-        >
-          {isFullscreen ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />}
-        </label>
-
-        {/* time setUp */}
-        <div className="inline-flex justify-center border me-3 p-3 w-52">
-          <span className="text-2xl">{time.toLocaleTimeString()}</span>
-        </div>
-        {/* time setUp */}
-
-        <div className="flex-none gap-2">
-          <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full">
-                <img src={profile} />
-              </div>
-            </label>
-            <ul
-              tabIndex={0}
-              className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+          {Math.floor(
+            Math.abs(new Date(user?.bill_from) - new Date()) /
+              (24 * 60 * 60 * 1000),
+          ) <= 30 ? (
+            <h3
+              className={`flex gap-1.5 text-xl font-bold animate-pulse text-yellow-500 ml-6`}
             >
-              <li>
-                <Link to="profile">Profile</Link>
-              </li>
-              <li onClick={() => dispatch(signOut())}>
-                <Link to={`/`}>Logout</Link>
-              </li>
-            </ul>
+              <span>
+                <GrLicense />
+              </span>
+              <span className={`-mt-0.5`}>
+                Your license will expire in{" "}
+                {Math.floor(
+                  Math.abs(new Date(user?.bill_from) - new Date()) /
+                    (24 * 60 * 60 * 1000),
+                )}{" "}
+                days
+              </span>
+            </h3>
+          ) : null}
+        </div>
+        <div>
+          <label
+            tabIndex={0}
+            className="btn btn-ghost btn-circle text-2xl mr-3"
+            onClick={isFullscreen ? exitFullscreen : enterFullscreen}
+          >
+            {isFullscreen ? (
+              <AiOutlineFullscreenExit />
+            ) : (
+              <AiOutlineFullscreen />
+            )}
+          </label>
+
+          {/* time setUp */}
+          <div className="inline-flex justify-center border me-3 p-3 w-52">
+            <span className="text-2xl">{time.toLocaleTimeString()}</span>
+          </div>
+          {/* time setUp */}
+
+          <div className="flex-none gap-2">
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img src={profile} />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <Link to="profile">Profile</Link>
+                </li>
+                <li onClick={() => dispatch(signOut())}>
+                  <Link to={`/`}>Logout</Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
 import { useFormik } from "formik";
+import React, { useState } from "react";
 import * as yup from "yup";
 import {useAddBookingMutation, useRoomsQuery} from "../../redux/room/roomAPI.js";
+import { useAddBookingMutation, useRoomsQuery } from "../../redux/room/roomAPI.js";
 
 
 // form validation
@@ -69,7 +70,7 @@ console.log(response)
 
   return (
     <>
-      <form method="dialog">
+      <form autoComplete="off" method="dialog">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           onClick={() => formik.handleReset()}
@@ -80,7 +81,7 @@ console.log(response)
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Booking</h3>
         <hr />
-        <form
+        <form autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >

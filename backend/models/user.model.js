@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import Hotel from "./hotel.model.js";
 import mongoosePaginate from "mongoose-paginate-v2";
 const ImageSchema = new mongoose.Schema({
   driving_lic_img: { type: Array, required: false, default: "" },
@@ -47,7 +48,7 @@ const userSchema = new mongoose.Schema(
     shift: {
       type: String,
       required: false,
-      enum: ["Morning","Day", "Night"],
+      enum: ["Morning", "Day", "Night"],
       default: "Day",
     },
     status: {
@@ -72,6 +73,11 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     emergency_contact: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    license_key: {
       type: String,
       required: false,
       default: "",
@@ -127,6 +133,7 @@ const userSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Hotel",
         required: false,
+        unique: true,
         default: null,
       },
     ],

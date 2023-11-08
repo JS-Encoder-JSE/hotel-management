@@ -1,7 +1,7 @@
-import React from "react";
 import { useFormik } from "formik";
+import React from "react";
+import { FaUpload } from "react-icons/fa";
 import * as yup from "yup";
-import { FaPlusCircle, FaUpload } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
@@ -54,7 +54,7 @@ const RoomEdit = () => {
           <div >
           <h1 className="text-2xl text-center m-2">Edit Room Update</h1>
           <hr className={`my-3 `}/>
-            <form
+            <form autoComplete="off"
               className="form-control grid grid-cols-1 gap-4 max-w-3xl w-full mx-auto"
               onSubmit={formik.handleSubmit}
             >

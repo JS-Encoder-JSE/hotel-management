@@ -1,11 +1,9 @@
-import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
-import { useAddInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { FaArrowLeft } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
 
 // form validation
 const validationSchema = yup.object({
@@ -57,7 +55,7 @@ const EditSwimming = () => {
           <span>Back</span>
         </div>
       </div>
-      <form
+      <form autoComplete="off"
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >

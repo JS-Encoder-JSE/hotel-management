@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
+    MdOutlineKeyboardArrowLeft,
+    MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
-import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import Select from "react-select";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import * as yup from "yup";
+import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useRoomsQuery } from "../../redux/room/roomAPI.js";
-import DatePicker from "react-datepicker";
 
 // form validation
 const validationSchema = yup.object({
@@ -145,7 +145,7 @@ const CheckIn = () => {
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
       <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
       <hr />
-      <form
+      <form autoComplete="off"
         className="form-control grid grid-cols-1 gap-4 mt-5"
         onSubmit={formik.handleSubmit}
       >

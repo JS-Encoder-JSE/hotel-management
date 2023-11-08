@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 // form validation
@@ -66,7 +66,7 @@ const SubAdminChangePass = () => {
           </button>
         </div>
       </div>
-      <form
+      <form autoComplete="off"
         className="form-control grid grid-cols-1 gap-4 mt-14"
         onSubmit={formik.handleSubmit}
       >

@@ -1,10 +1,9 @@
-import React, { useRef } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import DatePicker from "react-datepicker";
-import { Link, useNavigate } from "react-router-dom";
-import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
+import React, { useRef } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -20,23 +19,25 @@ const ManagerSettings = ({ owner }) => {
   const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();
   const formik = useFormik({
     initialValues: {
-      status: "",
       remarks: "",
-      fromDate: "",
-      toDate: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       const obj = { ...values };
-      const { status, remarks: remark, fromDate: from, toDate: to } = obj;
+      const { remarks: remark } = obj;
 
       const response = await updateLicenseStatus({
         user_id: owner?.id,
-        status,
+        status:
+          owner?.status === "Deactive" || owner?.status === "Deleted"
+            ? "Active"
+            : owner?.status === "Active"
+            ? "Deactive"
+            : null,
         extended_time: [
           {
-            from,
-            to,
+            from: "",
+            to: "",
           },
         ],
         remark,
@@ -53,7 +54,7 @@ const ManagerSettings = ({ owner }) => {
 
   return (
     <>
-      <form method="dialog">
+      <form autoComplete="off" method="dialog">
         <button
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -65,9 +66,16 @@ const ManagerSettings = ({ owner }) => {
         </button>
       </form>
       <div>
-        <h3 className={`text-2xl font-semibold mb-3`}>Change Status</h3>
+        <h3 className={`text-2xl font-semibold mb-3`}>
+          Change Status to{" "}
+          {owner?.status === "Deactive" || owner?.status === "Deleted"
+            ? "In Duty"
+            : owner?.status === "Active"
+            ? "Resign"
+            : null}
+        </h3>
         <hr />
-        <form
+        <form autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >

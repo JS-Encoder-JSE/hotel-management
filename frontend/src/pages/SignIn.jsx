@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { setToken } from "../redux/auth/authSlice.js";
-import { useSignInMutation } from "../redux/auth/authAPI.js";
-import imgAbstractSI from "../assets/bg-abstract-signin.svg";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import imgAbstractSI from "../assets/bg-abstract-signin.svg";
+import { useSignInMutation } from "../redux/auth/authAPI.js";
+import { setToken } from "../redux/auth/authSlice.js";
 
 // sign in form validation
 const validationSchema = yup.object({
@@ -79,7 +79,7 @@ const SignIn = () => {
                 <h3 className={`text-2xl font-bold`}>Sign In</h3>
                 <p>Sign in Using Your Username</p>
               </div>
-              <form
+              <form autoComplete="off"
                 className="form-control gap-y-4"
                 onSubmit={formik.handleSubmit}
               >

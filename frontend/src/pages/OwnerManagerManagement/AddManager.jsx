@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { FaEye, FaEyeSlash, FaTrash, FaUpload } from "react-icons/fa";
-import imgPlaceHolder from "../../assets/img-placeholder.jpg";
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash, FaUpload } from "react-icons/fa";
 import {
-  useUploadMutation,
-  useUploadSingleMutation,
-} from "../../redux/baseAPI.js";
+    MdOutlineKeyboardArrowLeft,
+    MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import * as yup from "yup";
 import { useAddSubAdminMutation } from "../../redux/admin/subadmin/subadminAPI.js";
 import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
-} from "react-icons/md";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import { TbReplaceFilled } from "react-icons/tb";
-import DatePicker from "react-datepicker";
+    useUploadMutation,
+    useUploadSingleMutation,
+} from "../../redux/baseAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -205,7 +203,7 @@ const AddManager = () => {
         </div>
 
         <div className="max-auto">
-          <form
+          <form autoComplete="off"
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
             onSubmit={formik.handleSubmit}
           >

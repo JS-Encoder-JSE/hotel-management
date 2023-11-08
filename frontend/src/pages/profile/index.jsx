@@ -12,13 +12,11 @@ const Profile = () => {
       className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
     >
       <div>
-        <div
-          className="absolute -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32"
-        >
+        <div className="absolute -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
           <img
-              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
-              alt=""
-              className="object-cover h-full w-full rounded-full"
+            src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+            alt=""
+            className="object-cover h-full w-full rounded-full"
           />
         </div>
         <div className={`text-end`}>
@@ -34,29 +32,50 @@ const Profile = () => {
       <div className="grid grid-cols-1 gap-4 mt-14">
         {/* name box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
-          <label className={`min-w-[4rem]`}>Name: </label>
+          <label className={`min-w-[5.5rem]`}>Name</label>
+          <span>:</span>
           <p className="text-slate-600">{user?.name}</p>
         </div>
         {/* Email box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
-          <label className={`min-w-[4rem]`}>Email: </label>
+          <label className={`min-w-[5.5rem]`}>Email</label>
+          <span>:</span>
           <p className="text-slate-600">{user?.email}</p>
         </div>
         {/* Phone box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
-          <label className={`min-w-[4rem]`}>Phone: </label>
+          <label className={`min-w-[5.5rem]`}>Phone</label>
+          <span>:</span>
           <p className="text-slate-600">{user?.phone_no}</p>
         </div>
         {/* Address box */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
-          <label className={`min-w-[4rem]`}>Address: </label>
+          <label className={`min-w-[5.5rem]`}>Address</label>
+          <span>:</span>
           <p className="text-slate-600">{user?.address}</p>
         </div>
         {user?.role === "owner" ? (
-          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
-            <label className={`min-w-[4rem]`}>License: </label>
-            <p className="text-slate-600">-</p>
-          </div>
+          <>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+              <label className={`min-w-[5.5rem]`}>License</label>
+              <span>:</span>
+              <p className="text-slate-600">-</p>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+              <label className={`min-w-[5.5rem]`}>Expire Date</label>
+              <span>:</span>
+              <p className="text-slate-600">
+                {new Date(user?.bill_to).toLocaleDateString()}
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+              <label className={`min-w-[5.5rem]`}>Last Renew <br/> Date</label>
+              <span>:</span>
+              <p className="text-slate-600">
+                {new Date(user?.bill_from).toLocaleDateString()}
+              </p>
+            </div>
+          </>
         ) : null}
       </div>
     </div>

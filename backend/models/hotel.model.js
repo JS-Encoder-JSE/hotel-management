@@ -21,7 +21,6 @@ const ManagerSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true,
     },
     parent_id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -45,7 +44,7 @@ const ManagerSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Deactive", "Suspended", "Expired", "Deleted"],
+      enum: ["Active", "Deactive", "Deleted"],
       required: false,
       default: "Active",
     },
@@ -97,6 +96,12 @@ const hotelSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  status: {
+    type: String,
+    required: false,
+    enum: ["Active", "Deactive", "Deleted"],
+    default: "Active",
+  },
   address: {
     type: String,
     required: false,
@@ -111,7 +116,6 @@ const hotelSchema = new mongoose.Schema({
     default: 0,
   },
   managers: [ManagerSchema],
-  // rooms: [RoomsSchema],
 });
 
 // Apply the mongoose-paginate-v2 plugin to your schema
