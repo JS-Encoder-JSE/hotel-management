@@ -264,7 +264,7 @@ const Report = () => {
                     <thead>
                       <tr>
                         <th>SL</th>
-                        <th>Name</th>
+                        <th>Username</th>
                         <th>Phone Number</th>
                         <th>Purchase Date</th>
                         <th>Expired Date</th>
@@ -275,7 +275,7 @@ const Report = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {reports?.docs?.map((report, idx) => {
+                      {[...reports?.docs]?.sort((a, b) => a.username - b.username)?.map((report, idx) => {
                         return (
                           <tr
                             className={

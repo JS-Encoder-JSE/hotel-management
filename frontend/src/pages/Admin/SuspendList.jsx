@@ -84,15 +84,15 @@ const {user}= store.getState().authSlice
                   <thead>
                     <tr>
                       <th>Sl</th>
-                      <th>Client Username</th>
                       <th>Client Name</th>
+                      <th>Client Username</th>
                       <th>Client Email</th>
                       <th>Client Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {owners?.docs?.map((owner, idx) => {
+                    {[...owners?.docs]?.sort((a, b) => a.name - b.name)?.map((owner, idx) => {
                       return (
                         <tr
                           className={
@@ -100,10 +100,18 @@ const {user}= store.getState().authSlice
                           }
                         >
                           <th>{++idx}</th>
-                          <td>{owner?.username}</td>
                           <td>{owner?.name}</td>
+                          <td>{owner?.username}</td>
                           <td>{owner?.email}</td>
-                          <td>{owner?.status}</td>
+                          <td>{owner?.status === "Active" ? (
+                              <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                                Active
+                              </div>
+                          ) : (
+                              <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                                Deactive
+                              </div>
+                          )}</td>
                           <td className={`space-x-1.5`}>
                             <span
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
