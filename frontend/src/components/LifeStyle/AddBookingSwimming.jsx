@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as yup from "yup";
 import {useAddBookingMutation, useRoomsQuery} from "../../redux/room/roomAPI.js";
-import { useAddBookingMutation, useRoomsQuery } from "../../redux/room/roomAPI.js";
 
 
 // form validation
