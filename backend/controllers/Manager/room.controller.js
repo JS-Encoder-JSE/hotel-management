@@ -1,6 +1,6 @@
 ﻿import Room from '../../models/Manager/room.model.js'; // Assuming the Room model file path
 
-// add room 
+//add room
 export const addRoom = async (req, res) => {
   try {
     const {
@@ -12,7 +12,10 @@ export const addRoom = async (req, res) => {
       floorNumber,
       roomNumber,
       images,
-      description
+      description,
+      air_conditioned,
+      status,
+      hotel_id
     } = req.body;
 
     const newRoom = new Room({
@@ -24,7 +27,10 @@ export const addRoom = async (req, res) => {
       floorNumber,
       roomNumber,
       images,
-      description
+      description,
+      air_conditioned,
+      status,
+      hotel_id
     });
 
     const savedRoom = await newRoom.save();
@@ -35,14 +41,76 @@ export const addRoom = async (req, res) => {
       message: 'Room added successfully'
     });
   } catch (error) {
-    console.log(error)
+    console.error(error);
+
+    if (error.name === 'ValidationError') {
+      res.status(400).json({
+        success: false,
+        error: error,
+        message: 'Validation error'
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: error,
+        message: 'Internal Server Error'
+      });
+    }
+  }
+};
+
+// get rooms by hotel Id 
+
+export const getRoomsByHotelId = async (req, res) => {
+  try {
+    const { hotel_id } = req.params; // Assuming you're passing `hotel_id` as a route parameter
+    const { category, type, status, search } = req.query; // Allow query parameters for filtering and searching
+
+    // Construct the filter object based on the query parameters
+    const filter = {
+      hotel_id,
+    };
+
+    if (category) {
+      filter.category = category;
+    }
+
+    if (type) {
+      filter.type = type;
+    }
+
+    if (status) {
+      filter.status = status;
+    }
+
+    // Add a search condition based on the "search" query parameter
+    if (search) {
+      filter.$or = [
+        { description: { $regex: search, $options: 'i' } }, // Case-insensitive search on the description field
+        // Add additional fields for searching if needed
+      ];
+    }
+
+    // Query the database with the constructed filter
+    const rooms = await Room.find(filter);
+
+    res.status(200).json({
+      success: true,
+      data: rooms,
+      message: 'Rooms retrieved successfully'
+    });
+  } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       error: error,
-      message:'Internal Server Error'
+      message: 'Internal Server Error'
     });
   }
 };
+
+
 
 // get room by id 
 export const getRoomById = async (req, res) => {

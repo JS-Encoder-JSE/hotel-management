@@ -3,13 +3,13 @@
 const roomSchema = new mongoose.Schema({
   category: {
     type: String,
-    enum: ["Standard", "Deluxe", "Suite", "General"],  // Add other category options as needed
-    required:true
+    enum: ["Standard", "Deluxe", "Suite", "President-Suite"],  // Add other category options as needed
+    default: "Standard",
   },
   type: {
     type: String,
-    enum: ["Single", "Double", "Twin"],  // Add other type options as needed
-    required:true
+    enum: ["Single", "Double"],  // Add other type options as needed
+    default: "Single",
   },
   capacity: {
     type: Number,
@@ -21,7 +21,7 @@ const roomSchema = new mongoose.Schema({
   },
   bedSize: {
     type: String,
-    enum: ["SM", "LG", "XL"],
+    enum: ["Single", "Double", "King"],
     required: true,
   },
   floorNumber: {
@@ -40,11 +40,19 @@ const roomSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  air_conditioned:{
+    type: Boolean,
+    required: true,
+  },
   status: {
     type: String,
     default: "Available",
     enum: ["Available", "Booked", "CheckedIn"],
   },
+  hotel_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    require:true
+  }
 });
 
 const Room = mongoose.model("Room", roomSchema);
