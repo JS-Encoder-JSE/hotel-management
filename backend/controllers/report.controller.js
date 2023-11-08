@@ -25,13 +25,22 @@ export const getReport = async (req, res) => {
 
     if (fromDate && toDate) {
       // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
-      query.createdAt = { $gte: new Date(fromDate), $lte: new Date(toDate) };
+      query.$and = [
+        { createdAt: { $gte: new Date(fromDate), $lte: new Date(toDate) } },
+        { updatedAt: { $gte: new Date(fromDate), $lte: new Date(toDate) } },
+      ];
     } else if (fromDate) {
       // If only fromDate is provided, use $gte for the minimum date filter
-      query.createdAt = { $gte: new Date(fromDate) };
+      query.$and = [
+        {createdAt:{ $gte: new Date(fromDate) }},
+        {updatedAt:{ $gte: new Date(fromDate) }},
+      ];
     } else if (toDate) {
       // If only toDate is provided, use $lte for the maximum date filter
-      query.createdAt = { $lte: new Date(toDate) };
+      query.createdAt = [
+        {createdAt:{ $lte: new Date(fromDate) }},
+        {updatedAt:{ $lte: new Date(fromDate) }},
+      ];
     }
     if (["Sold", "Renew", "Expired"].includes(filter)) {
       query.status = filter;
