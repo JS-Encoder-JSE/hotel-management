@@ -8,7 +8,13 @@ const reportAPI = baseAPI.injectEndpoints({
           filter ? `&filter=${filter}` : ""
         }${search ? `&search=${search}` : ""}${uid ? `&user_id=${uid}` : ""}&toDate=${toDate||''}&fromDate=${fromDate||''}`,
     }),
+    getAllReport: build.query({
+      query: ({ cp, filter, search, toDate,fromDate}) =>
+          `reports/get-all-report?page=${++cp}${
+              filter ? `&filter=${filter}` : ""
+          }${search ? `&search=${search}` : ""}&toDate=${toDate||''}&fromDate=${fromDate||''}`,
+    }),
   }),
 });
 
-export const { useGetReportQuery } = reportAPI;
+export const { useGetReportQuery, useGetAllReportQuery } = reportAPI;

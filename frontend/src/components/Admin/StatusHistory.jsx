@@ -158,9 +158,16 @@ const StatusHistory = () => {
                         <td>{item?.remark}</td>
                         <td>{item?.changed_from}</td>
                         <td>
-                          {item?.extended_time === null
-                            ? "null"
-                            : item?.extended_time?.to}
+                          {item?.extended_time?.from
+                            ? new Date(
+                                item?.extended_time.from,
+                              ).toLocaleDateString()
+                            : ""} -
+                          {item?.extended_time?.to
+                            ? new Date(
+                                item?.extended_time?.to,
+                              ).toLocaleDateString()
+                            : ""}
                         </td>
                       </tr>
                     );

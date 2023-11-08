@@ -3,19 +3,22 @@ import { FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
-import { useGetReportQuery } from "../../redux/admin/report/reportAPI.js";
+import {
+  useGetAllReportQuery,
+  useGetReportQuery,
+} from "../../redux/admin/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
 import { GrPowerReset } from "react-icons/gr";
 
 const Report = () => {
   const { user } = useSelector((store) => store.authSlice);
-  const {id} = useParams()
+  const { id } = useParams();
   const navigate = useNavigate();
   const [reportsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
@@ -51,13 +54,9 @@ const Report = () => {
     },
   });
 
-  const {
-    isLoading,
-    data: reports,
-  } = useGetReportQuery({
+  const { isLoading, data: reports } = useGetAllReportQuery({
     ...searchParams,
     cp: currentPage,
-    uid: id || user._id,
     filter: formik.values.filter,
   });
 
@@ -275,32 +274,42 @@ const Report = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {[...reports?.docs]?.sort((a, b) => a.username - b.username)?.map((report, idx) => {
-                        return (
-                          <tr
-                            className={
-                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                            }
-                          >
-                            <th>{++idx}</th>
-                            <td>{report?.username}</td>
-                            <td>{report?.phone_no}</td>
-                            <td>
-                              {extractTimeOrDate(report?.bill_from, "date")}
-                              <br />{" "}
-                              {extractTimeOrDate(report.bill_from, "time")}
-                            </td>
-                            <td>
-                              {extractTimeOrDate(report?.bill_to, "date")}
-                              <br /> {extractTimeOrDate(report.bill_to, "time")}
-                            </td>
-                            <td>{report?.deposit_by}</td>
-                            <td>{report?.hotel_limit}</td>
-                            <td>{report?.paid_amount}</td>
-                            <td>{report?.status}</td>
-                          </tr>
-                        );
-                      })}
+                      {[...reports?.docs]
+                        ?.sort((a, b) =>
+                          a.username.toLowerCase() > b.username.toLowerCase()
+                            ? 1
+                            : a.username.toLowerCase() <
+                              b.username.toLowerCase()
+                            ? -1
+                            : 0,
+                        )
+                        ?.map((report, idx) => {
+                          return (
+                            <tr
+                              className={
+                                idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                              }
+                            >
+                              <th>{++idx}</th>
+                              <td>{report?.username}</td>
+                              <td>{report?.phone_no}</td>
+                              <td>
+                                {extractTimeOrDate(report?.bill_from, "date")}
+                                <br />{" "}
+                                {extractTimeOrDate(report.bill_from, "time")}
+                              </td>
+                              <td>
+                                {extractTimeOrDate(report?.bill_to, "date")}
+                                <br />{" "}
+                                {extractTimeOrDate(report.bill_to, "time")}
+                              </td>
+                              <td>{report?.deposit_by}</td>
+                              <td>{report?.hotel_limit}</td>
+                              <td>{report?.paid_amount}</td>
+                              <td>{report?.status}</td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                     <tfoot className={`text-sm`}>
                       <tr>
