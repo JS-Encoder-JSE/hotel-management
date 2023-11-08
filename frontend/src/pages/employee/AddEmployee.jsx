@@ -14,7 +14,7 @@ const validationSchema = yup.object({
   designation: yup.string().required("Designation is required"),
   shift: yup.string().required("Shift is required"),
   salary: yup.string().required("Salary is required"),
-  street: yup.string().required("Street address is required"),
+  address: yup.string().required("Address is required"),
   state: yup.string().required("State is required"),
   city: yup.string().required("City is required"),
   zip: yup.string().required("Zip is required"),
@@ -34,32 +34,29 @@ const AddEmployee = () => {
       phone: "",
       shift: "",
       salary: "",
-      street: "",
-      state: "",
-      city: "",
-      zip: "",
+      address: "",
       userImg: null,
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       setLoading(true);
 
-      const obj = {...values};
+      const obj = { ...values };
       const formData = new FormData();
       const photoName = values.userImg.name.substring(
-          0,
-          values.userImg.name.lastIndexOf("."),
+        0,
+        values.userImg.name.lastIndexOf("."),
       );
 
       formData.append(photoName, values.userImg);
 
       delete obj.userImg;
       await uploadSingle(formData).then(
-          (result) => (obj.images = result.data.imageUrl),
+        (result) => (obj.images = result.data.imageUrl),
       );
 
       const response = await addEmployee(obj);
-console.log(response)
+      console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -91,7 +88,8 @@ console.log(response)
         <FaPlusCircle />
         <span>Add Employee</span>
       </h3>
-      <form autoComplete="off"
+      <form
+        autoComplete="off"
         className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
@@ -138,19 +136,15 @@ console.log(response)
         </div>
         {/* designation box */}
         <div className="flex flex-col gap-3">
-          <select
+          <input
+            type="text"
+            placeholder="Designation"
             name="designation"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.designation}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Designation
-            </option>
-            <option value="waiter">Waiter</option>
-            <option value="housekeeper">House Keeper</option>
-          </select>
+          />
           {formik.touched.designation && Boolean(formik.errors.designation) ? (
             <small className="text-red-600">
               {formik.touched.designation && formik.errors.designation}
@@ -196,70 +190,18 @@ console.log(response)
           ) : null}
         </div>
         {/* street box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Street address"
-            name="street"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.street}
+        <div className="col-span-full flex flex-col gap-3">
+          <textarea
+            placeholder="Address"
+            name="address"
+            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+            value={formik.values.address}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.street && Boolean(formik.errors.street) ? (
+          {formik.touched.address && Boolean(formik.errors.address) ? (
             <small className="text-red-600">
-              {formik.touched.street && formik.errors.street}
-            </small>
-          ) : null}
-        </div>
-        {/* state box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="State"
-            name="state"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.state}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.state && Boolean(formik.errors.state) ? (
-            <small className="text-red-600">
-              {formik.touched.state && formik.errors.state}
-            </small>
-          ) : null}
-        </div>
-        {/* city box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="City"
-            name="city"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.city}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.city && Boolean(formik.errors.city) ? (
-            <small className="text-red-600">
-              {formik.touched.city && formik.errors.city}
-            </small>
-          ) : null}
-        </div>
-        {/* zip box */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Zip"
-            name="zip"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.zip}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.zip && Boolean(formik.errors.zip) ? (
-            <small className="text-red-600">
-              {formik.touched.zip && formik.errors.zip}
+              {formik.touched.address && formik.errors.address}
             </small>
           ) : null}
         </div>
@@ -303,10 +245,10 @@ console.log(response)
         >
           <span>Add</span>
           {isLoading ? (
-              <span
-                  className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                  role="status"
-              ></span>
+            <span
+              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+              role="status"
+            ></span>
           ) : null}
         </button>
       </form>

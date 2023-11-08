@@ -58,9 +58,7 @@ const InventoryLists = ({ setCurrentPage, lists }) => {
           <thead>
             <tr className={`text-lg`}>
               <th>Name</th>
-              <th>Quantity</th>
-              <th>Stock</th>
-              <th>Use</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -80,9 +78,7 @@ const InventoryLists = ({ setCurrentPage, lists }) => {
                       </div>
                     </div>
                   </td>
-                  <td>{quantity}</td>
-                  <td>{stock}</td>
-                  <td>{use}</td>
+                  <td>Available</td>
                   <td className={`space-x-1.5`}>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}

@@ -38,8 +38,8 @@ const ManageInventory = () => {
             onBlur={formik.handleBlur}
           >
             <option value="all">All</option>
-            <option value="in_stock">Stock</option>
-            <option value="out_of_stock">Out of stock</option>
+            <option value="in_stock">Available</option>
+            <option value="out_of_stock">Unavailable</option>
           </select>
           {formik.touched.filter && Boolean(formik.errors.filter) ? (
             <small className="text-red-600">

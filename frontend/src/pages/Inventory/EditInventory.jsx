@@ -13,11 +13,6 @@ const validationSchema = yup.object({
     .string()
     .required("Description is required")
     .min(20, "Description at least 20 characters length"),
-  ItemQuantity: yup
-    .number()
-    .required("Quantity is required")
-    .positive("Quantity must be a positive number")
-    .integer("Quantity must be an integer"),
 });
 
 const EditInventory = () => {
@@ -28,7 +23,7 @@ const EditInventory = () => {
     initialValues: {
       itemName: "",
       itemDescription: "",
-      ItemQuantity: "",
+      status: "",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -63,7 +58,7 @@ const EditInventory = () => {
         </div>
       </div>
       <form autoComplete="off"
-        className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
+        className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
         {/* Item Name */}
@@ -83,22 +78,24 @@ const EditInventory = () => {
             </small>
           ) : null}
         </div>
-        {/* Item Quantity */}
         <div className="flex flex-col gap-3">
-          <input
-            type="number"
-            placeholder="Item Quantity"
-            name="ItemQuantity"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.ItemQuantity}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.ItemQuantity &&
-          Boolean(formik.errors.ItemQuantity) ? (
-            <small className="text-red-600">
-              {formik.touched.ItemQuantity && formik.errors.ItemQuantity}
-            </small>
+          <select
+              name="status"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
+              value={formik.values.status}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Status
+            </option>
+            <option value="">Available</option>
+            <option value="">Unavailable</option>
+          </select>
+          {formik.touched.status && Boolean(formik.errors.status) ? (
+              <small className="text-red-600">
+                {formik.touched.status && formik.errors.status}
+              </small>
           ) : null}
         </div>
         <div className="col-span-full flex flex-col gap-3">
