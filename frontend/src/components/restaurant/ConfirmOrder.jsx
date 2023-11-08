@@ -1,16 +1,38 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
+import { setOrder } from "../../redux/add-order/addOrderSlice.js";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { useRoomNumbersQuery } from "../../redux/room/roomAPI.js";
 
-const ConfirmOrder = ({formik}) => {
+// form validation
+const validationSchema = yup.object({
+  roomNumber: yup.string().required("Room number is required"),
+});
+
+const ConfirmOrder = () => {
+  const formik = useFormik({
+    initialValues: {
+      roomNumber: "",
+    },
+    validationSchema,
+    onSubmit: () => {
+      console.log(order);
+    },
+  });
+  const dispatch = useDispatch();
+  const { isLoading, data: rooms } = useRoomNumbersQuery();
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
+  useEffect(() => {
+    if (formik.values.roomNumber)
+      dispatch(setOrder({ ...order, roomNumber: formik.values.roomNumber }));
+  }, [formik.values.roomNumber]);
 
   return (
     <>
       <form autoComplete="off" method="dialog">
-        <button
-          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-        >
+        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
           ✕
         </button>
       </form>
@@ -18,8 +40,31 @@ const ConfirmOrder = ({formik}) => {
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Confirm Order</h3>
         <hr />
+        <div className="flex flex-col gap-3 mt-5">
+          <select
+            name="roomNumber"
+            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+            value={formik.values.roomNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Room Number
+            </option>
+            {rooms?.data?.map((room) => (
+              <option key={room?._id} value={room?._id}>
+                {room?.roomNumber}
+              </option>
+            ))}
+          </select>
+          {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
+            <small className="text-red-600">
+              {formik.touched.roomNumber && formik.errors.roomNumber}
+            </small>
+          ) : null}
+        </div>
         {order.foods.length ? (
-          <div className="overflow-x-auto w-full mt-10">
+          <div className="overflow-x-auto w-full mt-5">
             <table className="table">
               <thead>
                 <tr>

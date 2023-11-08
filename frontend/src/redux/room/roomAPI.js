@@ -7,9 +7,9 @@ const roomAPI = baseAPI.injectEndpoints({
       providesTags: ["room"],
     }),
     rooms: build.query({
-      query: ({ cp, filter, search }) =>
-        `rooms/get-room?page=${++cp}${filter ? `&status=${filter}` : ""}${
-          search ? `&roomNumber=${search}` : ""
+      query: ({ id, cp, filter, search }) =>
+        `rooms/get-rooms-by-hotel/${id}?page=${++cp}${filter ? `&filter=${filter}` : ""}${
+          search ? `&search=${search}` : ""
         }`,
       providesTags: ["room"],
     }),

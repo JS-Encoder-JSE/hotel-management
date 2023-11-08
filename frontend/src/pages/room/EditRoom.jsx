@@ -73,10 +73,12 @@ const EditRoom = () => {
         }
       }
 
-      delete obj.photos;
       obj.images = images;
+      obj.air_conditioned = obj.ac;
+      delete obj.ac;
+      delete obj.photos;
 
-      const response = await updateRoom({ id, obj });
+      const response = await updateRoom({ id, data: obj });
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -131,7 +133,7 @@ const EditRoom = () => {
         capacity: room?.data?.capacity,
         price: room?.data?.price,
         bedSize: room?.data?.bedSize,
-        photos: null,
+        ac: room?.data?.air_conditioned,
         description: room?.data?.description,
       });
 
@@ -224,36 +226,36 @@ const EditRoom = () => {
           </div>
           <div className="flex flex-col gap-3">
             <select
-              name="category"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.category}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+                name="category"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.category}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             >
-              <option value="" disabled>
+              <option value="" selected disabled>
                 Category
               </option>
               <option value="Standard">Standard</option>
               <option value="Deluxe">Deluxe</option>
               <option value="Suite">Suite</option>
-              <option value="General">General</option>
+              <option value="President Suite">President Suite</option>
             </select>
             {formik.touched.category && Boolean(formik.errors.category) ? (
-              <small className="text-red-600">
-                {formik.touched.category && formik.errors.category}
-              </small>
+                <small className="text-red-600">
+                  {formik.touched.category && formik.errors.category}
+                </small>
             ) : null}
           </div>
           {/* type box */}
           <div className="flex flex-col gap-3">
             <select
-              name="type"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.type}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+                name="type"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.type}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             >
-              <option value="" disabled>
+              <option value="" selected disabled>
                 Type
               </option>
               <option value="Single">Single</option>
@@ -261,21 +263,33 @@ const EditRoom = () => {
               <option value="Twin">Twin</option>
             </select>
             {formik.touched.type && Boolean(formik.errors.type) ? (
-              <small className="text-red-600">
-                {formik.touched.type && formik.errors.type}
-              </small>
+                <small className="text-red-600">
+                  {formik.touched.type && formik.errors.type}
+                </small>
             ) : null}
+          </div>
+          <div className="flex flex-col gap-3">
+            <label className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy space-x-1.5 flex items-center">
+              <input
+                  type="checkbox"
+                  name="ac"
+                  className="checkbox checkbox-sm"
+                  checked={formik.values.ac}
+                  onChange={formik.handleChange}
+              />
+              <span className="label-text">AC?</span>
+            </label>
           </div>
           {/* capacity box */}
           <div className="flex flex-col gap-3">
             <select
-              name="capacity"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.capacity}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+                name="capacity"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.capacity}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             >
-              <option value="" disabled>
+              <option value="" selected disabled>
                 Capacity
               </option>
               <option value={1}>1</option>
@@ -283,48 +297,48 @@ const EditRoom = () => {
               <option value={4}>4</option>
             </select>
             {formik.touched.capacity && Boolean(formik.errors.capacity) ? (
-              <small className="text-red-600">
-                {formik.touched.capacity && formik.errors.capacity}
-              </small>
+                <small className="text-red-600">
+                  {formik.touched.capacity && formik.errors.capacity}
+                </small>
             ) : null}
           </div>
           {/* price box */}
           <div className="flex flex-col gap-3">
             <input
-              type="text"
-              placeholder="Price"
-              name="price"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.price}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+                type="text"
+                placeholder="Price"
+                name="price"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             />
             {formik.touched.price && Boolean(formik.errors.price) ? (
-              <small className="text-red-600">
-                {formik.touched.price && formik.errors.price}
-              </small>
+                <small className="text-red-600">
+                  {formik.touched.price && formik.errors.price}
+                </small>
             ) : null}
           </div>
           {/* bed size box */}
           <div className="flex flex-col gap-3">
             <select
-              name="bedSize"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.bedSize}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+                name="bedSize"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.bedSize}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             >
-              <option value="" disabled>
+              <option value="" selected disabled>
                 Bed Size
               </option>
-              <option value="SM">SM</option>
-              <option value="LG">LG</option>
-              <option value="XL">XL</option>
+              <option value="Single">Single</option>
+              <option value="Double">Double</option>
+              <option value="King">King</option>
             </select>
             {formik.touched.bedSize && Boolean(formik.errors.bedSize) ? (
-              <small className="text-red-600">
-                {formik.touched.bedSize && formik.errors.bedSize}
-              </small>
+                <small className="text-red-600">
+                  {formik.touched.bedSize && formik.errors.bedSize}
+                </small>
             ) : null}
           </div>
           {/* room photos */}

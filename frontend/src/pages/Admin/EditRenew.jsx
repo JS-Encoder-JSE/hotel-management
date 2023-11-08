@@ -125,7 +125,7 @@ const EditRenew = () => {
           {/* Amount box */}
           <div className="flex flex-col gap-3">
             <input
-              type="text"
+              type="number"
               placeholder="Amount"
               name="amount"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"

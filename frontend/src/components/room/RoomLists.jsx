@@ -40,7 +40,7 @@ const RoomLists = ({ setCurrentPage, rooms }) => {
   };
 
   useEffect(() => {
-    if (rooms) setPageCount(rooms.pagination.totalPages);
+    if (rooms) setPageCount(rooms?.data?.totalPages);
   }, [rooms]);
 
   return (
@@ -58,7 +58,7 @@ const RoomLists = ({ setCurrentPage, rooms }) => {
             </tr>
           </thead>
           <tbody>
-            {rooms?.data?.map((room, idx) => {
+            {rooms?.data?.docs?.map((room, idx) => {
               const {
                 _id,
                 bedSize,

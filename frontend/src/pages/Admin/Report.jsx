@@ -3,7 +3,7 @@ import { FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
@@ -15,6 +15,7 @@ import { GrPowerReset } from "react-icons/gr";
 
 const Report = () => {
   const { user } = useSelector((store) => store.authSlice);
+  const {id} = useParams()
   const navigate = useNavigate();
   const [reportsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
@@ -53,11 +54,10 @@ const Report = () => {
   const {
     isLoading,
     data: reports,
-    refetch,
   } = useGetReportQuery({
     ...searchParams,
     cp: currentPage,
-    uid: user._id,
+    uid: id || user._id,
     filter: formik.values.filter,
   });
 

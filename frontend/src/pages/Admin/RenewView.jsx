@@ -48,6 +48,7 @@ const RenewView = () => {
 							<h2 className="card-title mb-3">
 								Client Information{" "}
 							</h2>
+							<h6>Client Username : {data?.username}</h6>
 							<h6>Client Name : {data?.name}</h6>
 							<h6>Hotel Address : {data?.address}</h6>
 							<h6>Contact Number : {data?.phone_no}</h6>

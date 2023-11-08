@@ -110,6 +110,37 @@ const ManagerListView = () => {
                     </ul>
                   </div>
                 </div>
+                <h1 className="text-center text-2xl mb-4">Assigned Hotel</h1>
+                <div className="overflow-x-auto">
+                  <table className="table border">
+                    <thead>
+                      <tr>
+                        <th>Sl</th>
+                        <th>Name</th>
+                        <th>Branch</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {userData?.assignedHotel?.map((elem, idx) => {
+                        return (
+                          <tr
+                            className={
+                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                            }
+                          >
+                            <th> {++idx}</th>
+                            <td>{elem?.name}</td>
+                            <td>{elem?.branch_name}</td>
+                            <td>{elem?.email}</td>
+                            <td>{elem?.phone_no}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </>
             ) : (
               <Rings
