@@ -1,48 +1,51 @@
 ﻿import Booking from '../../models/Manager/booking.model.js';
 
 export const addBooking = async (req, res) => {
-    try {
-        const {
-          roomNumber,
-          guestName,
-          mobileNumber,
-          age,
-          adult,
-          children,
-          paymentMethod,
-          discount,
-          documents,
-          to,
-          from,
-        } = req.body;
-    
-        const newBooking = new Booking({
-          roomNumber,
-          guestName,
-          mobileNumber,
-          age,
-          adult,
-          children,
-          paymentMethod,
-          discount,
-          documents,
-          from,
-          to
-        });
-    
-        const savedBooking = await newBooking.save();
-    
-        res.status(201).json({
-          success: true,
-          data: savedBooking,
-          message: 'Booking added successfully'
-        });
-      } catch (error) {
-        res.status(500).json({
-          success: false,
-          error: 'Internal Server Error'
-        });
-      }
+  try {
+    const {
+      room_id,
+      guestName,
+      address,
+      mobileNumber,
+      emergency_contact,
+      adult,
+      children,
+      paymentMethod,
+      discount,
+      from,
+      to,
+      nationality,
+    } = req.body;
+
+    const newBooking = new Booking({
+      room_id,
+      guestName,
+      address,
+      mobileNumber,
+      emergency_contact,
+      adult,
+      children,
+      paymentMethod,
+      discount,
+      from,
+      to,
+      nationality,
+      status: 'Active', // Set the default status as 'Active' if not provided in the request
+    });
+
+    const savedBooking = await newBooking.save();
+
+    res.status(201).json({
+      success: true,
+      data: savedBooking,
+      message: 'Booking added successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Internal Server Error',
+    });
+  }
 };
 
 export const getBooking = async (req, res) => {
