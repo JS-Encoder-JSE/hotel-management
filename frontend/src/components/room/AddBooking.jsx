@@ -46,32 +46,48 @@ const validationSchema = yup.object({
   // }),
 });
 
+
 const AddBooking = () => {
-  const { isLoading, data: rooms } = useRoomsQuery();
+  const { isLoading, data: rooms } = useRoomsQuery({ id, cp, filter, search });
   const [addBooking] = useAddBookingMutation();
   const [selectedRooms, setSelectedRooms] = useState([]);
-
+  console.log({rooms})
+  // {
+  //   "room_id": "654b6f1869788fc80c2eb0d8",
+  //   "hotel_id": "654a4d67932e9946307d5663",
+  //   "guestName": "John Doe",
+  //   "address": "123 Main Street",
+  //   "mobileNumber": "123-456-7890",
+  //   "emergency_contact": "987-654-3210",
+  //   "adult": 2,
+  //   "children": 1,
+  //   "paymentMethod": "Cash",
+  //   "discount": 10,
+  //   "from": "2023-11-15T14:00:00.000Z",
+  //   "to": "2023-11-20T12:00:00.000Z",
+  //   "nationality": "US"
+  // }
   const formik = useFormik({
     initialValues: {
-      rooms: null,
+      room_id: null,
+      hotel_id:'',
       guestName: "",
       address:"",
       mobileNumber: "",
-      emergencyNumber: "",
+      emergency_contact: "",
       adult: "",
       children: "",
       paymentMethod: "",
-      trxID: "",
+      // trxID: "",
       discount: "",
-      fromDate: "",
-      toDate: "",
+      from: "",
+      to: "",
       nationality: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       const obj = { ...values };
       obj.roomNumber = 101
-
       console.log(obj)
 
       const response = await addBooking(obj);
@@ -135,6 +151,8 @@ console.log(response)
               }}
             />
           </div>
+
+          
           {/* Guest box */}
           <div className="flex flex-col gap-3">
             <input
