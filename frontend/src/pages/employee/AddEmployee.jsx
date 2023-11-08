@@ -10,6 +10,7 @@ import { useAddEmployeeMutation } from "../../redux/employee/employeeAPI.js";
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
+  userName: yup.string().required("User Name is required"),
   designation: yup.string().required("Designation is required"),
   shift: yup.string().required("Shift is required"),
   salary: yup.string().required("Salary is required"),
@@ -28,6 +29,7 @@ const AddEmployee = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
+      userName: "",
       designation: "",
       phone: "",
       shift: "",
@@ -114,6 +116,23 @@ console.log(response)
           {formik.touched.name && Boolean(formik.errors.name) ? (
             <small className="text-red-600">
               {formik.touched.name && formik.errors.name}
+            </small>
+          ) : null}
+        </div>
+        {/*user name box */}
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="User Name"
+            name="userName"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.userName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.userName && Boolean(formik.errors.userName) ? (
+            <small className="text-red-600">
+              {formik.touched.userName && formik.errors.userName}
             </small>
           ) : null}
         </div>
@@ -257,7 +276,7 @@ console.log(response)
                 className={`flex justify-center items-baseline space-x-1.5`}
               >
                 <FaUpload />
-                <span>Choose photo</span>
+                <span>Choose Profile</span>
               </span>
             )}
             <input

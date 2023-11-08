@@ -92,7 +92,7 @@ const SwimmingBooking = () => {
         </button>
       </form> */}
       <div className=" ">
-        <h3 className={`text-2xl font-semibold mb-3 text-center`}> Swimming Pool Booking </h3>
+        <h3 className={`text-2xl font-semibold mb-3 text-center`}> Swimming Pool Reservation </h3>
         <hr />
         <form
           className=" form-control grid grid-cols-1 gap-4 mt-5 "

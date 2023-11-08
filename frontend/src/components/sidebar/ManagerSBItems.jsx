@@ -314,7 +314,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Swimming Booking
+              Pool Reservation
             </NavLink>
           </li>
           <li>
@@ -331,7 +331,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
          
         </ul>
       </li>
-      <li className={`group p-2`}>
+      {/* <li className={`group p-2`}>
         <div
           onClick={(e) => handleSBItems(e)}
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
@@ -348,7 +348,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </span>
         </div>
         <ul className={`group-[.active]:block hidden`}>
-          {/* <li>
+          <li>
             <NavLink
               to={`/dashboard/add-gym`}
               className={({ isActive }) =>
@@ -358,19 +358,23 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
              Add Gym
             </NavLink>
-          </li> */}
-          <li>
-            <NavLink
-              to={`/dashboard/gym-booking`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Gym Booking
-            </NavLink>
           </li>
-          {/* <li>
+          
+          <li>
+        <NavLink
+          to={`/dashboard/gym-booking`}
+          className={({ isActive }) =>
+            "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
+            (isActive ? " bg-gray-300" : "")
+          }
+        >
+          <div className={`flex space-x-1.5`}>
+            <MdBarChart />
+            <span>Gym Reservation</span>
+          </div>
+        </NavLink>
+      </li>
+          <li>
             <NavLink
               to={`/dashboard/gym-list`}
               className={({ isActive }) =>
@@ -380,9 +384,25 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Gym List
             </NavLink>
-          </li> */}
+          </li>
          
         </ul>
+      </li> */}
+
+      {/* Report */}
+      <li>
+        <NavLink
+          to={`/dashboard/gym-booking`}
+          className={({ isActive }) =>
+            "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
+            (isActive ? " bg-gray-300" : "")
+          }
+        >
+          <div className={`flex space-x-1.5`}>
+            <MdOutlineSportsGymnastics />
+            <span>Gym Reservation</span>
+          </div>
+        </NavLink>
       </li>
       <li>
         <NavLink

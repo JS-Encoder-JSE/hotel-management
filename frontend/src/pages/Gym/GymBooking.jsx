@@ -99,7 +99,7 @@ const GymBooking = () => {
       </Modal> */}
 
 <div>
-        <h3 className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case text-2xl font-bold"> Gym Booking </h3>
+        <h3 className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case text-2xl font-bold"> Gym Reservation </h3>
         <hr />
         <form
           className=" form-control grid grid-cols-1 gap-4 mt-5 "

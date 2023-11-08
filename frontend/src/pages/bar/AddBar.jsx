@@ -6,28 +6,29 @@ import * as yup from "yup";
 // form validation
 const validationSchema = yup.object({
   brandName: yup.string().required("Brand Name is required"),
+  typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
+  status: yup.string().required("Type Of Alcohol is required"),
+  surveyorQuantity: yup
+  .number()
+  .required("Quantity is required")
+  .positive("Quantity must be a positive number")
+  .integer("Quantity must be an integer"),
+  totalQuantity: yup
+  .number()
+  .required("Total Quantity is required")
+  .positive("Total Quantity must be a positive number")
+  .integer("Total Quantity must be an integer"),
+  ItemPrice: yup.string().required("Price is required"),
+  weightPerBottle: yup.string().required("weight Per Bottle is required"),
+ 
   itemDescription: yup
     .string()
     .required("Description is required")
     .min(20, "Description at least 20 characters length"),
-    surveyorQuantity: yup
-    .number()
-    .required("Quantity is required")
-    .positive("Quantity must be a positive number")
-    .integer("Quantity must be an integer"),
-    totalQuantity: yup
-    .number()
-    .required("Total Quantity is required")
-    .positive("Total Quantity must be a positive number")
-    .integer("Total Quantity must be an integer"),
-    weightPerBottle: yup
-    .number()
-    .required("weightPerBottle is required")
-    .positive("weightPerBottle must be a positive number")
-    .integer("weightPerBottle must be an integer"),
-    ItemPrice: yup.string().required("Price is required"),
-    typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
-    status: yup.string().required("Type Of Alcohol is required"),
+
+   
+    
+   
 });
 
 const AddBar = () => {
@@ -36,12 +37,12 @@ const AddBar = () => {
     initialValues: {
       brandName: "",
       typeOfAlcohol: "",
-      itemDescription: "",
+      status: "",
       surveyorQuantity: "",
       totalQuantity: "",
-      weightPerBottle: "",
       ItemPrice: "",
-      status: "",
+      weightPerBottle: "",
+      itemDescription: "",
      
     },
     validationSchema,
@@ -57,7 +58,7 @@ const AddBar = () => {
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
         <FaPlusCircle />
-        <span>Add Item Bar</span>
+        <span>Add Bar Item</span>
       </h3>
       <form autoComplete="off"
     
@@ -112,10 +113,9 @@ const AddBar = () => {
                   <option value="" selected disabled>
                     Status
                   </option>
-                  <option value=" Active">Active</option>
-                  <option value="InActive">InActive </option>
-                  <option value="Bookded"> Bookded</option>
-                  <option value="UnderMaintenence">Under Maintenence</option>
+                  <option value=" available">Available</option>
+                  <option value="notavailable">Not Available </option>
+                 
                 </select>
                 {formik.touched.status && Boolean(formik.errors.status) ? (
                   <small className="text-red-600">
@@ -123,10 +123,10 @@ const AddBar = () => {
                   </small>
                 ) : null}
               </div>
-        {/* Item Quantity */}
+        {/* surveyor Quantity */}
         <div className="flex flex-col gap-3">
           <input
-            type="number"
+            type="text"
             placeholder="surveyor Quantity"
             name="surveyorQuantity"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -163,7 +163,7 @@ const AddBar = () => {
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder=" Price"
+            placeholder="Price"
             name="ItemPrice"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.ItemPrice}
@@ -177,7 +177,7 @@ const AddBar = () => {
             </small>
           ) : null}
         </div>
-        {/* Weight Price */}
+        {/* Weight Per Price */}
         <div className="flex flex-col gap-3">
           <input
             type="text"

@@ -1,51 +1,106 @@
-import { useFormik } from "formik";
 import React from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import * as yup from "yup";
+import { useFormik } from "formik";
+// import BookingLists from "../../components/room/BookingLists.jsx";
+import { FaArrowLeft, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
+import Modal from "../../components/Modal.jsx";
+// import AddBooking from "../../components/room/AddBooking.jsx";
+import AddBookingSwimming from "../../components/LifeStyle/AddBookingSwimming.jsx";
 import { FaPencil } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
+// import SwimmingLists from "../../components/LifeStyle/SwimmingLists.jsx";
+
 
 // form validation
 const validationSchema = yup.object({
-  poolName: yup.string().required("Pool Name  is required"),
-  itemDescription: yup
-    .string()
-    .required("Description is required")
-    .min(20, "Description at least 20 characters length"),
-    surveyorQuantity: yup
+  roomNo: yup
+  .number()
+  .required("Room Number is required")
+  .positive("Room Number must be a positive number")
+  .integer("Room Number must be an integer"),
+  guestName: yup.string().required("Name is required"),
+  status: yup.string().required("Status is required"),
+  poolSelect: yup.string().required("pool Select is required"),
+  members: yup
     .number()
-    .required("Quantity is required")
-    .positive("Quantity must be a positive number")
-    .integer("Quantity must be an integer"),
-    ItemPrice: yup.string().required("Price is required"),
-    typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
+    .required("capacity Number is required")
+    .positive("capacity must be a positive number"),
+    perPersonPrice: yup
+    .number()
+    .required("Item Price is required")
+    .positive("Item Price must be a positive number"),
+
+
 });
 
 const EditSwimming = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
-      brandName: "",
-      typeOfAlcohol: "",
-      itemDescription: "",
-      surveyorQuantity: "",
-      ItemPrice: "",
-     
+      roomNo: "",
+      guestName: "",
+      status:"",
+      poolSelect: "",
+      members: "",
+      perPersonPrice: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-        console.log(values);
-      },
+    onSubmit: async (values,) => {
+    console.log(values)
+
+
+  
+    },
   });
 
   return (
-    <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
-  <div
+    <div  className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}>
+      {/* <div className={`flex justify-end gap-4`}>
+        <div className={`flex gap-1.5 `}>
+          <button
+            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+            onClick={() => window.ab_modal.showModal()}
+          >
+            <FaPlus />
+            <span>Swimming Pool Booking</span>
+          </button>
+          <div className={`relative sm:min-w-[20rem]`}>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+            />
+            <button
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
+        </div>
+      </div>
+      <SwimmingLists /> 
+       <Modal id={`ab_modal`}>
+        <AddBookingSwimming />
+      </Modal> */}
+        {/* <form method="dialog">
+        <button
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          onClick={() => formik.handleReset()}
+        >
+          ✕
+        </button>
+      </form> */}
+      <div className=" ">
+      <div
         className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
       >
         <h3 className={`flex text-2xl text-white space-x-1.5`}>
           <FaPencil />
-          <span>Update Swimming Pool</span>
+          <span>Edit Swimming Pool</span>
         </h3>
         <div
           className={`flex hover:text-white hover:bg-transparent border border-white items-center space-x-1.5 bg-white text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
@@ -55,87 +110,70 @@ const EditSwimming = () => {
           <span>Back</span>
         </div>
       </div>
-      <form autoComplete="off"
-        className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
-        onSubmit={formik.handleSubmit}
-      >
-        {/*Name box */}
-        <div className="flex flex-col gap-5">
-          <input
-            type="text"
-            placeholder="Guest Name"
-            name="name"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.name && Boolean(formik.errors.name) ? (
-            <small className="text-red-600">
-              {formik.touched.name && formik.errors.name}
-            </small>
-          ) : null}
-        </div>
-        {/*Room Number box */}
-        <div className="flex flex-col gap-5">
-          <input
-            type="text"
-            placeholder="Room Number"
-            name="roomNumber"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.roomNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
-            <small classroomNumber="text-red-600">
-              {formik.touched.roomNumber && formik.errors.roomNumber}
-            </small>
-          ) : null}
-        </div>
-        {/* Pool Name  */}
-        <div className="flex flex-col gap-5">
-          <input
-            type="text"
-            placeholder="Pool Name"
-            name="poolName"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.poolName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.poolName && Boolean(formik.errors.poolName) ? (
-            <small className="text-red-600">
-              {formik.touched.poolName && formik.errors.poolName}
-            </small>
-          ) : null}
-        </div>
-        {/* Type Of Name */}
-        <div className="flex flex-col gap-3">
-                <select
-                  name="typeOfName"
-                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.typeOfName}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="" selected disabled>
-                    Type Of Name
-                  </option>
-                  <option value="CommercialSwimmigPools ">Commercial Swimmig Pools</option>
-                  <option value="ResidentialSwimmingPools">Residential Swimming Pools</option>
-                  <option value="CompetitionPools">Competition Pools</option>
-                  <option value="IndoorSwimmingPools"> Indoor Swimming Pools</option>
-                  <option value="OutdoorPools">Outdoor Pools </option>
-                </select>
-                {formik.touched.typeOfName && Boolean(formik.errors.typeOfName) ? (
-                  <small className="text-red-600">
-                    {formik.touched.typeOfName && formik.errors.typeOfName}
-                  </small>
-                ) : null}
-              </div>
-        {/* Status */}
-        {/* <div className="flex flex-col gap-3">
+        <hr />
+        <form
+          className=" form-control grid grid-cols-1 gap-4 mt-5 "
+          onSubmit={formik.handleSubmit}
+        >
+          {/* Room Number */}
+          {/* <div className="flex flex-col gap-3">
+            <Select
+              placeholder="Room number"
+              defaultValue={selectedRooms}
+              options={transformedRooms}
+              isMulti
+              isSearchable
+              closeMenuOnSelect={false}
+              onKeyDown={handleKeyDown}
+              onChange={setSelectedRooms}
+              noOptionsMessage={() => "No room available"}
+              classNames={{
+                control: (state) =>
+                  `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    state.isFocused ? "!shadow-none" : ""
+                  }`,
+                valueContainer: () => "!p-0",
+                placeholder: () => "!m-0",
+              }}
+            />
+          </div> */}
+
+          {/* Room Number box */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Room Number"
+              name="roomNo"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.roomNo}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.roomNo && Boolean(formik.errors.roomNo) ? (
+              <small className="text-red-600">
+                {formik.touched.roomNo && formik.errors.roomNo}
+              </small>
+            ) : null}
+          </div>
+          {/* Guest box */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Guest name"
+              name="guestName"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.guestName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.guestName && Boolean(formik.errors.guestName) ? (
+              <small className="text-red-600">
+                {formik.touched.guestName && formik.errors.guestName}
+              </small>
+            ) : null}
+          </div>
+          {/* Status */}
+         <div className="flex flex-col gap-3">
                 <select
                   name="status"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -156,9 +194,9 @@ const EditSwimming = () => {
                     {formik.touched.status && formik.errors.status}
                   </small>
                 ) : null}
-              </div> */}
-        {/* Pool Name Select */}
-        {/* <div className="flex flex-col gap-3">
+              </div>
+                 {/* select Pool Name */}
+              <div className="flex flex-col gap-3">
                 <select
                   name="poolSelect"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -173,95 +211,72 @@ const EditSwimming = () => {
                   <option value="RoyalPools"> Royal Pools</option>
                   <option value="NeptunePool"> Neptune Pool</option>
                 </select>
-                {formik.touched.status && Boolean(formik.errors.status) ? (
+                {formik.touched.poolSelect && Boolean(formik.errors.poolSelect) ? (
                   <small className="text-red-600">
-                    {formik.touched.status && formik.errors.status}
+                    {formik.touched.poolSelect && formik.errors.poolSelect}
                   </small>
                 ) : null}
-              </div> */}
-
-      
-        {/* Capacity*/}
+              </div>
+                {/* Members*/}
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Capacity"
-            name="capacity"
+            placeholder="Members"
+            name="members"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.capacity}
+            value={formik.values.members}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.capacity &&
-          Boolean(formik.errors.capacity) ? (
+          {formik.touched.members &&
+          Boolean(formik.errors.members) ? (
             <small className="text-red-600">
-              {formik.touched.capacity && formik.errors.capacity}
+              {formik.touched.members && formik.errors.members}
+            </small>
+          ) : null}
+        </div>
+            {/* Price */}
+              <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Per Person Price"
+            name="perPersonPrice"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.perPersonPrice}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.perPersonPrice &&
+          Boolean(formik.errors.perPersonPrice) ? (
+            <small className="text-red-600">
+              {formik.touched.perPersonPrice && formik.errors.perPersonPrice}
             </small>
           ) : null}
         </div>
        
-        {/* Item Price */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Price"
-            name="ItemPrice"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.ItemPrice}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.ItemPrice &&
-          Boolean(formik.errors.ItemPrice) ? (
-            <small className="text-red-600">
-              {formik.touched.ItemPrice && formik.errors.ItemPrice}
-            </small>
-          ) : null}
-        </div>
-          {/* From Date */}
+          {/* From */}
           {/* <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="From  MM/DD/YYY"
-            name="fromDate"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.fromDate}
-            onChange={formik.handleChange}
-            onBlur={(e) => {
-              e.target.type = "text";
-              formik.handleBlur;
-            }}
-            onFocus={(e) => (e.target.type = "date")}
-          />
-          {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
-            <small className="text-red-600">
-              {formik.touched.fromDate && formik.errors.fromDate}
-            </small>
-          ) : null}
-        </div> */}
-        {/* To box */}
-        {/* <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="To  MM/DD/YYY"
-            name="toDate"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.toDate}
-            onChange={formik.handleChange}
-            onBlur={(e) => {
-              e.target.type = "text";
-              formik.handleBlur;
-            }}
-            onFocus={(e) => (e.target.type = "date")}
-          />
-          {formik.touched.toDate && Boolean(formik.errors.toDate) ? (
-            <small className="text-red-600">
-              {formik.touched.toDate && formik.errors.toDate}
-            </small>
-          ) : null}
-        </div> */}
-         {/* Hour Price */}
-         {/* <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="From  MM/DD/YYY"
+              name="fromDate"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.fromDate}
+              onChange={formik.handleChange}
+              onBlur={(e) => {
+                e.target.type = "text";
+                formik.handleBlur;
+              }}
+              onFocus={(e) => (e.target.type = "date")}
+            />
+            {formik.touched.fromDate && Boolean(formik.errors.fromDate) ? (
+              <small className="text-red-600">
+                {formik.touched.fromDate && formik.errors.fromDate}
+              </small>
+            ) : null}
+          </div> */}
+        {/* Hour of swimming */}
+  {/* <div className="flex flex-col gap-3">
           <input
             type="text"
             placeholder="Hour Of Swimming Pool"
@@ -278,34 +293,18 @@ const EditSwimming = () => {
             </small>
           ) : null}
         </div> */}
-        
-        {/* Pool Details */}
-        <div className="col-span-full flex flex-col gap-3">
-          <textarea
-            placeholder="Pool Details......."
-            name="remarks"
-            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
-            value={formik.values.remarks}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.remarks &&
-          Boolean(formik.errors.remarks) ? (
-            <small className="text-red-600">
-              {formik.touched.remarks && formik.errors.remarks}
-            </small>
-          ) : null}
-        </div>
-        {/* submit button */}
-        <div className=" col-span-full text-end mt-5 ">
-          <button
-            type="submit"
-            className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
-          >
-            Update
-          </button>
-        </div>
-      </form>
+
+          {/* button */}
+          <div className={`flex justify-between`}>
+            <button
+              type={"submit"}
+              className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              Confirm
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -69,7 +69,7 @@ const SwimmingPoolList = () => {
                 Name
               </th>
               <th>Status</th>
-              <th>Members</th>
+              <th>Capacity</th>
               <th>
                 Per Person <br />
                 Price
@@ -100,7 +100,7 @@ const SwimmingPoolList = () => {
                         </span> */}
                     <span
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                      onClick={() => navigate(`/dashboard/hotel-edit/${idx}`)}
+                      onClick={() => navigate(`/dashboard/swimming-edit/${idx}`)}
                     >
                       <FaEdit />
                     </span>
