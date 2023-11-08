@@ -37,7 +37,7 @@ const CreateReport = ({values}) => {
       <Page size="A4" style={styles.page}>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-            {Object.keys(values[0]).map((header, index) => (
+            {Object?.keys(values[0]).map((header, index) => (
               <Text key={index} style={[styles.tableCell, styles.text]}>
                 {header}
               </Text>
