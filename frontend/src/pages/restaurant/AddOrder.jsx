@@ -17,10 +17,12 @@ const validationSchema = yup.object({
 const AddOrder = () => {
   const { isLoading, data: rooms } = useRoomNumbersQuery();
   const { order } = useSelector((store) => store.addOrderSlice);
+  const [roomNo,setRoomNo]= useState()
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
-      roomNumber: "",
+      roomNumber: {},
+      
     },
     validationSchema,
     onSubmit: () => {
@@ -50,7 +52,7 @@ const AddOrder = () => {
               Room Number
             </option>
             {rooms?.data?.map((room) => (
-              <option key={room?._id} value={room?._id}>{room?.roomNumber}</option>
+              <option key={room?._id} value={[room._id,room.roomNumber]}>{room?.roomNumber}</option>
             ))}
           </select>
           {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (

@@ -4,7 +4,7 @@ import COItem from "./COItem.jsx";
 
 const ConfirmOrder = ({formik}) => {
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
-
+console.log()
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -17,6 +17,7 @@ const ConfirmOrder = ({formik}) => {
 
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Confirm Order</h3>
+        <h4>Room No: {formik.values.roomNumber.split(',')[1]}</h4>
         <hr />
         {order.foods.length ? (
           <div className="overflow-x-auto w-full mt-10">
