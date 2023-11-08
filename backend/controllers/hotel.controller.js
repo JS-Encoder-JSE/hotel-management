@@ -199,7 +199,7 @@ export const getHotelsByManagerId = async (req, res) => {
     const { manager_id } = req.params; // Assuming managerId is in the URL parameters
 
     // Use Mongoose to find hotels that have a manager with the specified ID
-    const hotels = await Hotel.find({ 'managers._id': manager_id });
+    const hotels = await Hotel.find({ 'managers._id': manager_id }).select('-managers');
 
     if (!hotels || hotels.length === 0) {
       return res.status(404).json({ message: 'No hotels found for this manager ID' });
