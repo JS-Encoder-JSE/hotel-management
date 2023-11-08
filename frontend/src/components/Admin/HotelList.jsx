@@ -51,7 +51,7 @@ const HotelList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {hotels?.docs?.map((hotel, idx) => {
+                    {[...hotels?.docs]?.sort((a, b) => a.name - b.name)?.map((hotel, idx) => {
                       return (
                         <tr
                           className={
