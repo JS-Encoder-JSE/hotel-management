@@ -155,8 +155,8 @@ export const getBookingById = async (req, res) => {
 
 export const updateBooking = async (req, res) => {
   try {
-    const bookingId = req.params.booking_id; // Assuming you pass the booking ID in the request body
-    const updateData = req.body; // Object containing the fields to update
+    const bookingId = req.params.booking_id;
+    const updateData = req.body;
 
     const updatedBooking = await Booking.findByIdAndUpdate(
       bookingId,
@@ -171,6 +171,25 @@ export const updateBooking = async (req, res) => {
       });
     }
 
+    // Check if the update includes changing the status to "CheckedIn"
+    if (updateData.status === "CheckedIn") {
+      const roomIds = updatedBooking.room_ids;
+
+      // Update room status to "CheckedIn"
+      await Room.updateMany(
+        { _id: { $in: roomIds } },
+        { $set: { status: "CheckedIn" } }
+      );
+    }
+    if (updateData.status === "CheckedOut") {
+      const roomIds = updatedBooking.room_ids;
+
+      // Update room status to "CheckedIn"
+      await Room.updateMany(
+        { _id: { $in: roomIds } },
+        { $set: { status: "Available" } }
+      );
+    }
     res.status(200).json({
       success: true,
       data: updatedBooking,
