@@ -7,8 +7,8 @@ import { Rings } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import {
-    useGetUserQuery,
-    useUpdateUserMutation,
+  useGetUserQuery,
+  useUpdateUserMutation,
 } from "../../redux/admin/subadmin/subadminAPI.js";
 import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 
@@ -161,7 +161,8 @@ const ManagerEdit = () => {
 
         <div className="max-auto">
           {!isLoading ? (
-            <form autoComplete="off"
+            <form
+              autoComplete="off"
               className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
               onSubmit={formik.handleSubmit}
             >
@@ -184,11 +185,19 @@ const ManagerEdit = () => {
                     />
                   </label>
                 </div>
-                <img
-                  src={userImgPrev && userData?.images?.profile_img}
-                  alt=""
-                  className={`w-full h-96 object-cover`}
-                />
+                {userImgPrev ? (
+                  <img
+                    src={userImgPrev}
+                    alt=""
+                    className={`w-full h-96 object-cover`}
+                  />
+                ) : (
+                  <img
+                    src={userData?.images?.profile_img}
+                    alt=""
+                    className={`w-full h-96 object-cover`}
+                  />
+                )}
               </div>
               {/* manager Name box */}
               <div className="flex flex-col gap-3">

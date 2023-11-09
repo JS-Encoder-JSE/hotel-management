@@ -12,7 +12,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
   const { order } = useSelector((store) => store.addOrderSlice);
   const dispatch = useDispatch();
   const [deleteFood] = useDeleteFoodMutation();
-
+console.log(food)
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -69,7 +69,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
           </div>
         )}
       </td>
-      <td>0</td>
+      <td>{food?.serveyor_quantity}</td>
       <td>{food?.price}</td>
       <th className={`flex gap-1.5`}>
         {!isAdd ? (

@@ -89,6 +89,7 @@ const EditProfileAdmin = () => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
+        navigate(-1);
         toast.success(response.data.message);
       }
     },

@@ -13,11 +13,13 @@ import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { useAddFoodMutation } from "../../redux/restaurant/foodAPI.js";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
+import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
   foodName: yup.string().required("Food name is required"),
+  chooseHotel: yup.string().required("Hotel is required"),
   surveyorQuantity: yup.string().required("Surveyor quantity is required"),
   price: yup
     .number()
@@ -36,7 +38,8 @@ const AddFood = () => {
   const [addFood] = useAddFoodMutation();
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
-  const {user} = useSelector(store => store.authSlice)
+  const { user } = useSelector((store) => store.authSlice);
+  const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const formik = useFormik({
     initialValues: {
       foodName: "",
@@ -44,6 +47,7 @@ const AddFood = () => {
       description: "",
       photos: null,
       surveyorQuantity: "",
+      chooseHotel: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -56,6 +60,7 @@ const AddFood = () => {
         description,
         surveyorQuantity: serveyor_quantity,
         photos,
+        chooseHotel: hotel_id,
       } = obj;
 
       const formData = new FormData();
@@ -74,7 +79,7 @@ const AddFood = () => {
       );
 
       const response = await addFood({
-        hotel_id: user?.assignedHotel[0],
+        hotel_id,
         food_name,
         price,
         description,
@@ -206,6 +211,30 @@ const AddFood = () => {
             )}
           </Swiper>
         </div>
+        <div className="flex flex-col gap-3">
+          <select
+            name="chooseHotel"
+            className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.chooseHotel}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Choose Hotel
+            </option>
+
+            {hotelList?.map((i) => (
+              <option key={i._id} value={i._id}>
+                {i.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.chooseHotel && Boolean(formik.errors.chooseHotel) ? (
+              <small className="text-red-600">
+                {formik.touched.chooseHotel && formik.errors.chooseHotel}
+              </small>
+          ) : null}
+        </div>
         {/* name box */}
         <div className="flex flex-col gap-3">
           <input
@@ -225,18 +254,20 @@ const AddFood = () => {
         </div>
         <div className="flex flex-col gap-3">
           <input
-              type="text"
-              placeholder="Surveyor Quantity"
-              name="surveyorQuantity"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.surveyorQuantity}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+            type="text"
+            placeholder="Surveyor Quantity"
+            name="surveyorQuantity"
+            className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+            value={formik.values.surveyorQuantity}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
           />
-          {formik.touched.surveyorQuantity && Boolean(formik.errors.surveyorQuantity) ? (
-              <small className="text-red-600">
-                {formik.touched.surveyorQuantity && formik.errors.surveyorQuantity}
-              </small>
+          {formik.touched.surveyorQuantity &&
+          Boolean(formik.errors.surveyorQuantity) ? (
+            <small className="text-red-600">
+              {formik.touched.surveyorQuantity &&
+                formik.errors.surveyorQuantity}
+            </small>
           ) : null}
         </div>
 
