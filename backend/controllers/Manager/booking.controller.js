@@ -3,7 +3,7 @@
 export const addBooking = async (req, res) => {
   try {
     const {
-      room_id,
+      room_ids,
       hotel_id,
       guestName,
       address,
@@ -22,7 +22,7 @@ export const addBooking = async (req, res) => {
     } = req.body;
 
     const newBooking = new Booking({
-      room_id,
+      room_ids,
       hotel_id,
       guestName,
       address,

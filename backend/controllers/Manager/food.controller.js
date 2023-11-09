@@ -1,4 +1,4 @@
-﻿import Food from "../../models/Manager/food.model.js";
+﻿import { Food, FoodOrder } from "../../models/Manager/food.model.js";
 
 export const addFood = async (req, res) => {
   try {
@@ -144,25 +144,27 @@ export const deletefood = async (req, res) => {
 // order
 export const addOrder = async (req, res) => {
   try {
-    const { foods, room } = req.body;
+    const { room_id, hotel_id, items, grand_total } = req.body;
 
-    const orderFoods = foods?.map(async (element) => {
-      const { food, quantity } = element;
-      let foodItem = await Food.findById(food);
-      foodItem = { sell: foodItem.sell + 1, ...foodItem };
-      await foodItem.save();
-      // await Food.findByIdAndUpdate(food, { $inc: { sell: 1 } });
+    const newFoodOrder = new FoodOrder({
+      room_id,
+      hotel_id,
+      items,
+      grand_total,
     });
-    const order = new FoodOrder({
-      room,
-      foods: orderFoods,
+
+    const savedFoodOrder = await newFoodOrder.save();
+
+    res.status(201).json({
+      success: true,
+      data: savedFoodOrder,
+      message: "Food order added successfully",
     });
-    await order.save();
-    res.status(201).json({ message: "Order created successfully" });
   } catch (error) {
+    console.error(error); // Log the error for debugging
     res.status(500).json({
-      message: "Error creating order",
-      error: error.message,
+      success: false,
+      error: "Internal Server Error",
     });
   }
 };
