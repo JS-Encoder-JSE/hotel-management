@@ -3,8 +3,8 @@ import baseAPI from "../baseAPI.js";
 const foodAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
     foods: build.query({
-      query: ({ cp, pp, search }) =>
-        `foods/get-food?limit=${pp}&page=${++cp}${
+      query: ({ id, cp, pp, search }) =>
+        `foods/get-foods-by-hotel/${id}?limit=${pp}&page=${++cp}${
           search ? `&food_name=${search}` : ""
         }`,
       providesTags: ["food"],

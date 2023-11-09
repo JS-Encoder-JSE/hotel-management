@@ -47,7 +47,6 @@ const HotelList = () => {
                       <th>Phone Number</th>
                       {/* <th>License <br /> Number</th> */}
                       {/* <th> Manager</th> */}
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -66,16 +65,6 @@ const HotelList = () => {
                           <td>{hotel?.phone_no}</td>
                           {/* <td>123456</td> */}
                           {/* <td>Manager 1</td> */}
-                          <td className={`space-x-1.5`}>
-                            <span
-                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                              onClick={() =>
-                                navigate(`/dashboard/adminowner-view/${idx}`)
-                              }
-                            >
-                              <FaEye />
-                            </span>
-                          </td>
                         </tr>
                       );
                     })}
