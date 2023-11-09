@@ -74,6 +74,7 @@ import AddGym from "./pages/Gym/AddGym.jsx";
 import GymList from "./pages/Gym/GymList.jsx";
 import LicenseHistory from "./pages/owner/LicenseHistory.jsx";
 import EditProfileAdmin from "./pages/profile/EditProfileAdmin.jsx";
+import OrderBarItem from "./pages/bar/OrderBarItem.jsx";
 
 
 
@@ -323,6 +324,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <EditBar />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "order-bar-item",
+              element: (
+                <ManagerRoute>
+                  <OrderBarItem />
                 </ManagerRoute>
               ),
             },
