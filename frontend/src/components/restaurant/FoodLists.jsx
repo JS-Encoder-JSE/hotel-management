@@ -50,6 +50,7 @@ const FoodLists = () => {
                 Surveyor <br /> Quantity
               </th>
               <th>Price</th>
+              <th className={`text-center`}>Add / Remove <br/> Food</th>
               <th>Action</th>
             </tr>
           </thead>
