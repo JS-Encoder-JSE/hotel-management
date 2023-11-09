@@ -86,7 +86,7 @@ const SubAdminList = () => {
       setModalOpen(false);
     }
   }, [modalOpen]);
-
+  console.log(subadmins);
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
@@ -156,7 +156,13 @@ const SubAdminList = () => {
                     </thead>
                     <tbody>
                       {[...subadmins?.docs]
-                        ?.sort((a, b) => a.name - b.name)
+                        ?.sort((a, b) =>
+                          a.name.toLowerCase() > b.name.toLowerCase()
+                            ? 1
+                            : a.name.toLowerCase() < b.name.toLowerCase()
+                            ? -1
+                            : 0,
+                        )
                         ?.map((sa, idx) => {
                           return (
                             <tr

@@ -1,4 +1,4 @@
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaEdit } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState } from "react";
 import Modal from "../Modal.jsx";
@@ -8,6 +8,7 @@ import TransactionHistory from "./TransactionHistory.jsx";
 import StatusHistory from "./StatusHistory.jsx";
 import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import store from "../../redux/store.js";
+import { useSelector } from "react-redux";
 
 const AdminOwnerView = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const AdminOwnerView = () => {
   const user_id = store?.getState()?.authSlice?.user?._id;
   const { id } = useParams();
   const { data, isLoading, error } = useGetUserQuery(id);
+  const { user } = useSelector((store) => store.authSlice);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -86,12 +88,14 @@ const AdminOwnerView = () => {
               <h6 className="capitalize">Status : {data?.status}</h6>
               <div className="flex gap-1.5">
                 <h6>Number Of Hotels : {data?.maxHotels}</h6>
-                {/* <span
-                  className={`cursor-pointer`}
-                  onClick={() => window.hle_modal.showModal()}
-                >
-                  <FaEdit />
-                </span> */}
+                {user.role === "admin" ? (
+                  <span
+                    className={`cursor-pointer`}
+                    onClick={() => window.hle_modal.showModal()}
+                  >
+                    <FaEdit />
+                  </span>
+                ) : null}
               </div>
             </div>
           </div>
