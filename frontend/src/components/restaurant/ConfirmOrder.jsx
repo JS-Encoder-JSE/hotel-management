@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
 import { setOrder } from "../../redux/add-order/addOrderSlice.js";
@@ -7,7 +7,10 @@ import * as yup from "yup";
 import {
   useGetRoomsAndHotelsQuery,
   useRoomNumbersQuery,
+  useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
+import toast from "react-hot-toast";
+import {useAddOrderMutation} from "../../redux/restaurant/foodAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -16,16 +19,18 @@ const validationSchema = yup.object({
 });
 
 const ConfirmOrder = () => {
+  const closeRef = useRef();
+  const [addOrder] = useAddOrderMutation();
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
     initialValues: {
-      roomNumber: "1",
+      roomNumber: "",
       chooseHotel: "",
     },
     validationSchema,
-    onSubmit: () => {
+    onSubmit: async (values) => {
       const obj = { ...order };
-      const items = [...order.foods];
+      const items = [...obj.foods];
 
       const arr = items.map((item) => ({
         item: item.food_name,
@@ -34,10 +39,29 @@ const ConfirmOrder = () => {
         quantity: item.quantity,
         total: item.quantity * item.price,
       }));
+
+      const response = await addOrder({
+        room_id: values.roomNumber,
+        hotel_id: values.chooseHotel,
+        items: arr,
+        grand_total: orderCalc.grandTotal,
+      });
+console.log(response)
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        closeRef.current.click();
+        toast.success(response.data.message);
+      }
     },
   });
   const dispatch = useDispatch();
-  const { isLoading, data: rooms } = useRoomNumbersQuery();
+  const { isLoading, data: rooms } = useRoomsQuery({
+    id: formik.values.chooseHotel,
+    cp: "0",
+    filter: "",
+    search: "",
+  });
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
 
   useEffect(() => {
@@ -48,7 +72,10 @@ const ConfirmOrder = () => {
   return (
     <>
       <form autoComplete="off" method="dialog">
-        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+        <button
+          ref={closeRef}
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+        >
           ✕
         </button>
       </form>
@@ -93,7 +120,7 @@ const ConfirmOrder = () => {
               <option value="" selected disabled>
                 Room Number
               </option>
-              {rooms?.data?.map((room) => (
+              {rooms?.data?.docs?.map((room) => (
                 <option key={room?._id} value={room?._id}>
                   {room?.roomNumber}
                 </option>
@@ -115,6 +142,10 @@ const ConfirmOrder = () => {
                   <th>Item</th>
                   <th>Price</th>
                   <th>Quantity</th>
+                  <th>
+                    Surveyor <br />
+                    Quantity
+                  </th>
                   <th>Total</th>
                   <th>Action</th>
                 </tr>
