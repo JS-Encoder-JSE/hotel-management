@@ -5,6 +5,7 @@ import {
   incQuantity,
   setOrderCalc,
   setQuantity,
+  setSerQuantity,
 } from "../../redux/add-order/addOrderSlice.js";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -21,7 +22,7 @@ const COItem = ({ idx, food }) => {
   return (
     <tr key={idx}>
       <th>{++idx}</th>
-      <td>{food.name}</td>
+      <td>{food.food_name}</td>
       <td>{food.price}</td>
       <td className="flex gap-1">
         <button
@@ -60,6 +61,7 @@ const COItem = ({ idx, food }) => {
           <FaPlus />
         </button>
       </td>
+      <td>{food?.serveyor_quantity}</td>
       <td>{food.quantity * food.price}</td>
       <td className="flex justify-center">
         <button

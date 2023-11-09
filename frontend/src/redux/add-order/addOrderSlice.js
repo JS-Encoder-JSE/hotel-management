@@ -21,14 +21,14 @@ const addOrderSlice = createSlice({
     },
     delOrder: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
-        (item) => item.id === action.payload.id,
+        (item) => item._id === action.payload._id,
       );
 
       state.order.foods.splice(findFoodIdx, 1);
     },
     incQuantity: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
-        (item) => item.id === action.payload.id,
+        (item) => item._id === action.payload._id,
       );
 
       state.order.foods.splice(findFoodIdx, 1, {
@@ -38,7 +38,7 @@ const addOrderSlice = createSlice({
     },
     decQuantity: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
-        (item) => item.id === action.payload.id,
+        (item) => item._id === action.payload._id,
       );
 
       state.order.foods.splice(findFoodIdx, 1, {
@@ -48,7 +48,7 @@ const addOrderSlice = createSlice({
     },
     setQuantity: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
-        (item) => item.id === action.payload.food.id,
+        (item) => item._id === action.payload._id,
       );
 
       if (action.payload.quantity) {
@@ -60,6 +60,23 @@ const addOrderSlice = createSlice({
         state.order.foods.splice(findFoodIdx, 1, {
           ...action.payload.food,
           quantity: 1,
+        });
+      }
+    },
+    setSerQuantity: (state, action) => {
+      const findFoodIdx = state.order.foods.findIndex(
+        (item) => item._id === action.payload.food._id,
+      );
+
+      if (action.payload.serQuantity) {
+        state.order.foods.splice(findFoodIdx, 1, {
+          ...action.payload.food,
+          serveyor_quantity: action.payload.serQuantity,
+        });
+      } else {
+        state.order.foods.splice(findFoodIdx, 1, {
+          ...action.payload.food,
+          serveyor_quantity: "1:1",
         });
       }
     },
@@ -86,6 +103,7 @@ export const {
   incQuantity,
   decQuantity,
   setQuantity,
+  setSerQuantity,
   setOrderCalc,
 } = addOrderSlice.actions;
 export default addOrderSlice.reducer;

@@ -9,8 +9,8 @@ import {
   useRoomNumbersQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
+import { useAddOrderMutation } from "../../redux/restaurant/foodAPI.js";
 import toast from "react-hot-toast";
-import {useAddOrderMutation} from "../../redux/restaurant/foodAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -19,9 +19,9 @@ const validationSchema = yup.object({
 });
 
 const ConfirmOrder = () => {
+  const { order, orderCalc } = useSelector((store) => store.inventorySlice);
   const closeRef = useRef();
   const [addOrder] = useAddOrderMutation();
-  const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
     initialValues: {
       roomNumber: "",
@@ -30,7 +30,7 @@ const ConfirmOrder = () => {
     validationSchema,
     onSubmit: async (values) => {
       const obj = { ...order };
-      const items = [...obj.foods];
+      const items = [...order.foods];
 
       const arr = items.map((item) => ({
         item: item.food_name,
@@ -46,7 +46,7 @@ const ConfirmOrder = () => {
         items: arr,
         grand_total: orderCalc.grandTotal,
       });
-console.log(response)
+
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -56,13 +56,13 @@ console.log(response)
     },
   });
   const dispatch = useDispatch();
+  const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const { isLoading, data: rooms } = useRoomsQuery({
     id: formik.values.chooseHotel,
     cp: "0",
     filter: "",
     search: "",
   });
-  const { data: hotelList } = useGetRoomsAndHotelsQuery();
 
   useEffect(() => {
     if (formik.values.roomNumber)
@@ -133,25 +133,18 @@ console.log(response)
             ) : null}
           </div>
         </div>
-        {order.foods.length ? (
+        {order.items.length ? (
           <div className="overflow-x-auto w-full mt-5">
             <table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
                   <th>Item</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>
-                    Surveyor <br />
-                    Quantity
-                  </th>
-                  <th>Total</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {order.foods.map((food, idx) => (
+                {order.items.map((food, idx) => (
                   <COItem key={idx} idx={idx} food={food} />
                 ))}
               </tbody>
@@ -159,23 +152,12 @@ console.log(response)
                 <tr>
                   <td colSpan={5}>
                     <div className="mt-3">
-                      <div className="pl-2 mb-4 w-[70%] text-md font-semibold">
-                        <p className="flex justify-between">
-                          Total Price : <span>{orderCalc.total}</span>
-                        </p>
-                        <p className="flex justify-between">
-                          Tax : <span>{orderCalc.tax}</span>
-                        </p>
-                        <p className="flex justify-between">
-                          Grand Total: <span>{orderCalc.grandTotal}</span>
-                        </p>
-                      </div>
                       <div className="flex">
                         <button
                           onClick={() => formik.handleSubmit()}
                           className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                         >
-                          Place Order
+                          Assign Items
                         </button>
                       </div>
                     </div>

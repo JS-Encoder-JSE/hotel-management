@@ -6,10 +6,12 @@ const ImageSchema = new mongoose.Schema({
   nid: { type: Array, required: false, default: "" },
 });
 const bookingSchema = new mongoose.Schema({
-  room_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
+  room_ids: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+  ],
   hotel_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -47,8 +49,34 @@ const bookingSchema = new mongoose.Schema({
     enum: ["Card", "Cash", "Mobile_Banking"],
     required: true,
   },
+  transection_id: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  amount: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  total_amount: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  paid_amount: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  total_unpaid_amount: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
   discount: {
     type: Number,
+    required: false,
     default: 0,
   },
   from: { type: Date, required: true },

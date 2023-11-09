@@ -1,9 +1,10 @@
 ﻿import Booking from "../../models/Manager/booking.model.js";
+import Room from "../../models/Manager/room.model.js";
 
 export const addBooking = async (req, res) => {
   try {
     const {
-      room_id,
+      room_ids,
       hotel_id,
       guestName,
       address,
@@ -12,6 +13,9 @@ export const addBooking = async (req, res) => {
       adult,
       children,
       paymentMethod,
+      transection_id,
+      amount,
+      paid_amount,
       discount,
       from,
       to,
@@ -21,8 +25,24 @@ export const addBooking = async (req, res) => {
       doc_images,
     } = req.body;
 
+    if (!room_ids || !Array.isArray(room_ids) || room_ids.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or empty room_ids provided",
+      });
+    }
+
+    // Check if all provided room_ids exist
+    const existingRooms = await Room.find({ _id: { $in: room_ids } });
+    if (existingRooms.length !== room_ids.length) {
+      return res.status(400).json({
+        success: false,
+        error: "One or more room_ids are invalid",
+      });
+    }
+
     const newBooking = new Booking({
-      room_id,
+      room_ids,
       hotel_id,
       guestName,
       address,
@@ -31,6 +51,9 @@ export const addBooking = async (req, res) => {
       adult,
       children,
       paymentMethod,
+      transection_id,
+      amount,
+      paid_amount,
       discount,
       from,
       to,
@@ -42,12 +65,20 @@ export const addBooking = async (req, res) => {
 
     const savedBooking = await newBooking.save();
 
+    // Update the status of booked rooms to "Booked"
+    await Room.updateMany(
+      { _id: { $in: room_ids } },
+      { $set: { status: "Booked" } }
+    );
+
     res.status(201).json({
       success: true,
       data: savedBooking,
       message: "Booking added successfully",
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       error: "Internal Server Error",
@@ -124,8 +155,8 @@ export const getBookingById = async (req, res) => {
 
 export const updateBooking = async (req, res) => {
   try {
-    const bookingId = req.params.booking_id; // Assuming you pass the booking ID in the request body
-    const updateData = req.body; // Object containing the fields to update
+    const bookingId = req.params.booking_id;
+    const updateData = req.body;
 
     const updatedBooking = await Booking.findByIdAndUpdate(
       bookingId,
@@ -140,6 +171,25 @@ export const updateBooking = async (req, res) => {
       });
     }
 
+    // Check if the update includes changing the status to "CheckedIn"
+    if (updateData.status === "CheckedIn") {
+      const roomIds = updatedBooking.room_ids;
+
+      // Update room status to "CheckedIn"
+      await Room.updateMany(
+        { _id: { $in: roomIds } },
+        { $set: { status: "CheckedIn" } }
+      );
+    }
+    if (updateData.status === "CheckedOut") {
+      const roomIds = updatedBooking.room_ids;
+
+      // Update room status to "CheckedIn"
+      await Room.updateMany(
+        { _id: { $in: roomIds } },
+        { $set: { status: "Available" } }
+      );
+    }
     res.status(200).json({
       success: true,
       data: updatedBooking,

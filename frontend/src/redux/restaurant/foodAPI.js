@@ -3,8 +3,8 @@ import baseAPI from "../baseAPI.js";
 const foodAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
     foods: build.query({
-      query: ({ cp, pp, search }) =>
-        `foods/get-food?limit=${pp}&page=${++cp}${
+      query: ({ id, cp, pp, search }) =>
+        `foods/get-foods-by-hotel/${id}?limit=${pp}&page=${++cp}${
           search ? `&food_name=${search}` : ""
         }`,
       providesTags: ["food"],
@@ -42,6 +42,23 @@ const foodAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["food"],
     }),
+    addOrder: build.mutation({
+      query: (data) => {
+        return {
+          url: "foods/add-order",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["food"],
+    }),
+    orders: build.query({
+      query: ({ id, cp, pp, search }) =>
+          `foods/get-orders-by-hotel/${id}?limit=${pp}&page=${++cp}${
+              search ? `&food_name=${search}` : ""
+          }`,
+      providesTags: ["food"],
+    }),
   }),
 });
 
@@ -49,6 +66,8 @@ export const {
   useFoodQuery,
   useFoodsQuery,
   useAddFoodMutation,
+  useAddOrderMutation,
   useDeleteFoodMutation,
   useUpdateFoodMutation,
+    useOrdersQuery
 } = foodAPI;

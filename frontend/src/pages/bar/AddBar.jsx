@@ -103,24 +103,7 @@ const AddBar = () => {
           ) : null}
         </div>
 
-        {/* Type Of Alcohol Pack */}
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Type Of Alcohol"
-            name="typeOfAlcohol"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.typeOfAlcohol}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.typeOfAlcohol &&
-          Boolean(formik.errors.typeOfAlcohol) ? (
-            <small className="text-red-600">
-              {formik.touched.typeOfAlcohol && formik.errors.typeOfAlcohol}
-            </small>
-          ) : null}
-        </div>
+       
               {/* Status */}
               <div className="flex flex-col gap-3">
                 <select

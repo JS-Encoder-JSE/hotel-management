@@ -131,6 +131,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Manage Order
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to={`/dashboard/order-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+             Order List
+            </NavLink>
+          </li>
         </ul>
       </li>
       <li className={`group p-2`}>
@@ -169,7 +180,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              All Items
+              Manage Items
             </NavLink>
           </li>
         </ul>
@@ -215,7 +226,9 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>
         </ul>
       </li>
-      <li className={`group p-2`}>
+
+      {/* Bar item */}
+      {/* <li className={`group p-2`}>
         <div
           onClick={(e) => handleSBItems(e)}
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
@@ -267,8 +280,42 @@ const ManagerSbItems = ({ handleSBItems }) => {
             </NavLink>
           </li>
         </ul>
+      </li> */}
+
+{/* Order Bar Item */}
+<li>
+        <NavLink
+          to={`/dashboard/order-bar-item`}
+          className={({ isActive }) =>
+            "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
+            (isActive ? " bg-gray-300" : "")
+          }
+        >
+          <div className={`flex space-x-1.5`}>
+          <FaGlassMartini />
+            <span>Order Bar Item</span>
+          </div>
+        </NavLink>
       </li>
-      <li className={`group p-2`}>
+
+{/* Gym Reservation */}
+      <li>
+        <NavLink
+          to={`/dashboard/gym-booking`}
+          className={({ isActive }) =>
+            "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
+            (isActive ? " bg-gray-300" : "")
+          }
+        >
+          <div className={`flex space-x-1.5`}>
+          <MdPool />
+            <span>Gym Reservation</span>
+          </div>
+        </NavLink>
+      </li>
+
+      {/* Swimming Pool sidebar */}
+      {/* <li className={`group p-2`}>
         <div
           onClick={(e) => handleSBItems(e)}
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
@@ -320,7 +367,10 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>
          
         </ul>
-      </li>
+      </li> */}
+
+
+      {/* Gym Sideber */}
       {/* <li className={`group p-2`}>
         <div
           onClick={(e) => handleSBItems(e)}
@@ -379,10 +429,10 @@ const ManagerSbItems = ({ handleSBItems }) => {
         </ul>
       </li> */}
 
-      {/* Report */}
+      {/* Pool Reservation */}
       <li>
         <NavLink
-          to={`/dashboard/gym-booking`}
+          to={`/dashboard/pool-reservation`}
           className={({ isActive }) =>
             "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
             (isActive ? " bg-gray-300" : "")
@@ -390,10 +440,12 @@ const ManagerSbItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineSportsGymnastics />
-            <span>Gym Reservation</span>
+            <span>Pool Reservation</span>
           </div>
         </NavLink>
       </li>
+
+      {/* Report */}
       <li>
         <NavLink
           to={`/dashboard/report`}

@@ -18,33 +18,32 @@ const validationSchema = yup.object({
     .positive("Room number must be a positive")
     .integer("Room number must be an integer"),
   name: yup.string().required(" Name  is required"),
+  poolName: yup.string().required("Pool Name  is required"),
+  members: yup.string().required("members  is required"),
   // packagePrice: yup
-  itemName: yup.string().required("item Name  is required"),
-  members: yup.string().required("Members  is required"),
   //   .string()
   //   .when(["documentsType"], ([membershipSubscription], schema) => {
   //     if (membershipSubscription !== "normalPackage")
   //       return schema.required("Package Price is required");
   //     else return schema;
   //   }),
-  normalprice: yup
+  price: yup
   .number()
   .required("Price is required")
   .positive(" Price must be a positive number")
   .integer(" Price must be an integer"),
 });
 
-const GymBooking = () => {
+const PoolReservation = () => {
   const formik = useFormik({
     initialValues: {
 
       chooseHotel: "",
       roomNo: "",
       name: "",
-      normalprice: "",
+      price: "",
       members: "",
-      itemName: "",
-
+      poolName: "",
       // packagePrice: "",
     },
     validationSchema,
@@ -107,7 +106,7 @@ const GymBooking = () => {
           <h3
             className={`text-center bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded text-white text-2xl`}
           >
-            Gym Reservation
+            Pool Reservation
           </h3>
           <hr />
           <form
@@ -172,20 +171,22 @@ const GymBooking = () => {
                 </small>
               ) : null}
             </div>
-             {/* Item Name box */}
+
+
+                  {/* Item Name box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
-              placeholder="Item name"
-              name="itemName"
+              placeholder="Pool name"
+              name="poolName"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.itemName}
+              value={formik.values.poolName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.itemName && Boolean(formik.errors.itemName) ? (
+            {formik.touched.poolName && Boolean(formik.errors.poolName) ? (
               <small className="text-red-600">
-                {formik.touched.itemName && formik.errors.itemName}
+                {formik.touched.poolName && formik.errors.poolName}
               </small>
             ) : null}
           </div>
@@ -256,17 +257,17 @@ const GymBooking = () => {
             <div className="flex flex-col gap-3">
               <input
                 type="text"
-                placeholder=" Price"
-                name="normalprice"
+                placeholder="Price"
+                name="price"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.normalprice}
+                value={formik.values.price}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.normalprice &&
-              Boolean(formik.errors.normalprice) ? (
+              {formik.touched.price &&
+              Boolean(formik.errors.price) ? (
                 <small className="text-red-600">
-                  {formik.touched.normalprice && formik.errors.normalprice}
+                  {formik.touched.price && formik.errors.price}
                 </small>
               ) : null}
             </div>
@@ -286,4 +287,4 @@ const GymBooking = () => {
   );
 };
 
-export default GymBooking;
+export default PoolReservation;

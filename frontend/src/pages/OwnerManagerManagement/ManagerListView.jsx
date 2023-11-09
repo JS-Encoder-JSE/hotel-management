@@ -38,7 +38,11 @@ const ManagerListView = () => {
               <>
                 <div>
                   <div className="group absolute -top-5 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32 overflow-hidden">
-                    <img src={userData?.images?.profile_img} alt="" />
+                    <img
+                      src={userData?.images?.profile_img}
+                      alt=""
+                      className={`w-full h-full`}
+                    />
                   </div>
                 </div>
                 <h1 className="text-2xl text-center mt-9">

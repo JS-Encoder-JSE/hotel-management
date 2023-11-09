@@ -74,6 +74,9 @@ import AddGym from "./pages/Gym/AddGym.jsx";
 import GymList from "./pages/Gym/GymList.jsx";
 import LicenseHistory from "./pages/owner/LicenseHistory.jsx";
 import EditProfileAdmin from "./pages/profile/EditProfileAdmin.jsx";
+import OrderBarItem from "./pages/bar/OrderBarItem.jsx";
+import PoolReservation from "./pages/LifeStyle/PoolReservation.jsx";
+import OrderList from "./pages/restaurant/OrderList.jsx";
 
 
 
@@ -207,6 +210,14 @@ const App = () => {
               ),
             },
             {
+              path: "order-list",
+              element: (
+                <ManagerRoute>
+                  <OrderList />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "food-inventory",
               element: (
                 <ManagerRoute>
@@ -327,6 +338,14 @@ const App = () => {
               ),
             },
             {
+              path: "order-bar-item",
+              element: (
+                <ManagerRoute>
+                  <OrderBarItem />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "add-swimming-pool",
               element: (
                 <ManagerRoute>
@@ -363,6 +382,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <SwimmingPoolLIstView />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "pool-reservation",
+              element: (
+                <ManagerRoute>
+                  <PoolReservation />
                 </ManagerRoute>
               ),
             },

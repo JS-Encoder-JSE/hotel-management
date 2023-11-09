@@ -98,12 +98,12 @@ const SalesProfitReport = () => {
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
-                <PDFDownloadLink
-                  document={<CreateReport />}
-                  fileName={`${new Date().toLocaleDateString()}.pdf`}
-                >
-                  PDF
-                </PDFDownloadLink>
+                {/*<PDFDownloadLink*/}
+                {/*  document={<CreateReport />}*/}
+                {/*  fileName={`${new Date().toLocaleDateString()}.pdf`}*/}
+                {/*>*/}
+                {/*  PDF*/}
+                {/*</PDFDownloadLink>*/}
               </button>
             </div>
             <div className={`relative sm:min-w-[20rem]`}>
