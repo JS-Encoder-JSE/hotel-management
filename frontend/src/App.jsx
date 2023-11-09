@@ -75,6 +75,8 @@ import GymList from "./pages/Gym/GymList.jsx";
 import LicenseHistory from "./pages/owner/LicenseHistory.jsx";
 import EditProfileAdmin from "./pages/profile/EditProfileAdmin.jsx";
 import OrderBarItem from "./pages/bar/OrderBarItem.jsx";
+import PoolReservation from "./pages/LifeStyle/PoolReservation.jsx";
+import OrderList from "./pages/restaurant/OrderList.jsx";
 
 
 
@@ -204,6 +206,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <AddOrder />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "order-list",
+              element: (
+                <ManagerRoute>
+                  <OrderList />
                 </ManagerRoute>
               ),
             },
@@ -372,6 +382,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <SwimmingPoolLIstView />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "pool-reservation",
+              element: (
+                <ManagerRoute>
+                  <PoolReservation />
                 </ManagerRoute>
               ),
             },
