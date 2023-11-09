@@ -6,10 +6,10 @@ const ImageSchema = new mongoose.Schema({
   nid: { type: Array, required: false, default: "" },
 });
 const bookingSchema = new mongoose.Schema({
-  room_id: {
+  room_ids: [{
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-  },
+  }],
   hotel_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
