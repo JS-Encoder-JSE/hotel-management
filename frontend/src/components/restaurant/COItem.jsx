@@ -24,17 +24,6 @@ const COItem = ({ idx, food }) => {
       <th>{++idx}</th>
       <td>{food.food_name}</td>
       <td>{food.price}</td>
-      <td>
-        <input
-          type="text"
-          placeholder="Surveyor Quantity"
-          name="surveyorQuantity"
-          className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-          onChange={(e) =>
-            dispatch(setSerQuantity({ food, serQuantity: e.target.value }))
-          }
-        />
-      </td>
       <td className="flex gap-1">
         <button
           type="button"
@@ -72,6 +61,7 @@ const COItem = ({ idx, food }) => {
           <FaPlus />
         </button>
       </td>
+      <td>{food?.serveyor_quantity}</td>
       <td>{food.quantity * food.price}</td>
       <td className="flex justify-center">
         <button

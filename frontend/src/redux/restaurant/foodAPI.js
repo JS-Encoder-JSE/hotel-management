@@ -52,6 +52,13 @@ const foodAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["food"],
     }),
+    orders: build.query({
+      query: ({ id, cp, pp, search }) =>
+          `foods/get-orders-by-hotel/${id}?limit=${pp}&page=${++cp}${
+              search ? `&food_name=${search}` : ""
+          }`,
+      providesTags: ["food"],
+    }),
   }),
 });
 
@@ -62,4 +69,5 @@ export const {
   useAddOrderMutation,
   useDeleteFoodMutation,
   useUpdateFoodMutation,
+    useOrdersQuery
 } = foodAPI;

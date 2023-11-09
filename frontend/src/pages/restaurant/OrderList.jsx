@@ -6,13 +6,20 @@ import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import Modal from "../../components/Modal.jsx";
+import {
+  useFoodsQuery,
+  useOrdersQuery,
+} from "../../redux/restaurant/foodAPI.js";
+import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
+import { FcCancel } from "react-icons/fc";
 // import StatusSettings from "./StatusSettings.jsx";
 
 const OrderList = () => {
-  const navigate = useNavigate()
-  const [managersPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
+  const navigate = useNavigate();
+  const [ordersPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
+  const { data: hotelList } = useGetRoomsAndHotelsQuery();
 
   const formik = useFormik({
     initialValues: {
@@ -20,7 +27,14 @@ const OrderList = () => {
       search: "",
       startDate: "",
       endDate: "",
+      chooseHotel: "",
     },
+  });
+
+  const { isLoading, data: orders } = useOrdersQuery({
+    id: formik.values.chooseHotel,
+    cp: currentPage,
+    pp: ordersPerPage,
   });
 
   const handlePageClick = ({ selected: page }) => {
@@ -30,7 +44,34 @@ const OrderList = () => {
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-        <h3 className={`text-xl font-semibold text-center`}>Order List</h3>
+        <div className={`flex justify-between`}>
+          <h3 className={`text-xl font-semibold text-center`}>Order List</h3>
+          <div className="flex flex-col gap-3">
+            <select
+              name="chooseHotel"
+              className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.chooseHotel}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Choose Hotel
+              </option>
+
+              {hotelList?.map((i) => (
+                <option key={i._id} value={i._id}>
+                  {i.name}
+                </option>
+              ))}
+            </select>
+            {formik.touched.chooseHotel &&
+            Boolean(formik.errors.chooseHotel) ? (
+              <small className="text-red-600">
+                {formik.touched.chooseHotel && formik.errors.chooseHotel}
+              </small>
+            ) : null}
+          </div>
+        </div>
         <hr className={`my-5`} />
         <div className={`space-y-10`}>
           <div className="overflow-x-auto">
@@ -38,53 +79,25 @@ const OrderList = () => {
               <thead>
                 <tr>
                   <th>SL</th>
-                  <th>Name</th>        
                   <th>Room Number</th>
-                  <th>Food Name</th>
+                  <th>Total</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
-                  // < key={idx} manager={idx}></>
+                {orders?.data?.docs?.map((order, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>Jon Doe</td>
-                      <td>101</td>
-                      <td>Kacchi</td>
-                      <td className={`space-x-1.5`}>
-                        {/* <span
-                          className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() => window.ol_modal.showModal()}
-                        >
-                          <AiFillSetting />
-                        </span> */}
-                        {/* <span
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() =>
-                            navigate(`/dashboard/managerList-view/${idx}`)
-                          }
-                        >
-                          <FaEye />
-                        </span> */}
-                        {/* <Link to={`/dashboard/manager-edit/${idx}`}>
-                          <span
-                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                          >
-                            <FaRegEdit />
-                          </span>
-                        </Link> */}
+                      <td>{order?.room_id}</td>
+                      <td>{order?.grand_total}</td>
+                      <td>
                         <span
-                          className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                          onClick={() =>
-                            navigate(`/dashboard/managerList-view/${idx}`)
-                          }
-                          
+                          className={`btn btn-sm bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                         >
-                          <AiTwotoneDelete />
+                          <FcCancel />
                         </span>
                       </td>
                     </tr>
@@ -92,9 +105,7 @@ const OrderList = () => {
                 })}
               </tbody>
             </table>
-            <Modal id={`ol_modal`}>
-              {/* <StatusSettings /> */}
-            </Modal>
+            <Modal id={`ol_modal`}>{/* <StatusSettings /> */}</Modal>
           </div>
           <div className="flex justify-center mt-10">
             <ReactPaginate
