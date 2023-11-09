@@ -196,7 +196,7 @@ export const deleteOrder = async (req, res) => {
 
     // Validate orderId here if needed
 
-    const deletedOrder = await FoodOrder.findByIdAndDelete(orderId);
+    const deletedOrder = await FoodOrder.findByIdAndDelete(order_id);
 
     if (!deletedOrder) {
       return res.status(404).json({
@@ -225,7 +225,7 @@ export const deleteFood = async (req, res) => {
 
     // Validate foodId here if needed
 
-    const deletedFood = await Food.findByIdAndDelete(foodId);
+    const deletedFood = await Food.findByIdAndDelete(food_id);
 
     if (!deletedFood) {
       return res.status(404).json({
