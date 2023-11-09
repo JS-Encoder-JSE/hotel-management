@@ -30,6 +30,7 @@ const LicenseHistory = () => {
   const [historyPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
   const { user } = useSelector((store) => store.authSlice);
 
   const [searchParams, setSearchParams] = useState({
@@ -49,6 +50,18 @@ const LicenseHistory = () => {
   useEffect(() => {
     if (data) setPageCount(data.totalPages);
   }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      const total = data.docs.reduce(
+        (total, current) => total + current.amount,
+        0,
+      );
+
+      setTotalAmount(total);
+    }
+  }, [data]);
+
   console.log(data);
   return (
     <div className="card w-full bg-white shadow-xl">
@@ -108,8 +121,8 @@ const LicenseHistory = () => {
                     <th>Transaction Id</th>
                     <th>Payment Method</th>
                     <th>License Duration</th>
-                    <th>Amount</th>
                     <th>Payment For</th>
+                    <th>Amount</th>
 
                     {/*<th>Action</th>*/}
                   </tr>
@@ -137,8 +150,8 @@ const LicenseHistory = () => {
                           ) /
                             (24 * 60 * 60 * 1000)}
                         </td>
-                        <td>{item?.amount}</td>
                         <td>{item?.payment_for}</td>
+                        <td>{item?.amount}</td>
 
                         {/*<td className={`space-x-1.5`}>*/}
                         {/*  <span*/}
@@ -154,6 +167,13 @@ const LicenseHistory = () => {
                     );
                   })}
                 </tbody>
+                <tfoot className={`text-sm`}>
+                  <tr>
+                    <td colSpan={5}></td>
+                    <td>Total</td>
+                    <td>{totalAmount}</td>
+                  </tr>
+                </tfoot>
               </table>
               <div className="flex justify-center mt-10">
                 <ReactPaginate

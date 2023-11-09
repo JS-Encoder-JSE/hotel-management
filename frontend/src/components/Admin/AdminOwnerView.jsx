@@ -23,7 +23,8 @@ const AdminOwnerView = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
-console.log(data)
+  console.log(data);
+
   function calculateDays(date1, date2) {
     const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
     const firstDate = new Date(date1);
@@ -88,14 +89,12 @@ console.log(data)
               <h6 className="capitalize">Status : {data?.status}</h6>
               <div className="flex gap-1.5">
                 <h6>Number Of Hotels : {data?.maxHotels}</h6>
-                {user.role === "admin" ? (
-                  <span
-                    className={`cursor-pointer`}
-                    onClick={() => window.hle_modal.showModal()}
-                  >
-                    <FaEdit />
-                  </span>
-                ) : null}
+                <span
+                  className={`cursor-pointer`}
+                  onClick={() => window.hle_modal.showModal()}
+                >
+                  <FaEdit />
+                </span>
               </div>
             </div>
           </div>

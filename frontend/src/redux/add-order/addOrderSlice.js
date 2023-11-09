@@ -63,6 +63,23 @@ const addOrderSlice = createSlice({
         });
       }
     },
+    setSerQuantity: (state, action) => {
+      const findFoodIdx = state.order.foods.findIndex(
+        (item) => item._id === action.payload.food._id,
+      );
+
+      if (action.payload.serQuantity) {
+        state.order.foods.splice(findFoodIdx, 1, {
+          ...action.payload.food,
+          serveyor_quantity: action.payload.serQuantity,
+        });
+      } else {
+        state.order.foods.splice(findFoodIdx, 1, {
+          ...action.payload.food,
+          serveyor_quantity: "1:1",
+        });
+      }
+    },
     setOrderCalc: (state, action) => {
       const total = state.order.foods.reduce(
         (total, current) => total + current.quantity * current.price,
@@ -86,6 +103,7 @@ export const {
   incQuantity,
   decQuantity,
   setQuantity,
+  setSerQuantity,
   setOrderCalc,
 } = addOrderSlice.actions;
 export default addOrderSlice.reducer;

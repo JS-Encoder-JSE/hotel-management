@@ -268,7 +268,7 @@ const ManagerList = () => {
                 </Modal>
               </>
             ) : (
-              <h3>No data!</h3>
+              <h3 className={`mt-10 text-center`}>No data found!</h3>
             )
           ) : (
             <Rings

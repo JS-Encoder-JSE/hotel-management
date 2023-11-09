@@ -4,26 +4,42 @@ import COItem from "./COItem.jsx";
 import { setOrder } from "../../redux/add-order/addOrderSlice.js";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useRoomNumbersQuery } from "../../redux/room/roomAPI.js";
+import {
+  useGetRoomsAndHotelsQuery,
+  useRoomNumbersQuery,
+} from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
+  chooseHotel: yup.string().required("Hotel is required"),
 });
 
 const ConfirmOrder = () => {
+  const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
     initialValues: {
-      roomNumber: "",
+      roomNumber: "1",
+      chooseHotel: "",
     },
     validationSchema,
     onSubmit: () => {
-      console.log(order);
+      const obj = { ...order };
+      const items = [...order.foods];
+
+      const arr = items.map((item) => ({
+        item: item.food_name,
+        price: item.price,
+        serveyor_quantity: item.serveyor_quantity,
+        quantity: item.quantity,
+        total: item.quantity * item.price,
+      }));
     },
   });
   const dispatch = useDispatch();
   const { isLoading, data: rooms } = useRoomNumbersQuery();
-  const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
+  const { data: hotelList } = useGetRoomsAndHotelsQuery();
+
   useEffect(() => {
     if (formik.values.roomNumber)
       dispatch(setOrder({ ...order, roomNumber: formik.values.roomNumber }));
@@ -40,28 +56,55 @@ const ConfirmOrder = () => {
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Confirm Order</h3>
         <hr />
-        <div className="flex flex-col gap-3 mt-5">
-          <select
-            name="roomNumber"
-            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-            value={formik.values.roomNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Room Number
-            </option>
-            {rooms?.data?.map((room) => (
-              <option key={room?._id} value={room?._id}>
-                {room?.roomNumber}
+        <div className={`flex justify-between mt-5`}>
+          <div className="flex flex-col gap-3">
+            <select
+              name="chooseHotel"
+              className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.chooseHotel}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Choose Hotel
               </option>
-            ))}
-          </select>
-          {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
-            <small className="text-red-600">
-              {formik.touched.roomNumber && formik.errors.roomNumber}
-            </small>
-          ) : null}
+
+              {hotelList?.map((i) => (
+                <option key={i._id} value={i._id}>
+                  {i.name}
+                </option>
+              ))}
+            </select>
+            {formik.touched.chooseHotel &&
+            Boolean(formik.errors.chooseHotel) ? (
+              <small className="text-red-600">
+                {formik.touched.chooseHotel && formik.errors.chooseHotel}
+              </small>
+            ) : null}
+          </div>
+          <div className="flex flex-col gap-3">
+            <select
+              name="roomNumber"
+              className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+              value={formik.values.roomNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Room Number
+              </option>
+              {rooms?.data?.map((room) => (
+                <option key={room?._id} value={room?._id}>
+                  {room?.roomNumber}
+                </option>
+              ))}
+            </select>
+            {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
+              <small className="text-red-600">
+                {formik.touched.roomNumber && formik.errors.roomNumber}
+              </small>
+            ) : null}
+          </div>
         </div>
         {order.foods.length ? (
           <div className="overflow-x-auto w-full mt-5">

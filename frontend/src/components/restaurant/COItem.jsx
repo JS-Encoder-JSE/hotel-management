@@ -5,6 +5,7 @@ import {
   incQuantity,
   setOrderCalc,
   setQuantity,
+  setSerQuantity,
 } from "../../redux/add-order/addOrderSlice.js";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -21,8 +22,19 @@ const COItem = ({ idx, food }) => {
   return (
     <tr key={idx}>
       <th>{++idx}</th>
-      <td>{food.name}</td>
+      <td>{food.food_name}</td>
       <td>{food.price}</td>
+      <td>
+        <input
+          type="text"
+          placeholder="Surveyor Quantity"
+          name="surveyorQuantity"
+          className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+          onChange={(e) =>
+            dispatch(setSerQuantity({ food, serQuantity: e.target.value }))
+          }
+        />
+      </td>
       <td className="flex gap-1">
         <button
           type="button"
