@@ -1,6 +1,6 @@
 import React from "react";
 import { MdOutlineClear } from "react-icons/md";
-import {FaTrash} from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 
 const HotelAsManager = ({
   managerList,
@@ -69,6 +69,15 @@ const HotelAsManager = ({
                   )}
                 </div>
                 <div className={`flex justify-between`}>
+                  {managerList.length - 1 === idx && managerList.length < 3 && (
+                    <button
+                      type="button"
+                      onClick={handleAdd}
+                      className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-fit"
+                    >
+                      Add more
+                    </button>
+                  )}
                   {managerList.length - 1 === idx ? (
                     <form method="dialog">
                       <button
@@ -79,15 +88,6 @@ const HotelAsManager = ({
                       </button>
                     </form>
                   ) : null}
-                  {managerList.length - 1 === idx && managerList.length < 3 && (
-                    <button
-                      type="button"
-                      onClick={handleAdd}
-                      className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case w-fit"
-                    >
-                      Add more
-                    </button>
-                  )}
                 </div>
               </>
             );

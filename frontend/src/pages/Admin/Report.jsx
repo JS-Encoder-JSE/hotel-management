@@ -199,6 +199,7 @@ const Report = () => {
           </div>
           <div className={`flex gap-3`}>
             <DatePicker
+              autoComplete={`off`}
               dateFormat="dd/MM/yyyy"
               name="startDate"
               placeholderText={`From`}
@@ -212,6 +213,7 @@ const Report = () => {
               onKeyDown={(e) => pressEnter(e)}
             />
             <DatePicker
+                autoComplete={`off`}
               dateFormat="dd/MM/yyyy"
               name="endDate"
               placeholderText={`To`}

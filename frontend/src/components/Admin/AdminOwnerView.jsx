@@ -23,7 +23,7 @@ const AdminOwnerView = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
-
+console.log(data)
   function calculateDays(date1, date2) {
     const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
     const firstDate = new Date(date1);
@@ -52,12 +52,12 @@ const AdminOwnerView = () => {
           <div className="card-body grid md:grid-cols-2 gap-4">
             <div className="">
               <h2 className="card-title mb-3">Client Information </h2>
-              <h6>Client Username : {data?.username}</h6>
-              <h6>Client Name : {data?.name}</h6>
-              <h6>Hotel Address : {data?.address}</h6>
+              <h6>Username : {data?.username}</h6>
+              <h6>Name : {data?.name}</h6>
+              <h6>Address : {data?.address}</h6>
               <h6>Contact Number : {data?.phone_no}</h6>
               <h6>Emergency Contact: {data?.emergency_contact}</h6>
-              <h6>Client Email : {data?.email}</h6>
+              <h6>Email : {data?.email}</h6>
             </div>
             <div className="">
               <h2 className="card-title mb-3">License Information </h2>
@@ -106,7 +106,7 @@ const AdminOwnerView = () => {
         <StatusHistory />
       </div>
       <Modal id={`hle_modal`}>
-        <HotelLimitEdit hotels={data?.maxHotels} />
+        <HotelLimitEdit data={data} hotels={data?.maxHotels} />
       </Modal>
     </>
   );

@@ -172,11 +172,19 @@ const ManagerList = () => {
                             <td>{sa?.emergency_contact}</td>
                             <td>-</td>
                             <td>
-                              {sa?.status === "Active"
-                                ? "In Duty"
-                                : sa?.status === "Deactive"
-                                ? "Resign"
-                                : "Deleted"}
+                              {sa?.status === "Active" ? (
+                                <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                                  In Duty
+                                </div>
+                              ) : sa?.status === "Deactive" ? (
+                                <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                                  Resign
+                                </div>
+                              ) : (
+                                <div className="badge min-w-[7rem] bg-orange-600 border-orange-600 text-white">
+                                  Deleted
+                                </div>
+                              )}
                             </td>
                             <td className={`flex flex-wrap gap-1.5`}>
                               <Link

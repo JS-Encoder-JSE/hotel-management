@@ -23,6 +23,7 @@ const ChangeShift = ({
         <hr />
         <div className={`mt-5 space-y-3`}>
           {managerList.map((elem, idx) => {
+            console.log(elem)
             return (
               <>
                 <div className="grid grid-cols-2 gap-4 relative">
