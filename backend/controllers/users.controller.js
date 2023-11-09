@@ -195,10 +195,10 @@ export const addLicense = async (req, res) => {
   }
 };
 
-export const getUsersByParentId =  async (req, res) => {
+export const getUsersByParentId = async (req, res) => {
   try {
     const { parent_id } = req.params;
-    const { page = 1, limit = 10,role, search, filter } = req.query;
+    const { page = 1, limit = 10, role, search, filter } = req.query;
 
     const parent = await User.findById(parent_id);
     if (!parent) {
@@ -1110,9 +1110,7 @@ export const getUsers = async (req, res) => {
 
     const query = { parent_id: user_id, role: role };
 
-    if (
-      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
-    ) {
+    if (["Active", "Deactive", "Suspended", "Expired"].includes(filter)) {
       query.status = filter;
     }
 
@@ -1122,6 +1120,9 @@ export const getUsers = async (req, res) => {
         { name: { $regex: search, $options: "i" } },
       ];
     }
+
+    // Exclude users with status "Deleted"
+    query.status = { $ne: "Deleted" };
 
     const options = {
       page: parseInt(page, 10),
