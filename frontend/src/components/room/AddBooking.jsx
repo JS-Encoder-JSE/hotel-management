@@ -56,25 +56,11 @@ const AddBooking = () => {
 	// console.log(user)
 	const [addBooking] = useAddBookingMutation();
 	const [selectedRooms, setSelectedRooms] = useState([]);
-	const closeRef= useRef(null)
-	// {
-	//   "room_id": "654b6f1869788fc80c2eb0d8",
-	//   "hotel_id": "654a4d67932e9946307d5663",
-	//   "guestName": "John Doe",
-	//   "address": "123 Main Street",
-	//   "mobileNumber": "123-456-7890",
-	//   "emergency_contact": "987-654-3210",
-	//   "adult": 2,
-	//   "children": 1,
-	//   "paymentMethod": "Cash",
-	//   "discount": 10,
-	//   "from": "2023-11-15T14:00:00.000Z",
-	//   "to": "2023-11-20T12:00:00.000Z",
-	//   "nationality": "US"
-	// }
+	const closeRef = useRef(null);
 	const formik = useFormik({
 		initialValues: {
 			room_ids: [],
+			advanced_amount: "",
 			hotel_id: "",
 			guestName: "",
 			address: "",
@@ -94,13 +80,14 @@ const AddBooking = () => {
 			const obj = { ...values };
 			obj.room_ids = selectedRooms.map((i) => i.id);
 			const response = await addBooking(obj);
+			console.log(values);
 			console.log(response);
+
 			if (response?.error) {
 				toast.error(response.error.data.message);
 			} else {
-
 				formikHelpers.resetForm();
-				closeRef.current.click()
+				closeRef.current.click();
 				toast.success(response.data.message);
 			}
 		},
@@ -113,7 +100,6 @@ const AddBooking = () => {
 	};
 	const { data: rooms } = useRoomsQuery({ id: formik.values.hotel_id });
 
-
 	const transformedRooms = rooms?.data?.docs?.map((room) => ({
 		id: room._id,
 		value: room.roomNumber,
@@ -123,7 +109,7 @@ const AddBooking = () => {
 	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 	return (
 		<>
-			<form autoComplete="off" method="dialog" >
+			<form autoComplete="off" method="dialog">
 				<button
 					ref={closeRef}
 					className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -255,6 +241,7 @@ const AddBooking = () => {
 							</small>
 						) : null}
 					</div>
+
 					{/* adult box */}
 					<div className="flex flex-col gap-3">
 						<input
@@ -273,6 +260,7 @@ const AddBooking = () => {
 							</small>
 						) : null}
 					</div>
+
 					{/* children box */}
 					<div className="flex flex-col gap-3">
 						<input
@@ -292,31 +280,49 @@ const AddBooking = () => {
 							</small>
 						) : null}
 					</div>
-					{/* payment method box */}
+
+					{/* advanced amount */}
 					<div className="flex flex-col gap-3">
-						<select
-							name="paymentMethod"
-							className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-							value={formik.values.paymentMethod}
+						<input
+							type="number"
+							placeholder="Advanced Ammount"
+							name="advanced_amount"
+							className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+							value={formik.values.advanced_amount}
 							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}>
-							<option value="" selected disabled>
-								Payment Method
-							</option>
-							<option value="Cash">Cash</option>
-							<option value="Card">Card</option>
-							<option value="Mobile_Banking">Mobile Banking</option>
-						</select>
-						{formik.touched.paymentMethod &&
-						Boolean(formik.errors.paymentMethod) ? (
-							<small className="text-red-600">
-								{formik.touched.paymentMethod &&
-									formik.errors.paymentMethod}
-							</small>
-						) : null}
+							onBlur={formik.handleBlur}
+						/>
 					</div>
+
+					{/* payment method box */}
+					{formik.values.advanced_amount && (
+						<div className="flex flex-col gap-3">
+							<select
+								name="paymentMethod"
+								className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+								value={formik.values.paymentMethod}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}>
+								<option value="" selected disabled>
+									Payment Method
+								</option>
+								<option value="Cash">Cash</option>
+								<option value="Card">Card</option>
+								<option value="Mobile_Banking">
+									Mobile Banking
+								</option>
+							</select>
+							{formik.touched.paymentMethod &&
+							Boolean(formik.errors.paymentMethod) ? (
+								<small className="text-red-600">
+									{formik.touched.paymentMethod &&
+										formik.errors.paymentMethod}
+								</small>
+							) : null}
+						</div>
+					)}
 					{formik.values.paymentMethod &&
-					formik.values.paymentMethod !== "cash" ? (
+					formik.values.paymentMethod !== "Cash" ? (
 						<div className="flex flex-col gap-3">
 							<input
 								type="text"
@@ -336,6 +342,7 @@ const AddBooking = () => {
 							) : null}
 						</div>
 					) : null}
+
 					<div className="flex flex-col gap-3">
 						<input
 							type="text"
@@ -354,6 +361,7 @@ const AddBooking = () => {
 							</small>
 						) : null}
 					</div>
+
 					{/* Date */}
 					<div className="flex flex-col gap-3">
 						<DatePicker
@@ -373,6 +381,8 @@ const AddBooking = () => {
 							</small>
 						) : null}
 					</div>
+
+					{/* Date */}
 					<div className="flex flex-col gap-3">
 						<DatePicker
 							dateFormat="dd/MM/yyyy"
@@ -411,6 +421,7 @@ const AddBooking = () => {
 							</small>
 						) : null}
 					</div>
+
 					{/* button */}
 					<div className={`flex justify-between`}>
 						<button
