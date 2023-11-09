@@ -4,18 +4,43 @@ import BookingLists from "../../components/room/BookingLists.jsx";
 import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
 import AddBooking from "../../components/room/AddBooking.jsx";
+import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 
 const ManageBooking = () => {
   const formik = useFormik({
     initialValues: {
       filter: "",
       search: "",
+      chooseHotels:''
     },
   });
-
+  const {data:hotelsList}= useGetRoomsAndHotelsQuery()
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl`}>
-      <div className={`flex justify-end gap-4`}>
+      <div className={`flex justify-between gap-4`}>
+
+      
+        {/* filter by hotels  */}
+        <div>
+					<select
+						name="chooseHotels"
+						className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+						value={formik.values.chooseHotels}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}>
+						<option value="" selected disabled>
+							Choose Hotels
+						</option>
+
+						{hotelsList?.map((i) => (
+							<option key={i._id} value={i._id}>
+								{i.name}
+							</option>
+						))}
+					</select>
+				</div>
+
+
         {/* <div>
           <select
             name="filter"

@@ -12,7 +12,7 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
-import { useRoomsQuery } from "../../redux/room/roomAPI.js";
+import { useGetRoomsAndHotelsQuery, useRoomsQuery } from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -141,6 +141,7 @@ const CheckIn = () => {
     }
   }, [formik.values.documents]);
 
+  const {data:hotelsList}= useGetRoomsAndHotelsQuery()
   return (
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
       <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
@@ -209,6 +210,28 @@ const CheckIn = () => {
             )}
           </Swiper>
         </div>
+
+
+        <div className="flex flex-col gap-3">
+						<select
+							name="chooseHotels"
+							className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+							value={formik.values.chooseHotels}
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}>
+							<option value="" selected disabled>
+								Choose Hotels
+							</option>
+
+							{hotelsList?.map((i) => (
+								<option key={i._id} value={i._id}>
+									{i.name}
+								</option>
+							))}
+						</select>
+					</div>
+
+        
         <div className="flex flex-col gap-3">
           <Select
             placeholder="Room Select"
