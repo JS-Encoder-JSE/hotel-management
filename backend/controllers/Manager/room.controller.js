@@ -69,20 +69,24 @@ export const getRoomsByHotelId = async (req, res) => {
     const query = {
       hotel_id: hotel_id,
     };
-    if (["Available", "Booked", "CheckedIn", "Deleted"].includes(filter)) {
+    if (["Available", "Booked", "CheckedIn"].includes(filter)) {
       query.status = filter;
     }
 
     if (search) {
-      query.$or = [{ roomNumber: { $regex: search, $options: "i" } }];
+      query.$or = [
+        { roomNumber: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
+      ];
     }
 
     const options = {
       page: parseInt(page, 10),
       limit: parseInt(limit, 10),
+      sort: { floorNumber: 1 }, // Sort by floorNumber in ascending order
     };
 
-    // Query the database with the constructed filter
+    // Query the database with the constructed filter and sort options
     const rooms = await Room.paginate(query, options);
 
     res.status(200).json({
