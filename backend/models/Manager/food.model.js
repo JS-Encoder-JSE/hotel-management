@@ -1,5 +1,6 @@
 ﻿import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import Room from "./room.model.js";
 const foodSchema = new mongoose.Schema(
   {
     hotel_id: {
@@ -64,6 +65,7 @@ const foodOrderSchema = new mongoose.Schema(
     room_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: "Room",
     },
     hotel_id: {
       type: mongoose.Schema.Types.ObjectId,

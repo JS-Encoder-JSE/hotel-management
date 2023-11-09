@@ -1,4 +1,5 @@
 ﻿import { Food, FoodOrder } from "../../models/Manager/food.model.js";
+import Hotel from "../../models/hotel.model.js";
 
 export const addFood = async (req, res) => {
   try {
@@ -144,7 +145,51 @@ export const addOrder = async (req, res) => {
     });
   }
 };
+export const getOrdersByHotelId = async (req, res) => {
+  try {
+    const { hotel_id } = req.params;
+    const { page = 1, limit = 10, search } = req.query;
 
+    const hotel = await Hotel.findById(hotel_id);
+
+    if (!hotel) {
+      return res.status(404).json({
+        success: false,
+        message: "Hotel not found",
+      });
+    }
+
+    const query = {
+      hotel_id,
+    };
+
+    if (search) {
+      // Include the search condition for roomNumber based on your model structure
+      query.room_id = { $regex: search, $options: "i" };
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const orders = await FoodOrder.paginate(query, options);
+
+    res.status(200).json({
+      success: true,
+      data: orders,
+      message: "Orders retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      error: error,
+      message: "Internal Server Error",
+    });
+  }
+};
 export const deleteOrder = async (req, res) => {
   try {
     const { order_id } = req.params;
