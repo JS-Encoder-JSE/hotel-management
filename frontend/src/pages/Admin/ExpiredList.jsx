@@ -37,11 +37,20 @@ const ExpiredList = () => {
   });
 
   const { user } = store.getState().authSlice;
-  const { isLoading, data: owners } = useGetOwnByAdminQuery({
-    cp: currentPage,
-    filter: "Expired",
-    search: keyword,
-  });
+  const { isLoading, data: owners } =
+    user.role === "admin"
+      ? useGetOwnByAdminQuery({
+          cp: currentPage,
+          filter: "Expired",
+          search: keyword,
+        })
+      : useGetUsersQuery({
+          cp: currentPage,
+          filter: "Expired",
+          search: keyword,
+          role: "owner",
+          parentId: user._id,
+        });
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
