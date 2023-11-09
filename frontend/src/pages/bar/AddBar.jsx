@@ -1,7 +1,10 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import * as yup from "yup";
+import Modal from "../../components/Modal";
+// import HotelAspack from "../../components/owner/HotelAspack";
+import SelectPackBar from "../../components/Bar/SelectPackBar";
 
 // form validation
 const validationSchema = yup.object({
@@ -32,7 +35,9 @@ const validationSchema = yup.object({
 });
 
 const AddBar = () => {
-
+  const [selectPack, setselectPack] = useState([{ pack: "", price: "" }]);
+  const [showpacks, setShowpacks] = useState([]);
+  const [save, setSave] = useState(false);
   const formik = useFormik({
     initialValues: {
       brandName: "",
@@ -50,7 +55,22 @@ const AddBar = () => {
         console.log(values);
       },
   });
+  const handleChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...selectPack];
+    list[index][name] = value;
+    setselectPack(list);
+  };
 
+  const handleRemove = (index) => {
+    const list = [...selectPack];
+    list.splice(index, 1);
+    setselectPack(list);
+  };
+
+  const handleAdd = () => {
+    setselectPack([...selectPack, { pack: "", price: "" }]);
+  };
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -195,8 +215,26 @@ const AddBar = () => {
             </small>
           ) : null}
         </div>
-
-     
+{/* select pack */}
+        <button
+              type="button"
+              className="btn btn-md bg-transparent border-gray-500/50 rounded focus:outline-none focus:border-green-slimy normal-case"
+              onClick={() => window.ol_modal.showModal()}
+            >
+             Select Pack
+            </button>
+            {showpacks.length ? (
+              <div className={`col-span-full`}>
+                <h3>Select Pack</h3>
+                <ul className={`list-disc list-inside`}>
+                  {showpacks?.map((elem) => (
+                    <li>
+                      {elem.name} - {elem.price}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
         
         {/* item Description */}
         <div className="col-span-full flex flex-col gap-3">
@@ -225,7 +263,16 @@ const AddBar = () => {
           </button>
         </div>
       </form>
-   
+      <Modal id={`ol_modal`}>
+        <SelectPackBar
+          setSave={setSave}
+          // packs={packs?.docs}
+          selectPack={selectPack}
+          handleAdd={handleAdd}
+          handleRemove={handleRemove}
+          handleChange={handleChange}
+        />
+      </Modal>
     </div>
   );
 };
