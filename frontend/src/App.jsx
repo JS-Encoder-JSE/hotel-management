@@ -73,6 +73,7 @@ import GymBooking from "./pages/Gym/GymBooking.jsx";
 import AddGym from "./pages/Gym/AddGym.jsx";
 import GymList from "./pages/Gym/GymList.jsx";
 import LicenseHistory from "./pages/owner/LicenseHistory.jsx";
+import EditProfileAdmin from "./pages/profile/EditProfileAdmin.jsx";
 
 
 
@@ -110,6 +111,10 @@ const App = () => {
             {
               path: "profile/edit",
               element: <EditProfile />,
+            },
+            {
+              path: "profile/admin/edit",
+              element: <EditProfileAdmin />,
             },
 
             // Manager Sidebar

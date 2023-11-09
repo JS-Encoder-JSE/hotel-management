@@ -68,14 +68,15 @@ const ManagerSettings = ({ owner }) => {
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>
           Change Status to{" "}
-          {owner?.status === "Deactive" || owner?.status === "Deleted"
-            ? "In Duty"
-            : owner?.status === "Active"
-            ? "Resign"
-            : null}
+          {owner?.status === "Deactive" || owner?.status === "Deleted" ? (
+            <span className={`text-green-500`}>In Duty</span>
+          ) : owner?.status === "Active" ? (
+            <span className={`text-red-500`}>Resign</span>
+          ) : null}
         </h3>
         <hr />
-        <form autoComplete="off"
+        <form
+          autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >

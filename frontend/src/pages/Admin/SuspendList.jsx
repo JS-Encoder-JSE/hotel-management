@@ -8,7 +8,10 @@ import ReactPaginate from "react-paginate";
 import { useFormik } from "formik";
 import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
 import { Rings } from "react-loader-spinner";
-import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import {
+  useGetOwnByAdminQuery,
+  useGetUsersQuery,
+} from "../../redux/admin/subadmin/subadminAPI.js";
 import store from "../../redux/store.js";
 
 const SuspendList = () => {
@@ -26,14 +29,21 @@ const SuspendList = () => {
       setKeyword(values.search);
     },
   });
-const {user}= store.getState().authSlice
-  const { isLoading, data: owners } = useGetUsersQuery({
-    cp: currentPage,
-    filter: "Suspended",
-    search: keyword,
-    role:'owner',
-    parentId:user._id
-  });
+  const { user } = store.getState().authSlice;
+  const { isLoading, data: owners } =
+    user.role === "admin"
+      ? useGetOwnByAdminQuery({
+          cp: currentPage,
+          filter: "Suspended",
+          search: keyword,
+        })
+      : useGetUsersQuery({
+          cp: currentPage,
+          filter: "Suspended",
+          search: keyword,
+          role: "owner",
+          parentId: user._id,
+        });
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -67,7 +77,7 @@ const {user}= store.getState().authSlice
             onKeyDown={(e) => pressEnter(e)}
           />
           <button
-              onClick={() => formik.handleSubmit()}
+            onClick={() => formik.handleSubmit()}
             type="button"
             className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
           >
@@ -92,47 +102,70 @@ const {user}= store.getState().authSlice
                     </tr>
                   </thead>
                   <tbody>
-                    {[...owners?.docs]?.sort((a, b) => a.name - b.name)?.map((owner, idx) => {
-                      return (
-                        <tr
-                          className={
-                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                          }
-                        >
-                          <th>{++idx}</th>
-                          <td>{owner?.name}</td>
-                          <td>{owner?.username}</td>
-                          <td>{owner?.email}</td>
-                          <td>{owner?.status === "Active" ? (
-                              <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
-                                Active
-                              </div>
-                          ) : (
-                              <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
-                                Deactive
-                              </div>
-                          )}</td>
-                          <td className={`space-x-1.5`}>
-                            <span
-                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
-                              onClick={() =>
-                                navigate(`/dashboard/renew-view/${owner?._id}`)
-                              }
-                            >
-                              <FaEye />
-                            </span>
-                            <span
-                              className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                              onClick={() =>
-                                navigate(`/dashboard/edit-renew/${owner?._id}`)
-                              }
-                            >
-                              <MdOutlineAutorenew />
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    {[...owners?.docs]
+                      ?.sort((a, b) =>
+                        a.name.toLowerCase() > b.name.toLowerCase()
+                          ? 1
+                          : a.name.toLowerCase() < b.name.toLowerCase()
+                          ? -1
+                          : 0,
+                      )
+                      ?.map((owner, idx) => {
+                        return (
+                          <tr
+                            className={
+                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                            }
+                          >
+                            <th>{++idx}</th>
+                            <td>{owner?.name}</td>
+                            <td>{owner?.username}</td>
+                            <td>{owner?.email}</td>
+                            <td>
+                              {owner?.status === "Active" ? (
+                                <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                                  Active
+                                </div>
+                              ) : owner?.status === "Deactive" ||
+                                owner?.status === "Deleted" ? (
+                                <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                                  Deactive
+                                </div>
+                              ) : owner?.status === "Suspended" ? (
+                                <div className="badge min-w-[7rem] bg-red-500 border-red-500 text-white">
+                                  Suspended
+                                </div>
+                              ) : (
+                                <div className="badge min-w-[7rem] bg-orange-600 border-orange-600 text-white">
+                                  Expired
+                                </div>
+                              )}
+                            </td>
+                            <td className={`space-x-1.5`}>
+                              <span
+                                className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
+                                onClick={() =>
+                                  navigate(
+                                    `/dashboard/renew-view/${owner?._id}`,
+                                  )
+                                }
+                              >
+                                <FaEye />
+                              </span>
+                              <span
+                                className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                                onClick={() =>
+                                  navigate(
+                                    `/dashboard/edit-renew/${owner?._id}`,
+                                  )
+                                }
+                              >
+                                <MdOutlineAutorenew />
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -157,7 +190,7 @@ const {user}= store.getState().authSlice
               </div>
             </>
           ) : (
-              <h3 className={`mt-10 text-center`}>No data found!</h3>
+            <h3 className={`mt-10 text-center`}>No data found!</h3>
           )
         ) : (
           <Rings

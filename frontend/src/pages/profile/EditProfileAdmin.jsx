@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -9,18 +9,33 @@ import { useUpdateUserMutation } from "../../redux/admin/subadmin/subadminAPI.js
 
 // form validation
 const validationSchema = yup.object({
+  name: yup.string().required("Name is required"),
+  address: yup.string().required("Address is required"),
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  phone: yup.string().required("Phone number is required"),
   newPassword: yup
     .string()
     .min(8, "Password should be of minimum 8 characters length")
-    .required("New password is required"),
+    .when([], {
+      is: (newPassword) => newPassword && newPassword.length > 0,
+      then: yup.string().required("Password is required"),
+    }),
   confirmPassword: yup
     .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Confirm password is required")
-    .oneOf([yup.ref("newPassword")], "Passwords must match"),
+    .min(8, "Confirm Password should be of minimum 8 characters length")
+    .when([], {
+      is: (confirmPassword) => confirmPassword && confirmPassword.length > 0,
+      then: yup
+        .string()
+        .required("Confirm password is required")
+        .oneOf([yup.ref("newPassword")], "Passwords must match"),
+    }),
 });
 
-const EditProfile = () => {
+const EditProfileAdmin = () => {
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
   const [showPass, setShowPass] = useState(false);
@@ -39,18 +54,41 @@ const EditProfile = () => {
     validationSchema,
     onSubmit: async (values) => {
       const obj = { ...values };
-      const { newPassword } = obj;
-      const response = await updateUser({
-        id: user._id,
-        data: {
-          password: newPassword,
-        },
-      });
+      const {
+        name,
+        phone: phone_no,
+        email,
+        newPassword: password,
+        address,
+      } = obj;
+      let response;
+
+      if (password) {
+        response = await updateUser({
+          id: user._id,
+          data: {
+            name,
+            phone_no,
+            email,
+            password,
+            address,
+          },
+        });
+      } else {
+        response = await updateUser({
+          id: user._id,
+          data: {
+            name,
+            phone_no,
+            email,
+            address,
+          },
+        });
+      }
 
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
-        navigate(-1);
         toast.success(response.data.message);
       }
     },
@@ -59,6 +97,17 @@ const EditProfile = () => {
   const handleShowPass = () => {
     setShowPass(!showPass);
   };
+
+  useEffect(() => {
+    if (user) {
+      formik.setValues({
+        name: user?.name,
+        address: user?.address,
+        phone: user?.phone_no,
+        email: user?.email,
+      });
+    }
+  }, [user]);
 
   return (
     <div
@@ -80,7 +129,7 @@ const EditProfile = () => {
             />
           )}
         </div>
-        <div className={`text-end`}>
+        <div>
           <button
             type="button"
             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded-md normal-case"
@@ -118,18 +167,18 @@ const EditProfile = () => {
           <h3 className={`font-semibold`}>Address</h3>
           <div className="relative">
             <input
-                type={"text"}
-                placeholder="Address"
-                name="address"
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                value={formik.values.address}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+              type={"text"}
+              placeholder="Address"
+              name="address"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
             {formik.touched.address && Boolean(formik.errors.address) ? (
-                <small className="text-red-600">
-                  {formik.touched.address && formik.errors.address}
-                </small>
+              <small className="text-red-600">
+                {formik.touched.address && formik.errors.address}
+              </small>
             ) : null}
           </div>
         </div>
@@ -137,37 +186,37 @@ const EditProfile = () => {
           <h3 className={`font-semibold`}>Phone</h3>
           <div className="relative">
             <input
-                type={"text"}
-                placeholder="Phone"
-                name="phone"
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+              type={"text"}
+              placeholder="Phone"
+              name="phone"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.phone}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {formik.touched.name && Boolean(formik.errors.name) ? (
-                <small className="text-red-600">
-                  {formik.touched.name && formik.errors.name}
-                </small>
+            {formik.touched.phone && Boolean(formik.errors.phone) ? (
+              <small className="text-red-600">
+                {formik.touched.phone && formik.errors.phone}
+              </small>
             ) : null}
           </div>
         </div>
         <div>
-          <h3 className={`font-semibold`}>Name</h3>
+          <h3 className={`font-semibold`}>Email</h3>
           <div className="relative">
             <input
-                type={"text"}
-                placeholder="Name"
-                name="name"
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+              type={"text"}
+              placeholder="Email"
+              name="email"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {formik.touched.name && Boolean(formik.errors.name) ? (
-                <small className="text-red-600">
-                  {formik.touched.name && formik.errors.name}
-                </small>
+            {formik.touched.email && Boolean(formik.errors.email) ? (
+              <small className="text-red-600">
+                {formik.touched.email && formik.errors.email}
+              </small>
             ) : null}
           </div>
         </div>
@@ -242,7 +291,7 @@ const EditProfile = () => {
           type={"submit"}
           className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
-          <span>Update Password</span>
+          <span>Update</span>
           {isFetching ? (
             <span
               className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
@@ -255,4 +304,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default EditProfileAdmin;

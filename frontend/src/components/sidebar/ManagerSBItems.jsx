@@ -13,6 +13,7 @@ import {
 } from "react-icons/md";
 import { FaGlassMartini } from "react-icons/fa";
 import { SiMomenteo } from "react-icons/si";
+import {TbToolsKitchen2} from "react-icons/tb";
 
 const ManagerSbItems = ({ handleSBItems }) => {
   return (
@@ -97,7 +98,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           onClick={(e) => handleSBItems(e)}
         >
           <div className={`flex space-x-1.5`}>
-            <MdOutlineKitchen />
+            <TbToolsKitchen2 />
             <span className={`-mt-0.5`}>Restaurant</span>
           </div>
           <span className={`group-[.active]:hidden`}>
@@ -127,18 +128,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Order
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={`/dashboard/food-inventory`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Food Inventory
+              Manage Order
             </NavLink>
           </li>
         </ul>
