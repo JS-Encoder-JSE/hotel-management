@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import {
   MdBarChart,
   MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
+  MdKeyboardArrowUp, MdManageAccounts,
   MdOutlineKitchen,
   MdOutlineLockClock,
   MdOutlineMeetingRoom,
@@ -149,7 +149,7 @@ const AdminSBItems = ({ handleSBItems }) => {
           >
             <div className={`flex space-x-1.5`}>
               <span className={`w-5`}>
-                <MdOutlineKitchen />
+                <MdManageAccounts />
               </span>
               <span className={`-mt-0.5`}>Sub Admin Management</span>
             </div>

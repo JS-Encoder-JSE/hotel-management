@@ -193,7 +193,7 @@ const AdminOwnerList = ({ title }) => {
                               ) : owner?.status === "Deactive" ||
                                 owner?.status === "Deleted" ? (
                                 <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
-                                  Deactive
+                                  {owner?.status}
                                 </div>
                               ) : owner?.status === "Suspended" ? (
                                 <div className="badge min-w-[7rem] bg-red-500 border-red-500 text-white">

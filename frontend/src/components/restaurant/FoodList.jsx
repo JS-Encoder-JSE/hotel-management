@@ -1,12 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
+import { FaEdit, FaMinusCircle, FaPlusCircle, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { delOrder, setOrderCalc } from "../../redux/add-order/addOrderSlice.js";
+import Swal from "sweetalert2";
+import { useDeleteFoodMutation } from "../../redux/restaurant/foodAPI.js";
+import {useNavigate} from "react-router-dom";
 
 const FoodList = ({ idx, food, handleOrder }) => {
+  const navigate = useNavigate()
   const [isAdd, setAdd] = useState(false);
   const { order } = useSelector((store) => store.addOrderSlice);
   const dispatch = useDispatch();
+  const [deleteFood] = useDeleteFoodMutation();
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Food will be delete.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#35bef0",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Deleted!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          deleteFood(id);
+        });
+      }
+    });
+  };
 
   useEffect(() => {
     const findFoodIdx = order.foods.findIndex((item) => item._id === food._id);
@@ -42,7 +71,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
       </td>
       <td>0</td>
       <td>{food?.price}</td>
-      <th>
+      <th className={`flex gap-1.5`}>
         {!isAdd ? (
           <span
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
@@ -65,6 +94,20 @@ const FoodList = ({ idx, food, handleOrder }) => {
             <FaMinusCircle />
           </span>
         )}
+        <span
+          className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+          onClick={() => navigate(`/dashboard/edit-food/${food._id}`)}
+          title={`Edit`}
+        >
+          <FaEdit />
+        </span>
+        <span
+          className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+          title={`Delete`}
+          onClick={() => handleDelete(food._id)}
+        >
+          <FaTrash />
+        </span>
       </th>
     </tr>
   );
