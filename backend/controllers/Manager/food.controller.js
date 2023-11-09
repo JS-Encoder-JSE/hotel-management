@@ -1,35 +1,36 @@
-﻿// controllers/Manager/food.controller.js
+﻿import Food from "../../models/Manager/food.model.js";
 
-import { Food, FoodOrder } from "../../models/Manager/food.model.js";
 
-export const addfood = async (req, res) => {
+export const addFood = async (req, res) => {
 	try {
-		const { food_name, quantity, price, images, description } = req.body;
-
-		const newFood = new Food({
-			food_name,
-			quantity,
-			price,
-			images,
-			description,
-		});
-
-		const savedFood = await newFood.save();
-
-		res.status(201).json({
-			success: true,
-			data: savedFood,
-			message: "Food item added successfully",
-		});
+	  const { hotel_id, food_name, status, serveyor_quantity, price, images, description } = req.body;
+  
+	  const newFood = new Food({
+		hotel_id,
+		food_name,
+		status,
+		serveyor_quantity,
+		price,
+		images,
+		description,
+	  });
+  
+	  const savedFood = await newFood.save();
+  
+	  res.status(201).json({
+		success: true,
+		data: savedFood,
+		message: 'Food item added successfully',
+	  });
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			error: "Internal Server Error",
-		});
+	  res.status(500).json({
+		success: false,
+		error: 'Internal Server Error',
+	  });
 	}
-};
+  };
 
-export const getfood = async (req, res) => {
+export const getFood = async (req, res) => {
 	try {
 		const { page = 1, limit = 10, ...query } = req.query;
 		const parsedLimit = parseInt(limit);
