@@ -117,30 +117,6 @@ export const updatefood = async (req, res) => {
   }
 };
 
-export const deletefood = async (req, res) => {
-  try {
-    const deletedFood = await Food.findByIdAndDelete(req.params.foodId);
-
-    if (!deletedFood) {
-      return res.status(404).json({
-        success: false,
-        error: "Food item not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: {},
-      message: "Food item deleted successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: "Internal Server Error",
-    });
-  }
-};
-
 // order
 export const addOrder = async (req, res) => {
   try {
@@ -162,6 +138,64 @@ export const addOrder = async (req, res) => {
     });
   } catch (error) {
     console.error(error); // Log the error for debugging
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+export const deleteOrder = async (req, res) => {
+  try {
+    const { order_id } = req.params;
+
+    // Validate orderId here if needed
+
+    const deletedOrder = await FoodOrder.findByIdAndDelete(orderId);
+
+    if (!deletedOrder) {
+      return res.status(404).json({
+        success: false,
+        error: "Order not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: deletedOrder,
+      message: "Order deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+export const deleteFood = async (req, res) => {
+  try {
+    const { food_id } = req.params;
+
+    // Validate foodId here if needed
+
+    const deletedFood = await Food.findByIdAndDelete(foodId);
+
+    if (!deletedFood) {
+      return res.status(404).json({
+        success: false,
+        error: "Food not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: deletedFood,
+      message: "Food deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       error: "Internal Server Error",

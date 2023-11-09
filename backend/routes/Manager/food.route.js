@@ -1,12 +1,13 @@
 ﻿import { Router } from "express";
 import {
   addFood,
-//   getFood,
+  //   getFood,
   getfoodById,
   updatefood,
-  deletefood,
   addOrder,
   getFoodByHotelId,
+  deleteFood,
+  deleteOrder,
 } from "../../controllers/Manager/food.controller.js";
 import { checkToken } from "../../middlewares/checkToken.js";
 
@@ -18,7 +19,8 @@ router.post("/add-food", checkToken, addFood);
 router.get("/get-foods-by-hotel/:hotel_id", checkToken, getFoodByHotelId);
 router.get("/get-food-by-id/:foodId", checkToken, getfoodById);
 router.patch("/update-food/:foodId", checkToken, updatefood);
-router.delete("/delete-food/:foodId", checkToken, deletefood);
+router.delete("/delete-food/:food_id", checkToken, deleteFood);
+router.delete("/delete-order/:order_id", checkToken, deleteOrder);
 router.post("/add-order", checkToken, addOrder);
 
 export default router;
