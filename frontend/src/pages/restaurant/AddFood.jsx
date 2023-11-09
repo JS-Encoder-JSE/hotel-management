@@ -13,6 +13,7 @@ import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { useAddFoodMutation } from "../../redux/restaurant/foodAPI.js";
+import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI";
 
 // form validation
 const validationSchema = yup.object({
@@ -34,18 +35,24 @@ const validationSchema = yup.object({
 		.min(20, "Description at least 20 characters length"),
 	photos: yup.mixed().required("Images are required"),
 	surveyorQuantity: yup
+		.number()
 		.required("Surveyor quantity is required")
 		.positive("Surveyor quantity must be a positive number")
 		.integer("Surveyor quantity must be an integer"),
+	chooseHotels:yup.string().required('Choose hotel is required')
 });
-
+import store from '../../redux/store'
 const AddFood = () => {
+	const { hotelsList, isLoading: loading } = useGetRoomsAndHotelsQuery()
 	const [isLoading, setLoading] = useState(false);
 	const [addFood] = useAddFoodMutation();
 	const [upload] = useUploadMutation();
 	const [selectedImages, setSelectedImages] = useState([]);
+
+	
 	const formik = useFormik({
 		initialValues: {
+			chooseHotels:'',
 			foodName: "",
 			quantity: "",
 			price: "",
@@ -80,6 +87,8 @@ const AddFood = () => {
 				quantity,
 				price,
 				description,
+				surveyorQuantity: '',
+				chooseHotels:'',
 				images: obj.images,
 			});
 

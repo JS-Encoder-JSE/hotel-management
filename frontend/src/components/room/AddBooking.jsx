@@ -8,7 +8,7 @@ import {
 	useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
 import DatePicker from "react-datepicker";
-import store from '../../redux/store.js'
+import store from "../../redux/store.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -39,8 +39,8 @@ const validationSchema = yup.object({
 			return schema.required("Transaction ID is required");
 		else return schema;
 	}),
-	fromDate: yup.string().required("From Date is required"),
-	toDate: yup.string().required("To Date is required"),
+	from: yup.string().required("From Date is required"),
+	to: yup.string().required("To Date is required"),
 	nationality: yup.string().required("Nationality Date is required"),
 	// discount: yup.number().when(["discount"], ([discount], schema) => {
 	//   if (discount)
@@ -52,12 +52,9 @@ const validationSchema = yup.object({
 });
 
 const AddBooking = () => {
-  const { user } = store.getState().authSlice
-  // console.log(user)
-  const { isLoading, data: rooms } = useGetRoomsAndHotelsQuery(user?._id);
+	// console.log(user)
 	const [addBooking] = useAddBookingMutation();
 	const [selectedRooms, setSelectedRooms] = useState([]);
-	console.log({ rooms });
 	// {
 	//   "room_id": "654b6f1869788fc80c2eb0d8",
 	//   "hotel_id": "654a4d67932e9946307d5663",
@@ -89,9 +86,10 @@ const AddBooking = () => {
 			to: "",
 			nationality: "US",
 		},
+
 		validationSchema,
-    onSubmit: async (values, formikHelpers) => {
-      console.log(values)
+		onSubmit: async (values, formikHelpers) => {
+			console.log(values);
 			// const obj = { ...values };
 			// obj.roomNumber = 101;
 			// console.log(obj);
@@ -113,12 +111,14 @@ const AddBooking = () => {
 			e.preventDefault();
 		}
 	};
+	const { data:rooms } = useRoomsQuery({ id: formik.values.hotel_id })
 
-	const transformedRooms = rooms?.data?.map((room) => ({
+	const transformedRooms = rooms?.data?.docs?.map((room) => ({
 		value: room.roomNumber,
 		label: `${room.roomNumber} - ${room.category}`,
 	}));
 
+	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 	return (
 		<>
 			<form autoComplete="off" method="dialog">
@@ -135,6 +135,25 @@ const AddBooking = () => {
 					autoComplete="off"
 					className="form-control grid grid-cols-1 gap-4 mt-5"
 					onSubmit={formik.handleSubmit}>
+					<div className="flex flex-col gap-3">
+						<select
+							name="hotel_id"
+							className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+							value={formik.values.hotel_id}
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}>
+							<option value="" selected disabled>
+								Choose Hotels
+							</option>
+
+							{hotelsList?.map((i) => (
+								<option key={i._id} value={i._id}>
+									{i.name}
+								</option>
+							))}
+						</select>
+					</div>
+
 					<div className="flex flex-col gap-3">
 						<Select
 							placeholder="Room number"
@@ -336,39 +355,39 @@ const AddBooking = () => {
 					<div className="flex flex-col gap-3">
 						<DatePicker
 							dateFormat="dd/MM/yyyy"
-							name="fromDate"
+							name="from"
 							placeholderText={`From`}
-							selected={formik.values.fromDate}
+							selected={formik.values.from}
 							className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
 							onChange={(date) =>
-								formik.setFieldValue("fromDate", date)
+								formik.setFieldValue("from", date)
 							}
 							onBlur={formik.handleBlur}
 						/>
-						{formik.touched.fromDate &&
-						Boolean(formik.errors.fromDate) ? (
+						{formik.touched.from &&
+						Boolean(formik.errors.from) ? (
 							<small className="text-red-600">
-								{formik.touched.fromDate &&
-									formik.errors.fromDate}
+								{formik.touched.from &&
+									formik.errors.from}
 							</small>
 						) : null}
 					</div>
 					<div className="flex flex-col gap-3">
 						<DatePicker
 							dateFormat="dd/MM/yyyy"
-							name="toDate"
+							name="to"
 							placeholderText={`To`}
-							selected={formik.values.toDate}
+							selected={formik.values.to}
 							className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
 							onChange={(date) =>
-								formik.setFieldValue("toDate", date)
+								formik.setFieldValue("to", date)
 							}
 							onBlur={formik.handleBlur}
 						/>
-						{formik.touched.toDate &&
-						Boolean(formik.errors.toDate) ? (
+						{formik.touched.to &&
+						Boolean(formik.errors.to) ? (
 							<small className="text-red-600">
-								{formik.touched.toDate && formik.errors.toDate}
+								{formik.touched.to && formik.errors.to}
 							</small>
 						) : null}
 					</div>
