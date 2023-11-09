@@ -67,20 +67,14 @@ export const getRoomsByHotelId = async (req, res) => {
 
     // Construct the filter object based on the query parameters
     const query = {
-      hotel_id:hotel_id,
+      hotel_id: hotel_id,
     };
-    if (
-      ["Available", "Booked", "CheckedIn", "Deleted"].includes(filter)
-    ) {
+    if (["Available", "Booked", "CheckedIn", "Deleted"].includes(filter)) {
       query.status = filter;
     }
 
     if (search) {
-      query.$or = [
-        { roomNumber: { $regex: search, $options: "i" } },
-        { floorNumber: { $regex: search, $options: "i" } },
-        { category: { $regex: search, $options: "i" } },
-      ];
+      query.$or = [{ roomNumber: { $regex: search, $options: "i" } }];
     }
 
     const options = {
