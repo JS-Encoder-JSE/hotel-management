@@ -104,14 +104,17 @@ const HotelEdit = () => {
 
   useEffect(() => {
     if (save) {
-      console.log("save");
       const tempList = [
         ...managerList
-          .map((elem) => ({
-            ...(elem.manager ? JSON.parse(elem.manager) : {}),
-            shift: elem.shift,
-          }))
-          .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+            .map((elem) => ({
+              ...(elem.manager
+                  ? typeof elem.manager === "string"
+                      ? JSON.parse(elem.manager)
+                      : elem.manager
+                  : {}),
+              shift: elem.shift,
+            }))
+            .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
       ];
 
       setShowManagers(tempList);
@@ -130,7 +133,7 @@ const HotelEdit = () => {
       });
 
       const tempArr = hotel.managers.map((elem) => ({
-        manager: JSON.stringify(elem),
+        manager: elem,
         shift: elem.shift,
       }));
 

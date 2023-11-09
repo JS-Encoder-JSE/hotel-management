@@ -141,15 +141,17 @@ const HotelLists = () => {
                         {/* <td>jondoe@gmail.com</td> */}
                         <td>{hotel?.phone_no}</td>
                         {/* <td>{hotel?.status}</td> */}
-                        <td>{hotel?.status === "Active" ? (
-                              <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
-                                Active
-                              </div>
+                        <td>
+                          {hotel?.status === "Active" ? (
+                            <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                              Active
+                            </div>
                           ) : (
-                              <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
-                                Deactive
-                              </div>
-                          )}</td>
+                            <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                              Deleted
+                            </div>
+                          )}
+                        </td>
                         {/* <td>123456</td> */}
                         {/* <td>Manager 1</td> */}
                         <td className={`space-x-1.5`}>

@@ -23,7 +23,6 @@ const ChangeShift = ({
         <hr />
         <div className={`mt-5 space-y-3`}>
           {managerList.map((elem, idx) => {
-            console.log(elem)
             return (
               <>
                 <div className="grid grid-cols-2 gap-4 relative">
@@ -31,15 +30,14 @@ const ChangeShift = ({
                     <select
                       name={`manager`}
                       className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                      value={elem.manager}
                       onChange={(e) => handleChange(e, idx)}
                     >
                       <option value="" selected disabled>
                         Manager
                       </option>
-                      {managers?.map((elem) => (
-                        <option value={JSON.stringify(elem)}>
-                          {elem?.name}
+                      {managers?.map((manager) => (
+                        <option value={JSON.stringify(manager)} selected={elem?.manager?._id === manager?._id}>
+                          {manager?.name}
                         </option>
                       ))}
                     </select>
