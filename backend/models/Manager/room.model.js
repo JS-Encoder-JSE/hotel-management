@@ -5,6 +5,10 @@ const roomSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  room_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   category: {
     type: String,
     enum: ["Standard", "Deluxe", "Suite", "President_Suite"], // Add other category options as needed

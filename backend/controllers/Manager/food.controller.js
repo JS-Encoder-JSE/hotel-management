@@ -68,7 +68,7 @@ export const getFoodByHotelId = async (req, res) => {
     res.status(200).json({
       success: true,
       data: foods,
-      message: "Rooms retrieved successfully",
+      message: "Foods retrieved successfully",
     });
   } catch (error) {
     console.error(error);
