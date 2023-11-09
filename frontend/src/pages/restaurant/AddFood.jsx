@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import {
-    MdOutlineKeyboardArrowLeft,
-    MdOutlineKeyboardArrowRight,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 import { TbReplaceFilled } from "react-icons/tb";
 import { Navigation } from "swiper/modules";
@@ -13,16 +13,12 @@ import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { useAddFoodMutation } from "../../redux/restaurant/foodAPI.js";
+import {useSelector} from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
   foodName: yup.string().required("Food name is required"),
-    quantity: yup
-  .number()
-  .required("quantity is required")
-  .positive("quantity must be a positive number")
-  .integer("quantity must be an integer"),
-  
+  surveyorQuantity: yup.string().required("Surveyor quantity is required"),
   price: yup
     .number()
     .required("Price is required")
@@ -40,10 +36,10 @@ const AddFood = () => {
   const [addFood] = useAddFoodMutation();
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
+  const {user} = useSelector(store => store.authSlice)
   const formik = useFormik({
     initialValues: {
       foodName: "",
-      quantity: "",
       price: "",
       description: "",
       photos: null,
@@ -54,17 +50,23 @@ const AddFood = () => {
       setLoading(true);
 
       const obj = { ...values };
-      const { foodName: food_name, quantity, price, description } = obj;
+      const {
+        foodName: food_name,
+        price,
+        description,
+        surveyorQuantity: serveyor_quantity,
+        photos,
+      } = obj;
 
       const formData = new FormData();
 
-      for (let i = 0; i < values.photos.length; i++) {
-        const photoName = values.photos[i].name.substring(
+      for (let i = 0; i < photos.length; i++) {
+        const photoName = photos[i].name.substring(
           0,
-          values.photos[i].name.lastIndexOf("."),
+          photos[i].name.lastIndexOf("."),
         );
 
-        formData.append(photoName, values.photos[i]);
+        formData.append(photoName, photos[i]);
       }
 
       await upload(formData).then(
@@ -72,10 +74,11 @@ const AddFood = () => {
       );
 
       const response = await addFood({
+        hotel_id: user?.assignedHotel[0],
         food_name,
-        quantity,
         price,
         description,
+        serveyor_quantity,
         images: obj.images,
       });
 
@@ -138,7 +141,8 @@ const AddFood = () => {
           <span>Add Food</span>
         </h3>
       </div>
-      <form autoComplete="off"
+      <form
+        autoComplete="off"
         className="form-control grid grid-cols-1 gap-4 mt-5"
         onSubmit={formik.handleSubmit}
       >
@@ -219,45 +223,22 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
-        {/* Quantity box */}
         <div className="flex flex-col gap-3">
           <input
-            type="text"
-            placeholder="Quantity"
-            name="quantity"
-            className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-            value={formik.values.quantity}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+              type="text"
+              placeholder="Surveyor Quantity"
+              name="surveyorQuantity"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.surveyorQuantity}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
           />
-          {formik.touched.quantity && Boolean(formik.errors.quantity) ? (
-            <small className="text-red-600">
-              {formik.touched.quantity && formik.errors.quantity}
-            </small>
+          {formik.touched.surveyorQuantity && Boolean(formik.errors.surveyorQuantity) ? (
+              <small className="text-red-600">
+                {formik.touched.surveyorQuantity && formik.errors.surveyorQuantity}
+              </small>
           ) : null}
         </div>
-        <div className="flex flex-col gap-3">
-                <select
-                  name="surveyorQuantity"
-                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.surveyorQuantity}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="" selected disabled>
-                   Surveyor Quantity
-                  </option>
-                  <option value="SetMenu1">1:1</option>
-                  <option value="SetMenu2">2:1</option>
-                  <option value="SetMenu3">3:1</option>
-                  <option value="SetMenu4">4:1</option>
-                </select>
-                {formik.touched.surveyorQuantity && Boolean(formik.errors.surveyorQuantity) ? (
-                  <small className="text-red-600">
-                    {formik.touched.surveyorQuantity && formik.errors.surveyorQuantity}
-                  </small>
-                ) : null}
-              </div>
 
         {/* Price box */}
         <div className="flex flex-col gap-3">
