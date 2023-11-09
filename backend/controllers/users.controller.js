@@ -987,7 +987,7 @@ export const updateStatus = async (req, res) => {
     res.status(200).json({ message: "User status updated successfully", user });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to update user status" });
+    res.status(500).json({ message: "Failed to update user status" });
   }
 };
 
