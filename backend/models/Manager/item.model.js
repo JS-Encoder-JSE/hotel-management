@@ -6,9 +6,13 @@ const itemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    assignedHotel: {
+    hotel_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Hotel",
+      required:true,
+    },
+    room_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required:true,
     },
     description: {
       type: String,

@@ -195,6 +195,46 @@ export const addLicense = async (req, res) => {
   }
 };
 
+export const getUsersByParentId =  async (req, res) => {
+  try {
+    const { parent_id } = req.params;
+    const { page = 1, limit = 10,role, search, filter } = req.query;
+
+    const parent = await User.findById(parent_id);
+    if (!parent) {
+      return res.status(404).json({ message: "Parent not found" });
+    }
+
+    const query = {};
+    if (role) {
+      query.role = role;
+    }
+    if (
+      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
+    ) {
+      query.status = filter;
+    }
+
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const users = await User.paginate(query, options);
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve users" });
+  }
+};
+
 export const addOwner = async (req, res) => {
   try {
     const { username, name, password, maxHotels } = req.body;
@@ -218,7 +258,7 @@ export const addOwner = async (req, res) => {
 
     res.status(201).json({ message: "Owner added successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Failed to add owner" });
   }
 };
 
@@ -335,7 +375,7 @@ export const addEmployee = async (req, res) => {
       message: "Manager added and assigned to the hotel successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -377,10 +417,18 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "User not found" });
     }
-
+    if (user.role === "employee") {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to login" });
+    }
+    if (["Expired", "Deactive", "Deleted"].includes(user.status)) {
+      return res
+        .status(403)
+        .json({ message: "You have no permission to login" });
+    }
     // Compare the provided password with the hashed password
     const isPasswordValid = await user.comparePassword(password);
-    console.log(isPasswordValid);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
@@ -392,7 +440,8 @@ export const login = async (req, res) => {
 
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Login failed" });
   }
 };
 
@@ -425,12 +474,10 @@ export const getOwners = async (req, res) => {
     }
     res.json(owners);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: error.message,
-        message: "Failed to retrieve user information",
-      });
+    res.status(500).json({
+      error: error.message,
+      message: "Failed to retrieve user information",
+    });
   }
 };
 
@@ -982,7 +1029,7 @@ export const getOwnersByAdmin = async (req, res) => {
     const users = await User.paginate(query, options);
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ error: "Failed to retrieve items" });
+    res.status(500).json({ message: "Failed to retrieve items" });
   }
 };
 
