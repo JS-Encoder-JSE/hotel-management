@@ -21,7 +21,7 @@ const addOrderSlice = createSlice({
     },
     delOrder: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
-        (item) => item.id === action.payload.id,
+        (item) => item._id === action.payload._id,
       );
 
       state.order.foods.splice(findFoodIdx, 1);

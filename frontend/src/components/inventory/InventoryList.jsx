@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaMinusCircle, FaPlusCircle, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { delOrder, setOrderCalc } from "../../redux/add-order/addOrderSlice.js";
+import { delOrder} from "../../redux/inventory/inventorySlice.js";
 import Swal from "sweetalert2";
 import { useDeleteFoodMutation } from "../../redux/restaurant/foodAPI.js";
 import { useNavigate } from "react-router-dom";
 
-const FoodList = ({ idx, food, handleOrder }) => {
+const InventoryList = ({ idx, list, handleOrder }) => {
   const navigate = useNavigate();
   const [isAdd, setAdd] = useState(false);
-  const { order } = useSelector((store) => store.addOrderSlice);
+  const { order } = useSelector((store) => store.inventorySlice);
   const dispatch = useDispatch();
   const [deleteFood] = useDeleteFoodMutation();
-  console.log(food);
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -38,28 +38,19 @@ const FoodList = ({ idx, food, handleOrder }) => {
   };
 
   useEffect(() => {
-    const findFoodIdx = order.foods.findIndex((item) => item._id === food._id);
+    const findFoodIdx = order.items.findIndex((item) => item._id === list._id);
 
     if (findFoodIdx !== -1) setAdd(true);
     else setAdd(false);
-  }, [order.foods]);
+  }, [order.items]);
 
   return (
     <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
       <td>
-        <div className="flex items-center space-x-3">
-          <div className="avatar">
-            <div className="mask mask-squircle w-16 h-16">
-              <img src={food?.images[0]} alt="" />
-            </div>
-          </div>
-          <div>
-            <div className="font-bold">{food?.food_name}</div>
-          </div>
-        </div>
+        <div className="font-bold">{list?.name}</div>
       </td>
       <td>
-        {food?.status === "Available" ? (
+        {list?.status === "Available" ? (
           <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
             Available
           </div>
@@ -69,15 +60,13 @@ const FoodList = ({ idx, food, handleOrder }) => {
           </div>
         )}
       </td>
-      <td>{food?.serveyor_quantity}</td>
-      <td>{food?.price}</td>
       <td className={`text-center`}>
         {!isAdd ? (
           <span
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
             title={`Add`}
             onClick={() => {
-              handleOrder(food);
+              handleOrder(list);
             }}
           >
             <FaPlusCircle />
@@ -87,8 +76,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
             className={`btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 rounded normal-case`}
             title={`Remove`}
             onClick={() => {
-              dispatch(delOrder(food));
-              dispatch(setOrderCalc());
+              dispatch(delOrder(list));
             }}
           >
             <FaMinusCircle />
@@ -98,7 +86,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
       <th className={`flex gap-1.5 mt-3.5`}>
         <span
           className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-          onClick={() => navigate(`/dashboard/edit-food/${food._id}`)}
+          onClick={() => navigate(`/dashboard/edit-inventory/${list._id}`)}
           title={`Edit`}
         >
           <FaEdit />
@@ -106,7 +94,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
         <span
           className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
           title={`Delete`}
-          onClick={() => handleDelete(food._id)}
+          onClick={() => handleDelete(list._id)}
         >
           <FaTrash />
         </span>
@@ -115,4 +103,4 @@ const FoodList = ({ idx, food, handleOrder }) => {
   );
 };
 
-export default FoodList;
+export default InventoryList;
