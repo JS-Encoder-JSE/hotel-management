@@ -49,7 +49,7 @@ const roomAPI = baseAPI.injectEndpoints({
 		addBooking: build.mutation({
 			query: (data) => {
 				return {
-					url: "booking/add-booking",
+					url: "bookings/add-booking",
 					method: "POST",
 					body: data,
 				};
@@ -61,7 +61,17 @@ const roomAPI = baseAPI.injectEndpoints({
 				return `hotels/get-hotel-by-manager/${user?._id}`;
 			},
 			providesTags: ["room"],
-		}),
+    }),
+    
+    getBookingsByHotel: build.query({
+      query: ({ hotel_id, page, limit, filter, search }) => {
+        return `bookings/get-bookings-by-hotel/${hotel_id}?&search=${search}`;
+      },
+      providesTags: (result, error, { hotel_id }) => [
+        { type: 'Bookings', id: 'LIST' },
+        { type: 'Bookings', id: hotel_id },
+      ],
+    }),
 	}),
 });
 
@@ -70,7 +80,8 @@ export const {
 	useRoomQuery,
 	useGetRoomsAndHotelsQuery,
 	useRoomsQuery,
-	useAddRoomMutation,
+  useAddRoomMutation,
+  useGetBookingsByHotelQuery,
 	useDeleteRoomMutation,
 	useUpdateRoomMutation,
 	useAddBookingMutation,

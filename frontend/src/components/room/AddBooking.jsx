@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Select from "react-select";
 import * as yup from "yup";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../../redux/room/roomAPI.js";
 import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -55,6 +56,7 @@ const AddBooking = () => {
 	// console.log(user)
 	const [addBooking] = useAddBookingMutation();
 	const [selectedRooms, setSelectedRooms] = useState([]);
+	const closeRef= useRef(null)
 	// {
 	//   "room_id": "654b6f1869788fc80c2eb0d8",
 	//   "hotel_id": "654a4d67932e9946307d5663",
@@ -72,37 +74,35 @@ const AddBooking = () => {
 	// }
 	const formik = useFormik({
 		initialValues: {
-			room_id: "",
+			room_ids: [],
 			hotel_id: "",
 			guestName: "",
 			address: "",
 			mobileNumber: "",
 			emergency_contact: "",
-			adult: 0,
-			children: 1,
+			adult: "",
+			children: "",
 			paymentMethod: "",
-			discount: 10,
+			discount: "",
 			from: "",
 			to: "",
-			nationality: "US",
+			nationality: "",
 		},
 
 		validationSchema,
 		onSubmit: async (values, formikHelpers) => {
-			console.log(values);
-			// const obj = { ...values };
-			// obj.roomNumber = 101;
-			// console.log(obj);
+			const obj = { ...values };
+			obj.room_ids = selectedRooms.map((i) => i.id);
+			const response = await addBooking(obj);
+			console.log(response);
+			if (response?.error) {
+				toast.error(response.error.data.message);
+			} else {
 
-			// const response = await addBooking(obj);
-			// console.log(response);
-			// if (response?.error) {
-			//   toast.error(response.error.data.message);
-			// } else {
-			//   toast.success(response.data.message);
-			//   // formikHelpers.resetForm();
-			//   // setSelectedImages([]);
-			// }
+				formikHelpers.resetForm();
+				closeRef.current.click()
+				toast.success(response.data.message);
+			}
 		},
 	});
 
@@ -111,9 +111,11 @@ const AddBooking = () => {
 			e.preventDefault();
 		}
 	};
-	const { data:rooms } = useRoomsQuery({ id: formik.values.hotel_id })
+	const { data: rooms } = useRoomsQuery({ id: formik.values.hotel_id });
+
 
 	const transformedRooms = rooms?.data?.docs?.map((room) => ({
+		id: room._id,
 		value: room.roomNumber,
 		label: `${room.roomNumber} - ${room.category}`,
 	}));
@@ -121,8 +123,9 @@ const AddBooking = () => {
 	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 	return (
 		<>
-			<form autoComplete="off" method="dialog">
+			<form autoComplete="off" method="dialog" >
 				<button
+					ref={closeRef}
 					className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
 					onClick={() => formik.handleReset()}>
 					✕
@@ -300,9 +303,9 @@ const AddBooking = () => {
 							<option value="" selected disabled>
 								Payment Method
 							</option>
-							<option value="cash">Cash</option>
-							<option value="card">Card</option>
-							<option value="mfs">Mobile Banking</option>
+							<option value="Cash">Cash</option>
+							<option value="Card">Card</option>
+							<option value="Mobile_Banking">Mobile Banking</option>
 						</select>
 						{formik.touched.paymentMethod &&
 						Boolean(formik.errors.paymentMethod) ? (
@@ -364,11 +367,9 @@ const AddBooking = () => {
 							}
 							onBlur={formik.handleBlur}
 						/>
-						{formik.touched.from &&
-						Boolean(formik.errors.from) ? (
+						{formik.touched.from && Boolean(formik.errors.from) ? (
 							<small className="text-red-600">
-								{formik.touched.from &&
-									formik.errors.from}
+								{formik.touched.from && formik.errors.from}
 							</small>
 						) : null}
 					</div>
@@ -384,8 +385,7 @@ const AddBooking = () => {
 							}
 							onBlur={formik.handleBlur}
 						/>
-						{formik.touched.to &&
-						Boolean(formik.errors.to) ? (
+						{formik.touched.to && Boolean(formik.errors.to) ? (
 							<small className="text-red-600">
 								{formik.touched.to && formik.errors.to}
 							</small>
@@ -426,3 +426,26 @@ const AddBooking = () => {
 };
 
 export default AddBooking;
+
+// {
+// 	"room_ids": ["654c864f371b0c183a57ff02", "654b8c5d08dff0d052faaad7"],
+// 	"hotel_id": "654b6d9f4a8162325a5e1756",
+// 	"guestName": "John Doe",
+// 	"address": "123 Main St, City",
+// 	"mobileNumber": "1234567890",
+// 	"emergency_contact": "9876543210",
+// 	"adult": 2,
+// 	"children": 1,
+// 	"paymentMethod": "Card",
+// 	"discount": 10,
+// 	"from": "2023-11-10T12:00:00Z",
+// 	"to": "2023-11-15T12:00:00Z",
+// 	"nationality": "USA",
+// 	"status": "Active",
+// 	"doc_number": "ABCD123456",
+// 	"doc_images": {
+// 	  "driving_lic_img": ["driving_license_img_url.jpg"],
+// 	  "passport": ["passport_img_url.jpg"],
+// 	  "nid": ["nid_img_url.jpg"]
+// 	}
+//   }

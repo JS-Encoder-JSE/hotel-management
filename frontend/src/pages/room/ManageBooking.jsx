@@ -1,19 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import BookingLists from "../../components/room/BookingLists.jsx";
 import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
 import AddBooking from "../../components/room/AddBooking.jsx";
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
-
+import { useGetBookingsByHotelQuery } from "../../redux/room/roomAPI.js";
 const ManageBooking = () => {
+  const {search,setSearch}=useState()
   const formik = useFormik({
     initialValues: {
       filter: "",
       search: "",
-      chooseHotels:''
+      hotel_id:''
     },
+    onSubmit: (values) => {
+      setSearch(values.search)
+    }
   });
+  const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({ hotel_id: formik.values.hotel_id, search })
+  console.log({bookingList})
   const {data:hotelsList}= useGetRoomsAndHotelsQuery()
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl`}>
@@ -23,9 +29,9 @@ const ManageBooking = () => {
         {/* filter by hotels  */}
         <div>
 					<select
-						name="chooseHotels"
+						name="hotel_id"
 						className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-						value={formik.values.chooseHotels}
+						value={formik.values.hotel_id}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}>
 						<option value="" selected disabled>
@@ -80,7 +86,7 @@ const ManageBooking = () => {
           </div>
         </div>
       </div>
-      <BookingLists />
+      <BookingLists bookingList={bookingList} />
       <Modal id={`ab_modal`}>
         <AddBooking />
       </Modal>
@@ -89,3 +95,20 @@ const ManageBooking = () => {
 };
 
 export default ManageBooking;
+// {
+//   "room_ids": [
+//       "654ca8c17795acca6b35263f"
+//   ],
+//   "hotel_id": "6549e816cce2882db0ad4aef",
+//   "guestName": "khalid",
+//   "address": "dhaka",
+//   "mobileNumber": "01765823311",
+//   "emergency_contact": "2343214213432",
+//   "adult": 4,
+//   "children": 4,
+//   "paymentMethod": "cash",
+//   "discount": 44,
+//   "from": "2023-11-09T18:00:00.000Z",
+//   "to": "2023-11-15T18:00:00.000Z",
+//   "nationality": "USA"
+// }

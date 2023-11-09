@@ -44,7 +44,7 @@ const ManageRoom = () => {
 				<div>
 					<select
 						name="hotel_id"
-						className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+						className="input h-8 input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
 						value={formik.values.hotel_id}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}>
