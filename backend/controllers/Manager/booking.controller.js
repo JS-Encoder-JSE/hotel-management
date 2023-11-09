@@ -65,10 +65,11 @@ export const addBooking = async (req, res) => {
 
     const savedBooking = await newBooking.save();
 
-    // Update the status of booked rooms to "Booked"
+    // Update the status of booked rooms based on booking status
+    const roomStatus = status === "CheckedIn" ? "CheckedIn" : "Booked";
     await Room.updateMany(
       { _id: { $in: room_ids } },
-      { $set: { status: "Booked" } }
+      { $set: { status: roomStatus } }
     );
 
     res.status(201).json({
