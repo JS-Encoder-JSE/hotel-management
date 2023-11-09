@@ -8,12 +8,22 @@ import { useGetTransactionlogsQuery } from "../../redux/admin/ownerlist/ownerLis
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Rings } from "react-loader-spinner";
+import { GrPowerReset } from "react-icons/gr";
 
 const LicenseHistory = () => {
   const formik = useFormik({
     initialValues: {
       startDate: "",
       endDate: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      setSearchParams((p) => ({
+        ...p,
+        toDate: values.endDate,
+        fromDate: values.startDate,
+        search: values.search,
+      }));
     },
   });
 
@@ -70,16 +80,20 @@ const LicenseHistory = () => {
             />
             <button
               type={"button"}
-              onClick={() =>
-                setSearchParams((p) => ({
-                  ...p,
-                  fromDate: formik.values.startDate,
-                  toDate: formik.values.endDate,
-                }))
-              }
+              onClick={() => {
+                formik.resetForm();
+                formik.handleSubmit();
+              }}
+              className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+            >
+              <GrPowerReset className="text-green-slimy" />
+            </button>
+            <button
+              type={"button"}
+              onClick={formik.handleSubmit}
               className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
-              Search
+              Apply Filter
             </button>
           </div>
         </div>
@@ -162,7 +176,7 @@ const LicenseHistory = () => {
               </div>
             </div>
           ) : (
-            <h3>No data!</h3>
+            <h3 className={`mt-10 text-center`}>No data found!</h3>
           )
         ) : (
           <Rings

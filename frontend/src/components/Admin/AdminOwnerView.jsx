@@ -1,4 +1,4 @@
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaEdit } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState } from "react";
 import Modal from "../Modal.jsx";
@@ -8,6 +8,7 @@ import TransactionHistory from "./TransactionHistory.jsx";
 import StatusHistory from "./StatusHistory.jsx";
 import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import store from "../../redux/store.js";
+import { useSelector } from "react-redux";
 
 const AdminOwnerView = () => {
   const navigate = useNavigate();
@@ -17,11 +18,12 @@ const AdminOwnerView = () => {
   const user_id = store?.getState()?.authSlice?.user?._id;
   const { id } = useParams();
   const { data, isLoading, error } = useGetUserQuery(id);
+  const { user } = useSelector((store) => store.authSlice);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
-
+console.log(data)
   function calculateDays(date1, date2) {
     const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
     const firstDate = new Date(date1);
@@ -50,12 +52,12 @@ const AdminOwnerView = () => {
           <div className="card-body grid md:grid-cols-2 gap-4">
             <div className="">
               <h2 className="card-title mb-3">Client Information </h2>
-              <h6>Client Username : {data?.username}</h6>
-              <h6>Client Name : {data?.name}</h6>
-              <h6>Hotel Address : {data?.address}</h6>
+              <h6>Username : {data?.username}</h6>
+              <h6>Name : {data?.name}</h6>
+              <h6>Address : {data?.address}</h6>
               <h6>Contact Number : {data?.phone_no}</h6>
               <h6>Emergency Contact: {data?.emergency_contact}</h6>
-              <h6>Client Email : {data?.email}</h6>
+              <h6>Email : {data?.email}</h6>
             </div>
             <div className="">
               <h2 className="card-title mb-3">License Information </h2>
@@ -86,12 +88,14 @@ const AdminOwnerView = () => {
               <h6 className="capitalize">Status : {data?.status}</h6>
               <div className="flex gap-1.5">
                 <h6>Number Of Hotels : {data?.maxHotels}</h6>
-                {/* <span
-                  className={`cursor-pointer`}
-                  onClick={() => window.hle_modal.showModal()}
-                >
-                  <FaEdit />
-                </span> */}
+                {user.role === "admin" ? (
+                  <span
+                    className={`cursor-pointer`}
+                    onClick={() => window.hle_modal.showModal()}
+                  >
+                    <FaEdit />
+                  </span>
+                ) : null}
               </div>
             </div>
           </div>
@@ -102,7 +106,7 @@ const AdminOwnerView = () => {
         <StatusHistory />
       </div>
       <Modal id={`hle_modal`}>
-        <HotelLimitEdit hotels={data?.maxHotels} />
+        <HotelLimitEdit data={data} hotels={data?.maxHotels} />
       </Modal>
     </>
   );

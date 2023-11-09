@@ -166,83 +166,102 @@ const AdminOwnerList = ({ title }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {[...owners?.docs]?.sort((a, b) => a.name - b.name)?.map((owner, idx) => {
-                      return (
-                        <tr
-                          className={
-                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                          }
-                        >
-                          <th>{++idx}</th>
-                          <td>{owner?.name}</td>
-                          <td>{owner?.username}</td>
-                          <td>{owner?.email}</td>
-                          <td>{owner?.status === "Active" ? (
-                              <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
-                                Active
-                              </div>
-                          ) : (
-                              <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
-                                Deactive
-                              </div>
-                          )}</td>
-                          <td>
-                            {`${new Date(
-                              owner?.bill_from,
-                            ).toLocaleDateString()} - ${new Date(
-                              owner?.bill_to,
-                            ).toLocaleDateString()}`}
-                          </td>
-                          <td className={`flex flex-wrap gap-1.5`}>
-                            <span
-                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                              onClick={() =>
-                                navigate(
-                                  `/dashboard/adminowner-view/${owner?._id}`,
-                                )
-                              }
-                            >
-                              <FaEye />
-                            </span>
-                            <Link
-                              to={`/dashboard/owner-profile/${owner?._id}/edit`}
-                            >
+                    {[...owners?.docs]
+                      ?.sort((a, b) =>
+                        a.name.toLowerCase() > b.name.toLowerCase()
+                          ? 1
+                          : a.name.toLowerCase() < b.name.toLowerCase()
+                          ? -1
+                          : 0,
+                      )
+                      ?.map((owner, idx) => {
+                        return (
+                          <tr
+                            className={
+                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                            }
+                          >
+                            <th>{++idx}</th>
+                            <td>{owner?.name}</td>
+                            <td>{owner?.username}</td>
+                            <td>{owner?.email}</td>
+                            <td>
+                              {owner?.status === "Active" ? (
+                                <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                                  Active
+                                </div>
+                              ) : owner?.status === "Deactive" ||
+                                owner?.status === "Deleted" ? (
+                                <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                                  {owner?.status}
+                                </div>
+                              ) : owner?.status === "Suspended" ? (
+                                <div className="badge min-w-[7rem] bg-red-500 border-red-500 text-white">
+                                  Suspended
+                                </div>
+                              ) : (
+                                <div className="badge min-w-[7rem] bg-orange-600 border-orange-600 text-white">
+                                  Expired
+                                </div>
+                              )}
+                            </td>
+                            <td>
+                              {`${new Date(
+                                owner?.bill_from,
+                              ).toLocaleDateString()} - ${new Date(
+                                owner?.bill_to,
+                              ).toLocaleDateString()}`}
+                            </td>
+                            <td className={`flex flex-wrap gap-1.5`}>
                               <span
                                 className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                              >
-                                <FaRegEdit />
-                              </span>
-                            </Link>
-                            {owner?.status !== "Deleted" &&
-                            user?.role !== "subadmin" ? (
-                              <span
-                                className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                                 onClick={() =>
-                                  handleDelete({
-                                    user_id: owner?._id,
-                                    status: "Deleted",
-                                  })
+                                  navigate(
+                                    `/dashboard/adminowner-view/${owner?._id}`,
+                                  )
                                 }
                               >
-                                <FaTrash />
+                                <FaEye />
                               </span>
-                            ) : null}
-                            <span
-                              className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case`}
-                              onClick={() => {
-                                setOwner({
-                                  id: owner?._id,
-                                  status: owner?.status,
-                                });
-                                setModalOpen(true);
-                              }}
-                            >
-                              <AiFillSetting />
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                              <Link
+                                to={`/dashboard/owner-profile/${owner?._id}/edit`}
+                              >
+                                <span
+                                  className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                                >
+                                  <FaRegEdit />
+                                </span>
+                              </Link>
+                              {owner?.status !== "Deleted" &&
+                              user?.role !== "subadmin" ? (
+                                <span
+                                  className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                                  onClick={() =>
+                                    handleDelete({
+                                      user_id: owner?._id,
+                                      status: "Deleted",
+                                    })
+                                  }
+                                >
+                                  <FaTrash />
+                                </span>
+                              ) : null}
+                              <span
+                                className={`btn btn-sm bg-green-slimy hover:bg-transparent hover:text-green-slimy text-white !border-green-slimy rounded normal-case`}
+                                onClick={() => {
+                                  setOwner({
+                                    id: owner?._id,
+                                    status: owner?.status,
+                                  });
+                                  setModalOpen(true);
+                                }}
+                              >
+                                <AiFillSetting />
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>

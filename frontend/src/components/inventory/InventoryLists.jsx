@@ -78,7 +78,16 @@ const InventoryLists = ({ setCurrentPage, lists }) => {
                       </div>
                     </div>
                   </td>
-                  <td>Available</td>
+                  <td>{lists?.status === "Available" ? (
+                              <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                                Available
+                              </div>
+                          ) : (
+                              <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                                UnAvailable
+                              </div>
+                          )}</td>
+                  {/* <td>Available</td> */}
                   <td className={`space-x-1.5`}>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}

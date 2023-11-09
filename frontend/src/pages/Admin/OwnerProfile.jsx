@@ -19,6 +19,7 @@ const validationSchema = yup.object({
     .email("Enter a valid email")
     .required("Email is required"),
   phoneNumber: yup.string().required("Phone number is required"),
+  numberOfHotel: yup.string().required("Hotel limit is required"),
   password: yup
       .string()
       .min(8, "Password should be of minimum 8 characters length")
@@ -43,11 +44,12 @@ const OwnerProfile = () => {
       phoneNumber: "",
       address: "",
       password: "",
+      numberOfHotel: ""
     },
     validationSchema,
     onSubmit: async (values) => {
       const obj = { ...values };
-      const { name, phoneNumber: phone_no, email, password, address } = obj;
+      const { name, phoneNumber: phone_no, email, password, address, numberOfHotel:maxHotels } = obj;
       let response;
 
       if (password) {
@@ -59,6 +61,7 @@ const OwnerProfile = () => {
             email,
             password,
             address,
+            maxHotels
           },
         });
       } else {
@@ -69,6 +72,7 @@ const OwnerProfile = () => {
             phone_no,
             email,
             address,
+            maxHotels
           },
         });
       }
@@ -89,6 +93,7 @@ const OwnerProfile = () => {
         phoneNumber: user?.phone_no,
         address: user?.address,
         salary: user?.salary,
+        numberOfHotel: user?.maxHotels,
       });
     }
   }, [user]);
@@ -205,6 +210,26 @@ const OwnerProfile = () => {
                 <small className="text-red-600">
                   {formik.touched.address && formik.errors.address}
                 </small>
+              ) : null}
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Phone: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                  type="number"
+                  placeholder="Hotel Limit"
+                  name="numberOfHotel"
+                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                  value={formik.values.numberOfHotel}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+              />
+              {formik.touched.numberOfHotel &&
+              Boolean(formik.errors.numberOfHotel) ? (
+                  <small className="text-red-600">
+                    {formik.touched.numberOfHotel && formik.errors.numberOfHotel}
+                  </small>
               ) : null}
             </div>
           </div>

@@ -65,6 +65,7 @@ const StatusHistory = () => {
         <div className="flex justify-between">
           <div className={`flex gap-3`}>
             <DatePicker
+              autoComplete={`off`}
               dateFormat="dd/MM/yyyy"
               name="startDate"
               placeholderText={`From`}
@@ -77,6 +78,7 @@ const StatusHistory = () => {
               onBlur={formik.handleBlur}
             />
             <DatePicker
+              autoComplete={`off`}
               dateFormat="dd/MM/yyyy"
               name="endDate"
               placeholderText={`To`}
@@ -158,9 +160,17 @@ const StatusHistory = () => {
                         <td>{item?.remark}</td>
                         <td>{item?.changed_from}</td>
                         <td>
-                          {item?.extended_time === null
-                            ? "null"
-                            : item?.extended_time?.to}
+                          {item?.extended_time?.from
+                            ? new Date(
+                                item?.extended_time.from,
+                              ).toLocaleDateString()
+                            : ""}{" "}
+                          -
+                          {item?.extended_time?.to
+                            ? new Date(
+                                item?.extended_time?.to,
+                              ).toLocaleDateString()
+                            : ""}
                         </td>
                       </tr>
                     );

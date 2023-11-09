@@ -66,3 +66,61 @@ export const getReport = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const getAllReport = async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 10,
+      filter,
+      search,
+      fromDate,
+      toDate,
+    } = req.query;
+
+    // Construct a query to filter transaction logs based on the username
+    const query = {};
+
+    if (fromDate && toDate) {
+      // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
+      query.$and = [
+        { createdAt: { $gte: new Date(fromDate), $lte: new Date(toDate) } },
+        { updatedAt: { $gte: new Date(fromDate), $lte: new Date(toDate) } },
+      ];
+    } else if (fromDate) {
+      // If only fromDate is provided, use $gte for the minimum date filter
+      query.$and = [
+        {createdAt:{ $gte: new Date(fromDate) }},
+        {updatedAt:{ $gte: new Date(fromDate) }},
+      ];
+    } else if (toDate) {
+      // If only toDate is provided, use $lte for the maximum date filter
+      query.createdAt = [
+        {createdAt:{ $lte: new Date(fromDate) }},
+        {updatedAt:{ $lte: new Date(fromDate) }},
+      ];
+    }
+    if (["Sold", "Renew", "Expired"].includes(filter)) {
+      query.status = filter;
+    }
+    if (search) {
+      // Add search criteria if a search keyword is provided
+      query.$or = [
+        { deposit_by: { $regex: search, $options: "i" } },
+        { deposit_to: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const result = await Report.paginate(query, options);
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching transaction logs:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

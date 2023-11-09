@@ -78,7 +78,7 @@ const AddRoom = () => {
         formData.append(photoName, values.photos[i]);
       }
 
-      obj.hotel_id = user.assignedHotel;
+      obj.hotel_id = user.assignedHotel[0];
       obj.air_conditioned = obj.ac;
       delete obj.photos;
       delete obj.ac;
@@ -87,7 +87,7 @@ const AddRoom = () => {
       );
 
       const response = await addRoom(obj);
-
+console.log(response)
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -229,7 +229,7 @@ const AddRoom = () => {
                   <option value="Standard">Standard</option>
                   <option value="Deluxe">Deluxe</option>
                   <option value="Suite">Suite</option>
-                  <option value="President Suite">President Suite</option>
+                  <option value="President_Suite">President Suite</option>
                 </select>
                 {formik.touched.category && Boolean(formik.errors.category) ? (
                   <small className="text-red-600">

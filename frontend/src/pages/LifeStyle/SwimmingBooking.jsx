@@ -114,7 +114,9 @@ const SwimmingBooking = () => {
         </button>
       </form> */}
 			<div className=" ">
-				<h3 className={`text-2xl font-semibold mb-3 text-center`}>
+				<h3 
+				  className={`text-center bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded text-white text-2xl`}
+				>
 					{" "}
 					Swimming Pool Booking{" "}
 				</h3>
