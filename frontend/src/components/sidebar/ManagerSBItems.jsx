@@ -11,7 +11,7 @@ import {
   MdPool,
   MdOutlineSportsGymnastics
 } from "react-icons/md";
-import {FaGlassMartini, FaUsers} from "react-icons/fa";
+import { FaGlassMartini } from "react-icons/fa";
 import { SiMomenteo } from "react-icons/si";
 import {TbToolsKitchen2} from "react-icons/tb";
 
@@ -191,7 +191,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           onClick={(e) => handleSBItems(e)}
         >
           <div className={`flex space-x-1.5`}>
-            <FaUsers />
+            <MdOutlineMeetingRoom />
             <span className={`-mt-0.5`}>Employee</span>
           </div>
           <span className={`group-[.active]:hidden`}>
