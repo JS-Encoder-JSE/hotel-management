@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 // import BookingLists from "../../components/room/BookingLists.jsx";
@@ -10,6 +10,9 @@ import SwimmingLists from "../../components/LifeStyle/SwimmingLists.jsx";
 import GymLits from "../../components/Gym/GymLits.jsx";
 import AddBookingGym from "../../components/Gym/AddBookingGym.jsx";
 import Select from "react-select";
+import { useAddPoolMutation } from "../../redux/Pool/PoolApi.js";
+import toast from "react-hot-toast";
+import { useGetRoomsAndHotelsQuery, useRoomsQuery } from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -37,10 +40,12 @@ const validationSchema = yup.object({
 
 const PoolReservation = () => {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [addPool, { isLoading }] = useAddPoolMutation()
+  const [selectedRooms, setSelectedRooms] = useState(null);
+	const closeRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-
-      chooseHotel: "",
+      hotel_id: "",
       roomNumber: "",
       name: "",
       members: "",
@@ -50,11 +55,42 @@ const PoolReservation = () => {
       // packagePrice: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      console.log(selectedRooms)
+
+      try {
+        const response = await addPool({...values,room_id:selectedRooms.id})
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          toast.success(response.data.message);
+          formikHelpers.resetForm();
+
+        }
+      } catch (error) {
+        toast.error(error.data.message);
+      }
+
     },
   });
 
+
+
+  const { data: rooms } = useRoomsQuery({ id: formik.values.hotel_id });
+
+	const transformedRooms = rooms?.data?.docs?.map((room) => ({
+		id: room._id,
+		value: room.roomNumber,
+		label: `${room.roomNumber} - ${room.category}`,
+	}));
+
+  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+  
+  const handleKeyDown = (e) => {
+		if (e.keyCode === 32) {
+			e.preventDefault();
+		}
+	};
   return (
     <>
       <div
@@ -118,57 +154,48 @@ const PoolReservation = () => {
           >
             {/* Selet Hotel */}
             <div className="flex flex-col gap-3">
-              <select
-                name="chooseHotel"
-                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.chooseHotel}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  Select Hotel
-                </option>
-                <option value="hotelNumber1">Hotel Number 1</option>
-                <option value="hotelNumber2">Hotel Number 2 </option>
-                <option value="hotelNumber3"> Hotel Number 3</option>
-              </select>
+						<select
+							name="hotel_id"
+							className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+							value={formik.values.hotel_id}
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}>
+							<option value="" selected disabled>
+								Choose Hotels
+							</option>
 
-              {formik.touched.chooseHotel &&
-              Boolean(formik.errors.chooseHotel) ? (
-                <small className="text-red-600">
-                  {formik.touched.chooseHotel && formik.errors.chooseHotel}
-                </small>
-              ) : null}
+							{hotelsList?.map((i) => (
+								<option key={i._id} value={i._id}>
+									{i.name}
+								</option>
+							))}
+						</select>
+					</div>
+
+					<div className="flex flex-col gap-3">
+						<Select
+							placeholder="Room number"
+							defaultValue={selectedRooms}
+							options={transformedRooms}
+					
+							isSearchable
+						
+							onKeyDown={handleKeyDown}
+							onChange={setSelectedRooms}
+							noOptionsMessage={() => "No room available"}
+							classNames={{
+								control: (state) =>
+									`!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+										state.isFocused ? "!shadow-none" : ""
+									}`,
+								valueContainer: () => "!p-0",
+								placeholder: () => "!m-0",
+							}}
+						/>
             </div>
-            {/* Room Number box */}
-               {/* Room Number box */}
+            
 
-               <div className="flex flex-col gap-3">
-            <Select
-              placeholder="Select room"
-              name={`roomNumber`}
-              defaultValue={selectedOption}
-              // options={transformedRooms}
-              isSearchable
-              closeMenuOnSelect={false}
-              onChange={setSelectedOption}
-              noOptionsMessage={() => "No room available"}
-              classNames={{
-                control: (state) =>
-                  `!input !input-md !h-8 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
-                    state.isFocused ? "!shadow-none" : ""
-                  }`,
-                valueContainer: () => "!p-0",
-                placeholder: () => "!m-0",
-              }}
-            />
-            {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
-              <small className="text-red-600">
-                {formik.touched.roomNumber && formik.errors.roomNumber}
-              </small>
-            ) : null}
-          </div>
-            {/* Name box */}
+
             <div className="flex flex-col gap-3">
               <input
                 type="text"
@@ -310,6 +337,12 @@ const PoolReservation = () => {
                 className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
                 Confirm
+
+                {isLoading ? (
+										<span
+											className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+											role="status"></span>
+									) : null}
               </button>
             </div>
           </form>
