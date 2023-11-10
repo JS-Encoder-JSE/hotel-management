@@ -150,6 +150,8 @@ const AddRoom = () => {
 		}
 	}, [formik.values.photos]);
 
+	
+
 	return (
 		<>
 			<div className={`space-y-10`}>

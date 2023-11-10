@@ -75,10 +75,24 @@ const roomAPI = baseAPI.injectEndpoints({
 				{ type: "Bookings", id: hotel_id },
 			],
 		}),
+
+		getBookingById:build.query({
+			query: (id) => {
+				return `bookings/get-booking-by-id/${id}`;
+			},
+		}),
+
+		getHotelById:build.query({
+			query: (id) => {
+				return `hotels/get-hotel-by-id/${id}`;
+			},
+		}),
+		
 	}),
 });
 
 export const {
+	useGetHotelByIdQuery,
 	useRoomNumbersQuery,
 	useRoomQuery,
 	useGetRoomsAndHotelsQuery,
@@ -88,4 +102,5 @@ export const {
 	useDeleteRoomMutation,
 	useUpdateRoomMutation,
 	useAddBookingMutation,
+	useGetBookingByIdQuery
 } = roomAPI;

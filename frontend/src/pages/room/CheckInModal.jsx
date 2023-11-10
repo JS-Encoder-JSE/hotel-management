@@ -1,5 +1,5 @@
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+﻿import { useFormik } from "formik";
+import React, { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import {
@@ -13,7 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import {
-  useAddBookingMutation,
+	useAddBookingMutation,
 	useGetBookingByIdQuery,
 	useGetBookingsByHotelQuery,
 	useGetHotelByIdQuery,
@@ -43,13 +43,11 @@ const validationSchema = yup.object({
 		.positive("Adult must be a positive number")
 		.integer("Adult must be an integer"),
 
-	// children: yup.number().when(["children"], ([children], schema) => {
-	//   if (children)
-	//     return schema
-	//       .positive("Children must be a positive number")
-	//       .integer("Children must be an integer");
-	//   else return schema;
-	// }),
+	children: yup
+		.number()
+		.positive("Children must be a positive number")
+		.integer("Children must be an integer"),
+
 	// paymentMethod: yup.string().required("Payment method is required"),
 	// trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
 	//   if (paymentMethod !== "cash")
@@ -66,13 +64,10 @@ const validationSchema = yup.object({
 			else return schema;
 		}),
 
-	// discount: yup.number().when(["discount"], ([discount], schema) => {
-	//   if (discount)
-	//     return schema
-	//       .positive("Discount must be a positive number")
-	//       .integer("Discount must be an integer");
-	//   else return schema;
-	// }),
+	discount: yup.number()
+	      .positive("Discount must be a positive number")
+	      .integer("Discount must be an integer"),
+
 
 	documents: yup.mixed().required("Documents are required"),
 	from: yup.string().required("From Date is required"),
@@ -80,22 +75,24 @@ const validationSchema = yup.object({
 	nationality: yup.string().required("Nationality is required"),
 });
 
-const CheckIn = () => {
+const CheckIn = ({ room }) => {
+	console.log(room);
 	const { isLoading, data: rooms } = useRoomsQuery();
 	const [selectedRooms, setSelectedRooms] = useState([]);
 	const [selectedImages, setSelectedImages] = useState([]);
 	const [isBooked, setIsBooked] = useState("");
-const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
+	const [uploadMultiple, { isLoading: uploading }] = useUploadMutation();
 	const { id } = useParams();
-	const { data: bookedData } = useGetBookingByIdQuery(id);
-  const { data: hotel } = useGetHotelByIdQuery(bookedData?.data?.hotel_id); 
-  const [addBooking,{isLoading:bookingLoading}]= useAddBookingMutation()
+
+	const { data: hotel } = useGetHotelByIdQuery(room?.data?.hotel_id);
+	const [addBooking, { isLoading: bookingLoading }] = useAddBookingMutation();
+	const closeRef = useRef(null);
 
 	const formik = useFormik({
 		initialValues: {
 			room_ids: [],
 			amount: "",
-			hotel_id: '',
+			hotel_id: "",
 			guestName: "",
 			address: "",
 			mobileNumber: "",
@@ -107,63 +104,52 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 			from: "",
 			to: "",
 			nationality: "",
-      address: "",
-      documents:null,
-      documentsType: "",
-      doc_number:'',
+			address: "",
+			documents: null,
+            documentsType: "",
+            transection_id:'',
+			doc_number: "",
 		},
 
 		validationSchema,
-		onSubmit:async (values,formikHelpers) => {
-      const postData = { ...values }
-      
-      if (selectedImages && selectedImages.length > 0) {
-        const formData = new FormData();
-      
-        // Assuming selectedImages is an array of File objects
-        selectedImages.forEach((image, index) => {
-          formData.append(
-            `image_${index}`,
-            image,
-            image.name.substring(0, image.name.lastIndexOf("."))
-          );
-        });
-      
-        try {
-          const result = await uploadMultiple(formData);
-          // Assuming result.data is an array of image URLs corresponding to the uploaded images
-          postData.doc_images = result.data.imageUrls;
-          delete postData.documents 
-          postData.status = 'CheckedIn'
+		onSubmit: async (values, formikHelpers) => {
+			const postData = { ...values };
+			if (selectedImages && selectedImages.length > 0) {
+				const formData = new FormData();
 
+				// Assuming selectedImages is an array of File objects
+				selectedImages.forEach((image, index) => {
+					formData.append(
+						`image_${index}`,
+						image,
+						image.name.substring(0, image.name.lastIndexOf("."))
+					);
+				});
 
-          if (postData.documentsType === 'passport') {
-            postData.doc_images = {passport:result.data.imageUrls}
-         }
+				try {
+					const result = await uploadMultiple(formData);
+					// Assuming result.data is an array of image URLs corresponding to the uploaded images
 
-         if (postData.documentsType === 'nid' || 'adarCard') {
-             postData.doc_images = {nid:result.data.imageUrls}
-         }
+					delete postData.documents;
+					postData.status = "CheckedIn";
 
-         if (postData.documentsType === 'drivingLicense') {
-             postData.doc_images = {driving_lic_img:result.data.imageUrls}
-         }
-
-          const response = await addBooking(postData)
-
-          if (response?.error) {
-            toast.error(response.error.data.message);
-          } else {
-            toast.success(response.data.message);
-            formikHelpers.resetForm();
-            setSelectedImages([]);
-          }
-        } catch (error) {
-          console.error("Error uploading images:", error);
-          // Handle error appropriately
-        }
-      }
-
+					const response = await addBooking(postData);
+                    closeRef.current.click()
+                    if (response?.error) {
+                        console.log(response?.error)
+						toast.error(response.error.data.message);
+                    } else {
+                        
+                        toast.success(response.data.message);
+                        formikHelpers.resetForm();
+						setSelectedImages([]);
+					}
+				} catch (error) {
+					console.error("Error uploading images:", error);
+                    // Handle error appropriately
+                    console.log(error)
+				}
+			}
 		},
 	});
 
@@ -171,8 +157,8 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 		const tempImgs = [
 			...selectedImages.slice(0, idx),
 			...selectedImages.slice(idx + 1),
-    ];
-    
+		];
+
 		const dataTransfer = new DataTransfer();
 
 		for (const file of tempImgs) {
@@ -181,8 +167,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 
 		formik.setFieldValue("documents", dataTransfer.files);
 		setSelectedImages(tempImgs);
-  };
- 
+	};
 
 	const handleChange = (idx, newFile) => {
 		const updatedImages = [...selectedImages];
@@ -196,8 +181,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 
 		formik.setFieldValue("documents", dataTransfer.files);
 		setSelectedImages(updatedImages);
-  };
-  console.log(selectedImages)
+	};
 
 	const handleKeyDown = (e) => {
 		if (e.keyCode === 32) {
@@ -217,27 +201,37 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 		}
 	}, [formik.values.documents]);
 
-
 	useEffect(() => {
-		if (bookedData) {
+		if (room?.data) {
 			formik.setValues((p) => ({
 				...p,
-				...bookedData.data,
-				from: new Date(bookedData.data.from),
-        to: new Date(bookedData.data.to),
-        
+				room_ids: [room.data._id],
+				hotel_id: room.data.hotel_id,
 			}));
 		}
-	}, [bookedData]);
+	}, [room?.data]);
 
-	return (
-		<div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
+    return (
+        
+        <>
+            <form autoComplete="off" method="dialog">
+				<button
+					ref={closeRef}
+					className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+					onClick={() => formik.handleReset()}>
+					✕
+				</button>
+            </form>
+            
+		<div className={`max-w-xl rounded-2xl mx-auto`}>
 			<h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
 			<hr />
 			<form
-				autoComplete="off"
+                autoComplete="off"
+                method="dialog"
 				className="form-control grid grid-cols-1 gap-4 mt-5"
 				onSubmit={formik.handleSubmit}>
+
 				<div className={`relative col-span-full`}>
 					<div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
 						<div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
@@ -307,7 +301,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 				<div className="flex flex-col gap-3">
 					<select
 						name="chooseHotels"
-						className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+						className="input input-md  bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
 						value={formik.values.chooseHotels}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}>
@@ -324,25 +318,22 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 				</div>
 
 				<div className="flex flex-col gap-3">
-					<Select
-						placeholder="Room Select"
-						defaultValue={selectedRooms}
-						options={transformedRooms}
-						isMulti
-						isSearchable
-						closeMenuOnSelect={false}
-						onKeyDown={handleKeyDown}
-						onChange={setSelectedRooms}
-						noOptionsMessage={() => "No room available"}
-						classNames={{
-							control: (state) =>
-								`!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
-									state.isFocused ? "!shadow-none" : ""
-								}`,
-							valueContainer: () => "!p-0",
-							placeholder: () => "!m-0",
-						}}
-					/>
+					<select
+						name="room_ids"
+						className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+						value={formik.values.room_ids}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}>
+						<option value="" selected disabled>
+							{room.data.category} <br />- {room.data.roomNumber}
+						</option>
+
+						{/* {hotelsList?.map((i) => (
+							<option key={i._id} value={i._id}>
+								{i.name}
+							</option>
+						))} */}
+					</select>
 				</div>
 
 				{/* name box */}
@@ -370,7 +361,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 					<input
 						type="text"
 						placeholder="Mobile number"
-						name="mobile"
+						name="mobileNumber"
 						className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
 						value={formik.values.mobileNumber}
 						onChange={formik.handleChange}
@@ -465,7 +456,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 				<div className="flex flex-col gap-3">
 					<input
 						type="number"
-						placeholder="Advanced Amount"
+						placeholder="Amount"
 						name="amount"
 						className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
 						value={formik.values.amount}
@@ -508,16 +499,16 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 						<input
 							type="text"
 							placeholder="Transaction ID"
-							name="trxID"
+							name="transection_id"
 							className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-							value={formik.values.trxID}
+							value={formik.values.transection_id}
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
 						/>
-						{formik.touched.trxID &&
-						Boolean(formik.errors.trxID) ? (
+						{formik.touched.transection_id &&
+						Boolean(formik.errors.transection_id) ? (
 							<small className="text-red-600">
-								{formik.touched.trxID && formik.errors.trxID}
+								{formik.touched.transection_id && formik.errors.transection_id}
 							</small>
 						) : null}
 					</div>
@@ -526,7 +517,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 				{/* discount box */}
 				<div className="flex flex-col gap-3">
 					<input
-						type="text"
+						type="number"
 						placeholder="Discount"
 						name="discount"
 						className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -541,7 +532,8 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 						</small>
 					) : null}
 				</div>
-				{/* From Date */}
+
+				{/* Date */}
 				<div className="flex flex-col gap-3">
 					<DatePicker
 						dateFormat="dd/MM/yyyy"
@@ -549,7 +541,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 						placeholderText={`From`}
 						selected={formik.values.from}
 						className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-						onChange={formik.handleChange}
+						onChange={(date) => formik.setFieldValue("from", date)}
 						onBlur={formik.handleBlur}
 					/>
 					{formik.touched.from && Boolean(formik.errors.from) ? (
@@ -558,7 +550,8 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 						</small>
 					) : null}
 				</div>
-				{/* Billing To box */}
+
+				{/* Date */}
 				<div className="flex flex-col gap-3">
 					<DatePicker
 						dateFormat="dd/MM/yyyy"
@@ -566,7 +559,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 						placeholderText={`To`}
 						selected={formik.values.to}
 						className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-						onChange={formik.handleChange}
+						onChange={(date) => formik.setFieldValue("to", date)}
 						onBlur={formik.handleBlur}
 					/>
 					{formik.touched.to && Boolean(formik.errors.to) ? (
@@ -587,6 +580,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 						<option value="" selected disabled>
 							Type Of Documents
 						</option>
+
 						<option value="adarCard">Adar Card</option>
 						<option value="passport">Passport</option>
 						<option value="drivingLicense">Driving Licence</option>
@@ -610,7 +604,12 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 							name="documentsNumber"
 							className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
 							value={formik.values.doc_number}
-							onChange={(e)=>formik.setFieldValue('doc_number', e.target.value)}
+							onChange={(e) =>
+								formik.setFieldValue(
+									"doc_number",
+									e.target.value
+								)
+							}
 							onBlur={formik.handleBlur}
 						/>
 						{formik.touched.doc_number &&
@@ -621,8 +620,8 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 							</small>
 						) : null}
 					</div>
-        ) : null}
-        
+				) : null}
+
 				{/* Nationality box */}
 				<div className="flex flex-col gap-3">
 					<input
@@ -641,8 +640,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 								formik.errors.nationality}
 						</small>
 					) : null}
-        </div>
-        
+				</div>
 
 				{/* documents */}
 				<div className={`flex space-x-1.5`}>
@@ -682,26 +680,24 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 							</small>
 						) : null}
 					</div>
-        </div>
-        
-
+				</div>
 
 				{/* button */}
 				<div className={`flex justify-between`}>
 					<button
 						type={"submit"}
 						className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-            Confirm
-            
-            {bookingLoading ? (
-										<span
-											className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-											role="status"></span>
-									) : null}
+						Confirm
+						{bookingLoading ? (
+							<span
+								className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+								role="status"></span>
+						) : null}
 					</button>
 				</div>
 			</form>
 		</div>
+        </>
 	);
 };
 

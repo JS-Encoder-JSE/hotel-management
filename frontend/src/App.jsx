@@ -170,7 +170,7 @@ const App = () => {
               ),
             },
             {
-              path: "checkin",
+              path: "checkin/:id",
               element: (
                 <ManagerRoute>
                   <CheckIn />

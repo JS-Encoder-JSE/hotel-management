@@ -55,7 +55,7 @@ const validationSchema = yup.object({
 
 const AddBooking = () => {
 	// console.log(user)
-	const [addBooking] = useAddBookingMutation();
+	const [addBooking,{isLoading}] = useAddBookingMutation();
 	
 	const [selectedRooms, setSelectedRooms] = useState([]);
 	const closeRef = useRef(null);
@@ -120,6 +120,8 @@ const AddBooking = () => {
 					✕
 				</button>
 			</form>
+
+			
 			<div>
 				<h3 className={`text-2xl font-semibold mb-3`}>Booking</h3>
 				<hr />
@@ -431,6 +433,11 @@ const AddBooking = () => {
 							type={"submit"}
 							className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
 							Confirm
+							{isLoading ? (
+										<span
+											className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+											role="status"></span>
+									) : null}
 						</button>
 					</div>
 				</form>
