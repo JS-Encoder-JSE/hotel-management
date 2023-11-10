@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import RoomLists from "../../components/room/RoomLists.jsx";
 import { FaSearch } from "react-icons/fa";
-import { useGetRoomsAndHotelsQuery, useRoomsQuery } from "../../redux/room/roomAPI.js";
+import {
+	useGetRoomsAndHotelsQuery,
+	useRoomsQuery,
+} from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import { useSelector } from "react-redux";
 
@@ -12,8 +15,8 @@ const ManageRoom = () => {
 	const formik = useFormik({
 		initialValues: {
 			filter: "",
-      search: "",
-      hotel_id:''
+			search: "",
+			hotel_id: "",
 		},
 		onSubmit: (values) => {
 			setKeyword(values.search);
@@ -25,7 +28,7 @@ const ManageRoom = () => {
 		id: formik.values.hotel_id,
 		cp: currentPage,
 		filter: formik.values.filter,
-    search: keyword,
+		search: keyword,
 	});
 
 	const pressEnter = (e) => {
@@ -34,14 +37,13 @@ const ManageRoom = () => {
 		}
 	};
 
-
-  const {data:hotelsList}= useGetRoomsAndHotelsQuery()
+	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 	return (
 		<div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
-      <div className={`flex justify-between gap-4`}>
-        
-        {/* filter by hotels  */}
-				<div>
+			<div className={`flex justify-between gap-4`}>
+				{/* filter by hotels  */}
+				<div className="flex  items-center gap-2">
+					<p className="">Please choose a hotel : </p>
 					<select
 						name="hotel_id"
 						className="input h-8 input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -100,7 +102,7 @@ const ManageRoom = () => {
 				rooms?.data?.docs?.length ? (
 					<RoomLists setCurrentPage={setCurrentPage} rooms={rooms} />
 				) : (
-					<h3>No data!</h3>
+					<h3 className="text-center">Please choose a hotel</h3>
 				)
 			) : (
 				<Rings
