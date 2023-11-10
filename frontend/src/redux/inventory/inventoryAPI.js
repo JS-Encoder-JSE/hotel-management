@@ -5,7 +5,7 @@ const inventoryAPI = baseAPI.injectEndpoints({
     inventory: build.query({
       query: ({ id, cp, filter, search }) =>
         `items/get-items-by-hotel/${id}?page=${++cp}${
-          filter ? `&stock=${filter}` : ""
+          filter ? `&filter=${filter}` : ""
         }${search ? `&search=${search}` : ""}`,
       providesTags: ["inventory"],
     }),

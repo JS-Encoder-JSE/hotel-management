@@ -32,7 +32,7 @@ const lists = {
   ],
 };
 
-const InventoryLists = ({ keyword,chooseHotel }) => {
+const InventoryLists = ({filter, keyword,chooseHotel }) => {
   const { order } = useSelector((store) => store.inventorySlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
@@ -43,6 +43,7 @@ const InventoryLists = ({ keyword,chooseHotel }) => {
     cp: currentPage,
     pp: foodsPerPage,
     search: keyword,
+    filter
   });
   const [pageCount, setPageCount] = useState(1);
 
