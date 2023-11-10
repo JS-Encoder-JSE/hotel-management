@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
 import { setOrder } from "../../redux/add-order/addOrderSlice.js";
@@ -12,17 +12,18 @@ import {
 import { useAddOrderMutation } from "../../redux/restaurant/foodAPI.js";
 import toast from "react-hot-toast";
 import Select from "react-select";
+import { useOrderInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
 
 // form validation
 const validationSchema = yup.object({
-  roomNumber: yup.string().required("Room number is required"),
+  // roomNumber: yup.string().required("Room number is required"),
   chooseHotel: yup.string().required("Hotel is required"),
 });
 
 const ConfirmOrder = () => {
   const { order, orderCalc } = useSelector((store) => store.inventorySlice);
   const closeRef = useRef();
-  const [addOrder] = useAddOrderMutation();
+  const [orderInventory] = useOrderInventoryMutation();
   const [selectedOption, setSelectedOption] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -32,21 +33,13 @@ const ConfirmOrder = () => {
     validationSchema,
     onSubmit: async (values) => {
       const obj = { ...order };
-      const items = [...order.foods];
+      const items = [...obj.items];
 
-      const arr = items.map((item) => ({
-        item: item.food_name,
-        price: item.price,
-        serveyor_quantity: item.serveyor_quantity,
-        quantity: item.quantity,
-        total: item.quantity * item.price,
-      }));
+      const arr = items.map((item) => item._id);
 
-      const response = await addOrder({
+      const response = await orderInventory({
         room_id: selectedOption?.value,
-        hotel_id: values.chooseHotel,
-        items: arr,
-        grand_total: orderCalc.grandTotal,
+        item_ids: arr,
       });
 
       if (response?.error) {
@@ -67,8 +60,8 @@ const ConfirmOrder = () => {
   });
 
   const transformedRooms = rooms?.data?.docs?.map((room) => ({
-    value: room.roomNumber,
-    label: `${room.roomNumber} - ${room.category}`,
+    value: room._id,
+    label: room.roomNumber,
   }));
 
   useEffect(() => {
@@ -118,21 +111,21 @@ const ConfirmOrder = () => {
           </div>
           <div className="flex flex-col gap-3">
             <Select
-                placeholder="Select room"
-                name={`roomNumber`}
-                defaultValue={selectedOption}
-                options={transformedRooms}
-                isSearchable
-                onChange={setSelectedOption}
-                noOptionsMessage={() => "No room available"}
-                classNames={{
-                  control: (state) =>
-                      `!input !input-md !h-4 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
-                          state.isFocused ? "!shadow-none" : ""
-                      }`,
-                  valueContainer: () => "!p-0",
-                  placeholder: () => "!m-0",
-                }}
+              placeholder="Select room"
+              name={`roomNumber`}
+              defaultValue={selectedOption}
+              options={transformedRooms}
+              isSearchable
+              onChange={setSelectedOption}
+              noOptionsMessage={() => "No room available"}
+              classNames={{
+                control: (state) =>
+                  `!input !input-md !h-4 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    state.isFocused ? "!shadow-none" : ""
+                  }`,
+                valueContainer: () => "!p-0",
+                placeholder: () => "!m-0",
+              }}
             />
             {/*{formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (*/}
             {/*    <small className="text-red-600">*/}

@@ -5,7 +5,7 @@ const foodAPI = baseAPI.injectEndpoints({
     foods: build.query({
       query: ({ id, cp, pp, search }) =>
         `foods/get-foods-by-hotel/${id}?limit=${pp}&page=${++cp}${
-          search ? `&food_name=${search}` : ""
+          search ? `&search=${search}` : ""
         }`,
       providesTags: ["food"],
     }),

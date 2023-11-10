@@ -84,7 +84,6 @@ const OrderList = () => {
               <option value="" selected disabled>
                 Choose Hotel
               </option>
-
               {hotelList?.map((i) => (
                 <option key={i._id} value={i._id}>
                   {i.name}
