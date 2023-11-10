@@ -65,7 +65,7 @@ const EditProfile = () => {
       className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
     >
       <div>
-        <div className="absolute -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
+        {/* <div className="absolute -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
           {imagePreview ? (
             <img
               src={imagePreview}
@@ -79,8 +79,10 @@ const EditProfile = () => {
               className="object-cover h-full w-full rounded-full"
             />
           )}
-        </div>
-        <div className={`text-end`}>
+        </div> */}
+        <div 
+        // className={`text-end`}
+        >
           <button
             type="button"
             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded-md normal-case"
