@@ -35,7 +35,7 @@ const CheckOut = () => {
 		<div className="space-y-8">
 			<div className="max-w-3xl mx-auto flex gap-5 items-center"></div>
 			{/* Select Room Section */}
-			<section className="max-w-3xl mx-auto flex gap-5 items-center ">
+			<section className="max-w-3xl mx-auto flex gap-5 items-center justify-start">
 				<select
 					name="chooseHotels"
 					className="input input-md  bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -69,7 +69,8 @@ const CheckOut = () => {
 						noOptionsMessage={() => "No room available"}
 						classNames={{
 							control: (state) =>
-								`!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+								`!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none
+								${
 									state.isFocused ? "!shadow-none" : ""
 								}`,
 							valueContainer: () => "!p-0",
