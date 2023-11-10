@@ -83,7 +83,8 @@ export const addBooking = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
@@ -115,7 +116,7 @@ export const getBookingsByHotel = async (req, res) => {
       page: parseInt(page, 10),
       limit: parseInt(limit, 10),
     };
-    
+
     // Execute the query without paginate and then use populate
     const result = await Booking.find(query)
       .limit(options.limit)
@@ -149,8 +150,7 @@ export const getBookingsByHotel = async (req, res) => {
 export const getBookingById = async (req, res) => {
   try {
     const bookingId = req.params.booking_id; // Assuming you pass the booking ID as a query parameter
-    const booking = await Booking.findById(bookingId);
-
+    const booking = await Booking.findById(bookingId).populate("room_ids", "roomNumber floorNumber");
     if (!booking) {
       return res.status(404).json({
         success: false,
