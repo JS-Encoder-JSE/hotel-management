@@ -29,7 +29,7 @@ export const addBooking = async (req, res) => {
     if (!room_ids || !Array.isArray(room_ids) || room_ids.length === 0) {
       return res.status(400).json({
         success: false,
-        error: "Invalid or empty room_ids provided",
+        message: "Invalid or empty room_ids provided",
       });
     }
 
@@ -38,7 +38,7 @@ export const addBooking = async (req, res) => {
     if (existingRooms.length !== room_ids.length) {
       return res.status(400).json({
         success: false,
-        error: "One or more room_ids are invalid",
+        message: "One or more room_ids are invalid",
       });
     }
 
@@ -143,7 +143,7 @@ export const getBookingsByHotel = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -154,7 +154,7 @@ export const getBookingById = async (req, res) => {
     if (!booking) {
       return res.status(404).json({
         success: false,
-        error: "Booking not found",
+        message: "Booking not found",
       });
     }
 
@@ -166,7 +166,7 @@ export const getBookingById = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -185,7 +185,7 @@ export const updateBooking = async (req, res) => {
     if (!updatedBooking) {
       return res.status(404).json({
         success: false,
-        error: "Booking not found",
+        message: "Booking not found",
       });
     }
 
@@ -223,7 +223,7 @@ export const updateBooking = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -235,7 +235,7 @@ export const deleteBooking = async (req, res) => {
     if (!deletedBooking) {
       return res.status(404).json({
         success: false,
-        error: "Booking not found",
+        message: "Booking not found",
       });
     }
 
@@ -246,7 +246,7 @@ export const deleteBooking = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };

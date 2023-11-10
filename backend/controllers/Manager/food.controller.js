@@ -33,7 +33,7 @@ export const addFood = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -92,7 +92,7 @@ export const getfoodById = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -113,7 +113,7 @@ export const updatefood = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -141,7 +141,7 @@ export const addOrder = async (req, res) => {
     console.error(error); // Log the error for debugging
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -216,7 +216,7 @@ export const deleteOrder = async (req, res) => {
     if (!deletedOrder) {
       return res.status(404).json({
         success: false,
-        error: "Order not found",
+        message: "Order not found",
       });
     }
 
@@ -229,7 +229,7 @@ export const deleteOrder = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -245,7 +245,7 @@ export const deleteFood = async (req, res) => {
     if (!deletedFood) {
       return res.status(404).json({
         success: false,
-        error: "Food not found",
+        message: "Food not found",
       });
     }
 
@@ -258,7 +258,7 @@ export const deleteFood = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };

@@ -46,7 +46,7 @@ export const addPoolBill = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -91,7 +91,7 @@ export const getPoolBillsByHotelId = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -102,7 +102,7 @@ export const getPoolBillById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(poolBillId)) {
       return res.status(400).json({
         success: false,
-        error: "Invalid pool bill ID",
+        message: "Invalid pool bill ID",
       });
     }
 
@@ -111,7 +111,7 @@ export const getPoolBillById = async (req, res) => {
     if (!poolBill) {
       return res.status(404).json({
         success: false,
-        error: "Pool bill not found",
+        message: "Pool bill not found",
       });
     }
 
@@ -125,7 +125,7 @@ export const getPoolBillById = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -137,7 +137,7 @@ export const updatePoolBill = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(poolBillId)) {
       return res.status(400).json({
         success: false,
-        error: "Invalid pool bill ID",
+        message: "Invalid pool bill ID",
       });
     }
 
@@ -146,7 +146,7 @@ export const updatePoolBill = async (req, res) => {
     if (!existingPoolBill) {
       return res.status(404).json({
         success: false,
-        error: "Pool bill not found",
+        message: "Pool bill not found",
       });
     }
 
@@ -166,7 +166,7 @@ export const updatePoolBill = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };

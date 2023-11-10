@@ -186,7 +186,7 @@ export const getHotels = async (req, res) => {
     const hotels = await Hotel.paginate(query, options);
     res.status(200).json(hotels);
   } catch (error) {
-    res.status(500).json({ error: "Failed to retrieve hotels" });
+    res.status(500).json({ message: "Failed to retrieve hotels" });
   }
 };
 
@@ -203,7 +203,7 @@ export const getHotelById = async (req, res) => {
     res.status(200).json(hotel);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to retrieve hotel information" });
+    res.status(500).json({ message: "Failed to retrieve hotel information" });
   }
 };
 export const getHotelsByManagerId = async (req, res) => {

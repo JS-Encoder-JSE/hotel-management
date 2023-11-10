@@ -11,7 +11,7 @@ export const addItem = async (req, res) => {
     res.status(201).json(savedItem);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Failed to add item" });
+    res.status(500).json({ message: "Failed to add item" });
   }
 };
 
@@ -23,7 +23,7 @@ export const updateItem = async (req, res) => {
 
     // Ensure at least one field is being updated
     if (Object.keys(updateFields).length === 0) {
-      return res.status(400).json({ error: "No fields to update provided" });
+      return res.status(400).json({ message: "No fields to update provided" });
     }
 
     const updatedItem = await Item.findByIdAndUpdate(
@@ -33,12 +33,12 @@ export const updateItem = async (req, res) => {
     );
 
     if (!updatedItem) {
-      return res.status(404).json({ error: "Item not found" });
+      return res.status(404).json({ message: "Item not found" });
     }
 
     res.status(200).json(updatedItem);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update item" });
+    res.status(500).json({ message: "Failed to update item" });
   }
 };
 
@@ -77,7 +77,7 @@ export const getItemsByHotelId = async (req, res) => {
     const items = await Item.paginate(query, options);
     res.status(200).json(items);
   } catch (error) {
-    res.status(500).json({ error: "Failed to retrieve items" });
+    res.status(500).json({ message: "Failed to retrieve items" });
   }
 };
 export const getItemById = async (req, res) => {
@@ -88,7 +88,7 @@ export const getItemById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(itemId)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid item ID',
+        message: 'Invalid item ID',
       });
     }
 
@@ -99,7 +99,7 @@ export const getItemById = async (req, res) => {
     if (!item) {
       return res.status(404).json({
         success: false,
-        error: 'Item not found',
+        message: 'Item not found',
       });
     }
 
@@ -112,7 +112,7 @@ export const getItemById = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: 'Internal Server Error',
+      message: 'Internal Server Error',
     });
   }
 };
@@ -124,7 +124,7 @@ export const assignItemsToRoom = async (req, res) => {
     if (!existingRoom) {
       return res.status(404).json({
         success: false,
-        error: "Room not found",
+        message: "Room not found",
       });
     }
 
@@ -132,7 +132,7 @@ export const assignItemsToRoom = async (req, res) => {
     if (existingItems.length !== item_ids.length) {
       return res.status(400).json({
         success: false,
-        error: "One or more items are invalid",
+        message: "One or more items are invalid",
       });
     }
 
@@ -144,7 +144,7 @@ export const assignItemsToRoom = async (req, res) => {
     if (updateResult.modifiedCount !== item_ids.length) {
       return res.status(500).json({
         success: false,
-        error: "Error updating items with room_id",
+        message: "Error updating items with room_id",
       });
     }
 
@@ -157,7 +157,7 @@ export const assignItemsToRoom = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };

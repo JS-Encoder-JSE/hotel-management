@@ -44,7 +44,7 @@ export const addGymBill = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -90,7 +90,7 @@ export const getGymBillsByHotelId = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -102,7 +102,7 @@ export const getGymBillById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(gymBillId)) {
       return res.status(400).json({
         success: false,
-        error: "Invalid gym bill ID",
+        message: "Invalid gym bill ID",
       });
     }
 
@@ -111,7 +111,7 @@ export const getGymBillById = async (req, res) => {
     if (!gymBill) {
       return res.status(404).json({
         success: false,
-        error: "Gym bill not found",
+        message: "Gym bill not found",
       });
     }
 
@@ -125,7 +125,7 @@ export const getGymBillById = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -138,7 +138,7 @@ export const updateGymBill = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(gymBillId)) {
       return res.status(400).json({
         success: false,
-        error: "Invalid gym bill ID",
+        message: "Invalid gym bill ID",
       });
     }
 
@@ -147,7 +147,7 @@ export const updateGymBill = async (req, res) => {
     if (!existingGymBill) {
       return res.status(404).json({
         success: false,
-        error: "Gym bill not found",
+        message: "Gym bill not found",
       });
     }
 
@@ -167,7 +167,7 @@ export const updateGymBill = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };

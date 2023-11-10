@@ -50,7 +50,7 @@ export const addBarOrder = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -141,7 +141,7 @@ export const getBarOrderById = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -155,7 +155,7 @@ export const updateBarOrder = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(barOrderId)) {
       return res.status(400).json({
         success: false,
-        error: "Invalid bar order ID",
+        message: "Invalid bar order ID",
       });
     }
 
@@ -164,7 +164,7 @@ export const updateBarOrder = async (req, res) => {
     if (!existingBarOrder) {
       return res.status(404).json({
         success: false,
-        error: "Bar order not found",
+        message: "Bar order not found",
       });
     }
 
@@ -185,7 +185,7 @@ export const updateBarOrder = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
