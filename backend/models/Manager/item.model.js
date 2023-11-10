@@ -25,7 +25,7 @@ const itemSchema = new mongoose.Schema(
       default: "Available",
     },
   },
-  { timeStamp: true }
+  { timestamp: true }
 );
 
 // Apply the mongoose-paginate-v2 plugin to your schema

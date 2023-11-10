@@ -243,7 +243,7 @@ export const getUsersByAssignedHotel = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(hotelId)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid hotel ID',
+        message: "Invalid hotel ID",
       });
     }
 
@@ -254,14 +254,16 @@ export const getUsersByAssignedHotel = async (req, res) => {
       query.role = role;
     }
 
-    if (['Active', 'Deactive', 'Suspended', 'Expired', 'Deleted'].includes(filter)) {
+    if (
+      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
+    ) {
       query.status = filter;
     }
 
     if (search) {
       query.$or = [
-        { username: { $regex: search, $options: 'i' } },
-        { name: { $regex: search, $options: 'i' } },
+        { username: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -278,7 +280,7 @@ export const getUsersByAssignedHotel = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: 'Failed to retrieve users',
+      message: "Failed to retrieve users",
     });
   }
 };
@@ -356,7 +358,9 @@ export const addManager = async (req, res) => {
       message: "Manager added and assigned to the hotel successfully",
     });
   } catch (error) {
-    res.status(500).json({ message:"Faild to add manager",error: error.message });
+    res
+      .status(500)
+      .json({ message: "Faild to add manager", error: error.message });
   }
 };
 
@@ -422,7 +426,9 @@ export const addEmployee = async (req, res) => {
       message: "Manager added and assigned to the hotel successfully",
     });
   } catch (error) {
-    res.status(500).json({ message:"Faild to add manager",error: error.message });
+    res
+      .status(500)
+      .json({ message: "Faild to add manager", error: error.message });
   }
 };
 
@@ -450,7 +456,9 @@ export const createSuperUser = async (req, res) => {
     res.status(200).json({ message: "Superuser created", data: superuser });
     console.log("Superuser created successfully.");
   } catch (error) {
-    res.status(500).json({ message:"Faild to add superuser",error: error.message });
+    res
+      .status(500)
+      .json({ message: "Faild to add superuser", error: error.message });
   }
 };
 
@@ -560,7 +568,9 @@ export const getManagersByOwner = async (req, res) => {
 
     res.status(200).json(managers);
   } catch (error) {
-    res.status(500).json({ message:"Failed to retrieve Managers",error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve Managers", error: error.message });
   }
 };
 
@@ -577,7 +587,9 @@ export const getManagerById = async (req, res) => {
 
     res.json(manager);
   } catch (error) {
-    res.status(500).json({ message:"Failed to retrieve Manager",error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve Manager", error: error.message });
   }
 };
 
@@ -1155,9 +1167,9 @@ export const getUsers = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const query = { parent_id: user_id, role: role };
+    const query = { parent_id: user_id, role: role, status: { $ne: "Deleted" } };
 
-    if (["Active", "Deactive", "Suspended", "Expired"].includes(filter)) {
+    if (filter && ["Active", "Deactive", "Suspended", "Expired"].includes(filter)) {
       query.status = filter;
     }
 
@@ -1167,9 +1179,6 @@ export const getUsers = async (req, res) => {
         { name: { $regex: search, $options: "i" } },
       ];
     }
-
-    // Exclude users with status "Deleted"
-    query.status = { $ne: "Deleted" };
 
     const options = {
       page: parseInt(page, 10),
@@ -1185,6 +1194,7 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ message: "Failed to retrieve users" });
   }
 };
+
 
 export const getUserById = async (req, res) => {
   try {
