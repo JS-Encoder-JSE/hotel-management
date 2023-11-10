@@ -222,7 +222,7 @@ const CheckIn = () => {
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}>
 							<option value="" selected disabled>
-								Choose Hotels
+								Choose Hotel
 							</option>
 
 							{hotelsList?.map((i) => (

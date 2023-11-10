@@ -31,7 +31,7 @@ const ManageBooking = () => {
 			<div className={`flex justify-between gap-4`}>
 				{/* filter by hotels  */}
 				<div className="flex items-center gap-2">
-					<p>Please choose a hotel : </p>
+					{/* <p>Please choose a hotel : </p> */}
 					<select
 						name="hotel_id"
 						className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -39,7 +39,7 @@ const ManageBooking = () => {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}>
 						<option value="" selected disabled>
-							Choose Hotels
+							Choose Hotel
 						</option>
 
 						{hotelsList?.map((i) => (

@@ -16,6 +16,7 @@ const HotelLimitEdit = ({ data, hotels }) => {
   const increment = () => {
     setUser(user + 1);
   };
+
   const decrement = () => {
     if (user > 0) {
       setUser(user - 1);
@@ -39,11 +40,13 @@ const HotelLimitEdit = ({ data, hotels }) => {
     tempArr.splice(findIdx, 1);
 
     updateUser({ id, data: { assignedHotel: tempArr } });
+    toast.success("Deleted successfully!");
   };
 
   const handleHotelNumChange = () => {
     if (hotels === user) return "";
     updateUser({ id, data: { maxHotels: user } });
+    toast.success("Hotel limit updated successfully!");
   };
 
   useEffect(() => {
@@ -52,7 +55,6 @@ const HotelLimitEdit = ({ data, hotels }) => {
 
   return (
     <>
-      <Toaster />
       <form autoComplete="off" method="dialog">
         <button
           ref={closeRef}
@@ -89,16 +91,7 @@ const HotelLimitEdit = ({ data, hotels }) => {
               onClick={handleHotelNumChange}
               className="btn btn-sm bg-white input-bordered border-gray-500 rounded normal-case"
             >
-              {isLoading ? (
-                <Rings
-                  width="50"
-                  height="50"
-                  color="#37a000"
-                  wrapperClass="flex items-center"
-                />
-              ) : (
-                "Save"
-              )}
+              Save
             </button>
           </div>
         </div>
