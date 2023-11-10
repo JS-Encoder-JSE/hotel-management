@@ -83,7 +83,8 @@ export const addBooking = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
