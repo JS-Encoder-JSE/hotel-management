@@ -9,11 +9,11 @@ import {
   MdOutlineKitchen,
   MdOutlineMeetingRoom,
   MdPool,
-  MdOutlineSportsGymnastics
+  MdOutlineSportsGymnastics,
 } from "react-icons/md";
-import { FaGlassMartini } from "react-icons/fa";
+import { FaGlassMartini, FaUsers } from "react-icons/fa";
 import { SiMomenteo } from "react-icons/si";
-import {TbToolsKitchen2} from "react-icons/tb";
+import { TbToolsKitchen2 } from "react-icons/tb";
 
 const ManagerSbItems = ({ handleSBItems }) => {
   return (
@@ -139,7 +139,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-             Order List
+              Order List
             </NavLink>
           </li>
         </ul>
@@ -191,7 +191,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           onClick={(e) => handleSBItems(e)}
         >
           <div className={`flex space-x-1.5`}>
-            <MdOutlineMeetingRoom />
+            <FaUsers />
             <span className={`-mt-0.5`}>Employee</span>
           </div>
           <span className={`group-[.active]:hidden`}>
@@ -267,7 +267,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Order Bar Item
             </NavLink>
           </li>
-          
+
           <li>
             <NavLink
               to={`/dashboard/baritem-list`}
@@ -282,23 +282,49 @@ const ManagerSbItems = ({ handleSBItems }) => {
         </ul>
       </li> */}
 
-{/* Order Bar Item */}
-<li>
-        <NavLink
-          to={`/dashboard/order-bar-item`}
-          className={({ isActive }) =>
-            "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500" +
-            (isActive ? " bg-gray-300" : "")
-          }
+      {/* Order Bar Item */}
+      <li className={`group p-2`}>
+        <div
+          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+          onClick={(e) => handleSBItems(e)}
         >
           <div className={`flex space-x-1.5`}>
-          <FaGlassMartini />
-            <span>Order Bar Item</span>
+            <FaGlassMartini />
+            <span className={`-mt-0.5`}>Manage Bar</span>
           </div>
-        </NavLink>
+          <span className={`group-[.active]:hidden`}>
+            <MdKeyboardArrowDown />
+          </span>
+          <span className={`hidden group-[.active]:inline`}>
+            <MdKeyboardArrowUp />
+          </span>
+        </div>
+        <ul className={`group-[.active]:block hidden`}>
+          <li>
+            <NavLink
+              to={`/dashboard/order-bar-item`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Add Bar Item
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/order-bar-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Order List
+            </NavLink>
+          </li>
+        </ul>
       </li>
-
-{/* Gym Reservation */}
+      {/* Gym Reservation */}
       <li>
         <NavLink
           to={`/dashboard/gym-booking`}
@@ -308,7 +334,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           }
         >
           <div className={`flex space-x-1.5`}>
-          <MdPool />
+            <MdPool />
             <span>Gym Reservation</span>
           </div>
         </NavLink>
@@ -365,10 +391,9 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Swimming Pool List
             </NavLink>
           </li>
-         
+
         </ul>
       </li> */}
-
 
       {/* Gym Sideber */}
       {/* <li className={`group p-2`}>
@@ -399,7 +424,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
              Add Gym
             </NavLink>
           </li>
-          
+
           <li>
         <NavLink
           to={`/dashboard/gym-booking`}
@@ -425,7 +450,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Gym List
             </NavLink>
           </li>
-         
+
         </ul>
       </li> */}
 
