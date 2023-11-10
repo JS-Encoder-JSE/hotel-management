@@ -35,7 +35,7 @@ const CheckOut = () => {
 		<div className="space-y-8">
 			<div className="max-w-3xl mx-auto flex gap-5 items-center"></div>
 			{/* Select Room Section */}
-			<section className="max-w-3xl mx-auto flex gap-5 items-center">
+			<section className="max-w-3xl mx-auto flex gap-5 items-center ">
 				<select
 					name="chooseHotels"
 					className="input input-md  bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
@@ -44,7 +44,7 @@ const CheckOut = () => {
 					// onBlur={formik.handleBlur}
 				>
 					<option value="" selected disabled>
-						Choose Hotels
+						Choose Hotel
 					</option>
 					{hotelsList?.map((i) => (
 						<option key={i._id} value={i._id}>
