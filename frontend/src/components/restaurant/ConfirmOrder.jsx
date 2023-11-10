@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
 import { setOrder } from "../../redux/add-order/addOrderSlice.js";
@@ -10,21 +10,23 @@ import {
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
 import toast from "react-hot-toast";
-import {useAddOrderMutation} from "../../redux/restaurant/foodAPI.js";
+import { useAddOrderMutation } from "../../redux/restaurant/foodAPI.js";
+import Select from "react-select";
 
 // form validation
 const validationSchema = yup.object({
-  roomNumber: yup.string().required("Room number is required"),
+  // roomNumber: yup.string().required("Room number is required"),
   chooseHotel: yup.string().required("Hotel is required"),
 });
 
 const ConfirmOrder = () => {
   const closeRef = useRef();
+  const [selectedOption, setSelectedOption] = useState(null);
   const [addOrder] = useAddOrderMutation();
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
     initialValues: {
-      roomNumber: "",
+      // roomNumber: "",
       chooseHotel: "",
     },
     validationSchema,
@@ -41,12 +43,12 @@ const ConfirmOrder = () => {
       }));
 
       const response = await addOrder({
-        room_id: values.roomNumber,
+        room_id: selectedOption?.value,
         hotel_id: values.chooseHotel,
         items: arr,
         grand_total: orderCalc.grandTotal,
       });
-console.log(response)
+      console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -68,6 +70,11 @@ console.log(response)
     if (formik.values.roomNumber)
       dispatch(setOrder({ ...order, roomNumber: formik.values.roomNumber }));
   }, [formik.values.roomNumber]);
+
+  const transformedRooms = rooms?.data?.docs?.map((room) => ({
+    value: room.roomNumber,
+    label: `${room.roomNumber} - ${room.category}`,
+  }));
 
   return (
     <>
@@ -110,27 +117,29 @@ console.log(response)
             ) : null}
           </div>
           <div className="flex flex-col gap-3">
-            <select
-              name="roomNumber"
-              className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-              value={formik.values.roomNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                Room Number
-              </option>
-              {rooms?.data?.docs?.map((room) => (
-                <option key={room?._id} value={room?._id}>
-                  {room?.roomNumber}
-                </option>
-              ))}
-            </select>
-            {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
-              <small className="text-red-600">
-                {formik.touched.roomNumber && formik.errors.roomNumber}
-              </small>
-            ) : null}
+            <Select
+              placeholder="Select room"
+              name={`roomNumber`}
+              defaultValue={selectedOption}
+              options={transformedRooms}
+              isSearchable
+              closeMenuOnSelect={false}
+              onChange={setSelectedOption}
+              noOptionsMessage={() => "No room available"}
+              classNames={{
+                control: (state) =>
+                  `!input !input-md !h-8 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    state.isFocused ? "!shadow-none" : ""
+                  }`,
+                valueContainer: () => "!p-0",
+                placeholder: () => "!m-0",
+              }}
+            />
+            {/*{formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (*/}
+            {/*  <small className="text-red-600">*/}
+            {/*    {formik.touched.roomNumber && formik.errors.roomNumber}*/}
+            {/*  </small>*/}
+            {/*) : null}*/}
           </div>
         </div>
         {order.foods.length ? (

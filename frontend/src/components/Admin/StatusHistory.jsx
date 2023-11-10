@@ -19,6 +19,7 @@ const StatusHistory = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const { id } = useParams();
   const [forcePage, setForcePage] = useState(null);
+  const [PDF, setPDF] = useState([]);
   const [searchParams, setSearchParams] = useState({
     id,
     fromDate: "",
@@ -56,6 +57,23 @@ const StatusHistory = () => {
 
   useEffect(() => {
     if (statusHistory) setPageCount(statusHistory.totalPages);
+  }, [statusHistory]);
+
+  useEffect(() => {
+    if (statusHistory) {
+      const values = statusHistory?.docs?.map((item) => ({
+        Date: new Date(item?.createdAt).toLocaleDateString(),
+        "Previous Status": item?.pre_status,
+        "Updated Status": item?.updated_status,
+        Remarks: item?.remark,
+        "Issue By": item?.changed_from,
+        "Extended Time": item?.extended_time?.to
+          ? new Date(item.extended_time.to).toLocaleDateString()
+          : "",
+      }));
+
+      setPDF(values);
+    }
   }, [statusHistory]);
 
   return (
@@ -108,20 +126,19 @@ const StatusHistory = () => {
               Search
             </button>
           </div>
-          <button
-            type={"button"}
-            className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-          >
-            {/*<PDFDownloadLink*/}
-            {/*  document={<CreateReport />}*/}
-            {/*  fileName={`${new Date().toLocaleDateString()}.pdf`}*/}
-            {/*>*/}
-            {/*  <span className={`flex gap-1.5`}>*/}
-            {/*    <span className={`mt-0.5`}>PDF</span>*/}
-            {/*    <FaFileDownload />*/}
-            {/*  </span>*/}
-            {/*</PDFDownloadLink>*/}
-          </button>
+          {PDF.length ? (
+            <button
+              type={"button"}
+              className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <PDFDownloadLink
+                document={<CreateReport values={PDF} />}
+                fileName={`${new Date().toLocaleDateString()}.pdf`}
+              >
+                PDF
+              </PDFDownloadLink>
+            </button>
+          ) : null}
         </div>
         {!isLoading ? (
           statusHistory?.docs?.length ? (

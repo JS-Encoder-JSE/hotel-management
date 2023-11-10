@@ -3,7 +3,10 @@ import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
-import { useRoomsQuery } from "../../redux/room/roomAPI.js";
+import {
+  useGetRoomsAndHotelsQuery,
+  useRoomsQuery,
+} from "../../redux/room/roomAPI.js";
 import {
   useDeleteEmployeeMutation,
   useEmployeeQuery,
@@ -13,10 +16,12 @@ import Swal from "sweetalert2";
 const ManageEmployee = () => {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState(null);
+  const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const formik = useFormik({
     initialValues: {
       filter: "",
       search: "",
+      chooseHotel: "",
     },
     onSubmit: (values) => {
       setKeyword(values.search);
@@ -67,7 +72,31 @@ const ManageEmployee = () => {
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-      <div className={`flex justify-end gap-4`}>
+      <div className={`flex justify-between gap-4`}>
+        <div className="flex flex-col gap-3">
+          <select
+            name="chooseHotel"
+            className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.chooseHotel}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Choose Hotel
+            </option>
+
+            {hotelList?.map((i) => (
+              <option key={i._id} value={i._id}>
+                {i.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.chooseHotel && Boolean(formik.errors.chooseHotel) ? (
+            <small className="text-red-600">
+              {formik.touched.chooseHotel && formik.errors.chooseHotel}
+            </small>
+          ) : null}
+        </div>
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"
@@ -86,99 +115,115 @@ const ManageEmployee = () => {
           </button>
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="table border">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Shift</th>
-              <th>Salary</th>
-              <th>Address</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees?.docs?.map((employee, idx) => {
-              const {
-                _id,
-                name,
-                designation,
-                shift,
-                sallary,
-                street_address,
-                city,
-                state,
-                zip,
-              } = employee;
+      {formik.values.chooseHotel ? (
+        employees?.docs?.length ? (
+          <>
+            <div className="overflow-x-auto">
+              <table className="table border">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Shift</th>
+                    <th>Salary</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {employees?.docs?.map((employee, idx) => {
+                    const {
+                      _id,
+                      name,
+                      designation,
+                      shift,
+                      sallary,
+                      street_address,
+                      city,
+                      state,
+                      zip,
+                    } = employee;
 
-              return (
-                <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                  <td>
-                    <div className="flex items-center space-x-3">
-                      <div className="avatar">
-                        <div className="mask mask-squircle w-12 h-12">
-                          <img
-                            src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="font-bold">{name}</div>
-                        <div className="text-sm opacity-50">{designation}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>{shift}</td>
-                  <td>{sallary}</td>
-                  <td className={`capitalize`}>
-                    <span>{street_address}, </span>
-                    <span>{city}, </span>
-                    <span>
-                      {state} - {zip}
-                    </span>
-                  </td>
-                  <td className={`space-x-1.5`}>
-                    <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                      onClick={() =>
-                        navigate(`/dashboard/edit-employee/${_id}`)
-                      }
-                    >
-                      <FaEdit />
-                    </span>
-                    <span
-                      className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                      onClick={() => handleDelete(_id)}
-                    >
-                      <FaTrash />
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-center mt-10">
-        <ReactPaginate
-          containerClassName="join rounded-none"
-          pageLinkClassName="join-item btn btn-md bg-transparent"
-          activeLinkClassName="btn-active !bg-green-slimy text-white"
-          disabledLinkClassName="btn-disabled"
-          previousLinkClassName="join-item btn btn-md bg-transparent"
-          nextLinkClassName="join-item btn btn-md bg-transparent"
-          breakLinkClassName="join-item btn btn-md bg-transparent"
-          previousLabel="<"
-          nextLabel=">"
-          breakLabel="..."
-          pageCount={pageCount}
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={2}
-          onPageChange={handlePageClick}
-          renderOnZeroPageCount={null}
-        />
-      </div>
+                    return (
+                      <tr
+                        className={
+                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                        }
+                      >
+                        <td>
+                          <div className="flex items-center space-x-3">
+                            <div className="avatar">
+                              <div className="mask mask-squircle w-12 h-12">
+                                <img
+                                  src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
+                                  alt=""
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <div className="font-bold">{name}</div>
+                              <div className="text-sm opacity-50">
+                                {designation}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{shift}</td>
+                        <td>{sallary}</td>
+                        <td className={`capitalize`}>
+                          <span>{street_address}, </span>
+                          <span>{city}, </span>
+                          <span>
+                            {state} - {zip}
+                          </span>
+                        </td>
+                        <td className={`space-x-1.5`}>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                            onClick={() =>
+                              navigate(`/dashboard/edit-employee/${_id}`)
+                            }
+                          >
+                            <FaEdit />
+                          </span>
+                          <span
+                            className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                            onClick={() => handleDelete(_id)}
+                          >
+                            <FaTrash />
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex justify-center mt-10">
+              <ReactPaginate
+                containerClassName="join rounded-none"
+                pageLinkClassName="join-item btn btn-md bg-transparent"
+                activeLinkClassName="btn-active !bg-green-slimy text-white"
+                disabledLinkClassName="btn-disabled"
+                previousLinkClassName="join-item btn btn-md bg-transparent"
+                nextLinkClassName="join-item btn btn-md bg-transparent"
+                breakLinkClassName="join-item btn btn-md bg-transparent"
+                previousLabel="<"
+                nextLabel=">"
+                breakLabel="..."
+                pageCount={pageCount}
+                pageRangeDisplayed={2}
+                marginPagesDisplayed={2}
+                onPageChange={handlePageClick}
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          </>
+        ) : (
+          <h3 className={`text-center`}>No data found!</h3>
+        )
+      ) : (
+        <h3 className={`text-center`}>Please choose a hotel</h3>
+      )}
     </div>
   );
 };

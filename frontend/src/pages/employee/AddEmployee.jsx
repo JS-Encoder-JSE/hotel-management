@@ -7,6 +7,7 @@ import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 
 import { useAddEmployeeMutation } from "../../redux/employee/employeeAPI.js";
+import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -16,7 +17,13 @@ const validationSchema = yup.object({
   designation: yup.string().required("Designation is required"),
   shift: yup.string().required("Shift is required"),
   salary: yup.string().required("Salary is required"),
-  address: yup.string().required("Address is required"),
+  address: yup
+    .string()
+    .required("Address is required")
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+      "Address must start with a character and can include characters and numbers",
+    ),
   state: yup.string().required("State is required"),
   city: yup.string().required("City is required"),
   zip: yup.string().required("Zip is required"),
@@ -32,7 +39,7 @@ const AddEmployee = () => {
 
   const formik = useFormik({
     initialValues: {
-      username:'',
+      username: "",
       name: "",
       userName: "",
       designation: "",
@@ -43,6 +50,7 @@ const AddEmployee = () => {
       userImg: null,
       documentsType: "",
       documents: null,
+      chooseHotel: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -76,7 +84,7 @@ const AddEmployee = () => {
     },
   });
 
-
+  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   useEffect(() => {
     if (formik.values.userImg) {
       const reader = new FileReader();
@@ -86,7 +94,6 @@ const AddEmployee = () => {
       setUserImgPrev(null);
     }
   }, [formik.values.userImg]);
-  
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -109,22 +116,24 @@ const AddEmployee = () => {
           />
         </div>
 
-             {/* username box */}
-             <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Username"
-            name="username"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.username}
+        <div className="flex flex-col gap-3">
+          <select
+            name="chooseHotels"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
+            value={formik.values.chooseHotel}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-          />
-          {formik.touched.username && Boolean(formik.errors.username) ? (
-            <small className="text-red-600">
-              {formik.touched.username && formik.errors.username}
-            </small>
-          ) : null}
+          >
+            <option value="" selected disabled>
+              Choose Hotel
+            </option>
+
+            {hotelsList?.map((i) => (
+              <option key={i._id} value={i._id}>
+                {i.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* name box */}
@@ -144,7 +153,7 @@ const AddEmployee = () => {
             </small>
           ) : null}
         </div>
-        
+
         {/*user name box */}
         <div className="flex flex-col gap-3">
           <input
@@ -218,9 +227,9 @@ const AddEmployee = () => {
             </small>
           ) : null}
         </div>
-        
-           {/* user image box */}
-           <div className=" flex flex-col gap-3">
+
+        {/* user image box */}
+        <div className=" flex flex-col gap-3">
           <label className="relative input input-md input-bordered border-gray-500/50 rounded  focus:outline-none bg-transparent flex items-center justify-center">
             {formik.values.userImg ? (
               formik.values.userImg.name.substring(
@@ -253,7 +262,6 @@ const AddEmployee = () => {
           ) : null}
         </div>
 
-
         {/* street box */}
         <div className="col-span-full flex flex-col gap-3">
           <textarea
@@ -270,9 +278,7 @@ const AddEmployee = () => {
             </small>
           ) : null}
         </div>
-     
-        
-     
+
         {/* submit button */}
         <button
           type="submit"

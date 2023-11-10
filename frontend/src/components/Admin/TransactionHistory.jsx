@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -16,6 +16,7 @@ const TransactionHistory = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const { id } = useParams();
   const [forcePage, setForcePage] = useState(null);
+  const [PDF, setPDF] = useState([]);
   const [searchParams, setSearchParams] = useState({
     id,
     fromDate: "",
@@ -49,6 +50,22 @@ const TransactionHistory = () => {
     setCurrentPage(page);
     setForcePage(page);
   };
+
+  useEffect(() => {
+    if (data) {
+      const values = data?.docs?.map((item) => ({
+        Date: new Date(item?.createdAt).toLocaleDateString(),
+        "Transaction Id": item.tran_id,
+        "Payment Method": item?.payment_method,
+        "License Duration": item?.payment_for,
+        Amount: item?.amount,
+        "Payment For": item?.payment_for,
+        "Deposit By": item?.to,
+      }));
+
+      setPDF(values);
+    }
+  }, [data]);
 
   return (
     <div className="card w-full bg-white shadow-xl">
@@ -98,20 +115,19 @@ const TransactionHistory = () => {
               Search
             </button>
           </div>
-          <button
-            type={"button"}
-            className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-          >
-            {/*<PDFDownloadLink*/}
-            {/*  document={<CreateReport />}*/}
-            {/*  fileName={`${new Date().toLocaleDateString()}.pdf`}*/}
-            {/*>*/}
-            {/*  <span className={`flex gap-1.5`}>*/}
-            {/*    <span className={`mt-0.5`}>PDF</span>*/}
-            {/*    <FaFileDownload />*/}
-            {/*  </span>*/}
-            {/*</PDFDownloadLink>*/}
-          </button>
+          {PDF.length ? (
+            <button
+              type={"button"}
+              className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <PDFDownloadLink
+                document={<CreateReport values={PDF} />}
+                fileName={`${new Date().toLocaleDateString()}.pdf`}
+              >
+                PDF
+              </PDFDownloadLink>
+            </button>
+          ) : null}
         </div>
         {!isLoading ? (
           data?.docs?.length ? (
