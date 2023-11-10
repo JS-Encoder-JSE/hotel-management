@@ -86,7 +86,7 @@ const AddOrder = () => {
         </div>
       </div>
       <FoodLists keyword={keyword} chooseHotel={formik.values.chooseHotel} />
-      <Modal id={`fp_modal`}>
+      <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
         <ConfirmOrder />
       </Modal>
     </div>

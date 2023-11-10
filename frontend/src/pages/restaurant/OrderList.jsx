@@ -126,7 +126,7 @@ const OrderList = () => {
                             <td>
                               {new Date(order?.createdAt).toLocaleString()}
                             </td>
-                            <td>{order?.room_id}</td>
+                            <td>{order?.room_id?.roomNumber}</td>
                             <td>{order?.grand_total}</td>
                             <td>
                               <span

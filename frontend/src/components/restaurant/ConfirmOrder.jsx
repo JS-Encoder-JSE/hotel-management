@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
 import { setOrder } from "../../redux/add-order/addOrderSlice.js";
@@ -15,7 +15,7 @@ import Select from "react-select";
 
 // form validation
 const validationSchema = yup.object({
-  // roomNumber: yup.string().required("Room number is required"),
+  roomNumber: yup.string().required("Room number is required"),
   chooseHotel: yup.string().required("Hotel is required"),
 });
 
@@ -26,7 +26,7 @@ const ConfirmOrder = () => {
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
     initialValues: {
-      // roomNumber: "",
+      roomNumber: "",
       chooseHotel: "",
     },
     validationSchema,
@@ -43,7 +43,7 @@ const ConfirmOrder = () => {
       }));
 
       const response = await addOrder({
-        room_id: selectedOption?.value,
+        room_id: values.roomNumber,
         hotel_id: values.chooseHotel,
         items: arr,
         grand_total: orderCalc.grandTotal,
@@ -116,30 +116,33 @@ const ConfirmOrder = () => {
               </small>
             ) : null}
           </div>
-          <div className="flex flex-col gap-3">
-            <Select
-              placeholder="Select room"
-              name={`roomNumber`}
-              defaultValue={selectedOption}
-              options={transformedRooms}
-              isSearchable
-              onChange={setSelectedOption}
-              noOptionsMessage={() => "No room available"}
-              classNames={{
-                control: (state) =>
-                  `!input !input-md !h-4 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
-                    state.isFocused ? "!shadow-none" : ""
-                  }`,
-                valueContainer: () => "!p-0",
-                placeholder: () => "!m-0",
-              }}
-            />
-            {/*{formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (*/}
-            {/*  <small className="text-red-600">*/}
-            {/*    {formik.touched.roomNumber && formik.errors.roomNumber}*/}
-            {/*  </small>*/}
-            {/*) : null}*/}
-          </div>
+          {formik.values.chooseHotel ? (
+            <div className="flex flex-col gap-3">
+              <Select
+                placeholder="Select room"
+                name={`roomNumber`}
+                defaultValue={formik.values.roomNumber}
+                options={transformedRooms}
+                isSearchable
+                onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
+                noOptionsMessage={() => "No room available"}
+                classNames={{
+                  control: (state) =>
+                    `!input !input-md !h-4 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                      state.isFocused ? "!shadow-none" : ""
+                    }`,
+                  valueContainer: () => "!p-0",
+                  placeholder: () => "!m-0",
+                }}
+              />
+              {formik.touched.roomNumber &&
+              Boolean(formik.errors.roomNumber) ? (
+                <small className="text-red-600">
+                  {formik.touched.roomNumber && formik.errors.roomNumber}
+                </small>
+              ) : null}
+            </div>
+          ) : null}
         </div>
         {order.foods.length ? (
           <div className="overflow-x-auto w-full mt-5">

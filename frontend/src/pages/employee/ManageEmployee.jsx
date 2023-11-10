@@ -48,6 +48,12 @@ const ManageEmployee = () => {
     setCurrentPage(page);
   };
 
+  const pressEnter = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      formik.handleSubmit();
+    }
+  };
+
   const handleDelete = (owner) => {
     Swal.fire({
       title: "Are you sure?",
@@ -112,6 +118,12 @@ const ManageEmployee = () => {
             className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.search}
             onChange={formik.handleChange}
+            onKeyUp={(e) => {
+              e.target.value === ""
+                  ? formik.handleSubmit()
+                  : null;
+            }}
+            onKeyDown={(e) => pressEnter(e)}
           />
           <button
             onClick={() => formik.handleSubmit()}
@@ -150,6 +162,7 @@ const ManageEmployee = () => {
                       address,
                       emergency_contact,
                       status,
+                        images
                     } = employee;
 
                     return (
@@ -163,7 +176,7 @@ const ManageEmployee = () => {
                             <div className="avatar">
                               <div className="mask mask-squircle w-12 h-12">
                                 <img
-                                  src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
+                                  src={images?.profile_img}
                                   alt=""
                                 />
                               </div>
