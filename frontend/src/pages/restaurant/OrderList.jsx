@@ -7,11 +7,13 @@ import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import Modal from "../../components/Modal.jsx";
 import {
+  useDeleteOrderMutation,
   useFoodsQuery,
   useOrdersQuery,
 } from "../../redux/restaurant/foodAPI.js";
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 import { FcCancel } from "react-icons/fc";
+import Swal from "sweetalert2";
 // import StatusSettings from "./StatusSettings.jsx";
 
 const OrderList = () => {
@@ -20,6 +22,7 @@ const OrderList = () => {
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
+  const [deleteOrder] = useDeleteOrderMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -39,6 +42,30 @@ const OrderList = () => {
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Order will be cancel.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#35bef0",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Deleted!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          deleteOrder(id);
+        });
+      }
+    });
   };
 
   return (
@@ -74,58 +101,75 @@ const OrderList = () => {
         </div>
         <hr className={`my-5`} />
         <div className={`space-y-10`}>
-          <div className="overflow-x-auto">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Room Number</th>
-                  <th>Total</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders?.data?.docs?.map((order, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>{order?.room_id}</td>
-                      <td>{order?.grand_total}</td>
-                      <td>
-                        <span
-                          className={`btn btn-sm bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                        >
-                          <FcCancel />
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <Modal id={`ol_modal`}>{/* <StatusSettings /> */}</Modal>
-          </div>
-          <div className="flex justify-center mt-10">
-            <ReactPaginate
-              containerClassName="join rounded-none"
-              pageLinkClassName="join-item btn btn-md bg-transparent"
-              activeLinkClassName="btn-active !bg-green-slimy text-white"
-              disabledLinkClassName="btn-disabled"
-              previousLinkClassName="join-item btn btn-md bg-transparent"
-              nextLinkClassName="join-item btn btn-md bg-transparent"
-              breakLinkClassName="join-item btn btn-md bg-transparent"
-              previousLabel="<"
-              nextLabel=">"
-              breakLabel="..."
-              pageCount={pageCount}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
-              renderOnZeroPageCount={null}
-            />
-          </div>
+          {formik.values.chooseHotel ? (
+            orders?.data?.docs?.length ? (
+              <>
+                <div className="overflow-x-auto">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>SL</th>
+                        <th>Date</th>
+                        <th>Room Number</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders?.data?.docs?.map((order, idx) => {
+                        return (
+                          <tr
+                            className={
+                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                            }
+                          >
+                            <th>{++idx}</th>
+                            <td>
+                              {new Date(order?.createdAt).toLocaleString()}
+                            </td>
+                            <td>{order?.room_id}</td>
+                            <td>{order?.grand_total}</td>
+                            <td>
+                              <span
+                                onClick={() => handleDelete(order?._id)}
+                                className={`btn btn-sm bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                              >
+                                <FcCancel />
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                  <Modal id={`ol_modal`}>{/* <StatusSettings /> */}</Modal>
+                </div>
+                <div className="flex justify-center mt-10">
+                  <ReactPaginate
+                    containerClassName="join rounded-none"
+                    pageLinkClassName="join-item btn btn-md bg-transparent"
+                    activeLinkClassName="btn-active !bg-green-slimy text-white"
+                    disabledLinkClassName="btn-disabled"
+                    previousLinkClassName="join-item btn btn-md bg-transparent"
+                    nextLinkClassName="join-item btn btn-md bg-transparent"
+                    breakLinkClassName="join-item btn btn-md bg-transparent"
+                    previousLabel="<"
+                    nextLabel=">"
+                    breakLabel="..."
+                    pageCount={pageCount}
+                    pageRangeDisplayed={2}
+                    marginPagesDisplayed={2}
+                    onPageChange={handlePageClick}
+                    renderOnZeroPageCount={null}
+                  />
+                </div>
+              </>
+            ) : (
+              <h3 className={`text-center`}>No data found!</h3>
+            )
+          ) : (
+            <h3 className={`text-center`}>Please choose a hotel</h3>
+          )}
         </div>
       </div>
     </div>
