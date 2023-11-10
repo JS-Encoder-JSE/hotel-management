@@ -57,6 +57,7 @@ const GymBooking = () => {
       name: "",
       normalprice: "",
       members: "",
+      paidamount: "",
       // itemName: "",
 
       // packagePrice: "",
@@ -318,6 +319,24 @@ const GymBooking = () => {
                 </small>
               ) : null}
             </div>
+             {/*Paid Amount  */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="number"
+              placeholder="Paid Amount"
+              name="paidamount"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.paidamount}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.paidamount &&
+            Boolean(formik.errors.paidamount) ? (
+              <small className="text-red-600">
+                {formik.touched.paidamount && formik.errors.paidamount}
+              </small>
+            ) : null}
+          </div>
             {/* button */}
             <div className={`flex justify-between`}>
               <button
