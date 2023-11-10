@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import { FaArrowLeft, FaTrash, FaUpload } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import {
-    MdOutlineKeyboardArrowLeft,
-    MdOutlineKeyboardArrowRight,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 import { TbReplaceFilled } from "react-icons/tb";
 import { Rings } from "react-loader-spinner";
@@ -14,10 +14,8 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import * as yup from "yup";
 import { useUploadSingleMutation } from "../../redux/baseAPI.js";
-import { useFoodQuery } from "../../redux/restaurant/foodAPI.js";
-import {
-    useUpdateRoomMutation
-} from "../../redux/room/roomAPI.js";
+import {useFoodQuery, useUpdateFoodMutation} from "../../redux/restaurant/foodAPI.js";
+import { useUpdateRoomMutation } from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -34,6 +32,7 @@ const validationSchema = yup.object({
     .required("Price is required")
     .positive("Price must be a positive number")
     .integer("Price must be an integer"),
+  surveyorQuantity: yup.string().required("Surveyor quantity is required"),
   description: yup
     .string()
     .required("Description is required")
@@ -45,13 +44,13 @@ const EditFood = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { isLoading, data: food } = useFoodQuery(id);
-  const [updateFood] = useUpdateRoomMutation();
+  const [updateFood] = useUpdateFoodMutation();
   const [uploadSingle] = useUploadSingleMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const formik = useFormik({
     initialValues: {
       foodName: "",
-      quantity: "",
+      surveyorQuantity: "",
       price: "",
       description: "",
       photos: null,
@@ -61,7 +60,13 @@ const EditFood = () => {
       setLoading(true);
 
       const obj = { ...values };
-      const { foodName: food_name, quantity, price, description } = obj;
+      const {
+        foodName: food_name,
+        quantity,
+        price,
+        description,
+        surveyorQuantity: serveyor_quantity,
+      } = obj;
       const images = [...selectedImages];
 
       for (let i = 0; i < images.length; i++) {
@@ -83,7 +88,7 @@ const EditFood = () => {
         id,
         obj: {
           food_name,
-          quantity,
+          serveyor_quantity,
           price,
           description,
           images,
@@ -139,7 +144,7 @@ const EditFood = () => {
     if (food) {
       formik.setValues({
         foodName: food?.data?.food_name,
-        quantity: food?.data?.quantity,
+        surveyorQuantity: food?.data?.serveyor_quantity,
         price: food?.data?.price,
         description: food?.data?.description,
         photos: null,
@@ -167,7 +172,8 @@ const EditFood = () => {
         </div>
       </div>
       {!isLoading ? (
-        <form autoComplete="off"
+        <form
+          autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
@@ -253,16 +259,18 @@ const EditFood = () => {
           <div className="flex flex-col gap-3">
             <input
               type="text"
-              placeholder="Quantity"
-              name="quantity"
+              placeholder="Surveyor Quantity"
+              name="surveyorQuantity"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.quantity}
+              value={formik.values.surveyorQuantity}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.quantity && Boolean(formik.errors.quantity) ? (
+            {formik.touched.surveyorQuantity &&
+            Boolean(formik.errors.surveyorQuantity) ? (
               <small className="text-red-600">
-                {formik.touched.quantity && formik.errors.quantity}
+                {formik.touched.surveyorQuantity &&
+                  formik.errors.surveyorQuantity}
               </small>
             ) : null}
           </div>
