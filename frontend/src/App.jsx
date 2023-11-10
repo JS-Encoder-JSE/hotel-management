@@ -78,6 +78,7 @@ import OrderBarItem from "./pages/bar/OrderBarItem.jsx";
 import PoolReservation from "./pages/LifeStyle/PoolReservation.jsx";
 import OrderList from "./pages/restaurant/OrderList.jsx";
 import ReportManager from "./pages/report/ReportManager.jsx";
+import OrderListBar from "./pages/bar/OrderListBar.jsx";
 
 
 
@@ -345,6 +346,14 @@ const App = () => {
                 <ManagerRoute>
                   <OrderBarItem />
                 </ManagerRoute>
+              ),
+            },
+            {
+              path: "order-bar-list",
+              element: (
+                  <ManagerRoute>
+                    <OrderListBar />
+                  </ManagerRoute>
               ),
             },
             {

@@ -8,16 +8,20 @@ import Modal from "../../components/Modal.jsx";
 import AddBookingSwimming from "../../components/LifeStyle/AddBookingSwimming.jsx";
 // import SwimmingLists from "../../components/LifeStyle/SwimmingLists.jsx";
 import Select from "react-select";
+import {
+  useGetRoomsAndHotelsQuery,
+  useRoomsQuery,
+} from "../../redux/room/roomAPI.js";
+import { useAddBarMutation } from "../../redux/bar/barAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
-//   chooseHotel: yup.string().required("Choose Hotel is required"),
-  roomNo: yup
-    .number()
-    .required("Room Number is required")
-    .positive("Room Number must be a positive number")
-    .integer("Room Number must be an integer"),
+  //   chooseHotel: yup.string().required("Choose Hotel is required"),
+  roomNumber: yup.string().required("Room number is required"),
+  chooseHotel: yup.string().required("Hotel is required"),
   itemName: yup.string().required("Item Name is required"),
+  price: yup.string().required("Price is required"),
 
   typeOfAlcohol: yup.string().required("Type Of Alcohol is required"),
   surveyorQuantity: yup
@@ -25,12 +29,11 @@ const validationSchema = yup.object({
     .required("Quantity is required")
     .positive("Quantity must be a positive number")
     .integer("Quantity must be an integer"),
-
-  perPersonPrice: yup.string().required("Price is required"),
 });
 
 const OrderBarItem = () => {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [addBar] = useAddBarMutation();
   const formik = useFormik({
     initialValues: {
       chooseHotel: "",
@@ -38,14 +41,52 @@ const OrderBarItem = () => {
       itemName: "",
       typeOfAlcohol: "",
       surveyorQuantity: "",
-      perPersonPrice: "",
-      paidamount: "",
+      price: "",
+      paid_amount: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
-      console.log(values);
+    onSubmit: async (values, formikHelpers) => {
+      const obj = { ...values };
+
+      const {
+        chooseHotel: hotel_id,
+        roomNumber: room_id,
+        itemName: name,
+        typeOfAlcohol: type_of_alcohol,
+        surveyorQuantity: surveyor_quantity,
+        price,
+        paid_amount,
+      } = obj;
+
+      const response = await addBar({
+        hotel_id,
+        room_id,
+        name,
+        type_of_alcohol,
+        surveyor_quantity,
+        price,
+        paid_amount,
+      });
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+      }
     },
   });
+  const { data: hotelList } = useGetRoomsAndHotelsQuery();
+  const { isLoading, data: rooms } = useRoomsQuery({
+    id: formik.values.chooseHotel,
+    cp: "0",
+    filter: "",
+    search: "",
+  });
+  const transformedRooms = rooms?.data?.docs?.map((room) => ({
+    value: room._id,
+    label: room.roomNumber,
+  }));
 
   // const [status, setStatus] = useState("");
 
@@ -91,19 +132,21 @@ const OrderBarItem = () => {
           <div className="flex flex-col gap-3">
             <select
               name="chooseHotel"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.poolSelect}
+              className="input input-md h-10 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.chooseHotel}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
               <option value="" selected disabled>
-                Select Hotel
+                Choose Hotel
               </option>
-              <option value="hotelNumber1">Hotel Number 1</option>
-              <option value="hotelNumber2">Hotel Number 2 </option>
-              <option value="hotelNumber3"> Hotel Number 3</option>
-            </select>
 
+              {hotelList?.map((i) => (
+                <option key={i._id} value={i._id}>
+                  {i.name}
+                </option>
+              ))}
+            </select>
             {formik.touched.chooseHotel &&
             Boolean(formik.errors.chooseHotel) ? (
               <small className="text-red-600">
@@ -112,21 +155,20 @@ const OrderBarItem = () => {
             ) : null}
           </div>
 
-            {/* Room Number box */}
+          {/* Room Number box */}
 
-            <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <Select
               placeholder="Select room"
               name={`roomNumber`}
-              defaultValue={selectedOption}
-              // options={transformedRooms}
+              defaultValue={formik.values.roomNumber}
+              options={transformedRooms}
               isSearchable
-              closeMenuOnSelect={false}
-              onChange={setSelectedOption}
+              onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
               noOptionsMessage={() => "No room available"}
               classNames={{
                 control: (state) =>
-                  `!input !input-md !h-8 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                  `!input !input-md !h-4 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
                     state.isFocused ? "!shadow-none" : ""
                   }`,
                 valueContainer: () => "!p-0",
@@ -195,42 +237,39 @@ const OrderBarItem = () => {
               </small>
             ) : null}
           </div>
-
-          {/* Price */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Price"
-              name="perPersonPrice"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.perPersonPrice}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.perPersonPrice &&
-            Boolean(formik.errors.perPersonPrice) ? (
-              <small className="text-red-600">
-                {formik.touched.perPersonPrice && formik.errors.perPersonPrice}
-              </small>
-            ) : null}
-          </div>
           {/* Price */}
 
           {/*Paid Amount  */}
           <div className="flex flex-col gap-3">
             <input
               type="number"
-              placeholder="Paid Amount"
-              name="paidamount"
+              placeholder="Price"
+              name="price"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.paidamount}
+              value={formik.values.price}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.paidamount &&
-            Boolean(formik.errors.paidamount) ? (
+            {formik.touched.price && Boolean(formik.errors.price) ? (
               <small className="text-red-600">
-                {formik.touched.paidamount && formik.errors.paidamount}
+                {formik.touched.price && formik.errors.price}
+              </small>
+            ) : null}
+          </div>
+          <div className="flex flex-col gap-3">
+            <input
+              type="number"
+              placeholder="Paid Amount"
+              name="paid_amount"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.paid_amount}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.paid_amount &&
+            Boolean(formik.errors.paid_amount) ? (
+              <small className="text-red-600">
+                {formik.touched.paid_amount && formik.errors.paid_amount}
               </small>
             ) : null}
           </div>
