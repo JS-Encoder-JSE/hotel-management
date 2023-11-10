@@ -30,6 +30,7 @@ const HotelLists = () => {
     search: formik.values.search,
     uid: user._id,
     pid: "",
+    filter: "Active"
   });
 
   const handleDelete = (id) => {
