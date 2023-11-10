@@ -30,6 +30,7 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
+  
   // children: yup.number().when(["children"], ([children], schema) => {
   //   if (children)
   //     return schema
@@ -37,12 +38,12 @@ const validationSchema = yup.object({
   //       .integer("Children must be an integer");
   //   else return schema;
   // }),
-  paymentMethod: yup.string().required("Payment method is required"),
-  trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-    if (paymentMethod !== "cash")
-      return schema.required("Transaction ID is required");
-    else return schema;
-  }),
+  // paymentMethod: yup.string().required("Payment method is required"),
+  // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
+  //   if (paymentMethod !== "cash")
+  //     return schema.required("Transaction ID is required");
+  //   else return schema;
+  // }),
 
   documentsType: yup.string().required("Document Number is required"),
   documentsNumber: yup
@@ -77,6 +78,7 @@ const CheckIn = () => {
       adult: "",
       children: "",
       paymentMethod: "",
+      advanced_amount: "",
       documentsNumber: "",
       discount: "",
       fromDate: "",
@@ -356,6 +358,71 @@ const CheckIn = () => {
             </small>
           ) : null}
         </div>
+
+
+
+				{/* advanced amount */}
+        <div className="flex flex-col gap-3">
+						<input
+							type="number"
+							placeholder="Advanced Amount"
+							name="advanced_amount"
+							className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+							value={formik.values.advanced_amount}
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+						/>
+					</div>
+
+					{/* payment method box */}
+					{formik.values.advanced_amount && (
+						<div className="flex flex-col gap-3">
+							<select
+								name="paymentMethod"
+								className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+								value={formik.values.paymentMethod}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}>
+								<option value="" selected disabled>
+									Payment Method
+								</option>
+								<option value="Cash">Cash</option>
+								<option value="Card">Card</option>
+								<option value="Mobile_Banking">
+									Mobile Banking
+								</option>
+							</select>
+							{formik.touched.paymentMethod &&
+							Boolean(formik.errors.paymentMethod) ? (
+								<small className="text-red-600">
+									{formik.touched.paymentMethod &&
+										formik.errors.paymentMethod}
+								</small>
+							) : null}
+						</div>
+					)}
+					{formik.values.paymentMethod &&
+					formik.values.paymentMethod !== "Cash" ? (
+						<div className="flex flex-col gap-3">
+							<input
+								type="text"
+								placeholder="Transaction ID"
+								name="trxID"
+								className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+								value={formik.values.trxID}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+							/>
+							{formik.touched.trxID &&
+							Boolean(formik.errors.trxID) ? (
+								<small className="text-red-600">
+									{formik.touched.trxID &&
+										formik.errors.trxID}
+								</small>
+							) : null}
+						</div>
+					) : null}
+
         {/* payment method box */}
         <div className="flex flex-col gap-3">
           <select

@@ -5,20 +5,41 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../Modal.jsx";
 import EditBooking from "./EditBooking.jsx";
 
-const BookingLists = ({ bookingList }) => {
+const BookingLists = ({ bookingList ,setCurrentPage}) => {
 	const navigate = useNavigate();
-	const [bookingPerPage] = useState(10);
-	const [pageCount, setPageCount] = useState(10);
-	const [currentPage, setCurrentPage] = useState(0);
-
+	// const [bookingPerPage] = useState(10);
+	// const [pageCount, setPageCount] = useState(0);
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);
 	};
-
+	// "_id": "654dd87a1baa8311561d8e16",
+	// "room_ids": [
+	// 	"654dce531baa8311561d8bf0"
+	// ],
+	// "hotel_id": "654a14726bb8816a0a034569",
+	// "guestName": "test",
+	// "address": "dhaka",
+	// "mobileNumber": "0123455",
+	// "emergency_contact": "2342343242",
+	// "adult": 3,
+	// "children": 3,
+	// "paymentMethod": "Cash",
+	// "transection_id": "",
+	// "amount": 0,
+	// "total_amount": 0,
+	// "paid_amount": 0,
+	// "total_unpaid_amount": 0,
+	// "discount": 44,
+	// "from": "2023-11-17T18:00:00.000Z",
+	// "to": "2023-11-24T18:00:00.000Z",
+	// "status": "Active",
+	// "nationality": "bd",
+	// "doc_number": "",
+	// "__v": 0
 	return (
 		<div>
 			<div className="overflow-x-auto border">
-				<table className="table">
+				{bookingList?<table className="table">
 					<thead>
 						<tr className={`text-lg`}>
 							<th>Name</th>
@@ -55,10 +76,10 @@ const BookingLists = ({ bookingList }) => {
 											</div>
 										</div>
 									</td>
-									<td>{item?.name}</td>
-									<td>i{item?.phone}</td>
-									<td>{item?.price}</td>
+									<td>{item?.mobileNumber}</td>
+									<td>i{item?.amount}</td>
 									<td>{item?.createdAt}</td>
+									<td>{item?.to}</td>
 									<td>{item?.from}</td>
 
 									<td className={`space-x-1.5`}>
@@ -122,7 +143,7 @@ const BookingLists = ({ bookingList }) => {
 							);
 						})}
 					</tbody>
-				</table>
+				</table>:<p className="text-center">Please Choose Hotel</p>}
 				<Modal id={`eb_modal`}>
 					<EditBooking />
 				</Modal>
@@ -139,7 +160,7 @@ const BookingLists = ({ bookingList }) => {
 					previousLabel="<"
 					nextLabel=">"
 					breakLabel="..."
-					pageCount={pageCount}
+					pageCount={bookingList?.data?.totalPages}
 					pageRangeDisplayed={2}
 					marginPagesDisplayed={2}
 					onPageChange={handlePageClick}

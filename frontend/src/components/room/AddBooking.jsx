@@ -34,15 +34,16 @@ const validationSchema = yup.object({
 	//       .integer("Children must be an integer");
 	//   else return schema;
 	// }),
-	paymentMethod: yup.string().required("Payment method is required"),
-	trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-		if (paymentMethod !== "cash")
-			return schema.required("Transaction ID is required");
-		else return schema;
-	}),
+	paymentMethod: yup.string(),
+	// trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
+	// 	if (paymentMethod !== "cash")
+	// 		return schema.required("Transaction ID is required");
+	// 	else return schema;
+	// }),
 	from: yup.string().required("From Date is required"),
 	to: yup.string().required("To Date is required"),
 	nationality: yup.string().required("Nationality Date is required"),
+	advanced_amount:yup.number()
 	// discount: yup.number().when(["discount"], ([discount], schema) => {
 	//   if (discount)
 	//     return schema
@@ -55,6 +56,7 @@ const validationSchema = yup.object({
 const AddBooking = () => {
 	// console.log(user)
 	const [addBooking] = useAddBookingMutation();
+	
 	const [selectedRooms, setSelectedRooms] = useState([]);
 	const closeRef = useRef(null);
 	const formik = useFormik({
@@ -79,8 +81,9 @@ const AddBooking = () => {
 		onSubmit: async (values, formikHelpers) => {
 			const obj = { ...values };
 			obj.room_ids = selectedRooms.map((i) => i.id);
+
 			const response = await addBooking(obj);
-			console.log(values);
+			console.log({values});
 			console.log(response);
 
 			if (response?.error) {
@@ -285,7 +288,7 @@ const AddBooking = () => {
 					<div className="flex flex-col gap-3">
 						<input
 							type="number"
-							placeholder="Advanced Ammount"
+							placeholder="Advanced Amount"
 							name="advanced_amount"
 							className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
 							value={formik.values.advanced_amount}
