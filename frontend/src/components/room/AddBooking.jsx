@@ -56,7 +56,6 @@ const validationSchema = yup.object({
 const AddBooking = () => {
 	// console.log(user)
 	const [addBooking,{isLoading}] = useAddBookingMutation();
-	
 	const [selectedRooms, setSelectedRooms] = useState([]);
 	const closeRef = useRef(null);
 	const formik = useFormik({
@@ -110,6 +109,7 @@ const AddBooking = () => {
 	}));
 
 	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+	
 	return (
 		<>
 			<form autoComplete="off" method="dialog">
