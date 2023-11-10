@@ -34,8 +34,26 @@ const ManageInventory = () => {
       <div
         className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
       >
-       <div className={`flex space-x-1.5`}>
-         <div className="flex flex-col gap-3">
+       <div className={`flex space-x-1.5 gap-2  `}>
+         <div className="flex flex-col gap-3 ">
+           <select
+               name="chooseHotel"
+               className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
+               value={formik.values.chooseHotel}
+               onChange={formik.handleChange}
+               onBlur={formik.handleBlur}
+           >
+             <option value="" selected disabled>
+               Choose Hotel
+             </option>
+             {hotelList?.map((i) => (
+                 <option key={i._id} value={i._id}>
+                   {i.name}
+                 </option>
+             ))}
+           </select>
+         </div>
+         <div className="flex flex-col gap-2">
            <select
                name="filter"
                className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
@@ -53,24 +71,6 @@ const ManageInventory = () => {
                </small>
            ) : null}
          </div>
-         <div className="flex flex-col gap-3">
-           <select
-               name="chooseHotel"
-               className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-               value={formik.values.chooseHotel}
-               onChange={formik.handleChange}
-               onBlur={formik.handleBlur}
-           >
-             <option value="" selected disabled>
-               Choose Hotel
-             </option>
-             {hotelList?.map((i) => (
-                 <option key={i._id} value={i._id}>
-                   {i.name}
-                 </option>
-             ))}
-           </select>
-         </div>
        </div>
         <div className={`flex space-x-1.5`}>
           <button
@@ -82,7 +82,7 @@ const ManageInventory = () => {
           >
             Assign Items
           </button>
-          <div className={`relative sm:min-w-[20rem]`}>
+          <div className={`relative sm:min-w-[10rem]`}>
             <input
               type="text"
               placeholder="Search by name..."

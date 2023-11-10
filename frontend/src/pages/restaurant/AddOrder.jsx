@@ -35,7 +35,7 @@ const AddOrder = () => {
         <div className="flex flex-col gap-3">
           <select
             name="chooseHotel"
-            className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.chooseHotel}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
