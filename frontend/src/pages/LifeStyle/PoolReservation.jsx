@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 // import BookingLists from "../../components/room/BookingLists.jsx";
@@ -9,6 +9,7 @@ import AddBookingSwimming from "../../components/LifeStyle/AddBookingSwimming.js
 import SwimmingLists from "../../components/LifeStyle/SwimmingLists.jsx";
 import GymLits from "../../components/Gym/GymLits.jsx";
 import AddBookingGym from "../../components/Gym/AddBookingGym.jsx";
+import Select from "react-select";
 
 // form validation
 const validationSchema = yup.object({
@@ -35,11 +36,12 @@ const validationSchema = yup.object({
 });
 
 const PoolReservation = () => {
+  const [selectedOption, setSelectedOption] = useState(null);
   const formik = useFormik({
     initialValues: {
 
       chooseHotel: "",
-      roomNo: "",
+      roomNumber: "",
       name: "",
       price: "",
       members: "",
@@ -138,22 +140,33 @@ const PoolReservation = () => {
               ) : null}
             </div>
             {/* Room Number box */}
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                placeholder="Room Number"
-                name="roomNo"
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-                value={formik.values.roomNo}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.roomNo && Boolean(formik.errors.roomNo) ? (
-                <small className="text-red-600">
-                  {formik.touched.roomNo && formik.errors.roomNo}
-                </small>
-              ) : null}
-            </div>
+               {/* Room Number box */}
+
+               <div className="flex flex-col gap-3">
+            <Select
+              placeholder="Select room"
+              name={`roomNumber`}
+              defaultValue={selectedOption}
+              // options={transformedRooms}
+              isSearchable
+              closeMenuOnSelect={false}
+              onChange={setSelectedOption}
+              noOptionsMessage={() => "No room available"}
+              classNames={{
+                control: (state) =>
+                  `!input !input-md !h-8 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    state.isFocused ? "!shadow-none" : ""
+                  }`,
+                valueContainer: () => "!p-0",
+                placeholder: () => "!m-0",
+              }}
+            />
+            {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
+              <small className="text-red-600">
+                {formik.touched.roomNumber && formik.errors.roomNumber}
+              </small>
+            ) : null}
+          </div>
             {/* Name box */}
             <div className="flex flex-col gap-3">
               <input

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 // import BookingLists from "../../components/room/BookingLists.jsx";
@@ -9,17 +9,18 @@ import AddBookingSwimming from "../../components/LifeStyle/AddBookingSwimming.js
 import SwimmingLists from "../../components/LifeStyle/SwimmingLists.jsx";
 import GymLits from "../../components/Gym/GymLits.jsx";
 import AddBookingGym from "../../components/Gym/AddBookingGym.jsx";
+import Select from "react-select";
 
 // form validation
 const validationSchema = yup.object({
-  roomNo: yup
-    .number()
-    .required("Room number is required")
-    .positive("Room number must be a positive")
-    .integer("Room number must be an integer"),
+  // roomNo: yup
+  //   .number()
+  //   .required("Room number is required")
+  //   .positive("Room number must be a positive")
+  //   .integer("Room number must be an integer"),
   name: yup.string().required(" Name  is required"),
   // packagePrice: yup
-  itemName: yup.string().required("item Name  is required"),
+  // itemName: yup.string().required("item Name  is required"),
   members: yup.string().required("Members  is required"),
   //   .string()
   //   .when(["documentsType"], ([membershipSubscription], schema) => {
@@ -35,15 +36,28 @@ const validationSchema = yup.object({
 });
 
 const GymBooking = () => {
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  // useEffect(() => {
+  //   if (formik.values.roomNumber)
+  //     dispatchEvent(setOrder({ ...order, roomNumber: formik.values.roomNumber }));
+  // }, [formik.values.roomNumber]);
+
+  // const transformedRooms = rooms?.data?.docs?.map((room) => ({
+  //   value: room.roomNumber,
+  //   label: `${room.roomNumber} - ${room.category}`,
+  // }));
+  
+
   const formik = useFormik({
     initialValues: {
 
       chooseHotel: "",
-      roomNo: "",
+      roomNumber: "",
       name: "",
       normalprice: "",
       members: "",
-      itemName: "",
+      // itemName: "",
 
       // packagePrice: "",
     },
@@ -51,6 +65,7 @@ const GymBooking = () => {
     onSubmit: (values) => {
       console.log(values);
     },
+    
   });
 
   return (
@@ -139,7 +154,37 @@ const GymBooking = () => {
               ) : null}
             </div>
             {/* Room Number box */}
+
             <div className="flex flex-col gap-3">
+            <Select
+              placeholder="Select room"
+              name={`roomNumber`}
+              defaultValue={selectedOption}
+              // options={transformedRooms}
+              isSearchable
+              closeMenuOnSelect={false}
+              onChange={setSelectedOption}
+              noOptionsMessage={() => "No room available"}
+              classNames={{
+                control: (state) =>
+                  `!input !input-md !h-8 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    state.isFocused ? "!shadow-none" : ""
+                  }`,
+                valueContainer: () => "!p-0",
+                placeholder: () => "!m-0",
+              }}
+            />
+            {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
+              <small className="text-red-600">
+                {formik.touched.roomNumber && formik.errors.roomNumber}
+              </small>
+            ) : null}
+          </div>
+
+
+
+
+            {/* <div className="flex flex-col gap-3">
               <input
                 type="text"
                 placeholder="Room Number"
@@ -154,7 +199,10 @@ const GymBooking = () => {
                   {formik.touched.roomNo && formik.errors.roomNo}
                 </small>
               ) : null}
-            </div>
+            </div> */}
+
+
+
             {/* Name box */}
             <div className="flex flex-col gap-3">
               <input
@@ -173,7 +221,7 @@ const GymBooking = () => {
               ) : null}
             </div>
              {/* Item Name box */}
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             <input
               type="text"
               placeholder="Item name"
@@ -188,7 +236,7 @@ const GymBooking = () => {
                 {formik.touched.itemName && formik.errors.itemName}
               </small>
             ) : null}
-          </div>
+          </div> */}
 
             {/* <div className="flex flex-col gap-3">
               <select
