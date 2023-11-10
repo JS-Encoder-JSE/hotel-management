@@ -202,3 +202,32 @@ export const updateBarOrder = async (req, res) => {
     });
   }
 };
+
+export const deleteBarOrder = async (req, res) => {
+  try {
+    const barOrderId = req.params.order_id; // Assuming you use "order_id" as the parameter name
+
+    // Find the bar order by ID
+    const barOrder = await BarOrder.findByIdAndDelete(barOrderId);
+
+    if (!barOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Bar order not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {},
+      message: "Bar order deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
