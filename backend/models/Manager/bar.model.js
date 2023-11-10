@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import Room from "./room.model.js";
 const barOrderSchema = new mongoose.Schema(
   {
     name: {
@@ -13,6 +14,7 @@ const barOrderSchema = new mongoose.Schema(
     room_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
+      ref: "Room"
     },
     type_of_alcohol: {
       type: String,

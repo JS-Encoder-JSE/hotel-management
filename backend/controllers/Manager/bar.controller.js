@@ -93,8 +93,21 @@ export const getBarOrdersByHotelId = async (req, res) => {
     };
 
     // Use mongoose paginate to retrieve BarOrders
-    const barOrders = await BarOrder.paginate(query, options);
+    // const barOrders = await BarOrder.paginate(query, options);
+    const result = await BarOrder.find(query)
+      .limit(options.limit)
+      .skip((options.page - 1) * options.limit)
+      .populate("room_id", "roomNumber floorNumber");
 
+    const totalDocuments = await BarOrder.countDocuments(query);
+
+    const barOrders = {
+      docs: result,
+      totalDocs: totalDocuments,
+      page: options.page,
+      limit: options.limit,
+      totalPages: Math.ceil(totalDocuments / options.limit),
+    };
     res.status(200).json({
       success: true,
       data: barOrders,
