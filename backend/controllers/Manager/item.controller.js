@@ -48,11 +48,11 @@ export const deleteItem = async (req, res) => {
     const itemId = req.params.item_id; // Assuming you pass the item ID in the URL
     const deletedItem = await Item.findByIdAndRemove(itemId);
     if (!deletedItem) {
-      return res.status(404).json({ error: "Item not found" });
+      return res.status(404).json({ message: "Item not found" });
     }
     res.status(204).json({ message: "Item deleted" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete item" });
+    res.status(500).json({ message: "Failed to delete item" });
   }
 };
 
@@ -80,11 +80,46 @@ export const getItemsByHotelId = async (req, res) => {
     res.status(500).json({ error: "Failed to retrieve items" });
   }
 };
+export const getItemById = async (req, res) => {
+  try {
+    const itemId = req.params.item_id; // Assuming you're passing the item ID as a parameter
+
+    // Check if the provided item ID is valid
+    if (!mongoose.Types.ObjectId.isValid(itemId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid item ID',
+      });
+    }
+
+    // Find the item by ID
+    const item = await Item.findById(itemId);
+
+    // Check if the item exists
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        error: 'Item not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: item,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      error: 'Internal Server Error',
+    });
+  }
+};
 export const assignItemsToRoom = async (req, res) => {
   try {
     const { room_id, item_ids } = req.body;
 
-    // Check if the provided room exists
     const existingRoom = await Room.findById(room_id);
     if (!existingRoom) {
       return res.status(404).json({
@@ -93,10 +128,7 @@ export const assignItemsToRoom = async (req, res) => {
       });
     }
 
-    // Check if the provided items exist
-    const existingItems = await Item.find({
-      _id: { $in: item_ids.map((id) => mongoose.Types.ObjectId(id)) },
-    });
+    const existingItems = await Item.find({ _id: { $in: item_ids } });
     if (existingItems.length !== item_ids.length) {
       return res.status(400).json({
         success: false,
@@ -104,14 +136,17 @@ export const assignItemsToRoom = async (req, res) => {
       });
     }
 
-    // Update the room_ids field in the items
-    const itemIdsAsObjectIds = item_ids.map((id) =>
-      mongoose.Types.ObjectId(id)
+    const updateResult = await Item.updateMany(
+      { _id: { $in: item_ids } },
+      { $push: { room_ids: room_id } }
     );
-    await Item.updateMany(
-      { _id: { $in: itemIdsAsObjectIds } },
-      { $push: { room_ids: mongoose.Types.ObjectId(room_id) } }
-    );
+
+    if (updateResult.modifiedCount !== item_ids.length) {
+      return res.status(500).json({
+        success: false,
+        error: "Error updating items with room_id",
+      });
+    }
 
     res.status(200).json({
       success: true,
