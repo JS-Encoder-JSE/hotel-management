@@ -88,13 +88,13 @@ const ConfirmOrder = () => {
       </form>
 
       <div>
-        <h3 className={`text-2xl font-semibold mb-3`}>Confirm Order</h3>
+        <h3 className={`text-2xl font-semibold mb-3`}>Assign Items</h3>
         <hr />
         <div className={`flex justify-between mt-5`}>
           <div className="flex flex-col gap-3">
             <select
               name="chooseHotel"
-              className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              className="input input-md h-10 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
               value={formik.values.chooseHotel}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -123,12 +123,11 @@ const ConfirmOrder = () => {
                 defaultValue={selectedOption}
                 options={transformedRooms}
                 isSearchable
-                closeMenuOnSelect={false}
                 onChange={setSelectedOption}
                 noOptionsMessage={() => "No room available"}
                 classNames={{
                   control: (state) =>
-                      `!input !input-md !h-8 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                      `!input !input-md !h-4 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
                           state.isFocused ? "!shadow-none" : ""
                       }`,
                   valueContainer: () => "!p-0",

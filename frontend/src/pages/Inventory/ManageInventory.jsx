@@ -50,7 +50,7 @@ const ManageInventory = () => {
               !order.items.length ? "opacity-50 pointer-events-none" : ""
             }`}
           >
-            Confirm Order
+            Assign Items
           </button>
           <div className={`relative sm:min-w-[20rem]`}>
             <input
