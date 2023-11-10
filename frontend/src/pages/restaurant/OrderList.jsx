@@ -71,12 +71,12 @@ const OrderList = () => {
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-        <div className={`flex justify-between`}>
-          <h3 className={`text-xl font-semibold text-center`}>Order List</h3>
+      <h3 className={`text-2xl font-semibold text-center`}>Order List</h3>
+        <div className={`flex `}>
           <div className="flex flex-col gap-3">
             <select
               name="chooseHotel"
-              className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
               value={formik.values.chooseHotel}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -126,7 +126,7 @@ const OrderList = () => {
                             <td>
                               {new Date(order?.createdAt).toLocaleString()}
                             </td>
-                            <td>{order?.room_id}</td>
+                            <td>{order?.room_id?.roomNumber}</td>
                             <td>{order?.grand_total}</td>
                             <td>
                               <span

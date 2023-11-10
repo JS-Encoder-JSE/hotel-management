@@ -34,29 +34,11 @@ const ManageInventory = () => {
       <div
         className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
       >
-       <div className={`flex space-x-1.5`}>
-         <div className="flex flex-col gap-3">
-           <select
-               name="filter"
-               className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-               value={formik.values.filter}
-               onChange={formik.handleChange}
-               onBlur={formik.handleBlur}
-           >
-             <option value="all">All</option>
-             <option value="in_stock">Available</option>
-             <option value="out_of_stock">Unavailable</option>
-           </select>
-           {formik.touched.filter && Boolean(formik.errors.filter) ? (
-               <small className="text-red-600">
-                 {formik.touched.filter && formik.errors.filter}
-               </small>
-           ) : null}
-         </div>
-         <div className="flex flex-col gap-3">
+       <div className={`flex space-x-1.5 gap-2  `}>
+         <div className="flex flex-col gap-3 ">
            <select
                name="chooseHotel"
-               className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+               className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
                value={formik.values.chooseHotel}
                onChange={formik.handleChange}
                onBlur={formik.handleBlur}
@@ -71,6 +53,24 @@ const ManageInventory = () => {
              ))}
            </select>
          </div>
+         <div className="flex flex-col gap-2">
+           <select
+               name="filter"
+               className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+               value={formik.values.filter}
+               onChange={formik.handleChange}
+               onBlur={formik.handleBlur}
+           >
+             <option value="all">All</option>
+             <option value="Available">Available</option>
+             <option value="Unavailable">Unavailable</option>
+           </select>
+           {formik.touched.filter && Boolean(formik.errors.filter) ? (
+               <small className="text-red-600">
+                 {formik.touched.filter && formik.errors.filter}
+               </small>
+           ) : null}
+         </div>
        </div>
         <div className={`flex space-x-1.5`}>
           <button
@@ -82,7 +82,7 @@ const ManageInventory = () => {
           >
             Assign Items
           </button>
-          <div className={`relative sm:min-w-[20rem]`}>
+          <div className={`relative sm:min-w-[10rem]`}>
             <input
               type="text"
               placeholder="Search by name..."
@@ -107,7 +107,7 @@ const ManageInventory = () => {
           </div>
         </div>
       </div>
-      <InventoryLists keyword={keyword} chooseHotel={formik.values.chooseHotel} />
+      <InventoryLists filter={formik.values.filter} keyword={keyword} chooseHotel={formik.values.chooseHotel} />
       <Modal id={`fp_modal`}>
         <ConfirmOrder />
       </Modal>
