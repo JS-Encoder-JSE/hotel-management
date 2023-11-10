@@ -6,9 +6,11 @@ import { Rings } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import {
-    useGetUserQuery,
-    useUpdateUserMutation,
+  useGetUserQuery,
+  useUpdateUserMutation,
 } from "../../redux/admin/subadmin/subadminAPI.js";
+import { TbReplaceFilled } from "react-icons/tb";
+import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -21,12 +23,12 @@ const validationSchema = yup.object({
   phoneNumber: yup.string().required("Phone number is required"),
   numberOfHotel: yup.string().required("Hotel limit is required"),
   password: yup
-      .string()
-      .min(8, "Password should be of minimum 8 characters length")
-      .when([], {
-        is: password => password && password.length > 0,
-        then: yup.string().required("Password is required"),
-      }),
+    .string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .when([], {
+      is: (password) => password && password.length > 0,
+      then: yup.string().required("Password is required"),
+    }),
 });
 
 const OwnerProfile = () => {
@@ -35,7 +37,9 @@ const OwnerProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [showPass, setShowPass] = useState(false);
   const { isLoading, data: user } = useGetUserQuery(id);
-  const [updateUser, { isLoading: isFetching }] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
+  const [isFetching, setFetching] = useState(false);
+  const [uploadSingle] = useUploadSingleMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -44,12 +48,39 @@ const OwnerProfile = () => {
       phoneNumber: "",
       address: "",
       password: "",
-      numberOfHotel: ""
+      numberOfHotel: "",
+      userImg: null,
     },
     validationSchema,
     onSubmit: async (values) => {
+      setFetching(true);
+
       const obj = { ...values };
-      const { name, phoneNumber: phone_no, email, password, address, numberOfHotel:maxHotels } = obj;
+      const {
+        name,
+        phoneNumber: phone_no,
+        email,
+        password,
+        address,
+        numberOfHotel: maxHotels,
+        userImg,
+      } = obj;
+
+      if (userImg) {
+        const formData = new FormData();
+        const photoName = userImg.name.substring(
+          0,
+          userImg.name.lastIndexOf("."),
+        );
+
+        formData.append(photoName, userImg);
+
+        delete obj.userImg;
+        await uploadSingle(formData).then(
+          (result) => (obj.profile_img = result.data.imageUrl),
+        );
+      }
+
       let response;
 
       if (password) {
@@ -61,7 +92,8 @@ const OwnerProfile = () => {
             email,
             password,
             address,
-            maxHotels
+            maxHotels,
+            ...(userImg ? { images: { profile_img: obj.profile_img } } : {}),
           },
         });
       } else {
@@ -72,7 +104,8 @@ const OwnerProfile = () => {
             phone_no,
             email,
             address,
-            maxHotels
+            maxHotels,
+            ...(userImg ? { images: { profile_img: obj.profile_img } } : {}),
           },
         });
       }
@@ -82,8 +115,20 @@ const OwnerProfile = () => {
       } else {
         toast.success(response.data.message);
       }
+
+      setFetching(false);
     },
   });
+
+  useEffect(() => {
+    if (formik.values.userImg) {
+      const reader = new FileReader();
+      reader.onload = () => setImagePreview(reader.result);
+      reader.readAsDataURL(formik.values.userImg);
+    } else {
+      setImagePreview(null);
+    }
+  }, [formik.values.userImg]);
 
   useEffect(() => {
     if (user) {
@@ -105,13 +150,28 @@ const OwnerProfile = () => {
       <div>
         <div>
           <span
-              className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
-              onClick={() => navigate(-1)}
+            className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+            onClick={() => navigate(-1)}
           >
             <FaArrowLeft />
           </span>
         </div>
-        <div className="absolute -top-16 break-words inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
+        <div className="relative -top-28 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
+          <div className={`absolute bottom-0 right-0`}>
+            <label className="relative btn btn-md p-2 h-auto bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-gray-500/50 focus:border-green-slimy normal-case rounded-full">
+              <TbReplaceFilled />
+              <input
+                type="file"
+                name="userImg"
+                className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+                accept="image/*"
+                onChange={(e) =>
+                  formik.setFieldValue("userImg", e.currentTarget.files[0])
+                }
+                onBlur={formik.handleBlur}
+              />
+            </label>
+          </div>
           {imagePreview ? (
             <img
               src={imagePreview}
@@ -120,7 +180,7 @@ const OwnerProfile = () => {
             />
           ) : (
             <img
-              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+              src={user?.images?.profile_img}
               alt=""
               className="object-cover h-full w-full rounded-full"
             />
@@ -129,8 +189,9 @@ const OwnerProfile = () => {
       </div>
 
       {!isLoading ? (
-        <form autoComplete="off"
-          className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto mt-14"
+        <form
+          autoComplete="off"
+          className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto"
           onSubmit={formik.handleSubmit}
         >
           {/* name box */}
@@ -217,19 +278,19 @@ const OwnerProfile = () => {
             <label className={`w-24 break-words`}>Phone: </label>
             <div className="flex flex-col w-full space-y-2">
               <input
-                  type="number"
-                  placeholder="Hotel Limit"
-                  name="numberOfHotel"
-                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.numberOfHotel}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
+                type="number"
+                placeholder="Hotel Limit"
+                name="numberOfHotel"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.numberOfHotel}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
               {formik.touched.numberOfHotel &&
               Boolean(formik.errors.numberOfHotel) ? (
-                  <small className="text-red-600">
-                    {formik.touched.numberOfHotel && formik.errors.numberOfHotel}
-                  </small>
+                <small className="text-red-600">
+                  {formik.touched.numberOfHotel && formik.errors.numberOfHotel}
+                </small>
               ) : null}
             </div>
           </div>

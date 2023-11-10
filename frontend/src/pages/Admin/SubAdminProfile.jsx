@@ -6,9 +6,11 @@ import { Rings } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import {
-    useGetUserQuery,
-    useUpdateUserMutation,
+  useGetUserQuery,
+  useUpdateUserMutation,
 } from "../../redux/admin/subadmin/subadminAPI.js";
+import { useUploadSingleMutation } from "../../redux/baseAPI.js";
+import { TbReplaceFilled } from "react-icons/tb";
 
 // form validation
 const validationSchema = yup.object({
@@ -25,12 +27,12 @@ const validationSchema = yup.object({
     .positive("Salary must be a positive number")
     .integer("Salary must be an integer"),
   password: yup
-      .string()
-      .min(8, "Password should be of minimum 8 characters length")
-      .when([], {
-        is: password => password && password.length > 0,
-        then: yup.string().required("Password is required"),
-      }),
+    .string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .when([], {
+      is: (password) => password && password.length > 0,
+      then: yup.string().required("Password is required"),
+    }),
 });
 
 const SubAdminProfile = () => {
@@ -39,7 +41,9 @@ const SubAdminProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [showPass, setShowPass] = useState(false);
   const { isLoading, data: user } = useGetUserQuery(id);
-  const [updateUser, { isLoading: isFetching }] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
+  const [isFetching, setFetching] = useState(false);
+  const [uploadSingle] = useUploadSingleMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -49,10 +53,13 @@ const SubAdminProfile = () => {
       address: "",
       password: "",
       salary: "",
-      emergency_contact:''
+      emergency_contact: "",
+      userImg: null,
     },
     validationSchema,
     onSubmit: async (values) => {
+      setFetching(true);
+
       const obj = { ...values };
       const {
         name,
@@ -61,8 +68,25 @@ const SubAdminProfile = () => {
         password,
         address,
         salary,
-        emergency_contact
+        emergency_contact,
+        userImg,
       } = obj;
+
+      if (userImg) {
+        const formData = new FormData();
+        const photoName = userImg.name.substring(
+          0,
+          userImg.name.lastIndexOf("."),
+        );
+
+        formData.append(photoName, userImg);
+
+        delete obj.userImg;
+        await uploadSingle(formData).then(
+          (result) => (obj.profile_img = result.data.imageUrl),
+        );
+      }
+
       let response;
 
       if (password) {
@@ -75,7 +99,8 @@ const SubAdminProfile = () => {
             password,
             address,
             salary,
-            emergency_contact
+            emergency_contact,
+            ...(userImg ? { images: { profile_img: obj.profile_img } } : {}),
           },
         });
       } else {
@@ -87,7 +112,8 @@ const SubAdminProfile = () => {
             email,
             address,
             salary,
-            emergency_contact
+            emergency_contact,
+            ...(userImg ? { images: { profile_img: obj.profile_img } } : {}),
           },
         });
       }
@@ -97,8 +123,20 @@ const SubAdminProfile = () => {
       } else {
         toast.success(response.data.message);
       }
+
+      setFetching(false);
     },
   });
+
+  useEffect(() => {
+    if (formik.values.userImg) {
+      const reader = new FileReader();
+      reader.onload = () => setImagePreview(reader.result);
+      reader.readAsDataURL(formik.values.userImg);
+    } else {
+      setImagePreview(null);
+    }
+  }, [formik.values.userImg]);
 
   useEffect(() => {
     if (user) {
@@ -108,7 +146,7 @@ const SubAdminProfile = () => {
         phoneNumber: user?.phone_no,
         address: user?.address,
         salary: user?.salary,
-        emergency_contact:user?.emergency_contact
+        emergency_contact: user?.emergency_contact,
       });
     }
   }, [user]);
@@ -120,13 +158,28 @@ const SubAdminProfile = () => {
       <div>
         <div>
           <span
-              className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
-              onClick={() => navigate(-1)}
+            className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
+            onClick={() => navigate(-1)}
           >
             <FaArrowLeft />
           </span>
         </div>
-        <div className="absolute -top-16 break-words inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
+        <div className="relative -top-28 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
+          <div className={`absolute bottom-0 right-0`}>
+            <label className="relative btn btn-md p-2 h-auto bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-gray-500/50 focus:border-green-slimy normal-case rounded-full">
+              <TbReplaceFilled />
+              <input
+                type="file"
+                name="userImg"
+                className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
+                accept="image/*"
+                onChange={(e) =>
+                  formik.setFieldValue("userImg", e.currentTarget.files[0])
+                }
+                onBlur={formik.handleBlur}
+              />
+            </label>
+          </div>
           {imagePreview ? (
             <img
               src={imagePreview}
@@ -135,7 +188,7 @@ const SubAdminProfile = () => {
             />
           ) : (
             <img
-              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+              src={user?.images?.profile_img}
               alt=""
               className="object-cover h-full w-full rounded-full"
             />
@@ -143,8 +196,9 @@ const SubAdminProfile = () => {
         </div>
       </div>
       {!isLoading ? (
-        <form autoComplete="off"
-          className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto mt-14"
+        <form
+          autoComplete="off"
+          className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto"
           onSubmit={formik.handleSubmit}
         >
           {/* name box */}
@@ -205,7 +259,7 @@ const SubAdminProfile = () => {
               ) : null}
             </div>
           </div>
-{/* emergency contact  */}
+          {/* emergency contact  */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
             <label className={`w-24 break-words`}>Emergency Contact: </label>
             <div className="flex flex-col w-full space-y-2">
@@ -220,12 +274,12 @@ const SubAdminProfile = () => {
               {formik.touched.emergency_contact &&
               Boolean(formik.errors.emergency_contact) ? (
                 <small className="text-red-600">
-                  {formik.touched.emergency_contact && formik.errors.emergency_contact}
+                  {formik.touched.emergency_contact &&
+                    formik.errors.emergency_contact}
                 </small>
               ) : null}
             </div>
           </div>
-
 
           {/* Address box */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
