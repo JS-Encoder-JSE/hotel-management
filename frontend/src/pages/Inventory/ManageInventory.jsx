@@ -44,8 +44,8 @@ const ManageInventory = () => {
                onBlur={formik.handleBlur}
            >
              <option value="all">All</option>
-             <option value="in_stock">Available</option>
-             <option value="out_of_stock">Unavailable</option>
+             <option value="Available">Available</option>
+             <option value="Unavailable">Unavailable</option>
            </select>
            {formik.touched.filter && Boolean(formik.errors.filter) ? (
                <small className="text-red-600">
@@ -107,7 +107,7 @@ const ManageInventory = () => {
           </div>
         </div>
       </div>
-      <InventoryLists keyword={keyword} chooseHotel={formik.values.chooseHotel} />
+      <InventoryLists filter={formik.values.filter} keyword={keyword} chooseHotel={formik.values.chooseHotel} />
       <Modal id={`fp_modal`}>
         <ConfirmOrder />
       </Modal>
