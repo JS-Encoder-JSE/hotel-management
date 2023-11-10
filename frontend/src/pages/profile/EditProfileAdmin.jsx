@@ -115,21 +115,21 @@ const EditProfileAdmin = () => {
       className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
     >
       <div>
-        <div className="absolute -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
-          {imagePreview ? (
-            <img
-              src={imagePreview}
-              alt=""
-              className="object-cover object-top h-full w-full rounded-full"
-            />
-          ) : (
-            <img
-              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
-              alt=""
-              className="object-cover h-full w-full rounded-full"
-            />
-          )}
-        </div>
+        {/*<div className="absolute -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">*/}
+        {/*  {imagePreview ? (*/}
+        {/*    <img*/}
+        {/*      src={imagePreview}*/}
+        {/*      alt=""*/}
+        {/*      className="object-cover object-top h-full w-full rounded-full"*/}
+        {/*    />*/}
+        {/*  ) : (*/}
+        {/*    <img*/}
+        {/*      src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"*/}
+        {/*      alt=""*/}
+        {/*      className="object-cover h-full w-full rounded-full"*/}
+        {/*    />*/}
+        {/*  )}*/}
+        {/*</div>*/}
         <div>
           <button
             type="button"

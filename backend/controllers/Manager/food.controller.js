@@ -164,8 +164,8 @@ export const getOrdersByHotelId = async (req, res) => {
     };
 
     if (search) {
-      // Include the search condition for roomNumber based on your model structure
-      query.room_id = { $regex: search, $options: "i" };
+      // Update the search condition based on the actual type of room_id
+      query.room_id = search; // Assuming search is the room_id you're looking for
     }
 
     const options = {
@@ -173,7 +173,21 @@ export const getOrdersByHotelId = async (req, res) => {
       limit: parseInt(limit, 10),
     };
 
-    const orders = await FoodOrder.paginate(query, options);
+    // Execute the query without paginate and then use populate
+    const result = await FoodOrder.find(query)
+      .limit(options.limit)
+      .skip((options.page - 1) * options.limit)
+      .populate("room_id", "roomNumber floorNumber");
+
+    const totalDocuments = await FoodOrder.countDocuments(query);
+
+    const orders = {
+      docs: result,
+      totalDocs: totalDocuments,
+      page: options.page,
+      limit: options.limit,
+      totalPages: Math.ceil(totalDocuments / options.limit),
+    };
 
     res.status(200).json({
       success: true,
@@ -190,6 +204,7 @@ export const getOrdersByHotelId = async (req, res) => {
     });
   }
 };
+
 export const deleteOrder = async (req, res) => {
   try {
     const { order_id } = req.params;

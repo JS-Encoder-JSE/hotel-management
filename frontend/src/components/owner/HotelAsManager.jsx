@@ -29,15 +29,17 @@ const HotelAsManager = ({
                     <select
                       name={`manager`}
                       className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                      value={elem.manager}
                       onChange={(e) => handleChange(e, idx)}
                     >
                       <option value="" selected disabled>
                         Manager
                       </option>
-                      {managers?.map((elem) => (
-                        <option value={JSON.stringify(elem)}>
-                          {elem?.name}
+                      {managers?.map((manager) => (
+                        <option
+                          value={JSON.stringify(manager)}
+                          selected={elem?.manager?._id === manager?._id}
+                        >
+                          {manager?.name}
                         </option>
                       ))}
                     </select>

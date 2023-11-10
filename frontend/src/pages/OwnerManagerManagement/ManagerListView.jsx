@@ -11,13 +11,15 @@ import { FaCamera } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import { Rings } from "react-loader-spinner";
+import { useGetHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 
 const ManagerListView = () => {
   const { id } = useParams();
 
   const { data: userData, error, isLoading } = useGetUserQuery(id);
+  const { data: hotels } = useGetHotelsQuery({ id, cp: 0 });
   const navigate = useNavigate();
-  console.log(userData);
+  console.log(hotels);
   return (
     <>
       <div>
@@ -127,7 +129,7 @@ const ManagerListView = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {userData?.assignedHotel?.map((elem, idx) => {
+                      {hotels?.map((elem, idx) => {
                         return (
                           <tr
                             className={

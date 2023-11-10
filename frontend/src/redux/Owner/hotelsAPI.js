@@ -33,15 +33,22 @@ const hotelsAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["room"],
     }),
+    getHotels: build.query({
+      query: ({ id, cp, filter, search }) =>
+        `hotels/get-hotel-by-manager/${id}?page=${++cp}${
+          filter ? `&filter=${filter}` : ""
+        }${search ? `&search=${search}` : ""}`,
+      providesTags: ["room"],
+    }),
     updateHotel: build.mutation({
-      query: ({id, data }) => {
+      query: ({ id, data }) => {
         return {
           url: `hotels/update-hotel/${id}`,
           method: "PATCH",
           body: data,
         };
       },
-      invalidatesTags: ["hotels"]
+      invalidatesTags: ["hotels"],
     }),
   }),
 });
@@ -49,6 +56,7 @@ const hotelsAPI = baseAPI.injectEndpoints({
 export const {
   useHotelQuery,
   useHotelsQuery,
+  useGetHotelsQuery,
   useAddHotelMutation,
   useDeleteRoomMutation,
   useUpdateHotelMutation,

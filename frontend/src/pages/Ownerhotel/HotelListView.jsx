@@ -39,11 +39,15 @@ const HotelListView = () => {
         data: {
           managers: [
             ...managerList
-                .map((elem) => ({
-                  ...(elem.manager ? JSON.parse(elem.manager) : {}),
-                  shift: elem.shift,
-                }))
-                .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+              .map((elem) => ({
+                ...(elem.manager
+                  ? typeof elem.manager === "string"
+                    ? JSON.parse(elem.manager)
+                    : elem.manager
+                  : {}),
+                shift: elem.shift,
+              }))
+              .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
           ],
         },
       });
@@ -74,30 +78,13 @@ const HotelListView = () => {
   };
 
   useEffect(() => {
-    if (save) {
-      const tempList = [
-        ...managerList
-          .map((elem) => ({
-            ...(elem.manager ? JSON.parse(elem.manager) : {}),
-            shift: elem.shift,
-          }))
-          .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
-      ];
-
-      setShowManagers(tempList);
-      setSave(false);
-    }
-  }, [save]);
-
-  useEffect(() => {
     if (hotel) {
       const tempArr = hotel.managers.map((elem) => ({
-        manager: JSON.stringify(elem),
+        manager: elem,
         shift: elem.shift,
       }));
 
       setManagerList(tempArr);
-      setSave(true);
     }
   }, [hotel]);
 
@@ -179,7 +166,7 @@ const HotelListView = () => {
               </h6>
               <Modal id={`ol_modal`}>
                 <ChangeShift
-                    formik={formik}
+                  formik={formik}
                   setSave={setSave}
                   managers={managers?.docs}
                   managerList={managerList}

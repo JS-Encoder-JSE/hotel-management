@@ -7,6 +7,7 @@ import Modal from "../../components/Modal.jsx";
 // import AddBooking from "../../components/room/AddBooking.jsx";
 import AddBookingSwimming from "../../components/LifeStyle/AddBookingSwimming.jsx";
 // import SwimmingLists from "../../components/LifeStyle/SwimmingLists.jsx";
+import Select from "react-select";
 
 // form validation
 const validationSchema = yup.object({
@@ -29,10 +30,11 @@ const validationSchema = yup.object({
 });
 
 const OrderBarItem = () => {
+  const [selectedOption, setSelectedOption] = useState(null);
   const formik = useFormik({
     initialValues: {
       chooseHotel: "",
-      roomNo: "",
+      roomNumber: "",
       itemName: "",
       typeOfAlcohol: "",
       surveyorQuantity: "",
@@ -109,23 +111,34 @@ const OrderBarItem = () => {
             ) : null}
           </div>
 
-          {/* Room Number box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Room Number"
-              name="roomNo"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.roomNo}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+            {/* Room Number box */}
+
+            <div className="flex flex-col gap-3">
+            <Select
+              placeholder="Select room"
+              name={`roomNumber`}
+              defaultValue={selectedOption}
+              // options={transformedRooms}
+              isSearchable
+              closeMenuOnSelect={false}
+              onChange={setSelectedOption}
+              noOptionsMessage={() => "No room available"}
+              classNames={{
+                control: (state) =>
+                  `!input !input-md !h-8 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    state.isFocused ? "!shadow-none" : ""
+                  }`,
+                valueContainer: () => "!p-0",
+                placeholder: () => "!m-0",
+              }}
             />
-            {formik.touched.roomNo && Boolean(formik.errors.roomNo) ? (
+            {formik.touched.roomNumber && Boolean(formik.errors.roomNumber) ? (
               <small className="text-red-600">
-                {formik.touched.roomNo && formik.errors.roomNo}
+                {formik.touched.roomNumber && formik.errors.roomNumber}
               </small>
             ) : null}
           </div>
+
           {/* Item Name box */}
           <div className="flex flex-col gap-3">
             <input

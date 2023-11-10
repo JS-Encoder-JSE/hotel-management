@@ -1,4 +1,5 @@
 ﻿import Booking from "../../models/Manager/booking.model.js";
+import { FoodOrder } from "../../models/Manager/food.model.js";
 import Room from "../../models/Manager/room.model.js";
 
 export const addBooking = async (req, res) => {
@@ -65,10 +66,11 @@ export const addBooking = async (req, res) => {
 
     const savedBooking = await newBooking.save();
 
-    // Update the status of booked rooms to "Booked"
+    // Update the status of booked rooms based on booking status
+    const roomStatus = status === "CheckedIn" ? "CheckedIn" : "Booked";
     await Room.updateMany(
       { _id: { $in: room_ids } },
-      { $set: { status: "Booked" } }
+      { $set: { status: roomStatus } }
     );
 
     res.status(201).json({
@@ -171,25 +173,32 @@ export const updateBooking = async (req, res) => {
       });
     }
 
-    // Check if the update includes changing the status to "CheckedIn"
-    if (updateData.status === "CheckedIn") {
+    // Check if the update includes changing the status to "CheckedIn" or "CheckedOut"
+    if (
+      updateData.status === "CheckedIn" ||
+      updateData.status === "CheckedOut"
+    ) {
       const roomIds = updatedBooking.room_ids;
 
-      // Update room status to "CheckedIn"
+      // Update room status based on the updated status
+      const roomStatus =
+        updateData.status === "CheckedIn" ? "CheckedIn" : "Available";
       await Room.updateMany(
         { _id: { $in: roomIds } },
-        { $set: { status: "CheckedIn" } }
+        { $set: { status: roomStatus } }
       );
-    }
-    if (updateData.status === "CheckedOut") {
-      const roomIds = updatedBooking.room_ids;
 
-      // Update room status to "CheckedIn"
-      await Room.updateMany(
-        { _id: { $in: roomIds } },
-        { $set: { status: "Available" } }
-      );
+      // Delete orders if the status is "CheckedOut"
+      if (updateData.status === "CheckedOut") {
+        await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
+        // Update room status to "CheckedIn"
+        await Room.updateMany(
+          { _id: { $in: roomIds } },
+          { $set: { status: "Available" } }
+        );
+      }
     }
+
     res.status(200).json({
       success: true,
       data: updatedBooking,

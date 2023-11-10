@@ -6,28 +6,23 @@ const itemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    assignedHotel: {
+    hotel_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Hotel",
+      required: false,
     },
+    room_ids: [{
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+    }],
     description: {
       type: String,
       required: false,
     },
-    quantity: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    stock: {
-      type: Number,
+    status: {
+      type: String,
       required: false,
-      default: 0,
-    },
-    use: {
-      type: Number,
-      required: false,
-      default: 0,
+      enum: ["Available", "Unavailable"],
+      default: "Available",
     },
   },
   { timeStamp: true }
