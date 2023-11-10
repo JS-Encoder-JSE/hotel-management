@@ -20,7 +20,7 @@ const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   username: yup.string().required("Username is required"),
   phoneNumber: yup.string().required("Phone is required"),
-  emergency_contact:yup.string().required("Emergency contact is required"),
+  emergency_contact: yup.string().required("Emergency contact is required"),
   email: yup
     .string()
     .email("Enter a valid email")
@@ -29,7 +29,13 @@ const validationSchema = yup.object({
     .string()
     .min(8, "Password should be of minimum 8 characters length")
     .required("Password is required"),
-  address: yup.string().required("Address is required"),
+  address: yup
+    .string()
+    .required("Address is required")
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+      "Address must start with a character and can include characters and numbers",
+    ),
   salary: yup
     .number()
     .required("Salary is required")
@@ -55,7 +61,7 @@ const AddSubAdmin = () => {
       username: "",
       phoneNumber: "",
       email: "",
-      emergency_contact:'',
+      emergency_contact: "",
       password: "",
       address: "",
       salary: "",
@@ -65,7 +71,6 @@ const AddSubAdmin = () => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-  
       setLoading(true);
 
       const formData = new FormData();
@@ -183,8 +188,8 @@ const AddSubAdmin = () => {
         </div>
 
         <div className="max-auto pb-5">
-          <form autoComplete="off"
-           
+          <form
+            autoComplete="off"
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
             onSubmit={formik.handleSubmit}
           >
@@ -302,8 +307,8 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
-                 {/*Emergency Contact*/}
-                 <div className="flex flex-col gap-3">
+            {/*Emergency Contact*/}
+            <div className="flex flex-col gap-3">
               <input
                 type="text"
                 placeholder="Emergency Contact"
@@ -313,9 +318,11 @@ const AddSubAdmin = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.emergency_contact && Boolean(formik.errors.emergency_contact) ? (
+              {formik.touched.emergency_contact &&
+              Boolean(formik.errors.emergency_contact) ? (
                 <small className="text-red-600">
-                  {formik.touched.emergency_contact && formik.errors.emergency_contact}
+                  {formik.touched.emergency_contact &&
+                    formik.errors.emergency_contact}
                 </small>
               ) : null}
             </div>
@@ -337,12 +344,8 @@ const AddSubAdmin = () => {
               ) : null}
             </div>
 
-         
-
             {/* Sub Admin Password box */}
-            <div
-              className={`flex flex-col gap-3 `}
-            >
+            <div className={`flex flex-col gap-3 `}>
               <div className={`relative`}>
                 <input
                   type={showPass ? "text" : "password"}
@@ -375,9 +378,6 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
-         
-
-        
 
             {/* Sub Admin Address box */}
             <div className="col-span-full flex flex-col gap-3">
@@ -431,8 +431,8 @@ const AddSubAdmin = () => {
                 </small>
               ) : null}
             </div>
-               {/* documents type box */}
-               <div className={`flex flex-col gap-3`}>
+            {/* documents type box */}
+            <div className={`flex flex-col gap-3`}>
               <select
                 name="documentsType"
                 className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
@@ -455,8 +455,8 @@ const AddSubAdmin = () => {
               ) : null}
             </div>
 
-                {/* documents box */}
-                {formik.values.documentsType ? (
+            {/* documents box */}
+            {formik.values.documentsType ? (
               <div className={`flex space-x-1.5`}>
                 <div className="flex flex-col gap-3 w-full">
                   <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
@@ -489,7 +489,6 @@ const AddSubAdmin = () => {
               </div>
             ) : null}
 
-          
             {/* submit button */}
             <div className="col-span-full text-end">
               <button

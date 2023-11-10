@@ -12,11 +12,20 @@ import {
   useEmployeeQuery,
 } from "../../redux/employee/employeeAPI.js";
 import Swal from "sweetalert2";
+import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import store from "../../redux/store.js";
+import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
 
 const ManageEmployee = () => {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState(null);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
+  const [employeesPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [deleteEmployee] = useDeleteEmployeeMutation();
+  const parentId = store.getState().authSlice.user._id;
+  const [updateLicenseStatus] = useUpdateLicenseStatusMutation();
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -27,22 +36,19 @@ const ManageEmployee = () => {
       setKeyword(values.search);
     },
   });
-
-  const [employeesPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(1);
-  const [currentPage, setCurrentPage] = useState(0);
-  const { isLoading, data: employees } = useEmployeeQuery({
+  const { isLoading, data: employees } = useGetUsersQuery({
     cp: currentPage,
     filter: formik.values.filter,
     search: keyword,
+    role: "employee",
+    parentId,
   });
-  const [deleteEmployee] = useDeleteEmployeeMutation();
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (owner) => {
     Swal.fire({
       title: "Are you sure?",
       text: "Employee will be delete.",
@@ -60,7 +66,8 @@ const ManageEmployee = () => {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          deleteEmployee(id);
+          const { user_id, status } = owner;
+          updateLicenseStatus({ user_id, status });
         });
       }
     });
@@ -123,24 +130,26 @@ const ManageEmployee = () => {
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Emergency Contact</th>
                     <th>Shift</th>
                     <th>Salary</th>
                     <th>Address</th>
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {employees?.docs?.map((employee, idx) => {
+                    console.log(employee);
                     const {
                       _id,
                       name,
                       designation,
                       shift,
-                      sallary,
-                      street_address,
-                      city,
-                      state,
-                      zip,
+                      salary,
+                      address,
+                      emergency_contact,
+                      status,
                     } = employee;
 
                     return (
@@ -167,14 +176,28 @@ const ManageEmployee = () => {
                             </div>
                           </div>
                         </td>
+                        <td>{emergency_contact}</td>
                         <td>{shift}</td>
-                        <td>{sallary}</td>
-                        <td className={`capitalize`}>
-                          <span>{street_address}, </span>
-                          <span>{city}, </span>
-                          <span>
-                            {state} - {zip}
-                          </span>
+                        <td>{salary}</td>
+                        <td>{address}</td>
+                        <td>
+                          {status === "Active" ? (
+                            <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                              Active
+                            </div>
+                          ) : status === "Deactive" || status === "Deleted" ? (
+                            <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                              {status}
+                            </div>
+                          ) : status === "Suspended" ? (
+                            <div className="badge min-w-[7rem] bg-red-500 border-red-500 text-white">
+                              Suspended
+                            </div>
+                          ) : (
+                            <div className="badge min-w-[7rem] bg-orange-600 border-orange-600 text-white">
+                              Expired
+                            </div>
+                          )}
                         </td>
                         <td className={`space-x-1.5`}>
                           <span
@@ -187,7 +210,12 @@ const ManageEmployee = () => {
                           </span>
                           <span
                             className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                            onClick={() => handleDelete(_id)}
+                            onClick={() =>
+                              handleDelete({
+                                user_id: _id,
+                                status: "Deleted",
+                              })
+                            }
                           >
                             <FaTrash />
                           </span>
