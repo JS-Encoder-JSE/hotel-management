@@ -6,16 +6,17 @@ import FoodList from "./FoodList.jsx";
 import ReactPaginate from "react-paginate";
 import { useFoodsQuery } from "../../redux/restaurant/foodAPI.js";
 
-const FoodLists = () => {
+const FoodLists = ({ keyword,chooseHotel }) => {
   const { order } = useSelector((store) => store.addOrderSlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const [foodsPerPage] = useState(10);
   const { isLoading, data: foods } = useFoodsQuery({
-    id: user?.assignedHotel[0],
+    id: chooseHotel,
     cp: currentPage,
     pp: foodsPerPage,
+    search: keyword,
   });
   const [pageCount, setPageCount] = useState(1);
 
@@ -38,54 +39,62 @@ const FoodLists = () => {
     if (foods) setPageCount(foods.data.totalPages);
   }, [foods]);
 
-  return (
-    <div>
-      <div className="overflow-x-auto border">
-        <table className="table">
-          <thead>
-            <tr className={`text-lg`}>
-              <th>Name</th>
-              <th>Status</th>
-              <th>
-                Surveyor <br /> Quantity
-              </th>
-              <th>Price</th>
-              <th className={`text-center`}>Add / Remove <br/> Food</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {foods?.data?.docs?.map((food, idx) => (
-              <FoodList
-                key={food._id}
-                idx={idx}
-                food={food}
-                handleOrder={handleOrder}
-              />
-            ))}
-          </tbody>
-        </table>
+  return chooseHotel ? (
+    foods?.data?.docs?.length ? (
+      <div>
+        <div className="overflow-x-auto border">
+          <table className="table">
+            <thead>
+              <tr className={`text-lg`}>
+                <th>Name</th>
+                <th>Status</th>
+                <th>
+                  Surveyor <br /> Quantity
+                </th>
+                <th>Price</th>
+                <th className={`text-center`}>
+                  Add / Remove <br /> Food
+                </th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {foods?.data?.docs?.map((food, idx) => (
+                <FoodList
+                  key={food._id}
+                  idx={idx}
+                  food={food}
+                  handleOrder={handleOrder}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex justify-center mt-10">
+          <ReactPaginate
+            containerClassName="join rounded-none"
+            pageLinkClassName="join-item btn btn-md bg-transparent"
+            activeLinkClassName="btn-active !bg-green-slimy text-white"
+            disabledLinkClassName="btn-disabled"
+            previousLinkClassName="join-item btn btn-md bg-transparent"
+            nextLinkClassName="join-item btn btn-md bg-transparent"
+            breakLinkClassName="join-item btn btn-md bg-transparent"
+            previousLabel="<"
+            nextLabel=">"
+            breakLabel="..."
+            pageCount={pageCount}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageClick}
+            renderOnZeroPageCount={null}
+          />
+        </div>
       </div>
-      <div className="flex justify-center mt-10">
-        <ReactPaginate
-          containerClassName="join rounded-none"
-          pageLinkClassName="join-item btn btn-md bg-transparent"
-          activeLinkClassName="btn-active !bg-green-slimy text-white"
-          disabledLinkClassName="btn-disabled"
-          previousLinkClassName="join-item btn btn-md bg-transparent"
-          nextLinkClassName="join-item btn btn-md bg-transparent"
-          breakLinkClassName="join-item btn btn-md bg-transparent"
-          previousLabel="<"
-          nextLabel=">"
-          breakLabel="..."
-          pageCount={pageCount}
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={2}
-          onPageChange={handlePageClick}
-          renderOnZeroPageCount={null}
-        />
-      </div>
-    </div>
+    ) : (
+      <h3 className={`text-center`}>No data found!</h3>
+    )
+  ) : (
+    <h3 className={`text-center`}>Please choose a hotel</h3>
   );
 };
 

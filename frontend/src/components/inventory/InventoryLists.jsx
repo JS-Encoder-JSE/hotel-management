@@ -5,6 +5,7 @@ import { setOrder } from "../../redux/inventory/inventorySlice.js";
 import ReactPaginate from "react-paginate";
 import { useFoodsQuery } from "../../redux/restaurant/foodAPI.js";
 import InventoryList from "./InventoryList.jsx";
+import { useInventoryQuery } from "../../redux/inventory/inventoryAPI.js";
 
 const lists = {
   docs: [
@@ -31,17 +32,19 @@ const lists = {
   ],
 };
 
-const InventoryLists = () => {
+const InventoryLists = ({filter, keyword,chooseHotel }) => {
   const { order } = useSelector((store) => store.inventorySlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const [foodsPerPage] = useState(10);
-  // const { isLoading, data: foods } = useFoodsQuery({
-  //   id: user?.assignedHotel[0],
-  //   cp: currentPage,
-  //   pp: foodsPerPage,
-  // });
+  const { isLoading, data: lists } = useInventoryQuery({
+    id: chooseHotel,
+    cp: currentPage,
+    pp: foodsPerPage,
+    search: keyword,
+    filter
+  });
   const [pageCount, setPageCount] = useState(1);
 
   const handlePageClick = ({ selected: page }) => {
@@ -62,52 +65,58 @@ const InventoryLists = () => {
   //   if (foods) setPageCount(foods.data.totalPages);
   // }, [foods]);
 
-  return (
-    <div>
-      <div className="overflow-x-auto border">
-        <table className="table">
-          <thead>
-            <tr className={`text-lg`}>
-              <th>Name</th>
-              <th>Status</th>
-              <th className={`text-center`}>
-                Add / Remove <br /> Item
-              </th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lists?.docs?.map((list, idx) => (
-              <InventoryList
-                key={list._id}
-                idx={idx}
-                list={list}
-                handleOrder={handleOrder}
-              />
-            ))}
-          </tbody>
-        </table>
+  return chooseHotel ? (
+    lists?.docs?.length ? (
+      <div>
+        <div className="overflow-x-auto border">
+          <table className="table">
+            <thead>
+              <tr className={`text-lg`}>
+                <th>Name</th>
+                <th>Status</th>
+                <th className={`text-center`}>
+                  Add / Remove <br /> Item
+                </th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lists?.docs?.map((list, idx) => (
+                <InventoryList
+                  key={list._id}
+                  idx={idx}
+                  list={list}
+                  handleOrder={handleOrder}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex justify-center mt-10">
+          <ReactPaginate
+            containerClassName="join rounded-none"
+            pageLinkClassName="join-item btn btn-md bg-transparent"
+            activeLinkClassName="btn-active !bg-green-slimy text-white"
+            disabledLinkClassName="btn-disabled"
+            previousLinkClassName="join-item btn btn-md bg-transparent"
+            nextLinkClassName="join-item btn btn-md bg-transparent"
+            breakLinkClassName="join-item btn btn-md bg-transparent"
+            previousLabel="<"
+            nextLabel=">"
+            breakLabel="..."
+            pageCount={pageCount}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageClick}
+            renderOnZeroPageCount={null}
+          />
+        </div>
       </div>
-      <div className="flex justify-center mt-10">
-        <ReactPaginate
-          containerClassName="join rounded-none"
-          pageLinkClassName="join-item btn btn-md bg-transparent"
-          activeLinkClassName="btn-active !bg-green-slimy text-white"
-          disabledLinkClassName="btn-disabled"
-          previousLinkClassName="join-item btn btn-md bg-transparent"
-          nextLinkClassName="join-item btn btn-md bg-transparent"
-          breakLinkClassName="join-item btn btn-md bg-transparent"
-          previousLabel="<"
-          nextLabel=">"
-          breakLabel="..."
-          pageCount={pageCount}
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={2}
-          onPageChange={handlePageClick}
-          renderOnZeroPageCount={null}
-        />
-      </div>
-    </div>
+    ) : (
+      <h3 className={`text-center`}>No data found!</h3>
+    )
+  ) : (
+    <h3 className={`text-center`}>Please choose a hotel</h3>
   );
 };
 

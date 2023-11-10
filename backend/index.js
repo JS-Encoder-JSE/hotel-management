@@ -12,6 +12,9 @@ import transactionRoute from "./routes/transaction.route.js";
 import statusRoute from "./routes/status.route.js";
 import reportRoute from "./routes/report.route.js";
 import itemRoute from "./routes/Manager/item.route.js";
+import barRoute from "./routes/Manager/bar.route.js";
+import gymRoute from "./routes/Manager/gym.route.js";
+import poolRoute from "./routes/Manager/pool.route.js";
 // import employeeRoute from "./routes/Manager/employee.route.js";
 import { fileURLToPath } from "url";
 // Manager Routes
@@ -45,6 +48,9 @@ app.use("/rooms", roomRoute);
 app.use("/foods", foodRoute);
 app.use("/bookings", bookingRoute);
 app.use("/items", itemRoute);
+app.use("/bar", barRoute);
+app.use("/gym", gymRoute);
+app.use("/pool", poolRoute);
 // app.use("/employee", employeeRoute);
 
 app.use("/", uploadRoute);

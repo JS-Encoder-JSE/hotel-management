@@ -13,11 +13,11 @@ import Select from "react-select";
 
 // form validation
 const validationSchema = yup.object({
-  roomNo: yup
-    .number()
-    .required("Room number is required")
-    .positive("Room number must be a positive")
-    .integer("Room number must be an integer"),
+  // roomNo: yup
+  //   .number()
+  //   .required("Room number is required")
+  //   .positive("Room number must be a positive")
+  //   .integer("Room number must be an integer"),
   name: yup.string().required(" Name  is required"),
   poolName: yup.string().required("Pool Name  is required"),
   members: yup.string().required("members  is required"),
@@ -43,9 +43,10 @@ const PoolReservation = () => {
       chooseHotel: "",
       roomNumber: "",
       name: "",
-      price: "",
       members: "",
       poolName: "",
+      paidamount: "",
+      price: "",
       // packagePrice: "",
     },
     validationSchema,
@@ -120,7 +121,7 @@ const PoolReservation = () => {
               <select
                 name="chooseHotel"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.poolSelect}
+                value={formik.values.chooseHotel}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               >
@@ -284,6 +285,24 @@ const PoolReservation = () => {
                 </small>
               ) : null}
             </div>
+              {/*Paid Amount  */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="number"
+              placeholder="Paid Amount"
+              name="paidamount"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.paidamount}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.paidamount &&
+            Boolean(formik.errors.paidamount) ? (
+              <small className="text-red-600">
+                {formik.touched.paidamount && formik.errors.paidamount}
+              </small>
+            ) : null}
+          </div>
             {/* button */}
             <div className={`flex justify-between`}>
               <button

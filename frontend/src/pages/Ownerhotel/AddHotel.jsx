@@ -11,7 +11,13 @@ import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Hotel Name is required"),
-  address: yup.string().required("Hotel Address is required"),
+  address: yup
+    .string()
+    .required("Address is required")
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+      "Address must start with a character and can include characters and numbers",
+    ),
   email: yup.string().required("Hotel Email is required"),
   phoneNumber: yup.string().required("Phone Number  is required"),
   branchName: yup.string().required("Branch Name is required"),

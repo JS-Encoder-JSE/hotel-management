@@ -77,6 +77,7 @@ import EditProfileAdmin from "./pages/profile/EditProfileAdmin.jsx";
 import OrderBarItem from "./pages/bar/OrderBarItem.jsx";
 import PoolReservation from "./pages/LifeStyle/PoolReservation.jsx";
 import OrderList from "./pages/restaurant/OrderList.jsx";
+import ReportManager from "./pages/report/ReportManager.jsx";
 
 
 
@@ -277,7 +278,8 @@ const App = () => {
               path: "report",
               element: (
                 <ManagerRoute>
-                  <SalesProfitReport />
+                  {/* <SalesProfitReport /> */}
+                  <ReportManager/>
                 </ManagerRoute>
               ),
             },

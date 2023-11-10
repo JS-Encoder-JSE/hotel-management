@@ -87,7 +87,7 @@ export const addUser = async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ error: "User creation failed", message: error.message });
+      .json({ message: "User creation failed", error: error.message });
   }
 };
 
@@ -234,7 +234,56 @@ export const getUsersByParentId = async (req, res) => {
     res.status(500).json({ message: "Failed to retrieve users" });
   }
 };
+export const getUsersByAssignedHotel = async (req, res) => {
+  try {
+    const hotelId = req.params.hotel_id;
+    const { page = 1, limit = 10, role, search, filter } = req.query;
 
+    // Check if the provided hotel ID is valid
+    if (!mongoose.Types.ObjectId.isValid(hotelId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid hotel ID",
+      });
+    }
+
+    // Find users with the provided hotel ID in their assignedHotel array
+    const query = { assignedHotel: hotelId };
+
+    if (role) {
+      query.role = role;
+    }
+
+    if (
+      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
+    ) {
+      query.status = filter;
+    }
+
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const users = await User.paginate(query, options);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve users",
+    });
+  }
+};
 export const addOwner = async (req, res) => {
   try {
     const { username, name, password, maxHotels } = req.body;
@@ -309,7 +358,9 @@ export const addManager = async (req, res) => {
       message: "Manager added and assigned to the hotel successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res
+      .status(500)
+      .json({ message: "Faild to add manager", error: error.message });
   }
 };
 
@@ -375,7 +426,9 @@ export const addEmployee = async (req, res) => {
       message: "Manager added and assigned to the hotel successfully",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Faild to add manager", error: error.message });
   }
 };
 
@@ -403,7 +456,9 @@ export const createSuperUser = async (req, res) => {
     res.status(200).json({ message: "Superuser created", data: superuser });
     console.log("Superuser created successfully.");
   } catch (error) {
-    console.error("Error creating superuser:", error.message);
+    res
+      .status(500)
+      .json({ message: "Faild to add superuser", error: error.message });
   }
 };
 
@@ -460,7 +515,7 @@ export const getLoginUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -513,7 +568,9 @@ export const getManagersByOwner = async (req, res) => {
 
     res.status(200).json(managers);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve Managers", error: error.message });
   }
 };
 
@@ -530,7 +587,9 @@ export const getManagerById = async (req, res) => {
 
     res.json(manager);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve Manager", error: error.message });
   }
 };
 
@@ -1080,7 +1139,7 @@ export const updateUserField = async (req, res) => {
     res.status(200).json({ message: "User field updated successfully", user });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to update user field" });
+    res.status(500).json({ message: "Failed to update user field" });
   }
 };
 
@@ -1108,9 +1167,9 @@ export const getUsers = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const query = { parent_id: user_id, role: role };
+    const query = { parent_id: user_id, role: role, status: { $ne: "Deleted" } };
 
-    if (["Active", "Deactive", "Suspended", "Expired"].includes(filter)) {
+    if (filter && ["Active", "Deactive", "Suspended", "Expired"].includes(filter)) {
       query.status = filter;
     }
 
@@ -1120,9 +1179,6 @@ export const getUsers = async (req, res) => {
         { name: { $regex: search, $options: "i" } },
       ];
     }
-
-    // Exclude users with status "Deleted"
-    query.status = { $ne: "Deleted" };
 
     const options = {
       page: parseInt(page, 10),
@@ -1135,9 +1191,10 @@ export const getUsers = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to retrieve users" });
+    res.status(500).json({ message: "Failed to retrieve users" });
   }
 };
+
 
 export const getUserById = async (req, res) => {
   try {

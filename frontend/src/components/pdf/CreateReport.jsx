@@ -28,7 +28,7 @@ const CreateReport = ({values}) => {
       backgroundColor: "#f2f2f2",
     },
     text: {
-      fontSize: 12,
+      fontSize: 10,
     },
   });
 

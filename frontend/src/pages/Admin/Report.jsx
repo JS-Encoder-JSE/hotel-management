@@ -17,6 +17,7 @@ import { Rings } from "react-loader-spinner";
 import { GrPowerReset } from "react-icons/gr";
 
 const Report = () => {
+  const [forcePage, setForcePage] = useState(null);
   const { user } = useSelector((store) => store.authSlice);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -51,6 +52,10 @@ const Report = () => {
         fromDate: values.startDate,
         search: values.search,
       }));
+    },
+    onReset: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
     },
   });
 
@@ -213,7 +218,7 @@ const Report = () => {
               onKeyDown={(e) => pressEnter(e)}
             />
             <DatePicker
-                autoComplete={`off`}
+              autoComplete={`off`}
               dateFormat="dd/MM/yyyy"
               name="endDate"
               placeholderText={`To`}
@@ -238,7 +243,11 @@ const Report = () => {
             </button>
             <button
               type={"button"}
-              onClick={formik.handleSubmit}
+              onClick={() => {
+                setCurrentPage(0);
+                setForcePage(0);
+                formik.handleSubmit()
+              }}
               className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
               Apply Filter
@@ -349,6 +358,7 @@ const Report = () => {
                     marginPagesDisplayed={2}
                     onPageChange={handlePageClick}
                     renderOnZeroPageCount={null}
+                    forcePage={forcePage}
                   />
                 </div>
               </>

@@ -29,7 +29,7 @@ export const addBooking = async (req, res) => {
     if (!room_ids || !Array.isArray(room_ids) || room_ids.length === 0) {
       return res.status(400).json({
         success: false,
-        error: "Invalid or empty room_ids provided",
+        message: "Invalid or empty room_ids provided",
       });
     }
 
@@ -38,7 +38,7 @@ export const addBooking = async (req, res) => {
     if (existingRooms.length !== room_ids.length) {
       return res.status(400).json({
         success: false,
-        error: "One or more room_ids are invalid",
+        message: "One or more room_ids are invalid",
       });
     }
 
@@ -83,7 +83,8 @@ export const addBooking = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
@@ -92,10 +93,12 @@ export const getBookingsByHotel = async (req, res) => {
   try {
     const hotel_id = req.params.hotel_id;
     const { limit = 10, page = 1, search, filter } = req.query;
+
     // Construct the filter object based on the query parameters
     const query = {
       hotel_id: hotel_id,
     };
+
     if (["Active", "CheckedIn", "CheckedOut", "Canceled"].includes(filter)) {
       query.status = filter;
     }
@@ -114,31 +117,44 @@ export const getBookingsByHotel = async (req, res) => {
       limit: parseInt(limit, 10),
     };
 
-    // Query the database with the constructed filter
-    const bookings = await Booking.paginate(query, options);
+    // Execute the query without paginate and then use populate
+    const result = await Booking.find(query)
+      .limit(options.limit)
+      .skip((options.page - 1) * options.limit)
+      .populate("room_ids", "roomNumber floorNumber");
+
+    const totalDocuments = await Booking.countDocuments(query);
+
+    const bookings = {
+      docs: result,
+      totalDocs: totalDocuments,
+      page: options.page,
+      limit: options.limit,
+      totalPages: Math.ceil(totalDocuments / options.limit),
+    };
 
     res.status(200).json({
       success: true,
       data: bookings,
-      message: "Rooms retrieved successfully",
+      message: "Bookings retrieved successfully",
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
-
 export const getBookingById = async (req, res) => {
   try {
     const bookingId = req.params.booking_id; // Assuming you pass the booking ID as a query parameter
-    const booking = await Booking.findById(bookingId);
-
+    const booking = await Booking.findById(bookingId).populate("room_ids", "roomNumber floorNumber");
     if (!booking) {
       return res.status(404).json({
         success: false,
-        error: "Booking not found",
+        message: "Booking not found",
       });
     }
 
@@ -150,7 +166,7 @@ export const getBookingById = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -169,7 +185,7 @@ export const updateBooking = async (req, res) => {
     if (!updatedBooking) {
       return res.status(404).json({
         success: false,
-        error: "Booking not found",
+        message: "Booking not found",
       });
     }
 
@@ -207,7 +223,7 @@ export const updateBooking = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -219,7 +235,7 @@ export const deleteBooking = async (req, res) => {
     if (!deletedBooking) {
       return res.status(404).json({
         success: false,
-        error: "Booking not found",
+        message: "Booking not found",
       });
     }
 
@@ -230,7 +246,7 @@ export const deleteBooking = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };

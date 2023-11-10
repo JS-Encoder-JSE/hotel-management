@@ -39,6 +39,7 @@ const OrderBarItem = () => {
       typeOfAlcohol: "",
       surveyorQuantity: "",
       perPersonPrice: "",
+      paidamount: "",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -46,31 +47,31 @@ const OrderBarItem = () => {
     },
   });
 
-  const [status, setStatus] = useState("");
+  // const [status, setStatus] = useState("");
 
-  const selectOption = [
-    {
-      name: "DolphinSwimming",
-      status: "Available",
-    },
-    {
-      name: "RoyalPools",
-      status: "Unavailable",
-    },
-    {
-      name: "NeptunePool",
-      status: "Available",
-    },
-  ];
+  // const selectOption = [
+  //   {
+  //     name: "DolphinSwimming",
+  //     status: "Available",
+  //   },
+  //   {
+  //     name: "RoyalPools",
+  //     status: "Unavailable",
+  //   },
+  //   {
+  //     name: "NeptunePool",
+  //     status: "Available",
+  //   },
+  // ];
 
-  useEffect(() => {
-    // console.log(formik.values.poolSelect)
+  // useEffect(() => {
+  //   // console.log(formik.values.poolSelect)
 
-    const value = selectOption.find((i) => i.name === formik.values.poolSelect);
-    console.log(value);
-    setStatus(value?.status);
-  }, [formik.values.poolSelect]);
-  console.log(status);
+  //   const value = selectOption.find((i) => i.name === formik.values.poolSelect);
+  //   console.log(value);
+  //   setStatus(value?.status);
+  // }, [formik.values.poolSelect]);
+  // console.log(status);
   return (
     <div
       className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
@@ -210,6 +211,26 @@ const OrderBarItem = () => {
             Boolean(formik.errors.perPersonPrice) ? (
               <small className="text-red-600">
                 {formik.touched.perPersonPrice && formik.errors.perPersonPrice}
+              </small>
+            ) : null}
+          </div>
+          {/* Price */}
+
+          {/*Paid Amount  */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="number"
+              placeholder="Paid Amount"
+              name="paidamount"
+              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.paidamount}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.paidamount &&
+            Boolean(formik.errors.paidamount) ? (
+              <small className="text-red-600">
+                {formik.touched.paidamount && formik.errors.paidamount}
               </small>
             ) : null}
           </div>

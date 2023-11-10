@@ -4,10 +4,12 @@ import toast from "react-hot-toast";
 import { FaPlusCircle } from "react-icons/fa";
 import * as yup from "yup";
 import { useAddInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
+import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
   itemName: yup.string().required("Name is required"),
+  chooseHotel: yup.string().required("Hotel is required"),
   itemDescription: yup
     .string()
     .required("Description is required")
@@ -15,12 +17,13 @@ const validationSchema = yup.object({
 });
 
 const AddInventory = () => {
-  const [addInventory] = useAddInventoryMutation();
+  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+  const [addInventory, { isLoading }] = useAddInventoryMutation();
   const formik = useFormik({
     initialValues: {
       itemName: "",
       itemDescription: "",
-      ItemQuantity: "",
+      chooseHotel: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -28,13 +31,13 @@ const AddInventory = () => {
       const {
         itemName: name,
         itemDescription: description,
-        ItemQuantity: quantity,
+        chooseHotel: hotel_id,
       } = obj;
 
       const response = await addInventory({
+        hotel_id,
         name,
         description,
-        quantity,
       });
 
       if (response?.error) {
@@ -54,10 +57,35 @@ const AddInventory = () => {
         <FaPlusCircle />
         <span>Add Item</span>
       </h3>
-      <form autoComplete="off"
+      <form
+        autoComplete="off"
         className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
+        <div className="flex flex-col gap-3">
+          <select
+            name="chooseHotel"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.chooseHotel}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Choose Hotel
+            </option>
+
+            {hotelsList?.map((i) => (
+              <option key={i._id} value={i._id}>
+                {i.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.chooseHotel && Boolean(formik.errors.chooseHotel) ? (
+            <small className="text-red-600">
+              {formik.touched.chooseHotel && formik.errors.chooseHotel}
+            </small>
+          ) : null}
+        </div>
         {/* Item Name */}
         <div className="flex flex-col gap-5">
           <input
@@ -97,7 +125,13 @@ const AddInventory = () => {
             type="submit"
             className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
           >
-            Add
+            <span>Add</span>
+            {isLoading ? (
+              <span
+                className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                role="status"
+              ></span>
+            ) : null}
           </button>
         </div>
       </form>

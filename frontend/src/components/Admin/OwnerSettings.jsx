@@ -111,7 +111,7 @@ const OwnerSettings = ({ owner }) => {
               ) : null}
               {owner?.status === "Expired" ? (
                 <>
-                  <option value="Active">Active</option>
+                  <option value="Renew">Renew</option>
                   <option value="Suspended">Suspend</option>
                 </>
               ) : null}
