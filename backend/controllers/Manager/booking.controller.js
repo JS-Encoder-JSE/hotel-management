@@ -92,10 +92,12 @@ export const getBookingsByHotel = async (req, res) => {
   try {
     const hotel_id = req.params.hotel_id;
     const { limit = 10, page = 1, search, filter } = req.query;
+
     // Construct the filter object based on the query parameters
     const query = {
       hotel_id: hotel_id,
     };
+
     if (["Active", "CheckedIn", "CheckedOut", "Canceled"].includes(filter)) {
       query.status = filter;
     }
@@ -113,23 +115,37 @@ export const getBookingsByHotel = async (req, res) => {
       page: parseInt(page, 10),
       limit: parseInt(limit, 10),
     };
+    
+    // Execute the query without paginate and then use populate
+    const result = await Booking.find(query)
+      .limit(options.limit)
+      .skip((options.page - 1) * options.limit)
+      .populate("room_ids", "roomNumber floorNumber");
 
-    // Query the database with the constructed filter
-    const bookings = await Booking.paginate(query, options);
+    const totalDocuments = await Booking.countDocuments(query);
+
+    const bookings = {
+      docs: result,
+      totalDocs: totalDocuments,
+      page: options.page,
+      limit: options.limit,
+      totalPages: Math.ceil(totalDocuments / options.limit),
+    };
 
     res.status(200).json({
       success: true,
       data: bookings,
-      message: "Rooms retrieved successfully",
+      message: "Bookings retrieved successfully",
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       error: "Internal Server Error",
     });
   }
 };
-
 export const getBookingById = async (req, res) => {
   try {
     const bookingId = req.params.booking_id; // Assuming you pass the booking ID as a query parameter

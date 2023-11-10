@@ -3,16 +3,30 @@ import baseAPI from "../baseAPI.js";
 const inventoryAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
     inventory: build.query({
-      query: ({ cp, filter, search }) =>
-        `item/get-items?page=${++cp}${filter ? `&stock=${filter}` : ""}${
-          search ? `&search=${search}` : ""
-        }`,
+      query: ({ id, cp, filter, search }) =>
+        `items/get-items-by-hotel/${id}?page=${++cp}${
+          filter ? `&stock=${filter}` : ""
+        }${search ? `&search=${search}` : ""}`,
+      providesTags: ["inventory"],
+    }),
+    invSingle: build.query({
+      query: (id) => `/items/get-item-by-id/${id}`,
       providesTags: ["inventory"],
     }),
     addInventory: build.mutation({
       query: (data) => {
         return {
-          url: "item/add-item",
+          url: "items/add-item",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["inventory"],
+    }),
+    orderInventory: build.mutation({
+      query: (data) => {
+        return {
+          url: "items/assign-items-to-room",
           method: "POST",
           body: data,
         };
@@ -22,7 +36,7 @@ const inventoryAPI = baseAPI.injectEndpoints({
     deleteInventory: build.mutation({
       query: (id) => {
         return {
-          url: `item/delete-item/${id}`,
+          url: `items/delete-item/${id}`,
           method: "DELETE",
         };
       },
@@ -31,7 +45,7 @@ const inventoryAPI = baseAPI.injectEndpoints({
     updateInventory: build.mutation({
       query: ({ id, data }) => {
         return {
-          url: `item/update-item/${id}`,
+          url: `items/update-item/${id}`,
           method: "PATCH",
           body: data,
         };
@@ -43,6 +57,8 @@ const inventoryAPI = baseAPI.injectEndpoints({
 
 export const {
   useInventoryQuery,
+  useInvSingleQuery,
+    useOrderInventoryMutation,
   useAddInventoryMutation,
   useDeleteInventoryMutation,
   useUpdateInventoryMutation,

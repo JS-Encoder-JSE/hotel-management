@@ -72,8 +72,8 @@ const ConfirmOrder = () => {
   }, [formik.values.roomNumber]);
 
   const transformedRooms = rooms?.data?.docs?.map((room) => ({
-    value: room.roomNumber,
-    label: `${room.roomNumber} - ${room.category}`,
+    value: room._id,
+    label: room.roomNumber,
   }));
 
   return (

@@ -5,18 +5,19 @@ import { delOrder} from "../../redux/inventory/inventorySlice.js";
 import Swal from "sweetalert2";
 import { useDeleteFoodMutation } from "../../redux/restaurant/foodAPI.js";
 import { useNavigate } from "react-router-dom";
+import {useDeleteInventoryMutation} from "../../redux/inventory/inventoryAPI.js";
 
 const InventoryList = ({ idx, list, handleOrder }) => {
   const navigate = useNavigate();
   const [isAdd, setAdd] = useState(false);
   const { order } = useSelector((store) => store.inventorySlice);
   const dispatch = useDispatch();
-  const [deleteFood] = useDeleteFoodMutation();
+  const [deleteInventory] = useDeleteInventoryMutation();
 
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "Food will be delete.",
+      text: "Item will be delete.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#35bef0",
@@ -31,7 +32,7 @@ const InventoryList = ({ idx, list, handleOrder }) => {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          deleteFood(id);
+          deleteInventory(id);
         });
       }
     });

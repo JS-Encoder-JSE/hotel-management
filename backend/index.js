@@ -13,6 +13,7 @@ import statusRoute from "./routes/status.route.js";
 import reportRoute from "./routes/report.route.js";
 import itemRoute from "./routes/Manager/item.route.js";
 import barRoute from "./routes/Manager/bar.route.js";
+import gymRoute from "./routes/Manager/gym.route.js";
 // import employeeRoute from "./routes/Manager/employee.route.js";
 import { fileURLToPath } from "url";
 // Manager Routes
@@ -47,6 +48,7 @@ app.use("/foods", foodRoute);
 app.use("/bookings", bookingRoute);
 app.use("/items", itemRoute);
 app.use("/bar", barRoute);
+app.use("/gym", gymRoute);
 // app.use("/employee", employeeRoute);
 
 app.use("/", uploadRoute);

@@ -149,7 +149,7 @@ const ManagerList = () => {
                         <th>Email</th>
                         <th>Phone Number</th>
                         <th>Emergency Contact</th>
-                        <th>Branch</th>
+
                         <th>Status</th>
                         {/* <th>Salary</th> */}
                         <th>Action</th>
@@ -170,7 +170,7 @@ const ManagerList = () => {
                             <td>{sa?.email}</td>
                             <td>{sa?.phone_no}</td>
                             <td>{sa?.emergency_contact}</td>
-                            <td>-</td>
+
                             {/* <td>{owner?.status === "Active" ? (
                               <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
                                 Active
