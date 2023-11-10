@@ -151,7 +151,7 @@ const EditEmployee = () => {
               <FaArrowLeft />
             </span>
           </div>
-          <h2 className={`text-3xl text-center`}>Edit Manager</h2>
+          <h2 className={`text-3xl text-center`}>Edit Employee</h2>
           <hr className={`my-5`} />
         </div>
 

@@ -1,10 +1,14 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { useUpdateInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
+import {
+  useInvSingleQuery,
+  useUpdateInventoryMutation,
+} from "../../redux/inventory/inventoryAPI.js";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -16,9 +20,10 @@ const validationSchema = yup.object({
 });
 
 const EditInventory = () => {
-  const {id} = useParams()
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [updateInventory] = useUpdateInventoryMutation()
+  const { data: userData } = useInvSingleQuery(id);
+  const [updateInventory] = useUpdateInventoryMutation();
   const formik = useFormik({
     initialValues: {
       itemName: "",
@@ -27,18 +32,34 @@ const EditInventory = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const response = await updateInventory({id, values})
+      const response = await updateInventory({
+        id,
+        data: {
+          name: values.itemName,
+          description: values.itemDescription,
+          status: values.status,
+        },
+      });
 
-      console.log(response)
+      console.log(response);
 
-      // if (response?.error) {
-      //   toast.error(response.error.data.message);
-      // } else {
-      //   toast.success(response.data.message);
-      //   formikHelpers.resetForm();
-      // }
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
     },
   });
+
+  useEffect(() => {
+    if (userData) {
+      formik.setValues({
+        itemName: userData?.data?.name,
+        itemDescription: userData?.data?.description,
+        status: userData?.data?.status,
+      });
+    }
+  }, [userData]);
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -57,7 +78,8 @@ const EditInventory = () => {
           <span>Back</span>
         </div>
       </div>
-      <form autoComplete="off"
+      <form
+        autoComplete="off"
         className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
@@ -80,22 +102,22 @@ const EditInventory = () => {
         </div>
         <div className="flex flex-col gap-3">
           <select
-              name="status"
-              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
-              value={formik.values.status}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+            name="status"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none focus:border-green-slimy"
+            value={formik.values.status}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
           >
             <option value="" selected disabled>
               Status
             </option>
-            <option value="">Available</option>
-            <option value="">Unavailable</option>
+            <option value="Available">Available</option>
+            <option value="Unavailable">Unavailable</option>
           </select>
           {formik.touched.status && Boolean(formik.errors.status) ? (
-              <small className="text-red-600">
-                {formik.touched.status && formik.errors.status}
-              </small>
+            <small className="text-red-600">
+              {formik.touched.status && formik.errors.status}
+            </small>
           ) : null}
         </div>
         <div className="col-span-full flex flex-col gap-3">
