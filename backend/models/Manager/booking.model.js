@@ -98,7 +98,7 @@ const bookingSchema = new mongoose.Schema({
     default: "",
   },
   doc_images: ImageSchema,
-});
+},{ timeStamp: true });
 // Apply the mongoose-paginate-v2 plugin to your schema
 bookingSchema.plugin(mongoosePaginate);
 const Booking = mongoose.model("Booking", bookingSchema);
