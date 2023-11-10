@@ -38,7 +38,7 @@ const CheckOut = () => {
 			<section className="max-w-3xl mx-auto flex gap-5 items-center justify-start">
 				<select
 					name="chooseHotels"
-					className="input input-md  bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+					className="input input-md  bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
 					// 		value={formik.values.chooseHotels}
 					// 		onChange={formik.handleChange}
 					// onBlur={formik.handleBlur}
