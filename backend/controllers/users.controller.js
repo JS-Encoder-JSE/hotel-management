@@ -234,7 +234,54 @@ export const getUsersByParentId = async (req, res) => {
     res.status(500).json({ message: "Failed to retrieve users" });
   }
 };
+export const getUsersByAssignedHotel = async (req, res) => {
+  try {
+    const hotelId = req.params.hotel_id;
+    const { page = 1, limit = 10, role, search, filter } = req.query;
 
+    // Check if the provided hotel ID is valid
+    if (!mongoose.Types.ObjectId.isValid(hotelId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid hotel ID',
+      });
+    }
+
+    // Find users with the provided hotel ID in their assignedHotel array
+    const query = { assignedHotel: hotelId };
+
+    if (role) {
+      query.role = role;
+    }
+
+    if (['Active', 'Deactive', 'Suspended', 'Expired', 'Deleted'].includes(filter)) {
+      query.status = filter;
+    }
+
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: 'i' } },
+        { name: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const users = await User.paginate(query, options);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve users',
+    });
+  }
+};
 export const addOwner = async (req, res) => {
   try {
     const { username, name, password, maxHotels } = req.body;
