@@ -45,7 +45,7 @@ const barOrderSchema = new mongoose.Schema(
       default: "Pending",
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 // Apply the mongoose-paginate-v2 plugin to your schema
