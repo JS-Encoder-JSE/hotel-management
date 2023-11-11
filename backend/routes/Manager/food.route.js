@@ -3,12 +3,12 @@ import {
   addFood,
   //   getFood,
   getfoodById,
-  updatefood,
   addOrder,
   getFoodByHotelId,
   deleteFood,
   deleteOrder,
   getOrdersByHotelId,
+  updateFood,
 } from "../../controllers/Manager/food.controller.js";
 import { checkToken } from "../../middlewares/checkToken.js";
 
@@ -20,7 +20,7 @@ router.post("/add-food", checkToken, addFood);
 router.get("/get-foods-by-hotel/:hotel_id", checkToken, getFoodByHotelId);
 router.get("/get-orders-by-hotel/:hotel_id", checkToken, getOrdersByHotelId);
 router.get("/get-food-by-id/:foodId", checkToken, getfoodById);
-router.patch("/update-food/:foodId", checkToken, updatefood);
+router.patch("/update-food/:food_id", checkToken, updateFood);
 router.delete("/delete-food/:food_id", checkToken, deleteFood);
 router.delete("/delete-order/:order_id", checkToken, deleteOrder);
 router.post("/add-order", checkToken, addOrder);
