@@ -43,7 +43,7 @@ const validationSchema = yup.object({
 	from: yup.string().required("From Date is required"),
 	to: yup.string().required("To Date is required"),
 	nationality: yup.string().required("Nationality Date is required"),
-	advanced_amount:yup.number()
+	advanced_amount: yup.number(),
 	// discount: yup.number().when(["discount"], ([discount], schema) => {
 	//   if (discount)
 	//     return schema
@@ -55,7 +55,7 @@ const validationSchema = yup.object({
 
 const AddBooking = () => {
 	// console.log(user)
-	const [addBooking,{isLoading}] = useAddBookingMutation();
+	const [addBooking, { isLoading }] = useAddBookingMutation();
 	const [selectedRooms, setSelectedRooms] = useState([]);
 	const closeRef = useRef(null);
 	const formik = useFormik({
@@ -82,7 +82,7 @@ const AddBooking = () => {
 			obj.room_ids = selectedRooms.map((i) => i.id);
 
 			const response = await addBooking(obj);
-			console.log({values});
+			console.log({ values });
 			console.log(response);
 
 			if (response?.error) {
@@ -102,14 +102,15 @@ const AddBooking = () => {
 	};
 	const { data: rooms } = useRoomsQuery({ id: formik.values.hotel_id });
 
-	const transformedRooms = rooms?.data?.docs?.map((room) => ({
-		id: room._id,
-		value: room.roomNumber,
-		label: `${room.roomNumber} - ${room.category}`,
-	}));
+	const transformedRooms = rooms?.data?.docs
+		?.filter((i) => i.status === "Available")
+		.map((room) => ({
+			id: room._id,
+			value: room.roomNumber,
+			label: `${room.roomNumber} - ${room.category}`,
+		}));
 
 	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
-	
 	return (
 		<>
 			<form autoComplete="off" method="dialog">
@@ -121,7 +122,6 @@ const AddBooking = () => {
 				</button>
 			</form>
 
-			
 			<div>
 				<h3 className={`text-2xl font-semibold mb-3`}>Booking</h3>
 				<hr />
@@ -434,10 +434,10 @@ const AddBooking = () => {
 							className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
 							Confirm
 							{isLoading ? (
-										<span
-											className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-											role="status"></span>
-									) : null}
+								<span
+									className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+									role="status"></span>
+							) : null}
 						</button>
 					</div>
 				</form>
