@@ -82,41 +82,44 @@ const ManagerSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-const hotelSchema = new mongoose.Schema({
-  owner_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
+const hotelSchema = new mongoose.Schema(
+  {
+    owner_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    branch_name: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    status: {
+      type: String,
+      required: false,
+      enum: ["Active", "Deleted"],
+      default: "Active",
+    },
+    address: {
+      type: String,
+      required: false,
+    },
+    email: {
+      type: String,
+      required: false,
+    },
+    phone_no: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    managers: [ManagerSchema],
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  branch_name: {
-    type: String,
-    required: false,
-    default: "",
-  },
-  status: {
-    type: String,
-    required: false,
-    enum: ["Active", "Deleted"],
-    default: "Active",
-  },
-  address: {
-    type: String,
-    required: false,
-  },
-  email: {
-    type: String,
-    required: false,
-  },
-  phone_no: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-  managers: [ManagerSchema],
-});
+  { timestamps: true }
+);
 
 // Apply the mongoose-paginate-v2 plugin to your schema
 hotelSchema.plugin(mongoosePaginate);

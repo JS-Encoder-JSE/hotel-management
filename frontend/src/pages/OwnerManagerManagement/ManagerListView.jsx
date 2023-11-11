@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { FaArrowLeft, FaDownload, FaEdit } from "react-icons/fa";
 import { BsFillArrowDownSquareFill } from "react-icons/bs";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -20,6 +20,15 @@ const ManagerListView = () => {
   const { data: hotels } = useGetHotelsQuery({ id, cp: 0 });
   const navigate = useNavigate();
   console.log(hotels);
+    useEffect(() => {
+        if (userData) {
+            const filteredImages = Object.values(userData?.images)
+                .flat()
+                .filter((value) => value !== '')
+            console.log(filteredImages)
+        }
+    }, []);
+
   return (
     <>
       <div>

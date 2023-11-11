@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import BookingLists from "../../components/room/BookingLists.jsx";
 import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
 import AddBooking from "../../components/room/AddBooking.jsx";
-import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
-import { useGetBookingsByHotelQuery } from "../../redux/room/roomAPI.js";
+import {
+	useGetRoomsAndHotelsQuery,
+	useGetBookingsByHotelQuery,
+} from "../../redux/room/roomAPI.js";
 const ManageBooking = () => {
-	const { search, setSearch } = useState();
+	const [search, setSearch ] = useState('');
 	const [currentPage, setCurrentPage] = useState(0);
 	const formik = useFormik({
 		initialValues: {
@@ -16,14 +18,24 @@ const ManageBooking = () => {
 			hotel_id: "",
 		},
 		onSubmit: (values) => {
-			setSearch(values.search);
-		},
+			setSearch(values.search)
+			setCurrentPage(0)
+		}
 	});
+
+
 	const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({
 		hotel_id: formik.values.hotel_id,
-    search,
-    page:currentPage
+		search:formik.values.search,
+		page: currentPage,
 	});
+
+
+	const pressEnter = (e) => {
+		if (e.key === "Enter" || e.keyCode === 13) {
+		  formik.handleSubmit()
+		}
+	  };
 	// console.log({ bookingList });
 	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 	return (
@@ -78,9 +90,11 @@ const ManageBooking = () => {
 							className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
 							value={formik.values.search}
 							onChange={formik.handleChange}
+							onKeyDown={(e) => pressEnter(e)}
 						/>
 						<button
 							type="button"
+							onClick={formik.handleSubmit}
 							className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
 							<FaSearch />
 						</button>

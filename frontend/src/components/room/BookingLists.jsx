@@ -1,42 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaDoorOpen, FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Modal.jsx";
 import EditBooking from "./EditBooking.jsx";
+import { useUpdateBookingMutation } from "../../redux/room/roomAPI.js";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const BookingLists = ({ bookingList, setCurrentPage }) => {
 	const navigate = useNavigate();
+	const [updateBooking, { isLoading: isCancelledLoading, error }] =
+		useUpdateBookingMutation();
 	// const [bookingPerPage] = useState(10);
 	// const [pageCount, setPageCount] = useState(0);
 	const handlePageClick = ({ selected: page }) => {
 		setCurrentPage(page);
 	};
-	// "_id": "654dd87a1baa8311561d8e16",
-	// "room_ids": [
-	// 	"654dce531baa8311561d8bf0"
-	// ],
-	// "hotel_id": "654a14726bb8816a0a034569",
-	// "guestName": "test",
-	// "address": "dhaka",
-	// "mobileNumber": "0123455",
-	// "emergency_contact": "2342343242",
-	// "adult": 3,
-	// "children": 3,
-	// "paymentMethod": "Cash",
-	// "transection_id": "",
-	// "amount": 0,
-	// "total_amount": 0,
-	// "paid_amount": 0,
-	// "total_unpaid_amount": 0,
-	// "discount": 44,
-	// "from": "2023-11-17T18:00:00.000Z",
-	// "to": "2023-11-24T18:00:00.000Z",
-	// "status": "Active",
-	// "nationality": "bd",
-	// "doc_number": "",
-	// "__v": 0
 
+	// console.log(bookingList)
+	const handleDelete = (id) => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Booking will be delete.",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#35bef0",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					position: "center",
+					icon: "success",
+					title: "Deleted!",
+					showConfirmButton: false,
+					timer: 1500,
+				}).then(() => {
+					updateBooking({ id, data: { status: "Canceled" } });
+				});
+			}
+		});
+	};
+
+	const [editBookedData, setEditBookedData] = useState([]);
 	return (
 		<div>
 			<div className="overflow-x-auto border">
@@ -70,19 +77,34 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 											<div className="flex items-center space-x-3">
 												<div>
 													<div className="font-bold">
-														Hasan
+														{item.guestName}
 													</div>
 													<div className="text-sm opacity-50">
-														Rooms: 1, 2
+														Rooms:{" "}
+														{item.room_ids.map(
+															(i) => i.roomNumber
+														)}
 													</div>
 												</div>
 											</div>
 										</td>
 										<td>{item?.mobileNumber}</td>
 										<td>i{item?.amount}</td>
-										<td>{item?.createdAt}</td>
-										<td>{item?.to}</td>
-										<td>{item?.from}</td>
+										<td>
+											{new Date(
+												item?.createdAt
+											).toLocaleString()}
+										</td>
+										<td>
+											{new Date(
+												item?.to
+											).toLocaleString()}
+										</td>
+										<td>
+											{new Date(
+												item?.from
+											).toLocaleString()}
+										</td>
 
 										<td className={`space-x-1.5`}>
 											<span
@@ -114,16 +136,20 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 											<span
 												className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
 												title={`Edit`}
-												onClick={() =>
-													window.eb_modal.showModal()
-												}>
+												onClick={() => {
+													setEditBookedData(item);
+													window.eb_modal.showModal();
+												}}>
 												<FaEdit />
 											</span>
-											<span
+											<button
+												onClick={() => {
+													handleDelete(item?._id);
+												}}
 												className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
 												title={`Delete`}>
 												<FaTrash />
-											</span>
+											</button>
 										</td>
 									</tr>
 								);
@@ -134,28 +160,30 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 					<p className="text-center">Please Choose Hotel</p>
 				)}
 				<Modal id={`eb_modal`}>
-					<EditBooking />
+					<EditBooking data={editBookedData} />
 				</Modal>
 			</div>
-			<div className="flex justify-center mt-10">
-				<ReactPaginate
-					containerClassName="join rounded-none"
-					pageLinkClassName="join-item btn btn-md bg-transparent"
-					activeLinkClassName="btn-active !bg-green-slimy text-white"
-					disabledLinkClassName="btn-disabled"
-					previousLinkClassName="join-item btn btn-md bg-transparent"
-					nextLinkClassName="join-item btn btn-md bg-transparent"
-					breakLinkClassName="join-item btn btn-md bg-transparent"
-					previousLabel="<"
-					nextLabel=">"
-					breakLabel="..."
-					pageCount={bookingList?.data?.totalPages}
-					pageRangeDisplayed={2}
-					marginPagesDisplayed={2}
-					onPageChange={handlePageClick}
-					renderOnZeroPageCount={null}
-				/>
-			</div>
+			{bookingList?.data?.docs?.length && (
+				<div className="flex justify-center mt-10">
+					<ReactPaginate
+						containerClassName="join rounded-none"
+						pageLinkClassName="join-item btn btn-md bg-transparent"
+						activeLinkClassName="btn-active !bg-green-slimy text-white"
+						disabledLinkClassName="btn-disabled"
+						previousLinkClassName="join-item btn btn-md bg-transparent"
+						nextLinkClassName="join-item btn btn-md bg-transparent"
+						breakLinkClassName="join-item btn btn-md bg-transparent"
+						previousLabel="<"
+						nextLabel=">"
+						breakLabel="..."
+						pageCount={bookingList?.data?.totalPages}
+						pageRangeDisplayed={2}
+						marginPagesDisplayed={2}
+						onPageChange={handlePageClick}
+						renderOnZeroPageCount={null}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };

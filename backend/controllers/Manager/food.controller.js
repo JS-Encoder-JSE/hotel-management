@@ -97,20 +97,33 @@ export const getfoodById = async (req, res) => {
   }
 };
 
-export const updatefood = async (req, res) => {
+export const updateFood = async (req, res) => {
   try {
-    const updatedFood = await Food.findByIdAndUpdate(
-      req.params.foodId,
-      req.body,
-      { new: true }
-    );
+    const foodId = req.params.food_id; // Assuming you use "food_id" as the parameter name
+    const updateData = req.body;
+
+    const existingFood = await Food.findById(foodId);
+
+    if (!existingFood) {
+      return res.status(404).json({
+        success: false,
+        message: "Food not found",
+      });
+    }
+
+    // Update the food with the provided data
+    const updatedFood = await Food.findByIdAndUpdate(foodId, updateData, {
+      new: true,
+    });
 
     res.status(200).json({
       success: true,
       data: updatedFood,
-      message: "Food item updated successfully",
+      message: "Food updated successfully",
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Internal Server Error",

@@ -150,7 +150,10 @@ export const getBookingsByHotel = async (req, res) => {
 export const getBookingById = async (req, res) => {
   try {
     const bookingId = req.params.booking_id; // Assuming you pass the booking ID as a query parameter
-    const booking = await Booking.findById(bookingId).populate("room_ids", "roomNumber floorNumber");
+    const booking = await Booking.findById(bookingId).populate(
+      "room_ids",
+      "roomNumber floorNumber"
+    );
     if (!booking) {
       return res.status(404).json({
         success: false,
@@ -208,6 +211,14 @@ export const updateBooking = async (req, res) => {
       if (updateData.status === "CheckedOut") {
         await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
         // Update room status to "CheckedIn"
+        await Room.updateMany(
+          { _id: { $in: roomIds } },
+          { $set: { status: "Available" } }
+        );
+      }
+
+      if (updateData.status === "Canceled") {
+        // Update room status to "Available"
         await Room.updateMany(
           { _id: { $in: roomIds } },
           { $set: { status: "Available" } }

@@ -114,7 +114,7 @@ export const getRoomById = async (req, res) => {
     if (!room) {
       return res.status(404).json({
         success: false,
-        error: "Room not found",
+        message: "Room not found",
       });
     }
 
@@ -126,7 +126,7 @@ export const getRoomById = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -195,7 +195,7 @@ export const updateRoom = async (req, res) => {
     if (!updateRoom) {
       return res.status(404).json({
         success: false,
-        error: "Room not found",
+        message: "Room not found",
       });
     }
 
@@ -207,7 +207,7 @@ export const updateRoom = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -220,7 +220,7 @@ export const deleteRoom = async (req, res) => {
     if (!deleteRoom) {
       return res.status(404).json({
         success: false,
-        error: "Room not found",
+        message: "Room not found",
       });
     }
 
@@ -231,7 +231,7 @@ export const deleteRoom = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };

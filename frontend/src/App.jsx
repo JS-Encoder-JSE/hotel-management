@@ -172,6 +172,14 @@ const App = () => {
               ),
             },
             {
+              path: "checkin",
+              element: (
+                  <ManagerRoute>
+                    <CheckIn />
+                  </ManagerRoute>
+              ),
+            },
+            {
               path: "checkin/:id",
               element: (
                 <ManagerRoute>
