@@ -107,7 +107,8 @@ const AddBooking = () => {
 		.map((room) => ({
 			id: room._id,
 			value: room.roomNumber,
-			label: `${room.roomNumber} - ${room.category}`,
+			label: `${room.roomNumber} - ${room.category} -  Price: $${room.price}`,
+			
 		}));
 
 	const { data: hotelsList } = useGetRoomsAndHotelsQuery();

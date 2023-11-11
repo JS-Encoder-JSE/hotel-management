@@ -13,7 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import {
-  useAddBookingMutation,
+	useAddBookingMutation,
 	useGetBookingByIdQuery,
 	useGetBookingsByHotelQuery,
 	useGetHotelByIdQuery,
@@ -85,17 +85,17 @@ const CheckIn = () => {
 	const [selectedRooms, setSelectedRooms] = useState([]);
 	const [selectedImages, setSelectedImages] = useState([]);
 	const [isBooked, setIsBooked] = useState("");
-const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
+	const [uploadMultiple, { isLoading: uploading }] = useUploadMutation();
 	const { id } = useParams();
 	const { data: bookedData } = useGetBookingByIdQuery(id);
-  const { data: hotel } = useGetHotelByIdQuery(bookedData?.data?.hotel_id); 
-  const [addBooking,{isLoading:bookingLoading}]= useAddBookingMutation()
+	const { data: hotel } = useGetHotelByIdQuery(bookedData?.data?.hotel_id);
+	const [addBooking, { isLoading: bookingLoading }] = useAddBookingMutation();
 
 	const formik = useFormik({
 		initialValues: {
 			room_ids: [],
 			amount: "",
-			hotel_id: '',
+			hotel_id: "",
 			guestName: "",
 			address: "",
 			mobileNumber: "",
@@ -107,72 +107,76 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 			from: "",
 			to: "",
 			nationality: "",
-      address: "",
-      documents:null,
-      documentsType: "",
-      doc_number:'',
+			address: "",
+			documents: null,
+			documentsType: "",
+			doc_number: "",
 		},
 
 		validationSchema,
-		onSubmit:async (values,formikHelpers) => {
-      const postData = { ...values }
-      
-      if (selectedImages && selectedImages.length > 0) {
-        const formData = new FormData();
-      
-        // Assuming selectedImages is an array of File objects
-        selectedImages.forEach((image, index) => {
-          formData.append(
-            `image_${index}`,
-            image,
-            image.name.substring(0, image.name.lastIndexOf("."))
-          );
-        });
-      
-        try {
-          const result = await uploadMultiple(formData);
-          // Assuming result.data is an array of image URLs corresponding to the uploaded images
-          postData.doc_images = result.data.imageUrls;
-          delete postData.documents 
-          postData.status = 'CheckedIn'
 
+		onSubmit: async (values, formikHelpers) => {
+			const postData = { ...values };
 
-          if (postData.documentsType === 'passport') {
-            postData.doc_images = {passport:result.data.imageUrls}
-         }
+			if (selectedImages && selectedImages.length > 0) {
+				const formData = new FormData();
 
-         if (postData.documentsType === 'nid' || 'adarCard') {
-             postData.doc_images = {nid:result.data.imageUrls}
-         }
+				// Assuming selectedImages is an array of File objects
+				selectedImages.forEach((image, index) => {
+					formData.append(
+						`image_${index}`,
+						image,
+						image.name.substring(0, image.name.lastIndexOf("."))
+					);
+				});
 
-         if (postData.documentsType === 'drivingLicense') {
-             postData.doc_images = {driving_lic_img:result.data.imageUrls}
-         }
+				try {
+					const result = await uploadMultiple(formData);
+					// Assuming result.data is an array of image URLs corresponding to the uploaded images
+					postData.doc_images = result.data.imageUrls;
+					delete postData.documents;
+					postData.status = "CheckedIn";
+					postData.room_ids=selectedRooms.map(i=>i.id)
+					if (postData.documentsType === "passport") {
+						postData.doc_images = {
+							passport: result.data.imageUrls,
+						};
+					}
 
-          const response = await addBooking(postData)
+					if (postData.documentsType === "nid" || "adarCard") {
+						postData.doc_images = { nid: result.data.imageUrls };
+					}
 
-          if (response?.error) {
-            toast.error(response.error.data.message);
-          } else {
-            toast.success(response.data.message);
-            formikHelpers.resetForm();
-            setSelectedImages([]);
-          }
-        } catch (error) {
-          console.error("Error uploading images:", error);
-          // Handle error appropriately
-        }
-      }
+					if (postData.documentsType === "drivingLicense") {
+						postData.doc_images = {
+							driving_lic_img: result.data.imageUrls,
+						};
+					}
 
+					const response = await addBooking(postData);
+
+					if (response?.error) {
+						toast.error(response.error.data.message);
+					} else {
+						toast.success(response.data.message);
+						formikHelpers.resetForm();
+						setSelectedImages([]);
+					}
+				} catch (error) {
+					console.error("Error uploading images:", error);
+					// Handle error appropriately
+				}
+			}
 		},
+
 	});
 
 	const handleDelete = (idx) => {
 		const tempImgs = [
 			...selectedImages.slice(0, idx),
 			...selectedImages.slice(idx + 1),
-    ];
-    
+		];
+
 		const dataTransfer = new DataTransfer();
 
 		for (const file of tempImgs) {
@@ -181,8 +185,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 
 		formik.setFieldValue("documents", dataTransfer.files);
 		setSelectedImages(tempImgs);
-  };
- 
+	};
 
 	const handleChange = (idx, newFile) => {
 		const updatedImages = [...selectedImages];
@@ -196,8 +199,8 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 
 		formik.setFieldValue("documents", dataTransfer.files);
 		setSelectedImages(updatedImages);
-  };
-  console.log(selectedImages)
+	};
+	console.log(selectedImages);
 
 	const handleKeyDown = (e) => {
 		if (e.keyCode === 32) {
@@ -205,10 +208,14 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 		}
 	};
 
-	const transformedRooms = rooms?.data?.map((room) => ({
+
+	const transformedRooms = formik.values?.room_ids?.map((room) => ({
+		id:room._id,
 		value: room.roomNumber,
-		label: `${room.roomNumber} - ${room.category}`,
+		label: `${room.roomNumber}`,
 	}));
+ 
+
 
 	useEffect(() => {
 		if (formik.values.documents) {
@@ -217,15 +224,13 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 		}
 	}, [formik.values.documents]);
 
-
 	useEffect(() => {
 		if (bookedData) {
 			formik.setValues((p) => ({
 				...p,
 				...bookedData.data,
 				from: new Date(bookedData.data.from),
-        to: new Date(bookedData.data.to),
-        
+				to: new Date(bookedData.data.to),
 			}));
 		}
 	}, [bookedData]);
@@ -462,10 +467,11 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 				</div>
 
 				{/* advanced amount */}
+
 				<div className="flex flex-col gap-3">
 					<input
 						type="number"
-						placeholder="Advanced Amount"
+						placeholder="Amount"
 						name="amount"
 						className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
 						value={formik.values.amount}
@@ -475,7 +481,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 				</div>
 
 				{/* payment method box */}
-				{formik.values.amount && (
+				{formik.values.amount > 0 && (
 					<div className="flex flex-col gap-3">
 						<select
 							name="paymentMethod"
@@ -541,6 +547,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 						</small>
 					) : null}
 				</div>
+
 				{/* From Date */}
 				<div className="flex flex-col gap-3">
 					<DatePicker
@@ -558,6 +565,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 						</small>
 					) : null}
 				</div>
+
 				{/* Billing To box */}
 				<div className="flex flex-col gap-3">
 					<DatePicker
@@ -610,7 +618,12 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 							name="documentsNumber"
 							className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
 							value={formik.values.doc_number}
-							onChange={(e)=>formik.setFieldValue('doc_number', e.target.value)}
+							onChange={(e) =>
+								formik.setFieldValue(
+									"doc_number",
+									e.target.value
+								)
+							}
 							onBlur={formik.handleBlur}
 						/>
 						{formik.touched.doc_number &&
@@ -621,8 +634,8 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 							</small>
 						) : null}
 					</div>
-        ) : null}
-        
+				) : null}
+
 				{/* Nationality box */}
 				<div className="flex flex-col gap-3">
 					<input
@@ -641,8 +654,7 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 								formik.errors.nationality}
 						</small>
 					) : null}
-        </div>
-        
+				</div>
 
 				{/* documents */}
 				<div className={`flex space-x-1.5`}>
@@ -682,22 +694,19 @@ const[uploadMultiple,{isLoading:uploading}]= useUploadMutation()
 							</small>
 						) : null}
 					</div>
-        </div>
-        
-
+				</div>
 
 				{/* button */}
 				<div className={`flex justify-between`}>
 					<button
 						type={"submit"}
 						className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-            Confirm
-            
-            {bookingLoading ? (
-										<span
-											className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-											role="status"></span>
-									) : null}
+						Confirm
+						{bookingLoading ? (
+							<span
+								className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+								role="status"></span>
+						) : null}
 					</button>
 				</div>
 			</form>
