@@ -88,6 +88,7 @@ const CheckIn = () => {
   const { data: hotel } = useGetHotelByIdQuery(bookedData?.data?.hotel_id);
   const [addBooking, { isLoading: bookingLoading }] = useAddBookingMutation();
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
+  const [transformedRooms, setTransformedRooms] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -154,6 +155,7 @@ const CheckIn = () => {
             toast.success(response.data.message);
             formikHelpers.resetForm();
             setSelectedImages([]);
+            setTransformedRooms([])
           }
         } catch (error) {
           console.error("Error uploading images:", error);
@@ -207,12 +209,20 @@ const CheckIn = () => {
     }
   };
 
-  const transformedRooms = rooms?.data?.docs
-    ?.filter((room) => room.status === "Booked" || room.status === "Available")
-    ?.map((room) => ({
-      value: room._id,
-      label: `${room.roomNumber} - ${room.category}`,
-    }));
+  useEffect(() => {
+    if (rooms) {
+      const arr = rooms?.data?.docs
+        ?.filter(
+          (room) => room.status === "Booked" || room.status === "Available",
+        )
+        ?.map((room) => ({
+          value: room._id,
+          label: `${room.roomNumber} - ${room.category}`,
+        }));
+
+      setTransformedRooms(arr);
+    }
+  }, [rooms]);
 
   useEffect(() => {
     if (formik.values.documents) {
