@@ -56,7 +56,7 @@ const roomSchema = new mongoose.Schema(
       enum: ["Available", "Booked", "CheckedIn", "Deleted"],
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 // Apply the mongoose-paginate-v2 plugin to your schema
 roomSchema.plugin(mongoosePaginate);
