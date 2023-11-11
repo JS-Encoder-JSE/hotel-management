@@ -36,7 +36,7 @@ export const updateItem = async (req, res) => {
       return res.status(404).json({ message: "Item not found" });
     }
 
-    res.status(200).json(updatedItem);
+    res.status(200).json({ message: "Successfully updated Item" });
   } catch (error) {
     res.status(500).json({ message: "Failed to update item" });
   }
@@ -88,7 +88,7 @@ export const getItemById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(itemId)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid item ID',
+        message: "Invalid item ID",
       });
     }
 
@@ -99,7 +99,7 @@ export const getItemById = async (req, res) => {
     if (!item) {
       return res.status(404).json({
         success: false,
-        message: 'Item not found',
+        message: "Item not found",
       });
     }
 
@@ -112,7 +112,7 @@ export const getItemById = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
     });
   }
 };
