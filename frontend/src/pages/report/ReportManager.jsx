@@ -242,7 +242,7 @@ const ReportManager = () => {
             <thead>
               <tr>
                 <th>SL</th>
-                <th>Booking Number</th>
+                {/* <th>Booking Number</th> */}
                 <th>Room Number</th>
                 <th>Check In</th>
                 <th>Check Out</th>
@@ -255,7 +255,7 @@ const ReportManager = () => {
                 return (
                   <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                     <th>{++idx}</th>
-                    <td>1542565</td>
+                    {/* <td>1542565</td> */}
                     <td>104</td>
                     <td>
                       2023-10-21 <br /> 10:00:00
