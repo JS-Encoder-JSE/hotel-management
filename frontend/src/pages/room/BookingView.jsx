@@ -90,9 +90,9 @@ const BookingView = () => {
 								</th>
 								<td className={`w-4 text-center`}>:</td>
 								<td>
-									{new Date(
+									{
 										data?.data?.amount
-									).toLocaleString()}
+									}
 								</td>
 							</tr>
 							<tr>
