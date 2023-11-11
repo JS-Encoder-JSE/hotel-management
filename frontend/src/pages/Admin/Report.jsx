@@ -146,23 +146,22 @@ const Report = () => {
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
                 onClick={() =>
-                  exportExcel([{ name: "test", age: 12 }], "testexcel")
+                  exportExcel(PDF, new Date().toLocaleDateString())
                 }
               >
                 CSV
               </button>
               {PDF.length ? (
-                <button
-                  type={"button"}
-                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                >
                   <PDFDownloadLink
-                    document={<CreateReport values={PDF} />}
+                    document={<CreateReport values={PDF} header={{
+                      title: "DAK Hospitality LTD",
+                      name: "All Report",
+                    }} />}
                     fileName={`${new Date().toLocaleDateString()}.pdf`}
+                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                   >
                     PDF
                   </PDFDownloadLink>
-                </button>
               ) : null}
             </div>
           </div>

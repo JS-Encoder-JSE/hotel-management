@@ -83,8 +83,12 @@ const AdminOwnerView = () => {
                 Expire Date : {new Date(data?.bill_to).toLocaleDateString()}
               </h6>
               <h6>
-                {" "}
-                Remaining Days: {calculateDays(data?.bill_to, Date.now())} Days
+                Remaining Days:{" "}
+                {Math.floor(
+                  Math.abs(new Date(data?.bill_to) - new Date()) /
+                    (24 * 60 * 60 * 1000),
+                )}{" "}
+                Days
               </h6>
               <h6 className="capitalize">Status : {data?.status}</h6>
               <div className="flex gap-1.5">

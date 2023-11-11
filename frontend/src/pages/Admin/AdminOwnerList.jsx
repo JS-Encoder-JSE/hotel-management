@@ -124,9 +124,9 @@ const AdminOwnerList = ({ title }) => {
               <option value="Deactive">Deactivate</option>
               <option value="Suspended">Suspend</option>
               <option value="Expired">Expired</option>
-              {user.role === "admin" ? (
-                <option value="Deleted">Deleted</option>
-              ) : null}
+              {/*{user.role === "admin" ? (*/}
+              {/*  <option value="Deleted">Deleted</option>*/}
+              {/*) : null}*/}
             </select>
           </div>
           <div className={`relative sm:min-w-[20rem]`}>

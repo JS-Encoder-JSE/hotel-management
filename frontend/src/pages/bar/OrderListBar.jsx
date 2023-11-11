@@ -14,7 +14,7 @@ import {
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 import { FcCancel } from "react-icons/fc";
 import Swal from "sweetalert2";
-import { useOrdersBarQuery } from "../../redux/bar/barAPI.js";
+import {useDeleteBarOrderMutation, useOrdersBarQuery} from "../../redux/bar/barAPI.js";
 // import StatusSettings from "./StatusSettings.jsx";
 
 const OrderListBar = () => {
@@ -23,7 +23,7 @@ const OrderListBar = () => {
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
-  const [deleteOrder] = useDeleteOrderMutation();
+  const [deleteBarOrder] = useDeleteBarOrderMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +63,7 @@ const OrderListBar = () => {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          deleteOrder(id);
+          deleteBarOrder(id);
         });
       }
     });
