@@ -14,7 +14,7 @@ const ManageSingleRoom = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const { isLoading, data: room } = useRoomQuery(id);
- console.log(room)
+	console.log(room);
 	return (
 		<div
 			className={`bg-white max-w-6xl mx-auto rounded-3xl p-10 space-y-10`}>
@@ -65,7 +65,9 @@ const ManageSingleRoom = () => {
 								<div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
 									<h6 className="">Ac </h6>
 									<h6 className="border-l px-2 border-gray-600">
-										{room?.data?.air_conditioned?"Yes":'No'}
+										{room?.data?.air_conditioned
+											? "Yes"
+											: "No"}
 									</h6>
 								</div>
 								<div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
@@ -113,17 +115,18 @@ const ManageSingleRoom = () => {
 											CheckIn
 										</button>
 									</>
-								) : room?.data?.status === "Booked" ? (
-									<button
-										className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
-										onClick={() =>
-											navigate("/dashboard/checkin", {
-												state: room,
-											})
-										}>
-										CheckIn
-									</button>
-								) : (
+								) : room?.data?.status === "Booked" ? // (
+								// 	<button
+								// 		className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
+								// 		onClick={() =>
+								// 			navigate("/dashboard/checkin", {
+								// 				state: room,
+								// 			})
+								// 		}>
+								// 		CheckIn
+								// 	</button>
+								// )
+								null : (
 									<button
 										className={`btn btn-md bg-yellow-400 hover:bg-yellow-300 text-black font-bold hover:text-black-300 !border-yellow-400 rounded normal-case min-w-[2rem]`}>
 										CheckOut
@@ -148,10 +151,10 @@ const ManageSingleRoom = () => {
 					{/* Modal Booking */}
 					<Modal id={`ab_modal`}>
 						<AddBooking />
-          </Modal>
-          
+					</Modal>
+
 					<Modal id={`ci_modal`}>
-            <CheckIn room={room } />
+						<CheckIn room={room} />
 					</Modal>
 				</>
 			) : (

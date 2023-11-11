@@ -38,6 +38,8 @@ const ManageRoom = () => {
 	};
 
 	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+
+	console.log(rooms)
 	return (
 		<div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
 			<div className={`flex justify-between gap-4`}>

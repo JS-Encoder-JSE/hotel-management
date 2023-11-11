@@ -43,13 +43,12 @@ const validationSchema = yup.object({
 		.positive("Adult must be a positive number")
 		.integer("Adult must be an integer"),
 
-	// children: yup.number().when(["children"], ([children], schema) => {
-	//   if (children)
-	//     return schema
-	//       .positive("Children must be a positive number")
-	//       .integer("Children must be an integer");
-	//   else return schema;
-	// }),
+	children: yup
+		.number()
+		.required("Children is required")
+		.positive("Children must be a positive number")
+		.integer("Children must be an integer"),
+
 	// paymentMethod: yup.string().required("Payment method is required"),
 	// trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
 	//   if (paymentMethod !== "cash")
@@ -136,7 +135,7 @@ const CheckIn = () => {
 					postData.doc_images = result.data.imageUrls;
 					delete postData.documents;
 					postData.status = "CheckedIn";
-					postData.room_ids=selectedRooms.map(i=>i.id)
+					postData.room_ids = selectedRooms.map((i) => i.id);
 					if (postData.documentsType === "passport") {
 						postData.doc_images = {
 							passport: result.data.imageUrls,
@@ -168,7 +167,6 @@ const CheckIn = () => {
 				}
 			}
 		},
-
 	});
 
 	const handleDelete = (idx) => {
@@ -200,7 +198,6 @@ const CheckIn = () => {
 		formik.setFieldValue("documents", dataTransfer.files);
 		setSelectedImages(updatedImages);
 	};
-	console.log(selectedImages);
 
 	const handleKeyDown = (e) => {
 		if (e.keyCode === 32) {
@@ -208,14 +205,11 @@ const CheckIn = () => {
 		}
 	};
 
-
 	const transformedRooms = formik.values?.room_ids?.map((room) => ({
-		id:room._id,
+		id: room._id,
 		value: room.roomNumber,
-		label: `${room.roomNumber}`,
+		label: `Room No: ${room.roomNumber}`,
 	}));
- 
-
 
 	useEffect(() => {
 		if (formik.values.documents) {
@@ -450,7 +444,7 @@ const CheckIn = () => {
 				{/* children box */}
 				<div className="flex flex-col gap-3">
 					<input
-						type="text"
+						type="number"
 						placeholder="Children"
 						name="children"
 						className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
@@ -556,7 +550,7 @@ const CheckIn = () => {
 						placeholderText={`From`}
 						selected={formik.values.from}
 						className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-						onChange={formik.handleChange}
+						onChange={(e) => formik.setFieldValue("from", e)}
 						onBlur={formik.handleBlur}
 					/>
 					{formik.touched.from && Boolean(formik.errors.from) ? (
@@ -574,7 +568,7 @@ const CheckIn = () => {
 						placeholderText={`To`}
 						selected={formik.values.to}
 						className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-						onChange={formik.handleChange}
+						onChange={(e) => formik.setFieldValue("to", e)}
 						onBlur={formik.handleBlur}
 					/>
 					{formik.touched.to && Boolean(formik.errors.to) ? (

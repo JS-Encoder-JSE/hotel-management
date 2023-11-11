@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import * as yup from "yup";
 import { useUpdateBookingMutation } from "../../redux/room/roomAPI";
 import toast from "react-hot-toast";
+import DatePicker from "react-datepicker";
 
 // form validation
 const validationSchema = yup.object({
@@ -48,8 +49,8 @@ const validationSchema = yup.object({
 });
 
 const EditBooking = ({ data }) => {
-  const [updateBooking, { isLoading }] = useUpdateBookingMutation();
-  const closeRef = useRef(null)
+	const [updateBooking, { isLoading }] = useUpdateBookingMutation();
+	const closeRef = useRef(null);
 	const formik = useFormik({
 		initialValues: {
 			// advanced_amount: "",
@@ -68,39 +69,45 @@ const EditBooking = ({ data }) => {
 		},
 
 		validationSchema,
-		onSubmit: async (values,formikHelpers) => {
+		onSubmit: async (values, formikHelpers) => {
 			try {
 				const response = await updateBooking({
 					id: values._id,
 					data: values,
-        });
+				});
 
-        console.log(response);
-  
-        if (response?.error) {
-          toast.error(response.error.data.message);
-        } else {
-          formikHelpers.resetForm();
-          closeRef.current.click();
-          toast.success(response.data.message);
-        }
-      } catch (error) {
-        console.log(error)
-      }
+				console.log(response);
+
+				if (response?.error) {
+					toast.error(response.error.data.message);
+				} else {
+					formikHelpers.resetForm();
+					closeRef.current.click();
+					toast.success(response.data.message);
+				}
+			} catch (error) {
+				console.log(error);
+			}
 		},
 	});
 
+  console.log(data)
 	useEffect(() => {
 		if (data) {
-			formik.setValues((p) => ({ ...p, ...data }));
+			formik.setValues((p) => ({
+				...p,
+				...data,
+				to: new Date(data?.to),
+				from: new Date(data?.from),
+			}));
 		}
 	}, [data]);
 
 	return (
 		<>
 			<form autoComplete="off" method="dialog">
-        <button
-          ref={closeRef}
+				<button
+					ref={closeRef}
 					className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
 					onClick={() => formik.handleReset()}>
 					✕
@@ -288,19 +295,16 @@ const EditBooking = ({ data }) => {
             ) : null}
           </div> */}
 					{/* from data */}
+					{/* From Date */}
 					<div className="flex flex-col gap-3">
-						<input
-							type="text"
-							placeholder="From  MM/DD/YYY"
+						<DatePicker
+							dateFormat="dd/MM/yyyy"
 							name="from"
-							className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-							value={formik.values.from}
-							onChange={formik.handleChange}
-							onBlur={(e) => {
-								e.target.type = "text";
-								formik.handleBlur;
-							}}
-							onFocus={(e) => (e.target.type = "date")}
+							placeholderText={`From`}
+							selected={formik.values.from}
+							className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+							onChange={(e) => formik.setFieldValue("from", e)}
+							onBlur={formik.handleBlur}
 						/>
 						{formik.touched.from && Boolean(formik.errors.from) ? (
 							<small className="text-red-600">
@@ -308,20 +312,17 @@ const EditBooking = ({ data }) => {
 							</small>
 						) : null}
 					</div>
-					{/* To date box */}
+
+					{/* Billing To box */}
 					<div className="flex flex-col gap-3">
-						<input
-							type="text"
-							placeholder="To  MM/DD/YYY"
+						<DatePicker
+							dateFormat="dd/MM/yyyy"
 							name="to"
-							className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-							value={formik.values.to}
-							onChange={formik.handleChange}
-							onBlur={(e) => {
-								e.target.type = "text";
-								formik.handleBlur;
-							}}
-							onFocus={(e) => (e.target.type = "date")}
+							placeholderText={`To`}
+							selected={formik.values.to}
+							className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+							onChange={(e) => formik.setFieldValue("to", e)}
+							onBlur={formik.handleBlur}
 						/>
 						{formik.touched.to && Boolean(formik.errors.to) ? (
 							<small className="text-red-600">

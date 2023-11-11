@@ -10,8 +10,7 @@ import Swal from "sweetalert2";
 
 const BookingLists = ({ bookingList, setCurrentPage }) => {
 	const navigate = useNavigate();
-	const [updateBooking, { isLoading: isCancelledLoading, error }] =
-		useUpdateBookingMutation();
+	const [updateBooking, { isLoading: isCancelledLoading, error }] = useUpdateBookingMutation();
 	// const [bookingPerPage] = useState(10);
 	// const [pageCount, setPageCount] = useState(0);
 	const handlePageClick = ({ selected: page }) => {
@@ -43,7 +42,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 		});
 	};
 
-	const [editBookedData, setEditBookedData] = useState([]);
+	const [editBookedData, setEditBookedData] = useState(null);
 	return (
 		<div>
 			<div className="overflow-x-auto border">
@@ -89,7 +88,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 											</div>
 										</td>
 										<td>{item?.mobileNumber}</td>
-										<td>i{item?.amount}</td>
+										<td>{item?.amount}</td>
 										<td>
 											{new Date(
 												item?.createdAt
@@ -111,7 +110,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 												className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
 												title={`View`}
 												onClick={() =>
-													navigate(`${++idx}`)
+													navigate(`${item._id}`)
 												}>
 												<FaEye />
 											</span>
@@ -160,7 +159,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 					<p className="text-center">Please Choose Hotel</p>
 				)}
 				<Modal id={`eb_modal`}>
-					<EditBooking data={editBookedData} />
+				{editBookedData&&	<EditBooking data={editBookedData} />}
 				</Modal>
 			</div>
 			{bookingList?.data?.docs?.length && (
