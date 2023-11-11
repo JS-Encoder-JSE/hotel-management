@@ -1,9 +1,9 @@
 import { useFormik } from "formik";
-import React, { useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Select from "react-select";
 import * as yup from "yup";
 import {
-  useAddBookingMutation,
+  useAddBookingMutation, useGetHotelByIdQuery,
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
@@ -53,11 +53,12 @@ const validationSchema = yup.object({
   // }),
 });
 
-const AddBooking = () => {
+const AddBookingSelect = ({room}) => {
   // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const [selectedRooms, setSelectedRooms] = useState([]);
   const closeRef = useRef(null);
+  const { data: hotel } = useGetHotelByIdQuery(room?.data?.hotel_id);
   const formik = useFormik({
     initialValues: {
       room_ids: [],
@@ -75,11 +76,9 @@ const AddBooking = () => {
       to: "",
       nationality: "",
     },
-
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       const obj = { ...values };
-      obj.room_ids = selectedRooms.map((i) => i.id);
 
       const response = await addBooking(obj);
       console.log({ values });
@@ -102,15 +101,16 @@ const AddBooking = () => {
   };
   const { data: rooms } = useRoomsQuery({ id: formik.values.hotel_id });
 
-  const transformedRooms = rooms?.data?.docs
-    ?.filter((i) => i.status === "Available")
-    .map((room) => ({
-      id: room._id,
-      value: room.roomNumber,
-      label: `${room.roomNumber} - ${room.category} -  Price: ${room.price}`,
-    }));
+  useEffect(() => {
+    if (room?.data) {
+      formik.setValues((p) => ({
+        ...p,
+        room_ids: [room.data._id],
+        hotel_id: room.data.hotel_id,
+      }));
+    }
+  }, [room?.data]);
 
-  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -140,37 +140,23 @@ const AddBooking = () => {
               onBlur={formik.handleBlur}
             >
               <option value="" selected disabled>
-                Choose Hotels
+                {hotel?.name}
               </option>
-
-              {hotelsList?.map((i) => (
-                <option key={i._id} value={i._id}>
-                  {i.name}
-                </option>
-              ))}
             </select>
           </div>
 
           <div className="flex flex-col gap-3">
-            <Select
-              placeholder="Room number"
-              defaultValue={selectedRooms}
-              options={transformedRooms}
-              isMulti
-              isSearchable
-              closeMenuOnSelect={false}
-              onKeyDown={handleKeyDown}
-              onChange={setSelectedRooms}
-              noOptionsMessage={() => "No room available"}
-              classNames={{
-                control: (state) =>
-                  `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
-                    state.isFocused ? "!shadow-none" : ""
-                  }`,
-                valueContainer: () => "!p-0",
-                placeholder: () => "!m-0",
-              }}
-            />
+            <select
+                name="room_ids"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.room_ids}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                {room.data.category} - {room.data.roomNumber}
+              </option>
+            </select>
           </div>
 
           {/* Guest box */}
@@ -432,7 +418,7 @@ const AddBooking = () => {
   );
 };
 
-export default AddBooking;
+export default AddBookingSelect;
 
 // {
 // 	"room_ids": ["654c864f371b0c183a57ff02", "654b8c5d08dff0d052faaad7"],
