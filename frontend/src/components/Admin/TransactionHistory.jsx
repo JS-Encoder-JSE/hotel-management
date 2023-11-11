@@ -116,25 +116,21 @@ const TransactionHistory = () => {
             </button>
           </div>
           {PDF.length ? (
-            <button
-              type={"button"}
+            <PDFDownloadLink
+              document={
+                <CreateReport
+                  values={PDF}
+                  header={{
+                    title: "DAK Hospitality LTD",
+                    name: "Transaction History",
+                  }}
+                />
+              }
+              fileName={`${new Date().toLocaleDateString()}.pdf`}
               className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
-              <PDFDownloadLink
-                document={
-                  <CreateReport
-                    values={PDF}
-                    header={{
-                      title: "Hotel Management System",
-                      name: "Transaction History",
-                    }}
-                  />
-                }
-                fileName={`${new Date().toLocaleDateString()}.pdf`}
-              >
-                PDF
-              </PDFDownloadLink>
-            </button>
+              PDF
+            </PDFDownloadLink>
           ) : null}
         </div>
         {!isLoading ? (

@@ -57,7 +57,7 @@ const CheckOut = () => {
         <div className="flex flex-col gap-3">
           <select
             name="hotel_id"
-            className="input input-md h-10 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.hotel_id}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -88,7 +88,7 @@ const CheckOut = () => {
             noOptionsMessage={() => "No room available"}
             classNames={{
               control: (state) =>
-                `!input !input-md !h-4 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                `!input !input-md !h-auto !min-h-[3rem] min-w-[20rem] !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
                   state.isFocused ? "!shadow-none" : ""
                 }`,
               valueContainer: () => "!p-0",
@@ -99,7 +99,7 @@ const CheckOut = () => {
         <button
           onClick={handleGetRooms}
           disabled={formik.values.room.length === 0}
-          className=" btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case p-4 h-auto"
+          className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
         >
           Go
         </button>
