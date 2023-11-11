@@ -22,10 +22,10 @@ const barAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["food"],
     }),
-    deleteOrder: build.mutation({
+    deleteBarOrder: build.mutation({
       query: (id) => {
         return {
-          url: `/foods/delete-order/${id}`,
+          url: `bar/delete-bar-order/${id}`,
           method: "DELETE",
         };
       },
@@ -46,7 +46,7 @@ export const {
   useFoodsQuery,
   useAddBarMutation,
   useAddOrderMutation,
-  useDeleteFoodMutation,
+  useDeleteBarOrderMutation,
   useUpdateFoodMutation,
   useOrdersBarQuery,
   useDeleteOrderMutation,

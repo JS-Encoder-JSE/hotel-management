@@ -146,7 +146,7 @@ const Report = () => {
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
                 onClick={() =>
-                  exportExcel([{ name: "test", age: 12 }], "testexcel")
+                  exportExcel(PDF, new Date().toLocaleDateString())
                 }
               >
                 CSV
@@ -157,7 +157,10 @@ const Report = () => {
                   className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                 >
                   <PDFDownloadLink
-                    document={<CreateReport values={PDF} />}
+                    document={<CreateReport values={PDF} header={{
+                      title: "Hotel Management System",
+                      name: "All Report",
+                    }} />}
                     fileName={`${new Date().toLocaleDateString()}.pdf`}
                   >
                     PDF

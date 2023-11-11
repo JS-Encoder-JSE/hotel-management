@@ -132,7 +132,10 @@ const StatusHistory = () => {
               className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
               <PDFDownloadLink
-                document={<CreateReport values={PDF} />}
+                document={<CreateReport values={PDF} header={{
+                  title: "Hotel Management System",
+                  name: "Status History",
+                }} />}
                 fileName={`${new Date().toLocaleDateString()}.pdf`}
               >
                 PDF

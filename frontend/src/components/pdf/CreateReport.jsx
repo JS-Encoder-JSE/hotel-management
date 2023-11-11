@@ -1,10 +1,10 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet } from "@react-pdf/renderer";
 
-const CreateReport = ({values}) => {
+const CreateReport = ({ values, header }) => {
   const styles = StyleSheet.create({
     page: {
-      flexDirection: "row",
+      flexDirection: "column",
       backgroundColor: "white",
       padding: 20,
     },
@@ -35,6 +35,34 @@ const CreateReport = ({values}) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <View
+          style={{
+            marginBottom: 15,
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <Text>{header?.title}</Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 12,
+              }}
+            >
+              {header?.name}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 10,
+              }}
+            >
+              Printed Date: {new Date().toLocaleDateString()}
+            </Text>
+          </View>
+        </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
             {Object?.keys(values[0]).map((header, index) => (
