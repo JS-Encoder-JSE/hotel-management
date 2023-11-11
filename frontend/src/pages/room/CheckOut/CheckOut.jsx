@@ -6,97 +6,116 @@ import BillingSection from "./BillingSection";
 import PaymentSection from "./PaymentSection";
 import {
   useGetRoomsAndHotelsQuery,
-	useRoomNumbersQuery,
-	useRoomsQuery,
+  useRoomNumbersQuery,
+  useRoomsQuery,
 } from "../../../redux/room/roomAPI";
+import { useFormik } from "formik";
+import toast from "react-hot-toast";
 
 const CheckOut = () => {
-	const { isLoading, data: rooms } = useRoomNumbersQuery();
-	const [selectedRooms, setSelectedRooms] = useState([]);
-	const [showRooms, setShowRooms] = useState(false);
+  const [showRooms, setShowRooms] = useState(false);
 
-	const handleGetRooms = () => {
-		setShowRooms(true);
-	};
+  const formik = useFormik({
+    initialValues: {
+      hotel_id: "",
+      room: [],
+      // itemName: "",
 
-	const handleKeyDown = (e) => {
-		if (e.keyCode === 32) {
-			e.preventDefault();
-		}
-	};
+      // packagePrice: "",
+    },
+  });
 
-	const transformedRooms = rooms?.data?.map((room) => ({
-		value: room.roomNumber,
-		label: `${room.roomNumber} - ${room.category}`,
-	}));
+  const { data: hotelList } = useGetRoomsAndHotelsQuery();
+  const { isLoading, data: rooms } = useRoomsQuery({
+    id: formik.values.hotel_id,
+    cp: "0",
+    filter: "",
+    search: "",
+  });
 
-	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
-	return (
-		<div className="space-y-8">
-			<div className="max-w-3xl mx-auto flex gap-5 items-center"></div>
-			{/* Select Room Section */}
-			<section className="max-w-3xl mx-auto flex gap-5 items-center justify-start">
-				<select
-					name="chooseHotels"
-					className="input input-md  bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
-					// 		value={formik.values.chooseHotels}
-					// 		onChange={formik.handleChange}
-					// onBlur={formik.handleBlur}
-				>
-					<option value="" selected disabled>
-						Choose Hotel
-					</option>
-					{hotelsList?.map((i) => (
-						<option key={i._id} value={i._id}>
-							{i.name}
-						</option>
-					))}
-        </select>
-        
+  const handleGetRooms = () => {
+    setShowRooms(true);
+  };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
 
-				<p>Room No. :</p>
-				<div className="w-[353px]">
-					<Select
-						placeholder="Room Select"
-						defaultValue={selectedRooms}
-						options={transformedRooms}
-						isMulti
-						isSearchable
-						closeMenuOnSelect={false}
-						onKeyDown={handleKeyDown}
-						onChange={setSelectedRooms}
-						noOptionsMessage={() => "No room available"}
-						classNames={{
-							control: (state) =>
-								`!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none
-								${
-									state.isFocused ? "!shadow-none" : ""
-								}`,
-							valueContainer: () => "!p-0",
-							placeholder: () => "!m-0",
-						}}
-					/>
-				</div>
-				<button
-					onClick={handleGetRooms}
-					disabled={selectedRooms.length === 0}
-					className=" btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case p-4 h-auto">
-					Go
-				</button>
-			</section>
+  const transformedRooms = rooms?.data?.docs
+    ?.filter((room) => room.status === "Booked" || room.status === "CheckedIn")
+    ?.map((room) => ({
+      value: room._id,
+      label: `${room.roomNumber} - ${room.category}`,
+    }));
 
-			{/* Customer Info and Set them to default */}
-			{showRooms && (
-				<>
-					<CustomerInfoSection />
-					<RoomDetailsSection selectedRooms={selectedRooms} />
-					<BillingSection />
-					<PaymentSection />
-				</>
-			)}
-		</div>
-	);
+  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+  return (
+    <div className="space-y-8">
+      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-start">
+        <div className="flex flex-col gap-3">
+          <select
+            name="hotel_id"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.hotel_id}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Choose Hotel
+            </option>
+
+            {hotelList?.map((i) => (
+              <option key={i._id} value={i._id}>
+                {i.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col gap-3">
+          <Select
+            placeholder="Select room"
+            name={`room`}
+            defaultValue={formik.values.room}
+            options={transformedRooms}
+            isSearchable
+            isMulti
+            closeMenuOnSelect={false}
+            onChange={(e) => {
+              formik.setFieldValue("room", e);
+            }}
+            noOptionsMessage={() => "No room available"}
+            classNames={{
+              control: (state) =>
+                `!input !input-md !h-auto !min-h-[3rem] min-w-[20rem] !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                  state.isFocused ? "!shadow-none" : ""
+                }`,
+              valueContainer: () => "!p-0",
+              placeholder: () => "!m-0",
+            }}
+          />
+        </div>
+        <button
+          onClick={handleGetRooms}
+          disabled={formik.values.room.length === 0}
+          className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+        >
+          Go
+        </button>
+      </div>
+
+      {/* Customer Info and Set them to default */}
+      {showRooms && (
+        <>
+          <CustomerInfoSection />
+          <RoomDetailsSection selectedRooms={formik.values.room} />
+          <BillingSection />
+          <PaymentSection />
+        </>
+      )}
+    </div>
+  );
 };
 
 export default CheckOut;

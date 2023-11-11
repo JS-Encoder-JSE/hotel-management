@@ -6,14 +6,11 @@ const RoomDetailsSection = ({ selectedRooms }) => {
     <section className="bg-white p-4 rounded">
       <table className="w-full border border-black/20 text-sm">
         <thead className="bg-[#e5e7eb] border border-black/20">
-          <tr className="grid grid-cols-5 items-center text-left">
+          <tr className="grid grid-cols-8 items-center text-left">
             <th className="py-1 px-3 text-black text-sm font-medium border-r border-black/20">
               Room No.
             </th>
-            <th className="py-1 px-3 text-black text-sm font-medium border-r border-black/20">
-              Date
-            </th>
-            <th className="col-span-3 text-center text-black text-sm font-medium">
+            <th className="col-span-7 text-center text-black text-sm font-medium">
               Room Rent List
             </th>
           </tr>
@@ -30,16 +27,8 @@ const RoomDetailsSection = ({ selectedRooms }) => {
               ))}
             </td>
 
-            <td className="pt-1 px-3 border-r border-black/20 space-y-2">
-              <p className="text-sm">23rd Feb 12:00 to 24th Feb 10:00</p>
-              <hr />
-              <p className="text-sm text-slate-400 font-light">Adult: 3</p>
-              <hr />
-              <p className="text-sm text-slate-400 font-light">Children: 0</p>
-            </td>
-
-            <td className="col-span-6 p-1 overflow-x-auto">
-              <table className="bg-[#e5e7eb]">
+            <td className="col-span-7 p-1 overflow-x-auto">
+              <table className="bg-[#e5e7eb] w-full">
                 <tbody>
                   <tr>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
@@ -58,22 +47,16 @@ const RoomDetailsSection = ({ selectedRooms }) => {
                       ($) Rent/Day
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Rent Discount
+                      ($) Total Rent
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Dis./Day
+                      ($) Discount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Amt.Aft Dis
+                      ($) Paid Amount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Tot.Rent
-                    </td>
-                    <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) VAT/GST
-                    </td>
-                    <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Tot.Amt
+                      ($) Unpaid Amount
                     </td>
                   </tr>
                 </tbody>
@@ -105,13 +88,6 @@ const RoomDetailsSection = ({ selectedRooms }) => {
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
                       4000
-                    </td>
-                    <td className="p-2 border border-black/20 align-top text-xs">
-                      (RST3.00% ) 120 (GST4.00% ) 160 (DST4.00% ) 160 (MSL3.50%
-                      ) 140
-                    </td>
-                    <td className="p-2 border border-black/20 align-top text-xs">
-                      4580
                     </td>
                   </tr>
                 </tbody>

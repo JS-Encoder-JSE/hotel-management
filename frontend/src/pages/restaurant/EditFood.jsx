@@ -87,7 +87,7 @@ const EditFood = () => {
 
       const response = await updateFood({
         id,
-        obj: {
+        data: {
           food_name,
           serveyor_quantity,
           price,
