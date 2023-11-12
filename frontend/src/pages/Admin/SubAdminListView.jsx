@@ -63,7 +63,10 @@ const SubAdminListView = () => {
           </div>
           <div className="">
             <h2 className="card-title mb-3">Other Information </h2>
-            <h6>Joining Date : {userData?.joining_date} </h6>
+            <h6>
+              Joining Date :{" "}
+              {new Date(userData?.joining_date).toLocaleDateString()}{" "}
+            </h6>
             <h6>Salary : {userData?.salary} </h6>
             <h6>Status : {userData?.status}</h6>
           </div>

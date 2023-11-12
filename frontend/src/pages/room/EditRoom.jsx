@@ -47,6 +47,7 @@ const EditRoom = () => {
       type: "",
       capacity: "",
       price: "",
+      floorNumber: "",
       bedSize: "",
       photos: null,
       description: "",
@@ -133,6 +134,7 @@ const EditRoom = () => {
         capacity: room?.data?.capacity,
         price: room?.data?.price,
         bedSize: room?.data?.bedSize,
+        floorNumber: room?.data?.floorNumber,
         ac: room?.data?.air_conditioned,
         description: room?.data?.description,
       });
@@ -338,6 +340,23 @@ const EditRoom = () => {
             {formik.touched.bedSize && Boolean(formik.errors.bedSize) ? (
                 <small className="text-red-600">
                   {formik.touched.bedSize && formik.errors.bedSize}
+                </small>
+            ) : null}
+          </div>
+          <div className="flex flex-col gap-3">
+            <input
+                type="text"
+                placeholder="Floor Number"
+                name="floorNumber"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.floorNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+            />
+            {formik.touched.floorNumber &&
+            Boolean(formik.errors.floorNumber) ? (
+                <small className="text-red-600">
+                  {formik.touched.floorNumber && formik.errors.floorNumber}
                 </small>
             ) : null}
           </div>
