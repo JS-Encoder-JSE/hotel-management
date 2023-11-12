@@ -103,11 +103,19 @@ const ManageBooking = () => {
           </div>
         </div>
       </div>
-      <BookingLists
-        bookingList={bookingList}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      {formik.values.hotel_id ? (
+        bookingList?.data?.docs?.length ? (
+          <BookingLists
+            bookingList={bookingList}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        ) : (
+          <h3 className={`text-center`}>No data found!</h3>
+        )
+      ) : (
+        <h3 className={`text-center`}>Choose a hotel!</h3>
+      )}
       <Modal id={`ab_modal`}>
         <AddBooking />
       </Modal>
@@ -116,20 +124,3 @@ const ManageBooking = () => {
 };
 
 export default ManageBooking;
-// {
-//   "room_ids": [
-//       "654ca8c17795acca6b35263f"
-//   ],
-//   "hotel_id": "6549e816cce2882db0ad4aef",
-//   "guestName": "khalid",
-//   "address": "dhaka",
-//   "mobileNumber": "01765823311",
-//   "emergency_contact": "2343214213432",
-//   "adult": 4,
-//   "children": 4,
-//   "paymentMethod": "cash",
-//   "discount": 44,
-//   "from": "2023-11-09T18:00:00.000Z",
-//   "to": "2023-11-15T18:00:00.000Z",
-//   "nationality": "USA"
-// }

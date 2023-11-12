@@ -87,7 +87,7 @@ const ManagerEdit = () => {
           id,
           data: {
             name,
-            phoneNumber: phone_no,
+            phone_no,
             email,
             emergency_contact,
             password,
@@ -101,7 +101,7 @@ const ManagerEdit = () => {
           id,
           data: {
             name,
-            phoneNumber: phone_no,
+            phone_no,
             email,
             emergency_contact,
             address,

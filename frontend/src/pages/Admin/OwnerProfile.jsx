@@ -21,6 +21,7 @@ const validationSchema = yup.object({
     .email("Enter a valid email")
     .required("Email is required"),
   phoneNumber: yup.string().required("Phone number is required"),
+  emergency_contact: yup.string().required("Phone number is required"),
   numberOfHotel: yup.string().required("Hotel limit is required"),
   password: yup
     .string()
@@ -46,6 +47,7 @@ const OwnerProfile = () => {
       name: "",
       email: "",
       phoneNumber: "",
+      emergency_contact: "",
       address: "",
       password: "",
       numberOfHotel: "",
@@ -59,6 +61,7 @@ const OwnerProfile = () => {
       const {
         name,
         phoneNumber: phone_no,
+        emergency_contact,
         email,
         password,
         address,
@@ -89,6 +92,7 @@ const OwnerProfile = () => {
           data: {
             name,
             phone_no,
+            emergency_contact,
             email,
             password,
             address,
@@ -102,6 +106,7 @@ const OwnerProfile = () => {
           data: {
             name,
             phone_no,
+            emergency_contact,
             email,
             address,
             maxHotels,
@@ -136,13 +141,14 @@ const OwnerProfile = () => {
         name: user?.name,
         email: user?.email,
         phoneNumber: user?.phone_no,
+        emergency_contact: user?.emergency_contact,
         address: user?.address,
         salary: user?.salary,
         numberOfHotel: user?.maxHotels,
       });
     }
   }, [user]);
-
+  console.log(user);
   return (
     <div
       className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
@@ -240,7 +246,7 @@ const OwnerProfile = () => {
             <div className="flex flex-col w-full space-y-2">
               <input
                 type="text"
-                placeholder="0123324434435"
+                placeholder="Phone"
                 name="phoneNumber"
                 className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.phoneNumber}
@@ -251,6 +257,27 @@ const OwnerProfile = () => {
               Boolean(formik.errors.phoneNumber) ? (
                 <small className="text-red-600">
                   {formik.touched.phoneNumber && formik.errors.phoneNumber}
+                </small>
+              ) : null}
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
+            <label className={`w-24 break-words`}>Emergency Contact: </label>
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                type="text"
+                placeholder="Emergency Contact"
+                name="emergency_contact"
+                className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.emergency_contact}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.emergency_contact &&
+              Boolean(formik.errors.emergency_contact) ? (
+                <small className="text-red-600">
+                  {formik.touched.emergency_contact &&
+                    formik.errors.emergency_contact}
                 </small>
               ) : null}
             </div>
@@ -275,7 +302,7 @@ const OwnerProfile = () => {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md">
-            <label className={`w-24 break-words`}>Phone: </label>
+            <label className={`w-24 break-words`}>Hotel Limit: </label>
             <div className="flex flex-col w-full space-y-2">
               <input
                 type="number"

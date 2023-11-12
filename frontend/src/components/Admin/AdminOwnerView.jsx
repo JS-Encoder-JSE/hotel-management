@@ -23,19 +23,6 @@ const AdminOwnerView = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
-  console.log(data);
-
-  function calculateDays(date1, date2) {
-    const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
-    const firstDate = new Date(date1);
-    const secondDate = new Date(date2);
-
-    // Calculate the difference in milliseconds
-    const differenceInMilliseconds = Math.abs(firstDate - secondDate);
-
-    // Convert the difference to days
-    return Math.floor(differenceInMilliseconds / oneDay);
-  }
 
   return (
     <>
@@ -72,14 +59,8 @@ const AdminOwnerView = () => {
                   data?.createdAt,
                 ).toLocaleDateString()}{" "}
               </h6>
+              <h6>Renew Date : {new Date(data?.bill_from).toLocaleDateString()}</h6>
               <h6>
-                {" "}
-                Renew Date :{new Date(
-                  data?.renew_date,
-                ).toLocaleDateString()}{" "}
-              </h6>
-              <h6>
-                {" "}
                 Expire Date : {new Date(data?.bill_to).toLocaleDateString()}
               </h6>
               <h6>

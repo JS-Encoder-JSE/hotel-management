@@ -107,6 +107,7 @@ const HotelListView = () => {
               <div className="">
                 <h2 className="card-title mb-3">Hotel Description </h2>
                 <h6> Name : {hotel?.name}</h6>
+                <h6> Branch : {hotel?.branch_name}</h6>
                 <h6> Address : {hotel?.address}</h6>
                 <h6> Number : {hotel?.phone_no}</h6>
                 <h6> Email : {hotel?.email}</h6>

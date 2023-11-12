@@ -56,6 +56,7 @@ const EditFood = () => {
       price: "",
       description: "",
       photos: null,
+      status: "",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -67,6 +68,7 @@ const EditFood = () => {
         surveyorQuantity: serveyor_quantity,
         price,
         description,
+        status,
       } = obj;
       const images = [...selectedImages];
 
@@ -93,6 +95,7 @@ const EditFood = () => {
           price,
           description,
           images,
+          status,
         },
       });
 
@@ -148,6 +151,7 @@ const EditFood = () => {
         surveyorQuantity: food?.data?.serveyor_quantity,
         price: food?.data?.price,
         description: food?.data?.description,
+        status: food?.data?.status,
         photos: null,
       });
 
@@ -289,6 +293,26 @@ const EditFood = () => {
             {formik.touched.price && Boolean(formik.errors.price) ? (
               <small className="text-red-600">
                 {formik.touched.price && formik.errors.price}
+              </small>
+            ) : null}
+          </div>
+          <div className={`flex flex-col gap-3`}>
+            <select
+              name="status"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+              value={formik.values.status}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Status
+              </option>
+              <option value="Available">Available</option>
+              <option value="Unavailable">Unavailable</option>
+            </select>
+            {formik.touched.status && Boolean(formik.errors.status) ? (
+              <small className="text-red-600">
+                {formik.touched.status && formik.errors.status}
               </small>
             ) : null}
           </div>
