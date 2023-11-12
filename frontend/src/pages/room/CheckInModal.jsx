@@ -1,153 +1,173 @@
 ﻿import { useFormik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import { FaTrash, FaUpload } from "react-icons/fa";
-import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
-} from "react-icons/md";
-import { TbReplaceFilled } from "react-icons/tb";
 import Select from "react-select";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 import * as yup from "yup";
-import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import {
   useAddBookingMutation,
-  useGetBookingByIdQuery,
-  useGetBookingsByHotelQuery,
   useGetHotelByIdQuery,
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
-import { useLocation, useParams } from "react-router-dom";
-import { useUploadMutation } from "../../redux/baseAPI";
+import DatePicker from "react-datepicker";
+import store from "../../redux/store.js";
 import toast from "react-hot-toast";
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { TbReplaceFilled } from "react-icons/tb";
+import { FaTrash, FaUpload } from "react-icons/fa";
+import { useUploadMutation } from "../../redux/baseAPI.js";
 
 // form validation
 const validationSchema = yup.object({
-  guestName: yup.string().required("Name is required"),
+  // room_arr: yup.array().required("Room IDs are required"),
+  // hotel_id: yup.string().required("Hotel ID is required"),
+  guestName: yup.string().required("Guest name is required"),
+  address: yup.string().required("Address is required"),
   mobileNumber: yup.string().required("Mobile number is required"),
-  emergency_contact: yup
-    .string()
-    .required("Emergency Number number is required"),
-  address: yup.string().required("Address Number number is required"),
-  // age: yup
-  //   .number()
-  //   .required("Age is required")
-  //   .positive("Age must be a positive number")
-  //   .integer("Age must be an integer"),
+  emergency_contact: yup.string().required("Emergency contact is required"),
   adult: yup
     .number()
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
-
-  children: yup
-    .number()
-    .positive("Children must be a positive number")
-    .integer("Children must be an integer"),
-
-  // paymentMethod: yup.string().required("Payment method is required"),
+  // children: yup.number().when([], {
+  //   is: (children) => children && children.length > 0,
+  //   then: yup
+  //     .number()
+  //     .positive("Children must be a positive number")
+  //     .integer("Children must be an integer"),
+  // }),
+  paymentMethod: yup.string().required("Payment method is required"),
   // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
   //   if (paymentMethod !== "cash")
   //     return schema.required("Transaction ID is required");
   //   else return schema;
   // }),
-
-  documentsType: yup.string().required("Document Number is required"),
-  doc_number: yup
-    .string()
-    .when(["documentsType"], ([documentsType], schema) => {
-      if (documentsType !== "nid")
-        return schema.required("Transaction ID is required");
-      else return schema;
-    }),
-
-  discount: yup
-    .number()
-    .positive("Discount must be a positive number")
-    .integer("Discount must be an integer"),
-
-  documents: yup.mixed().required("Documents are required"),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
+  amount: yup.string().required("Advance amount is required"),
   nationality: yup.string().required("Nationality is required"),
+  documentsType: yup.string().required("Documents type is required"),
+  doc_number: yup.string().required("Document number is required"),
+  documents: yup.string().required("Documents is required"),
 });
 
-const CheckIn = ({ room }) => {
-  console.log(room);
-  const { isLoading, data: rooms } = useRoomsQuery();
-  const [selectedRooms, setSelectedRooms] = useState([]);
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [isBooked, setIsBooked] = useState("");
-  const [uploadMultiple, { isLoading: uploading }] = useUploadMutation();
-  const { id } = useParams();
-
-  const { data: hotel } = useGetHotelByIdQuery(room?.data?.hotel_id);
-  const [addBooking, { isLoading: bookingLoading }] = useAddBookingMutation();
+const CheckInModal = ({ room }) => {
   const closeRef = useRef(null);
-
+  const [isLoading, setLoading] = useState(false);
+  const [upload] = useUploadMutation();
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [addBooking] = useAddBookingMutation();
   const formik = useFormik({
     initialValues: {
-      room_ids: [],
-      amount: "",
+      room_arr: [],
       hotel_id: "",
       guestName: "",
+      address: "",
       mobileNumber: "",
       emergency_contact: "",
       adult: "",
       children: "",
       paymentMethod: "",
-      discount: "",
+      trxID: "",
       from: "",
       to: "",
+      amount: "",
+      discount: "",
       nationality: "",
-      address: "",
-      documents: null,
       documentsType: "",
-      transection_id: "",
       doc_number: "",
+      documents: null,
     },
-
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      const postData = { ...values };
-      if (selectedImages && selectedImages.length > 0) {
-        const formData = new FormData();
+      setLoading(true);
+      const obj = { ...values };
 
-        // Assuming selectedImages is an array of File objects
-        selectedImages.forEach((image, index) => {
-          formData.append(
-            `image_${index}`,
-            image,
-            image.name.substring(0, image.name.lastIndexOf(".")),
-          );
-        });
+      if (!obj.discount) obj.discount = 0;
 
-        try {
-          const result = await uploadMultiple(formData);
-          // Assuming result.data is an array of image URLs corresponding to the uploaded images
+      const room_ids = obj.room_arr.map((elem) => elem.value);
+      const no_of_days = Math.floor(
+        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000),
+      );
+      const rent_per_day = obj.room_arr.reduce(
+        (init, current) => init + current.price,
+        0,
+      );
+      const total_rent = no_of_days * rent_per_day;
+      const discount = (total_rent * obj.discount) / 100;
+      const amount_after_dis = total_rent - discount;
+      let title;
+      let tempImg;
 
-          delete postData.documents;
-          postData.status = "CheckedIn";
-
-          const response = await addBooking(postData);
-          closeRef.current.click();
-          if (response?.error) {
-            console.log(response?.error);
-            toast.error(response.error.data.message);
-          } else {
-            toast.success(response.data.message);
-            formikHelpers.resetForm();
-            setSelectedImages([]);
-          }
-        } catch (error) {
-          console.error("Error uploading images:", error);
-          // Handle error appropriately
-          console.log(error);
-        }
+      switch (obj.documentsType) {
+        case "Aadhar Card":
+          title = "nid";
+          break;
+        case "Passport":
+          title = "passport";
+          break;
+        case "Driving Licence":
+          title = "driving_lic_img";
       }
+
+      const formData = new FormData();
+
+      for (let i = 0; i < obj.documents.length; i++) {
+        const photoName = obj.documents[i].name.substring(
+          0,
+          obj.documents[i].name.lastIndexOf("."),
+        );
+
+        formData.append(photoName, obj.documents[i]);
+      }
+
+      await upload(formData).then(
+        (result) => (tempImg = result.data.imageUrls),
+      );
+
+      const response = await addBooking({
+        hotel_id: obj.hotel_id,
+        room_ids,
+        guestName: obj.guestName,
+        address: obj.address,
+        mobileNumber: obj.mobileNumber,
+        emergency_contact: obj.emergency_contact,
+        adult: obj.adult,
+        children: obj.children,
+        paymentMethod: obj.paymentMethod,
+        transection_id: obj.trxID,
+        from: obj.from,
+        to: obj.to,
+        no_of_days,
+        rent_per_day,
+        total_rent,
+        discount,
+        amount_after_dis,
+        paid_amount: obj.amount,
+        total_unpaid_amount: amount_after_dis - obj.amount,
+        nationality: obj.nationality,
+        doc_number: obj.doc_number,
+        doc_images: {
+          [title]: tempImg,
+        },
+        status: "CheckedIn",
+      });
+
+      console.log(response);
+
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        formikHelpers.resetForm();
+        toast.success(response.data.message);
+      }
+
+      setLoading(false);
     },
   });
 
@@ -186,11 +206,22 @@ const CheckIn = ({ room }) => {
       e.preventDefault();
     }
   };
+  const { data: hotel } = useGetHotelByIdQuery(room?.data?.hotel_id);
 
-  const transformedRooms = rooms?.data?.map((room) => ({
-    value: room.roomNumber,
-    label: `${room.roomNumber} - ${room.category}`,
-  }));
+  useEffect(() => {
+    if (room?.data) {
+      formik.setValues({
+        room_arr: [
+          {
+            label: `${room.data.roomNumber} - ${room.data.category}`,
+            value: room.data._id,
+            price: room.data.price,
+          },
+        ],
+        hotel_id: room.data.hotel_id,
+      });
+    }
+  }, [room?.data]);
 
   useEffect(() => {
     if (formik.values.documents) {
@@ -198,16 +229,6 @@ const CheckIn = ({ room }) => {
       setSelectedImages(selectedImagesArray);
     }
   }, [formik.values.documents]);
-
-  useEffect(() => {
-    if (room?.data) {
-      formik.setValues((p) => ({
-        ...p,
-        room_ids: [room.data._id],
-        hotel_id: room.data.hotel_id,
-      }));
-    }
-  }, [room?.data]);
 
   return (
     <>
@@ -220,124 +241,115 @@ const CheckIn = ({ room }) => {
           ✕
         </button>
       </form>
-
-      <div className={`max-w-xl rounded-2xl mx-auto`}>
+      <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
         <hr />
         <form
           autoComplete="off"
-          method="dialog"
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
-          <div className={`relative col-span-full`}>
-            <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
-              <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
-                <MdOutlineKeyboardArrowLeft />
+          {selectedImages?.length ? (
+            <div className={`relative col-span-full`}>
+              <div className="swiper-controller absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full px-4 z-10">
+                <div className="swiper-er-button-prev flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                  <MdOutlineKeyboardArrowLeft />
+                </div>
+                <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
+                  <MdOutlineKeyboardArrowRight />
+                </div>
               </div>
-              <div className="swiper-er-button-next flex justify-center items-center bg-green-slimy text-white w-6 h-6 rounded-full cursor-pointer">
-                <MdOutlineKeyboardArrowRight />
-              </div>
-            </div>
-            <Swiper
-              modules={[Navigation]}
-              navigation={{
-                enabled: true,
-                prevEl: ".swiper-er-button-prev",
-                nextEl: ".swiper-er-button-next",
-                disabledClass: "swiper-er-button-disabled",
-              }}
-              slidesPerView={1}
-              spaceBetween={50}
-            >
-              {selectedImages.length ? (
-                selectedImages.map((image, idx) => (
-                  <SwiperSlide>
-                    <div className={`relative`}>
-                      <div className={`absolute top-3 right-3 space-x-1.5`}>
-                        <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
-                          <TbReplaceFilled />
-                          <input
-                            type="file"
-                            className="absolute left-0 top-0  overflow-hidden h-0"
-                            onChange={(e) =>
-                              handleChange(idx, e.currentTarget.files[0])
-                            }
+              <Swiper
+                modules={[Navigation]}
+                navigation={{
+                  enabled: true,
+                  prevEl: ".swiper-er-button-prev",
+                  nextEl: ".swiper-er-button-next",
+                  disabledClass: "swiper-er-button-disabled",
+                }}
+                slidesPerView={1}
+                spaceBetween={50}
+              >
+                {selectedImages.length
+                  ? selectedImages.map((image, idx) => (
+                      <SwiperSlide>
+                        <div className={`relative`}>
+                          <div className={`absolute top-3 right-3 space-x-1.5`}>
+                            <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                              <TbReplaceFilled />
+                              <input
+                                type="file"
+                                className="absolute left-0 top-0  overflow-hidden h-0"
+                                onChange={(e) =>
+                                  handleChange(idx, e.currentTarget.files[0])
+                                }
+                              />
+                            </label>
+                            <button
+                              className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                              onClick={() => handleDelete(idx)}
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                          <img
+                            key={idx}
+                            src={URL.createObjectURL(image)}
+                            alt=""
+                            className={`w-full h-96 object-cover rounded`}
                           />
-                        </label>
-                        <button
-                          className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                          onClick={() => handleDelete(idx)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                      <img
-                        key={idx}
-                        src={URL.createObjectURL(image)}
-                        alt=""
-                        className={`w-full h-96 object-cover rounded`}
-                      />
-                    </div>
-                  </SwiperSlide>
-                ))
-              ) : (
-                <img
-                  src={imgPlaceHolder}
-                  alt=""
-                  className={`w-full h-96 object-cover rounded`}
-                />
-              )}
-            </Swiper>
-          </div>
-
+                        </div>
+                      </SwiperSlide>
+                    ))
+                  : null}
+              </Swiper>
+            </div>
+          ) : null}
           <div className="flex flex-col gap-3">
             <select
-              name="chooseHotels"
-              className="input input-md  bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.chooseHotels}
+              name="hotel_id"
+              className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.hotel_id}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
               <option value="" selected disabled>
                 {hotel?.name}
               </option>
-
-              {/* {hotelsList?.map((i) => (
-							<option key={i._id} value={i._id}>
-								{i.name}
-							</option>
-						))} */}
             </select>
+            {/*{formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*/}
+            {/*  <small className="text-red-600">*/}
+            {/*    {formik.touched.hotel_id && formik.errors.hotel_id}*/}
+            {/*  </small>*/}
+            {/*) : null}*/}
           </div>
 
           <div className="flex flex-col gap-3">
             <select
-              name="room_ids"
-              className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.room_ids}
+              name="room_arr"
+              className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.room_arr}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
               <option value="" selected disabled>
-                {room.data.category} - {room.data.roomNumber}
+                {room.data.roomNumber + " - " + room.data.category}
               </option>
-
-              {/* {hotelsList?.map((i) => (
-							<option key={i._id} value={i._id}>
-								{i.name}
-							</option>
-						))} */}
             </select>
+            {/*{formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (*/}
+            {/*  <small className="text-red-600">*/}
+            {/*    {formik.touched.room_arr && formik.errors.room_arr}*/}
+            {/*  </small>*/}
+            {/*) : null}*/}
           </div>
 
-          {/* name box */}
+          {/* Guest box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
               placeholder="Guest name"
               name="guestName"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.guestName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -348,14 +360,30 @@ const CheckIn = ({ room }) => {
               </small>
             ) : null}
           </div>
-
-          {/* mobile box */}
+          {/* Address box */}
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Address"
+              name="address"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.address && Boolean(formik.errors.address) ? (
+              <small className="text-red-600">
+                {formik.touched.address && formik.errors.address}
+              </small>
+            ) : null}
+          </div>
+          {/* mobileNumber box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
               placeholder="Mobile number"
               name="mobileNumber"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.mobileNumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -367,14 +395,13 @@ const CheckIn = ({ room }) => {
               </small>
             ) : null}
           </div>
-
-          {/* emergency Number  box */}
+          {/* emergency  box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
               placeholder="Emergency Number"
               name="emergency_contact"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.emergency_contact}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -388,31 +415,13 @@ const CheckIn = ({ room }) => {
             ) : null}
           </div>
 
-          {/* Address   box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Address"
-              name="address"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.address}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.address && Boolean(formik.errors.address) ? (
-              <small className="text-red-600">
-                {formik.touched.address && formik.errors.address}
-              </small>
-            ) : null}
-          </div>
-
           {/* adult box */}
           <div className="flex flex-col gap-3">
             <input
-              type="text"
+              type="number"
               placeholder="Adult"
               name="adult"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.adult}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -427,10 +436,10 @@ const CheckIn = ({ room }) => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
-              type="text"
+              type="number"
               placeholder="Children"
               name="children"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.children}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -446,79 +455,78 @@ const CheckIn = ({ room }) => {
           <div className="flex flex-col gap-3">
             <input
               type="number"
-              placeholder="Amount"
+              placeholder="Advanced Amount"
               name="amount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.amount}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
+            {formik.touched.amount && Boolean(formik.errors.amount) ? (
+              <small className="text-red-600">
+                {formik.touched.amount && formik.errors.amount}
+              </small>
+            ) : null}
           </div>
 
           {/* payment method box */}
-          {formik.values.amount && (
-            <div className="flex flex-col gap-3">
-              <select
-                name="paymentMethod"
-                className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-                value={formik.values.paymentMethod}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  Payment Method
-                </option>
-                <option value="Cash">Cash</option>
-                <option value="Card">Card</option>
-                <option value="Mobile_Banking">Mobile Banking</option>
-              </select>
-              {formik.touched.paymentMethod &&
-              Boolean(formik.errors.paymentMethod) ? (
-                <small className="text-red-600">
-                  {formik.touched.paymentMethod && formik.errors.paymentMethod}
-                </small>
-              ) : null}
-            </div>
-          )}
-
+          <div className="flex flex-col gap-3">
+            <select
+              name="paymentMethod"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+              value={formik.values.paymentMethod}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Payment Method
+              </option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Mobile_Banking">Mobile Banking</option>
+            </select>
+            {formik.touched.paymentMethod &&
+            Boolean(formik.errors.paymentMethod) ? (
+              <small className="text-red-600">
+                {formik.touched.paymentMethod && formik.errors.paymentMethod}
+              </small>
+            ) : null}
+          </div>
           {formik.values.paymentMethod &&
           formik.values.paymentMethod !== "Cash" ? (
             <div className="flex flex-col gap-3">
               <input
                 type="text"
                 placeholder="Transaction ID"
-                name="transection_id"
+                name="trxID"
                 className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-                value={formik.values.transection_id}
+                value={formik.values.trxID}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.transection_id &&
-              Boolean(formik.errors.transection_id) ? (
+              {formik.touched.trxID && Boolean(formik.errors.trxID) ? (
                 <small className="text-red-600">
-                  {formik.touched.transection_id &&
-                    formik.errors.transection_id}
+                  {formik.touched.trxID && formik.errors.trxID}
                 </small>
               ) : null}
             </div>
           ) : null}
 
-          {/* discount box */}
           <div className="flex flex-col gap-3">
             <input
               type="number"
               placeholder="Discount"
               name="discount"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.discount}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.discount && Boolean(formik.errors.discount) ? (
-              <small className="text-red-600">
-                {formik.touched.discount && formik.errors.discount}
-              </small>
-            ) : null}
+            {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
+            {/*  <small className="text-red-600">*/}
+            {/*    {formik.touched.discount && formik.errors.discount}*/}
+            {/*  </small>*/}
+            {/*) : null}*/}
           </div>
 
           {/* Date */}
@@ -557,55 +565,6 @@ const CheckIn = ({ room }) => {
             ) : null}
           </div>
 
-          {/* type Of Documents  box */}
-          <div className="flex flex-col gap-3">
-            <select
-              name="documentsType"
-              className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-              value={formik.values.documentsType}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                Type Of Documents
-              </option>
-
-              <option value="adarCard">Adar Card</option>
-              <option value="passport">Passport</option>
-              <option value="drivingLicense">Driving Licence</option>
-              <option value="nid">NID</option>
-            </select>
-            {formik.touched.documentsType &&
-            Boolean(formik.errors.documentsType) ? (
-              <small className="text-red-600">
-                {formik.touched.documentsType && formik.errors.documentsType}
-              </small>
-            ) : null}
-          </div>
-
-          {formik.values.documentsType &&
-          formik.values.documentsType !== "nid" ? (
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                placeholder="Documents Number"
-                name="documentsNumber"
-                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                value={formik.values.doc_number}
-                onChange={(e) =>
-                  formik.setFieldValue("doc_number", e.target.value)
-                }
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.doc_number &&
-              Boolean(formik.errors.doc_number) ? (
-                <small className="text-red-600">
-                  {formik.touched.doc_number && formik.errors.doc_number}
-                </small>
-              ) : null}
-            </div>
-          ) : null}
-
           {/* Nationality box */}
           <div className="flex flex-col gap-3">
             <input
@@ -624,38 +583,79 @@ const CheckIn = ({ room }) => {
               </small>
             ) : null}
           </div>
-
-          {/* documents */}
-          <div className={`flex space-x-1.5`}>
-            <div className="flex flex-col gap-3 w-full">
-              <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                {formik.values.documents ? (
-                  <span>{formik.values.documents.length + " files"}</span>
-                ) : (
-                  <span className={`flex items-baseline space-x-1.5`}>
-                    <FaUpload />
-                    <span>Choose documents</span>
-                  </span>
-                )}
-
+          <div className="flex flex-col gap-3">
+            <select
+              name="documentsType"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+              value={formik.values.documentsType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Type Of Documents
+              </option>
+              <option value="Aadhar Card">Aadhar Card</option>
+              <option value="Passport">Passport</option>
+              <option value="Driving Licence">Driving Licence</option>
+            </select>
+            {formik.touched.documentsType &&
+            Boolean(formik.errors.documentsType) ? (
+              <small className="text-red-600">
+                {formik.touched.documentsType && formik.errors.documentsType}
+              </small>
+            ) : null}
+          </div>
+          {formik.values.documentsType ? (
+            <>
+              <div className="flex flex-col gap-3">
                 <input
-                  type="file"
-                  multiple
-                  name="documents"
-                  className="absolute left-0 top-0  overflow-hidden h-0"
-                  onChange={(e) =>
-                    formik.setFieldValue("documents", e.currentTarget.files)
-                  }
+                  type="text"
+                  placeholder="Document Number"
+                  name="doc_number"
+                  className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+                  value={formik.values.doc_number}
+                  onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-              </label>
-              {formik.touched.documents && Boolean(formik.errors.documents) ? (
-                <small className="text-red-600">
-                  {formik.touched.documents && formik.errors.documents}
-                </small>
-              ) : null}
-            </div>
-          </div>
+                {formik.touched.doc_number &&
+                Boolean(formik.errors.doc_number) ? (
+                  <small className="text-red-600">
+                    {formik.touched.doc_number && formik.errors.doc_number}
+                  </small>
+                ) : null}
+              </div>
+              <div className={`flex space-x-1.5`}>
+                <div className="flex flex-col gap-3 w-full">
+                  <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+                    {formik.values.documents ? (
+                      <span>{formik.values.documents.length + " files"}</span>
+                    ) : (
+                      <span className={`flex items-baseline space-x-1.5`}>
+                        <FaUpload />
+                        <span>Choose documents</span>
+                      </span>
+                    )}
+                    <input
+                      type="file"
+                      multiple
+                      name="documents"
+                      className="absolute left-0 top-0  overflow-hidden h-0"
+                      onChange={(e) =>
+                        formik.setFieldValue("documents", e.currentTarget.files)
+                      }
+                      onBlur={formik.handleBlur}
+                    />
+                  </label>
+                  {formik.touched.documents &&
+                  Boolean(formik.errors.documents) ? (
+                    <small className="text-red-600">
+                      {formik.touched.documents && formik.errors.documents}
+                    </small>
+                  ) : null}
+                </div>
+              </div>
+            </>
+          ) : null}
 
           {/* button */}
           <div className={`flex justify-between`}>
@@ -664,7 +664,7 @@ const CheckIn = ({ room }) => {
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
               Confirm
-              {bookingLoading ? (
+              {isLoading ? (
                 <span
                   className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
                   role="status"
@@ -678,4 +678,4 @@ const CheckIn = ({ room }) => {
   );
 };
 
-export default CheckIn;
+export default CheckInModal;
