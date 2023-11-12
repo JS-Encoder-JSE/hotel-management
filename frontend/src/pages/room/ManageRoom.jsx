@@ -37,24 +37,25 @@ const ManageRoom = () => {
     }
   };
 
-	const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 
-	console.log(rooms)
-	return (
-		<div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
-			<div className={`flex justify-between gap-4`}>
-				{/* filter by hotels  */}
-				<div className="flex  items-center gap-2">
-					{/* <p className="">Please choose hotel : </p> */}
-					<select
-						name="hotel_id"
-						className="input h-8 input-md bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
-						value={formik.values.hotel_id}
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}>
-						<option value="" selected disabled>
-							Choose Hotels
-						</option>
+  console.log(rooms);
+  return (
+    <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
+      <div className={`flex justify-between gap-4`}>
+        {/* filter by hotels  */}
+        <div className="flex  items-center gap-2">
+          {/* <p className="">Please choose hotel : </p> */}
+          <select
+            name="hotel_id"
+            className="input h-8 input-md bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
+            value={formik.values.hotel_id}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="" selected disabled>
+              Choose Hotels
+            </option>
 
             {hotelsList?.map((i) => (
               <option key={i._id} value={i._id}>

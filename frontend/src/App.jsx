@@ -79,6 +79,7 @@ import PoolReservation from "./pages/LifeStyle/PoolReservation.jsx";
 import OrderList from "./pages/restaurant/OrderList.jsx";
 import ReportManager from "./pages/report/ReportManager.jsx";
 import OrderListBar from "./pages/bar/OrderListBar.jsx";
+import CheckInDyn from "./pages/room/CheckInDyn.jsx";
 
 
 
@@ -183,7 +184,7 @@ const App = () => {
               path: "checkin/:id",
               element: (
                 <ManagerRoute>
-                  <CheckIn />
+                  <CheckInDyn />
                 </ManagerRoute>
               ),
             },

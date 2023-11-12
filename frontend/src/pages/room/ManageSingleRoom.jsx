@@ -8,8 +8,8 @@ import RoomBookingEdit from "../../components/room/RoomBookingEdit.jsx";
 import { useRoomQuery } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import AddBooking from "../../components/room/AddBooking.jsx";
-import CheckIn from "./CheckInModal.jsx";
 import AddBookingSelect from "../../components/room/AddBookingSelect.jsx";
+import CheckInModal from "./CheckInModal.jsx";
 
 const ManageSingleRoom = () => {
   const { id } = useParams();
@@ -148,7 +148,7 @@ const ManageSingleRoom = () => {
           </Modal>
 
           <Modal id={`ci_modal`}>
-            <CheckIn room={room} />
+            <CheckInModal room={room} />
           </Modal>
         </>
       ) : (

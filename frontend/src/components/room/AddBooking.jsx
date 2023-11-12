@@ -13,55 +13,43 @@ import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
-  guestName: yup.string().required("Name is required"),
+  room_arr: yup.array().required("Room IDs are required"),
+  hotel_id: yup.string().required("Hotel ID is required"),
+  guestName: yup.string().required("Guest name is required"),
   address: yup.string().required("Address is required"),
   mobileNumber: yup.string().required("Mobile number is required"),
-  emergency_contact: yup.string().required("Emergency Number is required"),
-  // age: yup
-  //   .number()
-  //   .required("Age is required")
-  //   .positive("Age must be a positive number")
-  //   .integer("Age must be an integer"),
+  emergency_contact: yup.string().required("Emergency contact is required"),
   adult: yup
     .number()
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
-  // children: yup.number().when(["children"], ([children], schema) => {
-  //   if (children)
-  //     return schema
-  //       .positive("Children must be a positive number")
-  //       .integer("Children must be an integer");
-  //   else return schema;
+  // children: yup.number().when([], {
+  //   is: (children) => children && children.length > 0,
+  //   then: yup
+  //     .number()
+  //     .positive("Children must be a positive number")
+  //     .integer("Children must be an integer"),
   // }),
-  paymentMethod: yup.string(),
+  paymentMethod: yup.string().required("Payment method is required"),
   // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-  // 	if (paymentMethod !== "cash")
-  // 		return schema.required("Transaction ID is required");
-  // 	else return schema;
+  //   if (paymentMethod !== "cash")
+  //     return schema.required("Transaction ID is required");
+  //   else return schema;
   // }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  nationality: yup.string().required("Nationality Date is required"),
-  advanced_amount: yup.number(),
-  // discount: yup.number().when(["discount"], ([discount], schema) => {
-  //   if (discount)
-  //     return schema
-  //       .positive("Discount must be a positive number")
-  //       .integer("Discount must be an integer");
-  //   else return schema;
-  // }),
+  amount: yup.string().required("Advance amount is required"),
+  nationality: yup.string().required("Nationality is required"),
 });
 
 const AddBooking = () => {
   // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
-  const [selectedRooms, setSelectedRooms] = useState([]);
   const closeRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-      room_ids: [],
-      advanced_amount: "",
+      room_arr: [],
       hotel_id: "",
       guestName: "",
       address: "",
@@ -70,19 +58,55 @@ const AddBooking = () => {
       adult: "",
       children: "",
       paymentMethod: "",
-      discount: "",
+      trxID: "",
       from: "",
       to: "",
+      amount: "",
+      discount: "",
       nationality: "",
     },
 
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       const obj = { ...values };
-      obj.room_ids = selectedRooms.map((i) => i.id);
 
-      const response = await addBooking(obj);
-      console.log({ values });
+      if (!obj.discount) obj.discount = 0;
+
+      const room_ids = obj.room_arr.map((elem) => elem.value);
+      const no_of_days = Math.floor(
+        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000),
+      );
+      const rent_per_day = obj.room_arr.reduce(
+        (init, current) => init + current.price,
+        0,
+      );
+      const total_rent = no_of_days * rent_per_day;
+      const discount = (total_rent * obj.discount) / 100;
+      const amount_after_dis = total_rent - discount;
+
+      const response = await addBooking({
+        hotel_id: obj.hotel_id,
+        room_ids,
+        guestName: obj.guestName,
+        address: obj.address,
+        mobileNumber: obj.mobileNumber,
+        emergency_contact: obj.emergency_contact,
+        adult: obj.adult,
+        children: obj.children,
+        paymentMethod: obj.paymentMethod,
+        transection_id: obj.trxID,
+        from: obj.from,
+        to: obj.to,
+        no_of_days,
+        rent_per_day,
+        total_rent,
+        discount,
+        amount_after_dis,
+        paid_amount: obj.amount,
+        total_unpaid_amount: amount_after_dis - obj.amount,
+        nationality: obj.nationality,
+      });
+
       console.log(response);
 
       if (response?.error) {
@@ -105,9 +129,9 @@ const AddBooking = () => {
   const transformedRooms = rooms?.data?.docs
     ?.filter((i) => i.status === "Available")
     .map((room) => ({
-      id: room._id,
-      value: room.roomNumber,
-      label: `${room.roomNumber} - ${room.category} -  Price: ${room.price}`,
+      label: `${room.roomNumber} - ${room.category}`,
+      value: room._id,
+      price: room.price,
     }));
 
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
@@ -134,13 +158,13 @@ const AddBooking = () => {
           <div className="flex flex-col gap-3">
             <select
               name="hotel_id"
-              className="input input-md h-8 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.hotel_id}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
               <option value="" selected disabled>
-                Choose Hotels
+                Choose Hotel
               </option>
 
               {hotelsList?.map((i) => (
@@ -149,18 +173,23 @@ const AddBooking = () => {
                 </option>
               ))}
             </select>
+            {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (
+              <small className="text-red-600">
+                {formik.touched.hotel_id && formik.errors.hotel_id}
+              </small>
+            ) : null}
           </div>
 
           <div className="flex flex-col gap-3">
             <Select
-              placeholder="Room number"
-              defaultValue={selectedRooms}
+              placeholder="Select Rooms"
+              defaultValue={formik.values.room_arr}
               options={transformedRooms}
               isMulti
               isSearchable
               closeMenuOnSelect={false}
-              onKeyDown={handleKeyDown}
-              onChange={setSelectedRooms}
+              // onKeyDown={handleKeyDown}
+              onChange={(e) => formik.setFieldValue("room_arr", e)}
               noOptionsMessage={() => "No room available"}
               classNames={{
                 control: (state) =>
@@ -171,6 +200,11 @@ const AddBooking = () => {
                 placeholder: () => "!m-0",
               }}
             />
+            {formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (
+              <small className="text-red-600">
+                {formik.touched.room_arr && formik.errors.room_arr}
+              </small>
+            ) : null}
           </div>
 
           {/* Guest box */}
@@ -190,7 +224,7 @@ const AddBooking = () => {
               </small>
             ) : null}
           </div>
-          {/* Adsress box */}
+          {/* Address box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
@@ -248,7 +282,7 @@ const AddBooking = () => {
           {/* adult box */}
           <div className="flex flex-col gap-3">
             <input
-              type="text"
+              type="number"
               placeholder="Adult"
               name="adult"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
@@ -266,7 +300,7 @@ const AddBooking = () => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
-              type="text"
+              type="number"
               placeholder="Children"
               name="children"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
@@ -286,39 +320,42 @@ const AddBooking = () => {
             <input
               type="number"
               placeholder="Advanced Amount"
-              name="advanced_amount"
+              name="amount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.advanced_amount}
+              value={formik.values.amount}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
+            {formik.touched.amount && Boolean(formik.errors.amount) ? (
+              <small className="text-red-600">
+                {formik.touched.amount && formik.errors.amount}
+              </small>
+            ) : null}
           </div>
 
           {/* payment method box */}
-          {formik.values.advanced_amount && (
-            <div className="flex flex-col gap-3">
-              <select
-                name="paymentMethod"
-                className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-                value={formik.values.paymentMethod}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  Payment Method
-                </option>
-                <option value="Cash">Cash</option>
-                <option value="Card">Card</option>
-                <option value="Mobile_Banking">Mobile Banking</option>
-              </select>
-              {formik.touched.paymentMethod &&
-              Boolean(formik.errors.paymentMethod) ? (
-                <small className="text-red-600">
-                  {formik.touched.paymentMethod && formik.errors.paymentMethod}
-                </small>
-              ) : null}
-            </div>
-          )}
+          <div className="flex flex-col gap-3">
+            <select
+              name="paymentMethod"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+              value={formik.values.paymentMethod}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Payment Method
+              </option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Mobile_Banking">Mobile Banking</option>
+            </select>
+            {formik.touched.paymentMethod &&
+            Boolean(formik.errors.paymentMethod) ? (
+              <small className="text-red-600">
+                {formik.touched.paymentMethod && formik.errors.paymentMethod}
+              </small>
+            ) : null}
+          </div>
           {formik.values.paymentMethod &&
           formik.values.paymentMethod !== "Cash" ? (
             <div className="flex flex-col gap-3">
@@ -341,7 +378,7 @@ const AddBooking = () => {
 
           <div className="flex flex-col gap-3">
             <input
-              type="text"
+              type="number"
               placeholder="Discount"
               name="discount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
@@ -349,11 +386,11 @@ const AddBooking = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.discount && Boolean(formik.errors.discount) ? (
-              <small className="text-red-600">
-                {formik.touched.discount && formik.errors.discount}
-              </small>
-            ) : null}
+            {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
+            {/*  <small className="text-red-600">*/}
+            {/*    {formik.touched.discount && formik.errors.discount}*/}
+            {/*  </small>*/}
+            {/*) : null}*/}
           </div>
 
           {/* Date */}
@@ -433,26 +470,3 @@ const AddBooking = () => {
 };
 
 export default AddBooking;
-
-// {
-// 	"room_ids": ["654c864f371b0c183a57ff02", "654b8c5d08dff0d052faaad7"],
-// 	"hotel_id": "654b6d9f4a8162325a5e1756",
-// 	"guestName": "John Doe",
-// 	"address": "123 Main St, City",
-// 	"mobileNumber": "1234567890",
-// 	"emergency_contact": "9876543210",
-// 	"adult": 2,
-// 	"children": 1,
-// 	"paymentMethod": "Card",
-// 	"discount": 10,
-// 	"from": "2023-11-10T12:00:00Z",
-// 	"to": "2023-11-15T12:00:00Z",
-// 	"nationality": "USA",
-// 	"status": "Active",
-// 	"doc_number": "ABCD123456",
-// 	"doc_images": {
-// 	  "driving_lic_img": ["driving_license_img_url.jpg"],
-// 	  "passport": ["passport_img_url.jpg"],
-// 	  "nid": ["nid_img_url.jpg"]
-// 	}
-//   }

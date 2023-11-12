@@ -111,7 +111,7 @@ const RoomLists = ({ setCurrentPage, rooms }) => {
                       </div>
                     )}
                   </td>
-                  <td className={`space-x-1.5`}>
+                  <td className={`flex flex-wrap gap-1.5`}>
                     <span
                       className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                       onClick={() => navigate(`/dashboard/manage-room/${_id}`)}
