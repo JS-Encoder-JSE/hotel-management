@@ -1,9 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillPrinter } from "react-icons/ai";
 
-const BillingSection = () => {
+const BillingSection = ({ setTotalBilling }) => {
   const [discount, setDiscount] = useState(false);
-  console.log(discount);
+  const [billing, setBilling] = useState([
+    { amount: "" },
+    { amount: "" },
+    { amount: "" },
+  ]);
+
+  const handleDiscountChange = (idx, val) => {
+    const arr = [...billing];
+
+    arr.splice(idx, 1, { amount: val });
+    setBilling(arr);
+  };
+
+  const handleAmountChange = (idx, val) => {
+    const arr = [...billing];
+
+    arr.splice(idx, 1, { amount: val });
+    setBilling(arr);
+  };
+
+  const handleTaxChange = (idx, val) => {
+    const arr = [...billing];
+
+    arr.splice(idx, 1, { amount: val });
+    setBilling(arr);
+  };
+
+  useEffect(() => {
+    const totalBilling = billing.reduce(
+      (total, current) =>
+        total + (Boolean(current?.amount) ? +current.amount : 0),
+      0,
+    );
+
+    setTotalBilling(totalBilling);
+  }, [billing]);
+
   return (
     <section className="grid lg:grid-cols-3 gap-5">
       <div className="bg-white rounded">
@@ -25,6 +61,7 @@ const BillingSection = () => {
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500 ${
                       !discount && "cursor-not-allowed"
                     }`}
+                    onChange={(e) => handleDiscountChange(0, +e.target.value)}
                   />
                   <span>(%)</span>
                 </div>
@@ -54,8 +91,9 @@ const BillingSection = () => {
                 <div className={`flex gap-1 items-center`}>
                   <span>$</span>
                   <input
-                      type="number"
-                      className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
+                    type="number"
+                    className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
+                    onChange={(e) => handleAmountChange(1, +e.target.value)}
                   />
                 </div>
               </td>
@@ -66,8 +104,9 @@ const BillingSection = () => {
                 <div className={`flex gap-1 items-center`}>
                   <span>%</span>
                   <input
-                      type="number"
-                      className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
+                    type="number"
+                    className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
+                    onChange={(e) => handleTaxChange(2, +e.target.value)}
                   />
                 </div>
               </td>
@@ -101,9 +140,7 @@ const BillingSection = () => {
             <tr>
               <td className="align-top">Additional Charges Comments</td>
               <td className="pl-5">
-                <textarea
-                  className="border rounded-md p-2 bg-transparent outline-none resize-none"
-                ></textarea>
+                <textarea className="border rounded-md p-2 bg-transparent outline-none resize-none"></textarea>
               </td>
             </tr>
           </tbody>

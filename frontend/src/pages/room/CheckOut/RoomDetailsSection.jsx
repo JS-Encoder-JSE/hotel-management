@@ -1,7 +1,6 @@
 import React from "react";
 
 const RoomDetailsSection = ({ selectedRooms }) => {
-    console.log(selectedRooms);
   return (
     <section className="bg-white p-4 rounded">
       <table className="w-full border border-black/20 text-sm">

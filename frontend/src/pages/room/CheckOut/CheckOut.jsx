@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 
 const CheckOut = () => {
   const [showRooms, setShowRooms] = useState(false);
+  const [totalBilling, setTotalBilling] = useState(0)
 
   const formik = useFormik({
     initialValues: {
@@ -51,13 +52,14 @@ const CheckOut = () => {
     }));
 
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+
   return (
     <div className="space-y-8">
       <div className="max-w-3xl mx-auto flex gap-5 items-center justify-start">
         <div className="flex flex-col gap-3">
           <select
             name="hotel_id"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.hotel_id}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -110,7 +112,7 @@ const CheckOut = () => {
         <>
           <CustomerInfoSection />
           <RoomDetailsSection selectedRooms={formik.values.room} />
-          <BillingSection />
+          <BillingSection setTotalBilling={setTotalBilling} />
           <PaymentSection />
         </>
       )}

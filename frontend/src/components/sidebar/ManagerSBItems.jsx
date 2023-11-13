@@ -308,7 +308,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Bar Item
+              Order Bar Item
             </NavLink>
           </li>
           <li>

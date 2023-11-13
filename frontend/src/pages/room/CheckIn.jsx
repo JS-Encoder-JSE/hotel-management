@@ -163,6 +163,7 @@ const CheckIn = () => {
         toast.error(response.error.data.message);
       } else {
         formikHelpers.resetForm();
+        setSelectedImages([]);
         toast.success(response.data.message);
       }
 

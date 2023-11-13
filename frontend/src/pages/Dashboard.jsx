@@ -8,6 +8,7 @@ import ManagerSBItems from "../components/sidebar/ManagerSBItems.jsx";
 import Header from "../components/Header.jsx";
 import OwnerSBItems from "../components/sidebar/OwnerSBItems.jsx";
 import AdminSBItems from "../components/sidebar/AdminSBItems.jsx";
+import Footer from "../components/Footer.jsx";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -94,6 +95,9 @@ const Dashboard = () => {
             </div>
             <div className={`px-10`}>
               <Outlet />
+            </div>
+            <div>
+              <Footer />
             </div>
           </div>
         </div>

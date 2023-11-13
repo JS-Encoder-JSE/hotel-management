@@ -6,6 +6,7 @@ import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 import PaymentMethod from "./PaymentMethod.jsx";
 
 const PaymentSection = () => {
+  const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const [collectedAmount, setCollectedAmount] = useState(0);
@@ -35,6 +36,16 @@ const PaymentSection = () => {
     ]);
   };
 
+  useEffect(() => {
+    const totalCol = paymentList.reduce(
+      (total, current) =>
+        total + (Boolean(current.amount) ? +current.amount : 0),
+      0,
+    );
+
+    setColAmount(totalCol);
+  }, [paymentList]);
+
   return (
     <section>
       <div className="grid lg:grid-cols-2 gap-5">
@@ -44,10 +55,10 @@ const PaymentSection = () => {
           <h3 className="p-5 text-xl mt-5">Bill Statement</h3>
           <hr />
           <PaymentMethod
-              paymentList={paymentList}
-              handleAdd={handleAdd}
-              handleRemove={handleRemove}
-              handleChange={handleChange}
+            paymentList={paymentList}
+            handleAdd={handleAdd}
+            handleRemove={handleRemove}
+            handleChange={handleChange}
           />
         </div>
         {/* Right Side */}
@@ -63,7 +74,7 @@ const PaymentSection = () => {
             </div>
             <div className="col-span-2 space-y-3">
               <p>$ {remainAmount.toFixed(2)}</p>
-              <p>$ {collectedAmount.toFixed(2)}</p>
+              <p>$ {colAmount.toFixed(2)}</p>
               <p>
                 ${" "}
                 {collectedAmount > remainAmount

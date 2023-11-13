@@ -74,7 +74,9 @@ const FoodList = ({ idx, food, handleOrder }) => {
       <td className={`text-center`}>
         {!isAdd ? (
           <span
-            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
+              food?.status === "Unavailable" ? "btn-disabled" : ""
+            }`}
             title={`Add`}
             onClick={() => {
               handleOrder(food);

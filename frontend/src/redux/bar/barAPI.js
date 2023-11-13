@@ -36,7 +36,7 @@ const barAPI = baseAPI.injectEndpoints({
         `bar/get-bar-orders-by-hotel/${id}?limit=${pp}&page=${++cp}${
           search ? `&search=${search}` : ""
         }`,
-      providesTags: ["order"],
+      providesTags: ["order", "bar"],
     }),
   }),
 });

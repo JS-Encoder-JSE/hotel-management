@@ -40,16 +40,18 @@ const PaymentMethod = ({
                   onChange={(e) => handleChange(e, idx)}
                 />
               </div>
-              <div className="flex flex-col gap-3">
-                <input
-                  type="text"
-                  placeholder="Trx ID"
-                  value={elem.trx}
-                  name="trx"
-                  className="input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                  onChange={(e) => handleChange(e, idx)}
-                />
-              </div>
+              {elem?.method && elem?.method !== "Cash" ? (
+                <div className="flex flex-col gap-3">
+                  <input
+                    type="text"
+                    placeholder="Trx ID"
+                    value={elem.trx}
+                    name="trx"
+                    className="input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+                    onChange={(e) => handleChange(e, idx)}
+                  />
+                </div>
+              ) : null}
               <div className="flex flex-col gap-3">
                 <DatePicker
                   dateFormat="dd/MM/yyyy"
