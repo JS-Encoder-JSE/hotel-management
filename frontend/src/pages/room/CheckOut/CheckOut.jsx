@@ -5,6 +5,7 @@ import RoomDetailsSection from "./RoomDetailsSection";
 import BillingSection from "./BillingSection";
 import PaymentSection from "./PaymentSection";
 import {
+  useGetCOInfoQuery,
   useGetRoomsAndHotelsQuery,
   useRoomNumbersQuery,
   useRoomsQuery,
@@ -14,7 +15,8 @@ import toast from "react-hot-toast";
 
 const CheckOut = () => {
   const [showRooms, setShowRooms] = useState(false);
-  const [totalBilling, setTotalBilling] = useState(0)
+  const [totalBilling, setTotalBilling] = useState(0);
+  const [fetch, setFetch] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -26,6 +28,7 @@ const CheckOut = () => {
     },
   });
 
+  const { data: checkout } = useGetCOInfoQuery(fetch?.[0]);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const { isLoading, data: rooms } = useRoomsQuery({
     id: formik.values.hotel_id,
@@ -35,6 +38,9 @@ const CheckOut = () => {
   });
 
   const handleGetRooms = () => {
+    const arr = formik.values.room.map((elem) => elem.value);
+
+    setFetch(arr);
     setShowRooms(true);
   };
 

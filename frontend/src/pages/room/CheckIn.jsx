@@ -206,7 +206,10 @@ const CheckIn = () => {
       e.preventDefault();
     }
   };
-  const { data: rooms } = useRoomsQuery({ id: formik.values.hotel_id });
+  const { data: rooms } = useRoomsQuery({
+    id: formik.values.hotel_id,
+    limit: 1000000,
+  });
 
   const transformedRooms = rooms?.data?.docs
     ?.filter((i) => i.status === "Available" || i.status === "Booked")

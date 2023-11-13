@@ -124,7 +124,7 @@ const ConfirmOrder = () => {
                 noOptionsMessage={() => "No room available"}
                 classNames={{
                   control: (state) =>
-                    `!input !input-md !h-4 !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    `!input !input-md !h-4 !input-bordered !bg-transparent min-w-[10rem] !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
                       state.isFocused ? "!shadow-none" : ""
                     }`,
                   valueContainer: () => "!p-0",

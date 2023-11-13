@@ -83,7 +83,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div>
+          <div className={`flex flex-col`}>
             <div className={`-mt-10 mb-10`}>
               <Header
                 isFullscreen={isFullscreen}
@@ -96,7 +96,7 @@ const Dashboard = () => {
             <div className={`px-10`}>
               <Outlet />
             </div>
-            <div>
+            <div className={`mt-auto`}>
               <Footer />
             </div>
           </div>
