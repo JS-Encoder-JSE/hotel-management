@@ -96,6 +96,11 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       default: "Active",
     },
+    deleted: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     nationality: {
       type: String,
       required: false,

@@ -46,6 +46,55 @@ export const addBooking = async (req, res) => {
       });
     }
 
+    // Check room availability for the requested dates, excluding deleted bookings or check-ins
+    const overlappingBookings = await Booking.find({
+      room_ids: { $in: room_ids },
+      deleted: false,
+      $or: [
+        {
+          from: { $lte: new Date(to) },
+          to: { $gte: new Date(from) },
+        },
+        {
+          from: { $gte: new Date(from) },
+          to: { $lte: new Date(to) },
+        },
+      ],
+    });
+
+    if (overlappingBookings.length > 0) {
+      const unavailableRooms = overlappingBookings.map(
+        (booking) => booking.room_ids
+      );
+
+      // Find the next available dates for each room, excluding deleted bookings or check-ins
+      const nextAvailableDates = await Promise.all(
+        unavailableRooms.map(async (roomId) => {
+          const bookingsForRoom = await Booking.find({
+            room_ids: roomId,
+            to: { $lte: new Date(from) },
+            deleted: false,
+          })
+            .sort({ to: -1 })
+            .limit(1);
+
+          if (bookingsForRoom.length > 0) {
+            return bookingsForRoom[0].to;
+          } else {
+            // If no previous bookings, room is available from today
+            return new Date();
+          }
+        })
+      );
+
+      return res.status(400).json({
+        success: false,
+        message: "One or more rooms are not available for the requested dates",
+        unavailableRooms,
+        nextAvailableDates,
+      });
+    }
+
     const newBooking = new Booking({
       room_ids,
       hotel_id,
