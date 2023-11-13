@@ -8,7 +8,7 @@ const Footer = () => {
         <div>
           <h3>
             Powered by{" "}
-            <Link className={`text-green-slimy text-lg font-semibold`} to={``}>
+            <Link className={`text-green-slimy text-lg font-semibold`} to={`https://jsencoder.com/`} target="_blank">
               JS Encoder
             </Link>
             . Copyright &copy; {new Date().getFullYear()}. All rights reserved.
