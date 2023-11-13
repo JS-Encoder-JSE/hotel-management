@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 import PaymentMethod from "./PaymentMethod.jsx";
 
-const PaymentSection = () => {
+const PaymentSection = ({ pBill }) => {
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
@@ -73,14 +73,9 @@ const PaymentSection = () => {
               <p>Change Amount</p>
             </div>
             <div className="col-span-2 space-y-3">
-              <p>$ {remainAmount.toFixed(2)}</p>
+              <p>$ {pBill.toFixed(2)}</p>
               <p>$ {colAmount.toFixed(2)}</p>
-              <p>
-                ${" "}
-                {collectedAmount > remainAmount
-                  ? changeAmount.toFixed(2)
-                  : "0.00"}
-              </p>
+              <p>{Math.abs(pBill.toFixed(2) - colAmount.toFixed(2))}</p>
             </div>
           </div>
         </div>

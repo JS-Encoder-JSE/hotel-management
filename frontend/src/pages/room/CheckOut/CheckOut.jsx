@@ -17,6 +17,7 @@ const CheckOut = () => {
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
+  const [pBill, setPBill] = useState(0);
 
   const formik = useFormik({
     initialValues: {
@@ -116,10 +117,15 @@ const CheckOut = () => {
       {/* Customer Info and Set them to default */}
       {showRooms && (
         <>
-          <CustomerInfoSection />
-          <RoomDetailsSection selectedRooms={formik.values.room} />
-          <BillingSection setTotalBilling={setTotalBilling} />
-          <PaymentSection />
+          <CustomerInfoSection data={checkout?.data?.booking_info} />
+          <RoomDetailsSection data={checkout?.data?.booking_info} />
+          <BillingSection
+            data={checkout?.data}
+            totalBilling={totalBilling}
+            setTotalBilling={setTotalBilling}
+            setPBill={setPBill}
+          />
+          <PaymentSection pBill={pBill} />
         </>
       )}
     </div>
