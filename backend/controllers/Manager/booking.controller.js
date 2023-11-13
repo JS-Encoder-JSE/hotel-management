@@ -249,37 +249,35 @@ export const updateBooking = async (req, res) => {
       });
     }
 
-    // Check if the update includes changing the status to "CheckedIn" or "CheckedOut"
+    // Check if the update includes changing the status to "CheckedIn" or "CheckedOut" or "Canceled"
     if (
       updateData.status === "CheckedIn" ||
-      updateData.status === "CheckedOut"
+      updateData.status === "CheckedOut" ||
+      updateData.status === "Canceled"
     ) {
       const roomIds = updatedBooking.room_ids;
 
       // Update room status based on the updated status
-      const roomStatus =
-        updateData.status === "CheckedIn" ? "CheckedIn" : "Available";
-      await Room.updateMany(
-        { _id: { $in: roomIds } },
-        { $set: { status: roomStatus } }
-      );
-
-      // Delete orders if the status is "CheckedOut"
-      if (updateData.status === "CheckedOut") {
-        await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
-        // Update room status to "Available"
+      if (updateData.status === "CheckedIn") {
+        const roomStatus = "CheckedIn";
         await Room.updateMany(
           { _id: { $in: roomIds } },
-          { $set: { status: "Available" } }
+          { $set: { status: roomStatus } }
+        );
+      } else if (
+        updateData.status === "CheckedOut" ||
+        updateData.status === "Canceled"
+      ) {
+        const roomStatus = "Available";
+        await Room.updateMany(
+          { _id: { $in: roomIds } },
+          { $set: { status: roomStatus } }
         );
       }
 
-      if (updateData.status === "Canceled") {
-        // Update room status to "Available"
-        await Room.updateMany(
-          { _id: { $in: roomIds } },
-          { $set: { status: "Available" } }
-        );
+      // Additional logic for "CheckedOut" status
+      if (updateData.status === "CheckedOut") {
+        await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
       }
     }
 
