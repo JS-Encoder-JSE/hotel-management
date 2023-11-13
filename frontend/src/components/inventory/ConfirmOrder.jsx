@@ -13,6 +13,7 @@ import { useAddOrderMutation } from "../../redux/restaurant/foodAPI.js";
 import toast from "react-hot-toast";
 import Select from "react-select";
 import { useOrderInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
+import { resetInv } from "../../redux/inventory/inventorySlice.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -21,6 +22,7 @@ const validationSchema = yup.object({
 });
 
 const ConfirmOrder = () => {
+  const dispatch = useDispatch();
   const { order, orderCalc } = useSelector((store) => store.inventorySlice);
   const closeRef = useRef();
   const [orderInventory] = useOrderInventoryMutation();
@@ -45,12 +47,13 @@ const ConfirmOrder = () => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
+        dispatch(resetInv());
         closeRef.current.click();
         toast.success(response.data.message);
       }
     },
   });
-  const dispatch = useDispatch();
+
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const { isLoading, data: rooms } = useRoomsQuery({
     id: formik.values.chooseHotel,

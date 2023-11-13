@@ -21,8 +21,14 @@ const inventorySlice = createSlice({
 
       state.order.items.splice(findFoodIdx, 1);
     },
+    resetInv: (state) => {
+      state.order = {
+        roomNumber: null,
+        items: [],
+      };
+    },
   },
 });
 
-export const { setOrder, delOrder } = inventorySlice.actions;
+export const { setOrder, delOrder, resetInv } = inventorySlice.actions;
 export default inventorySlice.reducer;

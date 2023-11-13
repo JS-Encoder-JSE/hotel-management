@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import {
   useGetRoomsAndHotelsQuery,
@@ -119,9 +119,7 @@ const ManageEmployee = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
             onKeyUp={(e) => {
-              e.target.value === ""
-                  ? formik.handleSubmit()
-                  : null;
+              e.target.value === "" ? formik.handleSubmit() : null;
             }}
             onKeyDown={(e) => pressEnter(e)}
           />
@@ -162,7 +160,7 @@ const ManageEmployee = () => {
                       address,
                       emergency_contact,
                       status,
-                        images
+                      images,
                     } = employee;
 
                     return (
@@ -175,10 +173,7 @@ const ManageEmployee = () => {
                           <div className="flex items-center space-x-3">
                             <div className="avatar">
                               <div className="mask mask-squircle w-12 h-12">
-                                <img
-                                  src={images?.profile_img}
-                                  alt=""
-                                />
+                                <img src={images?.profile_img} alt="" />
                               </div>
                             </div>
                             <div>
@@ -213,6 +208,13 @@ const ManageEmployee = () => {
                           )}
                         </td>
                         <td className={`space-x-1.5`}>
+                          <Link to={`${_id}`}>
+                            <span
+                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                            >
+                              <FaEye />
+                            </span>
+                          </Link>
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
                             onClick={() =>

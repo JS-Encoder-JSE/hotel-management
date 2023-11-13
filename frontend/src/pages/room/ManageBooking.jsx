@@ -28,6 +28,7 @@ const ManageBooking = () => {
     hotel_id: formik.values.hotel_id,
     search: formik.values.search,
     page: currentPage,
+    filter: "Active"
   });
 
   const pressEnter = (e) => {

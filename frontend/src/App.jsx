@@ -80,8 +80,7 @@ import OrderList from "./pages/restaurant/OrderList.jsx";
 import ReportManager from "./pages/report/ReportManager.jsx";
 import OrderListBar from "./pages/bar/OrderListBar.jsx";
 import CheckInDyn from "./pages/room/CheckInDyn.jsx";
-
-
+import EmployeeView from "./pages/employee/EmployeeView.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -175,9 +174,9 @@ const App = () => {
             {
               path: "checkin",
               element: (
-                  <ManagerRoute>
-                    <CheckIn />
-                  </ManagerRoute>
+                <ManagerRoute>
+                  <CheckIn />
+                </ManagerRoute>
               ),
             },
             {
@@ -285,11 +284,19 @@ const App = () => {
               ),
             },
             {
+              path: "manage-employee/:id",
+              element: (
+                <ManagerRoute>
+                  <EmployeeView />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "report",
               element: (
                 <ManagerRoute>
                   {/* <SalesProfitReport /> */}
-                  <ReportManager/>
+                  <ReportManager />
                 </ManagerRoute>
               ),
             },
@@ -360,9 +367,9 @@ const App = () => {
             {
               path: "order-bar-list",
               element: (
-                  <ManagerRoute>
-                    <OrderListBar />
-                  </ManagerRoute>
+                <ManagerRoute>
+                  <OrderListBar />
+                </ManagerRoute>
               ),
             },
             {
@@ -505,9 +512,9 @@ const App = () => {
             {
               path: "license-history",
               element: (
-                  <OwnerRoute>
-                    <LicenseHistory />
-                  </OwnerRoute>
+                <OwnerRoute>
+                  <LicenseHistory />
+                </OwnerRoute>
               ),
             },
             {
@@ -539,9 +546,9 @@ const App = () => {
             {
               path: "expired-list",
               element: (
-                  <AdminRoute>
-                    <ExpiredList />
-                  </AdminRoute>
+                <AdminRoute>
+                  <ExpiredList />
+                </AdminRoute>
               ),
             },
 
@@ -580,9 +587,9 @@ const App = () => {
             {
               path: "owner-profile/:id/edit",
               element: (
-                  <AdminRoute>
-                    <OwnerProfile />
-                  </AdminRoute>
+                <AdminRoute>
+                  <OwnerProfile />
+                </AdminRoute>
               ),
             },
             {

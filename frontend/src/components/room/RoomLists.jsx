@@ -5,7 +5,7 @@ import ReactPaginate from "react-paginate";
 import { useDeleteRoomMutation } from "../../redux/room/roomAPI.js";
 import Swal from "sweetalert2";
 
-const RoomLists = ({ setCurrentPage, rooms }) => {
+const RoomLists = ({ currentPage, setCurrentPage, rooms }) => {
   const navigate = useNavigate();
   const [deleteRoom] = useDeleteRoomMutation();
   const [roomsPerPage] = useState(10);
@@ -157,6 +157,7 @@ const RoomLists = ({ setCurrentPage, rooms }) => {
           marginPagesDisplayed={2}
           onPageChange={handlePageClick}
           renderOnZeroPageCount={null}
+          forcePage={currentPage}
         />
       </div>
     </div>

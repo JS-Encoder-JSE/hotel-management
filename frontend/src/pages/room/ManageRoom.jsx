@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useFormik } from "formik";
 import RoomLists from "../../components/room/RoomLists.jsx";
 import { FaSearch } from "react-icons/fa";
@@ -38,6 +38,12 @@ const ManageRoom = () => {
   };
 
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+
+  useEffect(() => {
+    if(formik.values.filter) {
+      setCurrentPage(0)
+    }
+  }, [formik.values.filter]);
 
   console.log(rooms);
   return (
@@ -104,7 +110,7 @@ const ManageRoom = () => {
       </div>
       {formik.values.hotel_id ? (
         rooms?.data?.docs?.length ? (
-          <RoomLists setCurrentPage={setCurrentPage} rooms={rooms} />
+          <RoomLists currentPage={currentPage} setCurrentPage={setCurrentPage} rooms={rooms} />
         ) : (
           <h3 className="text-center">No data found!</h3>
         )

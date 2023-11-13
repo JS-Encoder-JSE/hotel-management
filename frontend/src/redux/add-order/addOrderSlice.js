@@ -94,6 +94,17 @@ const addOrderSlice = createSlice({
         grandTotal: grandTotal.toFixed(2),
       };
     },
+    resetFoodOrder: (state) => {
+      state.order = {
+        roomNumber: null,
+        foods: [],
+      };
+      state.orderCalc = {
+        total: 0,
+        tax: 0,
+        grandTotal: 0,
+      };
+    },
   },
 });
 
@@ -105,5 +116,6 @@ export const {
   setQuantity,
   setSerQuantity,
   setOrderCalc,
+  resetFoodOrder,
 } = addOrderSlice.actions;
 export default addOrderSlice.reducer;

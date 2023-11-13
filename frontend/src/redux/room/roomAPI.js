@@ -68,7 +68,7 @@ const roomAPI = baseAPI.injectEndpoints({
       query: ({ hotel_id, page, limit, filter, search }) => {
         return `bookings/get-bookings-by-hotel/${hotel_id}?search=${
           search || ""
-        }&page=${page + 1}`;
+        }&page=${page + 1}${filter ? `&filter=${filter}` : ""}`;
       },
       providesTags: ["booking"],
     }),

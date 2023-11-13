@@ -1,14 +1,17 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import FoodLists from "../../components/restaurant/FoodLists.jsx";
 import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/restaurant/ConfirmOrder.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
+import { resetFoodOrder } from "../../redux/add-order/addOrderSlice.js";
+import {FaArrowsRotate} from "react-icons/fa6";
 
 const AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -52,6 +55,16 @@ const AddOrder = () => {
         </div>
         <div className={`flex space-x-1.5`}>
           <button
+            onClick={() => dispatch(resetFoodOrder())}
+            type={`button`}
+            className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
+              !order.foods.length ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            <span>Reset</span>
+            <span><FaArrowsRotate /></span>
+          </button>
+          <button
             onClick={() => window.fp_modal.showModal()}
             type={`button`}
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
@@ -69,9 +82,7 @@ const AddOrder = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === ""
-                    ? formik.handleSubmit()
-                    : null;
+                e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
             />

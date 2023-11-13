@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
-import { setOrder } from "../../redux/add-order/addOrderSlice.js";
+import {
+  resetFoodOrder,
+  setOrder,
+} from "../../redux/add-order/addOrderSlice.js";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {
@@ -22,6 +25,7 @@ const validationSchema = yup.object({
 const ConfirmOrder = () => {
   const closeRef = useRef();
   const [selectedOption, setSelectedOption] = useState(null);
+  const dispatch = useDispatch();
   const [addOrder] = useAddOrderMutation();
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
@@ -52,12 +56,12 @@ const ConfirmOrder = () => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
+        dispatch(resetFoodOrder());
         closeRef.current.click();
         toast.success(response.data.message);
       }
     },
   });
-  const dispatch = useDispatch();
   const { isLoading, data: rooms } = useRoomsQuery({
     id: formik.values.chooseHotel,
     cp: "0",
