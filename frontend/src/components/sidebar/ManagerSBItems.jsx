@@ -334,7 +334,8 @@ const ManagerSbItems = ({ handleSBItems }) => {
           }
         >
           <div className={`flex space-x-1.5`}>
-            <MdPool />
+           
+            <MdOutlineSportsGymnastics />
             <span>Gym Reservation</span>
           </div>
         </NavLink>
@@ -464,7 +465,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           }
         >
           <div className={`flex space-x-1.5`}>
-            <MdOutlineSportsGymnastics />
+          <MdPool />
             <span>Pool Reservation</span>
           </div>
         </NavLink>
