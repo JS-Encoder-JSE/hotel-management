@@ -66,6 +66,7 @@ const ConfirmOrder = () => {
     cp: "0",
     filter: "",
     search: "",
+    limit: 1000000,
   });
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
 

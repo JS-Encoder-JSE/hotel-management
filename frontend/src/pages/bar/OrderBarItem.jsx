@@ -82,6 +82,7 @@ const OrderBarItem = () => {
     cp: "0",
     filter: "",
     search: "",
+    limit: 1000000,
   });
   const transformedRooms = rooms?.data?.docs?.map((room) => ({
     value: room._id,
