@@ -140,7 +140,7 @@ export const addOrder = async (req, res) => {
       room_id,
       hotel_id,
       items,
-      grand_total,
+      total_price,
     });
 
     const savedFoodOrder = await newFoodOrder.save();
@@ -272,6 +272,45 @@ export const deleteFood = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
+    });
+  }
+};
+export const getFoodsByRoomId = async (req, res) => {
+  try {
+    const { room_id } = req.params;
+
+    // Find food orders for the given room_id
+    const foodOrders = await FoodOrder.find({
+      room_id: room_id,
+      // You may add other conditions if needed
+    });
+
+    if (!foodOrders || foodOrders.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No food orders found for the given room",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: foodOrders,
+      message: "Food orders retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Handle specific error cases
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        error: "Validation error. Check your request data.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
     });
   }
 };

@@ -1,20 +1,24 @@
 ﻿import { Router } from "express";
 import {
-    addBooking, getBookingsByHotel, getBookingById, updateBooking,deleteBooking
+  addBooking,
+  getBookingsByHotel,
+  getBookingById,
+  updateBooking,
+  deleteBooking,
+  getActiveBookingByRoomId,
 } from "../../controllers/Manager/booking.controller.js";
 import { checkToken } from "../../middlewares/checkToken.js";
+import { getCheckoutInfoByRoom } from "../../controllers/Manager/checkout.controller.js";
 
 const router = Router();
 
-// add room 
-router.post('/add-booking', checkToken, addBooking);
-router.get('/get-bookings-by-hotel/:hotel_id', checkToken, getBookingsByHotel);
-router.get('/get-booking-by-id/:booking_id', checkToken, getBookingById);
-router.patch('/update-booking/:booking_id', checkToken, updateBooking);
+// add room
+router.post("/add-booking", checkToken, addBooking);
+router.get("/get-bookings-by-hotel/:hotel_id", checkToken, getBookingsByHotel);
+router.get("/get-booking-by-id/:booking_id", checkToken, getBookingById);
+router.get("/get-active-booking-by-room/:room_id", getActiveBookingByRoomId);
+router.patch("/update-booking/:booking_id", checkToken, updateBooking);
+router.get("/get-checkoutinfo-by-room/:room_id", getCheckoutInfoByRoom);
 // router.delete('/delete-booking/:booking_id', checkToken, deleteBooking);
-
-
-
-
 
 export default router;

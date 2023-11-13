@@ -231,3 +231,43 @@ export const deleteBarOrder = async (req, res) => {
     });
   }
 };
+
+export const getBarOrdersByRoomId = async (req, res) => {
+  try {
+    const { room_id } = req.params;
+
+    // Find bar orders for the given room_id
+    const barOrders = await BarOrder.find({
+      room_id: room_id,
+      status: { $in: ["Partial", "Pending"] },
+    });
+
+    if (!barOrders || barOrders.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No bar orders found for the given room",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: barOrders,
+      message: "Bar orders retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Handle specific error cases
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        error: "Validation error. Check your request data.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};

@@ -57,15 +57,28 @@ const bookingSchema = new mongoose.Schema(
       required: false,
       default: "",
     },
-    amount: {
+    from: { type: Date, required: true },
+    to: { type: Date, required: true },
+    no_of_days: {
+      type: Number,
+      required: true,
+    },
+    rent_per_day: {
+      type: Number,
+      required: true,
+    },
+    total_rent: {
+      type: Number,
+      required: true,
+    },
+    discount: {
       type: Number,
       required: false,
       default: 0,
     },
-    total_amount: {
+    amount_after_dis: {
       type: Number,
-      required: false,
-      default: 0,
+      required: true,
     },
     paid_amount: {
       type: Number,
@@ -77,13 +90,6 @@ const bookingSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
-    discount: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    from: { type: Date, required: true },
-    to: { type: Date, required: true },
     status: {
       type: String,
       enum: ["Active", "CheckedIn", "CheckedOut", "Canceled"],

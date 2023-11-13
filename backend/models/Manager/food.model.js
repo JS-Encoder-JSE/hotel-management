@@ -54,10 +54,6 @@ const itemsSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  total: {
-    type: Number,
-    required: true,
-  },
 });
 // Food Order List
 const foodOrderSchema = new mongoose.Schema(
@@ -72,9 +68,19 @@ const foodOrderSchema = new mongoose.Schema(
       required: true,
     },
     items: [itemsSchema],
-    grand_total: {
+    total_price: {
       type: Number,
       required: true,
+    },
+    paid_amount: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    unpaid_amount: {
+      type: Number,
+      required: false,
+      default: 0,
     },
   },
   { timestamps: true }

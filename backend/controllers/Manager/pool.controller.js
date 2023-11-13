@@ -170,3 +170,43 @@ export const updatePoolBill = async (req, res) => {
     });
   }
 };
+
+export const getPoolBillsByRoomId = async (req, res) => {
+  try {
+    const { room_id } = req.params;
+
+    // Find pool bills for the given room_id
+    const poolBills = await PoolBills.find({
+      room_id: room_id,
+      // You may add other conditions if needed
+    });
+
+    if (!poolBills || poolBills.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No pool bills found for the given room",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: poolBills,
+      message: "Pool bills retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Handle specific error cases
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        error: "Validation error. Check your request data.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};

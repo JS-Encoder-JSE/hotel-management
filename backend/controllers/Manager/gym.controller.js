@@ -171,3 +171,43 @@ export const updateGymBill = async (req, res) => {
     });
   }
 };
+
+export const getGymBillsByRoomId = async (req, res) => {
+  try {
+    const { room_id } = req.params;
+
+    // Find gym bills for the given room_id
+    const gymBills = await GymBills.find({
+      room_id: room_id,
+      // You may add other conditions if needed
+    });
+
+    if (!gymBills || gymBills.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No gym bills found for the given room",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: gymBills,
+      message: "Gym bills retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Handle specific error cases
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        error: "Validation error. Check your request data.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};

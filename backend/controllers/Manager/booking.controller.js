@@ -15,13 +15,17 @@ export const addBooking = async (req, res) => {
       children,
       paymentMethod,
       transection_id,
-      amount,
-      paid_amount,
-      discount,
       from,
       to,
-      nationality,
+      no_of_days,
+      rent_per_day,
+      total_rent,
+      discount,
+      amount_after_dis,
+      paid_amount,
+      total_unpaid_amount,
       status,
+      nationality,
       doc_number,
       doc_images,
     } = req.body;
@@ -53,13 +57,17 @@ export const addBooking = async (req, res) => {
       children,
       paymentMethod,
       transection_id,
-      amount,
-      paid_amount,
-      discount,
       from,
       to,
-      nationality,
+      no_of_days,
+      rent_per_day,
+      total_rent,
+      discount,
+      amount_after_dis,
+      paid_amount,
+      total_unpaid_amount,
       status,
+      nationality,
       doc_number,
       doc_images,
     });
@@ -210,7 +218,7 @@ export const updateBooking = async (req, res) => {
       // Delete orders if the status is "CheckedOut"
       if (updateData.status === "CheckedOut") {
         await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
-        // Update room status to "CheckedIn"
+        // Update room status to "Available"
         await Room.updateMany(
           { _id: { $in: roomIds } },
           { $set: { status: "Available" } }
@@ -258,6 +266,51 @@ export const deleteBooking = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
+    });
+  }
+};
+
+export const getActiveBookingByRoomId = async (req, res) => {
+  try {
+    const { room_id } = req.params;
+
+    // Get the current date in the required format
+    const currentDate = new Date().toISOString();
+
+    // Find active bookings for the given room_id
+    const activeBookings = await Booking.find({
+      room_ids: room_id,
+      status: "Active",
+      from: { $lte: currentDate },
+      to: { $gte: currentDate },
+    });
+
+    if (!activeBookings || activeBookings.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No active bookings found for the given room",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: activeBookings,
+      message: "Active bookings retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Handle specific error cases
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        error: "Validation error. Check your request data.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
     });
   }
 };
