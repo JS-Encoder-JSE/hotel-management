@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { AiFillPrinter } from "react-icons/ai";
 
-const BillingSection = ({ setTotalBilling }) => {
+const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   const [discount, setDiscount] = useState(false);
-  const [billing, setBilling] = useState([
-    { amount: "" },
-    { amount: "" },
-    { amount: "" },
-  ]);
+  const [discountAmt, setDiscountAmt] = useState(0);
+  const [breakAmt, setBreakAmt] = useState(0);
+  const [billing, setBilling] = useState([{ amount: "" }, { amount: "" }]);
 
-  const handleDiscountChange = (idx, val) => {
-    const arr = [...billing];
+  const [poolBill, setPollBill] = useState(0);
+  const [barBill, setBarBill] = useState(0);
+  const [foodBill, setFoodBill] = useState(0);
+  const [gymBill, setGymBill] = useState(0);
 
-    arr.splice(idx, 1, { amount: val });
-    setBilling(arr);
+  const handleDiscountChange = (val) => {
+    const amount = (data?.booking_info?.[0]?.total_unpaid_amount * val) / 100;
+
+    setDiscountAmt(amount);
   };
 
   const handleAmountChange = (idx, val) => {
@@ -25,8 +27,9 @@ const BillingSection = ({ setTotalBilling }) => {
 
   const handleTaxChange = (idx, val) => {
     const arr = [...billing];
+    const amount = (data?.booking_info?.[0]?.total_unpaid_amount * val) / 100;
 
-    arr.splice(idx, 1, { amount: val });
+    arr.splice(idx, 1, { amount });
     setBilling(arr);
   };
 
@@ -40,6 +43,61 @@ const BillingSection = ({ setTotalBilling }) => {
     setTotalBilling(totalBilling);
   }, [billing]);
 
+  useEffect(() => {
+    if (data) {
+      setPollBill(
+        data?.pool_bills?.reduce(
+          (total, current) => total + current?.unpaid_amount,
+          0,
+        ),
+      );
+      setFoodBill(
+        data?.food_bills?.reduce(
+          (total, current) => total + current?.unpaid_amount,
+          0,
+        ),
+      );
+      setBarBill(
+        data?.bar_bills?.reduce(
+          (total, current) => total + current?.unpaid_amount,
+          0,
+        ),
+      );
+      setGymBill(
+        data?.gym_bills?.reduce(
+          (total, current) => total + current?.unpaid_amount,
+          0,
+        ),
+      );
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      const total =
+        poolBill +
+        foodBill +
+        barBill +
+        gymBill +
+        (data?.booking_info?.[0]?.total_unpaid_amount +
+          totalBilling -
+          (discount ? discountAmt : 0) +
+          breakAmt);
+
+      setPBill(total);
+    }
+  }, [
+    data,
+    poolBill,
+    foodBill,
+    barBill,
+    gymBill,
+    totalBilling,
+    discount,
+    discountAmt,
+    breakAmt,
+  ]);
+
   return (
     <section className="grid lg:grid-cols-3 gap-5">
       <div className="bg-white rounded">
@@ -49,7 +107,9 @@ const BillingSection = ({ setTotalBilling }) => {
           <tbody>
             <tr>
               <td>Total Unpaid Amount</td>
-              <td className="align-top pl-2 pb-2">$100000</td>
+              <td className="align-top pl-2 pb-2">
+                {data?.booking_info?.[0]?.total_unpaid_amount}
+              </td>
             </tr>
             <tr>
               <td>
@@ -61,7 +121,7 @@ const BillingSection = ({ setTotalBilling }) => {
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500 ${
                       !discount && "cursor-not-allowed"
                     }`}
-                    onChange={(e) => handleDiscountChange(0, +e.target.value)}
+                    onChange={(e) => handleDiscountChange(+e.target.value)}
                   />
                   <span>(%)</span>
                 </div>
@@ -83,7 +143,9 @@ const BillingSection = ({ setTotalBilling }) => {
             <div className={`mt-5`}></div>
             <tr>
               <td>Discount Amount</td>
-              <td className="align-top pl-2 pb-2">$0</td>
+              <td className="align-top pl-2 pb-2">
+                {billing?.[0]?.amount || 0}
+              </td>
             </tr>
             <tr>
               <td>Service Charge</td>
@@ -93,7 +155,7 @@ const BillingSection = ({ setTotalBilling }) => {
                   <input
                     type="number"
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
-                    onChange={(e) => handleAmountChange(1, +e.target.value)}
+                    onChange={(e) => handleAmountChange(0, +e.target.value)}
                   />
                 </div>
               </td>
@@ -106,18 +168,18 @@ const BillingSection = ({ setTotalBilling }) => {
                   <input
                     type="number"
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
-                    onChange={(e) => handleTaxChange(2, +e.target.value)}
+                    onChange={(e) => handleTaxChange(1, +e.target.value)}
                   />
                 </div>
               </td>
             </tr>
             <tr>
-              <td>Total Amount With Tax</td>
-              <td className="align-top pl-2 pb-2">$12150.00</td>
-            </tr>
-            <tr>
               <td>Payable Amount</td>
-              <td className="align-top pl-2 pb-2">$12150.00</td>
+              <td className="align-top pl-2 pb-2">
+                {data?.booking_info?.[0]?.total_unpaid_amount +
+                  totalBilling -
+                  (discount ? discountAmt : 0)}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -134,6 +196,7 @@ const BillingSection = ({ setTotalBilling }) => {
                 <input
                   type="number"
                   className="mb-3 border rounded-md p-2 outline-none"
+                  onChange={(e) => setBreakAmt(+e?.target?.value)}
                 />
               </td>
             </tr>
@@ -152,11 +215,20 @@ const BillingSection = ({ setTotalBilling }) => {
           <tbody className="flex flex-col gap-3">
             <tr>
               <td>Net Payable Amount</td>
-              <td>$12321.675</td>
+              <td>
+                {data?.booking_info?.[0]?.total_unpaid_amount +
+                  totalBilling -
+                  (discount ? discountAmt : 0)}
+              </td>
             </tr>
             <tr>
               <td>Payable Amount</td>
-              <td>$12321.675</td>
+              <td>
+                {data?.booking_info?.[0]?.total_unpaid_amount +
+                  totalBilling -
+                  (discount ? discountAmt : 0) +
+                  breakAmt}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -171,21 +243,22 @@ const BillingSection = ({ setTotalBilling }) => {
             <p>($) Total</p>
           </div>
           <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight border-b border-black/20 pb-2 px-2">
-            <p className="capitalize whitespace-nowrap col-span-2">
-              Swimming Pool
-            </p>
-            <p>0</p>
-
-            {/* Condition will apply here */}
-            {/* <button className='bg-green-slimy hover:bg-green-slimy/70 text-white text-xl p-1 rounded'>
-                        ------------------
-                        </button> */}
+            <p className="capitalize whitespace-nowrap col-span-2">Pool</p>
+            <p>{poolBill}</p>
           </div>
-          <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight pb-2 px-2">
+          <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight border-b border-black/20 pb-2 px-2">
             <p className="capitalize whitespace-nowrap col-span-2">
               Restaurant
             </p>
-            <p>171.675</p>
+            <p>{foodBill}</p>
+          </div>
+          <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight border-b border-black/20 pb-2 px-2">
+            <p className="capitalize whitespace-nowrap col-span-2">Bar</p>
+            <p>{barBill}</p>
+          </div>
+          <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight pb-2 px-2">
+            <p className="capitalize whitespace-nowrap col-span-2">Gym</p>
+            <p>{gymBill}</p>
           </div>
         </div>
       </div>
