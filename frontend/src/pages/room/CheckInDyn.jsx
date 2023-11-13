@@ -37,6 +37,7 @@ const CheckInDyn = ({ data }) => {
   const [updateBooking] = useUpdateBookingMutation();
   const formik = useFormik({
     initialValues: {
+      amount: "",
       documentsType: "",
       doc_number: "",
       documents: null,
@@ -78,6 +79,9 @@ const CheckInDyn = ({ data }) => {
       const response = await updateBooking({
         id: data._id,
         data: {
+          paid_amount: obj.amount
+            ? data.paid_amount + obj.amount
+            : data.paid_amount,
           doc_number: obj.doc_number,
           doc_images: {
             [title]: tempImg,
@@ -211,6 +215,17 @@ const CheckInDyn = ({ data }) => {
               </Swiper>
             </div>
           ) : null}
+          <div className="flex flex-col gap-3">
+            <input
+              type="number"
+              placeholder="Advanced Amount"
+              name="amount"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+              value={formik.values.amount}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </div>
           <div className="flex flex-col gap-3">
             <select
               name="documentsType"

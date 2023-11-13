@@ -30,7 +30,7 @@ const slsAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["owner"],
+      invalidatesTags: ["owner", "status_log"],
     }),
   }),
 });

@@ -12,7 +12,9 @@ const BookingChart = ({ userManager }) => {
         text: "Total History",
         align: "left",
       },
-      labels: userManager ? ["Check in", "Checkout", "Booking", "Canceled"] : ["Renew", "Expired", "Active", "Not Extend"],
+      labels: userManager
+        ? ["Check in", "Checkout", "Booking", "Canceled"]
+        : ["Renew", "Expired", "Active", "Not Extend"],
       responsive: [
         {
           breakpoint: 480,

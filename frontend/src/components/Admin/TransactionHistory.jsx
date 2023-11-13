@@ -109,7 +109,11 @@ const TransactionHistory = () => {
             </button>
             <button
               type={"button"}
-              onClick={formik.handleSubmit}
+              onClick={() => {
+                setCurrentPage(0);
+                setForcePage(0);
+                formik.handleSubmit();
+              }}
               className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
               Search

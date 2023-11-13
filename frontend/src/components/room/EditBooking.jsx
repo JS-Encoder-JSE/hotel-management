@@ -25,10 +25,10 @@ const validationSchema = yup.object({
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
 
-  children: yup
-    .number()
-    .positive("Children must be a positive number")
-    .integer("Children must be an integer"),
+  // children: yup
+  //   .number()
+  //   .positive("Children must be a positive number")
+  //   .integer("Children must be an integer"),
   // paymentMethod: yup.string().required("Payment method is required"),
   // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
   //   if (paymentMethod !== "cash")
@@ -214,7 +214,7 @@ const EditBooking = ({ data }) => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
-              type="text"
+              type="number"
               placeholder="Children"
               name="children"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"

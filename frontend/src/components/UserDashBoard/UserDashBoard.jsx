@@ -22,12 +22,14 @@ import { GrCurrency } from "react-icons/gr";
 const UserDashBoard = () => {
   const { user } = useSelector((store) => store.authSlice);
   const [userHotel, setUserHotel] = useState(
-    user.role === "manager" || user.role === "owner" 
+    user.role === "manager" || user.role === "owner",
   );
 
   return (
     <div>
-      <section className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}>
+      <section
+        className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+      >
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
             {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
@@ -37,25 +39,23 @@ const UserDashBoard = () => {
           </h6>
           <p className="text-2xl font-semibold mt-3">0</p>
           <hr />
-            {user.role === "manager" ? (
-  <div>
-  <h6 className="text-xs text-slate-400 mt-4">
-    TODAY {userHotel ? "  CHECK OUT" : "RENEW"}
-  </h6>
-  <p className="text-2xl font-semibold mt-4">
-    750</p>
-</div>
-            ):user.role === "owner" ? (
-              <div>
+          {user.role === "manager" ? (
+            <div>
               <h6 className="text-xs text-slate-400 mt-4">
                 TODAY {userHotel ? "  CHECK OUT" : "RENEW"}
               </h6>
-              <p className="text-2xl font-semibold mt-4">
-                750</p>
+              <p className="text-2xl font-semibold mt-4">750</p>
             </div>
-            ):""
-          }
-        
+          ) : user.role === "owner" ? (
+            <div>
+              <h6 className="text-xs text-slate-400 mt-4">
+                TODAY {userHotel ? "  CHECK OUT" : "RENEW"}
+              </h6>
+              <p className="text-2xl font-semibold mt-4">750</p>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         {/* Total Amount */}
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
@@ -67,33 +67,31 @@ const UserDashBoard = () => {
           <p className="text-2xl font-semibold mt-4">299m</p>
           <hr />
         </div>
-        {user.role === "admin" ?  (
+        {user.role === "admin" ? (
           <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
-            <FaUsers />
+            <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
+              <FaUsers />
+            </div>
+            <div>
+              <h6 className="text-xs text-slate-400">TOTAL CUSTOMER</h6>
+              <p className="text-2xl font-semibold mt-4">2.1k</p>
+              <hr />
+            </div>
           </div>
-        <div>
-         <h6 className="text-xs text-slate-400">
-            TOTAL CUSTOMER</h6>
-          <p className="text-2xl font-semibold mt-4">2.1k</p>
-          <hr />
-         </div>
-        </div> 
-        ) :user.role === "subadmin" ? (
+        ) : user.role === "subadmin" ? (
           <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
-            <FaUsers />
+            <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
+              <FaUsers />
+            </div>
+            <div>
+              <h6 className="text-xs text-slate-400">TOTAL CUSTOMER</h6>
+              <p className="text-2xl font-semibold mt-4">2.1k</p>
+              <hr />
+            </div>
           </div>
-        <div>
-         <h6 className="text-xs text-slate-400">
-            TOTAL CUSTOMER</h6>
-          <p className="text-2xl font-semibold mt-4">2.1k</p>
-          <hr />
-         </div>
-        </div>
-        ) :""
-      
-      }
+        ) : (
+          ""
+        )}
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
             {userHotel ? <FaRegCalendarAlt /> : <MdAutorenew />}
@@ -104,23 +102,22 @@ const UserDashBoard = () => {
           <p className="text-2xl font-semibold mt-4">750</p>
           <hr />
           {user.role === "manager" ? (
-               <div>
-               <h6 className="text-xs text-slate-400 mt-4">
-           TOTAL {userHotel ? "  CHECK OUT" : "Renew "}
-         </h6>
-         <p className="text-2xl font-semibold mt-4">750</p>
-       </div>
-            ) :user.role === "owner" ?  (
-              <div>
+            <div>
               <h6 className="text-xs text-slate-400 mt-4">
-          TOTAL {userHotel ? "  CHECK OUT" : "Renew "}
-        </h6>
-        <p className="text-2xl font-semibold mt-4">750</p>
-      </div>
-            ) :""
-          }
-          
-           
+                TOTAL {userHotel ? "  CHECK OUT" : "Renew "}
+              </h6>
+              <p className="text-2xl font-semibold mt-4">750</p>
+            </div>
+          ) : user.role === "owner" ? (
+            <div>
+              <h6 className="text-xs text-slate-400 mt-4">
+                TOTAL {userHotel ? "  CHECK OUT" : "Renew "}
+              </h6>
+              <p className="text-2xl font-semibold mt-4">750</p>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         {/* <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mt-3">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
