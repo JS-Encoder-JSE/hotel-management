@@ -1167,9 +1167,16 @@ export const getUsers = async (req, res) => {
         .json({ message: "You have no permission to get user information" });
     }
 
-    const query = { parent_id: user_id, role: role, status: { $ne: "Deleted" } };
+    const query = {
+      parent_id: user_id,
+      role: role,
+      status: { $ne: "Deleted" },
+    };
 
-    if (filter && ["Active", "Deactive", "Suspended", "Expired"].includes(filter)) {
+    if (
+      filter &&
+      ["Active", "Deactive", "Suspended", "Expired"].includes(filter)
+    ) {
       query.status = filter;
     }
 
@@ -1195,6 +1202,47 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getUsersByAdmin = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { role, page = 1, limit = 10, search, filter } = req.query;
+
+    const parent = await User.find({ _id: userId, role: "admin" });
+
+    if (!parent) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    const query = { role: role };
+
+    if (
+      filter &&
+      ["Active", "Deactive", "Suspended", "Expired", "Deleted"].includes(filter)
+    ) {
+      query.status = filter;
+    }
+
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    // Use Mongoose pagination to retrieve users
+    const users = await User.paginate(query, options);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve users" });
+  }
+};
 
 export const getUserById = async (req, res) => {
   try {

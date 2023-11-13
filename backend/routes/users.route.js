@@ -19,6 +19,7 @@ import {
   updateUser,
   getUsersByParentId,
   getUsersByAssignedHotel,
+  getUsersByAdmin,
 } from "../controllers/users.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
@@ -43,6 +44,11 @@ router.get("/get-owners-by-admin", checkToken, getOwnersByAdmin);
 router.get("/get-users", checkToken, getUsers);
 router.get("/get-user-by-id/:user_id", checkToken, getUserById);
 router.get("/get-users-by-parent/:parent_id", checkToken, getUsersByParentId);
-router.get("/get-users-by-hotel/:hotel_id", checkToken, getUsersByAssignedHotel);
+router.get("/get-users-by-admin", checkToken, getUsersByAdmin);
+router.get(
+  "/get-users-by-hotel/:hotel_id",
+  checkToken,
+  getUsersByAssignedHotel
+);
 
 export default router;
