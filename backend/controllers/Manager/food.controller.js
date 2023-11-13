@@ -131,16 +131,22 @@ export const updateFood = async (req, res) => {
   }
 };
 
-// order
 export const addOrder = async (req, res) => {
   try {
-    const { room_id, hotel_id, items, grand_total } = req.body;
+    const { room_id, hotel_id, items, paid_amount } = req.body;
+
+    // Calculate total_price based on the sum of the 'total' field in each item
+    const total_price = items.reduce((sum, item) => sum + item.total, 0);
+
+    const unpaid_amount = total_price - paid_amount;
 
     const newFoodOrder = new FoodOrder({
       room_id,
       hotel_id,
       items,
       total_price,
+      paid_amount,
+      unpaid_amount,
     });
 
     const savedFoodOrder = await newFoodOrder.save();
@@ -158,6 +164,7 @@ export const addOrder = async (req, res) => {
     });
   }
 };
+
 export const getOrdersByHotelId = async (req, res) => {
   try {
     const { hotel_id } = req.params;

@@ -54,6 +54,10 @@ const itemsSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  total: {
+    type: Number,
+    required: true,
+  }
 });
 // Food Order List
 const foodOrderSchema = new mongoose.Schema(
