@@ -20,6 +20,10 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       status: "CheckedIn",
       from: { $lte: currentDate },
       to: { $gte: currentDate },
+    }).populate({
+      path: "room_ids",
+      model: "Room",
+      select: "roomNumber category",
     });
     if (!activeBookings || activeBookings.length === 0) {
       return res.status(404).json({
