@@ -22,26 +22,25 @@ const CheckOut = () => {
   const formik = useFormik({
     initialValues: {
       hotel_id: "",
-      room: [],
+      roomNumber: "",
       // itemName: "",
 
       // packagePrice: "",
     },
   });
 
-  const { data: checkout } = useGetCOInfoQuery(fetch?.[0]);
+  const { data: checkout } = useGetCOInfoQuery(fetch);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const { isLoading, data: rooms } = useRoomsQuery({
     id: formik.values.hotel_id,
     cp: "0",
     filter: "",
     search: "",
+    limit: 1000000,
   });
 
   const handleGetRooms = () => {
-    const arr = formik.values.room.map((elem) => elem.value);
-
-    setFetch(arr);
+    setFetch(formik.values.roomNumber);
     setShowRooms(true);
   };
 
@@ -85,15 +84,11 @@ const CheckOut = () => {
         <div className="flex flex-col gap-3">
           <Select
             placeholder="Select room"
-            name={`room`}
-            defaultValue={formik.values.room}
+            name={`roomNumber`}
+            defaultValue={formik.values.roomNumber}
             options={transformedRooms}
             isSearchable
-            isMulti
-            closeMenuOnSelect={false}
-            onChange={(e) => {
-              formik.setFieldValue("room", e);
-            }}
+            onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
             noOptionsMessage={() => "No room available"}
             classNames={{
               control: (state) =>
@@ -107,8 +102,9 @@ const CheckOut = () => {
         </div>
         <button
           onClick={handleGetRooms}
-          disabled={formik.values.room.length === 0}
-          className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
+            !formik.values.roomNumber ? "btn-disabled" : ""
+          }`}
         >
           Go
         </button>

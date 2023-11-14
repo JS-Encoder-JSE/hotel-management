@@ -144,7 +144,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
             <tr>
               <td>Discount Amount</td>
               <td className="align-top pl-2 pb-2">
-                {billing?.[0]?.amount || 0}
+                {discount ? discountAmt : 0}
               </td>
             </tr>
             <tr>
