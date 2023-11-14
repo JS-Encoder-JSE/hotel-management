@@ -50,13 +50,13 @@ export const getReportsByHotelId = async (req, res) => {
     if (error.name === "ValidationError") {
       return res.status(400).json({
         success: false,
-        error: "Validation error. Check your request data.",
+        message: "Validation error. Check your request data.",
       });
     }
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };

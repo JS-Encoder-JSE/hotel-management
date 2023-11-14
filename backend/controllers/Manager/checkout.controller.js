@@ -28,7 +28,7 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     if (!activeBookings || activeBookings.length === 0) {
       return res.status(404).json({
         success: false,
-        error: "No active CheckIns found for the given room",
+        message: "No active CheckIns found for the given room",
       });
     }
     // Extract room_ids from each active booking
@@ -74,13 +74,13 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     if (error.name === "ValidationError") {
       return res.status(400).json({
         success: false,
-        error: "Validation error. Check your request data.",
+        message: "Validation error. Check your request data.",
       });
     }
 
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -133,7 +133,7 @@ export const checkedOut = async (req, res) => {
       { _id: { $in: roomIds } },
       { $set: { status: roomStatus } }
     );
-
+    await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
     // Save the report to the database
     const savedReport = await newReport.save();
 
@@ -142,6 +142,6 @@ export const checkedOut = async (req, res) => {
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
