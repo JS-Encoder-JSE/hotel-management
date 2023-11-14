@@ -4,8 +4,12 @@ import makeAnimated from "react-select/animated";
 import { useFormik } from "formik";
 import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 import PaymentMethod from "./PaymentMethod.jsx";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import InvoicePDF from "./InvoicePDF.jsx";
+import { jsPDF } from "jspdf";
 
-const PaymentSection = ({ pBill }) => {
+const PaymentSection = ({ pBill, formik }) => {
+  const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
@@ -73,22 +77,56 @@ const PaymentSection = ({ pBill }) => {
               <p>Change Amount</p>
             </div>
             <div className="col-span-2 space-y-3">
-              <p>$ {pBill.toFixed(2)}</p>
-              <p>$ {colAmount.toFixed(2)}</p>
-              <p>{Math.abs(pBill.toFixed(2) - colAmount.toFixed(2))}</p>
+              <p>
+                {pBill > colAmount
+                  ? Math.abs(pBill.toFixed(2) - colAmount.toFixed(2))
+                  : 0}
+              </p>
+              <p>{colAmount.toFixed(2)}</p>
+              <p>
+                {pBill < colAmount
+                  ? Math.abs(pBill.toFixed(2) - colAmount.toFixed(2))
+                  : 0}
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       <div className="flex justify-end gap-2 mt-5">
-        <button className="p-2 bg-[#28a745] text-xl text-white duration-300 rounded active:scale-90">
+        <PDFDownloadLink
+          document={
+            <InvoicePDF
+              header={{ title: "DAK Hospitality LTD", address: "Dhaka" }}
+            />
+          }
+          fileName={`${new Date().toLocaleDateString()}.pdf`}
+          className="btn btn-md hover:bg-transparent bg-green-slimy hover:text-green-slimy text-white !border-green-slimy rounded normal-case"
+        >
           Print
-        </button>
+        </PDFDownloadLink>
+        {/*{PDF.length ? (*/}
+        {/*  <PDFDownloadLink*/}
+        {/*    document={*/}
+        {/*      <CreateReport*/}
+        {/*        values={PDF}*/}
+        {/*        header={{*/}
+        {/*          title: "DAK Hospitality LTD",*/}
+        {/*          name: "Invoice",*/}
+        {/*        }}*/}
+        {/*      />*/}
+        {/*    }*/}
+        {/*    fileName={`${new Date().toLocaleDateString()}.pdf`}*/}
+        {/*    className="btn btn-md hover:bg-transparent bg-green-slimy hover:text-green-slimy text-white !border-green-slimy rounded normal-case"*/}
+        {/*  >*/}
+        {/*    Print*/}
+        {/*  </PDFDownloadLink>*/}
+        {/*) : null}*/}
         <button
-          disabled={checkoutBtn}
-          className={`p-2 bg-[#64bece] text-xl text-white duration-300 rounded active:scale-90 ${
-            checkoutBtn && "opacity-40 active:scale-100"
+          type={`button`}
+          onClick={() => formik.handleSubmit()}
+          className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
+            pBill.toFixed(2) > colAmount.toFixed(2) ? "btn-disabled" : ""
           }`}
         >
           Checkout

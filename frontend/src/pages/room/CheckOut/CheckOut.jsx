@@ -5,6 +5,7 @@ import RoomDetailsSection from "./RoomDetailsSection";
 import BillingSection from "./BillingSection";
 import PaymentSection from "./PaymentSection";
 import {
+  useAddCheckoutMutation,
   useGetCOInfoQuery,
   useGetRoomsAndHotelsQuery,
   useRoomNumbersQuery,
@@ -12,36 +13,59 @@ import {
 } from "../../../redux/room/roomAPI";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CheckOut = () => {
+  const navigate = useNavigate();
+  const [addCheckout, { isLoading }] = useAddCheckoutMutation();
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
-
+  const { data: checkout } = useGetCOInfoQuery(fetch);
   const formik = useFormik({
     initialValues: {
       hotel_id: "",
-      room: [],
-      // itemName: "",
+      roomNumber: "",
+    },
+    onSubmit: async () => {
+      const room_numbers = checkout?.data?.booking_info?.[0]?.room_ids?.map(
+        (i) => i?.roomNumber,
+      );
 
-      // packagePrice: "",
+      const response = await addCheckout({
+        hotel_id: checkout?.data?.booking_info?.[0]?.hotel_id,
+        booking_id: checkout?.data?.booking_info?.[0]?._id,
+        room_numbers,
+        checked_in: checkout?.data?.booking_info?.[0]?.from,
+        checked_out: new Date(),
+        payable_amount: 1,
+        paid_amount: 1,
+        unpaid_amount: 1,
+        guestName: checkout?.data?.booking_info?.[0]?.guestName,
+        payment_method: "",
+      });
+console.log(response)
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        navigate("/dashboard/checkout");
+      }
     },
   });
 
-  const { data: checkout } = useGetCOInfoQuery(fetch?.[0]);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
-  const { isLoading, data: rooms } = useRoomsQuery({
+  const { data: rooms } = useRoomsQuery({
     id: formik.values.hotel_id,
     cp: "0",
     filter: "",
     search: "",
+    limit: 1000000,
   });
 
   const handleGetRooms = () => {
-    const arr = formik.values.room.map((elem) => elem.value);
-
-    setFetch(arr);
+    setFetch(formik.values.roomNumber);
     setShowRooms(true);
   };
 
@@ -50,7 +74,7 @@ const CheckOut = () => {
       e.preventDefault();
     }
   };
-
+  console.log(checkout);
   const transformedRooms = rooms?.data?.docs
     ?.filter((room) => room.status === "Booked" || room.status === "CheckedIn")
     ?.map((room) => ({
@@ -85,15 +109,11 @@ const CheckOut = () => {
         <div className="flex flex-col gap-3">
           <Select
             placeholder="Select room"
-            name={`room`}
-            defaultValue={formik.values.room}
+            name={`roomNumber`}
+            defaultValue={formik.values.roomNumber}
             options={transformedRooms}
             isSearchable
-            isMulti
-            closeMenuOnSelect={false}
-            onChange={(e) => {
-              formik.setFieldValue("room", e);
-            }}
+            onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
             noOptionsMessage={() => "No room available"}
             classNames={{
               control: (state) =>
@@ -107,8 +127,9 @@ const CheckOut = () => {
         </div>
         <button
           onClick={handleGetRooms}
-          disabled={formik.values.room.length === 0}
-          className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+          className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
+            !formik.values.roomNumber ? "btn-disabled" : ""
+          }`}
         >
           Go
         </button>
@@ -125,7 +146,7 @@ const CheckOut = () => {
             setTotalBilling={setTotalBilling}
             setPBill={setPBill}
           />
-          <PaymentSection pBill={pBill} />
+          <PaymentSection pBill={pBill} formik={formik} />
         </>
       )}
     </div>

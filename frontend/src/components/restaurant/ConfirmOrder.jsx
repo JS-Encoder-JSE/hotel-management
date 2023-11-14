@@ -50,6 +50,7 @@ const ConfirmOrder = () => {
         room_id: values.roomNumber,
         hotel_id: values.chooseHotel,
         items: arr,
+        paid_amount: 0,
       });
 
       if (response?.error) {

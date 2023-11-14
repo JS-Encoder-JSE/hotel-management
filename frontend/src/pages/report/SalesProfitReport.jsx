@@ -133,7 +133,7 @@ const SalesProfitReport = () => {
                   <th>Check In</th>
                   <th>Check Out</th>
                   <th>Paid Amount</th>
-                  <th>Deposite By</th>
+                  <th>Deposit By</th>
                   {/* <th>Action</th> */}
                 </tr>
               </thead>

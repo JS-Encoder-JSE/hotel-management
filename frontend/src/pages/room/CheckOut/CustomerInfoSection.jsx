@@ -8,7 +8,7 @@ const CustomerInfoSection = ({ data }) => {
       <div className="p-5 grid grid-cols-4 items-center text-sm font-semibold">
         <div className="space-y-3">
           <p>Name</p>
-          <p>Room No..</p>
+          <p>Room No</p>
           {/*<p>Email ID</p>*/}
           <p>Mobile No</p>
           <p>Address</p>
@@ -18,7 +18,7 @@ const CustomerInfoSection = ({ data }) => {
         </div>
         <div className="col-span-3 space-y-3">
           <p>{data?.[0]?.guestName}</p>
-          <p>-</p>
+          <p>{data?.[0]?.room_ids?.map((i) => i?.roomNumber).join(", ")}</p>
           {/*<p>dev.tajkir@gmail.com</p>*/}
           <p>{data?.[0]?.mobileNumber}</p>
           <p>{data?.[0]?.address}</p>
