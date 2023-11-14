@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaMinusCircle, FaPlusCircle, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { delOrder} from "../../redux/inventory/inventorySlice.js";
+import { delOrder } from "../../redux/inventory/inventorySlice.js";
 import Swal from "sweetalert2";
 import { useDeleteFoodMutation } from "../../redux/restaurant/foodAPI.js";
 import { useNavigate } from "react-router-dom";
-import {useDeleteInventoryMutation} from "../../redux/inventory/inventoryAPI.js";
+import { useDeleteInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
 
 const InventoryList = ({ idx, list, handleOrder }) => {
   const navigate = useNavigate();
@@ -64,7 +64,9 @@ const InventoryList = ({ idx, list, handleOrder }) => {
       <td className={`text-center`}>
         {!isAdd ? (
           <span
-            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
+              list?.status === "Unavailable" ? "btn-disabled" : ""
+            }`}
             title={`Add`}
             onClick={() => {
               handleOrder(list);
