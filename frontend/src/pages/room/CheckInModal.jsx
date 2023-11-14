@@ -164,6 +164,7 @@ const CheckInModal = ({ room }) => {
         toast.error(response.error.data.message);
       } else {
         formikHelpers.resetForm();
+        closeRef?.current?.click();
         setSelectedImages([]);
         toast.success(response.data.message);
       }

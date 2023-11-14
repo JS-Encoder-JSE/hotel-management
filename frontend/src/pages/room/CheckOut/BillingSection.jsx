@@ -13,7 +13,8 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   const [gymBill, setGymBill] = useState(0);
 
   const handleDiscountChange = (val) => {
-    const amount = (data?.booking_info?.[0]?.total_unpaid_amount * val) / 100;
+    const newValue = Math.min(Math.max(val, 0), 100);
+    const amount = (data?.booking_info?.[0]?.total_unpaid_amount * newValue) / 100;
 
     setDiscountAmt(amount);
   };
@@ -227,7 +228,11 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 {data?.booking_info?.[0]?.total_unpaid_amount +
                   totalBilling -
                   (discount ? discountAmt : 0) +
-                  breakAmt}
+                  breakAmt +
+                  poolBill +
+                  gymBill +
+                  foodBill +
+                  barBill}
               </td>
             </tr>
           </tbody>

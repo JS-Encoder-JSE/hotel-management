@@ -101,6 +101,16 @@ const roomAPI = baseAPI.injectEndpoints({
       query: (id) => `bookings/get-checkoutinfo-by-room/${id}`,
       // providesTags: ["room"],
     }),
+    addCheckout: build.mutation({
+      query: (data) => {
+        return {
+          url: "bookings/checkout",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["room"],
+    }),
   }),
 });
 
@@ -118,4 +128,5 @@ export const {
   useAddBookingMutation,
   useGetBookingByIdQuery,
   useGetCOInfoQuery,
+  useAddCheckoutMutation,
 } = roomAPI;

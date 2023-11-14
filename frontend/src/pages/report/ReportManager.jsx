@@ -9,13 +9,25 @@ import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { GrPowerReset } from "react-icons/gr";
 import DatePicker from "react-datepicker";
+import {
+  useGetAllReportQuery,
+  useGetReportQuery,
+} from "../../redux/admin/report/reportAPI.js";
+import { useGetManagerReportQuery } from "../../redux/report/reportAPI.js";
 
 const ReportManager = () => {
+  const [forcePage, setForcePage] = useState(null);
   const navigate = useNavigate();
   const [reportsPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [PDF, setPDF] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [searchParams, setSearchParams] = useState({
+    fromDate: "",
+    toDate: "",
+    search: "",
+  });
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -24,9 +36,30 @@ const ReportManager = () => {
     initialValues: {
       entries: "",
       search: "",
+      filter: "",
       startDate: "",
       endDate: "",
     },
+    onSubmit: (values) => {
+      console.log(values);
+      setSearchParams((p) => ({
+        ...p,
+        toDate: values.endDate,
+        fromDate: values.startDate,
+        search: values.search,
+      }));
+    },
+    onReset: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
+    },
+  });
+
+  const { isLoading, data: reports } = useGetManagerReportQuery({
+    ...searchParams,
+    cp: currentPage,
+    filter: formik.values.filter,
+    limit: formik.values.entries,
   });
 
   const exportExcel = async (data, name) => {
@@ -36,6 +69,21 @@ const ReportManager = () => {
 
     XLSX.writeFile(wb, `${name}.xlsx`);
   };
+
+  useEffect(() => {
+    if (reports) setPageCount(reports?.totalPages);
+  }, [reports]);
+
+  useEffect(() => {
+    if (reports) {
+      const total = reports.docs.reduce(
+        (total, current) => total + current.paid_amount,
+        0,
+      );
+
+      setTotalAmount(total);
+    }
+  }, [reports]);
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -53,7 +101,7 @@ const ReportManager = () => {
               >
                 CSV
               </button>
-             {/* {PDF.
+              {/* {PDF.
              length ? (
                 <button
                   type={"button"}
@@ -67,7 +115,7 @@ const ReportManager = () => {
                   </PDFDownloadLink>
                 </button>
               ) : null} */}
-                 <button
+              <button
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
                 // onClick={() =>
@@ -243,39 +291,51 @@ const ReportManager = () => {
               <tr>
                 <th>SL</th>
                 {/* <th>Booking Number</th> */}
-                <th>Room Number</th>
+                <th>Guest Name</th>
+                <th>Room Numbers</th>
                 <th>Check In</th>
                 <th>Check Out</th>
                 <th>Paid Amount</th>
-                <th>Deposite By</th>
+                {/*<th>Deposit By</th>*/}
               </tr>
             </thead>
             <tbody>
-              {[...Array(+formik.values.entries || 10)].map((_, idx) => {
-                return (
-                  <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                    <th>{++idx}</th>
-                    {/* <td>1542565</td> */}
-                    <td>104</td>
-                    <td>
-                      2023-10-21 <br /> 10:00:00
-                    </td>
-                    <td>
-                      2023-10-21 <br /> 10:00:00
-                    </td>
-                    <td>25000</td>
-                    <td>25000</td>
-                    <td className={`space-x-1.5`}></td>
-                  </tr>
-                );
-              })}
+              {/*{[...reports?.docs]*/}
+              {/*  ?.sort((a, b) =>*/}
+              {/*    a.username.toLowerCase() > b.username.toLowerCase()*/}
+              {/*      ? 1*/}
+              {/*      : a.username.toLowerCase() < b.username.toLowerCase()*/}
+              {/*      ? -1*/}
+              {/*      : 0,*/}
+              {/*  )*/}
+              {/*  ?.map((report, idx) => {*/}
+              {/*    return (*/}
+              {/*      <tr*/}
+              {/*        className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}*/}
+              {/*      >*/}
+              {/*        <th>{++idx}</th>*/}
+              {/*        <td>S.M. Khalid Mahmud</td>*/}
+              {/*        /!* <td>1542565</td> *!/*/}
+              {/*        <td>104, 105</td>*/}
+              {/*        <td>*/}
+              {/*          2023-10-21 <br /> 10:00:00*/}
+              {/*        </td>*/}
+              {/*        <td>*/}
+              {/*          2023-10-21 <br /> 10:00:00*/}
+              {/*        </td>*/}
+              {/*        <td>25000</td>*/}
+              {/*        /!*<td>25000</td>*!/*/}
+              {/*        /!*<td className={`space-x-1.5`}></td>*!/*/}
+              {/*      </tr>*/}
+              {/*    );*/}
+              {/*  })}*/}
             </tbody>
             <tfoot className={`text-sm`}>
               <tr>
                 <td colSpan={5} className={`text-end`}>
                   Total
                 </td>
-                <td>250000</td>
+                <td>{totalAmount}</td>
               </tr>
             </tfoot>
           </table>
@@ -297,6 +357,7 @@ const ReportManager = () => {
             marginPagesDisplayed={2}
             onPageChange={handlePageClick}
             renderOnZeroPageCount={null}
+            forcePage={forcePage}
           />
         </div>
       </div>

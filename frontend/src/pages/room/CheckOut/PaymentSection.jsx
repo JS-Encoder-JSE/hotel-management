@@ -6,8 +6,9 @@ import { AiOutlineCloseCircle, AiOutlinePlus } from "react-icons/ai";
 import PaymentMethod from "./PaymentMethod.jsx";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import InvoicePDF from "./InvoicePDF.jsx";
+import { jsPDF } from "jspdf";
 
-const PaymentSection = ({ pBill }) => {
+const PaymentSection = ({ pBill, formik }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
@@ -77,13 +78,13 @@ const PaymentSection = ({ pBill }) => {
             </div>
             <div className="col-span-2 space-y-3">
               <p>
-                {pBill.toFixed(2) > colAmount.toFixed(2)
+                {pBill > colAmount
                   ? Math.abs(pBill.toFixed(2) - colAmount.toFixed(2))
                   : 0}
               </p>
               <p>{colAmount.toFixed(2)}</p>
               <p>
-                {pBill.toFixed(2) < colAmount.toFixed(2)
+                {pBill < colAmount
                   ? Math.abs(pBill.toFixed(2) - colAmount.toFixed(2))
                   : 0}
               </p>
@@ -123,6 +124,7 @@ const PaymentSection = ({ pBill }) => {
         {/*) : null}*/}
         <button
           type={`button`}
+          onClick={() => formik.handleSubmit()}
           className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
             pBill.toFixed(2) > colAmount.toFixed(2) ? "btn-disabled" : ""
           }`}

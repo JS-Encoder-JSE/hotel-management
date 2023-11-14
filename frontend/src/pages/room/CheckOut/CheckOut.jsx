@@ -5,6 +5,7 @@ import RoomDetailsSection from "./RoomDetailsSection";
 import BillingSection from "./BillingSection";
 import PaymentSection from "./PaymentSection";
 import {
+  useAddCheckoutMutation,
   useGetCOInfoQuery,
   useGetRoomsAndHotelsQuery,
   useRoomNumbersQuery,
@@ -12,26 +13,50 @@ import {
 } from "../../../redux/room/roomAPI";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CheckOut = () => {
+  const navigate = useNavigate();
+  const [addCheckout, { isLoading }] = useAddCheckoutMutation();
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
-
+  const { data: checkout } = useGetCOInfoQuery(fetch);
   const formik = useFormik({
     initialValues: {
       hotel_id: "",
       roomNumber: "",
-      // itemName: "",
+    },
+    onSubmit: async () => {
+      const room_numbers = checkout?.data?.booking_info?.[0]?.room_ids?.map(
+        (i) => i?.roomNumber,
+      );
 
-      // packagePrice: "",
+      const response = await addCheckout({
+        hotel_id: checkout?.data?.booking_info?.[0]?.hotel_id,
+        booking_id: checkout?.data?.booking_info?.[0]?._id,
+        room_numbers,
+        checked_in: checkout?.data?.booking_info?.[0]?.from,
+        checked_out: new Date(),
+        payable_amount: 1,
+        paid_amount: 1,
+        unpaid_amount: 1,
+        guestName: checkout?.data?.booking_info?.[0]?.guestName,
+        payment_method: "",
+      });
+console.log(response)
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success(response.data.message);
+        navigate("/dashboard/checkout");
+      }
     },
   });
 
-  const { data: checkout } = useGetCOInfoQuery(fetch);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
-  const { isLoading, data: rooms } = useRoomsQuery({
+  const { data: rooms } = useRoomsQuery({
     id: formik.values.hotel_id,
     cp: "0",
     filter: "",
@@ -49,7 +74,7 @@ const CheckOut = () => {
       e.preventDefault();
     }
   };
-
+  console.log(checkout);
   const transformedRooms = rooms?.data?.docs
     ?.filter((room) => room.status === "Booked" || room.status === "CheckedIn")
     ?.map((room) => ({
@@ -121,7 +146,7 @@ const CheckOut = () => {
             setTotalBilling={setTotalBilling}
             setPBill={setPBill}
           />
-          <PaymentSection pBill={pBill} />
+          <PaymentSection pBill={pBill} formik={formik} />
         </>
       )}
     </div>

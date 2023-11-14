@@ -17,6 +17,7 @@ const RoomDetailsSection = ({ data }) => {
         <tbody>
           <tr className="grid grid-cols-8 text-left">
             <td className="py-1 px-3 border-r border-black/20">
+              {data?.[0]?.room_ids?.map((i) => `${i?.roomNumber} - ${i?.category}`).join(', ')}
               {/*{selectedRooms.map((room, index) => (*/}
               {/*  <div key={index}>*/}
               {/*    <p className="font-semibold">{room.label}</p>*/}
