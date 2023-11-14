@@ -3,6 +3,8 @@ import Booking from "../../models/Manager/booking.model.js";
 import { FoodOrder } from "../../models/Manager/food.model.js";
 import GymBills from "../../models/Manager/gym.model.js";
 import PoolBills from "../../models/Manager/pool.model.js";
+import ManagerReport from "../../models/Manager/report.model.js";
+import Report from "../../models/Manager/report.model.js";
 import Room from "../../models/Manager/room.model.js";
 
 export const getCheckoutInfoByRoom = async (req, res) => {
@@ -29,7 +31,7 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     const roomIds = activeBookings.map((booking) => booking.room_ids).flat();
     console.log(roomIds);
     const barOrders = await BarOrder.find({
-      room_id: { $in: roomIds},
+      room_id: { $in: roomIds },
       status: { $in: ["Partial", "Pending"] },
     });
     // Find food orders for the given room_id
@@ -76,5 +78,66 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       success: false,
       error: "Internal Server Error",
     });
+  }
+};
+
+export const checkedOut = async (req, res) => {
+  try {
+    // Extract data from the request body
+    const {
+      hotel_id,
+      booking_id,
+      guestName,
+      room_numbers,
+      payment_method,
+      checked_in,
+      checked_out,
+      payable_amount,
+      paid_amount,
+      unpaid_amount,
+    } = req.body;
+
+    // Create a new Report instance
+    const newReport = new ManagerReport({
+      hotel_id,
+      booking_id,
+      guestName,
+      room_numbers,
+      payment_method,
+      checked_in,
+      checked_out,
+      payable_amount,
+      paid_amount,
+      unpaid_amount,
+    });
+
+    // Update the booking status to "CheckedOut"
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      booking_id,
+      { status: "CheckedOut" }, // Fix: wrap in an object
+      { new: true }
+    );
+
+    // Get room IDs from the updated booking
+    const roomIds = updatedBooking.room_ids;
+
+    // Define roomStatus (replace 'YOUR_ROOM_STATUS' with the actual status)
+    const roomStatus = "Available";
+
+    // Update room statuses
+    await Room.updateMany(
+      { _id: { $in: roomIds } },
+      { $set: { status: roomStatus } }
+    );
+
+    // Save the report to the database
+    const savedReport = await newReport.save();
+
+    // Respond with the saved report
+    res.status(201).json(savedReport);
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
