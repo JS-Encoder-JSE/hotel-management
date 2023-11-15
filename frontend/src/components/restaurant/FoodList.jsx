@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaMinusCircle, FaPlusCircle, FaTrash } from "react-icons/fa";
+import {
+  FaEdit,
+  FaMinus,
+  FaMinusCircle,
+  FaPlus,
+  FaPlusCircle,
+  FaTrash,
+} from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { delOrder, setOrderCalc } from "../../redux/add-order/addOrderSlice.js";
+import {
+  delOrder,
+  manipulateQuantity,
+  setOrderCalc,
+  setQuantity,
+} from "../../redux/add-order/addOrderSlice.js";
 import Swal from "sweetalert2";
 import { useDeleteFoodMutation } from "../../redux/restaurant/foodAPI.js";
 import { useNavigate } from "react-router-dom";
 
-const FoodList = ({ idx, food, handleOrder }) => {
+const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
   const navigate = useNavigate();
   const [isAdd, setAdd] = useState(false);
   const { order } = useSelector((store) => store.addOrderSlice);
   const dispatch = useDispatch();
   const [deleteFood] = useDeleteFoodMutation();
-  console.log(food);
+  const [input, setInput] = useState(1);
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -44,6 +57,18 @@ const FoodList = ({ idx, food, handleOrder }) => {
     else setAdd(false);
   }, [order.foods]);
 
+  useEffect(() => {
+    dispatch(manipulateQuantity({ food, quantity: input }));
+    dispatch(setOrderCalc());
+  }, [input]);
+
+  useEffect(() => {
+    if (reset) {
+      setInput(1);
+      setReset(false);
+    }
+  }, [reset]);
+
   return (
     <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
       <td>
@@ -71,6 +96,35 @@ const FoodList = ({ idx, food, handleOrder }) => {
       </td>
       <td>{food?.serveyor_quantity}</td>
       <td>{food?.price}</td>
+      <td className="flex gap-1">
+        <button
+          type="button"
+          className={input === 1 ? "btn-disabled opacity-50" : ""}
+          onClick={() => {
+            input > 1 ? setInput((prevState) => --prevState) : null;
+          }}
+        >
+          <FaMinus />
+        </button>
+        <input
+          type="number"
+          value={input}
+          className="input-hide_Arrows w-12 flex outline-none text-center rounded-md p-1 placeholder:text-black border focus:border-green-slimy"
+          onChange={(e) => {
+            if (e.target.value > 0 || e.target.value === "")
+              setInput(e.target.value);
+          }}
+          onBlur={(e) => {
+            dispatch(setQuantity({ food, quantity: +e.target.value }));
+          }}
+        />
+        <button
+          type="button"
+          onClick={() => setInput((prevState) => ++prevState)}
+        >
+          <FaPlus />
+        </button>
+      </td>
       <td className={`text-center`}>
         {!isAdd ? (
           <span
@@ -79,7 +133,7 @@ const FoodList = ({ idx, food, handleOrder }) => {
             }`}
             title={`Add`}
             onClick={() => {
-              handleOrder(food);
+              handleOrder({ food, input });
             }}
           >
             <FaPlusCircle />
@@ -90,7 +144,6 @@ const FoodList = ({ idx, food, handleOrder }) => {
             title={`Remove`}
             onClick={() => {
               dispatch(delOrder(food));
-              dispatch(setOrderCalc());
             }}
           >
             <FaMinusCircle />

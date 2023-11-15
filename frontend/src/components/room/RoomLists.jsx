@@ -128,7 +128,7 @@ const RoomLists = ({ currentPage, setCurrentPage, rooms }) => {
                     </span>
                     <span
                       className="btn btn-md bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                      title={`Delete`}
+                      title={`Cancel`}
                       onClick={() => handleDelete(_id)}
                     >
                       <FaTrash />

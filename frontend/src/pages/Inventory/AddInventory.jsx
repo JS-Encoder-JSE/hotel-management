@@ -9,7 +9,7 @@ import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 // form validation
 const validationSchema = yup.object({
   itemName: yup.string().required("Name is required"),
-  chooseHotel: yup.string().required("Hotel is required"),
+  // chooseHotel: yup.string().required("Hotel is required"),
   itemDescription: yup
     .string()
     .required("Description is required")
@@ -23,7 +23,7 @@ const AddInventory = () => {
     initialValues: {
       itemName: "",
       itemDescription: "",
-      chooseHotel: "",
+      // chooseHotel: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -62,30 +62,30 @@ const AddInventory = () => {
         className="form-control grid grid-cols-1 gap-4 max-w-3xl mx-auto"
         onSubmit={formik.handleSubmit}
       >
-        <div className="flex flex-col gap-3">
-          <select
-            name="chooseHotel"
-            className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.chooseHotel}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Choose Hotel
-            </option>
+        {/*<div className="flex flex-col gap-3">*/}
+        {/*  <select*/}
+        {/*    name="chooseHotel"*/}
+        {/*    className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"*/}
+        {/*    value={formik.values.chooseHotel}*/}
+        {/*    onChange={formik.handleChange}*/}
+        {/*    onBlur={formik.handleBlur}*/}
+        {/*  >*/}
+        {/*    <option value="" selected disabled>*/}
+        {/*      Choose Hotel*/}
+        {/*    </option>*/}
 
-            {hotelsList?.map((i) => (
-              <option key={i._id} value={i._id}>
-                {i.name}
-              </option>
-            ))}
-          </select>
-          {formik.touched.chooseHotel && Boolean(formik.errors.chooseHotel) ? (
-            <small className="text-red-600">
-              {formik.touched.chooseHotel && formik.errors.chooseHotel}
-            </small>
-          ) : null}
-        </div>
+        {/*    {hotelsList?.map((i) => (*/}
+        {/*      <option key={i._id} value={i._id}>*/}
+        {/*        {i.name}*/}
+        {/*      </option>*/}
+        {/*    ))}*/}
+        {/*  </select>*/}
+        {/*  {formik.touched.chooseHotel && Boolean(formik.errors.chooseHotel) ? (*/}
+        {/*    <small className="text-red-600">*/}
+        {/*      {formik.touched.chooseHotel && formik.errors.chooseHotel}*/}
+        {/*    </small>*/}
+        {/*  ) : null}*/}
+        {/*</div>*/}
         {/* Item Name */}
         <div className="flex flex-col gap-5">
           <input

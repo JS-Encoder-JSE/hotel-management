@@ -237,7 +237,7 @@ const CheckInDyn = ({ data }) => {
               <option value="" selected disabled>
                 Type Of Documents
               </option>
-              <option value="Aadhar Card">Aadhar Card</option>
+              <option value="Aadhar Card">Aadhar Card/ ID</option>
               <option value="Passport">Passport</option>
               <option value="Driving Licence">Driving Licence</option>
             </select>

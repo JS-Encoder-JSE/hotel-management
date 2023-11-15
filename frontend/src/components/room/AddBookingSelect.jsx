@@ -42,6 +42,7 @@ const validationSchema = yup.object({
   to: yup.string().required("To Date is required"),
   amount: yup.string().required("Advance amount is required"),
   nationality: yup.string().required("Nationality is required"),
+  method: yup.string().required("Booking method is required"),
 });
 
 const AddBookingSelect = ({ room }) => {
@@ -51,7 +52,7 @@ const AddBookingSelect = ({ room }) => {
   const formik = useFormik({
     initialValues: {
       room_arr: [],
-      hotel_id: "",
+      // hotel_id: "",
       guestName: "",
       address: "",
       mobileNumber: "",
@@ -65,6 +66,7 @@ const AddBookingSelect = ({ room }) => {
       amount: "",
       discount: "",
       nationality: "",
+      method: "",
     },
 
     validationSchema,
@@ -163,23 +165,44 @@ const AddBookingSelect = ({ room }) => {
           className="form-control grid grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
+          {/*<div className="flex flex-col gap-3">*/}
+          {/*  <select*/}
+          {/*    name="hotel_id"*/}
+          {/*    className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"*/}
+          {/*    value={formik.values.hotel_id}*/}
+          {/*    onChange={formik.handleChange}*/}
+          {/*    onBlur={formik.handleBlur}*/}
+          {/*  >*/}
+          {/*    <option value="" selected disabled>*/}
+          {/*      {hotel?.name}*/}
+          {/*    </option>*/}
+          {/*  </select>*/}
+          {/*  /!*{formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*!/*/}
+          {/*  /!*  <small className="text-red-600">*!/*/}
+          {/*  /!*    {formik.touched.hotel_id && formik.errors.hotel_id}*!/*/}
+          {/*  /!*  </small>*!/*/}
+          {/*  /!*) : null}*!/*/}
+          {/*</div>*/}
+
           <div className="flex flex-col gap-3">
             <select
-              name="hotel_id"
-              className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.hotel_id}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+                name="method"
+                className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+                value={formik.values.method}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             >
               <option value="" selected disabled>
-                {hotel?.name}
+                Booking Method
               </option>
+              <option value="Online">Online</option>
+              <option value="Offline">Offline</option>
             </select>
-            {/*{formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*/}
-            {/*  <small className="text-red-600">*/}
-            {/*    {formik.touched.hotel_id && formik.errors.hotel_id}*/}
-            {/*  </small>*/}
-            {/*) : null}*/}
+            {formik.touched.method && Boolean(formik.errors.method) ? (
+                <small className="text-red-600">
+                  {formik.touched.method && formik.errors.method}
+                </small>
+            ) : null}
           </div>
 
           <div className="flex flex-col gap-3">
