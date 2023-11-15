@@ -20,6 +20,7 @@ import { fileURLToPath } from "url";
 // Manager Routes
 import bookingRoute from "./routes/Manager/booking.route.js";
 import roomRoute from "./routes/Manager/room.route.js";
+import tableRoute from "./routes/Manager/table.route.js";
 
 dotenv.config();
 const app = express();
@@ -45,6 +46,7 @@ app.use("/status", statusRoute);
 app.use("/reports", reportRoute);
 app.use("/hotels", hotelsRoute);
 app.use("/rooms", roomRoute);
+app.use("/tables", tableRoute);
 app.use("/foods", foodRoute);
 app.use("/bookings", bookingRoute);
 app.use("/items", itemRoute);

@@ -1,4 +1,8 @@
-﻿import { Food, FoodOrder } from "../../models/Manager/food.model.js";
+﻿import {
+  Food,
+  FoodCategory,
+  FoodOrder,
+} from "../../models/Manager/food.model.js";
 import Hotel from "../../models/hotel.model.js";
 
 export const addFood = async (req, res) => {
@@ -7,6 +11,7 @@ export const addFood = async (req, res) => {
       hotel_id,
       food_name,
       status,
+      category,
       serveyor_quantity,
       price,
       images,
@@ -17,6 +22,7 @@ export const addFood = async (req, res) => {
       hotel_id,
       food_name,
       status,
+      category,
       serveyor_quantity,
       price,
       images,
@@ -41,7 +47,7 @@ export const addFood = async (req, res) => {
 export const getFoodByHotelId = async (req, res) => {
   try {
     const { hotel_id } = req.params;
-    const { page = 1, limit = 10, filter, search } = req.query;
+    const { page = 1, limit = 10, category, filter, search } = req.query;
 
     const query = {
       hotel_id,
@@ -49,6 +55,9 @@ export const getFoodByHotelId = async (req, res) => {
 
     if (["Available", "Unavailable"].includes(filter)) {
       query.status = filter;
+    }
+    if (category) {
+      query.category = category;
     }
 
     if (search) {
@@ -133,16 +142,25 @@ export const updateFood = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const { room_id, hotel_id, items, paid_amount } = req.body;
+    const { room_id, table_id, hotel_id, items, paid_amount } = req.body;
 
     // Calculate total_price based on the sum of the 'total' field in each item
     const total_price = items.reduce((sum, item) => sum + item.total, 0);
 
     const unpaid_amount = total_price - paid_amount;
 
+    // Generate a random 8-digit number
+    const randomNumber = Math.floor(10000000 + Math.random() * 90000000);
+
+    // Format the number to have exactly 8 digits as a string
+    const unique_id = randomNumber.toString().slice(0, 8);
+
     const newFoodOrder = new FoodOrder({
       room_id,
+      table_id,
       hotel_id,
+      unique_id,
+      current_order: true,
       items,
       total_price,
       paid_amount,
@@ -318,6 +336,187 @@ export const getFoodsByRoomId = async (req, res) => {
     res.status(500).json({
       success: false,
       error: "Internal Server Error",
+    });
+  }
+};
+
+export const addFoodCategory = async (req, res) => {
+  try {
+    const { hotel_id, category_name } = req.body;
+
+    // Check if the category_name already exists for the given hotel_id
+    const existingCategory = await FoodCategory.findOne({
+      hotel_id,
+      category_name,
+    });
+
+    if (existingCategory) {
+      return res.status(400).json({
+        success: false,
+        message: "Category with the same name already exists for this hotel",
+      });
+    }
+
+    const newCategory = new FoodCategory({
+      hotel_id,
+      category_name,
+    });
+
+    await newCategory.save();
+
+    res.status(201).json({
+      success: true,
+      data: newCategory,
+      message: "Food category added successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Handle specific error cases
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error. Check your request data.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const updateFoodCategory = async (req, res) => {
+  try {
+    const { category_id } = req.params;
+    const updateData = req.body;
+
+    const updatedCategory = await FoodCategory.findByIdAndUpdate(
+      category_id,
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedCategory) {
+      return res.status(404).json({
+        success: false,
+        message: "Food category not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updatedCategory,
+      message: "Food category updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Handle specific error cases
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error. Check your request data.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const deleteFoodCategory = async (req, res) => {
+  try {
+    const { category_id } = req.params;
+
+    const deletedCategory = await FoodCategory.findByIdAndRemove(category_id);
+
+    if (!deletedCategory) {
+      return res.status(404).json({
+        success: false,
+        message: "Food category not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: deletedCategory,
+      message: "Food category deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const getFoodCategoriesByHotelId = async (req, res) => {
+  try {
+    const { hotel_id } = req.params;
+
+    // Find food categories for the given hotel_id
+    const foodCategories = await FoodCategory.find({ hotel_id });
+
+    if (!foodCategories || foodCategories.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No food categories found for the given hotel",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: foodCategories,
+      message: "Food categories retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Handle specific error cases
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error. Check your request data.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const getFoodCategoryById = async (req, res) => {
+  try {
+    const { category_id } = req.params;
+
+    const foodCategory = await FoodCategory.findById(category_id);
+
+    if (!foodCategory) {
+      return res.status(404).json({
+        success: false,
+        message: "Food category not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: foodCategory,
+      message: "Food category retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
     });
   }
 };

@@ -17,9 +17,13 @@ const foodSchema = new mongoose.Schema(
       enum: ["Available", "Unavailable"],
       default: "Available",
     },
-    serveyor_quantity: {
+    category: {
       type: String,
       required: true,
+    },
+    serveyor_quantity: {
+      type: String,
+      required: false,
     },
     price: {
       type: Number,
@@ -27,11 +31,11 @@ const foodSchema = new mongoose.Schema(
     },
     images: {
       type: Array,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }
@@ -57,19 +61,44 @@ const itemsSchema = new mongoose.Schema({
   total: {
     type: Number,
     required: true,
-  }
+  },
 });
+const foodCategorySchema = new mongoose.Schema(
+  {
+    hotel_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    category_name: {
+      type: String,
+      required: true,
+    },
+  }
+);
 // Food Order List
 const foodOrderSchema = new mongoose.Schema(
   {
     room_id: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: "Room",
+    },
+    table_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+      ref: "Table",
     },
     hotel_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+    },
+    unique_id: {
+      type: String,
+      required: false,
+    },
+    current_order : {
+      type: Boolean,
+      required: false,
     },
     items: [itemsSchema],
     total_price: {
@@ -93,6 +122,7 @@ const foodOrderSchema = new mongoose.Schema(
 foodSchema.plugin(mongoosePaginate);
 foodOrderSchema.plugin(mongoosePaginate);
 const Food = mongoose.model("Food", foodSchema);
+const FoodCategory = mongoose.model("FoodCategory", foodCategorySchema);
 const FoodOrder = mongoose.model("FoodOrder", foodOrderSchema);
 
-export { Food, FoodOrder };
+export { Food, FoodOrder, FoodCategory };
