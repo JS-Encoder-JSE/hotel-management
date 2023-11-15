@@ -14,7 +14,7 @@ const FoodLists = ({ formik, keyword, chooseHotel, reset, setReset }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [foodsPerPage] = useState(10);
   const { isLoading, data: foods } = useFoodsQuery({
-    id: chooseHotel,
+    id: "655084bc24936415423bfa2f",
     cp: currentPage,
     pp: foodsPerPage,
     search: formik.values.search,

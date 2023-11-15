@@ -44,7 +44,7 @@ const CurOrderList = () => {
   });
 
   const { isLoading, data: orders } = useOrdersQuery({
-    id: formik.values.chooseHotel,
+    id: "655084bc24936415423bfa2f",
     cp: currentPage,
     pp: ordersPerPage,
   });
@@ -81,7 +81,22 @@ const CurOrderList = () => {
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
         <h3 className={`text-2xl font-semibold text-center`}>Current Order List</h3>
-        <div className={`flex justify-end mt-5`}>
+        <div className={`flex justify-between mt-5`}>
+          <div>
+            <select
+                name="bill_for"
+                className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.bill_for}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Select bills for
+              </option>
+              <option value="Room">Room</option>
+              <option value="Table">Table</option>
+            </select>
+          </div>
           <div className={`relative max-w-xs w-full`}>
             <input
                 type="text"
@@ -165,24 +180,12 @@ const CurOrderList = () => {
                             <td>{order?.room_id?.roomNumber}</td>
                             <td>{order?.grand_total}</td>
                             <td className={`flex gap-1.5`}>
-                              <span
-                                className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                                title={`View`}
-                              >
-                                <FaEye />
-                              </span>
-                              <span
+                              <Link to={`/dashboard/single-checkout`}
                                 title={`Checkout`}
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
                               >
                                 <FaDoorOpen />
-                              </span>
-                              <span
-                                className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                                title={`Print`}
-                              >
-                                <FaEye />
-                              </span>
+                              </Link>
                               <span
                                 onClick={() => handleDelete(order?._id)}
                                 title={`Cancel`}

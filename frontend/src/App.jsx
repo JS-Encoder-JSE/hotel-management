@@ -83,6 +83,7 @@ import CheckInDyn from "./pages/room/CheckInDyn.jsx";
 import EmployeeView from "./pages/employee/EmployeeView.jsx";
 import CurOrderList from "./pages/restaurant/CurOrderList.jsx";
 import AddTable from "./pages/restaurant/AddTable.jsx";
+import FoodCheckout from "./pages/restaurant/FoodCheckout.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -242,6 +243,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <CurOrderList />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "single-checkout",
+              element: (
+                <ManagerRoute>
+                  <FoodCheckout />
                 </ManagerRoute>
               ),
             },

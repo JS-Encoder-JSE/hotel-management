@@ -37,7 +37,7 @@ const AddOrder = () => {
   };
 
   const { isLoading, data: rooms } = useRoomsQuery({
-    id: formik.values.chooseHotel,
+    id: "655084bc24936415423bfa2f",
     cp: "0",
     filter: "",
     search: "",
