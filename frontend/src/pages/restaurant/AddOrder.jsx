@@ -87,22 +87,23 @@ const AddOrder = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
-              onKeyUp={(e) => {
-                e.target.value === "" ? formik.handleSubmit() : null;
-              }}
-              onKeyDown={(e) => pressEnter(e)}
+              // onKeyUp={(e) => {
+              //   e.target.value === "" ? formik.handleSubmit() : null;
+              // }}
+              // onKeyDown={(e) => pressEnter(e)}
             />
-            <button
-              type="button"
-              onClick={() => formik.handleSubmit()}
-              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-            >
-              <FaSearch />
-            </button>
+            {/*<button*/}
+            {/*  type="button"*/}
+            {/*  onClick={() => formik.handleSubmit()}*/}
+            {/*  className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"*/}
+            {/*>*/}
+            {/*  <FaSearch />*/}
+            {/*</button>*/}
           </div>
         </div>
       </div>
       <FoodLists
+          formik={formik}
         reset={reset}
         setReset={setReset}
         keyword={keyword}

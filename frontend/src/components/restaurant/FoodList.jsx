@@ -9,9 +9,7 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  decQuantity,
   delOrder,
-  incQuantity,
   manipulateQuantity,
   setOrderCalc,
   setQuantity,

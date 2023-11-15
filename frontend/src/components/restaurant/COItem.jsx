@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  decQuantity,
   delOrder,
-  incQuantity,
   setOrderCalc,
-  setQuantity,
-  setSerQuantity,
 } from "../../redux/add-order/addOrderSlice.js";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";

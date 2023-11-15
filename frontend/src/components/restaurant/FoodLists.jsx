@@ -6,7 +6,7 @@ import FoodList from "./FoodList.jsx";
 import ReactPaginate from "react-paginate";
 import { useFoodsQuery } from "../../redux/restaurant/foodAPI.js";
 
-const FoodLists = ({ keyword,chooseHotel, reset, setReset }) => {
+const FoodLists = ({ formik,keyword,chooseHotel, reset, setReset }) => {
   const { order } = useSelector((store) => store.addOrderSlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const FoodLists = ({ keyword,chooseHotel, reset, setReset }) => {
     id: chooseHotel,
     cp: currentPage,
     pp: foodsPerPage,
-    search: keyword,
+    search: formik.values.search,
   });
   const [pageCount, setPageCount] = useState(1);
 
