@@ -81,6 +81,7 @@ import ReportManager from "./pages/report/ReportManager.jsx";
 import OrderListBar from "./pages/bar/OrderListBar.jsx";
 import CheckInDyn from "./pages/room/CheckInDyn.jsx";
 import EmployeeView from "./pages/employee/EmployeeView.jsx";
+import CurOrderList from "./pages/restaurant/CurOrderList.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -224,6 +225,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <OrderList />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "current-order-list",
+              element: (
+                <ManagerRoute>
+                  <CurOrderList />
                 </ManagerRoute>
               ),
             },

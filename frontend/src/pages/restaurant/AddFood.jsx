@@ -18,7 +18,8 @@ import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 
 // form validation
 const validationSchema = yup.object({
-  foodName: yup.string().required("Food name is required"),
+  name: yup.string().required("Name is required"),
+  category: yup.string().required("Category is required"),
   chooseHotel: yup.string().required("Hotel is required"),
   surveyorQuantity: yup.string().required("Surveyor quantity is required"),
   price: yup
@@ -42,12 +43,16 @@ const AddFood = () => {
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const formik = useFormik({
     initialValues: {
-      foodName: "",
+      name: "",
       price: "",
       description: "",
       photos: null,
       surveyorQuantity: "",
+      surveyorQuantityOthers: "",
       chooseHotel: "",
+      category: "",
+      categoryOthers: "",
+      typeOfAlco: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -55,7 +60,7 @@ const AddFood = () => {
 
       const obj = { ...values };
       const {
-        foodName: food_name,
+        name: food_name,
         price,
         description,
         surveyorQuantity: serveyor_quantity,
@@ -142,7 +147,7 @@ const AddFood = () => {
       >
         <h3 className={`flex text-2xl text-white space-x-1.5`}>
           <FaPlus />
-          <span>Add Food</span>
+          <span>Add Food / Beverage</span>
         </h3>
       </div>
       <form
@@ -210,57 +215,144 @@ const AddFood = () => {
             )}
           </Swiper>
         </div>
+        {/*<div className="flex flex-col gap-3">*/}
+        {/*  <select*/}
+        {/*    name="chooseHotel"*/}
+        {/*    className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"*/}
+        {/*    value={formik.values.chooseHotel}*/}
+        {/*    onChange={formik.handleChange}*/}
+        {/*    onBlur={formik.handleBlur}*/}
+        {/*  >*/}
+        {/*    <option value="" selected disabled>*/}
+        {/*      Choose Hotel*/}
+        {/*    </option>*/}
+
+        {/*    {hotelList?.map((i) => (*/}
+        {/*      <option key={i._id} value={i._id}>*/}
+        {/*        {i.name}*/}
+        {/*      </option>*/}
+        {/*    ))}*/}
+        {/*  </select>*/}
+        {/*  {formik.touched.chooseHotel && Boolean(formik.errors.chooseHotel) ? (*/}
+        {/*      <small className="text-red-600">*/}
+        {/*        {formik.touched.chooseHotel && formik.errors.chooseHotel}*/}
+        {/*      </small>*/}
+        {/*  ) : null}*/}
+        {/*</div>*/}
+        {/* name box */}
         <div className="flex flex-col gap-3">
           <select
-            name="chooseHotel"
+            name="category"
             className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.chooseHotel}
+            value={formik.values.category}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
             <option value="" selected disabled>
-              Choose Hotel
+              Category
             </option>
-
-            {hotelList?.map((i) => (
-              <option key={i._id} value={i._id}>
-                {i.name}
-              </option>
-            ))}
+            <option value="Liquor">Liquor</option>
+            <option value="1">Kebab</option>
+            <option value="2">Rice</option>
+            <option value="3">Full Meal</option>
+            <option value="4">Sneaks</option>
+            <option value="5">Drinks</option>
+            <option value="6">Deserts</option>
+            <option value="7">Juices</option>
+            <option value="8">Carries</option>
+            <option value="9">Vegetarian Meals</option>
+            <option value="Others">Others</option>
           </select>
-          {formik.touched.chooseHotel && Boolean(formik.errors.chooseHotel) ? (
-              <small className="text-red-600">
-                {formik.touched.chooseHotel && formik.errors.chooseHotel}
-              </small>
+          {formik.touched.category && Boolean(formik.errors.category) ? (
+            <small className="text-red-600">
+              {formik.touched.category && formik.errors.category}
+            </small>
           ) : null}
         </div>
-        {/* name box */}
+        {formik.values.category && formik.values.category === "Others" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Write your category"
+              name="categoryOthers"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.categoryOthers}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.categoryOthers &&
+            Boolean(formik.errors.categoryOthers) ? (
+              <small className="text-red-600">
+                {formik.touched.categoryOthers && formik.errors.categoryOthers}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
+        {/*{formik.values.category && formik.values.category === "Liquor" ? (*/}
+        {/*  <div className="flex flex-col gap-3">*/}
+        {/*    <input*/}
+        {/*      type="text"*/}
+        {/*      placeholder="Type of Alcohol"*/}
+        {/*      name="typeOfAlco"*/}
+        {/*      className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"*/}
+        {/*      value={formik.values.typeOfAlco}*/}
+        {/*      onChange={formik.handleChange}*/}
+        {/*      onBlur={formik.handleBlur}*/}
+        {/*    />*/}
+        {/*    /!*{formik.touched.categoryOthers &&*!/*/}
+        {/*    /!*Boolean(formik.errors.categoryOthers) ? (*!/*/}
+        {/*    /!*    <small className="text-red-600">*!/*/}
+        {/*    /!*      {formik.touched.categoryOthers && formik.errors.categoryOthers}*!/*/}
+        {/*    /!*    </small>*!/*/}
+        {/*    /!*) : null}*!/*/}
+        {/*  </div>*/}
+        {/*) : null}*/}
         <div className="flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Food name"
-            name="foodName"
+            placeholder="Name"
+            name="name"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-            value={formik.values.foodName}
+            value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.foodName && Boolean(formik.errors.foodName) ? (
+          {formik.touched.name && Boolean(formik.errors.name) ? (
             <small className="text-red-600">
-              {formik.touched.foodName && formik.errors.foodName}
+              {formik.touched.name && formik.errors.name}
             </small>
           ) : null}
         </div>
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Surveyor Quantity"
-            name="surveyorQuantity"
-            className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-            value={formik.values.surveyorQuantity}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+          {formik.values.category === "Liquor" ? (
+            <select
+              name="surveyorQuantity"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.surveyorQuantity}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Surveyor Quantity
+              </option>
+              <option value="">30 ML Peg</option>
+              <option value="">60 ML Peg</option>
+              <option value="">Quarter Bottle</option>
+              <option value="">Half Bottle</option>
+              <option value="">Full Bottle</option>
+              <option value="Others">Others</option>
+            </select>
+          ) : (
+            <input
+              type="text"
+              placeholder="Surveyor Quantity"
+              name="surveyorQuantity"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.surveyorQuantity}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          )}
           {formik.touched.surveyorQuantity &&
           Boolean(formik.errors.surveyorQuantity) ? (
             <small className="text-red-600">
@@ -269,7 +361,27 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
-
+        {formik.values.surveyorQuantity &&
+        formik.values.surveyorQuantity === "Others" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Write your surveyor quantity"
+              name="surveyorQuantityOthers"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.surveyorQuantityOthers}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.surveyorQuantityOthers &&
+            Boolean(formik.errors.surveyorQuantityOthers) ? (
+              <small className="text-red-600">
+                {formik.touched.surveyorQuantityOthers &&
+                  formik.errors.surveyorQuantityOthers}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
         {/* Price box */}
         <div className="flex flex-col gap-3">
           <input

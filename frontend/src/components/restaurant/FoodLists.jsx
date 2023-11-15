@@ -6,7 +6,7 @@ import FoodList from "./FoodList.jsx";
 import ReactPaginate from "react-paginate";
 import { useFoodsQuery } from "../../redux/restaurant/foodAPI.js";
 
-const FoodLists = ({ keyword,chooseHotel }) => {
+const FoodLists = ({ keyword,chooseHotel, reset, setReset }) => {
   const { order } = useSelector((store) => store.addOrderSlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
@@ -24,11 +24,11 @@ const FoodLists = ({ keyword,chooseHotel }) => {
     setCurrentPage(page);
   };
 
-  const handleOrder = (item) => {
+  const handleOrder = ({ food: item, input: quantity }) => {
     const tempOrder = { ...order };
 
     const tempFoods = [...tempOrder.foods];
-    tempFoods.push({ ...item, quantity: 1 });
+    tempFoods.push({ ...item, quantity });
 
     const newOrder = { ...tempOrder, foods: tempFoods };
     dispatch(setOrder(newOrder));
@@ -38,7 +38,7 @@ const FoodLists = ({ keyword,chooseHotel }) => {
   useEffect(() => {
     if (foods) setPageCount(foods.data.totalPages);
   }, [foods]);
-
+console.log(order)
   return chooseHotel ? (
     foods?.data?.docs?.length ? (
       <div>
@@ -52,6 +52,7 @@ const FoodLists = ({ keyword,chooseHotel }) => {
                   Surveyor <br /> Quantity
                 </th>
                 <th>Price</th>
+                <th>Quantity</th>
                 <th className={`text-center`}>
                   Add / Remove <br /> Food
                 </th>
@@ -65,6 +66,7 @@ const FoodLists = ({ keyword,chooseHotel }) => {
                   idx={idx}
                   food={food}
                   handleOrder={handleOrder}
+                  reset={reset} setReset={setReset}
                 />
               ))}
             </tbody>

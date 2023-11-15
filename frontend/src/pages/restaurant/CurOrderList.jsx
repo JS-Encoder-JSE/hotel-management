@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
+  FaDoorOpen,
   FaEye,
   FaPrint,
-  FaRegEdit,
-  FaSearch,
+  FaRegEdit, FaSearch,
   FaStreetView,
 } from "react-icons/fa";
-import { GrPowerReset, GrView } from "react-icons/gr";
+import {GrPowerReset, GrView} from "react-icons/gr";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
@@ -25,7 +25,7 @@ import { MdCancel } from "react-icons/md";
 import DatePicker from "react-datepicker";
 // import StatusSettings from "./StatusSettings.jsx";
 
-const OrderList = () => {
+const CurOrderList = () => {
   const navigate = useNavigate();
   const [ordersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
@@ -80,75 +80,75 @@ const OrderList = () => {
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-        <h3 className={`text-2xl font-semibold text-center`}>Order List</h3>
+        <h3 className={`text-2xl font-semibold text-center`}>Current Order List</h3>
         <div className={`flex justify-between mt-5`}>
           <div className={`flex gap-3`}>
             <DatePicker
-              autoComplete={`off`}
-              dateFormat="dd/MM/yyyy"
-              name="startDate"
-              placeholderText={`From`}
-              selected={formik.values.startDate}
-              className={`input input-sm input-bordered rounded focus:outline-none`}
-              onChange={(date) => formik.setFieldValue("startDate", date)}
-              onBlur={formik.handleBlur}
-              onKeyUp={(e) => {
-                e.target.value === "" ? formik.handleSubmit() : null;
-              }}
-              onKeyDown={(e) => pressEnter(e)}
+                autoComplete={`off`}
+                dateFormat="dd/MM/yyyy"
+                name="startDate"
+                placeholderText={`From`}
+                selected={formik.values.startDate}
+                className={`input input-sm input-bordered rounded focus:outline-none`}
+                onChange={(date) => formik.setFieldValue("startDate", date)}
+                onBlur={formik.handleBlur}
+                onKeyUp={(e) => {
+                  e.target.value === "" ? formik.handleSubmit() : null;
+                }}
+                onKeyDown={(e) => pressEnter(e)}
             />
             <DatePicker
-              autoComplete={`off`}
-              dateFormat="dd/MM/yyyy"
-              name="endDate"
-              placeholderText={`To`}
-              selected={formik.values.endDate}
-              className={`input input-sm input-bordered rounded focus:outline-none`}
-              onChange={(date) => formik.setFieldValue("endDate", date)}
-              onBlur={formik.handleBlur}
-              onKeyUp={(e) => {
-                e.target.value === "" ? formik.handleSubmit() : null;
-              }}
-              onKeyDown={(e) => pressEnter(e)}
+                autoComplete={`off`}
+                dateFormat="dd/MM/yyyy"
+                name="endDate"
+                placeholderText={`To`}
+                selected={formik.values.endDate}
+                className={`input input-sm input-bordered rounded focus:outline-none`}
+                onChange={(date) => formik.setFieldValue("endDate", date)}
+                onBlur={formik.handleBlur}
+                onKeyUp={(e) => {
+                  e.target.value === "" ? formik.handleSubmit() : null;
+                }}
+                onKeyDown={(e) => pressEnter(e)}
             />
             <button
-              type={"button"}
-              onClick={() => {
-                formik.resetForm();
-                formik.handleSubmit();
-              }}
-              className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+                type={"button"}
+                onClick={() => {
+                  formik.resetForm();
+                  formik.handleSubmit();
+                }}
+                className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
               <GrPowerReset className="text-green-slimy" />
             </button>
             <button
-              type={"button"}
-              onClick={() => {
-                setCurrentPage(0);
-                formik.handleSubmit();
-              }}
-              className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+                type={"button"}
+                onClick={() => {
+                  setCurrentPage(0);
+                  formik.handleSubmit();
+                }}
+                className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
               Apply Filter
             </button>
           </div>
           <div className={`relative max-w-xs w-full`}>
             <input
-              type="text"
-              placeholder="Search by invoice number..."
-              name="search"
-              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-              value={formik.values.search}
-              onChange={formik.handleChange}
-              onKeyUp={(e) => {
-                e.target.value === "" ? formik.handleSubmit() : null;
-              }}
-              onKeyDown={(e) => pressEnter(e)}
+                type="text"
+                placeholder="Search by invoice number..."
+                name="search"
+                className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+                value={formik.values.search}
+                onChange={formik.handleChange}
+                onKeyUp={(e) => {
+                  e.target.value === "" ? formik.handleSubmit() : null;
+                }}
+                onKeyDown={(e) => pressEnter(e)}
             />
             <button
-              onClick={formik.handleSubmit}
-              type="button"
-              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                onClick={formik.handleSubmit}
+                type="button"
+                className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
               <FaSearch />
             </button>
@@ -221,18 +221,24 @@ const OrderList = () => {
                               >
                                 <FaEye />
                               </span>
-                              {/*<span*/}
-                              {/*  onClick={() => handleDelete(order?._id)}*/}
-                              {/*  title={`Cancel`}*/}
-                              {/*  className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}*/}
-                              {/*>*/}
-                              {/*  <MdCancel />*/}
-                              {/*</span>*/}
                               <span
-                                title={`Print`}
+                                title={`Checkout`}
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
                               >
-                                <FaPrint />
+                                <FaDoorOpen />
+                              </span>
+                              <span
+                                className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                                title={`Print`}
+                              >
+                                <FaEye />
+                              </span>
+                              <span
+                                onClick={() => handleDelete(order?._id)}
+                                title={`Cancel`}
+                                className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}
+                              >
+                                <MdCancel />
                               </span>
                             </td>
                           </tr>
@@ -279,4 +285,4 @@ const OrderList = () => {
   );
 };
 
-export default OrderList;
+export default CurOrderList;

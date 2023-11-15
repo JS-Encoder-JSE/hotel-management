@@ -11,11 +11,12 @@ import {FaArrowsRotate} from "react-icons/fa6";
 
 const AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
+  const [reset, setReset] = useState(false)
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       search: "",
-      chooseHotel: "",
+      method: "",
     },
     onSubmit: (values) => {
       setKeyword(values.search);
@@ -55,14 +56,19 @@ const AddOrder = () => {
         </div>
         <div className={`flex space-x-1.5`}>
           <button
-            onClick={() => dispatch(resetFoodOrder())}
+            onClick={() => {
+              dispatch(resetFoodOrder());
+              setReset(true);
+            }}
             type={`button`}
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
               !order.foods.length ? "opacity-50 pointer-events-none" : ""
             }`}
           >
             <span>Reset</span>
-            <span><FaArrowsRotate /></span>
+            <span>
+              <FaArrowsRotate />
+            </span>
           </button>
           <button
             onClick={() => window.fp_modal.showModal()}
@@ -96,7 +102,12 @@ const AddOrder = () => {
           </div>
         </div>
       </div>
-      <FoodLists keyword={keyword} chooseHotel={formik.values.chooseHotel} />
+      <FoodLists
+        reset={reset}
+        setReset={setReset}
+        keyword={keyword}
+        chooseHotel={formik.values.chooseHotel}
+      />
       <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
         <ConfirmOrder />
       </Modal>

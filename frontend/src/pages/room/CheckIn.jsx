@@ -23,7 +23,7 @@ import { useUploadMutation } from "../../redux/baseAPI.js";
 // form validation
 const validationSchema = yup.object({
   room_arr: yup.array().required("Room IDs are required"),
-  hotel_id: yup.string().required("Hotel ID is required"),
+  // hotel_id: yup.string().required("Hotel ID is required"),
   guestName: yup.string().required("Guest name is required"),
   address: yup.string().required("Address is required"),
   mobileNumber: yup.string().required("Mobile number is required"),
@@ -63,7 +63,7 @@ const CheckIn = () => {
   const formik = useFormik({
     initialValues: {
       room_arr: [],
-      hotel_id: "",
+      // hotel_id: "",
       guestName: "",
       address: "",
       mobileNumber: "",
@@ -293,30 +293,30 @@ const CheckIn = () => {
             </Swiper>
           </div>
         ) : null}
-        <div className="flex flex-col gap-3">
-          <select
-            name="hotel_id"
-            className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-            value={formik.values.hotel_id}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Choose Hotel
-            </option>
+        {/*<div className="flex flex-col gap-3">*/}
+        {/*  <select*/}
+        {/*    name="hotel_id"*/}
+        {/*    className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"*/}
+        {/*    value={formik.values.hotel_id}*/}
+        {/*    onChange={formik.handleChange}*/}
+        {/*    onBlur={formik.handleBlur}*/}
+        {/*  >*/}
+        {/*    <option value="" selected disabled>*/}
+        {/*      Choose Hotel*/}
+        {/*    </option>*/}
 
-            {hotelsList?.map((i) => (
-              <option key={i._id} value={i._id}>
-                {i.name}
-              </option>
-            ))}
-          </select>
-          {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (
-            <small className="text-red-600">
-              {formik.touched.hotel_id && formik.errors.hotel_id}
-            </small>
-          ) : null}
-        </div>
+        {/*    {hotelsList?.map((i) => (*/}
+        {/*      <option key={i._id} value={i._id}>*/}
+        {/*        {i.name}*/}
+        {/*      </option>*/}
+        {/*    ))}*/}
+        {/*  </select>*/}
+        {/*  {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*/}
+        {/*    <small className="text-red-600">*/}
+        {/*      {formik.touched.hotel_id && formik.errors.hotel_id}*/}
+        {/*    </small>*/}
+        {/*  ) : null}*/}
+        {/*</div>*/}
 
         <div className="flex flex-col gap-3">
           <Select
@@ -595,7 +595,7 @@ const CheckIn = () => {
             <option value="" selected disabled>
               Type Of Documents
             </option>
-            <option value="Aadhar Card">Aadhar Card</option>
+            <option value="Aadhar Card">Aadhar Card / ID</option>
             <option value="Passport">Passport</option>
             <option value="Driving Licence">Driving Licence</option>
           </select>

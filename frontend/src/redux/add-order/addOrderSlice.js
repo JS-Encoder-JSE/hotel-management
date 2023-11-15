@@ -26,26 +26,6 @@ const addOrderSlice = createSlice({
 
       state.order.foods.splice(findFoodIdx, 1);
     },
-    incQuantity: (state, action) => {
-      const findFoodIdx = state.order.foods.findIndex(
-        (item) => item._id === action.payload._id,
-      );
-
-      state.order.foods.splice(findFoodIdx, 1, {
-        ...action.payload,
-        quantity: action.payload.quantity + 1,
-      });
-    },
-    decQuantity: (state, action) => {
-      const findFoodIdx = state.order.foods.findIndex(
-        (item) => item._id === action.payload._id,
-      );
-
-      state.order.foods.splice(findFoodIdx, 1, {
-        ...action.payload,
-        quantity: action.payload.quantity - 1,
-      });
-    },
     setQuantity: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
         (item) => item._id === action.payload._id,
@@ -63,20 +43,15 @@ const addOrderSlice = createSlice({
         });
       }
     },
-    setSerQuantity: (state, action) => {
+    manipulateQuantity: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
         (item) => item._id === action.payload.food._id,
       );
 
-      if (action.payload.serQuantity) {
+      if (findFoodIdx !== -1) {
         state.order.foods.splice(findFoodIdx, 1, {
-          ...action.payload.food,
-          serveyor_quantity: action.payload.serQuantity,
-        });
-      } else {
-        state.order.foods.splice(findFoodIdx, 1, {
-          ...action.payload.food,
-          serveyor_quantity: "1:1",
+          ...state.order.foods[findFoodIdx],
+          quantity: action.payload.quantity,
         });
       }
     },
@@ -111,10 +86,8 @@ const addOrderSlice = createSlice({
 export const {
   setOrder,
   delOrder,
-  incQuantity,
-  decQuantity,
   setQuantity,
-  setSerQuantity,
+  manipulateQuantity,
   setOrderCalc,
   resetFoodOrder,
 } = addOrderSlice.actions;

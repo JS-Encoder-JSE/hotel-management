@@ -44,7 +44,7 @@ const validationSchema = yup.object({
     .string()
     .required("Description is required")
     .min(20, "Description at least 20 characters length"),
-  hotel_id: yup.string().required("Choose hotel is required"),
+  // hotel_id: yup.string().required("Choose hotel is required"),
 });
 
 const AddRoom = () => {
@@ -62,7 +62,7 @@ const AddRoom = () => {
 
   const formik = useFormik({
     initialValues: {
-      hotel_id: "",
+      // hotel_id: "",
       category: "",
       type: "",
       capacity: "",
@@ -229,31 +229,31 @@ const AddRoom = () => {
                 </Swiper>
               </div>
 
-              <div className="flex flex-col gap-3">
-                <select
-                  name="hotel_id"
-                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.hotel_id}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="" selected disabled>
-                    Choose Hotels
-                  </option>
+              {/*<div className="flex flex-col gap-3">*/}
+              {/*  <select*/}
+              {/*    name="hotel_id"*/}
+              {/*    className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"*/}
+              {/*    value={formik.values.hotel_id}*/}
+              {/*    onChange={formik.handleChange}*/}
+              {/*    onBlur={formik.handleBlur}*/}
+              {/*  >*/}
+              {/*    <option value="" selected disabled>*/}
+              {/*      Choose Hotels*/}
+              {/*    </option>*/}
 
-                  {hotelsList?.map((i) => (
-                    <option key={i._id} value={i._id}>
-                      {i.name}
-                    </option>
-                  ))}
-                </select>
+              {/*    {hotelsList?.map((i) => (*/}
+              {/*      <option key={i._id} value={i._id}>*/}
+              {/*        {i.name}*/}
+              {/*      </option>*/}
+              {/*    ))}*/}
+              {/*  </select>*/}
 
-                {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (
-                  <small className="text-red-600">
-                    {formik.touched.hotel_id && formik.errors.hotel_id}
-                  </small>
-                ) : null}
-              </div>
+              {/*  {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*/}
+              {/*    <small className="text-red-600">*/}
+              {/*      {formik.touched.hotel_id && formik.errors.hotel_id}*/}
+              {/*    </small>*/}
+              {/*  ) : null}*/}
+              {/*</div>*/}
 
               {/* category box */}
               <div className="flex flex-col gap-3">
@@ -269,7 +269,7 @@ const AddRoom = () => {
                   </option>
                   <option value="Standard">Standard</option>
                   <option value="Deluxe">Deluxe</option>
-                  <option value="Suite">Suite</option>
+                  <option value="Super_Deluxe">Super Deluxe</option>
                   <option value="President_Suite">President Suite</option>
                 </select>
                 {formik.touched.category && Boolean(formik.errors.category) ? (

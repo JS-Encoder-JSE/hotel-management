@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import RoomLists from "../../components/room/RoomLists.jsx";
 import { FaSearch } from "react-icons/fa";
@@ -16,7 +16,7 @@ const ManageRoom = () => {
     initialValues: {
       filter: "",
       search: "",
-      hotel_id: "",
+      // hotel_id: "",
     },
     onSubmit: (values) => {
       setKeyword(values.search);
@@ -40,36 +40,35 @@ const ManageRoom = () => {
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 
   useEffect(() => {
-    if(formik.values.filter) {
-      setCurrentPage(0)
+    if (formik.values.filter) {
+      setCurrentPage(0);
     }
   }, [formik.values.filter]);
 
-  console.log(rooms);
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
-      <div className={`flex justify-between gap-4`}>
+      <div className={`flex justify-end gap-4`}>
         {/* filter by hotels  */}
-        <div className="flex  items-center gap-2">
-          {/* <p className="">Please choose hotel : </p> */}
-          <select
-            name="hotel_id"
-            className="input h-8 input-md bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.hotel_id}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Choose Hotels
-            </option>
+        {/*<div className="flex  items-center gap-2">*/}
+        {/*  /!* <p className="">Please choose hotel : </p> *!/*/}
+        {/*  <select*/}
+        {/*    name="hotel_id"*/}
+        {/*    className="input h-8 input-md bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"*/}
+        {/*    value={formik.values.hotel_id}*/}
+        {/*    onChange={formik.handleChange}*/}
+        {/*    onBlur={formik.handleBlur}*/}
+        {/*  >*/}
+        {/*    <option value="" selected disabled>*/}
+        {/*      Choose Hotels*/}
+        {/*    </option>*/}
 
-            {hotelsList?.map((i) => (
-              <option key={i._id} value={i._id}>
-                {i.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/*    {hotelsList?.map((i) => (*/}
+        {/*      <option key={i._id} value={i._id}>*/}
+        {/*        {i.name}*/}
+        {/*      </option>*/}
+        {/*    ))}*/}
+        {/*  </select>*/}
+        {/*</div>*/}
 
         <div className={`flex gap-1.5`}>
           <div>
@@ -108,14 +107,23 @@ const ManageRoom = () => {
           </div>
         </div>
       </div>
-      {formik.values.hotel_id ? (
+      {!isLoading ? (
         rooms?.data?.docs?.length ? (
-          <RoomLists currentPage={currentPage} setCurrentPage={setCurrentPage} rooms={rooms} />
+          <RoomLists
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            rooms={rooms}
+          />
         ) : (
           <h3 className="text-center">No data found!</h3>
         )
       ) : (
-        <h3 className="text-center">Please choose a hotel</h3>
+        <Rings
+          width="50"
+          height="50"
+          color="#37a000"
+          wrapperClass="justify-center"
+        />
       )}
     </div>
   );

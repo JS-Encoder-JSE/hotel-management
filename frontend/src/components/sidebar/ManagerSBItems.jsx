@@ -133,6 +133,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
+                to={`/dashboard/current-order-list`}
+                className={({ isActive }) =>
+                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                    (isActive ? " bg-gray-300" : "")
+                }
+            >
+              Current Order List
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to={`/dashboard/order-list`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +

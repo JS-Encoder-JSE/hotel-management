@@ -8,6 +8,7 @@ import {
   useGetRoomsAndHotelsQuery,
   useGetBookingsByHotelQuery,
 } from "../../redux/room/roomAPI.js";
+import { Rings } from "react-loader-spinner";
 
 const ManageBooking = () => {
   const [search, setSearch] = useState("");
@@ -16,7 +17,7 @@ const ManageBooking = () => {
     initialValues: {
       filter: "",
       search: "",
-      hotel_id: "",
+      // hotel_id: "",
     },
     onSubmit: (values) => {
       setSearch(values.search);
@@ -28,7 +29,7 @@ const ManageBooking = () => {
     hotel_id: formik.values.hotel_id,
     search: formik.values.search,
     page: currentPage,
-    filter: "Active"
+    filter: "Active",
   });
 
   const pressEnter = (e) => {
@@ -40,28 +41,28 @@ const ManageBooking = () => {
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl`}>
-      <div className={`flex justify-between gap-4`}>
+      <div className={`flex justify-end gap-4`}>
         {/* filter by hotels  */}
-        <div className="flex items-center gap-2">
-          {/* <p>Please choose a hotel : </p> */}
-          <select
-            name="hotel_id"
-            className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.hotel_id}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Choose Hotel
-            </option>
+        {/*<div className="flex items-center gap-2">*/}
+        {/*  /!* <p>Please choose a hotel : </p> *!/*/}
+        {/*  <select*/}
+        {/*    name="hotel_id"*/}
+        {/*    className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"*/}
+        {/*    value={formik.values.hotel_id}*/}
+        {/*    onChange={formik.handleChange}*/}
+        {/*    onBlur={formik.handleBlur}*/}
+        {/*  >*/}
+        {/*    <option value="" selected disabled>*/}
+        {/*      Choose Hotel*/}
+        {/*    </option>*/}
 
-            {hotelsList?.map((i) => (
-              <option key={i._id} value={i._id}>
-                {i.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/*    {hotelsList?.map((i) => (*/}
+        {/*      <option key={i._id} value={i._id}>*/}
+        {/*        {i.name}*/}
+        {/*      </option>*/}
+        {/*    ))}*/}
+        {/*  </select>*/}
+        {/*</div>*/}
 
         {/* <div>
           <select
@@ -104,7 +105,7 @@ const ManageBooking = () => {
           </div>
         </div>
       </div>
-      {formik.values.hotel_id ? (
+      {!isLoading ? (
         bookingList?.data?.docs?.length ? (
           <BookingLists
             bookingList={bookingList}
@@ -115,7 +116,12 @@ const ManageBooking = () => {
           <h3 className={`text-center`}>No data found!</h3>
         )
       ) : (
-        <h3 className={`text-center`}>Choose a hotel!</h3>
+        <Rings
+          width="50"
+          height="50"
+          color="#37a000"
+          wrapperClass="justify-center"
+        />
       )}
       <Modal id={`ab_modal`}>
         <AddBooking />
