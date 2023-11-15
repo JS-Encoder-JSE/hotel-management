@@ -5,8 +5,9 @@ import { setOrder, setOrderCalc } from "../../redux/add-order/addOrderSlice.js";
 import FoodList from "./FoodList.jsx";
 import ReactPaginate from "react-paginate";
 import { useFoodsQuery } from "../../redux/restaurant/foodAPI.js";
+import { Rings } from "react-loader-spinner";
 
-const FoodLists = ({ formik,keyword,chooseHotel, reset, setReset }) => {
+const FoodLists = ({ formik, keyword, chooseHotel, reset, setReset }) => {
   const { order } = useSelector((store) => store.addOrderSlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
@@ -38,8 +39,8 @@ const FoodLists = ({ formik,keyword,chooseHotel, reset, setReset }) => {
   useEffect(() => {
     if (foods) setPageCount(foods.data.totalPages);
   }, [foods]);
-console.log(order)
-  return chooseHotel ? (
+
+  return !isLoading ? (
     foods?.data?.docs?.length ? (
       <div>
         <div className="overflow-x-auto border">
@@ -66,7 +67,8 @@ console.log(order)
                   idx={idx}
                   food={food}
                   handleOrder={handleOrder}
-                  reset={reset} setReset={setReset}
+                  reset={reset}
+                  setReset={setReset}
                 />
               ))}
             </tbody>
@@ -96,7 +98,12 @@ console.log(order)
       <h3 className={`text-center`}>No data found!</h3>
     )
   ) : (
-    <h3 className={`text-center`}>Please choose a hotel</h3>
+    <Rings
+      width="50"
+      height="50"
+      color="#37a000"
+      wrapperClass="justify-center"
+    />
   );
 };
 

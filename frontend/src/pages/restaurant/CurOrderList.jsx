@@ -81,57 +81,7 @@ const CurOrderList = () => {
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
         <h3 className={`text-2xl font-semibold text-center`}>Current Order List</h3>
-        <div className={`flex justify-between mt-5`}>
-          <div className={`flex gap-3`}>
-            <DatePicker
-                autoComplete={`off`}
-                dateFormat="dd/MM/yyyy"
-                name="startDate"
-                placeholderText={`From`}
-                selected={formik.values.startDate}
-                className={`input input-sm input-bordered rounded focus:outline-none`}
-                onChange={(date) => formik.setFieldValue("startDate", date)}
-                onBlur={formik.handleBlur}
-                onKeyUp={(e) => {
-                  e.target.value === "" ? formik.handleSubmit() : null;
-                }}
-                onKeyDown={(e) => pressEnter(e)}
-            />
-            <DatePicker
-                autoComplete={`off`}
-                dateFormat="dd/MM/yyyy"
-                name="endDate"
-                placeholderText={`To`}
-                selected={formik.values.endDate}
-                className={`input input-sm input-bordered rounded focus:outline-none`}
-                onChange={(date) => formik.setFieldValue("endDate", date)}
-                onBlur={formik.handleBlur}
-                onKeyUp={(e) => {
-                  e.target.value === "" ? formik.handleSubmit() : null;
-                }}
-                onKeyDown={(e) => pressEnter(e)}
-            />
-            <button
-                type={"button"}
-                onClick={() => {
-                  formik.resetForm();
-                  formik.handleSubmit();
-                }}
-                className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-            >
-              <GrPowerReset className="text-green-slimy" />
-            </button>
-            <button
-                type={"button"}
-                onClick={() => {
-                  setCurrentPage(0);
-                  formik.handleSubmit();
-                }}
-                className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-            >
-              Apply Filter
-            </button>
-          </div>
+        <div className={`flex justify-end mt-5`}>
           <div className={`relative max-w-xs w-full`}>
             <input
                 type="text"

@@ -82,6 +82,7 @@ import OrderListBar from "./pages/bar/OrderListBar.jsx";
 import CheckInDyn from "./pages/room/CheckInDyn.jsx";
 import EmployeeView from "./pages/employee/EmployeeView.jsx";
 import CurOrderList from "./pages/restaurant/CurOrderList.jsx";
+import AddTable from "./pages/restaurant/AddTable.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -201,6 +202,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <AddFood />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-table",
+              element: (
+                <ManagerRoute>
+                  <AddTable />
                 </ManagerRoute>
               ),
             },
@@ -325,62 +334,62 @@ const App = () => {
                 </ManagerRoute>
               ),
             },
-            {
-              path: "add-bar",
-              element: (
-                <ManagerRoute>
-                  <AddBar />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "bar-order",
-              element: (
-                <ManagerRoute>
-                  <OrderBar />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "baritem-list",
-              element: (
-                <ManagerRoute>
-                  <BarItemList />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "barItem-listView/:id",
-              element: (
-                <ManagerRoute>
-                  <BarItemView />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "edit-bar/:id",
-              element: (
-                <ManagerRoute>
-                  <EditBar />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "order-bar-item",
-              element: (
-                <ManagerRoute>
-                  <OrderBarItem />
-                </ManagerRoute>
-              ),
-            },
-            {
-              path: "order-bar-list",
-              element: (
-                <ManagerRoute>
-                  <OrderListBar />
-                </ManagerRoute>
-              ),
-            },
+            // {
+            //   path: "add-bar",
+            //   element: (
+            //     <ManagerRoute>
+            //       <AddBar />
+            //     </ManagerRoute>
+            //   ),
+            // },
+            // {
+            //   path: "bar-order",
+            //   element: (
+            //     <ManagerRoute>
+            //       <OrderBar />
+            //     </ManagerRoute>
+            //   ),
+            // },
+            // {
+            //   path: "baritem-list",
+            //   element: (
+            //     <ManagerRoute>
+            //       <BarItemList />
+            //     </ManagerRoute>
+            //   ),
+            // },
+            // {
+            //   path: "barItem-listView/:id",
+            //   element: (
+            //     <ManagerRoute>
+            //       <BarItemView />
+            //     </ManagerRoute>
+            //   ),
+            // },
+            // {
+            //   path: "edit-bar/:id",
+            //   element: (
+            //     <ManagerRoute>
+            //       <EditBar />
+            //     </ManagerRoute>
+            //   ),
+            // },
+            // {
+            //   path: "order-bar-item",
+            //   element: (
+            //     <ManagerRoute>
+            //       <OrderBarItem />
+            //     </ManagerRoute>
+            //   ),
+            // },
+            // {
+            //   path: "order-bar-list",
+            //   element: (
+            //     <ManagerRoute>
+            //       <OrderListBar />
+            //     </ManagerRoute>
+            //   ),
+            // },
             {
               path: "add-swimming-pool",
               element: (

@@ -111,13 +111,24 @@ const ManagerSbItems = ({ handleSBItems }) => {
         <ul className={`group-[.active]:block hidden`}>
           <li>
             <NavLink
+                to={`/dashboard/add-table`}
+                className={({ isActive }) =>
+                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                    (isActive ? " bg-gray-300" : "")
+                }
+            >
+              Add Table
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to={`/dashboard/add-food`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Food
+              Add Food / Beverage
             </NavLink>
           </li>
           <li>
@@ -294,47 +305,47 @@ const ManagerSbItems = ({ handleSBItems }) => {
       </li> */}
 
       {/* Order Bar Item */}
-      <li className={`group p-2`}>
-        <div
-          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
-          onClick={(e) => handleSBItems(e)}
-        >
-          <div className={`flex space-x-1.5`}>
-            <FaGlassMartini />
-            <span className={`-mt-0.5`}>Manage Bar</span>
-          </div>
-          <span className={`group-[.active]:hidden`}>
-            <MdKeyboardArrowDown />
-          </span>
-          <span className={`hidden group-[.active]:inline`}>
-            <MdKeyboardArrowUp />
-          </span>
-        </div>
-        <ul className={`group-[.active]:block hidden`}>
-          <li>
-            <NavLink
-              to={`/dashboard/order-bar-item`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Order Bar Item
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={`/dashboard/order-bar-list`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Order List
-            </NavLink>
-          </li>
-        </ul>
-      </li>
+      {/*<li className={`group p-2`}>*/}
+      {/*  <div*/}
+      {/*    className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}*/}
+      {/*    onClick={(e) => handleSBItems(e)}*/}
+      {/*  >*/}
+      {/*    <div className={`flex space-x-1.5`}>*/}
+      {/*      <FaGlassMartini />*/}
+      {/*      <span className={`-mt-0.5`}>Manage Bar</span>*/}
+      {/*    </div>*/}
+      {/*    <span className={`group-[.active]:hidden`}>*/}
+      {/*      <MdKeyboardArrowDown />*/}
+      {/*    </span>*/}
+      {/*    <span className={`hidden group-[.active]:inline`}>*/}
+      {/*      <MdKeyboardArrowUp />*/}
+      {/*    </span>*/}
+      {/*  </div>*/}
+      {/*  <ul className={`group-[.active]:block hidden`}>*/}
+      {/*    <li>*/}
+      {/*      <NavLink*/}
+      {/*        to={`/dashboard/order-bar-item`}*/}
+      {/*        className={({ isActive }) =>*/}
+      {/*          "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +*/}
+      {/*          (isActive ? " bg-gray-300" : "")*/}
+      {/*        }*/}
+      {/*      >*/}
+      {/*        Order Bar Item*/}
+      {/*      </NavLink>*/}
+      {/*    </li>*/}
+      {/*    <li>*/}
+      {/*      <NavLink*/}
+      {/*        to={`/dashboard/order-bar-list`}*/}
+      {/*        className={({ isActive }) =>*/}
+      {/*          "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +*/}
+      {/*          (isActive ? " bg-gray-300" : "")*/}
+      {/*        }*/}
+      {/*      >*/}
+      {/*        Order List*/}
+      {/*      </NavLink>*/}
+      {/*    </li>*/}
+      {/*  </ul>*/}
+      {/*</li>*/}
       {/* Gym Reservation */}
       <li>
         <NavLink

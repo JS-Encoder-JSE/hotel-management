@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaPlus, FaTrash, FaUpload } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -31,7 +31,7 @@ const validationSchema = yup.object({
     .string()
     .required("Description is required")
     .min(20, "Description at least 20 characters length"),
-  photos: yup.mixed().required("Images are required"),
+  // photos: yup.mixed().required("Images are required"),
 });
 
 const AddFood = () => {
@@ -41,6 +41,7 @@ const AddFood = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const { user } = useSelector((store) => store.authSlice);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
+  const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -53,6 +54,7 @@ const AddFood = () => {
       category: "",
       categoryOthers: "",
       typeOfAlco: "",
+      password: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -259,7 +261,7 @@ const AddFood = () => {
             <option value="5">Drinks</option>
             <option value="6">Deserts</option>
             <option value="7">Juices</option>
-            <option value="8">Carries</option>
+            <option value="8">Curries</option>
             <option value="9">Vegetarian Meals</option>
             <option value="Others">Others</option>
           </select>
@@ -337,6 +339,8 @@ const AddFood = () => {
               </option>
               <option value="">30 ML Peg</option>
               <option value="">60 ML Peg</option>
+              <option value="">Cans</option>
+              <option value="">Bear Bottle</option>
               <option value="">Quarter Bottle</option>
               <option value="">Half Bottle</option>
               <option value="">Full Bottle</option>
@@ -445,6 +449,41 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
+        {formik.values.category && formik.values.category === "Liquor" ? (
+          <div className={`flex flex-col gap-3`}>
+            <div className={`relative`}>
+              <input
+                type={showPass ? "text" : "password"}
+                placeholder="Password"
+                name="password"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {showPass ? (
+                <span
+                  className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                  onClick={() => setShowPass(false)}
+                >
+                  <FaEyeSlash />
+                </span>
+              ) : (
+                <span
+                  className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                  onClick={() => setShowPass(true)}
+                >
+                  <FaEye />
+                </span>
+              )}
+            </div>
+            {formik.touched.password && Boolean(formik.errors.password) ? (
+              <small className="text-red-600">
+                {formik.touched.password && formik.errors.password}
+              </small>
+            ) : null}
+          </div>
+        ) : null}
         {/* button */}
         <div className={`flex justify-between`}>
           <button
