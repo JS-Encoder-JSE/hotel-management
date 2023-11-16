@@ -7,14 +7,13 @@ import ReactPaginate from "react-paginate";
 import { useFoodsQuery } from "../../redux/restaurant/foodAPI.js";
 import { Rings } from "react-loader-spinner";
 
-const FoodLists = ({ formik, keyword, chooseHotel, reset, setReset }) => {
+const FoodLists = ({ formik, keyword, roomOrTable, reset, setReset }) => {
   const { order } = useSelector((store) => store.addOrderSlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const [foodsPerPage] = useState(10);
   const { isLoading, data: foods } = useFoodsQuery({
-    id: "655084bc24936415423bfa2f",
     cp: currentPage,
     pp: foodsPerPage,
     search: formik.values.search,
@@ -31,8 +30,9 @@ const FoodLists = ({ formik, keyword, chooseHotel, reset, setReset }) => {
     const tempFoods = [...tempOrder.foods];
     tempFoods.push({ ...item, quantity });
 
-    const newOrder = { ...tempOrder, foods: tempFoods };
-    dispatch(setOrder(newOrder));
+    // const newOrder = { ...tempOrder, foods: tempFoods };
+    // console.log("new Order", newOrder);
+    dispatch(setOrder(tempFoods));
     dispatch(setOrderCalc());
   };
 

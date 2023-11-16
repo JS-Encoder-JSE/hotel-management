@@ -8,8 +8,8 @@ const roomAPI = baseAPI.injectEndpoints({
       providesTags: ["room"],
     }),
     rooms: build.query({
-      query: ({ id, cp, filter, search, limit }) =>
-        `rooms/get-rooms-by-hotel/${id}?page=${++cp}${
+      query: ({ cp, filter, search, limit }) =>
+        `rooms/get-rooms-by-hotel/?page=${++cp}${
           limit ? `&limit=${limit}` : ""
         }${filter ? `&filter=${filter}` : ""}${
           search ? `&search=${search}` : ""
@@ -111,6 +111,10 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["room"],
     }),
+    getTables: build.query({
+      query: () => `tables/get-tables-by-hotel`,
+      providesTags: ["room"],
+    }),
   }),
 });
 
@@ -129,4 +133,5 @@ export const {
   useGetBookingByIdQuery,
   useGetCOInfoQuery,
   useAddCheckoutMutation,
+  useGetTablesQuery,
 } = roomAPI;
