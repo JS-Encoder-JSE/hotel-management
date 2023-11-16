@@ -28,7 +28,7 @@ router.patch("/update-food/:food_id", checkToken, updateFood);
 router.delete("/delete-food/:food_id", checkToken, deleteFood);
 router.delete("/delete-order/:order_id", checkToken, deleteOrder);
 router.post("/add-order", checkToken, addOrder);
-router.patch("/updare-order", checkToken, updateOrder);
+router.patch("/update-order/:order_id", checkToken, updateOrder);
 
 // Food category routes
 router.get("/get-food-categories-by-hotel/:hotel_id", checkToken, getFoodCategoriesByHotelId);
