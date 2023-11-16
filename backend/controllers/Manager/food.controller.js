@@ -267,7 +267,7 @@ export const updateOrder = async (req, res) => {
 
 export const getOrdersByHotelId = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search } = req.query;
+    const { page = 1, limit = 10, search, current_order } = req.query;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
@@ -289,6 +289,9 @@ export const getOrdersByHotelId = async (req, res) => {
     if (search) {
       // Update the search condition based on the actual type of room_id
       query.room_id = search; // Assuming search is the room_id you're looking for
+    }
+    if (current_order) {
+      query.current_order = current_order;
     }
 
     const options = {
