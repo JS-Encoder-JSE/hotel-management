@@ -7,6 +7,7 @@ import Modal from "../../components/Modal.jsx";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
 import { useAddHotelMutation } from "../../redux/Owner/hotelsAPI.js";
 import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 // form validation
 const validationSchema = yup.object({
@@ -16,11 +17,22 @@ const validationSchema = yup.object({
     .required("Address is required")
     .matches(
       /^[a-zA-Z][a-zA-Z0-9\s]*$/,
-      "Address must start with a character and can include characters and numbers",
+      "Address must start with a character and can include characters and numbers"
     ),
   email: yup.string().required("Hotel Email is required"),
   phoneNumber: yup.string().required("Phone Number  is required"),
   branchName: yup.string().required("Branch Name is required"),
+  password: yup
+    .string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
+  username: yup
+    .string()
+    .required("Username is required")
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9]*$/,
+      "Username must start with a character and can include characters and numbers"
+    ),
 });
 
 const AddHotel = () => {
@@ -29,6 +41,7 @@ const AddHotel = () => {
   const [addHotel] = useAddHotelMutation();
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
   const [showManagers, setShowManagers] = useState([]);
+  const [showPass, setShowPass] = useState(false);
   const { data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
@@ -45,6 +58,8 @@ const AddHotel = () => {
       email: "",
       phoneNumber: "",
       branchName: "",
+      username: "",
+      password: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -57,6 +72,8 @@ const AddHotel = () => {
         email,
         phoneNumber: phone_no,
         branchName: branch_name,
+        username,
+        password,
       } = obj;
 
       const response = await addHotel({
@@ -67,6 +84,8 @@ const AddHotel = () => {
         phone_no,
         branch_name,
         managers: showManagers,
+        username,
+        password,
       });
 
       if (response?.error) {
@@ -235,7 +254,56 @@ const AddHotel = () => {
                 </small>
               ) : null}
             </div>
-            <button
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Username "
+                name="username"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy "
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.username && Boolean(formik.errors.username) ? (
+                <small className="text-red-600">
+                  {formik.touched.username && formik.errors.username}
+                </small>
+              ) : null}
+            </div>
+            <div className={`flex flex-col gap-3`}>
+              <div className={`relative`}>
+                <input
+                  type={showPass ? "text" : "password"}
+                  placeholder="New Password"
+                  name="password"
+                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {showPass ? (
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                    onClick={() => setShowPass(false)}
+                  >
+                    <FaEyeSlash />
+                  </span>
+                ) : (
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                    onClick={() => setShowPass(true)}
+                  >
+                    <FaEye />
+                  </span>
+                )}
+              </div>
+              {formik.touched.password && Boolean(formik.errors.password) ? (
+                <small className="text-red-600">
+                  {formik.touched.password && formik.errors.password}
+                </small>
+              ) : null}
+            </div>
+            {/* <button
               type="button"
               className="btn btn-md bg-transparent border-gray-500/50 rounded focus:outline-none focus:border-green-slimy normal-case"
               onClick={() => window.ol_modal.showModal()}
@@ -253,7 +321,7 @@ const AddHotel = () => {
                   ))}
                 </ul>
               </div>
-            ) : null}
+            ) : null} */}
             {/* submit button */}
             <div className="flex flex-col gap-3 col-span-full text-end">
               <button

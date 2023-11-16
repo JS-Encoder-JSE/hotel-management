@@ -55,6 +55,7 @@ const ReportManager = () => {
     },
   });
 
+  
   const { isLoading, data: reports } = useGetManagerReportQuery({
     ...searchParams,
     cp: currentPage,
@@ -76,9 +77,9 @@ const ReportManager = () => {
 
   useEffect(() => {
     if (reports) {
-      const total = reports.docs.reduce(
+      const total = reports?.docs?.reduce(
         (total, current) => total + current.paid_amount,
-        0,
+        0
       );
 
       setTotalAmount(total);
