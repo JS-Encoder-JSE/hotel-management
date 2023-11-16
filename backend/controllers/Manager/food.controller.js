@@ -4,19 +4,54 @@
   FoodOrder,
 } from "../../models/Manager/food.model.js";
 import Hotel from "../../models/hotel.model.js";
+import User from "../../models/user.model.js";
 
 export const addFood = async (req, res) => {
   try {
     const {
-      hotel_id,
       food_name,
       status,
       category,
       serveyor_quantity,
+      type_of_alcohol,
       price,
       images,
       description,
+      password,
     } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
+
+    if (!hotel_id) {
+      return res
+        .status(400)
+        .json({ message: "User is not assigned to any hotel" });
+    }
+
+    if (category === "Liquor") {
+      const parent = await User.findById(user.parent_id);
+      // Compare the provided password with the hashed password
+      const isPasswordValid = await parent.comparePassword(password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
+    }
+    // Check if the category_name already exists for the given hotel_id
+    const existingCategory = await FoodCategory.findOne({
+      hotel_id,
+      category_name: category,
+    });
+
+    if (!existingCategory) {
+      const newCategory = new FoodCategory({
+        hotel_id,
+        category_name: category,
+      });
+
+      await newCategory.save();
+    }
 
     const newFood = new Food({
       hotel_id,
@@ -24,6 +59,7 @@ export const addFood = async (req, res) => {
       status,
       category,
       serveyor_quantity,
+      type_of_alcohol,
       price,
       images,
       description,
@@ -37,6 +73,7 @@ export const addFood = async (req, res) => {
       message: "Food item added successfully",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -46,8 +83,11 @@ export const addFood = async (req, res) => {
 
 export const getFoodByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
     const { page = 1, limit = 10, category, filter, search } = req.query;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const query = {
       hotel_id,
@@ -142,7 +182,11 @@ export const updateFood = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const { room_id, table_id, hotel_id, items, paid_amount } = req.body;
+    const { room_id, table_id, items, paid_amount } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Calculate total_price based on the sum of the 'total' field in each item
     const total_price = items.reduce((sum, item) => sum + item.total, 0);
@@ -183,10 +227,51 @@ export const addOrder = async (req, res) => {
   }
 };
 
+export const updateOrder = async (req, res) => {
+  try {
+    const orderId = req.params.order_id; // Assuming you use "order_id" as the parameter name
+    const updateData = req.body;
+
+    const existingOrder = await FoodOrder.findById(orderId);
+
+    if (!existingOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    // Update the order with the provided data
+    const updatedOrder = await FoodOrder.findByIdAndUpdate(
+      orderId,
+      updateData,
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      data: updatedOrder,
+      message: "Order updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 export const getOrdersByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
     const { page = 1, limit = 10, search } = req.query;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const hotel = await Hotel.findById(hotel_id);
 
@@ -342,7 +427,11 @@ export const getFoodsByRoomId = async (req, res) => {
 
 export const addFoodCategory = async (req, res) => {
   try {
-    const { hotel_id, category_name } = req.body;
+    const { category_name } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Check if the category_name already exists for the given hotel_id
     const existingCategory = await FoodCategory.findOne({
@@ -458,7 +547,10 @@ export const deleteFoodCategory = async (req, res) => {
 
 export const getFoodCategoriesByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Find food categories for the given hotel_id
     const foodCategories = await FoodCategory.find({ hotel_id });

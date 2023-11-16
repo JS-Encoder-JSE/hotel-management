@@ -1,12 +1,12 @@
 ﻿import Booking from "../../models/Manager/booking.model.js";
 import { FoodOrder } from "../../models/Manager/food.model.js";
 import Room from "../../models/Manager/room.model.js";
+import User from "../../models/user.model.js";
 
 export const addBooking = async (req, res) => {
   try {
     const {
       room_ids,
-      hotel_id,
       guestName,
       address,
       mobileNumber,
@@ -29,6 +29,10 @@ export const addBooking = async (req, res) => {
       doc_number,
       doc_images,
     } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     if (!room_ids || !Array.isArray(room_ids) || room_ids.length === 0) {
       return res.status(400).json({
@@ -148,8 +152,11 @@ export const addBooking = async (req, res) => {
 
 export const getBookingsByHotel = async (req, res) => {
   try {
-    const hotel_id = req.params.hotel_id;
     const { limit = 10, page = 1, search, filter } = req.query;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Construct the filter object based on the query parameters
     const query = {

@@ -1,17 +1,16 @@
 import mongoose from "mongoose";
 import GymBills from "../../models/Manager/gym.model.js";
 import Room from "../../models/Manager/room.model.js";
+import User from "../../models/user.model.js";
 
 export const addGymBill = async (req, res) => {
   try {
-    const {
-      name,
-      hotel_id,
-      room_id,
-      members,
-      price,
-      paid_amount = 0,
-    } = req.body;
+    const { name, room_id, members, price, paid_amount = 0 } = req.body;
+
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const unpaid_amount = Math.max(price - paid_amount, 0);
     let status = "Pending";
@@ -51,8 +50,11 @@ export const addGymBill = async (req, res) => {
 
 export const getGymBillsByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
     const { page = 1, limit = 10, search, filter } = req.query;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const query = { hotel_id };
 

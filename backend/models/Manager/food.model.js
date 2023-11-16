@@ -25,6 +25,10 @@ const foodSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    type_of_alcohol: {
+      type: String,
+      required: false,
+    },
     price: {
       type: Number,
       required: true,
@@ -63,18 +67,16 @@ const itemsSchema = new mongoose.Schema({
     required: true,
   },
 });
-const foodCategorySchema = new mongoose.Schema(
-  {
-    hotel_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
-    category_name: {
-      type: String,
-      required: true,
-    },
-  }
-);
+const foodCategorySchema = new mongoose.Schema({
+  hotel_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+  category_name: {
+    type: String,
+    required: true,
+  },
+});
 // Food Order List
 const foodOrderSchema = new mongoose.Schema(
   {
@@ -96,9 +98,14 @@ const foodOrderSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    current_order : {
+    current_order: {
       type: Boolean,
       required: false,
+    },
+    order_status: {
+      type: String,
+      required: false,
+      enum: ["Current", "CheckedOut", "AssignedToRoom"],
     },
     items: [itemsSchema],
     total_price: {
@@ -114,6 +121,12 @@ const foodOrderSchema = new mongoose.Schema(
       type: Number,
       required: false,
       default: 0,
+    },
+    payment_status: {
+      type: String,
+      required: true,
+      enum: ["Pending", "Paid", "Partial"],
+      default: "Pending",
     },
   },
   { timestamps: true }

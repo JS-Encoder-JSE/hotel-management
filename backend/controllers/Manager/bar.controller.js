@@ -2,18 +2,22 @@ import mongoose from "mongoose";
 import BarOrder from "../../models/Manager/bar.model.js";
 import Hotel from "../../models/hotel.model.js";
 import Room from "../../models/Manager/room.model.js";
+import User from "../../models/user.model.js";
 
 export const addBarOrder = async (req, res) => {
   try {
     const {
       name,
-      hotel_id,
       room_id,
       type_of_alcohol,
       surveyor_quantity,
       price,
       paid_amount = 0, // Set default value to 0 if not provided
     } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Calculate unpaid amount
     const unpaid_amount = Math.max(price - paid_amount, 0); // Ensure unpaid_amount is not negative
@@ -57,8 +61,11 @@ export const addBarOrder = async (req, res) => {
 
 export const getBarOrdersByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
     const { page = 1, limit = 10, search } = req.query;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Validate if the hotel exists
     const existingHotel = await Hotel.findById(hotel_id);
