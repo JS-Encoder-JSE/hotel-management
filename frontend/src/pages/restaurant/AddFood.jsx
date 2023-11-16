@@ -20,7 +20,6 @@ import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   category: yup.string().required("Category is required"),
-  chooseHotel: yup.string().required("Hotel is required"),
   surveyorQuantity: yup.string().required("Surveyor quantity is required"),
   price: yup
     .number()
@@ -53,21 +52,26 @@ const AddFood = () => {
       chooseHotel: "",
       category: "",
       categoryOthers: "",
-      typeOfAlco: "",
+      typeOfAlcohol: "",
       password: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
+      console.log("hi", values);
       setLoading(true);
 
       const obj = { ...values };
       const {
+        category,
+        categoryOthers,
         name: food_name,
         price,
         description,
         surveyorQuantity: serveyor_quantity,
         photos,
         chooseHotel: hotel_id,
+        typeOfAlcohol:type_of_alcohol,
+        password
       } = obj;
 
       const formData = new FormData();
@@ -75,23 +79,28 @@ const AddFood = () => {
       for (let i = 0; i < photos.length; i++) {
         const photoName = photos[i].name.substring(
           0,
-          photos[i].name.lastIndexOf("."),
+          photos[i].name.lastIndexOf(".")
         );
 
         formData.append(photoName, photos[i]);
       }
 
       await upload(formData).then(
-        (result) => (obj.images = result.data.imageUrls),
+        (result) => (obj.images = result.data.imageUrls)
       );
 
       const response = await addFood({
-        hotel_id,
+        category: category === "Others" ? categoryOthers : category,
         food_name,
         price,
         description,
-        serveyor_quantity,
+        serveyor_quantity:
+          serveyor_quantity === "Others"
+            ? surveyorQuantityOthers
+            : serveyor_quantity,
         images: obj.images,
+        type_of_alcohol,
+        password
       });
 
       if (response?.error) {
@@ -325,6 +334,26 @@ const AddFood = () => {
             </small>
           ) : null}
         </div>
+        {formik.values.category === "Liquor" ? (
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Type of alcohol"
+              name="typeOfAlcohol"
+              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+              value={formik.values.typeOfAlcohol}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.name && Boolean(formik.errors.name) ? (
+              <small className="text-red-600">
+                {formik.touched.name && formik.errors.name}
+              </small>
+            ) : null}
+          </div>
+        ) : (
+          <></>
+        )}
         <div className="flex flex-col gap-3">
           {formik.values.category === "Liquor" ? (
             <select
@@ -337,13 +366,13 @@ const AddFood = () => {
               <option value="" selected disabled>
                 Surveyor Quantity
               </option>
-              <option value="">30 ML Peg</option>
-              <option value="">60 ML Peg</option>
-              <option value="">Cans</option>
-              <option value="">Bear Bottle</option>
-              <option value="">Quarter Bottle</option>
-              <option value="">Half Bottle</option>
-              <option value="">Full Bottle</option>
+              <option value="30 ml Peg">30 ML Peg</option>
+              <option value="60 ml Peg">60 ML Peg</option>
+              <option value="Cans">Cans</option>
+              <option value="Bear Bottle">Bear Bottle</option>
+              <option value="Quarter Bottle">Quarter Bottle</option>
+              <option value="Half Bottle">Half Bottle</option>
+              <option value="Full Bottle">Full Bottle</option>
               <option value="Others">Others</option>
             </select>
           ) : (

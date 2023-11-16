@@ -3,7 +3,7 @@ import React from "react";
 import toast from "react-hot-toast";
 import { FaPlus } from "react-icons/fa";
 import { useAddTableMutation } from "../../redux/restaurant/foodAPI.js";
-
+import * as yup from 'yup';
 // form validation
 const validationSchema = yup.object({
   number: yup.string().required("Table number is required"),
