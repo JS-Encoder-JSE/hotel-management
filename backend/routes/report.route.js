@@ -8,7 +8,7 @@ const router = Router();
 router.get("/get-report", checkToken, getReport);
 router.get("/get-all-report", checkToken, getAllReport);
 router.get(
-  "/get-rooms-reports-by-hotel/:hotel_id",
+  "/get-rooms-reports-by-hotel",
   checkToken,
   getReportsByHotelId
 );
