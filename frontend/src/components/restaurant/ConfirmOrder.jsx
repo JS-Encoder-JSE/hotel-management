@@ -40,34 +40,48 @@ const ConfirmOrder = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const obj = { ...order };
-      const items = [...obj.foods];
-
-      const arr = items.map((item) => ({
-        item: item.food_name,
-        price: item.price,
-        serveyor_quantity: item.serveyor_quantity,
-        quantity: item.quantity,
-        total: item.quantity * item.price,
-      }));
-
-      const response = await addOrder({
-        room_id: values.roomNumber,
-        hotel_id: values.chooseHotel,
-        items: arr,
-        paid_amount: 0,
-      });
-      console.log(response);
-      if (response?.error) {
-        toast.error(response.error.data.message);
-      } else {
-        dispatch(resetFoodOrder());
-        // closeRef.current.click();
-        // toast.success(response.data.message);
-        setSuccess(response?.data?.data);
-      }
+      console.log("hello");
     },
   });
+  const handlePlaceOrder = async () => {
+    const obj = { ...order };
+    const items = [...obj.foods];
+
+    const arr = items.map((item) => ({
+      item: item.food_name,
+      price: item.price,
+      serveyor_quantity: item.serveyor_quantity,
+      quantity: item.quantity,
+      total: item.quantity * item.price,
+    }));
+    const orderForRoom = {
+      room_id: obj.roomId,
+      items: arr,
+      paid_amount: 0,
+      current_order: false,
+    };
+    const orderForTable = {
+      room_id: obj.tableId,
+      items: arr,
+      paid_amount: 0,
+    };
+    const response = await addOrder(
+      obj.tableId.length
+        ? orderForTable
+        : obj.roomId.length
+          ? orderForRoom
+          : null
+    );
+    console.log(response);
+    if (response?.error) {
+      toast.error(response.error.data.message);
+    } else {
+      dispatch(resetFoodOrder());
+      // closeRef.current.click();
+      // toast.success(response.data.message);
+      setSuccess(response?.data?.data);
+    }
+  };
   const { isLoading, data: rooms } = useRoomsQuery({
     id: formik.values.chooseHotel,
     cp: "0",
@@ -78,8 +92,7 @@ const ConfirmOrder = () => {
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
 
   useEffect(() => {
-    if (formik.values.roomNumber)
-      dispatch(setOrder({ ...order, roomNumber: formik.values.roomNumber }));
+    if (formik.values.roomNumber) dispatch(setOrder({ ...order }));
   }, [formik.values.roomNumber]);
 
   // const transformedRooms = rooms?.data?.docs?.map((room) => ({
@@ -200,7 +213,7 @@ const ConfirmOrder = () => {
                         </div>
                         <div className="flex">
                           <button
-                            onClick={() => formik.handleSubmit()}
+                            onClick={handlePlaceOrder}
                             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                           >
                             Place Order

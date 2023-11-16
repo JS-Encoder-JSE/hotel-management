@@ -53,7 +53,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </li>
         </ul>
       </li>
-      <li className={`group p-2`}>
+      {/* <li className={`group p-2`}>
         <div
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
           onClick={(e) => handleSBItems(e)}
@@ -93,7 +93,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
             </NavLink>
           </li>
         </ul>
-      </li>
+      </li> */}
       <li className={`group p-2`}>
         <NavLink
           to={`/dashboard/finance`}

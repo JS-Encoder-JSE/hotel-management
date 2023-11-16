@@ -7,9 +7,14 @@ import { FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import {
   useGetRoomsAndHotelsQuery,
+  useGetTablesQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
-import { resetFoodOrder } from "../../redux/add-order/addOrderSlice.js";
+import {
+  resetFoodOrder,
+  setRoomId,
+  setTableId,
+} from "../../redux/add-order/addOrderSlice.js";
 import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
 
@@ -22,9 +27,12 @@ const AddOrder = () => {
       search: "",
       method: "",
       type: "",
+      roomId: "",
+      tableId: "",
     },
     onSubmit: (values) => {
-      setKeyword(values.search);
+      console.log("values: ", values);
+      // setKeyword(values.search);
     },
   });
   const { order } = useSelector((store) => store.addOrderSlice);
@@ -43,10 +51,15 @@ const AddOrder = () => {
     search: "",
     limit: 1000000,
   });
-
+  console.log("rooms");
+  const { data: tables } = useGetTablesQuery();
   const transformedRooms = rooms?.data?.docs?.map((room) => ({
     value: room._id,
     label: room.roomNumber,
+  }));
+  const transformedTables = tables?.data?.map((table) => ({
+    value: table._id,
+    label: table.table_number,
   }));
 
   return (
@@ -91,11 +104,13 @@ const AddOrder = () => {
             <div className="flex flex-col gap-3">
               <Select
                 placeholder="Select room"
-                name={`roomNumber`}
-                defaultValue={formik.values.roomNumber}
+                name={`roomId`}
+                // defaultValue={formik.values.roomNumber}
                 options={transformedRooms}
                 isSearchable
-                onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
+                onChange={(e) => {
+                  formik.setFieldValue("roomId", e.value);
+                }}
                 noOptionsMessage={() => "No room available"}
                 classNames={{
                   control: (state) =>
@@ -109,25 +124,25 @@ const AddOrder = () => {
             </div>
           ) : null}
           {formik.values.type && formik.values.type === "Table" ? (
-              <div className="flex flex-col gap-3">
-                <Select
-                    placeholder="Select table"
-                    name={`roomNumber`}
-                    defaultValue={formik.values.roomNumber}
-                    options={transformedRooms}
-                    isSearchable
-                    onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
-                    noOptionsMessage={() => "No table available"}
-                    classNames={{
-                      control: (state) =>
-                          `!input !input-md !h-auto !min-w-[12rem] !input-bordered !bg-transparent !rounded !border-gray-500/50 focus-within:!outline-none ${
-                              state.isFocused ? "!shadow-none" : ""
-                          }`,
-                      valueContainer: () => "!p-0",
-                      placeholder: () => "!m-0",
-                    }}
-                />
-              </div>
+            <div className="flex flex-col gap-3">
+              <Select
+                placeholder="Select table"
+                name={`tableId`}
+                // defaultValue={formik.values.roomNumber}
+                options={transformedTables}
+                isSearchable
+                onChange={(e) => formik.setFieldValue("tableId", e.value)}
+                noOptionsMessage={() => "No table available"}
+                classNames={{
+                  control: (state) =>
+                    `!input !input-md !h-auto !min-w-[12rem] !input-bordered !bg-transparent !rounded !border-gray-500/50 focus-within:!outline-none ${
+                      state.isFocused ? "!shadow-none" : ""
+                    }`,
+                  valueContainer: () => "!p-0",
+                  placeholder: () => "!m-0",
+                }}
+              />
+            </div>
           ) : null}
         </div>
         <div className={`flex space-x-1.5`}>
@@ -145,7 +160,14 @@ const AddOrder = () => {
             </span>
           </button>
           <button
-            onClick={() => window.fp_modal.showModal()}
+            onClick={() => {
+              formik.values.type && formik.values.type === "Table"
+                ? dispatch(setTableId(formik.values.tableId))
+                : formik.values.type && formik.values.type === "Room"
+                  ? dispatch(setRoomId(formik.values.roomId))
+                  : null;
+              window.fp_modal.showModal();
+            }}
             type={`button`}
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
               !order.foods.length ? "opacity-50 pointer-events-none" : ""

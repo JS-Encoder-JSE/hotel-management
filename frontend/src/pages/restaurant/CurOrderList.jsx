@@ -3,10 +3,12 @@ import {
   FaDoorOpen,
   FaEye,
   FaPrint,
-  FaRegEdit, FaSearch,
+  FaRegEdit,
+  FaSearch,
   FaStreetView,
 } from "react-icons/fa";
-import {GrPowerReset, GrView} from "react-icons/gr";
+import { MdShoppingCartCheckout } from "react-icons/md"
+import { GrPowerReset, GrView } from "react-icons/gr";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
@@ -44,10 +46,18 @@ const CurOrderList = () => {
   });
 
   const { isLoading, data: orders } = useOrdersQuery({
-    id: "655084bc24936415423bfa2f",
+    current_order: true,
     cp: currentPage,
     pp: ordersPerPage,
   });
+
+  const modifiedData = orders?.data?.docs?.map((order) => ({
+    ...order,
+    grand_total: order.items.reduce(
+      (total, item) => total + item.total,
+      0
+    ),
+  }));
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -80,40 +90,27 @@ const CurOrderList = () => {
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-        <h3 className={`text-2xl font-semibold text-center`}>Current Order List</h3>
-        <div className={`flex justify-between mt-5`}>
-          <div>
-            <select
-                name="bill_for"
-                className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.bill_for}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                Select bills for
-              </option>
-              <option value="Room">Room</option>
-              <option value="Table">Table</option>
-            </select>
-          </div>
+        <h3 className={`text-2xl font-semibold text-center`}>
+          Current Order List
+        </h3>
+        <div className={`flex justify-end mt-5`}>
           <div className={`relative max-w-xs w-full`}>
             <input
-                type="text"
-                placeholder="Search by invoice number..."
-                name="search"
-                className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-                value={formik.values.search}
-                onChange={formik.handleChange}
-                onKeyUp={(e) => {
-                  e.target.value === "" ? formik.handleSubmit() : null;
-                }}
-                onKeyDown={(e) => pressEnter(e)}
+              type="text"
+              placeholder="Search by invoice number..."
+              name="search"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.search}
+              onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
+              onKeyDown={(e) => pressEnter(e)}
             />
             <button
-                onClick={formik.handleSubmit}
-                type="button"
-                className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              onClick={formik.handleSubmit}
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
               <FaSearch />
             </button>
@@ -165,7 +162,7 @@ const CurOrderList = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {orders?.data?.docs?.map((order, idx) => {
+                      {modifiedData?.map((order, idx) => {
                         return (
                           <tr
                             className={
@@ -173,25 +170,26 @@ const CurOrderList = () => {
                             }
                           >
                             <th>{++idx}</th>
-                            <td>123456</td>
+                            <td>{order?.unique_id}</td>
                             <td>
                               {new Date(order?.createdAt).toLocaleString()}
                             </td>
                             <td>{order?.room_id?.roomNumber}</td>
                             <td>{order?.grand_total}</td>
                             <td className={`flex gap-1.5`}>
-                              <Link to={`/dashboard/single-checkout`}
+                              <Link
+                                to={`/dashboard/single-checkout`}
                                 title={`Checkout`}
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
                               >
-                                <FaDoorOpen />
+                                <MdShoppingCartCheckout size={20} />
                               </Link>
                               <span
                                 onClick={() => handleDelete(order?._id)}
                                 title={`Cancel`}
                                 className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}
                               >
-                                <MdCancel />
+                                <MdCancel size={20}/>
                               </span>
                             </td>
                           </tr>

@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   order: {
-    roomNumber: null,
+    roomId: "",
+    tableId: "",
     foods: [],
   },
   orderCalc: {
@@ -17,18 +18,26 @@ const addOrderSlice = createSlice({
   initialState,
   reducers: {
     setOrder: (state, action) => {
-      state.order = action.payload;
+      state.order.foods = action.payload;
+    },
+    setRoomId: (state, action) => {
+      state.order.roomId = action.payload;
+      state.order.tableId = "";
+    },
+    setTableId: (state, action) => {
+      state.order.tableId = action.payload;
+      state.order.roomId = "";
     },
     delOrder: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
-        (item) => item._id === action.payload._id,
+        (item) => item._id === action.payload._id
       );
 
       state.order.foods.splice(findFoodIdx, 1);
     },
     setQuantity: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
-        (item) => item._id === action.payload._id,
+        (item) => item._id === action.payload._id
       );
 
       if (action.payload.quantity) {
@@ -45,7 +54,7 @@ const addOrderSlice = createSlice({
     },
     manipulateQuantity: (state, action) => {
       const findFoodIdx = state.order.foods.findIndex(
-        (item) => item._id === action.payload.food._id,
+        (item) => item._id === action.payload.food._id
       );
 
       if (findFoodIdx !== -1) {
@@ -58,7 +67,7 @@ const addOrderSlice = createSlice({
     setOrderCalc: (state, action) => {
       const total = state.order.foods.reduce(
         (total, current) => total + current.quantity * current.price,
-        0,
+        0
       );
       const tax = total * 0.03;
       const grandTotal = total + tax;
@@ -71,7 +80,8 @@ const addOrderSlice = createSlice({
     },
     resetFoodOrder: (state) => {
       state.order = {
-        roomNumber: null,
+        roomId: "",
+        tableId: "",
         foods: [],
       };
       state.orderCalc = {
@@ -90,5 +100,7 @@ export const {
   manipulateQuantity,
   setOrderCalc,
   resetFoodOrder,
+  setRoomId,
+  setTableId,
 } = addOrderSlice.actions;
 export default addOrderSlice.reducer;

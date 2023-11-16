@@ -30,7 +30,6 @@ const ManageEmployee = () => {
     initialValues: {
       filter: "",
       search: "",
-      chooseHotel: "",
     },
     onSubmit: (values) => {
       setKeyword(values.search);
@@ -86,30 +85,6 @@ const ManageEmployee = () => {
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
       <div className={`flex justify-between gap-4`}>
-        <div className="flex flex-col gap-3">
-          <select
-            name="chooseHotel"
-            className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.chooseHotel}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option value="" selected disabled>
-              Choose Hotel
-            </option>
-
-            {hotelList?.map((i) => (
-              <option key={i._id} value={i._id}>
-                {i.name}
-              </option>
-            ))}
-          </select>
-          {formik.touched.chooseHotel && Boolean(formik.errors.chooseHotel) ? (
-            <small className="text-red-600">
-              {formik.touched.chooseHotel && formik.errors.chooseHotel}
-            </small>
-          ) : null}
-        </div>
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"
@@ -132,140 +107,134 @@ const ManageEmployee = () => {
           </button>
         </div>
       </div>
-      {formik.values.chooseHotel ? (
-        employees?.docs?.length ? (
-          <>
-            <div className="overflow-x-auto">
-              <table className="table border">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Emergency Contact</th>
-                    <th>Shift</th>
-                    <th>Salary</th>
-                    <th>Address</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {employees?.docs?.map((employee, idx) => {
-                    console.log(employee);
-                    const {
-                      _id,
-                      name,
-                      designation,
-                      shift,
-                      salary,
-                      address,
-                      emergency_contact,
-                      status,
-                      images,
-                    } = employee;
+      {employees?.docs?.length ? (
+        <>
+          <div className="overflow-x-auto">
+            <table className="table border">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Emergency Contact</th>
+                  <th>Shift</th>
+                  <th>Salary</th>
+                  <th>Address</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {employees?.docs?.map((employee, idx) => {
+                  console.log(employee);
+                  const {
+                    _id,
+                    name,
+                    designation,
+                    shift,
+                    salary,
+                    address,
+                    emergency_contact,
+                    status,
+                    images,
+                  } = employee;
 
-                    return (
-                      <tr
-                        className={
-                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                        }
-                      >
-                        <td>
-                          <div className="flex items-center space-x-3">
-                            <div className="avatar">
-                              <div className="mask mask-squircle w-12 h-12">
-                                <img src={images?.profile_img} alt="" />
-                              </div>
-                            </div>
-                            <div>
-                              <div className="font-bold">{name}</div>
-                              <div className="text-sm opacity-50">
-                                {designation}
-                              </div>
+                  return (
+                    <tr
+                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                    >
+                      <td>
+                        <div className="flex items-center space-x-3">
+                          <div className="avatar">
+                            <div className="mask mask-squircle w-12 h-12">
+                              <img src={images?.profile_img} alt="" />
                             </div>
                           </div>
-                        </td>
-                        <td>{emergency_contact}</td>
-                        <td>{shift}</td>
-                        <td>{salary}</td>
-                        <td>{address}</td>
-                        <td>
-                          {status === "Active" ? (
-                            <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
-                              Active
+                          <div>
+                            <div className="font-bold">{name}</div>
+                            <div className="text-sm opacity-50">
+                              {designation}
                             </div>
-                          ) : status === "Deactive" || status === "Deleted" ? (
-                            <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
-                              {status}
-                            </div>
-                          ) : status === "Suspended" ? (
-                            <div className="badge min-w-[7rem] bg-red-500 border-red-500 text-white">
-                              Suspended
-                            </div>
-                          ) : (
-                            <div className="badge min-w-[7rem] bg-orange-600 border-orange-600 text-white">
-                              Expired
-                            </div>
-                          )}
-                        </td>
-                        <td className={`space-x-1.5`}>
-                          <Link to={`${_id}`}>
-                            <span
-                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                            >
-                              <FaEye />
-                            </span>
-                          </Link>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{emergency_contact}</td>
+                      <td>{shift}</td>
+                      <td>{salary}</td>
+                      <td>{address}</td>
+                      <td>
+                        {status === "Active" ? (
+                          <div className="badge min-w-[7rem] bg-green-slimy border-green-slimy text-white">
+                            Active
+                          </div>
+                        ) : status === "Deactive" || status === "Deleted" ? (
+                          <div className="badge min-w-[7rem] bg-red-600 border-red-600 text-white">
+                            {status}
+                          </div>
+                        ) : status === "Suspended" ? (
+                          <div className="badge min-w-[7rem] bg-red-500 border-red-500 text-white">
+                            Suspended
+                          </div>
+                        ) : (
+                          <div className="badge min-w-[7rem] bg-orange-600 border-orange-600 text-white">
+                            Expired
+                          </div>
+                        )}
+                      </td>
+                      <td className={`space-x-1.5`}>
+                        <Link to={`${_id}`}>
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                            onClick={() =>
-                              navigate(`/dashboard/edit-employee/${_id}`)
-                            }
                           >
-                            <FaEdit />
+                            <FaEye />
                           </span>
-                          <span
-                            className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                            onClick={() =>
-                              handleDelete({
-                                user_id: _id,
-                                status: "Deleted",
-                              })
-                            }
-                          >
-                            <FaTrash />
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <div className="flex justify-center mt-10">
-              <ReactPaginate
-                containerClassName="join rounded-none"
-                pageLinkClassName="join-item btn btn-md bg-transparent"
-                activeLinkClassName="btn-active !bg-green-slimy text-white"
-                disabledLinkClassName="btn-disabled"
-                previousLinkClassName="join-item btn btn-md bg-transparent"
-                nextLinkClassName="join-item btn btn-md bg-transparent"
-                breakLinkClassName="join-item btn btn-md bg-transparent"
-                previousLabel="<"
-                nextLabel=">"
-                breakLabel="..."
-                pageCount={pageCount}
-                pageRangeDisplayed={2}
-                marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
-                renderOnZeroPageCount={null}
-              />
-            </div>
-          </>
-        ) : (
-          <h3 className={`text-center`}>No data found!</h3>
-        )
+                        </Link>
+                        <span
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+                          onClick={() =>
+                            navigate(`/dashboard/edit-employee/${_id}`)
+                          }
+                        >
+                          <FaEdit />
+                        </span>
+                        <span
+                          className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                          onClick={() =>
+                            handleDelete({
+                              user_id: _id,
+                              status: "Deleted",
+                            })
+                          }
+                        >
+                          <FaTrash />
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex justify-center mt-10">
+            <ReactPaginate
+              containerClassName="join rounded-none"
+              pageLinkClassName="join-item btn btn-md bg-transparent"
+              activeLinkClassName="btn-active !bg-green-slimy text-white"
+              disabledLinkClassName="btn-disabled"
+              previousLinkClassName="join-item btn btn-md bg-transparent"
+              nextLinkClassName="join-item btn btn-md bg-transparent"
+              breakLinkClassName="join-item btn btn-md bg-transparent"
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel="..."
+              pageCount={pageCount}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              onPageChange={handlePageClick}
+              renderOnZeroPageCount={null}
+            />
+          </div>
+        </>
       ) : (
-        <h3 className={`text-center`}>Please choose a hotel</h3>
+        <h3 className={`text-center`}>No data found!</h3>
       )}
     </div>
   );

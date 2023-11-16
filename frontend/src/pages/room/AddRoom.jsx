@@ -54,7 +54,7 @@ const AddRoom = () => {
 
   const { data: hotelsList, isLoading: loading } = useGetRoomsAndHotelsQuery();
 
-  console.log({ hotelsList });
+  // console.log({ hotelsList });
 
   const [addRoom] = useAddRoomMutation();
   const [upload] = useUploadMutation();
@@ -72,13 +72,15 @@ const AddRoom = () => {
       roomNumber: "",
       photos: null,
       description: "",
-      ac: false,
+      air_conditioned: false,
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       setLoading(true);
+  
 
       const obj = { ...values };
+      console.log(obj)
       const formData = new FormData();
 
       for (let i = 0; i < values.photos.length; i++) {
@@ -98,8 +100,8 @@ const AddRoom = () => {
         (result) => (obj.images = result.data.imageUrls)
       );
 
-      console.log(obj);
-      const response = await addRoom(obj);
+      // console.log(obj);
+       const response = await addRoom(obj);
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -308,9 +310,9 @@ const AddRoom = () => {
                 <label className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy space-x-1.5 flex items-center">
                   <input
                     type="checkbox"
-                    name="ac"
+                    name="air_conditioned"
                     className="checkbox checkbox-sm"
-                    checked={formik.values.ac}
+                    checked={formik.values.air_conditioned}
                     onChange={formik.handleChange}
                   />
                   <span className="label-text">AC?</span>

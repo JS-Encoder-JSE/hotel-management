@@ -52,7 +52,7 @@ const validationSchema = yup.object({
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
   nationality: yup.string().required("Nationality is required"),
-  method: yup.string().required("Booking method is required"),
+  bookingMethod: yup.string().required("Booking method is required"),
 });
 
 const AddBooking = () => {
@@ -76,12 +76,13 @@ const AddBooking = () => {
       amount: "",
       discount: "",
       nationality: "",
-      method: "",
+      bookingMethod: "",
     },
 
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       const obj = { ...values };
+      console.log(obj)
 
       if (!obj.discount) obj.discount = 0;
 
@@ -100,6 +101,7 @@ const AddBooking = () => {
       const response = await addBooking({
         hotel_id: obj.hotel_id,
         room_ids,
+        bookingMethod:obj.bookingMethod,
         guestName: obj.guestName,
         address: obj.address,
         mobileNumber: obj.mobileNumber,
@@ -197,9 +199,9 @@ const AddBooking = () => {
           {/*</div>*/}
           <div className="flex flex-col gap-3">
             <select
-              name="method"
+              name="bookingMethod"
               className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-              value={formik.values.method}
+              value={formik.values.bookingMethod}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
@@ -209,9 +211,9 @@ const AddBooking = () => {
               <option value="Online">Online</option>
               <option value="Offline">Offline</option>
             </select>
-            {formik.touched.method && Boolean(formik.errors.method) ? (
+            {formik.touched.bookingMethod && Boolean(formik.errors.bookingMethod) ? (
               <small className="text-red-600">
-                {formik.touched.method && formik.errors.method}
+                {formik.touched.method && formik.errors.bookingMethod}
               </small>
             ) : null}
           </div>

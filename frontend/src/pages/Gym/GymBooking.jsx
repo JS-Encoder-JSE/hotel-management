@@ -25,7 +25,6 @@ const validationSchema = yup.object({
   //   .positive("Room number must be a positive")
   //   .integer("Room number must be an integer"),
   roomNumber: yup.string().required("Room number is required"),
-  chooseHotel: yup.string().required("Hotel is required"),
   name: yup.string().required(" Name  is required"),
   // packagePrice: yup
   // itemName: yup.string().required("item Name  is required"),
@@ -65,7 +64,7 @@ const GymBooking = () => {
 
   const formik = useFormik({
     initialValues: {
-      chooseHotel: "",
+     
       roomNumber: "",
       name: "",
       price: "",
@@ -80,7 +79,7 @@ const GymBooking = () => {
       const obj = {...values};
 
       const {
-        chooseHotel: hotel_id,
+      
         roomNumber: room_id,
         name,
         price,
@@ -89,7 +88,6 @@ const GymBooking = () => {
       } = obj;
 
       const response = await addGym({
-        hotel_id,
         room_id,
         name,
         members,
@@ -108,7 +106,7 @@ const GymBooking = () => {
 
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const { isLoading, data: rooms } = useRoomsQuery({
-    id: formik.values.chooseHotel,
+    
     cp: "0",
     filter: "",
     search: "",
@@ -180,33 +178,7 @@ const GymBooking = () => {
             className=" form-control grid grid-cols-1 gap-4 mt-5 "
             onSubmit={formik.handleSubmit}
           >
-            {/* Choose Hotel  Name */}
-            <div className="flex flex-col gap-3">
-              <select
-                name="chooseHotel"
-                className="input input-md h-10 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.chooseHotel}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  Choose Hotel
-                </option>
-
-                {hotelList?.map((i) => (
-                  <option key={i._id} value={i._id}>
-                    {i.name}
-                  </option>
-                ))}
-              </select>
-              {formik.touched.chooseHotel &&
-              Boolean(formik.errors.chooseHotel) ? (
-                <small className="text-red-600">
-                  {formik.touched.chooseHotel && formik.errors.chooseHotel}
-                </small>
-              ) : null}
-            </div>
-
+         
             {/* Room Number box */}
 
             <div className="flex flex-col gap-3">

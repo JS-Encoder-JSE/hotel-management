@@ -22,12 +22,12 @@ const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   userName: yup.string().required("Username is required"),
   address: yup
-      .string()
-      .required("Address is required")
-      .matches(
-          /^[a-zA-Z][a-zA-Z0-9\s]*$/,
-          "Address must start with a character and can include characters and numbers",
-      ),
+    .string()
+    .required("Address is required")
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9\s]*$/,
+      "Address must start with a character and can include characters and numbers"
+    ),
   email: yup
     .string()
     .email("Enter a valid email")
@@ -35,7 +35,6 @@ const validationSchema = yup.object({
   phoneNumber: yup.string().required("Phone Number is required"),
   emergency_contact: yup.string().required("Emergency contact is required"),
   shift: yup.string().required("Shift is required"),
-  chooseHotel: yup.string().required("Hotel is required"),
   designation: yup.string().required("Designation is required"),
   salary: yup
     .number()
@@ -73,7 +72,6 @@ const AddEmployee = () => {
       documents: null,
       designation: "",
       shift: "",
-      chooseHotel: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -96,13 +94,12 @@ const AddEmployee = () => {
         documentsType,
         documents,
         userImg,
-        chooseHotel: assignedHotel,
       } = obj;
 
       for (let i = 0; i < documents.length; i++) {
         const photoName = documents[i].name.substring(
           0,
-          documents[i].name.lastIndexOf("."),
+          documents[i].name.lastIndexOf(".")
         );
 
         formData.append(photoName, documents[i]);
@@ -129,11 +126,11 @@ const AddEmployee = () => {
 
       formData2.append(
         userImg.name.substring(0, userImg.name.lastIndexOf(".")),
-        userImg,
+        userImg
       );
 
       await uploadSingle(formData2).then(
-        (result) => (obj.images.profile_img = result.data.imageUrl),
+        (result) => (obj.images.profile_img = result.data.imageUrl)
       );
 
       const response = await addSubAdmin({
@@ -149,7 +146,6 @@ const AddEmployee = () => {
         address,
         salary,
         joining_date,
-        assignedHotel,
         images: obj.images,
       });
       console.log(response);
@@ -280,31 +276,7 @@ const AddEmployee = () => {
                 </Swiper>
               </div>
             ) : null}
-            <div className="flex flex-col gap-3">
-              <select
-                name="chooseHotel"
-                className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-                value={formik.values.chooseHotel}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  Choose Hotel
-                </option>
 
-                {hotelsList?.map((i) => (
-                  <option key={i._id} value={i._id}>
-                    {i.name}
-                  </option>
-                ))}
-              </select>
-              {formik.touched.chooseHotel &&
-              Boolean(formik.errors.chooseHotel) ? (
-                <small className="text-red-600">
-                  {formik.touched.chooseHotel && formik.errors.chooseHotel}
-                </small>
-              ) : null}
-            </div>
             {/* manager Name box */}
             <div className="flex flex-col gap-3">
               <input
@@ -546,7 +518,7 @@ const AddEmployee = () => {
                 {formik.values.userImg ? (
                   `Profile Image: ${formik.values.userImg.name.substring(
                     0,
-                    formik.values.userImg.name.lastIndexOf("."),
+                    formik.values.userImg.name.lastIndexOf(".")
                   )}`
                 ) : (
                   <span

@@ -28,7 +28,7 @@ const validationSchema = yup.object({
   poolName: yup.string().required("Pool Name  is required"),
   members: yup.string().required("members  is required"),
   roomNumber: yup.string().required("Room number is required"),
-  hotel_id: yup.string().required("Hotel is required"),
+ 
   // packagePrice: yup
   //   .string()
   //   .when(["documentsType"], ([membershipSubscription], schema) => {
@@ -56,7 +56,7 @@ const PoolReservation = () => {
   const closeRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-      hotel_id: "",
+     
       roomNumber: "",
       name: "",
       members: "",
@@ -69,8 +69,7 @@ const PoolReservation = () => {
     onSubmit: async (values, formikHelpers) => {
       try {
         const data = { ...values };
-        const {
-          hotel_id,
+        const {     
           roomNumber: room_id,
           name,
           members,
@@ -80,7 +79,6 @@ const PoolReservation = () => {
         } = data;
 
         const response = await addPool({
-          hotel_id,
           room_id,
           name,
           members,
@@ -180,31 +178,7 @@ const PoolReservation = () => {
             onSubmit={formik.handleSubmit}
           >
             {/* Selet Hotel */}
-            <div className="flex flex-col gap-3">
-              <select
-                name="hotel_id"
-                className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                value={formik.values.hotel_id}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="" selected disabled>
-                  Choose Hotel
-                </option>
-
-                {hotelsList?.map((i) => (
-                  <option key={i._id} value={i._id}>
-                    {i.name}
-                  </option>
-                ))}
-              </select>
-              {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (
-                <small className="text-red-600">
-                  {formik.touched.hotel_id && formik.errors.hotel_id}
-                </small>
-              ) : null}
-            </div>
-
+            
             <div className="flex flex-col gap-3">
               <Select
                 placeholder="Select room"

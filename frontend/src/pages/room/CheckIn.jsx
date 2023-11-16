@@ -105,6 +105,7 @@ const CheckIn = () => {
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
+      console.log(room_ids)
       const no_of_days = Math.floor(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000),
       );
@@ -183,6 +184,7 @@ const CheckIn = () => {
       }
 
       setLoading(false);
+      formReset()
     },
   });
 
@@ -227,7 +229,7 @@ const CheckIn = () => {
   });
 
   const transformedRooms = rooms?.data?.docs
-    ?.filter((i) => i.status === "Available" || i.status === "Booked")
+    ?.filter((i) => i.status === "Available")
     .map((room) => ({
       label: `${room.roomNumber} - ${room.category}`,
       value: room._id,
