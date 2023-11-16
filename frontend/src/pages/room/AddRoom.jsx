@@ -43,7 +43,7 @@ const validationSchema = yup.object({
   description: yup
     .string()
     .required("Description is required")
-    .min(20, "Description at least 20 characters length"),
+    .min(10, "Description at least 10 characters length"),
   // hotel_id: yup.string().required("Choose hotel is required"),
 });
 
@@ -84,7 +84,7 @@ const AddRoom = () => {
       for (let i = 0; i < values.photos.length; i++) {
         const photoName = values.photos[i].name.substring(
           0,
-          values.photos[i].name.lastIndexOf("."),
+          values.photos[i].name.lastIndexOf(".")
         );
 
         formData.append(photoName, values.photos[i]);
@@ -95,7 +95,7 @@ const AddRoom = () => {
       delete obj.photos;
       delete obj.ac;
       await upload(formData).then(
-        (result) => (obj.images = result.data.imageUrls),
+        (result) => (obj.images = result.data.imageUrls)
       );
 
       console.log(obj);
@@ -113,6 +113,7 @@ const AddRoom = () => {
     },
   });
 
+  // Image delete
   const handleDelete = (idx) => {
     const tempImgs = [
       ...selectedImages.slice(0, idx),
@@ -128,6 +129,7 @@ const AddRoom = () => {
     setSelectedImages(tempImgs);
   };
 
+  // HandleChange
   const handleChange = (idx, newFile) => {
     const updatedImages = [...selectedImages];
     updatedImages[idx] = newFile;
@@ -142,6 +144,7 @@ const AddRoom = () => {
     setSelectedImages(updatedImages);
   };
 
+  // Update Image
   useEffect(() => {
     if (formik.values.photos) {
       const selectedImagesArray = Array.from(formik.values.photos);

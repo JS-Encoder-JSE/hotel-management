@@ -30,7 +30,12 @@ const validationSchema = yup.object({
   // packagePrice: yup
   // itemName: yup.string().required("item Name  is required"),
   members: yup.string().required("Members  is required"),
-  paid_amount: yup.string().required("Paid amount  is required"),
+  // paid_amount: yup.string().required("Paid amount  is required"),
+  paid_amount: yup
+  .number()
+  .required("Paid Amount is required")
+  .positive(" Paid Amount must be a positive number"),
+  // .integer(" Paid Amount must be an integer"),
   //   .string()
   //   .when(["documentsType"], ([membershipSubscription], schema) => {
   //     if (membershipSubscription !== "normalPackage")

@@ -3,6 +3,7 @@ import { MdOutlineClear } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 
+
 const PaymentMethod = ({
   paymentList,
   handleAdd,
@@ -39,7 +40,8 @@ const PaymentMethod = ({
                   className={`input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 ${
                     !elem?.method ? "btn-disabled" : ""
                   }`}
-                  onChange={(e) => handleChange(e, idx)}
+                  onChange={(e) => (handleChange)(e, idx)}
+                  
                 />
               </div>
               {elem?.method && elem?.method !== "Cash" ? (
