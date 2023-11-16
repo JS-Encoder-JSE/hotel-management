@@ -68,6 +68,16 @@ const foodAPI = baseAPI.injectEndpoints({
         }`,
       providesTags: ["order"],
     }),
+    addTable: build.mutation({
+      query: (data) => {
+        return {
+          url: "tables/add-table",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["food"],
+    }),
   }),
 });
 
@@ -80,4 +90,5 @@ export const {
   useUpdateFoodMutation,
   useOrdersQuery,
   useDeleteOrderMutation,
+  useAddTableMutation
 } = foodAPI;
