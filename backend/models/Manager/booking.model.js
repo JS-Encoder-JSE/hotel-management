@@ -47,6 +47,11 @@ const bookingSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    bookingMethod: {
+      type: String,
+      enum: ["Online", "Offline"],
+      required: true,
+    },
     paymentMethod: {
       type: String,
       enum: ["Card", "Cash", "Mobile_Banking"],
