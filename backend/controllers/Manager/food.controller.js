@@ -9,7 +9,6 @@ import User from "../../models/user.model.js";
 export const addFood = async (req, res) => {
   try {
     const {
-      hotel_id,
       food_name,
       status,
       category,
@@ -20,16 +19,38 @@ export const addFood = async (req, res) => {
       description,
       password,
     } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
+
+    if (!hotel_id) {
+      return res
+        .status(400)
+        .json({ message: "User is not assigned to any hotel" });
+    }
 
     if (category === "Liquor") {
-      const userId = req.user.userId;
-      const user = await User.findById(userId);
       const parent = await User.findById(user.parent_id);
       // Compare the provided password with the hashed password
       const isPasswordValid = await parent.comparePassword(password);
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid password" });
       }
+    }
+    // Check if the category_name already exists for the given hotel_id
+    const existingCategory = await FoodCategory.findOne({
+      hotel_id,
+      category_name: category,
+    });
+
+    if (!existingCategory) {
+      const newCategory = new FoodCategory({
+        hotel_id,
+        category_name: category,
+      });
+
+      await newCategory.save();
     }
 
     const newFood = new Food({
