@@ -220,6 +220,41 @@ export const addOrder = async (req, res) => {
   }
 };
 
+export const updateOrder = async (req, res) => {
+  try {
+    const orderId = req.params.order_id; // Assuming you use "order_id" as the parameter name
+    const updateData = req.body;
+
+    const existingOrder = await FoodOrder.findById(orderId);
+
+    if (!existingOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    // Update the order with the provided data
+    const updatedOrder = await FoodOrder.findByIdAndUpdate(orderId, updateData, {
+      new: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: updatedOrder,
+      message: "Order updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+
 export const getOrdersByHotelId = async (req, res) => {
   try {
     const { hotel_id } = req.params;
