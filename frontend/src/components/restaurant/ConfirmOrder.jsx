@@ -61,16 +61,17 @@ const ConfirmOrder = () => {
       current_order: false,
     };
     const orderForTable = {
-      room_id: obj.tableId,
+      table_id: obj.tableId,
       items: arr,
       paid_amount: 0,
+      current_order: true,
     };
     const response = await addOrder(
       obj.tableId.length
         ? orderForTable
         : obj.roomId.length
-          ? orderForRoom
-          : null
+        ? orderForRoom
+        : null
     );
     console.log(response);
     if (response?.error) {

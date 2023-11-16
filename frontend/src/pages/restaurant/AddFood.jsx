@@ -69,7 +69,6 @@ const AddFood = () => {
         description,
         surveyorQuantity: serveyor_quantity,
         photos,
-        chooseHotel: hotel_id,
         typeOfAlcohol:type_of_alcohol,
         password
       } = obj;

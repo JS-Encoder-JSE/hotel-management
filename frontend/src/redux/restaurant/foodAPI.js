@@ -78,6 +78,20 @@ const foodAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["food"],
     }),
+    getOrderById: build.query({
+      query: (id) => `foods/get-order-by-id/${id}`,
+      providesTags: ["checkout"],
+    }),
+    updateOrder: build.mutation({
+      query: ({ data, id }) => {
+        return {
+          url: `foods/update-order/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["checkout", "order"],
+    }),
   }),
 });
 
@@ -91,4 +105,6 @@ export const {
   useOrdersQuery,
   useDeleteOrderMutation,
   useAddTableMutation,
+  useGetOrderByIdQuery,
+  useUpdateOrderMutation,
 } = foodAPI;

@@ -247,7 +247,15 @@ const App = () => {
               ),
             },
             {
-              path: "single-checkout",
+              path: "single-checkout/:id",
+              element: (
+                <ManagerRoute>
+                  <FoodCheckout />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "orderDetails/:id",
               element: (
                 <ManagerRoute>
                   <FoodCheckout />

@@ -1,7 +1,13 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaArrowLeft, FaTrash, FaUpload } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaEyeSlash,
+  FaTrash,
+  FaUpload,
+} from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import {
   MdOutlineKeyboardArrowLeft,
@@ -46,13 +52,20 @@ const EditFood = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { isLoading, data: food } = useFoodQuery(id);
+  console.log("food data", food);
   const [updateFood] = useUpdateFoodMutation();
   const [uploadSingle] = useUploadSingleMutation();
   const [selectedImages, setSelectedImages] = useState([]);
+  const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
     initialValues: {
+      category: "",
+      categoryOthers: "",
       foodName: "",
       surveyorQuantity: "",
+      surveyorQuantityOthers: "",
+      typeOfAlcohol: "",
+      password: "",
       price: "",
       description: "",
       photos: null,
@@ -60,15 +73,20 @@ const EditFood = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
+      console.log("submit value :", values);
       setLoading(true);
 
       const obj = { ...values };
       const {
+        category,
+        categoryOthers,
         foodName: food_name,
         surveyorQuantity: serveyor_quantity,
         price,
         description,
         status,
+        password,
+        typeOfAlcohol,
       } = obj;
       const images = [...selectedImages];
 
@@ -77,12 +95,12 @@ const EditFood = () => {
           const formData = new FormData();
           const photoName = images[i].name.substring(
             0,
-            images[i].name.lastIndexOf("."),
+            images[i].name.lastIndexOf(".")
           );
 
           formData.append(photoName, images[i]);
           await uploadSingle(formData).then((result) =>
-            images.splice(i, 1, result.data.imageUrl),
+            images.splice(i, 1, result.data.imageUrl)
           );
         }
       }
@@ -90,12 +108,18 @@ const EditFood = () => {
       const response = await updateFood({
         id,
         data: {
+          category: category === "Others" ? categoryOthers : category,
           food_name,
-          serveyor_quantity,
+          serveyor_quantity:
+            serveyor_quantity === "Others"
+              ? surveyorQuantityOthers
+              : serveyor_quantity,
           price,
           description,
           images,
           status,
+          password,
+          type_of_alcohol: typeOfAlcohol,
         },
       });
 
@@ -153,6 +177,8 @@ const EditFood = () => {
         description: food?.data?.description,
         status: food?.data?.status,
         photos: null,
+        category: food?.data?.category,
+        typeOfAlcohol: food?.data?.type_of_alcohol,
       });
 
       setSelectedImages(food?.data?.images);
@@ -245,6 +271,55 @@ const EditFood = () => {
           </div>
           {/* name box */}
           <div className="flex flex-col gap-3">
+            <select
+              name="category"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+              value={formik.values.category}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value="" selected disabled>
+                Category
+              </option>
+              <option value="Liquor">Liquor</option>
+              <option value="1">Kebab</option>
+              <option value="2">Rice</option>
+              <option value="3">Full Meal</option>
+              <option value="4">Sneaks</option>
+              <option value="5">Drinks</option>
+              <option value="6">Deserts</option>
+              <option value="7">Juices</option>
+              <option value="8">Curries</option>
+              <option value="9">Vegetarian Meals</option>
+              <option value="Others">Others</option>
+            </select>
+            {formik.touched.category && Boolean(formik.errors.category) ? (
+              <small className="text-red-600">
+                {formik.touched.category && formik.errors.category}
+              </small>
+            ) : null}
+          </div>
+          {formik.values.category && formik.values.category === "Others" ? (
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Write your category"
+                name="categoryOthers"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+                value={formik.values.categoryOthers}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.categoryOthers &&
+              Boolean(formik.errors.categoryOthers) ? (
+                <small className="text-red-600">
+                  {formik.touched.categoryOthers &&
+                    formik.errors.categoryOthers}
+                </small>
+              ) : null}
+            </div>
+          ) : null}
+          <div className="flex flex-col gap-3">
             <input
               type="text"
               placeholder="Food name"
@@ -260,17 +335,58 @@ const EditFood = () => {
               </small>
             ) : null}
           </div>
-          {/* age box */}
+          {formik.values.category === "Liquor" ? (
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Type of alcohol"
+                name="typeOfAlcohol"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+                value={formik.values.typeOfAlcohol}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.name && Boolean(formik.errors.name) ? (
+                <small className="text-red-600">
+                  {formik.touched.name && formik.errors.name}
+                </small>
+              ) : null}
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Surveyor Quantity"
-              name="surveyorQuantity"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-              value={formik.values.surveyorQuantity}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            {formik.values.category === "Liquor" ? (
+              <select
+                name="surveyorQuantity"
+                className="select select-md bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.surveyorQuantity}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" selected disabled>
+                  Surveyor Quantity
+                </option>
+                <option value="30 ml Peg">30 ML Peg</option>
+                <option value="60 ml Peg">60 ML Peg</option>
+                <option value="Cans">Cans</option>
+                <option value="Bear Bottle">Bear Bottle</option>
+                <option value="Quarter Bottle">Quarter Bottle</option>
+                <option value="Half Bottle">Half Bottle</option>
+                <option value="Full Bottle">Full Bottle</option>
+                <option value="Others">Others</option>
+              </select>
+            ) : (
+              <input
+                type="text"
+                placeholder="Surveyor Quantity"
+                name="surveyorQuantity"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+                value={formik.values.surveyorQuantity}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            )}
             {formik.touched.surveyorQuantity &&
             Boolean(formik.errors.surveyorQuantity) ? (
               <small className="text-red-600">
@@ -279,6 +395,27 @@ const EditFood = () => {
               </small>
             ) : null}
           </div>
+          {formik.values.surveyorQuantity &&
+          formik.values.surveyorQuantity === "Others" ? (
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Write your surveyor quantity"
+                name="surveyorQuantityOthers"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+                value={formik.values.surveyorQuantityOthers}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.surveyorQuantityOthers &&
+              Boolean(formik.errors.surveyorQuantityOthers) ? (
+                <small className="text-red-600">
+                  {formik.touched.surveyorQuantityOthers &&
+                    formik.errors.surveyorQuantityOthers}
+                </small>
+              ) : null}
+            </div>
+          ) : null}
           {/* adult box */}
           <div className="flex flex-col gap-3">
             <input
@@ -361,6 +498,41 @@ const EditFood = () => {
               </small>
             ) : null}
           </div>
+          {formik.values.category && formik.values.category === "Liquor" ? (
+            <div className={`flex flex-col gap-3`}>
+              <div className={`relative`}>
+                <input
+                  type={showPass ? "text" : "password"}
+                  placeholder="Password"
+                  name="password"
+                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {showPass ? (
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                    onClick={() => setShowPass(false)}
+                  >
+                    <FaEyeSlash />
+                  </span>
+                ) : (
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer`}
+                    onClick={() => setShowPass(true)}
+                  >
+                    <FaEye />
+                  </span>
+                )}
+              </div>
+              {formik.touched.password && Boolean(formik.errors.password) ? (
+                <small className="text-red-600">
+                  {formik.touched.password && formik.errors.password}
+                </small>
+              ) : null}
+            </div>
+          ) : null}
           {/* button */}
           <div className={`flex justify-between`}>
             <button

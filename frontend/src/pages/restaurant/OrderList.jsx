@@ -211,20 +211,25 @@ const OrderList = () => {
                             }
                           >
                             <th>{++idx}</th>
-                            <td>hello</td>
+                            <td>{order?.unique_id}</td>
                             <td>
                               {new Date(order?.createdAt).toLocaleString()}
                             </td>
                             <td>{order?.room_id?.roomNumber}</td>
-                            <td>{order?.grand_total}</td>
+                            <td>{order?.total_price}</td>
                             <td className={`flex gap-1.5`}>
                               <span
+                                onClick={() =>
+                                  navigate(
+                                    `/dashboard/orderDetails/${order?._id}`
+                                  )
+                                }
                                 className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                                 title={`View`}
                               >
                                 <FaEye />
                               </span>
-                             
+
                               <span
                                 title={`Print`}
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}

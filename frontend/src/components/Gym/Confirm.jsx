@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
 import { setOrder } from "../../redux/add-order/addOrderSlice.js";
@@ -76,7 +76,7 @@ const ConfirmOrder = () => {
     label: `${room.roomNumber} - ${room.category}`,
   }));
 
- return (
+  return (
     <>
       <form autoComplete="off" method="dialog">
         <button

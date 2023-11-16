@@ -1,17 +1,66 @@
 import React, { useEffect, useState } from "react";
 import { FaMinus, FaPlus, FaTrash, FaArrowLeft } from "react-icons/fa";
 import { setQuantity } from "../../redux/add-order/addOrderSlice.js";
-import { useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useGetOrderByIdQuery,
+  useUpdateOrderMutation,
+} from "../../redux/restaurant/foodAPI.js";
+import { Rings } from "react-loader-spinner";
+import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem.jsx";
+import toast from "react-hot-toast";
 const FoodCheckout = () => {
+  const { id } = useParams();
+  const { data, isLoading } = useGetOrderByIdQuery(id);
+  const [orderData, setOrderData] = useState({});
+  console.log("orderData", orderData);
   const [input, setInput] = useState(1);
   const navigate = useNavigate();
-
+  const [updateOrder] = useUpdateOrderMutation();
+  const location = useLocation();
+  const path = location.pathname;
   const print = () => {
     {
       window.print();
     }
   };
+  const grandTotal = orderData?.data?.items?.reduce(
+    (accumulator, item) => accumulator + item.total,
+    0
+  );
+  const handleDeleteItems = (index) => {
+    setOrderData((prev) => {
+      const updatedItems = [...prev?.data?.items];
+      updatedItems.splice(index, 1);
+      return {
+        ...prev,
+        data: {
+          ...prev?.data,
+          items: updatedItems,
+        },
+      };
+    });
+  };
+
+  const handleCheckout = async () => {
+    const response = await updateOrder({
+      data: {
+        paid_amount: grandTotal,
+        items: orderData.data.items,
+        order_status: "CheckedOut",
+      },
+      id,
+    });
+    console.log("res", response);
+    if (response?.error) {
+      toast.error(response.error.data.message);
+    } else {
+      toast.success("Checkout successful");
+    }
+  };
+  useEffect(() => {
+    setOrderData(data);
+  }, [data]);
 
   return (
     <div className={`flex flex-col gap-5 bg-white rounded-lg p-10`}>
@@ -23,7 +72,7 @@ const FoodCheckout = () => {
           <FaArrowLeft />
         </span>
       </div>
-      <h3 className="text-2xl font-semibold text-center">Checkout</h3>
+      <h3 className="text-2xl font-semibold text-center">{path.includes('orderDetails')?'Order details':'Checkout'}</h3>
       <hr />
       <div>
         <div className={`flex items-center gap-3 `}>
@@ -34,77 +83,59 @@ const FoodCheckout = () => {
         <div className={`flex items-center gap-3`}>
           <span className={`w-24`}>Invoice No</span>
           <span className="ms-7">:</span>
-          <span>512123</span>
+          <span>{orderData?.data?.unique_id}</span>
         </div>
       </div>
-      <div className="overflow-x-auto border mt-3">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>
-                Surveyor <br /> Quantity
-              </th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Pizza</td>
-              <td>1:2</td>
+      {!isLoading ? (
+        <>
+          {orderData?.data?.items?.length ? (
+            <div className="overflow-x-auto border mt-3">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>
+                      Surveyor <br /> Quantity
+                    </th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderData?.data?.items.map((item, i) => (
+                    <SingleCheckoutItem
+                      index={i}
+                      handleDeleteItems={handleDeleteItems}
+                      item={item}
+                      key={i}
+                    />
+                  ))}
 
-              <td className="flex gap-3 mb-4">
-                <button
-                  type="button"
-                  className={input === 1 ? "btn-disabled opacity-50" : ""}
-                  onClick={() => {
-                    input > 1 ? setInput((prevState) => --prevState) : null;
-                  }}
-                >
-                  <FaMinus />
-                </button>
-                <input
-                  type="number"
-                  value={input}
-                  className="input-hide_Arrows w-12 flex outline-none text-center rounded-md p-1 placeholder:text-black border focus:border-green-slimy"
-                  onChange={(e) => {
-                    if (e.target.value > 0 || e.target.value === "")
-                      setInput(e.target.value);
-                  }}
-                  onBlur={(e) => {
-                    dispatch(setQuantity({ food, quantity: +e.target.value }));
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setInput((prevState) => ++prevState)}
-                >
-                  <FaPlus />
-                </button>
-              </td>
-              {/* <td>{food.quantity * food.price}</td> */}
-              <td>22</td>
-              <td>
-                <button
-                  type="button"
-                  className="text-red-600 hover:text-red-400 transition-colors duration-500"
-                >
-                  <FaTrash />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>Total</td>
-              <td>500</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Grand Total</td>
+                    <td>{grandTotal}</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <h3 className={`text-center`}>No data found!</h3>
+          )}
+        </>
+      ) : (
+        <Rings
+          width="50"
+          height="50"
+          color="#37a000"
+          wrapperClass="justify-center"
+        />
+      )}
+
       {/* <tfoot className={`text-sm `}>
                   <tr>
                     <td colSpan={5}>
@@ -136,7 +167,10 @@ const FoodCheckout = () => {
         >
           Print
         </button>
-        <button className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case">
+        <button
+          onClick={handleCheckout}
+          className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
+        >
           Checkout
         </button>
       </div>

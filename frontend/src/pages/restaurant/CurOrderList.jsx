@@ -58,7 +58,6 @@ const CurOrderList = () => {
       0
     ),
   }));
-
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
@@ -178,7 +177,7 @@ const CurOrderList = () => {
                             <td>{order?.grand_total}</td>
                             <td className={`flex gap-1.5`}>
                               <Link
-                                to={`/dashboard/single-checkout`}
+                                to={`/dashboard/single-checkout/${order?._id}`}
                                 title={`Checkout`}
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
                               >
