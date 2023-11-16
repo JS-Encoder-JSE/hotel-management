@@ -14,7 +14,7 @@ const BookingChart = ({ userManager }) => {
       },
       labels: userManager
         ? ["Check in", "Checkout", "Booking", "Canceled"]
-        : ["Renew", "Expired", "Active", "Not Extend"],
+        : ["Renew", "Expired", "Active", "Suspended"],
       responsive: [
         {
           breakpoint: 480,
