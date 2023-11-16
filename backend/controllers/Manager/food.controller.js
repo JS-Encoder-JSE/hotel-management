@@ -4,6 +4,7 @@
   FoodOrder,
 } from "../../models/Manager/food.model.js";
 import Hotel from "../../models/hotel.model.js";
+import User from "../../models/user.model.js";
 
 export const addFood = async (req, res) => {
   try {
@@ -13,10 +14,23 @@ export const addFood = async (req, res) => {
       status,
       category,
       serveyor_quantity,
+      type_of_alcohol,
       price,
       images,
       description,
+      password,
     } = req.body;
+
+    if (category === "Liquor") {
+      const userId = req.user.userId;
+      const user = await User.findById(userId);
+      const parent = await User.findById(user.parent_id);
+      // Compare the provided password with the hashed password
+      const isPasswordValid = await parent.comparePassword(password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
+    }
 
     const newFood = new Food({
       hotel_id,
@@ -24,6 +38,7 @@ export const addFood = async (req, res) => {
       status,
       category,
       serveyor_quantity,
+      type_of_alcohol,
       price,
       images,
       description,
@@ -37,6 +52,7 @@ export const addFood = async (req, res) => {
       message: "Food item added successfully",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
