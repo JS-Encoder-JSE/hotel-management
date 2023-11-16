@@ -7,6 +7,7 @@ import {
   FaSearch,
   FaStreetView,
 } from "react-icons/fa";
+import { MdShoppingCartCheckout } from "react-icons/md"
 import { GrPowerReset, GrView } from "react-icons/gr";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
@@ -181,14 +182,14 @@ const CurOrderList = () => {
                                 title={`Checkout`}
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
                               >
-                                <FaDoorOpen />
+                                <MdShoppingCartCheckout size={20} />
                               </Link>
                               <span
                                 onClick={() => handleDelete(order?._id)}
                                 title={`Cancel`}
                                 className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}
                               >
-                                <MdCancel />
+                                <MdCancel size={20}/>
                               </span>
                             </td>
                           </tr>

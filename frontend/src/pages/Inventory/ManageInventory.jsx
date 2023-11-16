@@ -2,17 +2,20 @@ import React, { useState } from "react";
 import FoodLists from "../../components/restaurant/FoodLists.jsx";
 import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/inventory/ConfirmOrder.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import InventoryLists from "../../components/inventory/InventoryLists.jsx";
-import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
+import {
+  useGetItemsQuery,
+  useGetRoomsAndHotelsQuery,
+} from "../../redux/room/roomAPI.js";
 import { resetFoodOrder } from "../../redux/add-order/addOrderSlice.js";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { resetInv } from "../../redux/inventory/inventorySlice.js";
 
 const ManageInventory = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [keyword, setKeyword] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -24,7 +27,8 @@ const ManageInventory = () => {
       setKeyword(values.search);
     },
   });
-  const { data: hotelList } = useGetRoomsAndHotelsQuery();
+  const { data: ItemsData } = useGetItemsQuery();
+  console.log("items :", ItemsData);
   const { order } = useSelector((store) => store.inventorySlice);
 
   const pressEnter = (e) => {
@@ -39,24 +43,7 @@ const ManageInventory = () => {
         className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
       >
         <div className={`flex space-x-1.5 gap-2  `}>
-          <div className="flex flex-col gap-3 ">
-            <select
-              name="chooseHotel"
-              className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.chooseHotel}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                Choose Hotel
-              </option>
-              {hotelList?.map((i) => (
-                <option key={i._id} value={i._id}>
-                  {i.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          
           <div className="flex flex-col gap-2">
             <select
               name="filter"

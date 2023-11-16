@@ -32,7 +32,7 @@ const lists = {
   ],
 };
 
-const InventoryLists = ({filter, keyword,chooseHotel }) => {
+const InventoryLists = ({ filter, keyword, chooseHotel }) => {
   const { order } = useSelector((store) => store.inventorySlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const InventoryLists = ({filter, keyword,chooseHotel }) => {
     cp: currentPage,
     pp: foodsPerPage,
     search: keyword,
-    filter
+    filter,
   });
   const [pageCount, setPageCount] = useState(1);
 
@@ -65,58 +65,54 @@ const InventoryLists = ({filter, keyword,chooseHotel }) => {
   //   if (foods) setPageCount(foods.data.totalPages);
   // }, [foods]);
 
-  return chooseHotel ? (
-    lists?.docs?.length ? (
-      <div>
-        <div className="overflow-x-auto border">
-          <table className="table">
-            <thead>
-              <tr className={`text-lg`}>
-                <th>Name</th>
-                <th>Status</th>
-                <th className={`text-center`}>
-                  Add / Remove <br /> Item
-                </th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {lists?.docs?.map((list, idx) => (
-                <InventoryList
-                  key={list._id}
-                  idx={idx}
-                  list={list}
-                  handleOrder={handleOrder}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="flex justify-center mt-10">
-          <ReactPaginate
-            containerClassName="join rounded-none"
-            pageLinkClassName="join-item btn btn-md bg-transparent"
-            activeLinkClassName="btn-active !bg-green-slimy text-white"
-            disabledLinkClassName="btn-disabled"
-            previousLinkClassName="join-item btn btn-md bg-transparent"
-            nextLinkClassName="join-item btn btn-md bg-transparent"
-            breakLinkClassName="join-item btn btn-md bg-transparent"
-            previousLabel="<"
-            nextLabel=">"
-            breakLabel="..."
-            pageCount={pageCount}
-            pageRangeDisplayed={2}
-            marginPagesDisplayed={2}
-            onPageChange={handlePageClick}
-            renderOnZeroPageCount={null}
-          />
-        </div>
+  return lists?.docs?.length ? (
+    <div>
+      <div className="overflow-x-auto border">
+        <table className="table">
+          <thead>
+            <tr className={`text-lg`}>
+              <th>Name</th>
+              <th>Status</th>
+              <th className={`text-center`}>
+                Add / Remove <br /> Item
+              </th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lists?.docs?.map((list, idx) => (
+              <InventoryList
+                key={list._id}
+                idx={idx}
+                list={list}
+                handleOrder={handleOrder}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
-    ) : (
-      <h3 className={`text-center`}>No data found!</h3>
-    )
+      <div className="flex justify-center mt-10">
+        <ReactPaginate
+          containerClassName="join rounded-none"
+          pageLinkClassName="join-item btn btn-md bg-transparent"
+          activeLinkClassName="btn-active !bg-green-slimy text-white"
+          disabledLinkClassName="btn-disabled"
+          previousLinkClassName="join-item btn btn-md bg-transparent"
+          nextLinkClassName="join-item btn btn-md bg-transparent"
+          breakLinkClassName="join-item btn btn-md bg-transparent"
+          previousLabel="<"
+          nextLabel=">"
+          breakLabel="..."
+          pageCount={pageCount}
+          pageRangeDisplayed={2}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageClick}
+          renderOnZeroPageCount={null}
+        />
+      </div>
+    </div>
   ) : (
-    <h3 className={`text-center`}>Please choose a hotel</h3>
+    <h3 className={`text-center`}>No data found!</h3>
   );
 };
 

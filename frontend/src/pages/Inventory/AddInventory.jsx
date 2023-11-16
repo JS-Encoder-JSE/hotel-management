@@ -43,7 +43,7 @@ const AddInventory = () => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
-        toast.success(response.data.message);
+        toast.success('Successfully item added');
         formikHelpers.resetForm();
       }
     },

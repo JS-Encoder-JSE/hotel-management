@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaEye,
   FaPrint,
   FaRegEdit,
   FaSearch,
   FaStreetView,
+  FaTrash,
 } from "react-icons/fa";
 import { GrPowerReset, GrView } from "react-icons/gr";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
@@ -44,7 +45,6 @@ const OrderList = () => {
   });
 
   const { isLoading, data: orders } = useOrdersQuery({
-    id: formik.values.chooseHotel,
     cp: currentPage,
     pp: ordersPerPage,
   });
@@ -76,7 +76,10 @@ const OrderList = () => {
       }
     });
   };
-
+  useEffect(() => {
+    setPageCount(orders?.data?.totalPages);
+  }, [orders]);
+  console.log(orders);
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
@@ -208,7 +211,7 @@ const OrderList = () => {
                             }
                           >
                             <th>{++idx}</th>
-                            <td>123456</td>
+                            <td>hello</td>
                             <td>
                               {new Date(order?.createdAt).toLocaleString()}
                             </td>
@@ -221,18 +224,19 @@ const OrderList = () => {
                               >
                                 <FaEye />
                               </span>
-                              {/*<span*/}
-                              {/*  onClick={() => handleDelete(order?._id)}*/}
-                              {/*  title={`Cancel`}*/}
-                              {/*  className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}*/}
-                              {/*>*/}
-                              {/*  <MdCancel />*/}
-                              {/*</span>*/}
+                             
                               <span
                                 title={`Print`}
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
                               >
                                 <FaPrint />
+                              </span>
+                              <span
+                                onClick={() => handleDelete(order?._id)}
+                                title={`Cancel`}
+                                className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}
+                              >
+                                <FaTrash />
                               </span>
                             </td>
                           </tr>
@@ -255,8 +259,8 @@ const OrderList = () => {
                     nextLabel=">"
                     breakLabel="..."
                     pageCount={pageCount}
-                    pageRangeDisplayed={2}
-                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={1}
+                    marginPagesDisplayed={1}
                     onPageChange={handlePageClick}
                     renderOnZeroPageCount={null}
                   />
