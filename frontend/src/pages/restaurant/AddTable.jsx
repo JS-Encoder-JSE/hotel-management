@@ -122,9 +122,9 @@ const AddTable = () => {
   return (
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
       <div
-        className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
+        className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded `}
       >
-        <h3 className={`flex text-2xl text-white space-x-1.5`}>
+        <h3 className={`flex text-2xl text-white space-x-1.5 `}>
           <FaPlus />
           <span>Add Table</span>
         </h3>
@@ -159,7 +159,7 @@ const AddTable = () => {
         {/*  ) : null}*/}
         {/*</div>*/}
         {/* Price box */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 mt-6 mb-6">
           <input
             type="text"
             placeholder="Table number"

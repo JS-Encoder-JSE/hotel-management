@@ -497,7 +497,7 @@ const AddEmployee = () => {
                   Type Of Documents
                 </option>
                 <option value="Driving License">Driving License</option>
-                <option value="NID">NID</option>
+                <option value="NID">Aadhaar Card / ID</option>
                 <option value="Passport">Passport</option>
               </select>
               {formik.touched.documentsType &&
