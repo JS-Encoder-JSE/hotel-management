@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import ManagerReport from "../../models/Manager/report.model.js";
+import User from "../../models/user.model.js";
 
 export const getReportsByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
     const {
       page = 1,
       limit = 10,
@@ -12,6 +12,11 @@ export const getReportsByHotelId = async (req, res) => {
       fromDate,
       toDate,
     } = req.query;
+
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const query = { hotel_id };
 

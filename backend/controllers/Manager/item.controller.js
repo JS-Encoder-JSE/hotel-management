@@ -1,11 +1,17 @@
 import Item from "../../models/Manager/item.model.js";
 import Room from "../../models/Manager/room.model.js";
 import mongoose from "mongoose";
+import User from "../../models/user.model.js";
 
 // Controller to add a new item
 export const addItem = async (req, res) => {
   try {
-    const { hotel_id, name, description } = req.body;
+    const { name, description } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
+
     const newItem = new Item({ hotel_id, name, description });
     const savedItem = await newItem.save();
     res.status(201).json(savedItem);
@@ -59,8 +65,12 @@ export const deleteItem = async (req, res) => {
 // Controller to get all items with filter options and pagination
 export const getItemsByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
     const { page = 1, limit = 10, filter, search } = req.query;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
+
     const query = { hotel_id: hotel_id };
 
     if (["Available", "Unavailable"].includes(filter)) {
@@ -161,4 +171,3 @@ export const assignItemsToRoom = async (req, res) => {
     });
   }
 };
-

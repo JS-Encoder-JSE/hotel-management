@@ -83,8 +83,11 @@ export const addFood = async (req, res) => {
 
 export const getFoodByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
     const { page = 1, limit = 10, category, filter, search } = req.query;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const query = {
       hotel_id,
@@ -179,7 +182,11 @@ export const updateFood = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const { room_id, table_id, hotel_id, items, paid_amount } = req.body;
+    const { room_id, table_id, items, paid_amount } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Calculate total_price based on the sum of the 'total' field in each item
     const total_price = items.reduce((sum, item) => sum + item.total, 0);
@@ -235,9 +242,13 @@ export const updateOrder = async (req, res) => {
     }
 
     // Update the order with the provided data
-    const updatedOrder = await FoodOrder.findByIdAndUpdate(orderId, updateData, {
-      new: true,
-    });
+    const updatedOrder = await FoodOrder.findByIdAndUpdate(
+      orderId,
+      updateData,
+      {
+        new: true,
+      }
+    );
 
     res.status(200).json({
       success: true,
@@ -254,11 +265,13 @@ export const updateOrder = async (req, res) => {
   }
 };
 
-
 export const getOrdersByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
     const { page = 1, limit = 10, search } = req.query;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const hotel = await Hotel.findById(hotel_id);
 
@@ -414,7 +427,11 @@ export const getFoodsByRoomId = async (req, res) => {
 
 export const addFoodCategory = async (req, res) => {
   try {
-    const { hotel_id, category_name } = req.body;
+    const { category_name } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Check if the category_name already exists for the given hotel_id
     const existingCategory = await FoodCategory.findOne({
@@ -530,7 +547,10 @@ export const deleteFoodCategory = async (req, res) => {
 
 export const getFoodCategoriesByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Find food categories for the given hotel_id
     const foodCategories = await FoodCategory.find({ hotel_id });

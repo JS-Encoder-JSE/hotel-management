@@ -6,6 +6,7 @@ import PoolBills from "../../models/Manager/pool.model.js";
 import ManagerReport from "../../models/Manager/report.model.js";
 import Report from "../../models/Manager/report.model.js";
 import Room from "../../models/Manager/room.model.js";
+import User from "../../models/user.model.js";
 
 export const getCheckoutInfoByRoom = async (req, res) => {
   try {
@@ -33,7 +34,6 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     }
     // Extract room_ids from each active booking
     const roomIds = activeBookings.map((booking) => booking.room_ids).flat();
-    console.log(roomIds);
     const barOrders = await BarOrder.find({
       room_id: { $in: roomIds },
       status: { $in: ["Partial", "Pending"] },
@@ -89,7 +89,6 @@ export const checkedOut = async (req, res) => {
   try {
     // Extract data from the request body
     const {
-      hotel_id,
       booking_id,
       guestName,
       room_numbers,
@@ -100,6 +99,11 @@ export const checkedOut = async (req, res) => {
       paid_amount,
       unpaid_amount,
     } = req.body;
+
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Create a new Report instance
     const newReport = new ManagerReport({
