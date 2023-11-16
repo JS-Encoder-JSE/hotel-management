@@ -27,6 +27,11 @@ const validationSchema = yup.object({
   documentsType: yup.string().required("Documents type is required"),
   doc_number: yup.string().required("Document number is required"),
   documents: yup.string().required("Documents is required"),
+  amount: yup
+  .number()
+  .required("Amount is required")
+  .positive("Amount must be a positive number")
+  .integer("Amount must be an integer"),
 });
 
 const CheckInDyn = ({ data }) => {
@@ -225,6 +230,12 @@ const CheckInDyn = ({ data }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
+               {formik.touched.amount &&
+            Boolean(formik.errors.amount) ? (
+              <small className="text-red-600">
+                {formik.touched.amount && formik.errors.amount}
+              </small>
+            ) : null}
           </div>
           <div className="flex flex-col gap-3">
             <select
