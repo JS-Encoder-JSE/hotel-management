@@ -13,7 +13,7 @@ const router = Router();
 // add room
 router.post("/add-room", checkToken, addRoom);
 router.get("/get-room-by-id/:room_id", checkToken, getRoomById);
-router.get("/get-rooms-by-hotel/:hotel_id", checkToken, getRoomsByHotelId);
+router.get("/get-rooms-by-hotel", checkToken, getRoomsByHotelId);
 // router.get('/get-room', checkToken, getAllRooms);
 router.patch("/update-room/:room_id", checkToken, updateRoom);
 router.delete("/delete-room/:room_id", checkToken, deleteRoom);

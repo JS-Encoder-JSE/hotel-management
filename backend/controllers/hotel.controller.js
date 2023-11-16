@@ -76,9 +76,9 @@ export const addHotel = async (req, res) => {
       branch_name,
       address,
       email,
+      username,
+      password,
       phone_no,
-      managers,
-      rooms,
     } = req.body;
 
     // Check if the owner exists and has available slots for a new hotel
@@ -87,24 +87,10 @@ export const addHotel = async (req, res) => {
     if (!owner) {
       return res.status(404).json({ message: "Owner not found" });
     }
-
-    if (owner.maxHotels <= owner.assignedHotel.length) {
-      return res
-        .status(403)
-        .json({ message: "Please upgrade your package to add more hotels" });
-    }
-    // Validate if managers is an array of valid ObjectIds
-    if (!Array.isArray(managers) || managers.length === 0) {
-      return res.status(400).json({ message: "Invalid managers array" });
-    }
-
-    const manager = await User.find({
-      _id: { $in: managers },
-      role: "manager",
-    });
-
-    if (manager.length !== managers.length) {
-      return res.status(404).json({ message: "Manager not found" });
+    // Check if a user with the same username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
     }
 
     // Create a new hotel instance with the provided data
@@ -115,22 +101,26 @@ export const addHotel = async (req, res) => {
       address,
       email,
       phone_no,
-      managers,
-      rooms,
     });
 
     // Save the new hotel to the database
     const savedHotel = await newHotel.save();
 
+    // Create a new user instance
+    const newUser = new User({
+      parent_id: owner_id,
+      username,
+      name: name + " " + branch_name,
+      password,
+      role: "manager",
+      assignedHotel: [savedHotel._id],
+    });
+
+    // Save the user to the database
+    await newUser.save();
     // Update the owner's assignedHotel array
     owner.assignedHotel.push(savedHotel._id);
     await owner.save();
-    // Assign the hotel to the managers
-    for (const managerId of managers) {
-      const manager = await User.findById(managerId);
-      manager.assignedHotel.push(savedHotel._id);
-      await manager.save();
-    }
 
     res.status(201).json({ message: "Successfully added hotel" }); // Respond with the created hotel data
   } catch (error) {
