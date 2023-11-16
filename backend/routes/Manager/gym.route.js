@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/add-gym-bill", checkToken, addGymBill);
 
 // Get Gym Bills by Hotel ID
-router.get("/get-gym-bills-by-hotel/:hotel_id", checkToken, getGymBillsByHotelId);
+router.get("/get-gym-bills-by-hotel", checkToken, getGymBillsByHotelId);
 
 // Get Gym Bill by ID
 router.get("/get-gym-bill/:bill_id", checkToken, getGymBillById);

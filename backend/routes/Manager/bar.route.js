@@ -15,7 +15,7 @@ router.post("/add-bar-order", checkToken, addBarOrder);
 
 // Get Bar Orders by Hotel ID
 router.get(
-  "/get-bar-orders-by-hotel/:hotel_id",
+  "/get-bar-orders-by-hotel",
   checkToken,
   getBarOrdersByHotelId
 );

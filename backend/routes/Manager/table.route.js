@@ -15,7 +15,7 @@ const router = Router();
 router.post("/add-table", checkToken, addTable);
 
 // Get Tables By Hotel ID
-router.get("/get-tables-by-hotel/:hotel_id", checkToken, getTablesByHotelId);
+router.get("/get-tables-by-hotel", checkToken, getTablesByHotelId);
 
 // Get Table By ID
 router.get("/get-table-by-id/:table_id", checkToken, getTableById);
