@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/add-pool-bill", checkToken, addPoolBill);
 
 // Get Pool Bills by Hotel ID
-router.get("/get-pool-bills-by-hotel/:hotel_id", checkToken, getPoolBillsByHotelId);
+router.get("/get-pool-bills-by-hotel", checkToken, getPoolBillsByHotelId);
 
 // Get Pool Bill by ID
 router.get("/get-pool-bill/:bill_id", checkToken, getPoolBillById);
