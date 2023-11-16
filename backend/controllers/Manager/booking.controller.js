@@ -55,6 +55,7 @@ export const addBooking = async (req, res) => {
     const overlappingBookings = await Booking.find({
       room_ids: { $in: room_ids },
       deleted: false,
+      status: { $ne: "Canceled" },
       $or: [
         {
           from: { $lte: new Date(to) },
@@ -78,6 +79,7 @@ export const addBooking = async (req, res) => {
           const bookingsForRoom = await Booking.find({
             room_ids: roomId,
             to: { $lte: new Date(from) },
+            status: { $ne: "Canceled" },
             deleted: false,
           })
             .sort({ to: -1 })
