@@ -50,7 +50,7 @@ const bookingSchema = new mongoose.Schema(
     bookingMethod: {
       type: String,
       enum: ["Online", "Offline"],
-      required: true,
+      required: false,
     },
     paymentMethod: {
       type: String,
