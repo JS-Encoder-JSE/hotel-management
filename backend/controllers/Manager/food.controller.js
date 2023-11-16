@@ -226,6 +226,35 @@ export const addOrder = async (req, res) => {
     });
   }
 };
+export const getOrderById = async (req, res) => {
+  try {
+    const orderId = req.params.order_id; // Assuming you use "order_id" as the parameter name
+
+    // Retrieve the order by ID
+    const order = await FoodOrder.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: order,
+      message: "Order retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 
 export const updateOrder = async (req, res) => {
   try {
