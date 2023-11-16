@@ -8,7 +8,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import InvoicePDF from "./InvoicePDF.jsx";
 import { jsPDF } from "jspdf";
 
-const PaymentSection = ({ pBill, formik }) => {
+const PaymentSection = ({ pBill, formik, paymentList, setPaymentList }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
@@ -16,12 +16,9 @@ const PaymentSection = ({ pBill, formik }) => {
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
 
-  const [paymentList, setPaymentList] = useState([
-    { method: "", amount: "", trx: "", date: "" },
-  ]);
-
   const handleChange = (e, index) => {
     const { name, value } = e.target;
+
     const list = [...paymentList];
     list[index][name] = value;
     setPaymentList(list);
@@ -44,7 +41,7 @@ const PaymentSection = ({ pBill, formik }) => {
     const totalCol = paymentList.reduce(
       (total, current) =>
         total + (Boolean(current.amount) ? +current.amount : 0),
-      0,
+      0
     );
 
     setColAmount(totalCol);

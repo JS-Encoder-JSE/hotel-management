@@ -75,7 +75,7 @@ const PaymentMethod = ({
                 </div>
               )}
             </div>
-            <div className={`px-14 pb-4`}>
+            {/* <div className={`px-14 pb-4`}>
               {paymentList.length - 1 === idx && (
                 <button
                   type="button"
@@ -85,7 +85,7 @@ const PaymentMethod = ({
                   Add more
                 </button>
               )}
-            </div>
+            </div> */}
           </>
         );
       })}

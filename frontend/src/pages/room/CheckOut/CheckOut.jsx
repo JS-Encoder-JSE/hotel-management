@@ -23,6 +23,11 @@ const CheckOut = () => {
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
   const { data: checkout } = useGetCOInfoQuery(fetch);
+  const [paymentList, setPaymentList] = useState([
+    { method: "", amount: "", trx: "", date: "" },
+  ]);
+  // console.log("checkout info", checkout);
+
   const formik = useFormik({
     initialValues: {
       hotel_id: "",
@@ -30,27 +35,26 @@ const CheckOut = () => {
     },
     onSubmit: async () => {
       const room_numbers = checkout?.data?.booking_info?.[0]?.room_ids?.map(
-        (i) => i?.roomNumber,
+        (i) => i?.roomNumber
       );
-
+      const unpaid = pBill - Number(paymentList[0].amount);
       const response = await addCheckout({
-        hotel_id: checkout?.data?.booking_info?.[0]?.hotel_id,
         booking_id: checkout?.data?.booking_info?.[0]?._id,
         room_numbers,
         checked_in: checkout?.data?.booking_info?.[0]?.from,
         checked_out: new Date(),
-        payable_amount: 1,
-        paid_amount: 1,
-        unpaid_amount: 1,
+        payable_amount: pBill,
+        paid_amount: Number(paymentList[0].amount),
+        unpaid_amount: unpaid < 0 ? 0 : unpaid,
         guestName: checkout?.data?.booking_info?.[0]?.guestName,
-        payment_method: "",
+        payment_method: paymentList[0].method,
       });
-console.log(response)
+      console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
-        toast.success(response.data.message);
-        navigate("/dashboard/checkout");
+        toast.success("Checkout Successful");
+        // navigate("/dashboard/checkout");
       }
     },
   });
@@ -74,7 +78,7 @@ console.log(response)
       e.preventDefault();
     }
   };
-  console.log(checkout);
+  // console.log(checkout);
   const transformedRooms = rooms?.data?.docs
     ?.filter((room) => room.status === "Booked" || room.status === "CheckedIn")
     ?.map((room) => ({
@@ -146,7 +150,12 @@ console.log(response)
             setTotalBilling={setTotalBilling}
             setPBill={setPBill}
           />
-          <PaymentSection pBill={pBill} formik={formik} />
+          <PaymentSection
+            paymentList={paymentList}
+            setPaymentList={setPaymentList}
+            pBill={pBill}
+            formik={formik}
+          />
         </>
       )}
     </div>
