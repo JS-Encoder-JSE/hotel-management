@@ -137,7 +137,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                         handleDelete(item?._id);
                       }}
                       className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                      title={`Delete`}
+                      title={`Cancel`}
                     >
                       <FaTrash />
                     </button>

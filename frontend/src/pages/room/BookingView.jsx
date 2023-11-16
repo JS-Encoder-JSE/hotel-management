@@ -81,6 +81,11 @@ const BookingView = () => {
           <h3 className={`text-2xl font-semibold mb-3`}>Booking Information</h3>
           <table>
             <tbody>
+            <tr>
+                <th className={`text-start`}>Booking Mathod</th>
+                <td className={`w-4 text-center`}>:</td>
+                <td>{booking?.data?.bookingMethod}</td>
+              </tr>
               <tr>
                 <th className={`text-start`}>Booking Date</th>
                 <td className={`w-4 text-center`}>:</td>
@@ -91,6 +96,7 @@ const BookingView = () => {
                 <td className={`w-4 text-center`}>:</td>
                 {/* <td>{data?.data?._id}</td>  
               </tr> */}
+              
               <tr>
                 <th className={`text-start`}>Room No</th>
                 <td className={`w-4 text-center`}>:</td>
@@ -105,6 +111,11 @@ const BookingView = () => {
                 <th className={`text-start`}>Children</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.children}</td>
+              </tr>
+              <tr>
+                <th className={`text-start`}>Payment Method</th>
+                <td className={`w-4 text-center`}>:</td>
+                <td>{booking?.data?.paymentMethod}</td>
               </tr>
               <tr>
                 <th className={`text-start`}>Advanced payment</th>
