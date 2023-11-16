@@ -1,9 +1,13 @@
 import Table from "../../models/Manager/table.model.js";
-
+import User from "../../models/user.model.js";
 
 export const addTable = async (req, res) => {
   try {
-    const { hotel_id, table_number, capacity, description, status } = req.body;
+    const { table_number, capacity, description, status } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const newTable = new Table({
       hotel_id,
@@ -31,7 +35,10 @@ export const addTable = async (req, res) => {
 
 export const getTablesByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const tables = await Table.find({ hotel_id });
 

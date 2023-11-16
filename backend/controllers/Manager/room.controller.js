@@ -1,10 +1,10 @@
 ﻿import Room from "../../models/Manager/room.model.js"; // Assuming the Room model file path
+import User from "../../models/user.model.js";
 
 //add room
 export const addRoom = async (req, res) => {
   try {
     const {
-      hotel_id,
       category,
       type,
       capacity,
@@ -17,6 +17,11 @@ export const addRoom = async (req, res) => {
       air_conditioned,
       status,
     } = req.body;
+
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const newRoom = new Room({
       category,
@@ -62,8 +67,11 @@ export const addRoom = async (req, res) => {
 // get rooms by hotel Id
 export const getRoomsByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params; // Assuming you're passing `hotel_id` as a route parameter
     const { page = 1, limit = 10, filter, search } = req.query; // Allow query parameters for filtering and searching
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     // Construct the filter object based on the query parameters
     const query = {
