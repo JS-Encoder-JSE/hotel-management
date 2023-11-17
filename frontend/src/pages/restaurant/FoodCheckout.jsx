@@ -43,13 +43,26 @@ const FoodCheckout = () => {
   };
 
   const handleCheckout = async () => {
+    const checkoutForTable = {
+      paid_amount: grandTotal,
+      items: orderData.data.items,
+      order_status: "CheckedOut",
+      current_order: false,
+      total_price: grandTotal,
+    };
+    const updateForRoom = {
+      paid_amount: 0,
+      unpaid_amount: grandTotal,
+      total_price: grandTotal,
+      items: orderData.data.items,
+      current_order: false,
+    };
     const response = await updateOrder({
-      data: {
-        paid_amount: grandTotal,
-        items: orderData.data.items,
-        order_status: "CheckedOut",
-        current_order: false,
-      },
+      data: orderData?.data?.room_id
+        ? updateForRoom
+        : orderData?.data?.table_id
+        ? checkoutForTable
+        : null,
       id,
     });
     console.log("res", response);
