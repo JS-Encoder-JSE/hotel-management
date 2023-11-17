@@ -33,6 +33,17 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
+
+  children: yup
+    .number()
+    .required("children is required")
+    .positive("children must be a positive number")
+    .integer("children must be an integer"),
+  amount: yup
+    .number()
+    .required("Amount is required")
+    .positive("Amount must be a positive number")
+    .integer("Amount must be an integer"),
   // children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
   //   then: yup
@@ -48,10 +59,14 @@ const validationSchema = yup.object({
   // }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  amount: yup.string().required("Advance amount is required"),
   nationality: yup.string().required("Nationality is required"),
   documentsType: yup.string().required("Documents type is required"),
-  doc_number: yup.string().required("Document number is required"),
+  // doc_number: yup.string().required("Document number is required"),
+  doc_number: yup
+  .number()
+  .required("Doc_number is required")
+  .positive("Doc_number must be a positive number")
+  .integer("Doc_number must be an integer"),
   documents: yup.string().required("Documents is required"),
 });
 

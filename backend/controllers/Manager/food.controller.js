@@ -182,7 +182,7 @@ export const updateFood = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const { room_id, table_id, items, paid_amount } = req.body;
+    const { room_id, table_id, items,current_order, paid_amount } = req.body;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
@@ -204,7 +204,7 @@ export const addOrder = async (req, res) => {
       table_id,
       hotel_id,
       unique_id,
-      current_order: true,
+      current_order,
       items,
       total_price,
       paid_amount,
@@ -226,6 +226,35 @@ export const addOrder = async (req, res) => {
     });
   }
 };
+export const getOrderById = async (req, res) => {
+  try {
+    const orderId = req.params.order_id; // Assuming you use "order_id" as the parameter name
+
+    // Retrieve the order by ID
+    const order = await FoodOrder.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: order,
+      message: "Order retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 
 export const updateOrder = async (req, res) => {
   try {
@@ -267,7 +296,7 @@ export const updateOrder = async (req, res) => {
 
 export const getOrdersByHotelId = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search } = req.query;
+    const { page = 1, limit = 10, search, current_order } = req.query;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
@@ -289,6 +318,9 @@ export const getOrdersByHotelId = async (req, res) => {
     if (search) {
       // Update the search condition based on the actual type of room_id
       query.room_id = search; // Assuming search is the room_id you're looking for
+    }
+    if (current_order) {
+      query.current_order = current_order;
     }
 
     const options = {
