@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import logo from "../../assets/logo.png"
 import COItem from "./COItem.jsx";
 import {
   resetFoodOrder,
@@ -25,7 +26,8 @@ const validationSchema = yup.object({
   chooseHotel: yup.string().required("Hotel is required"),
 });
 
-const ConfirmOrder = () => {
+const ConfirmOrder = ({selectRoomId,selectTableId}) => {
+  console.log(selectRoomId,selectTableId)
   const componentRef = useRef();
   const closeRef = useRef();
   const [success, setSuccess] = useState(null);
@@ -100,10 +102,28 @@ const ConfirmOrder = () => {
   //   value: room._id,
   //   label: room.roomNumber,
   // }));
-
+ const [isheaderHide,setHeaderHide]=useState(false)
   const handlePrint = useReactToPrint({
-    content: () => <RestaurantPDF data={success} />,
-  });
+    content: () =>componentRef.current
+  })
+  const handleButtonClick = () => {
+    // Call multiple functions here
+    handlePrint()
+    setHeaderHide(true)
+    // Add more functions if needed
+
+    // Additional logic specific to the onClick event
+  };
+
+  // current date
+
+  const currentDate = new Date();
+
+const year = currentDate.getFullYear();
+const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+const day = String(currentDate.getDate()).padStart(2, '0');
+
+const formattedDate = `${year}-${month}-${day}`;
 
   return (
     <>
@@ -116,7 +136,6 @@ const ConfirmOrder = () => {
           ✕
         </button>
       </form>
-
       {!success ? (
         <div>
           <h3 className={`text-2xl font-semibold mb-3`}>Confirm Order</h3>
@@ -214,6 +233,7 @@ const ConfirmOrder = () => {
                         </div>
                         <div className="flex">
                           <button
+
                             onClick={handlePlaceOrder}
                             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                           >
@@ -235,8 +255,16 @@ const ConfirmOrder = () => {
           <h3 className={`mb-5 font-bold text-2xl`}>
             Order placed successfully.
           </h3>
-          <div className="overflow-x-auto border">
-            <table className="table" ref={componentRef}>
+          <div ref={componentRef} className={`overflow-x-auto border ${isheaderHide?"p-5":""}`}>
+            <div >
+              {/* header rendering by condition */}
+              {isheaderHide&&<div className={`text-center mb-6`}>
+                <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
+                <h1 className="font-bold text-2xl" >DAK Hospital LTD</h1>
+                <span>Customer Receipt</span> <br />
+                <span>Issue Date: {formattedDate} </span>
+              </div>}
+            <table className="table" >
               <thead>
                 <tr className={`text-lg`}>
                   <th>Name</th>
@@ -257,11 +285,32 @@ const ConfirmOrder = () => {
                   </tr>
                 ))}
               </tbody>
+              <tfoot className={`text-sm`}>
+                  <tr>
+                    <td colSpan={5}>
+                      <div className="mt-3">
+                        <div className="pl-2 mb-4 w-[70%] text-md font-semibold">
+                          <p className="flex justify-between">
+                            Total Price : <span>{orderCalc.total}</span>
+                          </p>
+                          <p className="flex justify-between">
+                            Tax : <span>{orderCalc.tax}</span>
+                          </p>
+                          <p className="flex justify-between font-bold">
+                            Grand Total: <span>{orderCalc.grandTotal}</span>
+                          </p>
+                        </div>
+                      
+                      </div>
+                    </td>
+                  </tr>
+                </tfoot>
             </table>
+            </div>
           </div>
           <div className={`mt-5 text-end`}>
             <button
-              onClick={handlePrint}
+              onClick={handleButtonClick}
               className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
               Print

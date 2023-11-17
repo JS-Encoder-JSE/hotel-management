@@ -84,11 +84,11 @@ const addOrderSlice = createSlice({
         tableId: "",
         foods: [],
       };
-      state.orderCalc = {
-        total: 0,
-        tax: 0,
-        grandTotal: 0,
-      };
+      // state.orderCalc = {
+      //   total: 0,
+      //   tax: 0,
+      //   grandTotal: 0,
+      // };
     },
   },
 });
