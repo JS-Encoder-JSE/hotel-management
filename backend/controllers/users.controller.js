@@ -230,11 +230,11 @@ export const addLicense = async (req, res) => {
       }
     }
     function generateLicenseKey() {
-      const randomBytes = crypto.randomBytes(5); // Adjust the number of bytes for your desired length
+      const randomBytes = crypto.randomBytes(15); // Adjust the number of bytes for your desired length (20 characters -> 15 bytes)
       const licenseKey = randomBytes
-        .toString("base64")
-        .replace(/[^a-zA-Z0-9]/g, "")
-        .slice(0, 9);
+        .toString('base64')
+        .replace(/[^a-zA-Z0-9]/g, '')
+        .slice(0, 20); // Adjust the slice length to 20
       return licenseKey;
     }
 
