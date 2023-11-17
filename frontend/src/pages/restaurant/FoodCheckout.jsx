@@ -187,7 +187,7 @@ const FoodCheckout = () => {
           onClick={handleCheckout}
           className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
         >
-          Checkout
+          {path.includes("orderDetails") ? "Update Order" : "Checkout"}
         </button>
       </div>
     </div>
