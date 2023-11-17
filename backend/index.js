@@ -15,6 +15,7 @@ import itemRoute from "./routes/Manager/item.route.js";
 import barRoute from "./routes/Manager/bar.route.js";
 import gymRoute from "./routes/Manager/gym.route.js";
 import poolRoute from "./routes/Manager/pool.route.js";
+import dashboardRoute from "./routes/dashboard.route.js";
 // import employeeRoute from "./routes/Manager/employee.route.js";
 import { fileURLToPath } from "url";
 // Manager Routes
@@ -53,6 +54,7 @@ app.use("/items", itemRoute);
 app.use("/bar", barRoute);
 app.use("/gym", gymRoute);
 app.use("/pool", poolRoute);
+app.use("/dashboards", dashboardRoute);
 // app.use("/employee", employeeRoute);
 
 app.use("/", uploadRoute);

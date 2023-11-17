@@ -6,6 +6,11 @@ import PoolBills from "../../models/Manager/pool.model.js";
 import ManagerReport from "../../models/Manager/report.model.js";
 import Report from "../../models/Manager/report.model.js";
 import Room from "../../models/Manager/room.model.js";
+import {
+  CheckInfo,
+  Dashboard,
+  DashboardTable,
+} from "../../models/dashboard.model.js";
 import User from "../../models/user.model.js";
 
 export const getCheckoutInfoByRoom = async (req, res) => {
@@ -105,6 +110,17 @@ export const checkedOut = async (req, res) => {
     const hotel_id =
       user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
+    const currentDate = new Date();
+
+    const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
+    const year = currentDate.getFullYear().toString();
+
+    const Year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+    const day = currentDate.getDate().toString().padStart(2, "0");
+
+    const formattedDate = `${day}-${month}-${Year}`;
+
     // Create a new Report instance
     const newReport = new ManagerReport({
       hotel_id,
@@ -141,6 +157,92 @@ export const checkedOut = async (req, res) => {
     // Save the report to the database
     const savedReport = await newReport.save();
 
+    const ownerDashboard = await Dashboard.findOne({
+      user_id: user.parent_id,
+    });
+    const managerDashboard = await Dashboard.findOne({
+      user_id: userId,
+    });
+
+    ownerDashboard.total_checkout += 1;
+    ownerDashboard.total_amount += paid_amount;
+
+    await ownerDashboard.save();
+
+    managerDashboard.total_checkout += 1;
+    managerDashboard.total_amount += paid_amount;
+
+    await managerDashboard.save();
+
+    const managerDashboardTable = await DashboardTable.findOne({
+      user_id: userId,
+      month_name: month_name,
+      year: year,
+    });
+
+    if (managerDashboardTable) {
+      managerDashboardTable.total_checkout += 1;
+      await managerDashboardTable.save();
+    } else {
+      // Create a new dashboard table entry
+      const newDashboardTable = new DashboardTable({
+        user_id: userId,
+        user_role: user.role,
+        total_checkout: 1,
+      });
+      // Save the new dashboard table to the database
+      await newDashboardTable.save();
+    }
+    const ownerDashboardTable = await DashboardTable.findOne({
+      user_id: user.parent_id,
+      month_name: month_name,
+      year: year,
+    });
+
+    if (ownerDashboardTable) {
+      ownerDashboardTable.total_checkout += 1;
+      await ownerDashboardTable.save();
+    } else {
+      const newDashboardTable = new DashboardTable({
+        user_id: user.parent_id,
+        user_role: "owner",
+        total_checkout: 1,
+      });
+      // Save the new dashboard table to the database
+      await newDashboardTable.save();
+    }
+    const managerCheckInfo = await CheckInfo({
+      user_id: userId,
+      date: formattedDate,
+    });
+
+    if (managerCheckInfo) {
+      managerCheckInfo.today_checkout += 1;
+      await managerCheckInfo.save();
+    } else {
+      const newCheckInfo = new CheckInfo({
+        user_id: userId,
+        user_role: user.role,
+        today_checkout: 1,
+      });
+      await newCheckInfo.save();
+    }
+    const ownerCheckInfo = await CheckInfo({
+      user_id: user.parent_id,
+      date: formattedDate,
+    });
+
+    if (ownerCheckInfo) {
+      ownerCheckInfo.today_checkout += 1;
+      await ownerCheckInfo.save();
+    } else {
+      const newCheckInfo = new CheckInfo({
+        user_id: userId,
+        user_role: user.role,
+        today_checkout: 1,
+      });
+      await newCheckInfo.save();
+    }
     // Respond with the saved report
     res.status(201).json(savedReport);
   } catch (error) {

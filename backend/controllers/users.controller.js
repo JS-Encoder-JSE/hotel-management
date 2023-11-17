@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import User from "../models/user.model.js";
 import Hotel from "../models/hotel.model.js";
 import TransactionLog from "../models/transactionlog.model.js";
 import StatusLog from "../models/statuslog.model.js";
 import Report from "../models/report.model.js";
+import { Dashboard, DashboardTable } from "../models/dashboard.model.js";
 
 // Create a function to handle user creation
 export const addUser = async (req, res) => {
@@ -77,6 +79,18 @@ export const addUser = async (req, res) => {
 
     // Save the user to the database
     await newUser.save();
+    const newDashboard = new Dashboard({
+      user_id: newUser._id,
+      user_role: role,
+    });
+    await newDashboard.save();
+    // Create a new dashboard table entry
+    const newDashboardTable = new DashboardTable({
+      user_id: newUser._id,
+      user_role: role,
+    });
+    // Save the new dashboard table to the database
+    await newDashboardTable.save();
 
     // Respond with a success message or the created user object
     res
@@ -129,7 +143,102 @@ export const addLicense = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "Username already exists" });
     }
+    const currentDate = new Date();
+    const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
+    const year = currentDate.getFullYear().toString();
 
+    const existingDashboard = await Dashboard.findOne({
+      user_id: userId,
+    });
+    if (parent.role === "admin") {
+      existingDashboard.total_sell_lic += 1;
+      existingDashboard.total_amount += amount;
+      existingDashboard.total_customer += 1;
+      existingDashboard.total_active_lic += 1;
+
+      await existingDashboard.save();
+      const existingDashboardTable = await DashboardTable.findOne({
+        user_id: userId,
+        month_name: month_name,
+        year: year,
+      });
+      if (existingDashboardTable) {
+        existingDashboardTable.total_sale += 1;
+        await existingDashboardTable.save();
+      } else {
+        // Create a new dashboard table entry
+        const newDashboardTable = new DashboardTable({
+          user_id: userId,
+          user_role: parent.role,
+          total_sale: 1,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
+    } else {
+      existingDashboard.total_sell_lic += 1;
+      existingDashboard.total_amount += amount;
+      existingDashboard.total_customer += 1;
+      existingDashboard.total_active_lic += 1;
+
+      await existingDashboard.save();
+
+      const existingParentDashboard = await Dashboard.findOne({
+        user_id: parent.parent_id,
+      });
+      existingParentDashboard.total_sell_lic += 1;
+      existingParentDashboard.total_amount += amount;
+      existingParentDashboard.total_customer += 1;
+      existingParentDashboard.total_active_lic += 1;
+
+      await existingParentDashboard.save();
+
+      const existingDashboardTable = await DashboardTable.findOne({
+        user_id: userId,
+        month_name: month_name,
+        year: year,
+      });
+      if (existingDashboardTable) {
+        existingDashboardTable.total_sale += 1;
+        await existingDashboardTable.save();
+      } else {
+        // Create a new dashboard table entry
+        const newDashboardTable = new DashboardTable({
+          user_id: userId,
+          user_role: parent.role,
+          total_sale: 1,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
+      const existingParentDashboardTable = await DashboardTable.findOne({
+        user_id: parent.parent_id,
+        month_name: month_name,
+        year: year,
+      });
+      if (existingParentDashboardTable) {
+        existingParentDashboardTable.total_sale += 1;
+        await existingParentDashboardTable.save();
+      } else {
+        const newDashboardTable = new DashboardTable({
+          user_id: parent.parent_id,
+          user_role: "admin",
+          total_sale: 1,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
+    }
+    function generateLicenseKey() {
+      const randomBytes = crypto.randomBytes(5); // Adjust the number of bytes for your desired length
+      const licenseKey = randomBytes
+        .toString("base64")
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .slice(0, 9);
+      return licenseKey;
+    }
+
+    const license_key = generateLicenseKey();
     // Create a new owner user
     const newOwner = new User({
       parent_id: userId,
@@ -145,6 +254,7 @@ export const addLicense = async (req, res) => {
       bill_info,
       bill_from,
       bill_to,
+      license_key,
       maxHotels,
       images,
     });
@@ -181,10 +291,15 @@ export const addLicense = async (req, res) => {
       paid_amount: amount,
       payment_type: payment_method,
     });
-
     await newReport.save({ session });
 
     await session.commitTransaction();
+
+    const newDeshboard = new Dashboard({
+      user_id: savedOwner._id,
+      user_role: "owner",
+    });
+    await newDeshboard.save();
 
     res.status(201).json({ message: "Successfully added license" });
   } catch (error) {
@@ -820,13 +935,98 @@ export const renewLicense = async (req, res) => {
     } = req.body;
 
     const parent = await User.findById(loginUserId);
+    const currentDate = new Date();
+    const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
+    const year = currentDate.getFullYear().toString();
 
     if (!parent || (parent.role !== "admin" && parent.role !== "subadmin")) {
       return res
         .status(403)
         .json({ message: "You have no permission to renew a license" });
     }
+    if (parent.role === "admin") {
+      const adminDashboard = await Dashboard.findOne({ user_id: loginUserId });
 
+      adminDashboard.total_renew_lic += 1;
+      adminDashboard.total_amount += amount;
+
+      await adminDashboard.save();
+      const adminDashboardTable = await DashboardTable.findOne({
+        user_id: loginUserId,
+        month_name: month_name,
+        year: year,
+      });
+
+      if (adminDashboardTable) {
+        adminDashboardTable.total_renew += 1;
+        await adminDashboardTable.save();
+      } else {
+        // Create a new dashboard table entry
+        const newDashboardTable = new DashboardTable({
+          user_id: loginUserId,
+          user_role: parent.role,
+          total_renew: 1,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
+    }
+    if (parent.role === "subadmin") {
+      const adminDashboard = await Dashboard.findOne({
+        user_id: parent.parent_id,
+      });
+      const subadminDashboard = await Dashboard.findOne({
+        user_id: loginUserId,
+      });
+
+      adminDashboard.total_renew_lic += 1;
+      adminDashboard.total_amount += amount;
+
+      await adminDashboard.save();
+
+      subadminDashboard.total_renew_lic += 1;
+      subadminDashboard.total_amount += amount;
+
+      await subadminDashboard.save();
+
+      const subadminDashboardTable = await DashboardTable.findOne({
+        user_id: loginUserId,
+        month_name: month_name,
+        year: year,
+      });
+
+      if (subadminDashboardTable) {
+        subadminDashboardTable.total_renew += 1;
+        await subadminDashboardTable.save();
+      } else {
+        // Create a new dashboard table entry
+        const newDashboardTable = new DashboardTable({
+          user_id: loginUserId,
+          user_role: parent.role,
+          total_renew: 1,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
+      const adminDashboardTable = await DashboardTable.findOne({
+        user_id: parent.parent_id,
+        month_name: month_name,
+        year: year,
+      });
+
+      if (adminDashboardTable) {
+        adminDashboardTable.total_renew += 1;
+        await adminDashboardTable.save();
+      } else {
+        const newDashboardTable = new DashboardTable({
+          user_id: parent.parent_id,
+          user_role: "admin",
+          total_renew: 1,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
+    }
     const user = await User.findById(user_id);
 
     if (!user) {
@@ -1030,13 +1230,90 @@ export const updateStatus = async (req, res) => {
       if (user.status !== "Expired") {
         return res.status(400).json({ message: "Invalid status value" });
       }
+      if (parent.role === "subadmin") {
+        if (user.role === "owner") {
+          const userDashboard = await Dashboard.findOne({
+            user_id: loginUserId,
+          });
+          const parentDashboard = await Dashboard.findOne({
+            user_id: parent.parent_id,
+          });
+          userDashboard.total_expired_lic -= 1;
+          userDashboard.total_suspended_lic += 1;
+
+          await userDashboard.save();
+
+          parentDashboard.total_expired_lic -= 1;
+          parentDashboard.total_suspended_lic += 1;
+
+          await parentDashboard.save();
+        }
+      }
+      if (parent.role === "admin") {
+        if (user.role === "owner") {
+          const userDashboard = await Dashboard.findOne({
+            user_id: loginUserId,
+          });
+          userDashboard.total_expired_lic -= 1;
+          userDashboard.total_suspended_lic += 1;
+
+          await userDashboard.save();
+        }
+      }
+
       user.extended_time = extended_time;
     } else if (status === "Active") {
       if (user.status !== "Deactive" && user.status !== "Deleted") {
         return res.status(400).json({ message: "Invalid status value" });
       }
-    }
+      if (parent.role === "subadmin") {
+        if (user.role === "owner") {
+          const userDashboard = await Dashboard.findOne({
+            user_id: loginUserId,
+          });
+          const parentDashboard = await Dashboard.findOne({
+            user_id: parent.parent_id,
+          });
 
+          parentDashboard.total_active_lic += 1;
+          userDashboard.total_active_lic += 1;
+          await parentDashboard.save();
+          await userDashboard.save();
+        }
+      }
+      if (parent.role === "admin") {
+        if (user.role === "owner") {
+          const userDashboard = await Dashboard.findOne({
+            user_id: loginUserId,
+          });
+          userDashboard.total_active_lic += 1;
+          await userDashboard.save();
+        }
+      }
+    } else {
+      if (user.role === "owner") {
+        if (parent.role === "subadmin") {
+          const userDashboard = await Dashboard.findOne({
+            user_id: loginUserId,
+          });
+          const parentDashboard = await Dashboard.findOne({
+            user_id: parent.parent_id,
+          });
+
+          parentDashboard.total_active_lic -= 1;
+          userDashboard.total_active_lic -= 1;
+          await parentDashboard.save();
+          await userDashboard.save();
+        }
+        if (parent.role === "admin") {
+          const userDashboard = await Dashboard.findOne({
+            user_id: loginUserId,
+          });
+          userDashboard.total_active_lic -= 1;
+          await userDashboard.save();
+        }
+      }
+    }
     // Update the user's status
     user.status = status;
 
