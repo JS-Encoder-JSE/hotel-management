@@ -48,6 +48,7 @@ const FoodCheckout = () => {
         paid_amount: grandTotal,
         items: orderData.data.items,
         order_status: "CheckedOut",
+        current_order: false,
       },
       id,
     });
@@ -72,7 +73,9 @@ const FoodCheckout = () => {
           <FaArrowLeft />
         </span>
       </div>
-      <h3 className="text-2xl font-semibold text-center">{path.includes('orderDetails')?'Order details':'Checkout'}</h3>
+      <h3 className="text-2xl font-semibold text-center">
+        {path.includes("orderDetails") ? "Order details" : "Checkout"}
+      </h3>
       <hr />
       <div>
         <div className={`flex items-center gap-3 `}>
