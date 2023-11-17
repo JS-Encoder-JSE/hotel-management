@@ -257,10 +257,10 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
             </p>
             <p>{foodBill}</p>
           </div>
-          <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight border-b border-black/20 pb-2 px-2">
+          {/* <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight border-b border-black/20 pb-2 px-2">
             <p className="capitalize whitespace-nowrap col-span-2">Bar</p>
             <p>{barBill}</p>
-          </div>
+          </div> */}
           <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight pb-2 px-2">
             <p className="capitalize whitespace-nowrap col-span-2">Gym</p>
             <p>{gymBill}</p>

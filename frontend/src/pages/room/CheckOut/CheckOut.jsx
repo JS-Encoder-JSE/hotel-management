@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import CustomerInfoSection from "./CustomerInfoSection";
 import RoomDetailsSection from "./RoomDetailsSection";
@@ -13,10 +13,12 @@ import {
 } from "../../../redux/room/roomAPI";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CheckOut = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const roomFromQuery = searchParams.get("room");
   const [addCheckout, { isLoading }] = useAddCheckoutMutation();
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
@@ -59,7 +61,6 @@ const CheckOut = () => {
     },
   });
 
-  const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const { data: rooms } = useRoomsQuery({
     cp: "0",
     filter: "",
@@ -79,13 +80,15 @@ const CheckOut = () => {
   };
   // console.log(checkout);
   const transformedRooms = rooms?.data?.docs
-    ?.filter((room) => room.status === "Booked" || room.status === "CheckedIn")
+    ?.filter((room) => room.status === "CheckedIn")
     ?.map((room) => ({
       value: room._id,
       label: `${room.roomNumber} - ${room.category}`,
     }));
-
-  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+  useEffect(() => {
+    setFetch(roomFromQuery);
+    setShowRooms(true);
+  }, [roomFromQuery]);
 
   return (
     <div className="space-y-8">

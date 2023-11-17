@@ -110,8 +110,8 @@ const ManageSingleRoom = () => {
                       CheckIn
                     </button>
                   </>
-                ) : room?.data?.status === "Booked" ? // 	<button // (
-                // 		className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
+                ) : room?.data?.status ===
+                  "Booked" ? // 		className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `} // 	<button // (
                 // 		onClick={() =>
                 // 			navigate("/dashboard/checkin", {
                 // 				state: room,
@@ -122,6 +122,9 @@ const ManageSingleRoom = () => {
                 // )
                 null : (
                   <button
+                    onClick={() =>
+                      navigate(`/dashboard/checkout?room=${room?.data?._id}`)
+                    }
                     className={`btn btn-md bg-yellow-400 hover:bg-yellow-300 text-black font-bold hover:text-black-300 !border-yellow-400 rounded normal-case min-w-[2rem]`}
                   >
                     CheckOut
