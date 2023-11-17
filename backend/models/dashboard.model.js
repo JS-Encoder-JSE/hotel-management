@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+
 const dashboardTableSchema = new mongoose.Schema(
   {
     user_id: {
@@ -21,37 +22,38 @@ const dashboardTableSchema = new mongoose.Schema(
     },
     total_expired: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_renew: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_sale: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_checkin: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_checkout: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_booking: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
   },
   { timestamps: true }
 );
+
 const checkinfoSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -68,25 +70,26 @@ const checkinfoSchema = new mongoose.Schema({
   },
   today_checkin: {
     type: Number,
-    require: false,
+    required: false,
     default: 0,
   },
   today_checkout: {
     type: Number,
-    require: false,
+    required: false,
     default: 0,
   },
   today_booking: {
     type: Number,
-    require: false,
+    required: false,
     default: 0,
   },
   today_canceled_bookings: {
     type: Number,
-    require: false,
+    required: false,
     default: 0,
   },
 });
+
 const dashboardSchema = new mongoose.Schema(
   {
     user_id: {
@@ -100,62 +103,63 @@ const dashboardSchema = new mongoose.Schema(
     },
     total_sell_lic: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_renew_lic: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_active_lic: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_expired_lic: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_suspended_lic: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_amount: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_customer: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_checkin: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_checkout: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_booking: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
     total_canceled: {
       type: Number,
-      require: false,
+      required: false,
       default: 0,
     },
   },
   { timestamps: true }
 );
+
 // Pre-save middleware to set current date and year before saving
 dashboardTableSchema.pre("save", function (next) {
   const currentDate = new Date();
@@ -164,6 +168,7 @@ dashboardTableSchema.pre("save", function (next) {
 
   next();
 });
+
 checkinfoSchema.pre("save", function (next) {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -174,6 +179,7 @@ checkinfoSchema.pre("save", function (next) {
   this.date = formattedDate;
   next();
 });
+
 // Apply the mongoose-paginate-v2 plugin to your schema
 dashboardSchema.plugin(mongoosePaginate);
 dashboardTableSchema.plugin(mongoosePaginate);

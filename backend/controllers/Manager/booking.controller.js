@@ -158,25 +158,26 @@ export const addBooking = async (req, res) => {
       const ownerDashboard = await Dashboard.findOne({
         user_id: user.parent_id,
       });
-      const managerDashboard = await Dashboard.findOne({
-        user_id: userId,
-      });
 
       ownerDashboard.total_checkin += 1;
       ownerDashboard.total_amount += paid_amount;
 
       await ownerDashboard.save();
+      const managerDashboard = await Dashboard.findOne({
+        user_id: userId,
+      });
 
       managerDashboard.total_checkin += 1;
       managerDashboard.total_amount += paid_amount;
 
       await managerDashboard.save();
-
+      console.log(managerDashboard);
       const managerDashboardTable = await DashboardTable.findOne({
         user_id: userId,
         month_name: month_name,
         year: year,
       });
+      console.log(managerDashboardTable);
 
       if (managerDashboardTable) {
         managerDashboardTable.total_checkin += 1;
