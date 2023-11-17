@@ -20,6 +20,8 @@ import FoodList from "./FoodList.jsx";
 import { useReactToPrint } from "react-to-print";
 import RestaurantPDF from "../../pages/restaurant/RestaurantPDF.jsx";
 
+// current year
+const currentYear = new Date().getFullYear();
 // form validation
 const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
@@ -251,8 +253,8 @@ const formattedDate = `${year}-${month}-${day}`;
           )}
         </div>
       ) : (
-        <div>
-          <h3 className={`mb-5 font-bold text-2xl`}>
+        <div >
+          <h3 className={`mb-5 font-bold text-2xl `}>
             Order placed successfully.
           </h3>
           <div ref={componentRef} className={`overflow-x-auto border ${isheaderHide?"p-5":""}`}>
@@ -264,6 +266,7 @@ const formattedDate = `${year}-${month}-${day}`;
                 <span>Customer Receipt</span> <br />
                 <span>Issue Date: {formattedDate} </span>
               </div>}
+
             <table className="table" >
               <thead>
                 <tr className={`text-lg`}>
@@ -307,6 +310,20 @@ const formattedDate = `${year}-${month}-${day}`;
                 </tfoot>
             </table>
             </div>
+            {/* singature */}
+            {isheaderHide&&<div className="flex justify-between mt-24">
+             <div>
+              {/* office signature */}
+                <div className="h-[2px] w-48 divider"></div>
+                <div className="text-center">Office Signature</div>
+             </div>
+             {/* customer signature  */}
+              <div>
+              <div className="h-[2px] w-48 divider"></div>
+              <div className="text-center">Custoner Signature</div>
+              </div>
+            </div>}
+            <p className="text-center absolute bottom-0 left-36">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved.</p>
           </div>
           <div className={`mt-5 text-end`}>
             <button
