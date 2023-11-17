@@ -78,15 +78,15 @@ export const addUser = async (req, res) => {
     });
 
     // Save the user to the database
-    await newUser.save();
+    const savedNewUser=await newUser.save();
     const newDashboard = new Dashboard({
-      user_id: newUser._id,
+      user_id: savedNewUser._id,
       user_role: role,
     });
     await newDashboard.save();
     // Create a new dashboard table entry
     const newDashboardTable = new DashboardTable({
-      user_id: newUser._id,
+      user_id: savedNewUser._id,
       user_role: role,
     });
     // Save the new dashboard table to the database
