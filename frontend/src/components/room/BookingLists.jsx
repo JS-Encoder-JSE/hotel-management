@@ -92,8 +92,8 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                   <td>{item?.mobileNumber}</td>
                   <td>{item?.paid_amount}</td>
                   <td>{new Date(item?.createdAt).toLocaleString()}</td>
-                  <td>{new Date(item?.to).toLocaleString()}</td>
                   <td>{new Date(item?.from).toLocaleString()}</td>
+                  <td>{new Date(item?.to).toLocaleString()}</td>
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span

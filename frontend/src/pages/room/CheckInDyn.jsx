@@ -41,6 +41,8 @@ const CheckInDyn = ({ data }) => {
       documentsType: "",
       doc_number: "",
       documents: null,
+      paymentMethod: "",
+      transection_id: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -66,14 +68,14 @@ const CheckInDyn = ({ data }) => {
       for (let i = 0; i < obj.documents.length; i++) {
         const photoName = obj.documents[i].name.substring(
           0,
-          obj.documents[i].name.lastIndexOf("."),
+          obj.documents[i].name.lastIndexOf(".")
         );
 
         formData.append(photoName, obj.documents[i]);
       }
 
       await upload(formData).then(
-        (result) => (tempImg = result.data.imageUrls),
+        (result) => (tempImg = result.data.imageUrls)
       );
 
       const response = await updateBooking({
@@ -87,6 +89,8 @@ const CheckInDyn = ({ data }) => {
             [title]: tempImg,
           },
           status: "CheckedIn",
+          paymentMethod: obj.paymentMethod,
+          transection_id: obj.transection_id,
         },
       });
 
@@ -216,16 +220,58 @@ const CheckInDyn = ({ data }) => {
             </div>
           ) : null}
           <div className="flex flex-col gap-3">
-            <input
-              type="number"
-              placeholder="Advanced Amount"
-              name="amount"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.amount}
+            <select
+              name="paymentMethod"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+              value={formik.values.paymentMethod}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-            />
+            >
+              <option value="" selected disabled>
+                Payment Method
+              </option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Mobile_Banking">Mobile Banking</option>
+            </select>
+            {formik.touched.paymentMethod &&
+            Boolean(formik.errors.paymentMethod) ? (
+              <small className="text-red-600">
+                {formik.touched.paymentMethod && formik.errors.paymentMethod}
+              </small>
+            ) : null}
           </div>
+          {formik.values.paymentMethod.length ? (
+            <div className="flex flex-col gap-3">
+              <input
+                type="number"
+                placeholder="Advanced Amount"
+                name="amount"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.amount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
+          {formik.values.paymentMethod === "Card" ||
+          formik.values.paymentMethod === "Mobile_Banking" ? (
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="transaction Id"
+                name="transection_id"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.transection_id}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="flex flex-col gap-3">
             <select
               name="documentsType"
