@@ -255,7 +255,8 @@ export const addBooking = async (req, res) => {
       const managerDashboard = await Dashboard.findOne({
         user_id: userId,
       });
-
+      console.log(ownerDashboard);
+      console.log(managerDashboard);
       ownerDashboard.total_booking += 1;
       ownerDashboard.total_amount += paid_amount;
 
@@ -553,7 +554,7 @@ export const updateBooking = async (req, res) => {
           // Save the new dashboard table to the database
           await newDashboardTable.save();
         }
-        const managerCheckInfo = await CheckInfo({
+        const managerCheckInfo = await CheckInfo.findOne({
           user_id: userId,
           date: formattedDate,
         });
@@ -570,7 +571,7 @@ export const updateBooking = async (req, res) => {
           });
           await newCheckInfo.save();
         }
-        const ownerCheckInfo = await CheckInfo({
+        const ownerCheckInfo = await CheckInfo.findOne({
           user_id: user.parent_id,
           date: formattedDate,
         });
@@ -636,7 +637,7 @@ export const updateBooking = async (req, res) => {
           ownerDashboardTable.total_booking -= 1;
           await ownerDashboardTable.save();
         }
-        const managerCheckInfo = await CheckInfo({
+        const managerCheckInfo = await CheckInfo.findOne({
           user_id: userId,
           date: formattedDate,
         });
@@ -653,7 +654,7 @@ export const updateBooking = async (req, res) => {
           });
           await newCheckInfo.save();
         }
-        const ownerCheckInfo = await CheckInfo({
+        const ownerCheckInfo = await CheckInfo.findOne({
           user_id: user.parent_id,
           date: formattedDate,
         });

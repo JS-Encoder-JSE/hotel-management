@@ -99,7 +99,6 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       enum: ["Active", "CheckedIn", "CheckedOut", "Canceled"],
       required: true,
-      default: "Active",
     },
     deleted: {
       type: Boolean,
