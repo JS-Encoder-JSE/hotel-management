@@ -25,6 +25,11 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
+    children: yup
+    .number()
+    .required("Children is required")
+    .positive("Children must be a positive number")
+    .integer("Children must be an integer"),
   // children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
   //   then: yup

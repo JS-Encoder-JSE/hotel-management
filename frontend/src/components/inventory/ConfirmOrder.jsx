@@ -18,7 +18,6 @@ import { resetInv } from "../../redux/inventory/inventorySlice.js";
 // form validation
 const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
-  chooseHotel: yup.string().required("Hotel is required"),
 });
 
 const ConfirmOrder = () => {
@@ -56,7 +55,6 @@ const ConfirmOrder = () => {
 
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const { isLoading, data: rooms } = useRoomsQuery({
-    id: formik.values.chooseHotel,
     cp: "0",
     filter: "",
     search: "",
@@ -134,6 +132,7 @@ const ConfirmOrder = () => {
                     <div className="mt-3">
                       <div className="flex">
                         <button
+                        type="submit"
                           onClick={() => formik.handleSubmit()}
                           className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                         >

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Hotel from "../models/hotel.model.js";
 import User from "../models/user.model.js";
+import { Dashboard, DashboardTable } from "../models/dashboard.model.js";
 
 // Controller to add a new hotel
 // export const addHotel = async (req, res) => {
@@ -117,7 +118,19 @@ export const addHotel = async (req, res) => {
     });
 
     // Save the user to the database
-    await newUser.save();
+    const savedNewUser=await newUser.save();
+    const newDashboard = new Dashboard({
+      user_id: savedNewUser._id,
+      user_role: "manager",
+    });
+    await newDashboard.save();
+    // Create a new dashboard table entry
+    const newDashboardTable = new DashboardTable({
+      user_id: savedNewUser._id,
+      user_role: "manager",
+    });
+    // Save the new dashboard table to the database
+    await newDashboardTable.save();
     // Update the owner's assignedHotel array
     owner.assignedHotel.push(savedHotel._id);
     await owner.save();

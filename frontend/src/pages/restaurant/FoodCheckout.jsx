@@ -43,12 +43,26 @@ const FoodCheckout = () => {
   };
 
   const handleCheckout = async () => {
+    const checkoutForTable = {
+      paid_amount: grandTotal,
+      items: orderData.data.items,
+      order_status: "CheckedOut",
+      current_order: false,
+      total_price: grandTotal,
+    };
+    const updateForRoom = {
+      paid_amount: 0,
+      unpaid_amount: grandTotal,
+      total_price: grandTotal,
+      items: orderData.data.items,
+      current_order: false,
+    };
     const response = await updateOrder({
-      data: {
-        paid_amount: grandTotal,
-        items: orderData.data.items,
-        order_status: "CheckedOut",
-      },
+      data: orderData?.data?.room_id
+        ? updateForRoom
+        : orderData?.data?.table_id
+        ? checkoutForTable
+        : null,
       id,
     });
     console.log("res", response);
@@ -72,7 +86,9 @@ const FoodCheckout = () => {
           <FaArrowLeft />
         </span>
       </div>
-      <h3 className="text-2xl font-semibold text-center">{path.includes('orderDetails')?'Order details':'Checkout'}</h3>
+      <h3 className="text-2xl font-semibold text-center">
+        {path.includes("orderDetails") ? "Order details" : "Checkout"}
+      </h3>
       <hr />
       <div>
         <div className={`flex items-center gap-3 `}>
@@ -171,7 +187,7 @@ const FoodCheckout = () => {
           onClick={handleCheckout}
           className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
         >
-          Checkout
+          {path.includes("orderDetails") ? "Update Order" : "Checkout"}
         </button>
       </div>
     </div>

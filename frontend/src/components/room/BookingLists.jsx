@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaDoorOpen, FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { MdOutlineCancel } from "react-icons/md";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Modal.jsx";
@@ -26,12 +27,12 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "Booking will be delete.",
+      text: "Booking will be Cancel.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#35bef0",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, Cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
@@ -92,8 +93,8 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                   <td>{item?.mobileNumber}</td>
                   <td>{item?.paid_amount}</td>
                   <td>{new Date(item?.createdAt).toLocaleString()}</td>
-                  <td>{new Date(item?.to).toLocaleString()}</td>
                   <td>{new Date(item?.from).toLocaleString()}</td>
+                  <td>{new Date(item?.to).toLocaleString()}</td>
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span
@@ -139,7 +140,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                       className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                       title={`Cancel`}
                     >
-                      <FaTrash />
+                     <MdOutlineCancel className="text-[17px]"  />
                     </button>
                   </td>
                 </tr>

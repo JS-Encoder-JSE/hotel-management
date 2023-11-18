@@ -41,6 +41,12 @@ const validationSchema = yup.object({
     .required("Price is required")
     .positive(" Price must be a positive number")
     .integer(" Price must be an integer"),
+    
+    paidamount: yup
+    .number()
+    .required("Paid Amount is required")
+    .positive(" Paid Amount must be a positive number")
+    .integer(" Paid Amount must be an integer"),
 });
 
 const PoolReservation = () => {

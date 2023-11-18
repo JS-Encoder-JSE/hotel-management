@@ -24,13 +24,25 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
-  // children: yup.number().when([], {
+  //   children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
-  //   then: yup
+  //   children: yup
   //     .number()
   //     .positive("Children must be a positive number")
   //     .integer("Children must be an integer"),
   // }),
+  children: yup
+  .number()
+  .required("Children is required")
+  .positive("Children must be a positive number")
+  .integer("Children must be an integer"),
+
+  amount: yup
+  .number()
+  .required("Amount is required")
+  .positive("Amount must be a positive number")
+  .integer("Amount must be an integer"),
+
   paymentMethod: yup.string().required("Payment method is required"),
   // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
   //   if (paymentMethod !== "cash")
