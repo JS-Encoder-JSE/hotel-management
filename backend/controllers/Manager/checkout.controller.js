@@ -19,17 +19,17 @@ export const getCheckoutInfoByRoom = async (req, res) => {
 
     // Get the current date in the required format
     const currentDate = new Date().toISOString();
-    // Get the date for the next day
-    const nextDay = new Date();
-    nextDay.setDate(nextDay.getDate() + 1);
-    const nextDayString = nextDay.toISOString();
+    // Get the date for the previous day
+    const previousDay = new Date();
+    previousDay.setDate(previousDay.getDate() - 1);
+    const previousDayString = previousDay.toISOString();
 
     // Find active bookings for the given room_id
     const activeBookings = await Booking.find({
       room_ids: room_id,
       status: "CheckedIn",
       from: { $lte: currentDate },
-      to: { $gte: nextDayString },
+      to: { $gte: previousDayString },
     }).populate({
       path: "room_ids",
       model: "Room",
