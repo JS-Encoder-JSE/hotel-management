@@ -503,13 +503,13 @@ export const updateBooking = async (req, res) => {
           user_id: userId,
         });
 
-        ownerDashboard.total_booking -= 1;
+        // ownerDashboard.total_booking -= 1;
         ownerDashboard.total_checkin += 1;
         ownerDashboard.total_amount += paid_amount;
 
         await ownerDashboard.save();
 
-        managerDashboard.total_booking -= 1;
+        // managerDashboard.total_booking -= 1;
         managerDashboard.total_checkin += 1;
         managerDashboard.total_amount += paid_amount;
 
@@ -522,7 +522,7 @@ export const updateBooking = async (req, res) => {
         });
 
         if (managerDashboardTable) {
-          managerDashboardTable.total_booking -= 1;
+          // managerDashboardTable.total_booking -= 1;
           managerDashboardTable.total_checkin += 1;
           await managerDashboardTable.save();
         } else {
@@ -542,7 +542,7 @@ export const updateBooking = async (req, res) => {
         });
 
         if (ownerDashboardTable) {
-          ownerDashboardTable.total_booking -= 1;
+          // ownerDashboardTable.total_booking -= 1;
           ownerDashboardTable.total_checkin += 1;
           await ownerDashboardTable.save();
         } else {
@@ -589,14 +589,10 @@ export const updateBooking = async (req, res) => {
           await newCheckInfo.save();
         }
       }
-      if (
-        updateData.status === "CheckedOut" ||
-        updateData.status === "Canceled"
-      ) {
-        const roomStatus = "Available";
+      if (updateData.status === "Canceled") {
         await Room.updateMany(
           { _id: { $in: roomIds } },
-          { $set: { status: roomStatus } }
+          { $set: { status: "Available" } }
         );
         const ownerDashboard = await Dashboard.findOne({
           user_id: user.parent_id,
@@ -605,13 +601,13 @@ export const updateBooking = async (req, res) => {
           user_id: userId,
         });
 
-        ownerDashboard.total_booking -= 1;
+        // ownerDashboard.total_booking -= 1;
         ownerDashboard.total_canceled += 1;
         ownerDashboard.total_amount -= updatedBooking.paid_amount;
 
         await ownerDashboard.save();
 
-        managerDashboard.total_booking -= 1;
+        // managerDashboard.total_booking -= 1;
         managerDashboard.total_canceled += 1;
         managerDashboard.total_amount -= updatedBooking.paid_amount;
 
@@ -671,11 +667,6 @@ export const updateBooking = async (req, res) => {
           });
           await newCheckInfo.save();
         }
-      }
-
-      // Additional logic for "CheckedOut" status
-      if (updateData.status === "CheckedOut") {
-        await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
       }
     }
 
