@@ -121,7 +121,7 @@ const HotelEdit = () => {
       setSave(false);
     }
   }, [save]);
-
+console.log(hotel);
   useEffect(() => {
     if (hotel) {
       formik.setValues({
@@ -258,13 +258,20 @@ const HotelEdit = () => {
                   ) : null}
                 </div>
                 <button
+                    type="button"
+                    className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                  >
+                    <span>Change Password</span>
+                    
+                  </button>
+                {/* <button
                   type="button"
                   className="btn btn-md bg-transparent border-gray-500/50 rounded focus:outline-none focus:border-green-slimy normal-case"
                   onClick={() => window.ol_modal.showModal()}
                 >
                   Assign Manager
-                </button>
-                {showManagers.length ? (
+                </button> */}
+                {/* {showManagers.length ? (
                   <div className={`col-span-full`}>
                     <h3>Assigned Manager</h3>
                     <ul className={`list-disc list-inside`}>
@@ -275,7 +282,7 @@ const HotelEdit = () => {
                       ))}
                     </ul>
                   </div>
-                ) : null}
+                ) : null} */}
                 {/* submit button */}
                 <div className="flex flex-col gap-3 col-span-full text-end">
                   <button
