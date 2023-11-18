@@ -582,8 +582,8 @@ export const updateBooking = async (req, res) => {
           await ownerCheckInfo.save();
         } else {
           const newCheckInfo = new CheckInfo({
-            user_id: userId,
-            user_role: user.role,
+            user_id: user.parent_id,
+            user_role: "owner",
             today_checkin: 1,
           });
           await newCheckInfo.save();
@@ -661,8 +661,8 @@ export const updateBooking = async (req, res) => {
           await ownerCheckInfo.save();
         } else {
           const newCheckInfo = new CheckInfo({
-            user_id: userId,
-            user_role: user.role,
+            user_id: user.parent_id,
+            user_role: "owner",
             today_canceled_bookings: 1,
           });
           await newCheckInfo.save();
