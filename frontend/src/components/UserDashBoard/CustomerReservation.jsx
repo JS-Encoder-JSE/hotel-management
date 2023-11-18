@@ -74,7 +74,6 @@ const CustomerReservation = ({ userHotel, monthlyData }) => {
     },
   });
 
-  console.log("chartProps", chartProps);
 
   useEffect(() => {
     const sortedData = monthlyData.sort((a, b) => {
@@ -83,7 +82,6 @@ const CustomerReservation = ({ userHotel, monthlyData }) => {
       return aDate - bDate;
     });
     const last12Data = sortedData.slice(-12);
-    console.log("last 12 data", last12Data);
     const convertedDate = [
       ...new Set(
         last12Data.map((data) => {
@@ -101,7 +99,6 @@ const CustomerReservation = ({ userHotel, monthlyData }) => {
     // Extracting data for "Checkin Confirmed" and "Booking"
     const checkinData = last12Data.map((data) => data.total_checkin);
     const bookingData = last12Data.map((data) => data.total_booking);
-    console.log("sorted", sortedData);
     // Update state
     setChartProps((prevProps) => ({
       ...prevProps,

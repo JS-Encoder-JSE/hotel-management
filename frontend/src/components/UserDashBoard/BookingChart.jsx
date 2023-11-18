@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const BookingChart = ({ userManager }) => {
+const BookingChart = ({ userManager, chartData }) => {
   const [chartProps, setChartProps] = useState({
-    series: [44, 55, 41, 0],
+    series: [
+      chartData?.total_checkin,
+      chartData?.total_checkout,
+      chartData?.total_booking,
+    ],
     options: {
       chart: {
         type: "donut",
@@ -13,7 +17,7 @@ const BookingChart = ({ userManager }) => {
         align: "left",
       },
       labels: userManager
-        ? ["Check in", "Checkout", "Booking", "Canceled"]
+        ? ["Check in", "Checkout", "Booking"]
         : ["Renew", "Expired", "Active", "Suspended"],
       responsive: [
         {
