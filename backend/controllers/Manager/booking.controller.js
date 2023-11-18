@@ -146,12 +146,6 @@ export const addBooking = async (req, res) => {
       doc_images,
     });
 
-    // Update the status of booked rooms based on booking status
-    const roomStatus = status === "CheckedIn" ? "CheckedIn" : "Booked";
-    await Room.updateMany(
-      { _id: { $in: room_ids } },
-      { $set: { status: roomStatus } }
-    );
     if (status === "CheckedIn") {
       console.log("aise");
       console.log(user.parent_id);
@@ -343,6 +337,12 @@ export const addBooking = async (req, res) => {
       }
     }
     const savedBooking = await newBooking.save();
+    // Update the status of booked rooms based on booking status
+    const roomStatus = status === "CheckedIn" ? "CheckedIn" : "Booked";
+    await Room.updateMany(
+      { _id: { $in: room_ids } },
+      { $set: { status: roomStatus } }
+    );
     res.status(201).json({
       success: true,
       data: savedBooking,
@@ -505,13 +505,13 @@ export const updateBooking = async (req, res) => {
 
         // ownerDashboard.total_booking -= 1;
         ownerDashboard.total_checkin += 1;
-        ownerDashboard.total_amount += paid_amount;
+        ownerDashboard.total_amount += updateData.paid_amount;
 
         await ownerDashboard.save();
 
         // managerDashboard.total_booking -= 1;
         managerDashboard.total_checkin += 1;
-        managerDashboard.total_amount += paid_amount;
+        managerDashboard.total_amount += updateData.paid_amount;
 
         await managerDashboard.save();
 
@@ -676,9 +676,11 @@ export const updateBooking = async (req, res) => {
       message: "Booking updated successfully",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
