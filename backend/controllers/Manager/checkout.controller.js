@@ -211,7 +211,7 @@ export const checkedOut = async (req, res) => {
       // Save the new dashboard table to the database
       await newDashboardTable.save();
     }
-    const managerCheckInfo = await CheckInfo({
+    const managerCheckInfo = await CheckInfo.findOne({
       user_id: userId,
       date: formattedDate,
     });
@@ -227,7 +227,7 @@ export const checkedOut = async (req, res) => {
       });
       await newCheckInfo.save();
     }
-    const ownerCheckInfo = await CheckInfo({
+    const ownerCheckInfo = await CheckInfo.findOne({
       user_id: user.parent_id,
       date: formattedDate,
     });
