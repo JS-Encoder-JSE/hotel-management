@@ -19,13 +19,17 @@ export const getCheckoutInfoByRoom = async (req, res) => {
 
     // Get the current date in the required format
     const currentDate = new Date().toISOString();
+    // Get the date for the previous day
+    const previousDay = new Date();
+    previousDay.setDate(previousDay.getDate() - 1);
+    const previousDayString = previousDay.toISOString();
 
     // Find active bookings for the given room_id
     const activeBookings = await Booking.find({
       room_ids: room_id,
       status: "CheckedIn",
       from: { $lte: currentDate },
-      to: { $gte: currentDate },
+      to: { $gte: previousDayString },
     }).populate({
       path: "room_ids",
       model: "Room",
@@ -211,7 +215,7 @@ export const checkedOut = async (req, res) => {
       // Save the new dashboard table to the database
       await newDashboardTable.save();
     }
-    const managerCheckInfo = await CheckInfo({
+    const managerCheckInfo = await CheckInfo.findOne({
       user_id: userId,
       date: formattedDate,
     });
@@ -227,7 +231,7 @@ export const checkedOut = async (req, res) => {
       });
       await newCheckInfo.save();
     }
-    const ownerCheckInfo = await CheckInfo({
+    const ownerCheckInfo = await CheckInfo.findOne({
       user_id: user.parent_id,
       date: formattedDate,
     });

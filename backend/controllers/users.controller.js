@@ -78,19 +78,21 @@ export const addUser = async (req, res) => {
     });
 
     // Save the user to the database
-    await newUser.save();
-    const newDashboard = new Dashboard({
-      user_id: newUser._id,
-      user_role: role,
-    });
-    await newDashboard.save();
-    // Create a new dashboard table entry
-    const newDashboardTable = new DashboardTable({
-      user_id: newUser._id,
-      user_role: role,
-    });
-    // Save the new dashboard table to the database
-    await newDashboardTable.save();
+    const savedNewUser = await newUser.save();
+    if (role === "employee") {
+      const newDashboard = new Dashboard({
+        user_id: savedNewUser._id,
+        user_role: role,
+      });
+      await newDashboard.save();
+      // Create a new dashboard table entry
+      const newDashboardTable = new DashboardTable({
+        user_id: savedNewUser._id,
+        user_role: role,
+      });
+      // Save the new dashboard table to the database
+      await newDashboardTable.save();
+    }
 
     // Respond with a success message or the created user object
     res
@@ -232,8 +234,8 @@ export const addLicense = async (req, res) => {
     function generateLicenseKey() {
       const randomBytes = crypto.randomBytes(15); // Adjust the number of bytes for your desired length (20 characters -> 15 bytes)
       const licenseKey = randomBytes
-        .toString('base64')
-        .replace(/[^a-zA-Z0-9]/g, '')
+        .toString("base64")
+        .replace(/[^a-zA-Z0-9]/g, "")
         .slice(0, 20); // Adjust the slice length to 20
       return licenseKey;
     }
@@ -944,6 +946,20 @@ export const renewLicense = async (req, res) => {
         .status(403)
         .json({ message: "You have no permission to renew a license" });
     }
+    const user = await User.findById(user_id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (!user.role === "owner") {
+      return res.status(403).json({ message: "This user isn't a owner" });
+    }
+
+    if (!["Expired", "Suspended"].includes(user.status)) {
+      return res
+        .status(400)
+        .json({ message: "This license is not Expired or Suspended" });
+    }
     if (parent.role === "admin") {
       const adminDashboard = await Dashboard.findOne({ user_id: loginUserId });
 
@@ -1026,20 +1042,6 @@ export const renewLicense = async (req, res) => {
         // Save the new dashboard table to the database
         await newDashboardTable.save();
       }
-    }
-    const user = await User.findById(user_id);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    if (!user.role === "owner") {
-      return res.status(403).json({ message: "This user isn't a owner" });
-    }
-
-    if (!["Expired", "Suspended"].includes(user.status)) {
-      return res
-        .status(400)
-        .json({ message: "This license is not Expired or Suspended" });
     }
 
     // Create a new StatusLog instance

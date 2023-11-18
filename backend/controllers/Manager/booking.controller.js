@@ -146,19 +146,13 @@ export const addBooking = async (req, res) => {
       doc_images,
     });
 
-    const savedBooking = await newBooking.save();
-
-    // Update the status of booked rooms based on booking status
-    const roomStatus = status === "CheckedIn" ? "CheckedIn" : "Booked";
-    await Room.updateMany(
-      { _id: { $in: room_ids } },
-      { $set: { status: roomStatus } }
-    );
     if (status === "CheckedIn") {
+      console.log("aise");
+      console.log(user.parent_id);
       const ownerDashboard = await Dashboard.findOne({
         user_id: user.parent_id,
       });
-
+      console.log(ownerDashboard);
       ownerDashboard.total_checkin += 1;
       ownerDashboard.total_amount += paid_amount;
 
@@ -166,7 +160,7 @@ export const addBooking = async (req, res) => {
       const managerDashboard = await Dashboard.findOne({
         user_id: userId,
       });
-
+      console.log(managerDashboard);
       managerDashboard.total_checkin += 1;
       managerDashboard.total_amount += paid_amount;
 
@@ -197,6 +191,7 @@ export const addBooking = async (req, res) => {
         month_name: month_name,
         year: year,
       });
+      console.log(ownerDashboardTable);
 
       if (ownerDashboardTable) {
         ownerDashboardTable.total_checkin += 1;
@@ -210,11 +205,12 @@ export const addBooking = async (req, res) => {
         // Save the new dashboard table to the database
         await newDashboardTable.save();
       }
-      const managerCheckInfo = await CheckInfo({
+      const managerCheckInfo = await CheckInfo.findOne({
         user_id: userId,
         date: formattedDate,
       });
-
+      console.log(managerCheckInfo);
+      console.log(user.role);
       if (managerCheckInfo) {
         managerCheckInfo.today_checkin += 1;
         await managerCheckInfo.save();
@@ -224,9 +220,11 @@ export const addBooking = async (req, res) => {
           user_role: user.role,
           today_checkin: 1,
         });
+        console.log(1);
         await newCheckInfo.save();
       }
-      const ownerCheckInfo = await CheckInfo({
+      console.log(2);
+      const ownerCheckInfo = await CheckInfo.findOne({
         user_id: user.parent_id,
         date: formattedDate,
       });
@@ -236,12 +234,13 @@ export const addBooking = async (req, res) => {
         await ownerCheckInfo.save();
       } else {
         const newCheckInfo = new CheckInfo({
-          user_id: userId,
-          user_role: user.role,
+          user_id: user.parent_id,
+          user_role: "owner",
           today_checkin: 1,
         });
         await newCheckInfo.save();
       }
+      console.log("finished");
     }
     if (status === "Active") {
       const ownerDashboard = await Dashboard.findOne({
@@ -250,7 +249,8 @@ export const addBooking = async (req, res) => {
       const managerDashboard = await Dashboard.findOne({
         user_id: userId,
       });
-
+      console.log(ownerDashboard);
+      console.log(managerDashboard);
       ownerDashboard.total_booking += 1;
       ownerDashboard.total_amount += paid_amount;
 
@@ -298,15 +298,18 @@ export const addBooking = async (req, res) => {
         // Save the new dashboard table to the database
         await newDashboardTable.save();
       }
-      const managerCheckInfo = await CheckInfo({
+      const managerCheckInfo = await CheckInfo.findOne({
         user_id: userId,
         date: formattedDate,
       });
-
+      console.log(managerCheckInfo);
+      console.log(user.role);
       if (managerCheckInfo) {
+        console.log(1);
         managerCheckInfo.today_booking += 1;
         await managerCheckInfo.save();
       } else {
+        console.log(2);
         const newCheckInfo = new CheckInfo({
           user_id: userId,
           user_role: user.role,
@@ -314,23 +317,32 @@ export const addBooking = async (req, res) => {
         });
         await newCheckInfo.save();
       }
-      const ownerCheckInfo = await CheckInfo({
+      console.log("aise");
+      const ownerCheckInfo = await CheckInfo.findOne({
         user_id: user.parent_id,
         date: formattedDate,
       });
+      console.log(ownerCheckInfo);
 
       if (ownerCheckInfo) {
         ownerCheckInfo.today_booking += 1;
         await ownerCheckInfo.save();
       } else {
         const newCheckInfo = new CheckInfo({
-          user_id: userId,
-          user_role: user.role,
+          user_id: user.parent_id,
+          user_role: "owner",
           today_booking: 1,
         });
         await newCheckInfo.save();
       }
     }
+    const savedBooking = await newBooking.save();
+    // Update the status of booked rooms based on booking status
+    const roomStatus = status === "CheckedIn" ? "CheckedIn" : "Booked";
+    await Room.updateMany(
+      { _id: { $in: room_ids } },
+      { $set: { status: roomStatus } }
+    );
     res.status(201).json({
       success: true,
       data: savedBooking,
@@ -491,15 +503,15 @@ export const updateBooking = async (req, res) => {
           user_id: userId,
         });
 
-        ownerDashboard.total_booking -= 1;
+        // ownerDashboard.total_booking -= 1;
         ownerDashboard.total_checkin += 1;
-        ownerDashboard.total_amount += paid_amount;
+        ownerDashboard.total_amount += updateData.paid_amount;
 
         await ownerDashboard.save();
 
-        managerDashboard.total_booking -= 1;
+        // managerDashboard.total_booking -= 1;
         managerDashboard.total_checkin += 1;
-        managerDashboard.total_amount += paid_amount;
+        managerDashboard.total_amount += updateData.paid_amount;
 
         await managerDashboard.save();
 
@@ -510,7 +522,7 @@ export const updateBooking = async (req, res) => {
         });
 
         if (managerDashboardTable) {
-          managerDashboardTable.total_booking -= 1;
+          // managerDashboardTable.total_booking -= 1;
           managerDashboardTable.total_checkin += 1;
           await managerDashboardTable.save();
         } else {
@@ -530,7 +542,7 @@ export const updateBooking = async (req, res) => {
         });
 
         if (ownerDashboardTable) {
-          ownerDashboardTable.total_booking -= 1;
+          // ownerDashboardTable.total_booking -= 1;
           ownerDashboardTable.total_checkin += 1;
           await ownerDashboardTable.save();
         } else {
@@ -542,7 +554,7 @@ export const updateBooking = async (req, res) => {
           // Save the new dashboard table to the database
           await newDashboardTable.save();
         }
-        const managerCheckInfo = await CheckInfo({
+        const managerCheckInfo = await CheckInfo.findOne({
           user_id: userId,
           date: formattedDate,
         });
@@ -559,7 +571,7 @@ export const updateBooking = async (req, res) => {
           });
           await newCheckInfo.save();
         }
-        const ownerCheckInfo = await CheckInfo({
+        const ownerCheckInfo = await CheckInfo.findOne({
           user_id: user.parent_id,
           date: formattedDate,
         });
@@ -570,21 +582,17 @@ export const updateBooking = async (req, res) => {
           await ownerCheckInfo.save();
         } else {
           const newCheckInfo = new CheckInfo({
-            user_id: userId,
-            user_role: user.role,
+            user_id: user.parent_id,
+            user_role: "owner",
             today_checkin: 1,
           });
           await newCheckInfo.save();
         }
       }
-      if (
-        updateData.status === "CheckedOut" ||
-        updateData.status === "Canceled"
-      ) {
-        const roomStatus = "Available";
+      if (updateData.status === "Canceled") {
         await Room.updateMany(
           { _id: { $in: roomIds } },
-          { $set: { status: roomStatus } }
+          { $set: { status: "Available" } }
         );
         const ownerDashboard = await Dashboard.findOne({
           user_id: user.parent_id,
@@ -593,13 +601,13 @@ export const updateBooking = async (req, res) => {
           user_id: userId,
         });
 
-        ownerDashboard.total_booking -= 1;
+        // ownerDashboard.total_booking -= 1;
         ownerDashboard.total_canceled += 1;
         ownerDashboard.total_amount -= updatedBooking.paid_amount;
 
         await ownerDashboard.save();
 
-        managerDashboard.total_booking -= 1;
+        // managerDashboard.total_booking -= 1;
         managerDashboard.total_canceled += 1;
         managerDashboard.total_amount -= updatedBooking.paid_amount;
 
@@ -625,7 +633,7 @@ export const updateBooking = async (req, res) => {
           ownerDashboardTable.total_booking -= 1;
           await ownerDashboardTable.save();
         }
-        const managerCheckInfo = await CheckInfo({
+        const managerCheckInfo = await CheckInfo.findOne({
           user_id: userId,
           date: formattedDate,
         });
@@ -642,7 +650,7 @@ export const updateBooking = async (req, res) => {
           });
           await newCheckInfo.save();
         }
-        const ownerCheckInfo = await CheckInfo({
+        const ownerCheckInfo = await CheckInfo.findOne({
           user_id: user.parent_id,
           date: formattedDate,
         });
@@ -653,17 +661,12 @@ export const updateBooking = async (req, res) => {
           await ownerCheckInfo.save();
         } else {
           const newCheckInfo = new CheckInfo({
-            user_id: userId,
-            user_role: user.role,
+            user_id: user.parent_id,
+            user_role: "owner",
             today_canceled_bookings: 1,
           });
           await newCheckInfo.save();
         }
-      }
-
-      // Additional logic for "CheckedOut" status
-      if (updateData.status === "CheckedOut") {
-        await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
       }
     }
 
@@ -673,9 +676,11 @@ export const updateBooking = async (req, res) => {
       message: "Booking updated successfully",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
+      error: error.message,
     });
   }
 };

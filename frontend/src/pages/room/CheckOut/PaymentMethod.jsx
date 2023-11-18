@@ -2,7 +2,7 @@ import React from "react";
 import { MdOutlineClear } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import DatePicker from "react-datepicker";
-
+// const [discount, setDiscount] = useState(false);
 
 const PaymentMethod = ({
   paymentList,
@@ -37,9 +37,11 @@ const PaymentMethod = ({
                   value={elem.amount}
                   placeholder="Amount"
                   name="amount"
-                  className={`input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 ${
-                    !elem?.method ? "btn-disabled" : ""
-                  }`}
+                  className={`input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 
+                  ${
+                    !elem?.method ? "btn-disabled":"" 
+                  }
+                  `}
                   onChange={(e) => (handleChange)(e, idx)}
                   
                 />

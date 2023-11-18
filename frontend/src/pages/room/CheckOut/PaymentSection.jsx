@@ -16,6 +16,7 @@ const PaymentSection = ({ pBill, formik, paymentList, setPaymentList }) => {
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
 
+
   const handleChange = (e, index) => {
     const { name, value } = e.target;
 
