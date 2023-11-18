@@ -179,28 +179,20 @@ const dummyData = [
   },
 ];
 const UserDashBoard = () => {
-  const [dailyData, setDailyData] = useState({});
-  const [permanentData, setPermanentData] = useState({});
-  const [monthlyData, setMonthlyData] = useState([]);
   const { user } = useSelector((store) => store.authSlice);
   const {
     data: dashboardData,
     isSuccess,
     isLoading,
+    isError,
   } = useGetDashboardInfoQuery();
 
   console.log(dashboardData);
   const [userHotel, setUserHotel] = useState(
     user.role === "manager" || user.role === "owner"
   );
-  useEffect(() => {
-    if (isSuccess) {
-      setDailyData(dashboardData.daily_datas[0]);
-      setPermanentData(dashboardData.permanent_datas);
-      setMonthlyData(dashboardData.monthly_datas);
-    }
-  }, []);
-  if (isLoading && !isSuccess) {
+  useEffect(() => {}, []);
+  if (isLoading || isError) {
     return (
       <Rings
         width="50"
@@ -224,7 +216,11 @@ const UserDashBoard = () => {
               {userHotel ? "TODAY CHECK IN" : "TOTAL SELL"}
             </h6>
             <p className="text-2xl font-semibold mt-3">
-              {Math.floor(dashboardData?.daily_datas[0]?.today_checkin)}
+              {Math.floor(
+                userHotel
+                  ? dashboardData?.daily_datas[0]?.today_checkin
+                  : dashboardData?.permanent_datas?.total_sell_lic
+              )}
               {}
             </p>
             <hr />
@@ -260,25 +256,16 @@ const UserDashBoard = () => {
             </p>
             <hr />
           </div>
-          {user.role === "admin" ? (
+          {user.role === "admin" || user.role === "subadmin" ? (
             <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
                 <FaUsers />
               </div>
               <div>
                 <h6 className="text-xs text-slate-400">TOTAL CUSTOMER</h6>
-                <p className="text-2xl font-semibold mt-4">2.1k</p>
-                <hr />
-              </div>
-            </div>
-          ) : user.role === "subadmin" ? (
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-              <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
-                <FaUsers />
-              </div>
-              <div>
-                <h6 className="text-xs text-slate-400">TOTAL CUSTOMER</h6>
-                <p className="text-2xl font-semibold mt-4">2.1k</p>
+                <p className="text-2xl font-semibold mt-4">
+                  {dashboardData?.permanent_datas?.total_customer}
+                </p>
                 <hr />
               </div>
             </div>
@@ -293,7 +280,11 @@ const UserDashBoard = () => {
               TOTAL {userHotel ? "CHECK IN" : "RENEW"}
             </h6>
             <p className="text-2xl font-semibold mt-4">
-              {Math.floor(dashboardData?.permanent_datas?.total_checkin)}
+              {Math.floor(
+                userHotel
+                  ? dashboardData?.permanent_datas?.total_checkin
+                  : dashboardData?.permanent_datas?.total_renew_lic
+              )}
             </p>
             <hr />
             {user.role === "manager" ? (
@@ -337,10 +328,16 @@ const UserDashBoard = () => {
 
         <section className="mt-8 grid md:grid-cols-2 gap-5">
           <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-            <BookingChart chartData={dashboardData?.permanent_datas} userManager={userHotel} />
+            <BookingChart
+              chartData={dashboardData?.permanent_datas}
+              userManager={userHotel}
+            />
           </div>
           <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-            <ReservationChart userManager={userHotel} monthlyData={[...dashboardData?.monthly_datas, ...dummyData]} />
+            <ReservationChart
+              userManager={userHotel}
+              monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
+            />
           </div>
         </section>
 

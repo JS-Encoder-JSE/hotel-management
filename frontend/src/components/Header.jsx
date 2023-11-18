@@ -94,9 +94,9 @@ const Header = ({
                 tabIndex={0}
                 className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
               >
-                <li>
+                {!user.role==='manager'?<li>
                   <Link to="profile">Profile</Link>
-                </li>
+                </li>:<></>}
                 <li onClick={() => dispatch(signOut())}>
                   <Link to={`/`}>Logout</Link>
                 </li>

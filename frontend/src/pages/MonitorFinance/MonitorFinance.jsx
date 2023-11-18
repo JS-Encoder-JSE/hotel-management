@@ -2,9 +2,16 @@ import React, { useState } from "react";
 import Select from "react-select";
 import { useRoomsQuery } from "../../redux/room/roomAPI.js";
 import UserDashBoard from "../../components/UserDashBoard/UserDashBoard";
+import { useSelector } from "react-redux";
+import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 
 const MonitorFinance = () => {
-  const { isLoading, data: rooms } = useRoomsQuery();
+  const { user } = useSelector((store) => store.authSlice);
+  const { isLoading: loding, data: hotels } = useHotelsQuery({
+    uid: user._id,
+    pid: "",
+    filter: "Active",
+  });
   const [selectedRooms, setSelectedRooms] = useState([]);
 
   const handleKeyDown = (e) => {
@@ -12,10 +19,9 @@ const MonitorFinance = () => {
       e.preventDefault();
     }
   };
-
-  const transformedRooms = rooms?.data?.map((room) => ({
-    value: room.roomNumber,
-    label: `${room.roomNumber} - ${room.category}`,
+  const transformedHotel = hotels?.docs?.map((hotel) => ({
+    value: hotel.roomNumber,
+    label: `${hotel.name} - ${hotel.branch_name}`,
   }));
 
   return (
@@ -27,13 +33,13 @@ const MonitorFinance = () => {
           <Select
             placeholder="Search with hotel name"
             defaultValue={selectedRooms}
-            options={transformedRooms}
+            options={transformedHotel}
             isMulti
             isSearchable
             closeMenuOnSelect={false}
             onKeyDown={handleKeyDown}
             onChange={setSelectedRooms}
-            noOptionsMessage={() => "No room available"}
+            noOptionsMessage={() => "No Hotel available"}
             classNames={{
               control: (state) =>
                 `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${

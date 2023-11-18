@@ -4,9 +4,9 @@ import ReactApexChart from "react-apexcharts";
 const BookingChart = ({ userManager, chartData }) => {
   const [chartProps, setChartProps] = useState({
     series: [
-      chartData?.total_checkin,
-      chartData?.total_checkout,
-      chartData?.total_booking,
+      userManager ? chartData?.total_checkin : chartData?.total_renew_lic,
+      userManager ? chartData?.total_checkout : chartData?.total_expired_lic,
+      userManager ? chartData?.total_booking : chartData?.total_suspended_lic,
     ],
     options: {
       chart: {
@@ -18,7 +18,7 @@ const BookingChart = ({ userManager, chartData }) => {
       },
       labels: userManager
         ? ["Check in", "Checkout", "Booking"]
-        : ["Renew", "Expired", "Active", "Suspended"],
+        : ["Renew", "Expired", "Suspended"],
       responsive: [
         {
           breakpoint: 480,

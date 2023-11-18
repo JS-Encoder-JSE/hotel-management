@@ -74,7 +74,6 @@ const CustomerReservation = ({ userHotel, monthlyData }) => {
     },
   });
 
-
   useEffect(() => {
     const sortedData = monthlyData.sort((a, b) => {
       const aDate = new Date(`${a.year}-${a.month_name}`);
@@ -99,40 +98,24 @@ const CustomerReservation = ({ userHotel, monthlyData }) => {
     // Extracting data for "Checkin Confirmed" and "Booking"
     const checkinData = last12Data.map((data) => data.total_checkin);
     const bookingData = last12Data.map((data) => data.total_booking);
+    const expiredData = last12Data.map((data) => data.total_expired);
+    const renewData = last12Data.map((data) => data.total_renew);
     // Update state
     setChartProps((prevProps) => ({
       ...prevProps,
       series: [
         {
           ...prevProps.series[0],
-          data: [
-            // 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            ...checkinData,
-          ],
+          data: userHotel ? checkinData : expiredData,
         },
         {
           ...prevProps.series[1],
-          data: [
-            // 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            ...bookingData,
-          ],
+          data: userHotel ? bookingData : renewData,
         },
       ],
       options: {
         ...prevProps.options,
-        labels: [
-          // "01/01/2023",
-          // "02/01/2023",
-          // "03/01/2023",
-          // "04/01/2023",
-          // "05/01/2023",
-          // "06/01/2023",
-          // "07/01/2023",
-          // "08/01/2023",
-          // "09/01/2023",
-          // "10/01/2023",
-          ...convertedDate,
-        ],
+        labels: convertedDate,
       },
     }));
   }, [monthlyData]);

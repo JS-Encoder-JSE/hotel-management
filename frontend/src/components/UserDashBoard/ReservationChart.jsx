@@ -6,7 +6,7 @@ const ReservationChart = ({ userManager, monthlyData }) => {
     series: [
       {
         name: "Check in",
-        data: [10, 41, 35, 71, 49, 39, 53, 33, 23],
+        data: [],
         color: "#359b00",
       },
     ],
@@ -49,6 +49,7 @@ const ReservationChart = ({ userManager, monthlyData }) => {
       data.month_name.substring(0, 3)
     );
     const checkInData = last12Data?.map((data) => data.total_checkin);
+    const salesData = last12Data?.map((data) => data.total_sale);
     setChartProps((prev) => ({
       ...prev,
       options: {
@@ -61,7 +62,7 @@ const ReservationChart = ({ userManager, monthlyData }) => {
       series: [
         {
           ...prev.series[0],
-          data: checkInData,
+          data: userManager ? checkInData : salesData,
         },
       ],
     }));
