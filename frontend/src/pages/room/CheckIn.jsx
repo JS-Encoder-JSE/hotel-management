@@ -20,6 +20,9 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 
+
+
+
 // form validation
 const validationSchema = yup.object({
   room_arr: yup.array().required("Room IDs are required"),
@@ -48,7 +51,7 @@ const validationSchema = yup.object({
   // }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  amount: yup.string().required("Advance amount is required"),
+  amount: yup.number(),
   nationality: yup.string().required("Nationality is required"),
   documentsType: yup.string().required("Documents type is required"),
   doc_number: yup.string().required("Document number is required"),
@@ -60,6 +63,23 @@ const CheckIn = () => {
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [addBooking] = useAddBookingMutation();
+
+  // handleAmount
+  const handleAmount = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.amount;
+  console.log(fieldName)
+    
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    }
+    else if(inputValue === ""){
+      e.target.value=0
+      formik.handleChange(e)
+    }
+    }
+
   const formik = useFormik({
     initialValues: {
       room_arr: [],
@@ -148,7 +168,7 @@ const CheckIn = () => {
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: obj.amount,
+        paid_amount: obj.amount.length? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
         doc_number: obj.doc_number,
@@ -463,7 +483,7 @@ const CheckIn = () => {
             name="amount"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
             value={formik.values.amount}
-            onChange={formik.handleChange}
+           onChange={handleAmount}
             onBlur={formik.handleBlur}
           />
           {formik.touched.amount && Boolean(formik.errors.amount) ? (

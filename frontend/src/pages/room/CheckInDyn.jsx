@@ -27,6 +27,7 @@ const validationSchema = yup.object({
   documentsType: yup.string().required("Documents type is required"),
   doc_number: yup.string().required("Document number is required"),
   documents: yup.string().required("Documents is required"),
+  amount:yup.number()
 });
 
 const CheckInDyn = ({ data }) => {
@@ -35,6 +36,23 @@ const CheckInDyn = ({ data }) => {
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [updateBooking] = useUpdateBookingMutation();
+
+// handle advanceAmoun
+  const handleAmount = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.amount;
+  console.log(fieldName)
+    
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    }
+    else if(inputValue === ""){
+      e.target.value=0
+      formik.handleChange(e)
+    }
+    }
+
   const formik = useFormik({
     initialValues: {
       amount: "",
@@ -79,7 +97,7 @@ const CheckInDyn = ({ data }) => {
       const response = await updateBooking({
         id: data._id,
         data: {
-          paid_amount: obj.amount
+          paid_amount: obj.amount.length? obj.amount : 0
             ? data.paid_amount + obj.amount
             : data.paid_amount,
           doc_number: obj.doc_number,
@@ -222,7 +240,7 @@ const CheckInDyn = ({ data }) => {
               name="amount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.amount}
-              onChange={formik.handleChange}
+              onChange={handleAmount}
               onBlur={formik.handleBlur}
             />
           </div>

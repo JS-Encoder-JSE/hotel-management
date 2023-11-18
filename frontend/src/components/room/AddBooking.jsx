@@ -39,12 +39,34 @@ const validationSchema = yup.object({
   // }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  amount: yup.string().required("Advance amount is required"),
+  amount: yup.number(),
   nationality: yup.string().required("Nationality is required"),
   bookingMethod: yup.string().required("Booking method is required"),
 });
 
 const AddBooking = () => {
+
+
+  const handleAmount = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.amount;
+  console.log(fieldName)
+    
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    }
+    else if(inputValue === ""){
+      e.target.value=0
+      formik.handleChange(e)
+    }
+  //  else {
+  //     // Set inputValue to 0 and update the Formik state
+  //     e.target.value = 0;
+  //     formik.handleChange(e);
+  // }
+  };
+  
   // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
@@ -62,10 +84,11 @@ const AddBooking = () => {
       trxID: "",
       from: "",
       to: "",
-      amount: "",
+      amount:"",
       discount: "",
       nationality: "",
       bookingMethod: "",
+      status:"Active"
     },
 
     validationSchema,
@@ -86,8 +109,36 @@ const AddBooking = () => {
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
+      console.log(typeof(obj.amount))
 
-      const response = await addBooking({
+      console.log(
+        {
+            hotel_id: obj.hotel_id,
+            room_ids,
+            bookingMethod:obj.bookingMethod,
+            guestName: obj.guestName,
+            address: obj.address,
+            mobileNumber: obj.mobileNumber,
+            emergency_contact: obj.emergency_contact,
+            adult: obj.adult,
+            children: obj.children,
+            paymentMethod: obj.paymentMethod,
+            transection_id: obj.trxID,
+            from: obj.from,
+            to: obj.to,
+            no_of_days,
+            rent_per_day,
+            total_rent,
+            discount,
+            amount_after_dis,
+            paid_amount: obj.amount.length? obj.amount : 0,
+            total_unpaid_amount: amount_after_dis - obj.amount,
+            nationality: obj.nationality,
+            status:"Active"
+          }
+      );
+
+       const response = await addBooking({
         hotel_id: obj.hotel_id,
         room_ids,
         bookingMethod:obj.bookingMethod,
@@ -106,9 +157,10 @@ const AddBooking = () => {
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: obj.amount,
+        paid_amount: obj.amount.length? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
+        status:"Active"
       });
 
       console.log(response);
@@ -349,7 +401,7 @@ const AddBooking = () => {
               name="amount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.amount}
-              onChange={formik.handleChange}
+              onChange={handleAmount}
               onBlur={formik.handleBlur}
             />
             {formik.touched.amount && Boolean(formik.errors.amount) ? (

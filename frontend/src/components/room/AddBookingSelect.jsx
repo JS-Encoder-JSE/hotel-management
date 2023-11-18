@@ -40,12 +40,33 @@ const validationSchema = yup.object({
   // }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  amount: yup.string().required("Advance amount is required"),
+  amount: yup.number(),
   nationality: yup.string().required("Nationality is required"),
   bookingMethod: yup.string().required("Booking method is required"),
 });
 
 const AddBookingSelect = ({ room }) => {
+
+
+  const handleAmount = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.amount;
+  console.log(fieldName)
+    
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    }
+    else if(inputValue === ""){
+      e.target.value=0
+      formik.handleChange(e)
+    }
+  //  else {
+  //     // Set inputValue to 0 and update the Formik state
+  //     e.target.value = 0;
+  //     formik.handleChange(e);
+  // }
+  };
   // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
@@ -107,9 +128,10 @@ const AddBookingSelect = ({ room }) => {
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: obj.amount,
+        paid_amount: obj.amount.length? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
+        status:"Active"
       });
 
       console.log(response);
@@ -342,7 +364,7 @@ const AddBookingSelect = ({ room }) => {
               name="amount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.amount}
-              onChange={formik.handleChange}
+              onChange={handleAmount}
               onBlur={formik.handleBlur}
             />
             {formik.touched.amount && Boolean(formik.errors.amount) ? (

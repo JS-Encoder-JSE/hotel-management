@@ -108,17 +108,21 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
   const handlePrint = useReactToPrint({
     content: () =>componentRef.current
   })
-  const handleButtonClick = () => {
-    // Call multiple functions here
-    handlePrint()
-    setHeaderHide(true)
-    // Add more functions if needed
 
-    // Additional logic specific to the onClick event
-  };
+
+
+ // Call multiple functions here
+ const handleButtonClick = () => {
+  // Call multiple functions here
+  setHeaderHide(true);
+
+  // Introduce a delay before calling handlePrint
+  setTimeout(() => {
+      handlePrint();
+  }, 1000); // Replace 1000 with the desired delay in milliseconds
+};
 
   // current date
-
   const currentDate = new Date();
 
 const year = currentDate.getFullYear();
