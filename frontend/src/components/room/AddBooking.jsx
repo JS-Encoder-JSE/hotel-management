@@ -154,7 +154,7 @@ const AddBooking = () => {
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: obj.amount.length ? obj.amount : 0,
+        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
         status: "Active",
