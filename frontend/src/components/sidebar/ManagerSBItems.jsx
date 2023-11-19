@@ -139,7 +139,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Manage Order
+              Add Order
             </NavLink>
           </li>
           <li>

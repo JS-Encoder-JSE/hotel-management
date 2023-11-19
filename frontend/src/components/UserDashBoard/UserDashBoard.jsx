@@ -224,21 +224,14 @@ const UserDashBoard = ({ managerId }) => {
               {}
             </p>
             <hr />
-            {user.role === "manager" ? (
+            {userHotel ? (
               <div>
                 <h6 className="text-xs text-slate-400 mt-4">
-                  TODAY'S {userHotel ? "  CHECK OUT" : "RENEW"}
+                  TODAY'S CHECK OUT
                 </h6>
                 <p className="text-2xl font-semibold mt-4">
                   {Math.floor(dashboardData?.daily_datas[0]?.today_checkout)}
                 </p>
-              </div>
-            ) : user.role === "owner" ? (
-              <div>
-                <h6 className="text-xs text-slate-400 mt-4">
-                  TODAY'S {userHotel ? "  CHECK OUT" : "RENEW"}
-                </h6>
-                <p className="text-2xl font-semibold mt-4">750</p>
               </div>
             ) : (
               ""
@@ -257,7 +250,7 @@ const UserDashBoard = ({ managerId }) => {
               </p>
               <hr />
               <h6 className="text-xs text-slate-400 mt-4">
-                TODAY'S CANCEL BOOKING
+                TODAY'S CANCELED BOOKING
               </h6>
               <p className="text-2xl font-semibold mt-4">
                 {Math.floor(
@@ -311,7 +304,7 @@ const UserDashBoard = ({ managerId }) => {
               )}
             </p>
             <hr />
-            {user.role === "manager" ? (
+            {userHotel ? (
               <div>
                 <h6 className="text-xs text-slate-400 mt-4">
                   TOTAL {userHotel ? "  CHECK OUT" : "Renew "}
@@ -319,13 +312,6 @@ const UserDashBoard = ({ managerId }) => {
                 <p className="text-2xl font-semibold mt-4">
                   {Math.floor(dashboardData?.permanent_datas?.total_checkout)}
                 </p>
-              </div>
-            ) : user.role === "owner" ? (
-              <div>
-                <h6 className="text-xs text-slate-400 mt-4">
-                  TOTAL {userHotel ? "  CHECK OUT" : "Renew "}
-                </h6>
-                <p className="text-2xl font-semibold mt-4">750</p>
               </div>
             ) : (
               ""
@@ -353,7 +339,8 @@ const UserDashBoard = ({ managerId }) => {
         <section className="mt-8 grid md:grid-cols-2 gap-5">
           <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
             <BookingChart
-              chartData={dashboardData?.permanent_datas}
+              daily_datas={dashboardData?.daily_datas}
+              permanent_datas={dashboardData?.permanent_datas}
               userManager={userHotel}
             />
           </div>
