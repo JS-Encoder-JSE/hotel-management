@@ -106,22 +106,22 @@ const HotelEdit = () => {
     if (save) {
       const tempList = [
         ...managerList
-            .map((elem) => ({
-              ...(elem.manager
-                  ? typeof elem.manager === "string"
-                      ? JSON.parse(elem.manager)
-                      : elem.manager
-                  : {}),
-              shift: elem.shift,
-            }))
-            .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
+          .map((elem) => ({
+            ...(elem.manager
+              ? typeof elem.manager === "string"
+                ? JSON.parse(elem.manager)
+                : elem.manager
+              : {}),
+            shift: elem.shift,
+          }))
+          .filter((elem) => Boolean(elem._id) && Boolean(elem.shift)),
       ];
 
       setShowManagers(tempList);
       setSave(false);
     }
   }, [save]);
-console.log(hotel);
+  console.log(hotel);
   useEffect(() => {
     if (hotel) {
       formik.setValues({
@@ -258,12 +258,16 @@ console.log(hotel);
                   ) : null}
                 </div>
                 <button
-                    type="button"
-                    className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                  >
-                    <span>Change Password</span>
-                    
-                  </button>
+                  onClick={() =>
+                    navigate(
+                      `/dashboard/change-hotel-password/${hotel?.managers[0]?._id}`
+                    )
+                  }
+                  type="button"
+                  className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                >
+                  <span>Change Password</span>
+                </button>
                 {/* <button
                   type="button"
                   className="btn btn-md bg-transparent border-gray-500/50 rounded focus:outline-none focus:border-green-slimy normal-case"

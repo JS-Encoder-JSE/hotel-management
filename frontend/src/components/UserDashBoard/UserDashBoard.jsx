@@ -178,14 +178,14 @@ const dummyData = [
     year: "2023",
   },
 ];
-const UserDashBoard = () => {
+const UserDashBoard = ({ managerId }) => {
   const { user } = useSelector((store) => store.authSlice);
   const {
     data: dashboardData,
     isSuccess,
     isLoading,
     isError,
-  } = useGetDashboardInfoQuery(user._id);
+  } = useGetDashboardInfoQuery(managerId ? managerId : user._id);
 
   console.log(dashboardData);
   const [userHotel, setUserHotel] = useState(

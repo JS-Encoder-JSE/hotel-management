@@ -84,6 +84,7 @@ import EmployeeView from "./pages/employee/EmployeeView.jsx";
 import CurOrderList from "./pages/restaurant/CurOrderList.jsx";
 import AddTable from "./pages/restaurant/AddTable.jsx";
 import FoodCheckout from "./pages/restaurant/FoodCheckout.jsx";
+import ChangeManagerPassword from "./components/HotelEdit/ChangeManagerPassword.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -509,6 +510,14 @@ const App = () => {
               element: (
                 <OwnerRoute>
                   <HotelEdit />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "change-hotel-password/:id",
+              element: (
+                <OwnerRoute>
+                  <ChangeManagerPassword />
                 </OwnerRoute>
               ),
             },

@@ -4,26 +4,40 @@ import { useRoomsQuery } from "../../redux/room/roomAPI.js";
 import UserDashBoard from "../../components/UserDashBoard/UserDashBoard";
 import { useSelector } from "react-redux";
 import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
+import { Rings } from "react-loader-spinner";
 
 const MonitorFinance = () => {
   const { user } = useSelector((store) => store.authSlice);
-  const { isLoading: loding, data: hotels } = useHotelsQuery({
+  const {
+    isLoading,
+    data: hotels,
+    isError,
+  } = useHotelsQuery({
     uid: user._id,
     pid: "",
     filter: "Active",
   });
-  const [selectedRooms, setSelectedRooms] = useState([]);
-
+  const [selectedHotel, setselectedHotel] = useState([]);
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
     }
   };
   const transformedHotel = hotels?.docs?.map((hotel) => ({
-    value: hotel.roomNumber,
+    value: hotel?.managers[0]?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
-
+  console.log(hotels?.docs);
+  if (isLoading || isError) {
+    return (
+      <Rings
+        width="50"
+        height="50"
+        color="#37a000"
+        wrapperClass="justify-center"
+      />
+    );
+  }
   return (
     <div className="space-y-20">
       {/* Select Room Section */}
@@ -32,13 +46,13 @@ const MonitorFinance = () => {
         <div className="w-[353px]">
           <Select
             placeholder="Search with hotel name"
-            defaultValue={selectedRooms}
+            defaultValue={selectedHotel}
             options={transformedHotel}
             isMulti
             isSearchable
             closeMenuOnSelect={false}
             onKeyDown={handleKeyDown}
-            onChange={setSelectedRooms}
+            onChange={setselectedHotel}
             noOptionsMessage={() => "No Hotel available"}
             classNames={{
               control: (state) =>
@@ -53,7 +67,11 @@ const MonitorFinance = () => {
       </section>
 
       <section>
-        <UserDashBoard></UserDashBoard>
+        {selectedHotel?.length ? (
+          <UserDashBoard managerId={selectedHotel[0]?.value}></UserDashBoard>
+        ) : (
+          ""
+        )}
       </section>
     </div>
   );
