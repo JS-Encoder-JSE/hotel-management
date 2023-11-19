@@ -7,7 +7,7 @@ import {
   FaRegCalendarAlt,
 } from "react-icons/fa";
 import { MdAutorenew } from "react-icons/md";
-import { BsFillSendCheckFill } from "react-icons/bs";
+import { BsClipboard2DataFill, BsFillSendCheckFill } from "react-icons/bs";
 import CustomerReservation from "./CustomerReservation";
 import BookingChart from "./BookingChart";
 import ReservationChart from "./ReservationChart";
@@ -185,7 +185,7 @@ const UserDashBoard = () => {
     isSuccess,
     isLoading,
     isError,
-  } = useGetDashboardInfoQuery();
+  } = useGetDashboardInfoQuery(user._id);
 
   console.log(dashboardData);
   const [userHotel, setUserHotel] = useState(
@@ -213,7 +213,7 @@ const UserDashBoard = () => {
               {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
             </div>
             <h6 className="text-xs text-slate-400">
-              {userHotel ? "TODAY CHECK IN" : "TOTAL SELL"}
+              {userHotel ? "TODAY'S CHECK IN" : "TOTAL SELL"}
             </h6>
             <p className="text-2xl font-semibold mt-3">
               {Math.floor(
@@ -227,7 +227,7 @@ const UserDashBoard = () => {
             {user.role === "manager" ? (
               <div>
                 <h6 className="text-xs text-slate-400 mt-4">
-                  TODAY {userHotel ? "  CHECK OUT" : "RENEW"}
+                  TODAY'S {userHotel ? "  CHECK OUT" : "RENEW"}
                 </h6>
                 <p className="text-2xl font-semibold mt-4">
                   {Math.floor(dashboardData?.daily_datas[0]?.today_checkout)}
@@ -236,7 +236,7 @@ const UserDashBoard = () => {
             ) : user.role === "owner" ? (
               <div>
                 <h6 className="text-xs text-slate-400 mt-4">
-                  TODAY {userHotel ? "  CHECK OUT" : "RENEW"}
+                  TODAY'S {userHotel ? "  CHECK OUT" : "RENEW"}
                 </h6>
                 <p className="text-2xl font-semibold mt-4">750</p>
               </div>
@@ -244,6 +244,30 @@ const UserDashBoard = () => {
               ""
             )}
           </div>
+          {user.role === "manager" || user.role === "owner" ? (
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+              <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
+                <BsClipboard2DataFill />
+              </div>
+              <h6 className="text-xs text-slate-400 uppercase">
+                TODAY'S Booking
+              </h6>
+              <p className="text-2xl font-semibold mt-3">
+                {Math.floor(dashboardData?.daily_datas[0]?.today_booking)}
+              </p>
+              <hr />
+              <h6 className="text-xs text-slate-400 mt-4">
+                TODAY'S CANCEL BOOKING
+              </h6>
+              <p className="text-2xl font-semibold mt-4">
+                {Math.floor(
+                  dashboardData?.daily_datas[0]?.today_canceled_bookings
+                )}
+              </p>
+            </div>
+          ) : (
+            ""
+          )}
           {/* Total Amount */}
           <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
             <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
