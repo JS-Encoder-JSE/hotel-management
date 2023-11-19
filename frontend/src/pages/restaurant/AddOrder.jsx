@@ -4,6 +4,7 @@ import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/restaurant/ConfirmOrder.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
+
 import { useFormik } from "formik";
 import {
   useGetRoomsAndHotelsQuery,
@@ -18,10 +19,18 @@ import {
 import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
 
+
+
+
 const AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
+  const [error, setError] = useState("");
+  
+  
+
   const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -30,12 +39,14 @@ const AddOrder = () => {
       roomId: "",
       tableId: "",
     },
+
     onSubmit: (values) => {
       console.log("values: ", values);
       // setKeyword(values.search);
     },
   });
   const { order } = useSelector((store) => store.addOrderSlice);
+ 
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
 
   const pressEnter = (e) => {
@@ -62,6 +73,8 @@ const AddOrder = () => {
     label: table.table_number,
   }));
 
+  console.log(order.roomId,order.tableId)
+
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
       <div
@@ -85,6 +98,7 @@ const AddOrder = () => {
         {/*    ))}*/}
         {/*  </select>*/}
         {/*</div>*/}
+      
         <div className={`flex gap-1.5`}>
           <div className="flex flex-col gap-3">
             <select
@@ -99,7 +113,9 @@ const AddOrder = () => {
               <option value="Room">Room</option>
               <option value="Table">Table</option>
             </select>
+            { error && <span className="text-red-600 "><small>{error}</small></span>}
           </div>
+          
           {formik.values.type && formik.values.type === "Room" ? (
             <div className="flex flex-col gap-3">
               <Select
@@ -145,6 +161,7 @@ const AddOrder = () => {
             </div>
           ) : null}
         </div>
+       
         <div className={`flex space-x-1.5`}>
           <button
             onClick={() => {
@@ -161,12 +178,24 @@ const AddOrder = () => {
           </button>
           <button
             onClick={() => {
-              formik.values.type && formik.values.type === "Table"
-                ? dispatch(setTableId(formik.values.tableId))
-                : formik.values.type && formik.values.type === "Room"
-                  ? dispatch(setRoomId(formik.values.roomId))
-                  : null;
-              window.fp_modal.showModal();
+              if(formik.values.type && formik.values.type === "Table"){
+                dispatch(setTableId(formik.values.tableId))
+                window.fp_modal.showModal();
+                setError("")
+              }else if(formik.values.type && formik.values.type === "Room"){
+                dispatch(setRoomId(formik.values.roomId))
+                window.fp_modal.showModal();
+                setError("")
+              }
+              else{
+                setError("please Choose the type")
+              }
+              // formik.values.type && formik.values.type === "Table"
+              //   ? dispatch(setTableId(formik.values.tableId))
+              //   : formik.values.type && formik.values.type === "Room"
+              //     ? dispatch(setRoomId(formik.values.roomId))
+              //     : null;
+              // window.fp_modal.showModal();
             }}
             type={`button`}
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
@@ -205,8 +234,8 @@ const AddOrder = () => {
         keyword={keyword}
         chooseHotel={formik.values.chooseHotel}
       />
-      <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
-        <ConfirmOrder />
+     <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
+     {<ConfirmOrder  />}
       </Modal>
     </div>
   );

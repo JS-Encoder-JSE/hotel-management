@@ -56,8 +56,10 @@ const CheckOut = () => {
         toast.error(response.error.data.message);
       } else {
         toast.success("Checkout Successful");
+        formikHelpers.resetForm();
         // navigate("/dashboard/checkout");
       }
+      
     },
   });
 
