@@ -93,20 +93,7 @@ export const addHotel = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "Username already exists" });
     }
-
-    // Create a new hotel instance with the provided data
-    const newHotel = new Hotel({
-      owner_id,
-      name,
-      branch_name,
-      address,
-      email,
-      phone_no,
-    });
-
-    // Save the new hotel to the database
-    const savedHotel = await newHotel.save();
-
+    
     // Create a new user instance
     const newUser = new User({
       parent_id: owner_id,
@@ -119,6 +106,21 @@ export const addHotel = async (req, res) => {
 
     // Save the user to the database
     const savedNewUser=await newUser.save();
+
+    // Create a new hotel instance with the provided data
+    const newHotel = new Hotel({
+      owner_id,
+      name,
+      branch_name,
+      address,
+      email,
+      phone_no,
+      manager_acc:savedNewUser._id,
+    });
+
+    // Save the new hotel to the database
+    const savedHotel = await newHotel.save();
+
     const newDashboard = new Dashboard({
       user_id: savedNewUser._id,
       user_role: "manager",

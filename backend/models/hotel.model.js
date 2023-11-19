@@ -116,6 +116,10 @@ const hotelSchema = new mongoose.Schema(
       required: false,
       default: "",
     },
+    manager_acc: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     managers: [ManagerSchema],
   },
   { timestamps: true }
