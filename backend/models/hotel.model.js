@@ -118,7 +118,7 @@ const hotelSchema = new mongoose.Schema(
     },
     manager_acc: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
     },
     managers: [ManagerSchema],
   },
