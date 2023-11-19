@@ -215,7 +215,13 @@ const OrderList = () => {
                             <td>
                               {new Date(order?.createdAt).toLocaleString()}
                             </td>
-                            <td>{order?.room_id?.roomNumber}</td>
+                            <td>
+                              {order?.room_id
+                                ? `Room: ${order?.room_id?.roomNumber}`
+                                : order?.table_id
+                                ? `Table: ${order?.table_id?.table_number}`
+                                : ""}
+                            </td>
                             <td>{order?.total_price}</td>
                             <td className={`flex gap-1.5`}>
                               <span

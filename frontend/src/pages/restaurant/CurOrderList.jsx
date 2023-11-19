@@ -7,7 +7,7 @@ import {
   FaSearch,
   FaStreetView,
 } from "react-icons/fa";
-import { MdShoppingCartCheckout } from "react-icons/md"
+import { MdShoppingCartCheckout } from "react-icons/md";
 import { GrPowerReset, GrView } from "react-icons/gr";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
@@ -50,13 +50,10 @@ const CurOrderList = () => {
     cp: currentPage,
     pp: ordersPerPage,
   });
-
+  console.log(orders);
   const modifiedData = orders?.data?.docs?.map((order) => ({
     ...order,
-    grand_total: order.items.reduce(
-      (total, item) => total + item.total,
-      0
-    ),
+    grand_total: order.items.reduce((total, item) => total + item.total, 0),
   }));
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -153,9 +150,7 @@ const CurOrderList = () => {
                         <th>SL</th>
                         <th>Invoice No</th>
                         <th>Date</th>
-                        <th>
-                          Room / Table <br /> Number
-                        </th>
+                        <th>Table Number</th>
                         <th>Total Amount</th>
                         <th>Action</th>
                       </tr>
@@ -173,7 +168,7 @@ const CurOrderList = () => {
                             <td>
                               {new Date(order?.createdAt).toLocaleString()}
                             </td>
-                            <td>{order?.room_id?.roomNumber}</td>
+                            <td>{order?.table_id?.table_number}</td>
                             <td>{order?.grand_total}</td>
                             <td className={`flex gap-1.5`}>
                               <Link
@@ -188,7 +183,7 @@ const CurOrderList = () => {
                                 title={`Cancel`}
                                 className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}
                               >
-                                <MdCancel size={20}/>
+                                <MdCancel size={20} />
                               </span>
                             </td>
                           </tr>
