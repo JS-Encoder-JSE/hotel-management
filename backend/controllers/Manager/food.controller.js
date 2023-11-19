@@ -182,7 +182,7 @@ export const updateFood = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const { room_id, table_id, items,current_order, paid_amount } = req.body;
+    const { room_id, table_id, items, current_order, paid_amount } = req.body;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
@@ -254,7 +254,6 @@ export const getOrderById = async (req, res) => {
     });
   }
 };
-
 
 export const updateOrder = async (req, res) => {
   try {
@@ -332,7 +331,14 @@ export const getOrdersByHotelId = async (req, res) => {
     const result = await FoodOrder.find(query)
       .limit(options.limit)
       .skip((options.page - 1) * options.limit)
-      .populate("room_id", "roomNumber floorNumber");
+      .populate({
+        path: "room_id",
+        select: "roomNumber floorNumber",
+      })
+      .populate({
+        path: "table_id",
+        select: "table_number",
+      });
 
     const totalDocuments = await FoodOrder.countDocuments(query);
 
