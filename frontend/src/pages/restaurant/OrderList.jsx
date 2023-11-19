@@ -24,6 +24,7 @@ import Swal from "sweetalert2";
 import { Rings } from "react-loader-spinner";
 import { MdCancel } from "react-icons/md";
 import DatePicker from "react-datepicker";
+import { getISOStringDate } from "../../utils/utils.js";
 // import StatusSettings from "./StatusSettings.jsx";
 
 const OrderList = () => {
@@ -31,9 +32,13 @@ const OrderList = () => {
   const [ordersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
-  const { data: hotelList } = useGetRoomsAndHotelsQuery();
-  const [deleteOrder] = useDeleteOrderMutation();
 
+  const [deleteOrder] = useDeleteOrderMutation();
+  const [searchParams, setSearchParams] = useState({
+    fromDate: "",
+    toDate: "",
+    search: "",
+  });
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -42,9 +47,18 @@ const OrderList = () => {
       endDate: "",
       // chooseHotel: "",
     },
+    onSubmit: (values) => {
+      setSearchParams((p) => ({
+        ...p,
+        toDate: getISOStringDate(values.endDate),
+        fromDate: getISOStringDate(values.startDate),
+        search: values.search,
+      }));
+    },
   });
 
   const { isLoading, data: orders } = useOrdersQuery({
+    ...searchParams,
     cp: currentPage,
     pp: ordersPerPage,
   });

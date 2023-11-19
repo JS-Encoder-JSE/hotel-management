@@ -34,6 +34,7 @@ const CurOrderList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const [deleteOrder] = useDeleteOrderMutation();
+  const [search, setSearch] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -43,9 +44,14 @@ const CurOrderList = () => {
       endDate: "",
       // chooseHotel: "",
     },
+    onSubmit: (values) => {
+      setSearch(values.search);
+      setCurrentPage(0);
+    },
   });
 
   const { isLoading, data: orders } = useOrdersQuery({
+    search: search,
     current_order: true,
     cp: currentPage,
     pp: ordersPerPage,
