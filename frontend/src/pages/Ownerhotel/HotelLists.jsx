@@ -30,9 +30,9 @@ const HotelLists = () => {
     search: formik.values.search,
     uid: user._id,
     pid: "",
-    filter: "Active"
+    filter: "Active",
   });
-
+  console.log("hotel list :", hotels);
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -160,7 +160,7 @@ const HotelLists = () => {
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                             onClick={() =>
                               navigate(
-                                `/dashboard/hotelList-view/${hotel?._id}`,
+                                `/dashboard/hotelList-view/${hotel?._id}`
                               )
                             }
                           >
