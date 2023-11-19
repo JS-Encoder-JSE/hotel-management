@@ -24,7 +24,20 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 
 const baseAPI = createApi({
   reducerPath: "baseAPI",
-  tagTypes: ["auth", "room", "food", "inventory", "employee", "owner", "subadmin", "hotels", "order", "bar",'checkout'],
+  tagTypes: [
+    "auth",
+    "room",
+    "food",
+    "inventory",
+    "employee",
+    "owner",
+    "subadmin",
+    "hotels",
+    "order",
+    "bar",
+    "checkout",
+    "category",
+  ],
   baseQuery: baseQueryWithReAuth,
   endpoints: (build) => ({
     upload: build.mutation({

@@ -21,7 +21,7 @@ const foodAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["food"],
+      invalidatesTags: ["food",'category'],
     }),
     deleteFood: build.mutation({
       query: (id) => {
@@ -92,6 +92,10 @@ const foodAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["checkout", "order"],
     }),
+    getCategory: build.query({
+      query: () => "foods/get-food-categories-by-hotel",
+      providesTags:['category']
+    }),
   }),
 });
 
@@ -107,4 +111,5 @@ export const {
   useAddTableMutation,
   useGetOrderByIdQuery,
   useUpdateOrderMutation,
+  useGetCategoryQuery,
 } = foodAPI;
