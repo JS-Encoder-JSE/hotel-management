@@ -21,8 +21,6 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 
-
-
 // form validation
 const validationSchema = yup.object({
   // room_arr: yup.array().required("Room IDs are required"),
@@ -66,20 +64,19 @@ const CheckInModal = ({ room }) => {
   const [addBooking] = useAddBookingMutation();
 
   // handleadvanceAmount
-const handleAmount = (e) => {
-  const inputValue = e.target.value;
-  const fieldName = e.target.amount;
-console.log(fieldName)
-  
-  if (inputValue >= 0) {
-    // Update the Formik state
-    formik.handleChange(e);
-  }
-  else if(inputValue === ""){
-    e.target.value=0
-    formik.handleChange(e)
-  }
-  }
+  const handleAmount = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.amount;
+    console.log(fieldName);
+
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -111,11 +108,11 @@ console.log(fieldName)
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
       const no_of_days = Math.floor(
-        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000),
+        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
       const rent_per_day = obj.room_arr.reduce(
         (init, current) => init + current.price,
-        0,
+        0
       );
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
@@ -139,14 +136,14 @@ console.log(fieldName)
       for (let i = 0; i < obj.documents.length; i++) {
         const photoName = obj.documents[i].name.substring(
           0,
-          obj.documents[i].name.lastIndexOf("."),
+          obj.documents[i].name.lastIndexOf(".")
         );
 
         formData.append(photoName, obj.documents[i]);
       }
 
       await upload(formData).then(
-        (result) => (tempImg = result.data.imageUrls),
+        (result) => (tempImg = result.data.imageUrls)
       );
 
       const response = await addBooking({
@@ -167,7 +164,7 @@ console.log(fieldName)
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: obj.amount.length? obj.amount : 0,
+        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
         doc_number: obj.doc_number,
