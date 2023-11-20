@@ -231,7 +231,15 @@ export const getOrderById = async (req, res) => {
     const orderId = req.params.order_id; // Assuming you use "order_id" as the parameter name
 
     // Retrieve the order by ID
-    const order = await FoodOrder.findById(orderId);
+    const order = await FoodOrder.findById(orderId)
+      .populate({
+        path: "room_id",
+        select: "roomNumber floorNumber",
+      })
+      .populate({
+        path: "table_id",
+        select: "table_number",
+      });
 
     if (!order) {
       return res.status(404).json({
