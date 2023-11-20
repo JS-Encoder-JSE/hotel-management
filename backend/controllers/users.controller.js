@@ -79,7 +79,7 @@ export const addUser = async (req, res) => {
 
     // Save the user to the database
     const savedNewUser = await newUser.save();
-    if (!role === "employee") {
+    if (role !== "employee") {
       const newDashboard = new Dashboard({
         user_id: savedNewUser._id,
         user_role: role,
