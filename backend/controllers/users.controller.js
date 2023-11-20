@@ -976,6 +976,12 @@ export const renewLicense = async (req, res) => {
 
       adminDashboard.total_renew_lic += 1;
       adminDashboard.total_amount += amount;
+      if (user.status === "Expired") {
+        adminDashboard.total_expired_lic -= 1;
+      }
+      if (user.status === "Suspended") {
+        adminDashboard.total_suspended_lic -= 1;
+      }
 
       await adminDashboard.save();
       const adminDashboardTable = await DashboardTable.findOne({
@@ -1008,11 +1014,23 @@ export const renewLicense = async (req, res) => {
 
       adminDashboard.total_renew_lic += 1;
       adminDashboard.total_amount += amount;
+      if (user.status === "Expired") {
+        adminDashboard.total_expired_lic -= 1;
+      }
+      if (user.status === "Suspended") {
+        adminDashboard.total_suspended_lic -= 1;
+      }
 
       await adminDashboard.save();
 
       subadminDashboard.total_renew_lic += 1;
       subadminDashboard.total_amount += amount;
+      if (user.status === "Expired") {
+        subadminDashboard.total_expired_lic -= 1;
+      }
+      if (user.status === "Suspended") {
+        subadminDashboard.total_suspended_lic -= 1;
+      }
 
       await subadminDashboard.save();
 
