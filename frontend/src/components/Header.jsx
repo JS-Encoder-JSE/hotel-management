@@ -18,7 +18,6 @@ const Header = ({
   setHbMenu,
 }) => {
   const { user } = useSelector((store) => store.authSlice);
-  
   const dispatch = useDispatch();
   const [time, setTime] = useState(new Date());
   useEffect(() => {

@@ -124,6 +124,7 @@ const HotelLists = () => {
                     <th>Phone Number</th>
                     {/* <th>License <br /> Number</th> */}
                     {/* <th> Manager</th> */}
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>

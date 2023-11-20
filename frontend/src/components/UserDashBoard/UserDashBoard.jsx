@@ -191,7 +191,6 @@ const UserDashBoard = ({ managerId }) => {
   const [userHotel, setUserHotel] = useState(
     user.role === "manager" || user.role === "owner"
   );
-  useEffect(() => {}, []);
   if (isLoading || isError) {
     return (
       <Rings
@@ -218,8 +217,12 @@ const UserDashBoard = ({ managerId }) => {
             <p className="text-2xl font-semibold mt-3">
               {Math.floor(
                 userHotel
-                  ? dashboardData?.daily_datas[0]?.today_checkin
-                  : dashboardData?.permanent_datas?.total_sell_lic
+                  ? dashboardData?.daily_datas[0]
+                    ? dashboardData?.daily_datas[0]?.today_checkin
+                    : 0
+                  : dashboardData?.permanent_datas
+                  ? dashboardData?.permanent_datas?.total_sell_lic
+                  : 0
               )}
               {}
             </p>
@@ -230,7 +233,9 @@ const UserDashBoard = ({ managerId }) => {
                   TODAY'S CHECK OUT
                 </h6>
                 <p className="text-2xl font-semibold mt-4">
-                  {Math.floor(dashboardData?.daily_datas[0]?.today_checkout)}
+                  {Math.floor(
+                    dashboardData?.daily_datas[0]?.today_checkout || 0
+                  )}
                 </p>
               </div>
             ) : (
@@ -246,7 +251,7 @@ const UserDashBoard = ({ managerId }) => {
                 TODAY'S Booking
               </h6>
               <p className="text-2xl font-semibold mt-3">
-                {Math.floor(dashboardData?.daily_datas[0]?.today_booking)}
+                {Math.floor(dashboardData?.daily_datas[0]?.today_booking || 0)}
               </p>
               <hr />
               <h6 className="text-xs text-slate-400 mt-4">
@@ -254,7 +259,7 @@ const UserDashBoard = ({ managerId }) => {
               </h6>
               <p className="text-2xl font-semibold mt-4">
                 {Math.floor(
-                  dashboardData?.daily_datas[0]?.today_canceled_bookings
+                  dashboardData?.daily_datas[0]?.today_canceled_bookings || 0
                 )}
               </p>
             </div>
@@ -269,7 +274,7 @@ const UserDashBoard = ({ managerId }) => {
             </div>
             <h6 className="text-xs text-slate-400 ">TOTAL AMOUNT</h6>
             <p className="text-2xl font-semibold mt-4">
-              {Math.floor(dashboardData?.permanent_datas?.total_amount)}
+              {Math.floor(dashboardData?.permanent_datas?.total_amount || 0)}
             </p>
             <hr />
           </div>
@@ -281,7 +286,7 @@ const UserDashBoard = ({ managerId }) => {
               <div>
                 <h6 className="text-xs text-slate-400">TOTAL CUSTOMER</h6>
                 <p className="text-2xl font-semibold mt-4">
-                  {dashboardData?.permanent_datas?.total_customer}
+                  {dashboardData?.permanent_datas?.total_customer || 0}
                 </p>
                 <hr />
               </div>
@@ -299,8 +304,8 @@ const UserDashBoard = ({ managerId }) => {
             <p className="text-2xl font-semibold mt-4">
               {Math.floor(
                 userHotel
-                  ? dashboardData?.permanent_datas?.total_checkin
-                  : dashboardData?.permanent_datas?.total_renew_lic
+                  ? dashboardData?.permanent_datas?.total_checkin || 0
+                  : dashboardData?.permanent_datas?.total_renew_lic || 0
               )}
             </p>
             <hr />
@@ -310,7 +315,9 @@ const UserDashBoard = ({ managerId }) => {
                   TOTAL {userHotel ? "  CHECK OUT" : "Renew "}
                 </h6>
                 <p className="text-2xl font-semibold mt-4">
-                  {Math.floor(dashboardData?.permanent_datas?.total_checkout)}
+                  {Math.floor(
+                    dashboardData?.permanent_datas?.total_checkout || 0
+                  )}
                 </p>
               </div>
             ) : (
