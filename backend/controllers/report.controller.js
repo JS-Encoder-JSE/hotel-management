@@ -96,8 +96,8 @@ export const getAllReport = async (req, res) => {
     } else if (toDate) {
       // If only toDate is provided, use $lte for the maximum date filter
       query.createdAt = [
-        {createdAt:{ $lte: new Date(fromDate) }},
-        {updatedAt:{ $lte: new Date(fromDate) }},
+        {createdAt:{ $lte: new Date(toDate) }},
+        {updatedAt:{ $lte: new Date(toDate) }},
       ];
     }
     if (["Sold", "Renew", "Expired"].includes(filter)) {

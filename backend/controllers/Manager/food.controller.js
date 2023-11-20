@@ -3,6 +3,7 @@
   FoodCategory,
   FoodOrder,
 } from "../../models/Manager/food.model.js";
+import Room from "../../models/Manager/room.model.js";
 import Hotel from "../../models/hotel.model.js";
 import User from "../../models/user.model.js";
 
@@ -303,7 +304,16 @@ export const updateOrder = async (req, res) => {
 
 export const getOrdersByHotelId = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search, current_order } = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      roomNumber,
+      table_number,
+      unique_id,
+      current_order,
+      fromDate,
+      toDate,
+    } = req.query;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
@@ -322,12 +332,51 @@ export const getOrdersByHotelId = async (req, res) => {
       hotel_id,
     };
 
-    if (search) {
-      // Update the search condition based on the actual type of room_id
-      query.room_id = search; // Assuming search is the room_id you're looking for
+    if (roomNumber) {
+      const room = await Room.findOne({ hotel_id, roomNumber: roomNumber });
+      if (room) {
+        query.room_id = room._id;
+      } else {
+        return res.status(200).json({
+          success: true,
+          data: [],
+          message: "No Gym Bills found for the given Room Number",
+        });
+      }
+    }
+    if (table_number) {
+      const table = await Room.findOne({
+        hotel_id,
+        table_number: table_number,
+      });
+      if (table) {
+        query.table_id = table._id;
+      } else {
+        return res.status(200).json({
+          success: true,
+          data: [],
+          message: "No Gym Bills found for the given Table Number",
+        });
+      }
+    }
+    if (unique_id) {
+      query.unique_id = unique_id;
     }
     if (current_order) {
       query.current_order = current_order;
+    }
+    if (fromDate && toDate) {
+      // Assuming createdAt is a Date field in your schema
+      query.createdAt = {
+        $gte: new Date(fromDate), // Greater than or equal to fromDate
+        $lte: new Date(toDate), // Less than or equal to toDate
+      };
+    } else if (fromDate) {
+      // If only fromDate is provided, use $gte for the minimum date filter
+      query.createdAt = { $gte: new Date(fromDate) };
+    } else if (toDate) {
+      // If only toDate is provided, use $lte for the maximum date filter
+      query.createdAt = { $gte: new Date(toDate) };
     }
 
     const options = {
