@@ -6,6 +6,7 @@ import authSlice from "./auth/authSlice.js";
 import addOrderSlice from "./add-order/addOrderSlice.js";
 import baseAPI from "./baseAPI.js";
 import inventorySlice from "./inventory/inventorySlice.js";
+import checkoutInfoCalSlice from "./checkoutInfoCal/checkoutInfoCalSlice.js"
 
 const authSliceTransform = createTransform(
   (inboundState, key) => {
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
   authSlice,
   addOrderSlice,
   inventorySlice,
+  checkoutInfoCalSlice,
   [baseAPI.reducerPath]: baseAPI.reducer,
 });
 
