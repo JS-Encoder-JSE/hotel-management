@@ -352,7 +352,7 @@ const AddHotel = () => {
               <button
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                disabled={user?.maxHotels - user?.assignedHotel.length === 0}
+                disabled={user?.maxHotels - hotels?.docs?.length === 0}
               >
                 <span>Create Hotel</span>
                 {isLoading ? (

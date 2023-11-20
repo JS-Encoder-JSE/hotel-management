@@ -57,7 +57,7 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["room"],
+      invalidatesTags: ["room",'booking'],
     }),
     getRoomsAndHotels: build.query({
       query: () => {
