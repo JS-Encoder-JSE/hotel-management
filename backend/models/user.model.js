@@ -105,12 +105,12 @@ const userSchema = new mongoose.Schema(
     bill_from: {
       type: Date,
       required: false,
-      default: Date.now,
+      default: new Date(),
     },
     bill_to: {
       type: Date,
       required: false,
-      default: Date.now,
+      default: new Date(),
     },
     extended_time: [ExtendedTimeSchema],
     salary: {

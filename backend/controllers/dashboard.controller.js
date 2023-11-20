@@ -167,7 +167,7 @@ export const getCheckInfo = async (req, res) => {
 // Get dashboard by user ID
 export const getDashboardInfo = async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.params.user_id;
     const currentDate = new Date();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name

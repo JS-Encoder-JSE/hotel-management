@@ -6,6 +6,6 @@ const router = Router();
 
 router.post("/add-dashboard/:user_id", checkToken, addDashboard);
 router.post("/add-dashboard-table/:user_id", checkToken, addDashboardTable);
-router.get("/get-dashboard-info", checkToken, getDashboardInfo);
+router.get("/get-dashboard-info/:user_id", checkToken, getDashboardInfo);
 
 export default router;

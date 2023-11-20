@@ -118,7 +118,10 @@ export const addHotel = async (req, res) => {
     });
 
     // Save the user to the database
-    const savedNewUser=await newUser.save();
+    const savedNewUser = await newUser.save();
+    savedHotel.manager_acc = savedNewUser._id;
+    await savedHotel.save();
+
     const newDashboard = new Dashboard({
       user_id: savedNewUser._id,
       user_role: "manager",
@@ -186,7 +189,22 @@ export const getHotels = async (req, res) => {
       limit: parseInt(limit, 10),
     };
 
-    const hotels = await Hotel.paginate(query, options);
+    // const hotels = await Hotel.paginate(query, options);
+    // Execute the query without paginate and then use populate
+    const result = await Hotel.find(query)
+      .limit(options.limit)
+      .skip((options.page - 1) * options.limit)
+      .populate("manager_acc", "username");
+
+    const totalDocuments = await Hotel.countDocuments(query);
+
+    const hotels = {
+      docs: result,
+      totalDocs: totalDocuments,
+      page: options.page,
+      limit: options.limit,
+      totalPages: Math.ceil(totalDocuments / options.limit),
+    };
     res.status(200).json(hotels);
   } catch (error) {
     res.status(500).json({ message: "Failed to retrieve hotels" });
@@ -197,7 +215,10 @@ export const getHotelById = async (req, res) => {
   try {
     const { hotel_id } = req.params;
 
-    const hotel = await Hotel.findById(hotel_id);
+    const hotel = await Hotel.findById(hotel_id).populate(
+      "manager_acc",
+      "username"
+    );
 
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
@@ -233,12 +254,28 @@ export const getHotelsByManagerId = async (req, res) => {
 // Controller to update a hotel by ID
 export const updateHotel = async (req, res) => {
   try {
+    const owner_id = req.query.owner_id;
     const hotel_id = req.params.hotel_id; // Assuming you pass the hotel ID in the URL
     const updateFields = req.body; // Fields to be updated
 
     // Ensure at least one field is being updated
     if (Object.keys(updateFields).length === 0) {
       return res.status(400).json({ message: "No fields to update provided" });
+    }
+    if (updateFields.status === "Active") {
+      const owner = await User.findById(owner_id);
+      if (!owner) {
+        return res.status(404).json({ message: "Owner not found" });
+      }
+      const totalDocuments = await Hotel.countDocuments({
+        owner_id: owner_id,
+        status: "Active",
+      });
+      if (owner.maxHotels <= totalDocuments) {
+        return res.status(403).json({
+          message: "Please upgrade owner package to 'Active' this hotel",
+        });
+      }
     }
 
     // Use the `findByIdAndUpdate` method to update the hotel by ID
