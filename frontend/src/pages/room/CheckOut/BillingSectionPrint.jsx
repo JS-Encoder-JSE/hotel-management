@@ -116,14 +116,18 @@ const BillingSectionPrint = ({ data, totalBilling, setTotalBilling, setPBill }) 
         <div className="space-y-4">
         <p>SubTotal</p>
         <p>Tax</p>
+        <p>ServiceCharge</p>
         <p>Additional Changes</p>
+        <p>Discount</p>
         <p className="text-lg font-bold">GrandTotal</p>
         </div>
         <div className="space-y-4">
             <p>: ${subTotals}</p>
             <p>: ${tax}</p>
             <p>: ${serviceCharge}</p>
-            <p>: ${subTotals+tax+serviceCharge}</p>
+            <p>: ${additionalCharge}</p>
+            <p>: ${discountOffer}</p>
+            <p>: $grand</p>
         </div>
         
 
