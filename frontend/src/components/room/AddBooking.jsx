@@ -92,7 +92,8 @@ const AddBooking = () => {
 
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      const obj = { ...values };
+      const obj = { ...values,from: fromDateIsoConverter(values.from),
+        to: toDateIsoConverter(values.to), };
       console.log(obj);
 
       if (!obj.discount) obj.discount = 0;

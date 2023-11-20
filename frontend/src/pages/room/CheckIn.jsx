@@ -108,7 +108,8 @@ const CheckIn = () => {
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       setLoading(true);
-      const obj = { ...values };
+      const obj = { ...values,from: fromDateIsoConverter(values.from),
+        to: toDateIsoConverter(values.to), };
 
       if (!obj.discount) obj.discount = 0;
 

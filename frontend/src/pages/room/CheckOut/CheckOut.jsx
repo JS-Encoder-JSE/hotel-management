@@ -150,12 +150,14 @@ const CheckOut = () => {
           <div>
             <CustomerInfoSection data={checkout?.data?.booking_info} />
             <RoomDetailsSection data={checkout?.data?.booking_info} />
+            <div className="my-5">
             <BillingSection
               data={checkout?.data}
               totalBilling={totalBilling}
               setTotalBilling={setTotalBilling}
               setPBill={setPBill}
             />
+            </div>
             <PaymentSection
               data={checkout?.data?.booking_info}
               paymentList={paymentList}

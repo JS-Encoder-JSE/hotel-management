@@ -21,3 +21,16 @@ export const getISOStringDate = (date) => {
     return "";
   }
 };
+
+export const fromDateIsoConverter = (date) => {
+  const fromDate = new Date(date);
+  fromDate.setHours(0, 0, 0, 0);
+  const isoFromDate = fromDate.toISOString();
+  return isoFromDate;
+};
+export const toDateIsoConverter = (date) => {
+  const toDate = new Date(date);
+  toDate.setHours(23, 59, 59, 999);
+  const isoToDate = toDate.toISOString();
+  return isoToDate;
+};
