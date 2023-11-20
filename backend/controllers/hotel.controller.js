@@ -251,12 +251,30 @@ export const getHotelsByManagerId = async (req, res) => {
 // Controller to update a hotel by ID
 export const updateHotel = async (req, res) => {
   try {
+    const owner_id = req.query;
     const hotel_id = req.params.hotel_id; // Assuming you pass the hotel ID in the URL
     const updateFields = req.body; // Fields to be updated
 
     // Ensure at least one field is being updated
     if (Object.keys(updateFields).length === 0) {
       return res.status(400).json({ message: "No fields to update provided" });
+    }
+    if (updateFields.status === "Active") {
+      const owner = await User.findById(owner_id);
+      if (!owner) {
+        return res.status(404).json({ message: "Owner not found" });
+      }
+      const totalDocuments = await Hotel.countDocuments({
+        owner_id: owner_id,
+        status: "Active",
+      });
+      if (owner.maxHotels <= totalDocuments) {
+        return res
+          .status(403)
+          .json({
+            message: "Please upgrade owner package to 'Active' this hotel",
+          });
+      }
     }
 
     // Use the `findByIdAndUpdate` method to update the hotel by ID
