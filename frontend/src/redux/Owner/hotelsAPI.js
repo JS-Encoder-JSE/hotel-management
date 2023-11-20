@@ -50,6 +50,9 @@ const hotelsAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["hotels"],
     }),
+    getLicenseDate: build.query({
+      query: () => "users/get-license-date",
+    }),
   }),
 });
 
@@ -60,4 +63,5 @@ export const {
   useAddHotelMutation,
   useDeleteRoomMutation,
   useUpdateHotelMutation,
+  useGetLicenseDateQuery,
 } = hotelsAPI;
