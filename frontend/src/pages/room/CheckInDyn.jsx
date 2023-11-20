@@ -31,6 +31,7 @@ const validationSchema = yup.object({
 });
 
 const CheckInDyn = ({ data }) => {
+  console.log("data", data);
   const closeRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
   const [upload] = useUploadMutation();
@@ -66,6 +67,7 @@ const CheckInDyn = ({ data }) => {
       setLoading(true);
 
       const obj = { ...values };
+      console.log("obj");
       let title;
       let tempImg;
 
@@ -94,14 +96,14 @@ const CheckInDyn = ({ data }) => {
       await upload(formData).then(
         (result) => (tempImg = result.data.imageUrls)
       );
-
+      const paidAmount =
+        typeof obj.amount === "number"
+          ? data.paid_amount + obj.amount
+          : data.paid_amount;
       const response = await updateBooking({
         id: data._id,
         data: {
-          paid_amount:
-            typeof obj.amount === "number"
-              ? data.paid_amount + obj.amount
-              : data.paid_amount,
+          paid_amount: paidAmount,
           doc_number: obj.doc_number,
           doc_images: {
             [title]: tempImg,
@@ -109,6 +111,7 @@ const CheckInDyn = ({ data }) => {
           status: "CheckedIn",
           paymentMethod: obj.paymentMethod,
           transection_id: obj.transection_id,
+          total_unpaid_amount: data.amount_after_dis - paidAmount,
         },
       });
 
