@@ -18,6 +18,7 @@ const Header = ({
   setHbMenu,
 }) => {
   const { user } = useSelector((store) => store.authSlice);
+  
   const dispatch = useDispatch();
   const [time, setTime] = useState(new Date());
   useEffect(() => {
@@ -85,7 +86,13 @@ const Header = ({
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img src={profile} />
+                  <img
+                    src={
+                      user?.images?.profile_img
+                        ? user?.images?.profile_img
+                        : profile
+                    }
+                  />
                 </div>
               </label>
               <ul

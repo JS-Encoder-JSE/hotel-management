@@ -14,7 +14,7 @@ const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
         type: "donut",
       },
       title: {
-        text: "Total History",
+        text: `${userManager ? "Total History" : "Current History"}`,
         align: "left",
       },
       labels: userManager
@@ -54,10 +54,10 @@ const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
       setChartProps((prev) => ({
         ...prev,
         series: [
-          permanent_datas?.total_checkin,
-          permanent_datas?.total_checkout,
-          permanent_datas?.total_booking,
-          permanent_datas?.total_canceled,
+          daily_datas.length ? daily_datas[0]?.today_active_lic : 0,
+          daily_datas.length ? daily_datas[0]?.today_renew_lic : 0,
+          daily_datas.length ? daily_datas[0]?.today_expired : 0,
+          daily_datas.length ? daily_datas[0]?.today_suspend : 0,
         ],
         options: {
           ...prev.options,
