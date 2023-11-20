@@ -1,6 +1,7 @@
 ﻿import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import Room from "./room.model.js";
+import Table from "./table.model.js";
 const foodSchema = new mongoose.Schema(
   {
     hotel_id: {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaMinus, FaPlus, FaTrash, FaArrowLeft } from "react-icons/fa";
 import { setQuantity } from "../../redux/add-order/addOrderSlice.js";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,9 @@ import {
 import { Rings } from "react-loader-spinner";
 import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem.jsx";
 import toast from "react-hot-toast";
+import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx"
+import ReactToPrint from "react-to-print";
+import { current } from "@reduxjs/toolkit";
 const FoodCheckout = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetOrderByIdQuery(id);
@@ -19,11 +22,7 @@ const FoodCheckout = () => {
   const [updateOrder] = useUpdateOrderMutation();
   const location = useLocation();
   const path = location.pathname;
-  const print = () => {
-    {
-      window.print();
-    }
-  };
+
   const grandTotal = orderData?.data?.items?.reduce(
     (accumulator, item) => accumulator + item.total,
     0
@@ -41,6 +40,10 @@ const FoodCheckout = () => {
       };
     });
   };
+
+
+console.log(orderData)
+
 
   const handleCheckout = async () => {
     const checkoutForTable = {
@@ -77,6 +80,11 @@ const FoodCheckout = () => {
     setOrderData(data);
   }, [data]);
 
+// for printing
+  const componentRef = useRef();
+
+  // const Id = orderData.data.room
+
   return (
     <div className={`flex flex-col gap-5 bg-white rounded-lg p-10`}>
       <div>
@@ -91,12 +99,15 @@ const FoodCheckout = () => {
         {path.includes("orderDetails") ? "Order details" : "Checkout"}
       </h3>
       <hr />
-      <div>
+      <div >
         <div className={`flex items-center gap-3 `}>
-          <span className={`w-26`}>Room / Table No</span>
+        <span className={`w-26`}>{orderData?.data?.table_id ? "Table" : "Room"}</span>
           <span>:</span>
-          <span>512</span>
-        </div>
+          <span>
+          {orderData?.data?.table_id ? orderData?.data?.table_id?.table_number: orderData?.data?.room_id?.roomNumber}
+          </span>
+          {/* {orderData?.data?.room_id && <span>{orderData?.data?.room_id}</span>} */}
+              </div>
         <div className={`flex items-center gap-3`}>
           <span className={`w-24`}>Invoice No</span>
           <span className="ms-7">:</span>
@@ -178,12 +189,22 @@ const FoodCheckout = () => {
                   </tr>
                 </tfoot> */}
       <div className={`flex gap-4 justify-end mt-4`}>
-        <button
-          className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-          onClick={() => print()}
-        >
-          Print
-        </button>
+        <div style={{display:"none"}} >
+          <div className="p-4" ref={componentRef}>
+           <FoodCheckoutPrint orderData={orderData} />
+          </div>   
+        </div>
+      <ReactToPrint
+          trigger={() => (
+            <button
+              title="please select payment method"
+              className="bg-green-slimy text-white px-2 rounded-sm"
+            >
+              Print
+            </button>
+          )}
+          content={() => componentRef.current}
+        />
         <button
           onClick={handleCheckout}
           className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"

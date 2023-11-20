@@ -79,7 +79,7 @@ export const addUser = async (req, res) => {
 
     // Save the user to the database
     const savedNewUser = await newUser.save();
-    if (role === "employee") {
+    if (role !== "employee") {
       const newDashboard = new Dashboard({
         user_id: savedNewUser._id,
         user_role: role,
@@ -594,6 +594,17 @@ export const login = async (req, res) => {
         .status(403)
         .json({ message: "You have no permission to login" });
     }
+    if (user.role === "owner") {
+      const currentDate = new Date();
+      if (currentDate < user.bill_from) {
+        return res
+          .status(403)
+          .json({
+            message:
+              "Login failed, please try to login within your license date",
+          });
+      }
+    }
     if (["Expired", "Deactive", "Deleted"].includes(user.status)) {
       return res
         .status(403)
@@ -965,6 +976,12 @@ export const renewLicense = async (req, res) => {
 
       adminDashboard.total_renew_lic += 1;
       adminDashboard.total_amount += amount;
+      if (user.status === "Expired") {
+        adminDashboard.total_expired_lic -= 1;
+      }
+      if (user.status === "Suspended") {
+        adminDashboard.total_suspended_lic -= 1;
+      }
 
       await adminDashboard.save();
       const adminDashboardTable = await DashboardTable.findOne({
@@ -997,11 +1014,23 @@ export const renewLicense = async (req, res) => {
 
       adminDashboard.total_renew_lic += 1;
       adminDashboard.total_amount += amount;
+      if (user.status === "Expired") {
+        adminDashboard.total_expired_lic -= 1;
+      }
+      if (user.status === "Suspended") {
+        adminDashboard.total_suspended_lic -= 1;
+      }
 
       await adminDashboard.save();
 
       subadminDashboard.total_renew_lic += 1;
       subadminDashboard.total_amount += amount;
+      if (user.status === "Expired") {
+        subadminDashboard.total_expired_lic -= 1;
+      }
+      if (user.status === "Suspended") {
+        subadminDashboard.total_suspended_lic -= 1;
+      }
 
       await subadminDashboard.save();
 

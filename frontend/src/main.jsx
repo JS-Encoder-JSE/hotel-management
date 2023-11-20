@@ -8,6 +8,7 @@ import "swiper/css/thumbs";
 import "react-datepicker/dist/react-datepicker.css";
 import "./css/index.css";
 
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
   <App />,
