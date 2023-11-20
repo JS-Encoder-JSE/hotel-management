@@ -251,7 +251,7 @@ export const getHotelsByManagerId = async (req, res) => {
 // Controller to update a hotel by ID
 export const updateHotel = async (req, res) => {
   try {
-    const owner_id = req.query;
+    const owner_id = req.query.owner_id;
     const hotel_id = req.params.hotel_id; // Assuming you pass the hotel ID in the URL
     const updateFields = req.body; // Fields to be updated
 

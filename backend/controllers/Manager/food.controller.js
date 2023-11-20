@@ -4,6 +4,7 @@
   FoodOrder,
 } from "../../models/Manager/food.model.js";
 import Room from "../../models/Manager/room.model.js";
+import { Dashboard } from "../../models/dashboard.model.js";
 import Hotel from "../../models/hotel.model.js";
 import User from "../../models/user.model.js";
 
@@ -266,6 +267,7 @@ export const getOrderById = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   try {
+    const user_id = req.user.userId;
     const orderId = req.params.order_id; // Assuming you use "order_id" as the parameter name
     const updateData = req.body;
 
@@ -277,7 +279,27 @@ export const updateOrder = async (req, res) => {
         message: "Order not found",
       });
     }
+    if ((updateData.order_status = "CheckedOut")) {
+      const new_paid_amount =
+        updateData.paid_amount - existingOrder.paid_amount;
+      const user = await User.findById(user_id);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      const ownerDashboard = await Dashboard.findOne({
+        user_id: user.parent_id,
+      });
+      const managerDashboard = await Dashboard.findOne({ user_id: user_id });
 
+      ownerDashboard.total_amount += new_paid_amount;
+      managerDashboard.total_amount += new_paid_amount;
+
+      await ownerDashboard.save();
+      await managerDashboard.save();
+    }
     // Update the order with the provided data
     const updatedOrder = await FoodOrder.findByIdAndUpdate(
       orderId,
