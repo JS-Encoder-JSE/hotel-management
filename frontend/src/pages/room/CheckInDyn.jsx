@@ -100,8 +100,6 @@ const CheckInDyn = ({ data }) => {
         data: {
           paid_amount:
             typeof obj.amount === "number"
-              ? obj.amount
-              : 0
               ? data.paid_amount + obj.amount
               : data.paid_amount,
           doc_number: obj.doc_number,
