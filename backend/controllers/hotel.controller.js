@@ -215,7 +215,10 @@ export const getHotelById = async (req, res) => {
   try {
     const { hotel_id } = req.params;
 
-    const hotel = await Hotel.findById(hotel_id);
+    const hotel = await Hotel.findById(hotel_id).populate(
+      "manager_acc",
+      "username"
+    );
 
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
@@ -269,11 +272,9 @@ export const updateHotel = async (req, res) => {
         status: "Active",
       });
       if (owner.maxHotels <= totalDocuments) {
-        return res
-          .status(403)
-          .json({
-            message: "Please upgrade owner package to 'Active' this hotel",
-          });
+        return res.status(403).json({
+          message: "Please upgrade owner package to 'Active' this hotel",
+        });
       }
     }
 
