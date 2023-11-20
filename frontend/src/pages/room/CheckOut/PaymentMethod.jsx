@@ -35,15 +35,13 @@ const PaymentMethod = ({
                 <input
                   type="number"
                   value={elem.amount}
+                  disabled={!elem?.method}
                   placeholder="Amount"
                   name="amount"
                   className={`input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 
-                  ${
-                    !elem?.method ? "btn-disabled":"" 
-                  }
+                  ${!elem?.method ? "cursor-not-allowed" : ""}
                   `}
-                  onChange={(e) => (handleChange)(e, idx)}
-                  
+                  onChange={(e) => handleChange(e, idx)}
                 />
               </div>
               {elem?.method && elem?.method !== "Cash" ? (

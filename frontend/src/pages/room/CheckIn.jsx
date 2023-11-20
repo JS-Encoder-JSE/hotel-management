@@ -20,9 +20,6 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 
-
-
-
 // form validation
 const validationSchema = yup.object({
   room_arr: yup.array().required("Room IDs are required"),
@@ -37,16 +34,7 @@ const validationSchema = yup.object({
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
 
-  children: yup
-    .number()
-    .required("children is required")
-    .positive("children must be a positive number")
-    .integer("children must be an integer"),
-  amount: yup
-    .number()
-    .required("Amount is required")
-    .positive("Amount must be a positive number")
-    .integer("Amount must be an integer"),
+  children: yup.number().integer("children must be an integer"),
   // children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
   //   then: yup
@@ -67,10 +55,10 @@ const validationSchema = yup.object({
   documentsType: yup.string().required("Documents type is required"),
   // doc_number: yup.string().required("Document number is required"),
   doc_number: yup
-  .number()
-  .required("Doc_number is required")
-  .positive("Doc_number must be a positive number")
-  .integer("Doc_number must be an integer"),
+    .number()
+    .required("Doc_number is required")
+    .positive("Doc_number must be a positive number")
+    .integer("Doc_number must be an integer"),
   documents: yup.string().required("Documents is required"),
 });
 
@@ -84,17 +72,16 @@ const CheckIn = () => {
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-  console.log(fieldName)
-    
+    console.log(fieldName);
+
     if (inputValue >= 0) {
       // Update the Formik state
       formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
     }
-    else if(inputValue === ""){
-      e.target.value=0
-      formik.handleChange(e)
-    }
-    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -126,13 +113,13 @@ const CheckIn = () => {
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
-      console.log(room_ids)
+      console.log(room_ids);
       const no_of_days = Math.floor(
-        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000),
+        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
       const rent_per_day = obj.room_arr.reduce(
         (init, current) => init + current.price,
-        0,
+        0
       );
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
@@ -156,14 +143,14 @@ const CheckIn = () => {
       for (let i = 0; i < obj.documents.length; i++) {
         const photoName = obj.documents[i].name.substring(
           0,
-          obj.documents[i].name.lastIndexOf("."),
+          obj.documents[i].name.lastIndexOf(".")
         );
 
         formData.append(photoName, obj.documents[i]);
       }
 
       await upload(formData).then(
-        (result) => (tempImg = result.data.imageUrls),
+        (result) => (tempImg = result.data.imageUrls)
       );
 
       const response = await addBooking({
@@ -184,7 +171,7 @@ const CheckIn = () => {
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: obj.amount.length? obj.amount : 0,
+        paid_amount: typeof(obj.amount)==='number' ? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
         doc_number: obj.doc_number,
@@ -205,7 +192,7 @@ const CheckIn = () => {
       }
 
       setLoading(false);
-      formReset()
+      formReset();
     },
   });
 
@@ -499,7 +486,7 @@ const CheckIn = () => {
             name="amount"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
             value={formik.values.amount}
-           onChange={handleAmount}
+            onChange={handleAmount}
             onBlur={formik.handleBlur}
           />
           {formik.touched.amount && Boolean(formik.errors.amount) ? (

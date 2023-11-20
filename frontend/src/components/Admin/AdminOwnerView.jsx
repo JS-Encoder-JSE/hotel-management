@@ -19,7 +19,7 @@ const AdminOwnerView = () => {
   const { id } = useParams();
   const { data, isLoading, error } = useGetUserQuery(id);
   const { user } = useSelector((store) => store.authSlice);
-
+  console.log(data?.assignedHotel);
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
@@ -56,10 +56,12 @@ const AdminOwnerView = () => {
               <h6>
                 {" "}
                 Purchase Date :{new Date(
-                  data?.createdAt,
+                  data?.createdAt
                 ).toLocaleDateString()}{" "}
               </h6>
-              <h6>Renew Date : {new Date(data?.bill_from).toLocaleDateString()}</h6>
+              <h6>
+                Renew Date : {new Date(data?.bill_from).toLocaleDateString()}
+              </h6>
               <h6>
                 Expire Date : {new Date(data?.bill_to).toLocaleDateString()}
               </h6>
@@ -67,7 +69,7 @@ const AdminOwnerView = () => {
                 Remaining Days:{" "}
                 {Math.floor(
                   Math.abs(new Date(data?.bill_to) - new Date()) /
-                    (24 * 60 * 60 * 1000),
+                    (24 * 60 * 60 * 1000)
                 )}{" "}
                 Days
               </h6>
@@ -85,7 +87,7 @@ const AdminOwnerView = () => {
           </div>
         </div>
 
-        <HotelList />
+        <HotelList hotels={data?.assignedHotel} />
         <TransactionHistory />
         <StatusHistory />
       </div>

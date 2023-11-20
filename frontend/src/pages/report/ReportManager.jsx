@@ -14,6 +14,8 @@ import {
   useGetReportQuery,
 } from "../../redux/admin/report/reportAPI.js";
 import { useGetManagerReportQuery } from "../../redux/report/reportAPI.js";
+import { Rings } from "react-loader-spinner";
+import { getFormateDateAndTime, getISOStringDate } from "../../utils/utils.js";
 
 const ReportManager = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -28,7 +30,6 @@ const ReportManager = () => {
     toDate: "",
     search: "",
   });
-
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
@@ -41,11 +42,10 @@ const ReportManager = () => {
       endDate: "",
     },
     onSubmit: (values) => {
-      console.log(values);
       setSearchParams((p) => ({
         ...p,
-        toDate: values.endDate,
-        fromDate: values.startDate,
+        toDate: getISOStringDate(values.endDate),
+        fromDate: getISOStringDate(values.startDate),
         search: values.search,
       }));
     },
@@ -54,15 +54,12 @@ const ReportManager = () => {
       setForcePage(0);
     },
   });
-
-  
   const { isLoading, data: reports } = useGetManagerReportQuery({
     ...searchParams,
     cp: currentPage,
     filter: formik.values.filter,
     limit: formik.values.entries,
   });
-
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
@@ -72,12 +69,12 @@ const ReportManager = () => {
   };
 
   useEffect(() => {
-    if (reports) setPageCount(reports?.totalPages);
+    if (reports) setPageCount(reports?.data?.totalPages);
   }, [reports]);
 
   useEffect(() => {
     if (reports) {
-      const total = reports?.docs?.reduce(
+      const total = reports?.data?.docs?.reduce(
         (total, current) => total + current.paid_amount,
         0
       );
@@ -96,9 +93,7 @@ const ReportManager = () => {
               <button
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-                onClick={() =>
-                  exportExcel([{ name: "test", age: 12 }], "testexcel")
-                }
+                onClick={() => exportExcel(reports?.data?.docs, "testexcel")}
               >
                 CSV
               </button>
@@ -119,9 +114,7 @@ const ReportManager = () => {
               <button
                 type={"button"}
                 className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-                // onClick={() =>
-                //   exportExcel([{ name: "test", age: 12 }], "testexcel")
-                // }
+                onClick={() => exportExcel(reports?.data?.docs, "testexcel")}
               >
                 PDF
               </button>
@@ -145,22 +138,6 @@ const ReportManager = () => {
                 <option value={50}>50</option>
               </select>
               <span>entries</span>
-            </div>
-            <div>
-              <select
-                name="filter"
-                className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-                value={formik.values.filter}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="All" selected>
-                  All
-                </option>
-                <option value="Sold">Sold</option>
-                <option value="Renew">Renew</option>
-                {/* <option value="Expired">Expired</option> */}
-              </select>
             </div>
           </div>
           <div className={`flex gap-3`}>
@@ -286,61 +263,56 @@ const ReportManager = () => {
               </button>
             </div> */}
 
-        <div className="overflow-x-auto mt-10">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>SL</th>
-                {/* <th>Booking Number</th> */}
-                <th>Guest Name</th>
-                <th>Room Numbers</th>
-                <th>Check In</th>
-                <th>Check Out</th>
-                <th>Paid Amount</th>
-                {/*<th>Deposit By</th>*/}
-              </tr>
-            </thead>
-            <tbody>
-              {/*{[...reports?.docs]*/}
-              {/*  ?.sort((a, b) =>*/}
-              {/*    a.username.toLowerCase() > b.username.toLowerCase()*/}
-              {/*      ? 1*/}
-              {/*      : a.username.toLowerCase() < b.username.toLowerCase()*/}
-              {/*      ? -1*/}
-              {/*      : 0,*/}
-              {/*  )*/}
-              {/*  ?.map((report, idx) => {*/}
-              {/*    return (*/}
-              {/*      <tr*/}
-              {/*        className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}*/}
-              {/*      >*/}
-              {/*        <th>{++idx}</th>*/}
-              {/*        <td>S.M. Khalid Mahmud</td>*/}
-              {/*        /!* <td>1542565</td> *!/*/}
-              {/*        <td>104, 105</td>*/}
-              {/*        <td>*/}
-              {/*          2023-10-21 <br /> 10:00:00*/}
-              {/*        </td>*/}
-              {/*        <td>*/}
-              {/*          2023-10-21 <br /> 10:00:00*/}
-              {/*        </td>*/}
-              {/*        <td>25000</td>*/}
-              {/*        /!*<td>25000</td>*!/*/}
-              {/*        /!*<td className={`space-x-1.5`}></td>*!/*/}
-              {/*      </tr>*/}
-              {/*    );*/}
-              {/*  })}*/}
-            </tbody>
-            <tfoot className={`text-sm`}>
-              <tr>
-                <td colSpan={5} className={`text-end`}>
-                  Total
-                </td>
-                <td>{totalAmount}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+        {!isLoading ? (
+          <div className="overflow-x-auto mt-10">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  {/* <th>Booking Number</th> */}
+                  <th>Guest Name</th>
+                  <th>Room Numbers</th>
+                  <th>Check In</th>
+                  <th>Check Out</th>
+                  <th>Paid Amount</th>
+                  {/*<th>Deposit By</th>*/}
+                </tr>
+              </thead>
+              <tbody>
+                {reports?.data?.docs?.map((report, idx) => {
+                  return (
+                    <tr
+                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                    >
+                      <th>{++idx}</th>
+                      <td>{report.guestName}</td>
+                      <td>{report?.room_numbers.join(",")}</td>
+                      <td>{getFormateDateAndTime(report?.checked_in)}</td>
+                      <td>{getFormateDateAndTime(report?.checked_out)}</td>
+                      <td>{report?.paid_amount}</td>
+                      <td className={`space-x-1.5`}></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot className={`text-sm`}>
+                <tr>
+                  <td colSpan={5} className={`text-end`}>
+                    Total
+                  </td>
+                  <td>{totalAmount}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        ) : (
+          <Rings
+            width="50"
+            height="50"
+            color="#37a000"
+            wrapperClass="justify-center"
+          />
+        )}
         <div className="flex justify-center mt-10">
           <ReactPaginate
             containerClassName="join rounded-none"

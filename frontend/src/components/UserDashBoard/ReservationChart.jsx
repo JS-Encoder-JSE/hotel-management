@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const ReservationChart = ({ userManager }) => {
+const ReservationChart = ({ userManager, monthlyData }) => {
   const [chartProps, setChartProps] = useState({
     series: [
       {
-        name: "Desktops",
-        data: [10, 41, 35, 71, 49, 39, 53, 33, 23],
+        name: "Check in",
+        data: [],
         color: "#359b00",
       },
     ],
@@ -34,24 +34,39 @@ const ReservationChart = ({ userManager }) => {
         },
       },
       xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
+        categories: [],
       },
     },
   });
-
+  useEffect(() => {
+    const sortedData = monthlyData?.sort((a, b) => {
+      const aDate = new Date(`${a.year}-${a.month_name}`);
+      const bDate = new Date(`${b.year}-${b.month_name}`);
+      return aDate - bDate;
+    });
+    const last12Data = sortedData?.slice(-12);
+    const getAllMonth = last12Data?.map((data) =>
+      data.month_name.substring(0, 3)
+    );
+    const checkInData = last12Data?.map((data) => data.total_checkin);
+    const salesData = last12Data?.map((data) => data.total_sale);
+    setChartProps((prev) => ({
+      ...prev,
+      options: {
+        ...prev.options,
+        xaxis: {
+          ...prev.options.xaxis,
+          categories: getAllMonth,
+        },
+      },
+      series: [
+        {
+          ...prev.series[0],
+          data: userManager ? checkInData : salesData,
+        },
+      ],
+    }));
+  }, []);
   return (
     <ReactApexChart
       options={chartProps.options}

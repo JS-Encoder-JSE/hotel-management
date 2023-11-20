@@ -2,22 +2,42 @@ import React, { useState } from "react";
 import Select from "react-select";
 import { useRoomsQuery } from "../../redux/room/roomAPI.js";
 import UserDashBoard from "../../components/UserDashBoard/UserDashBoard";
+import { useSelector } from "react-redux";
+import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
+import { Rings } from "react-loader-spinner";
 
 const MonitorFinance = () => {
-  const { isLoading, data: rooms } = useRoomsQuery();
-  const [selectedRooms, setSelectedRooms] = useState([]);
-
+  const { user } = useSelector((store) => store.authSlice);
+  const {
+    isLoading,
+    data: hotels,
+    isError,
+  } = useHotelsQuery({
+    uid: user._id,
+    pid: "",
+    filter: "Active",
+  });
+  const [selectedHotel, setselectedHotel] = useState([]);
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
     }
   };
-
-  const transformedRooms = rooms?.data?.map((room) => ({
-    value: room.roomNumber,
-    label: `${room.roomNumber} - ${room.category}`,
+  const transformedHotel = hotels?.docs?.map((hotel) => ({
+    value: hotel?.managers[0]?._id,
+    label: `${hotel.name} - ${hotel.branch_name}`,
   }));
-
+  console.log(hotels?.docs);
+  if (isLoading || isError) {
+    return (
+      <Rings
+        width="50"
+        height="50"
+        color="#37a000"
+        wrapperClass="justify-center"
+      />
+    );
+  }
   return (
     <div className="space-y-20">
       {/* Select Room Section */}
@@ -26,14 +46,14 @@ const MonitorFinance = () => {
         <div className="w-[353px]">
           <Select
             placeholder="Search with hotel name"
-            defaultValue={selectedRooms}
-            options={transformedRooms}
+            defaultValue={selectedHotel}
+            options={transformedHotel}
             isMulti
             isSearchable
             closeMenuOnSelect={false}
             onKeyDown={handleKeyDown}
-            onChange={setSelectedRooms}
-            noOptionsMessage={() => "No room available"}
+            onChange={setselectedHotel}
+            noOptionsMessage={() => "No Hotel available"}
             classNames={{
               control: (state) =>
                 `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
@@ -47,7 +67,11 @@ const MonitorFinance = () => {
       </section>
 
       <section>
-        <UserDashBoard></UserDashBoard>
+        {selectedHotel?.length ? (
+          <UserDashBoard managerId={selectedHotel[0]?.value}></UserDashBoard>
+        ) : (
+          ""
+        )}
       </section>
     </div>
   );

@@ -25,6 +25,7 @@ const AdminOwnerList = ({ title }) => {
     },
     onSubmit: (values) => {
       setKeyword(values.search);
+      setCurrentPage(0)
     },
   });
   const [updateLicenseStatus] = useUpdateLicenseStatusMutation();
@@ -117,7 +118,10 @@ const AdminOwnerList = ({ title }) => {
               name="filter"
               className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.filter}
-              onChange={formik.handleChange}
+              onChange={(e)=>{
+                formik.setFieldValue('filter',e.target.value)
+                setCurrentPage(0)
+              }}
             >
               <option value="">All</option>
               <option value="Active">Active</option>

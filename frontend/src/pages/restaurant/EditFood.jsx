@@ -22,6 +22,7 @@ import * as yup from "yup";
 import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 import {
   useFoodQuery,
+  useGetCategoryQuery,
   useUpdateFoodMutation,
 } from "../../redux/restaurant/foodAPI.js";
 import { useUpdateRoomMutation } from "../../redux/room/roomAPI.js";
@@ -57,6 +58,8 @@ const EditFood = () => {
   const [uploadSingle] = useUploadSingleMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [showPass, setShowPass] = useState(false);
+  const { data: categories, isLoading: categoryLoading } =
+    useGetCategoryQuery();
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -185,6 +188,43 @@ const EditFood = () => {
     }
   }, [food]);
 
+  const predefinedOptions = [
+    { key: "", value: "", label: "Category" },
+    { key: "Liquor", value: "Liquor", label: "Liquor" },
+    { key: "Rice", value: "Rice", label: "Rice" },
+    { key: "Full Meal", value: "Full Meal", label: "Full Meal" },
+    { key: "Sneaks", value: "Sneaks", label: "Sneaks" },
+    { key: "Drinks", value: "Drinks", label: "Drinks" },
+    { key: "Deserts", value: "Deserts", label: "Deserts" },
+    { key: "Juices", value: "Juices", label: "Juices" },
+    {
+      key: "Vegetarian Meals",
+      value: "Vegetarian Meals",
+      label: "Vegetarian Meals",
+    },
+    { key: "Curries", value: "Curries", label: "Curries" },
+  ];
+  const combinedArray = categoryLoading
+    ? []
+    : [
+        ...predefinedOptions,
+        ...categories?.data?.map((category) => {
+          const categoryExists = predefinedOptions.find(
+            (option) =>
+              option.value === category.category_name &&
+              option.label === category.category_name
+          );
+          if (categoryExists) {
+            return null;
+          }
+          return {
+            key: category?._id,
+            value: category?.category_name,
+            label: category?.category_name,
+          };
+        }),
+      ].filter((item) => item !== null);
+
   return (
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
       <div
@@ -278,20 +318,18 @@ const EditFood = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
-              <option value="" selected disabled>
-                Category
-              </option>
-              <option value="Liquor">Liquor</option>
-              <option value="1">Kebab</option>
-              <option value="2">Rice</option>
-              <option value="3">Full Meal</option>
-              <option value="4">Sneaks</option>
-              <option value="5">Drinks</option>
-              <option value="6">Deserts</option>
-              <option value="7">Juices</option>
-              <option value="8">Curries</option>
-              <option value="9">Vegetarian Meals</option>
-              <option value="Others">Others</option>
+              {[
+                ...combinedArray,
+                { key: "Others", value: "Others", label: "Others" },
+              ]?.map((option) => (
+                <option
+                  key={option.key}
+                  value={option.value}
+                  disabled={option === "Category" ? true : false}
+                >
+                  {option.label}
+                </option>
+              ))}
             </select>
             {formik.touched.category && Boolean(formik.errors.category) ? (
               <small className="text-red-600">

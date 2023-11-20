@@ -25,9 +25,8 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
-    children: yup
+  children: yup
     .number()
-    .required("Children is required")
     .positive("Children must be a positive number")
     .integer("Children must be an integer"),
   // children: yup.number().when([], {
@@ -37,7 +36,8 @@ const validationSchema = yup.object({
   //     .positive("Children must be a positive number")
   //     .integer("Children must be an integer"),
   // }),
-  paymentMethod: yup.string().required("Payment method is required"),
+  amount: yup.number(),
+  paymentMethod: yup.string(),
   // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
   //   if (paymentMethod !== "cash")
   //     return schema.required("Transaction ID is required");
@@ -45,32 +45,29 @@ const validationSchema = yup.object({
   // }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  amount: yup.number(),
+
   nationality: yup.string().required("Nationality is required"),
   bookingMethod: yup.string().required("Booking method is required"),
 });
 
 const AddBookingSelect = ({ room }) => {
-
-
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-  console.log(fieldName)
-    
+    console.log(fieldName);
+
     if (inputValue >= 0) {
       // Update the Formik state
       formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
     }
-    else if(inputValue === ""){
-      e.target.value=0
-      formik.handleChange(e)
-    }
-  //  else {
-  //     // Set inputValue to 0 and update the Formik state
-  //     e.target.value = 0;
-  //     formik.handleChange(e);
-  // }
+    //  else {
+    //     // Set inputValue to 0 and update the Formik state
+    //     e.target.value = 0;
+    //     formik.handleChange(e);
+    // }
   };
   // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
@@ -98,17 +95,17 @@ const AddBookingSelect = ({ room }) => {
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       const obj = { ...values };
-      console.log(obj)
+      console.log(obj);
 
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
       const no_of_days = Math.floor(
-        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000),
+        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
       const rent_per_day = obj.room_arr.reduce(
         (init, current) => init + current.price,
-        0,
+        0
       );
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
@@ -116,7 +113,7 @@ const AddBookingSelect = ({ room }) => {
 
       const response = await addBooking({
         hotel_id: obj.hotel_id,
-        bookingMethod:obj.bookingMethod,
+        bookingMethod: obj.bookingMethod,
         room_ids,
         guestName: obj.guestName,
         address: obj.address,
@@ -133,10 +130,10 @@ const AddBookingSelect = ({ room }) => {
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: obj.amount.length? obj.amount : 0,
+        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
-        status:"Active"
+        status: "Active",
       });
 
       console.log(response);
@@ -215,11 +212,11 @@ const AddBookingSelect = ({ room }) => {
 
           <div className="flex flex-col gap-3">
             <select
-                name="bookingMethod"
-                className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-                value={formik.values.bookingMethod}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+              name="bookingMethod"
+              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+              value={formik.values.bookingMethod}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               <option value="" selected disabled>
                 Booking Method
@@ -227,10 +224,11 @@ const AddBookingSelect = ({ room }) => {
               <option value="Online">Online</option>
               <option value="Offline">Offline</option>
             </select>
-            {formik.touched.bookingMethod && Boolean(formik.errors.bookingMethod) ? (
-                <small className="text-red-600">
-                  {formik.touched.bookingMethod && formik.errors.bookingMethod}
-                </small>
+            {formik.touched.bookingMethod &&
+            Boolean(formik.errors.bookingMethod) ? (
+              <small className="text-red-600">
+                {formik.touched.bookingMethod && formik.errors.bookingMethod}
+              </small>
             ) : null}
           </div>
 

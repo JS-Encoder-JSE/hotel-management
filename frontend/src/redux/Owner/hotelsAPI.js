@@ -22,7 +22,7 @@ const hotelsAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["hotels"],
+      invalidatesTags: ["hotels", "auth"],
     }),
     deleteRoom: build.mutation({
       query: (id) => {

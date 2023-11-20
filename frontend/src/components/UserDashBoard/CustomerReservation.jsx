@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const CustomerReservation = ({ userHotel }) => {
+const CustomerReservation = ({ userHotel, monthlyData }) => {
   const [chartProps, setChartProps] = useState({
     series: [
       {
@@ -46,19 +46,7 @@ const CustomerReservation = ({ userHotel }) => {
           stops: [0, 100, 100, 100],
         },
       },
-      labels: [
-        "01/01/2023",
-        "02/01/2023",
-        "03/01/2023",
-        "04/01/2023",
-        "05/01/2023",
-        "06/01/2023",
-        "07/01/2023",
-        "08/01/2023",
-        "09/01/2023",
-        "10/01/2023",
-        "11/01/2023",
-      ],
+      labels: [],
       markers: {
         size: 0,
       },
@@ -85,6 +73,52 @@ const CustomerReservation = ({ userHotel }) => {
       },
     },
   });
+
+  useEffect(() => {
+    const sortedData = monthlyData.sort((a, b) => {
+      const aDate = new Date(`${a.year}-${a.month_name}`);
+      const bDate = new Date(`${b.year}-${b.month_name}`);
+      return aDate - bDate;
+    });
+    const last12Data = sortedData.slice(-12);
+    const convertedDate = [
+      ...new Set(
+        last12Data.map((data) => {
+          const formattedDate = new Date(
+            `${data.year}-${data.month_name}-01`
+          ).toLocaleDateString("en-US", {
+            month: "2-digit",
+            day: "2-digit",
+            year: "numeric",
+          });
+          return formattedDate;
+        })
+      ),
+    ];
+    // Extracting data for "Checkin Confirmed" and "Booking"
+    const checkinData = last12Data.map((data) => data.total_checkin);
+    const bookingData = last12Data.map((data) => data.total_booking);
+    const expiredData = last12Data.map((data) => data.total_expired);
+    const renewData = last12Data.map((data) => data.total_renew);
+    // Update state
+    setChartProps((prevProps) => ({
+      ...prevProps,
+      series: [
+        {
+          ...prevProps.series[0],
+          data: userHotel ? checkinData : expiredData,
+        },
+        {
+          ...prevProps.series[1],
+          data: userHotel ? bookingData : renewData,
+        },
+      ],
+      options: {
+        ...prevProps.options,
+        labels: convertedDate,
+      },
+    }));
+  }, [monthlyData]);
 
   return (
     <ReactApexChart
