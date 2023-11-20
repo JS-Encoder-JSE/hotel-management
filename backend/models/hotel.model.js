@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import User from "./user.model.js";
 
 // const RoomsSchema = new mongoose.Schema({
 //   room_no: { type: Number, required: true },
@@ -119,6 +120,7 @@ const hotelSchema = new mongoose.Schema(
     manager_acc: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
+      ref: "User",
     },
     managers: [ManagerSchema],
   },

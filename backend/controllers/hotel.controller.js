@@ -189,7 +189,22 @@ export const getHotels = async (req, res) => {
       limit: parseInt(limit, 10),
     };
 
-    const hotels = await Hotel.paginate(query, options);
+    // const hotels = await Hotel.paginate(query, options);
+    // Execute the query without paginate and then use populate
+    const result = await Hotel.find(query)
+      .limit(options.limit)
+      .skip((options.page - 1) * options.limit)
+      .populate("manager_acc", "username");
+
+    const totalDocuments = await Hotel.countDocuments(query);
+
+    const hotels = {
+      docs: result,
+      totalDocs: totalDocuments,
+      page: options.page,
+      limit: options.limit,
+      totalPages: Math.ceil(totalDocuments / options.limit),
+    };
     res.status(200).json(hotels);
   } catch (error) {
     res.status(500).json({ message: "Failed to retrieve hotels" });
