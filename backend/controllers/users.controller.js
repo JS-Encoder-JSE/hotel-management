@@ -594,6 +594,17 @@ export const login = async (req, res) => {
         .status(403)
         .json({ message: "You have no permission to login" });
     }
+    if (user.role === "owner") {
+      const currentDate = new Date();
+      if (currentDate < user.bill_from) {
+        return res
+          .status(403)
+          .json({
+            message:
+              "Login failed, please try to login within your license date",
+          });
+      }
+    }
     if (["Expired", "Deactive", "Deleted"].includes(user.status)) {
       return res
         .status(403)
