@@ -4,6 +4,7 @@
   FoodOrder,
 } from "../../models/Manager/food.model.js";
 import Room from "../../models/Manager/room.model.js";
+import Table from "../../models/Manager/table.model.js";
 import { Dashboard } from "../../models/dashboard.model.js";
 import Hotel from "../../models/hotel.model.js";
 import User from "../../models/user.model.js";
@@ -355,29 +356,27 @@ export const getOrdersByHotelId = async (req, res) => {
     };
 
     if (roomNumber) {
-      const room = await Room.findOne({ hotel_id, roomNumber: roomNumber });
+      const room = await Room.findOne({ hotel_id, roomNumber });
       if (room) {
         query.room_id = room._id;
       } else {
         return res.status(200).json({
-          success: true,
+          success: false,
           data: [],
-          message: "No Gym Bills found for the given Room Number",
+          message: "No room found for the given room number",
         });
       }
     }
+
     if (table_number) {
-      const table = await Room.findOne({
-        hotel_id,
-        table_number: table_number,
-      });
+      const table = await Table.findOne({ hotel_id, table_number });
       if (table) {
         query.table_id = table._id;
       } else {
         return res.status(200).json({
-          success: true,
+          success: false,
           data: [],
-          message: "No Gym Bills found for the given Table Number",
+          message: "No table found for the given table number",
         });
       }
     }
