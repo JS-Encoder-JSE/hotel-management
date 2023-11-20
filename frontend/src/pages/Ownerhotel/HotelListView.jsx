@@ -112,7 +112,7 @@ const HotelListView = () => {
                 <h6> Address : {hotel?.address}</h6>
                 <h6> Number : {hotel?.phone_no}</h6>
                 <h6> Email : {hotel?.email}</h6>
-                <h6> Username : {hotel?.email}</h6>
+                <h6> Username : {hotel?.manager_acc?.username}</h6>
               </div>
             </div>
           </>

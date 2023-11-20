@@ -37,7 +37,7 @@ const OrderList = () => {
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
-    search: "",
+    unique_id: "",
   });
   const formik = useFormik({
     initialValues: {
@@ -52,7 +52,7 @@ const OrderList = () => {
         ...p,
         toDate: getISOStringDate(values.endDate),
         fromDate: getISOStringDate(values.startDate),
-        search: values.search,
+        unique_id: values.search,
       }));
     },
   });

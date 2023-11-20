@@ -49,6 +49,7 @@ const FoodCheckout = () => {
       order_status: "CheckedOut",
       current_order: false,
       total_price: grandTotal,
+      unpaid_amount:0,
     };
     const updateForRoom = {
       paid_amount: 0,

@@ -260,7 +260,7 @@ const HotelEdit = () => {
                 <button
                   onClick={() =>
                     navigate(
-                      `/dashboard/change-hotel-password/${hotel?.manager_acc}`
+                      `/dashboard/change-hotel-password/${hotel?.manager_acc?._id}`
                     )
                   }
                   type="button"

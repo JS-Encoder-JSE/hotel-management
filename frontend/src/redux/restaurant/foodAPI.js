@@ -62,14 +62,25 @@ const foodAPI = baseAPI.injectEndpoints({
       invalidatesTags: ["order"],
     }),
     orders: build.query({
-      query: ({ current_order, cp, pp, search, fromDate, toDate }) =>
+      query: ({
+        current_order,
+        cp,
+        pp,
+        unique_id,
+        fromDate,
+        toDate,
+        roomNumber,
+        table_number,
+      }) =>
         `foods/get-orders-by-hotel?limit=${pp}&page=${++cp}${
-          search
-            ? `&search=${search} &toDate=${toDate || ""}&fromDate=${
-                fromDate || ""
-              }`
+          toDate && fromDate
+            ? `&toDate=${toDate || ""}&fromDate=${fromDate || ""}`
             : ""
-        } ${current_order ? `&current_order=true` : ""}`,
+        }${current_order ? `&current_order=true` : ""}${
+          roomNumber ? `&roomNumber=${roomNumber}` : ""
+        }${table_number ? `&table_number=${table_number}` : ""}${
+          unique_id ? `&unique_id=${unique_id}` : ""
+        }`,
       providesTags: ["order"],
     }),
     addTable: build.mutation({
