@@ -8,8 +8,9 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import logo from "../../../assets/logo.png";
+import RoomDetailsSection from "./RoomDetailsSection";
 
-const InvoicePDF = ({ header }) => {
+const InvoicePDF = ({ header, data }) => {
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -87,7 +88,9 @@ const InvoicePDF = ({ header }) => {
                 <Text>+8801715-738573</Text>
               </View>
             </View>
-
+            <View>
+              <RoomDetailsSection data={data} />
+            </View>
             <View
               style={{
                 position: "absolute",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import CustomerInfoSection from "./CustomerInfoSection";
 import RoomDetailsSection from "./RoomDetailsSection";
@@ -14,6 +14,9 @@ import {
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import CheckOutPrint from "./CheckOutPrint";
+import { useDispatch } from "react-redux";
+import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 
 const CheckOut = () => {
   const navigate = useNavigate();
@@ -24,11 +27,19 @@ const CheckOut = () => {
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
-  const { data: checkout } = useGetCOInfoQuery(fetch);
+  const { data: checkout , isLoading:checkoutLoading ,isSuccess } = useGetCOInfoQuery(fetch);
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
   // console.log("checkout info", checkout);
+  // console.log( checkout);
+
+  // this is use for Print
+  const componentRef = useRef();
+
+  // dispatch
+  const dispatch=useDispatch()
+
 
   const formik = useFormik({
     initialValues: {
@@ -51,15 +62,13 @@ const CheckOut = () => {
         guestName: checkout?.data?.booking_info?.[0]?.guestName,
         payment_method: paymentList[0].method,
       });
-      console.log(response);
+      // console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
         toast.success("Checkout Successful");
-        formikHelpers.resetForm();
         // navigate("/dashboard/checkout");
       }
-      
     },
   });
 
@@ -90,8 +99,19 @@ const CheckOut = () => {
   useEffect(() => {
     setFetch(roomFromQuery);
     setShowRooms(true);
+    
+   
   }, [roomFromQuery]);
 
+  // set subtotal amount
+  useEffect(()=>{
+      if(isSuccess){
+        dispatch(updateSubTotal(checkout?.data?.booking_info?.[0]?.total_unpaid_amount||0))
+      }
+      
+  },[checkout])
+  console.log(checkout?.data?.booking_info);
+ 
   return (
     <div className="space-y-8">
       <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center">
@@ -125,23 +145,44 @@ const CheckOut = () => {
       </div>
 
       {/* Customer Info and Set them to default */}
-      {showRooms && (
+      {showRooms && checkout ? (
         <>
-          <CustomerInfoSection data={checkout?.data?.booking_info} />
-          <RoomDetailsSection data={checkout?.data?.booking_info} />
-          <BillingSection
-            data={checkout?.data}
-            totalBilling={totalBilling}
-            setTotalBilling={setTotalBilling}
-            setPBill={setPBill}
-          />
-          <PaymentSection
-            paymentList={paymentList}
-            setPaymentList={setPaymentList}
-            pBill={pBill}
-            formik={formik}
-          />
+          <div>
+            <CustomerInfoSection data={checkout?.data?.booking_info} />
+            <RoomDetailsSection data={checkout?.data?.booking_info} />
+            <BillingSection
+              data={checkout?.data}
+              totalBilling={totalBilling}
+              setTotalBilling={setTotalBilling}
+              setPBill={setPBill}
+            />
+            <PaymentSection
+              data={checkout?.data?.booking_info}
+              paymentList={paymentList}
+              setPaymentList={setPaymentList}
+              pBill={pBill}
+              formik={formik}
+            />
+          </div>
+
+          <div style={{ display: "none" }}>
+            <div ref={componentRef}>
+              <CheckOutPrint
+                data={checkout?.data?.booking_info}
+                paymentList={paymentList}
+                totalBilling={totalBilling}
+                setTotalBilling={setTotalBilling}
+                setPBill={setPBill}
+               
+              />
+            </div>
+          </div>
         </>
+      ) : (
+        <p className="hidden lg:flex absolute top-[50%] left-[54%]">
+          {" "}
+          "Please select the room"
+        </p>
       )}
     </div>
   );

@@ -17,7 +17,9 @@ const RoomDetailsSection = ({ data }) => {
         <tbody>
           <tr className="grid grid-cols-8 text-left">
             <td className="py-1 px-3 border-r border-black/20">
-              {data?.[0]?.room_ids?.map((i) => `${i?.roomNumber} - ${i?.category}`).join(', ')}
+              {data?.[0]?.room_ids
+                ?.map((i) => `${i?.roomNumber} - ${i?.category}`)
+                .join(", ")}
               {/*{selectedRooms.map((room, index) => (*/}
               {/*  <div key={index}>*/}
               {/*    <p className="font-semibold">{room.label}</p>*/}
@@ -69,19 +71,19 @@ const RoomDetailsSection = ({ data }) => {
                       {data?.[0]?.no_of_days}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.[0]?.rent_per_day}
+                      {data?.[0]?.rent_per_day.toFixed(2)}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.[0]?.total_rent}
+                      {data?.[0]?.total_rent.toFixed(2)}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.[0]?.discount}
+                      {data?.[0]?.discount.toFixed(2)}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.[0]?.paid_amount}
+                      {data?.[0]?.paid_amount.toFixed(2)}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.[0]?.total_unpaid_amount}
+                      {data?.[0]?.total_unpaid_amount.toFixed(2)}
                     </td>
                   </tr>
                 </tbody>

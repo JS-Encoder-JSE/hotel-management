@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useFormik } from "formik";
@@ -7,15 +7,22 @@ import PaymentMethod from "./PaymentMethod.jsx";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import InvoicePDF from "./InvoicePDF.jsx";
 import { jsPDF } from "jspdf";
+import ReactToPrint from "react-to-print";
+import CheckOutPrint from "./CheckOutPrint.jsx";
 
-const PaymentSection = ({ pBill, formik, paymentList, setPaymentList }) => {
+const PaymentSection = ({
+  pBill,
+  formik,
+  paymentList,
+  setPaymentList,
+  data,
+}) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
-
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -48,6 +55,8 @@ const PaymentSection = ({ pBill, formik, paymentList, setPaymentList }) => {
     setColAmount(totalCol);
   }, [paymentList]);
 
+  const componentRef = useRef();
+
   return (
     <section>
       <div className="grid lg:grid-cols-2 gap-5">
@@ -76,15 +85,11 @@ const PaymentSection = ({ pBill, formik, paymentList, setPaymentList }) => {
             </div>
             <div className="col-span-2 space-y-3">
               <p>
-                {pBill > colAmount
-                  ? Math.abs(pBill.toFixed(2) - colAmount.toFixed(2))
-                  : 0}
+                {pBill > colAmount ? Math.abs(Math.ceil(pBill - colAmount)) : 0}
               </p>
-              <p>{colAmount.toFixed(2)}</p>
+              <p>{Math.ceil(colAmount)}</p>
               <p>
-                {pBill < colAmount
-                  ? Math.abs(pBill.toFixed(2) - colAmount.toFixed(2))
-                  : 0}
+                {pBill < colAmount ? Math.abs(Math.ceil(pBill - colAmount)) : 0}
               </p>
             </div>
           </div>
@@ -92,9 +97,31 @@ const PaymentSection = ({ pBill, formik, paymentList, setPaymentList }) => {
       </div>
 
       <div className="flex justify-end gap-2 mt-5">
-        <PDFDownloadLink
+        <ReactToPrint
+          trigger={() => (
+            <button
+              title="please select payment method"
+              className="bg-green-slimy text-white px-2 rounded-sm"
+            >
+              Print
+            </button>
+          )}
+          content={() => componentRef.current}
+        />
+        <div style={{ display: "none" }}>
+          <div ref={componentRef}>
+            <CheckOutPrint
+              pBill={pBill}
+              colAmount={colAmount}
+              data={data}
+              paymentList={paymentList}
+            />
+          </div>
+        </div>
+        {/* <PDFDownloadLink
           document={
             <InvoicePDF
+              data={data}
               header={{ title: "DAK Hospitality LTD", address: "Dhaka" }}
             />
           }
@@ -102,7 +129,7 @@ const PaymentSection = ({ pBill, formik, paymentList, setPaymentList }) => {
           className="btn btn-md hover:bg-transparent bg-green-slimy hover:text-green-slimy text-white !border-green-slimy rounded normal-case"
         >
           Print
-        </PDFDownloadLink>
+        </PDFDownloadLink> */}
         {/*{PDF.length ? (*/}
         {/*  <PDFDownloadLink*/}
         {/*    document={*/}
