@@ -16,6 +16,7 @@ import {
 import { useGetManagerReportQuery } from "../../redux/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
 import { getFormateDateAndTime, getISOStringDate } from "../../utils/utils.js";
+import ManagerReport from "./ManagerReport.jsx";
 
 const ReportManager = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -60,6 +61,10 @@ const ReportManager = () => {
     filter: formik.values.filter,
     limit: formik.values.entries,
   });
+
+
+console.log(reports,"reports")
+
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
@@ -78,10 +83,12 @@ const ReportManager = () => {
         (total, current) => total + current.paid_amount,
         0
       );
-
       setTotalAmount(total);
+      setPDF(reports?.data?.docs)
     }
   }, [reports]);
+
+  console.log(PDF,"pdf")
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -97,27 +104,19 @@ const ReportManager = () => {
               >
                 CSV
               </button>
-              {/* {PDF.
-             length ? (
-                <button
-                  type={"button"}
-                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                >
+              {PDF.length ? (
                   <PDFDownloadLink
-                    document={<CreateReport values={PDF} />}
+                    document={<ManagerReport values={PDF} header={{
+                      title: "DAK Hospitality LTD",
+                      name: "All Report",
+                    }} />}
                     fileName={`${new Date().toLocaleDateString()}.pdf`}
+                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                   >
                     PDF
                   </PDFDownloadLink>
-                </button>
-              ) : null} */}
-              <button
-                type={"button"}
-                className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-                onClick={() => exportExcel(reports?.data?.docs, "testexcel")}
-              >
-                PDF
-              </button>
+              ) : null}
+              
             </div>
           </div>
         </div>

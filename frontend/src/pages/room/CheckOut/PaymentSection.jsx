@@ -55,6 +55,7 @@ const PaymentSection = ({
     setColAmount(totalCol);
   }, [paymentList]);
 
+  // for printing
   const componentRef = useRef();
 
   return (
