@@ -16,7 +16,6 @@ const FoodCheckout = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetOrderByIdQuery(id);
   const [orderData, setOrderData] = useState({});
-  console.log("orderData", orderData);
   const [input, setInput] = useState(1);
   const navigate = useNavigate();
   const [updateOrder] = useUpdateOrderMutation();
@@ -42,7 +41,6 @@ const FoodCheckout = () => {
   };
 
 
-console.log(orderData)
 
 
   const handleCheckout = async () => {
@@ -69,7 +67,6 @@ console.log(orderData)
         : null,
       id,
     });
-    console.log("res", response);
     if (response?.error) {
       toast.error(response.error.data.message);
     } else {

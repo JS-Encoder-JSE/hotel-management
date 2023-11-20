@@ -31,7 +31,6 @@ const validationSchema = yup.object({
 });
 
 const CheckInDyn = ({ data }) => {
-  console.log("data", data);
   const closeRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
   const [upload] = useUploadMutation();
@@ -42,7 +41,6 @@ const CheckInDyn = ({ data }) => {
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-    console.log(fieldName);
 
     if (inputValue >= 0) {
       // Update the Formik state
@@ -67,7 +65,6 @@ const CheckInDyn = ({ data }) => {
       setLoading(true);
 
       const obj = { ...values };
-      console.log("obj");
       let title;
       let tempImg;
 

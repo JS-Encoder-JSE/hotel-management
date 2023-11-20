@@ -31,7 +31,6 @@ const FoodLists = ({ formik, keyword, roomOrTable, reset, setReset }) => {
     tempFoods.push({ ...item, quantity });
 
     // const newOrder = { ...tempOrder, foods: tempFoods };
-    // console.log("new Order", newOrder);
     dispatch(setOrder(tempFoods));
     dispatch(setOrderCalc());
   };

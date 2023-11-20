@@ -14,7 +14,6 @@ const Profile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadSingle] = useUploadSingleMutation();
   const [updateUser] = useUpdateUserMutation();
-  console.log(user);
   const formik = useFormik({
     initialValues: {
       userImg: null,

@@ -16,7 +16,6 @@ const EmployeeView = () => {
       const filteredImages = Object.values(userData?.images)
         .flat()
         .filter((value) => value !== "");
-      console.log(filteredImages);
     }
   }, []);
 

@@ -47,7 +47,6 @@ const CurOrderList = () => {
       // chooseHotel: "",
     },
     onSubmit: (values) => {
-      console.log(values);
       setSearch(values.search);
       setSearchTable(values.tableNumber);
       setCurrentPage(0);

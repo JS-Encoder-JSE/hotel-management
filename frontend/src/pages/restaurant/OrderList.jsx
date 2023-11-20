@@ -93,7 +93,6 @@ const OrderList = () => {
   useEffect(() => {
     setPageCount(orders?.data?.totalPages);
   }, [orders]);
-  console.log(orders);
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>

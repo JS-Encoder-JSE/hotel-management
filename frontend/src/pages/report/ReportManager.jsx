@@ -63,7 +63,6 @@ const ReportManager = () => {
   });
 
 
-console.log(reports,"reports")
 
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
@@ -88,7 +87,6 @@ console.log(reports,"reports")
     }
   }, [reports]);
 
-  console.log(PDF,"pdf")
 
   return (
     <div className={`px-5 space-y-5`}>

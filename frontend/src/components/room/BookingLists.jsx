@@ -23,7 +23,6 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
     setCurrentPage(page);
   };
 
-  // console.log(bookingList)
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",

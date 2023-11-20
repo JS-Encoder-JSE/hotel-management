@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
-  console.log("permanent_datas", permanent_datas);
+ 
   const [chartProps, setChartProps] = useState({
     series: [
       // !userManager && chartData?.total_active_lic,
@@ -37,7 +37,6 @@ const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
     },
   });
   useEffect(() => {
-    console.log("userManager", userManager);
     if (userManager) {
       setChartProps((prev) => ({
         ...prev,

@@ -24,10 +24,8 @@ const day = String(currentDate.getDate()).padStart(2, "0");
 const formattedDate = `${year}-${month}-${day}`;
 
 const CheckOutPrint = ({ data, paymentList, totalBilling,setTotalBilling ,setPBill }) => {
-  console.log(totalBilling, setPBill, setTotalBilling, "Nissan")
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
-  // console.log(user, "user");
   return (
     <div>
       <div>

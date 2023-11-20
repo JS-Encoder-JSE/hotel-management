@@ -19,13 +19,11 @@ const ManagerListView = () => {
   const { data: userData, error, isLoading } = useGetUserQuery(id);
   const { data: hotels } = useGetHotelsQuery({ id, cp: 0 });
   const navigate = useNavigate();
-  console.log(hotels);
     useEffect(() => {
         if (userData) {
             const filteredImages = Object.values(userData?.images)
                 .flat()
                 .filter((value) => value !== '')
-            console.log(filteredImages)
         }
     }, []);
 

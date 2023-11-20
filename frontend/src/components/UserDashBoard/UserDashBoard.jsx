@@ -187,7 +187,6 @@ const UserDashBoard = ({ managerId }) => {
     isError,
   } = useGetDashboardInfoQuery(managerId ? managerId : user._id);
 
-  console.log(dashboardData);
   const [userHotel, setUserHotel] = useState(
     user.role === "manager" || user.role === "owner"
   );

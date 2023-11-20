@@ -32,7 +32,6 @@ const HotelLists = () => {
     pid: "",
     filter: "Active",
   });
-  console.log("hotel list :", hotels);
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",

@@ -31,7 +31,6 @@ const AddGym = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-        console.log(values);
       },
   });
 

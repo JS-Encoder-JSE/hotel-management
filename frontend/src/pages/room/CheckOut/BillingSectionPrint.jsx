@@ -18,8 +18,6 @@ const BillingSectionPrint = ({
     grandTotal,
     roomPostedBill,
   } = billingState;
-  // console.log(data,"dataaaaaaaa")
-  // console.log(data?.booking_info?.[0]?.total_unpaid_amount)
   //   const [discount, setDiscount] = useState(false);
   //   const [discountAmt, setDiscountAmt] = useState(0);
   //   const [breakAmt, setBreakAmt] = useState(0);

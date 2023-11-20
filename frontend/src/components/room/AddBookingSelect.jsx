@@ -52,7 +52,6 @@ const AddBookingSelect = ({ room }) => {
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-    console.log(fieldName);
 
     if (inputValue >= 0) {
       // Update the Formik state
@@ -67,7 +66,6 @@ const AddBookingSelect = ({ room }) => {
     //     formik.handleChange(e);
     // }
   };
-  // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -111,7 +109,6 @@ const AddBookingSelect = ({ room }) => {
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
-      console.log(obj);
       const response = await addBooking({
         hotel_id: obj.hotel_id,
         bookingMethod: obj.bookingMethod,
@@ -137,7 +134,6 @@ const AddBookingSelect = ({ room }) => {
         status: "Active",
       });
 
-      console.log(response);
 
       if (response?.error) {
         toast.error(response.error.data.message);

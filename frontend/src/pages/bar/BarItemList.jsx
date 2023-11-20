@@ -29,7 +29,6 @@ const BarItemList = () => {
   //   },
   //   validationSchema,
   //   onSubmit: () => {
-  //     console.log(order);
   //   },
   // });
 

@@ -19,7 +19,6 @@ const AdminOwnerView = () => {
   const { id } = useParams();
   const { data, isLoading, error } = useGetUserQuery(id);
   const { user } = useSelector((store) => store.authSlice);
-  console.log(data?.assignedHotel);
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };

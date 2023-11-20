@@ -66,7 +66,6 @@ const AddFood = () => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      console.log("hi", values);
       setLoading(true);
 
       const obj = { ...values };
@@ -195,7 +194,6 @@ const AddFood = () => {
             };
           }),
         ].filter((item) => item !== null);
-  console.log(combinedArray);
   if (categoryLoading) {
     return (
       <Rings

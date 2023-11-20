@@ -72,8 +72,6 @@ const CheckIn = () => {
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-    console.log(fieldName);
-
     if (inputValue >= 0) {
       // Update the Formik state
       formik.handleChange(e);
@@ -114,7 +112,6 @@ const CheckIn = () => {
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
-      console.log(room_ids);
       const no_of_days = Math.floor(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
@@ -182,7 +179,6 @@ const CheckIn = () => {
         status: "CheckedIn",
       });
 
-      console.log(response);
 
       if (response?.error) {
         toast.error(response.error.data.message);

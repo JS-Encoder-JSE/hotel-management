@@ -48,10 +48,9 @@ const AddBookingSwimming = () => {
       const obj = { ...values };
       obj.roomNumber = 101
 
-      console.log(obj)
 
       const response = await addBooking(obj);
-console.log(response)
+
   
     },
   });

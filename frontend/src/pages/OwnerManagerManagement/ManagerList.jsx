@@ -34,7 +34,6 @@ const ManagerList = () => {
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const parentId = store.getState().authSlice.user._id;
-  console.log(parentId);
   const { isLoading, data: subadmins } = useGetUsersQuery({
     cp: currentPage,
     filter: formik.values.filter,

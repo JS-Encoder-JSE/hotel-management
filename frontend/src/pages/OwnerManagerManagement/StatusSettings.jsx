@@ -28,7 +28,6 @@ const StatusSettings = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
     },
   });
 

@@ -28,7 +28,6 @@ const ManageInventory = () => {
     },
   });
   const { data: ItemsData } = useGetItemsQuery();
-  console.log("items :", ItemsData);
   const { order } = useSelector((store) => store.inventorySlice);
 
   const pressEnter = (e) => {

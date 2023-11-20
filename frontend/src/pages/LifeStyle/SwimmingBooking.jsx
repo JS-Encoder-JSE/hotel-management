@@ -40,7 +40,6 @@ const SwimmingBooking = () => {
 		},
 		validationSchema,
 		onSubmit: async (values) => {
-			console.log(values);
 		},
 	});
 
@@ -64,13 +63,11 @@ const SwimmingBooking = () => {
 	]
 
   useEffect(() => {
-    // console.log(formik.values.poolSelect)
     
     const value = selectOption.find(i => i.name === formik.values.poolSelect)
-    console.log(value)
+
 		setStatus(value?.status);
   }, [formik.values.poolSelect]);
-  console.log(status)
 	return (
 		<div
 			className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}>

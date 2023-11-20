@@ -87,7 +87,6 @@ const SubAdminList = () => {
       setModalOpen(false);
     }
   }, [modalOpen]);
-  console.log(subadmins);
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>

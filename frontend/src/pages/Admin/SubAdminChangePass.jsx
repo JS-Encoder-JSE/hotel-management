@@ -28,7 +28,6 @@ const SubAdminChangePass = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
     },
   });
 

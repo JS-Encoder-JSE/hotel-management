@@ -32,7 +32,6 @@ const RenewView = () => {
     !isLoading && data?.status === "Suspended"
       ? data?.extended_time[0]?.to
       : data?.bill_to;
-  console.log(bill_to);
   return (
     <div>
       <div className="card w-full bg-white shadow-xl p-5">

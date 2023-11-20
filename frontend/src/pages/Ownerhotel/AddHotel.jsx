@@ -56,7 +56,6 @@ const AddHotel = () => {
     pid: "",
     filter: "Active",
   });
-  console.log("hotels", hotels);
   const { data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
@@ -148,7 +147,6 @@ const AddHotel = () => {
       setSave(false);
     }
   }, [save]);
-  console.log("user", user);
   if (hotelsLoading) {
     return (
       <Rings

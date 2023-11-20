@@ -48,7 +48,6 @@ const ConfirmOrder = () => {
         items: arr,
         grand_total: orderCalc.grandTotal,
       });
-      console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {

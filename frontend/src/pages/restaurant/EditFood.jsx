@@ -53,7 +53,6 @@ const EditFood = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { isLoading, data: food } = useFoodQuery(id);
-  console.log("food data", food);
   const [updateFood] = useUpdateFoodMutation();
   const [uploadSingle] = useUploadSingleMutation();
   const [selectedImages, setSelectedImages] = useState([]);
@@ -76,7 +75,6 @@ const EditFood = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      console.log("submit value :", values);
       setLoading(true);
 
       const obj = { ...values };

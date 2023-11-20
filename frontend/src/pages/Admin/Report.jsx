@@ -45,7 +45,6 @@ const Report = () => {
       endDate: "",
     },
     onSubmit: (values) => {
-      console.log(values);
       setSearchParams((p) => ({
         ...p,
         toDate: values.endDate,

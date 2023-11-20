@@ -30,7 +30,6 @@ const HotelListView = () => {
     parentId: user._id,
   });
   const [updateHotel] = useUpdateHotelMutation();
-  console.log("hotel", hotel);
 
   const formik = useFormik({
     initialValues: {},

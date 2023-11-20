@@ -67,7 +67,6 @@ const CheckInModal = ({ room }) => {
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-    console.log(fieldName);
 
     if (inputValue >= 0) {
       // Update the Formik state
@@ -177,8 +176,6 @@ const CheckInModal = ({ room }) => {
         },
         status: "CheckedIn",
       });
-
-      console.log(response);
 
       if (response?.error) {
         toast.error(response.error.data.message);

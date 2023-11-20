@@ -74,7 +74,6 @@ const HotelEdit = () => {
           managers: showManagers,
         },
       });
-      console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -121,7 +120,6 @@ const HotelEdit = () => {
       setSave(false);
     }
   }, [save]);
-  console.log(hotel);
   useEffect(() => {
     if (hotel) {
       formik.setValues({
