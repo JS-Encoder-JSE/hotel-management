@@ -11,8 +11,9 @@ import {
   useHotelsQuery,
 } from "../../redux/Owner/hotelsAPI.js";
 import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Rings } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -161,8 +162,24 @@ const AddHotel = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
-          <div className="text-2xl md:flex justify-between items-center">
-            <h2>Add Hotel</h2>
+        <div>
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
+            <div>
+            <h2 className="text-2xl text-center">Add Hotel</h2>
+            </div>
+          <div className="text-2xl md:flex justify-end items-center">
             <h2 className="shadow-lg bg-slate-100 px-4 py-2 rounded-md text-green-slimy inline-block space-x-1.5">
               {user?.maxHotels - hotels?.docs?.length >= 1 ? (
                 <>

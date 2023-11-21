@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
 import {
+  FaArrowLeft,
   FaEye,
   FaEyeSlash,
   FaPlusCircle,
@@ -20,6 +21,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { validationSchema } from "../../components/Yup/AdminNewLicenseVal.jsx";
 import { useAddLicenseMutation } from "../../redux/admin/sls/slsAPI.js";
 import { useUploadMutation } from "../../redux/baseAPI.js";
+import { Link } from "react-router-dom";
 
 const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
@@ -90,7 +92,7 @@ const AdminNewLicense = () => {
       for (let i = 0; i < utilities.length; i++) {
         const photoName = utilities[i].name.substring(
           0,
-          utilities[i].name.lastIndexOf("."),
+          utilities[i].name.lastIndexOf(".")
         );
 
         formData1.append(photoName, utilities[i]);
@@ -99,7 +101,7 @@ const AdminNewLicense = () => {
       for (let i = 0; i < tradeLicenses.length; i++) {
         const photoName = tradeLicenses[i].name.substring(
           0,
-          tradeLicenses[i].name.lastIndexOf("."),
+          tradeLicenses[i].name.lastIndexOf(".")
         );
 
         formData2.append(photoName, tradeLicenses[i]);
@@ -108,20 +110,20 @@ const AdminNewLicense = () => {
       for (let i = 0; i < panCard.length; i++) {
         const photoName = panCard[i].name.substring(
           0,
-          panCard[i].name.lastIndexOf("."),
+          panCard[i].name.lastIndexOf(".")
         );
 
         formData3.append(photoName, panCard[i]);
       }
 
       await upload(formData1).then(
-        (result) => (tempImages.utilities = result.data.imageUrls),
+        (result) => (tempImages.utilities = result.data.imageUrls)
       );
       await upload(formData2).then(
-        (result) => (tempImages.trade_lic_img = result.data.imageUrls),
+        (result) => (tempImages.trade_lic_img = result.data.imageUrls)
       );
       await upload(formData3).then(
-        (result) => (tempImages.pancard = result.data.imageUrls),
+        (result) => (tempImages.pancard = result.data.imageUrls)
       );
 
       const response = await addLicense({
@@ -193,7 +195,7 @@ const AdminNewLicense = () => {
   useEffect(() => {
     if (formik.values.tradeLicenses) {
       const selectedTradeLicensesArray = Array.from(
-        formik.values.tradeLicenses,
+        formik.values.tradeLicenses
       );
 
       setSelectedImages([...selectedImages, ...selectedTradeLicensesArray]);
@@ -210,6 +212,22 @@ const AdminNewLicense = () => {
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
+      <div>
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
       <h3
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >

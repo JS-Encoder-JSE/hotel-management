@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AiFillSetting } from "react-icons/ai";
@@ -112,8 +112,24 @@ const AdminOwnerList = ({ title }) => {
     <div>
       <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
         {title && <h1 className="text-center text-2xl">{title}</h1>}
+      
         <div className={`flex justify-between gap-4`}>
-          <div>
+        <div>
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
+         <div className={`flex gap-5`}>
+         <div>
             <select
               name="filter"
               className="select select-sm select-bordered border-green-slimy rounded w-full focus:outline-none"
@@ -154,6 +170,7 @@ const AdminOwnerList = ({ title }) => {
               <FaSearch />
             </button>
           </div>
+         </div>
         </div>
         {!isLoading ? (
           owners?.docs?.length ? (

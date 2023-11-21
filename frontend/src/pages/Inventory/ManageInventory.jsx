@@ -3,7 +3,7 @@ import FoodLists from "../../components/restaurant/FoodLists.jsx";
 import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/inventory/ConfirmOrder.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import InventoryLists from "../../components/inventory/InventoryLists.jsx";
 import {
@@ -13,6 +13,7 @@ import {
 import { resetFoodOrder } from "../../redux/add-order/addOrderSlice.js";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { resetInv } from "../../redux/inventory/inventorySlice.js";
+import { Link } from "react-router-dom";
 
 const ManageInventory = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,20 @@ const ManageInventory = () => {
         className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
       >
         <div className={`flex space-x-1.5 gap-2  `}>
+        <div className="mb-7">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
           
           <div className="flex flex-col gap-2">
             <select

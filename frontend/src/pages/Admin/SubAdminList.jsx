@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
@@ -93,6 +93,22 @@ const SubAdminList = () => {
         <div
           className={`flex flex-col sm:flex-row justify-between items-center gap-5`}
         >
+          <div>
+            <Link to={`/dashboard `}>
+              <button
+                type="button"
+                class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              >
+                <dfn>
+                  <abbr title="Back">
+                    <FaArrowLeft />
+                  </abbr>
+                </dfn>
+
+                <span className="tracking-wider font-semibold text-[1rem]"></span>
+              </button>
+            </Link>
+          </div>
           <h3 className={`text-xl font-semibold text-center`}>
             Sub Admin List
           </h3>
@@ -104,7 +120,7 @@ const SubAdminList = () => {
                 value={formik.values.filter}
                 onChange={(e) => {
                   formik.setFieldValue("filter", e.target.value);
-                  setCurrentPage(0)
+                  setCurrentPage(0);
                 }}
               >
                 <option value="">All</option>

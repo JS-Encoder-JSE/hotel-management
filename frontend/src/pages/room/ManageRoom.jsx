@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import RoomLists from "../../components/room/RoomLists.jsx";
-import { FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import {
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const ManageRoom = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -47,7 +48,21 @@ const ManageRoom = () => {
 
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
-      <div className={`flex justify-end gap-4`}>
+      <div className="flex justify-between">
+      <div>
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
         {/* filter by hotels  */}
         {/*<div className="flex  items-center gap-2">*/}
         {/*  /!* <p className="">Please choose hotel : </p> *!/*/}
@@ -70,7 +85,7 @@ const ManageRoom = () => {
         {/*  </select>*/}
         {/*</div>*/}
 
-        <div className={`flex gap-1.5`}>
+        <div className={`flex gap-3`}>
           <div>
             <select
               name="filter"

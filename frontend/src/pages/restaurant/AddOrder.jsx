@@ -3,7 +3,7 @@ import FoodLists from "../../components/restaurant/FoodLists.jsx";
 import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/restaurant/ConfirmOrder.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 
 import { useFormik } from "formik";
 import {
@@ -18,6 +18,7 @@ import {
 } from "../../redux/add-order/addOrderSlice.js";
 import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
+import { Link } from "react-router-dom";
 
 
 
@@ -97,7 +98,21 @@ const AddOrder = () => {
         {/*</div>*/}
       
         <div className={`flex gap-1.5`}>
-          <div className="flex flex-col gap-3">
+          <div className="flex ">
+          <div className="mb-7">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
             <select
               name="type"
               className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy !h-[2.35rem]"

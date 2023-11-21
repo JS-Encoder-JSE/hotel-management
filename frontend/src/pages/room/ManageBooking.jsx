@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import BookingLists from "../../components/room/BookingLists.jsx";
-import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
 import AddBooking from "../../components/room/AddBooking.jsx";
 import {
@@ -9,6 +9,7 @@ import {
   useGetBookingsByHotelQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 
 const ManageBooking = () => {
   const [search, setSearch] = useState("");
@@ -40,7 +41,21 @@ const ManageBooking = () => {
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl`}>
-      <div className={`flex justify-end gap-4`}>
+      <div className="flex justify-between" >
+      <div>
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
         {/* filter by hotels  */}
         {/*<div className="flex items-center gap-2">*/}
         {/*  /!* <p>Please choose a hotel : </p> *!/*/}
@@ -76,7 +91,7 @@ const ManageBooking = () => {
             <option value="suspended">Suspended</option>
           </select>
         </div> */}
-        <div className={`flex gap-1.5 `}>
+        <div className={`flex gap-3 `}>
           <button
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
             onClick={() => window.ab_modal.showModal()}
