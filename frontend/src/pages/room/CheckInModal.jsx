@@ -58,6 +58,10 @@ const validationSchema = yup.object({
 });
 
 const CheckInModal = ({ room }) => {
+
+// current Date
+  const [currentDate,setCurrentDate]=useState(new Date())
+
   const closeRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
   const [upload] = useUploadMutation();
@@ -90,7 +94,7 @@ const CheckInModal = ({ room }) => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from: "",
+      from: currentDate,
       to: "",
       amount: "",
       discount: "",

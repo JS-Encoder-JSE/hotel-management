@@ -4,6 +4,7 @@ import CustomerInfoSection from "./CustomerInfoSection";
 import RoomDetailsSection from "./RoomDetailsSection";
 import BillingSection from "./BillingSection";
 import PaymentSection from "./PaymentSection";
+import { BiReset } from "react-icons/bi";
 import {
   useAddCheckoutMutation,
   useGetCOInfoQuery,
@@ -156,7 +157,7 @@ console.log(user._id);
         onClick={handleResetCheckout}
         className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
             !formik.values.roomNumber ? "btn-disabled" : ""
-          }`}>Reset</button>
+          }`}> <BiReset className="text-xl text-white mb-1"/> Reset</button>
       </div>
 
       {/* Customer Info and Set them to default */}
@@ -191,6 +192,7 @@ console.log(user._id);
                 setTotalBilling={setTotalBilling}
                 setPBill={setPBill}
                 hotelInfo={hotelInfo}
+                isHotelSuccess={isHotelSuccess}
                
               />
             </div>

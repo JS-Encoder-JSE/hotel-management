@@ -185,10 +185,10 @@ const UserDashBoard = ({ managerId }) => {
     isSuccess,
     isLoading,
     isError,
-  } = useGetDashboardInfoQuery(managerId ? managerId : user._id);
+  } = useGetDashboardInfoQuery(managerId ? managerId : user?._id);
 
   const [userHotel, setUserHotel] = useState(
-    user.role === "manager" || user.role === "owner"
+    user?.role === "manager" || user?.role === "owner"
   );
   if (isLoading || isError) {
     return (
@@ -241,7 +241,7 @@ const UserDashBoard = ({ managerId }) => {
               ""
             )}
           </div>
-          {user.role === "manager" || user.role === "owner" ? (
+          {user?.role === "manager" || user?.role === "owner" ? (
             <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
                 <BsClipboard2DataFill />

@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import imgAbstractSI from "../assets/bg-abstract-signin.svg";
 import { useSignInMutation } from "../redux/auth/authAPI.js";
 import { setToken } from "../redux/auth/authSlice.js";
+import loginPageLogo from "../assets/LoginLogo.png"
+import Footer from "../components/Footer.jsx";
 
 // sign in form validation
 const validationSchema = yup.object({
@@ -57,23 +59,33 @@ const SignIn = () => {
   }, []);
 
   return (
-    <section className={`relative py-10`}>
+<>
+<section className={`relative py-10`}>
       {/* background pattern */}
       <figure
         className={`hidden md:block absolute top-0 left-0 w-full h-96 overflow-hidden`}
       >
         <img src={imgAbstractSI} alt="" />
       </figure>
-      <div className="container">
-        <div className={`mt-28`}>
+      <div className="container max-2xl mx-auto">
+        <div className={`mt-20`}>
           {/* brand title */}
-          <h1
-            className={`relative text-4xl font-black text-green-slimy text-center`}
+          <div className={`relative -mt-20 max-w-xl max-h-sm mx-auto`}>
+
+          <img src={loginPageLogo} alt="Dak Hopitality" />
+          </div >
+
+          <div className={`relative text-center -mt-10 mb-10 mx-auto`}> 
+
+              <h1 className="text-4xl font-bold text-green-slimy">Hotel Management System</h1>
+          </div>
+          {/* <h1
+            className={` text-4xl absolute right-[38%]   text-center w-auto -mt-14 font-black text-green-slimy`}
           >
             Hotel Management System
-          </h1>
+          </h1> */}
           {/* sign in card */}
-          <div className="card w-full sm:max-w-lg sm:mx-auto bg-white shadow-2xl mt-16">
+          <div className="card  w-full sm:max-w-lg sm:mx-auto bg-white shadow-2xl">
             <div className="card-body">
               <div className={`flex flex-col items-center space-y-2`}>
                 <h3 className={`text-2xl font-bold`}>Sign In</h3>
@@ -155,6 +167,16 @@ const SignIn = () => {
         </div>
       </div>
     </section>
+    <div>
+          <h3 className="text-lg text-center">
+            Powered by{" "}
+            <Link className={`text-green-slimy text-sm font-semibold`} to={`https://jsencoder.com/`} target="_blank">
+              JS Encoder
+            </Link>
+            . Copyright &copy; {new Date().getFullYear()}. All rights reserved. Version 01.0.0 </h3>
+        </div>
+    
+</>
   );
 };
 

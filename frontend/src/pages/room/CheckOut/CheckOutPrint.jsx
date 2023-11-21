@@ -24,7 +24,7 @@ const day = String(currentDate.getDate()).padStart(2, "0");
 
 const formattedDate = `${year}-${month}-${day}`;
 
-const CheckOutPrint = ({ data, paymentList,setPll,hotelInfo }) => {
+const CheckOutPrint = ({ data, paymentList,setPll,hotelInfo ,isHotelSucccess}) => {
 
   return (
     <div>
@@ -37,7 +37,7 @@ const CheckOutPrint = ({ data, paymentList,setPll,hotelInfo }) => {
         </div>
       </div>
       <div className="px-4 mt-10 flex justify-between mx-10">
-        <AuthoInfoPrint hotelInfo={hotelInfo} />
+        <AuthoInfoPrint hotelInfo={hotelInfo} isHotelSucccess={isHotelSucccess}/>
         <CustomerInfoPrint data={data} />
       </div>
       <RoomDetailsSection data={data} />

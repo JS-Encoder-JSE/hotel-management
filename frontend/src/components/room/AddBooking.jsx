@@ -48,6 +48,11 @@ const validationSchema = yup.object({
 });
 
 const AddBooking = () => {
+
+
+const [currentDate,setCurrentDate]=useState(new Date())
+
+
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
@@ -81,7 +86,7 @@ const AddBooking = () => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from: "",
+      from: new Date(),
       to: "",
       amount: "",
       discount: "",

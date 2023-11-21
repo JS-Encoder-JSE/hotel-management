@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as yup from "yup";
 import { useUpdateBookingMutation } from "../../redux/room/roomAPI";
 import toast from "react-hot-toast";
@@ -52,6 +52,9 @@ const validationSchema = yup.object({
 });
 
 const EditBooking = ({ data }) => {
+// current date for from
+  const [currentDate,setCurrentDate]=useState(new Date())
+
   const [updateBooking, { isLoading }] = useUpdateBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -66,7 +69,7 @@ const EditBooking = ({ data }) => {
       children: "",
       // paymentMethod: "",
       // discount: "",
-      from: "",
+      from:currentDate,
       to: "",
       nationality: "",
     },

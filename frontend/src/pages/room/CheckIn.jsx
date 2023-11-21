@@ -64,6 +64,10 @@ const validationSchema = yup.object({
 });
 
 const CheckIn = () => {
+
+// current date
+  const [currentDate,setCurrentDate]=useState(new Date())
+
   const [isLoading, setLoading] = useState(false);
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
@@ -94,7 +98,7 @@ const CheckIn = () => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from: "",
+      from:currentDate,
       to: "",
       amount: "",
       discount: "",
