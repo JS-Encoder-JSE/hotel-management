@@ -7,6 +7,7 @@ import PaymentSection from "./PaymentSection";
 import {
   useAddCheckoutMutation,
   useGetCOInfoQuery,
+  useGetHotelByManagerIdQuery,
   useGetRoomsAndHotelsQuery,
   useRoomNumbersQuery,
   useRoomsQuery,
@@ -15,7 +16,7 @@ import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import CheckOutPrint from "./CheckOutPrint";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 
 const CheckOut = () => {
@@ -31,6 +32,12 @@ const CheckOut = () => {
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
+
+
+
+  const handleResetCheckout =()=>{
+    setShowRooms(false)
+  }
 
   // this is use for Print
   const componentRef = useRef();
@@ -68,6 +75,14 @@ const CheckOut = () => {
       }
     },
   });
+
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+
+console.log(user._id);
+
+  const {data:hotelInfo ,isLoading:isHotelLoading, isSuccess:isHotelSuccess}=useGetHotelByManagerIdQuery(user?._id)
+  console.log(hotelInfo)
+
 
   const { data: rooms } = useRoomsQuery({
     cp: "0",
@@ -137,10 +152,15 @@ const CheckOut = () => {
         >
           Go
         </button>
+        <button 
+        onClick={handleResetCheckout}
+        className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
+            !formik.values.roomNumber ? "btn-disabled" : ""
+          }`}>Reset</button>
       </div>
 
       {/* Customer Info and Set them to default */}
-      {showRooms && checkout ? (
+      {showRooms && checkout && isHotelSuccess ? (
         <>
           <div>
             <CustomerInfoSection data={checkout?.data?.booking_info} />
@@ -170,6 +190,7 @@ const CheckOut = () => {
                 totalBilling={totalBilling}
                 setTotalBilling={setTotalBilling}
                 setPBill={setPBill}
+                hotelInfo={hotelInfo}
                
               />
             </div>

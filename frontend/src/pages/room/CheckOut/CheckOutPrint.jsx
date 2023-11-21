@@ -11,6 +11,7 @@ import AuthoInfoPrint from "./AuthoInfoPrint";
 import logo from "../../../assets/logo.png";
 import BillingSection from "./BillingSection";
 import BillingSectionPrint from "./BillingSectionPrint";
+import { useGetHotelByManagerIdQuery } from "../../../redux/room/roomAPI";
 
 
 
@@ -23,9 +24,8 @@ const day = String(currentDate.getDate()).padStart(2, "0");
 
 const formattedDate = `${year}-${month}-${day}`;
 
-const CheckOutPrint = ({ data, paymentList, totalBilling,setTotalBilling ,setPBill }) => {
+const CheckOutPrint = ({ data, paymentList,setPll,hotelInfo }) => {
 
-  const { isUserLoading, user } = useSelector((store) => store.authSlice);
   return (
     <div>
       <div>
@@ -36,8 +36,8 @@ const CheckOutPrint = ({ data, paymentList, totalBilling,setTotalBilling ,setPBi
           <span>Issue Date: {formattedDate} </span>
         </div>
       </div>
-      <div className="px-4 mt-10 flex justify-between ">
-        <AuthoInfoPrint user={user} />
+      <div className="px-4 mt-10 flex justify-between mx-10">
+        <AuthoInfoPrint hotelInfo={hotelInfo} />
         <CustomerInfoPrint data={data} />
       </div>
       <RoomDetailsSection data={data} />
@@ -136,7 +136,7 @@ const CheckOutPrint = ({ data, paymentList, totalBilling,setTotalBilling ,setPBi
         ))}
       </div> */}
       {/* payment method */}
-      <div className="w-[700px] mx-auto flex justify-between items-center px-4">
+      <div className="w-[800px] mx-auto flex justify-between items-center px-4">
         {paymentList.map(
           (method) =>
             method.method &&

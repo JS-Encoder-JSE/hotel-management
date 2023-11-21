@@ -8,6 +8,7 @@ const initialState = {
   discountOffer: 0,
   grandTotal: 0,
   roomPostedBill: 0,
+  extraDiscount:0,
 };
 
 const checkoutInfoCalSlice = createSlice({
@@ -35,6 +36,9 @@ const checkoutInfoCalSlice = createSlice({
     setRoomPostedBill: (state, action) => {
       state.roomPostedBill = action.payload;
     },
+    setExtraDiscount: (state, action) => {
+      state.extraDiscount = action.payload;
+    },
   },
 });
 
@@ -45,7 +49,8 @@ export const {
   updateAdditionalCharge,
   updateDiscountOffer,
   setGrandTotal,
-  setRoomPostedBill
+  setRoomPostedBill,
+  setExtraDiscount
 } = checkoutInfoCalSlice.actions;
 
 export default checkoutInfoCalSlice.reducer;

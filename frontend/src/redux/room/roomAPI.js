@@ -116,7 +116,10 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     getItems:build.query({
       query:()=>'items/get-items-by-hotel'
-    })
+    }),
+    getHotelByManagerId:build.query({
+      query:(id)=>`hotels/get-hotel-by-manager/${id}`
+    }),
   }),
 });
 
@@ -136,5 +139,6 @@ export const {
   useGetCOInfoQuery,
   useAddCheckoutMutation,
   useGetTablesQuery,
-  useGetItemsQuery
+  useGetItemsQuery,
+  useGetHotelByManagerIdQuery,
 } = roomAPI;
