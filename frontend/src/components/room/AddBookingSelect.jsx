@@ -80,7 +80,7 @@ const AddBookingSelect = ({ room }) => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from: "",
+      from: new Date,
       to: "",
       amount: "",
       discount: "",
