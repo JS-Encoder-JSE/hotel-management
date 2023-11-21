@@ -12,7 +12,6 @@ const AddOrder = () => {
       search: "",
     },
     onSubmit: () => {
-      console.log(order);
     },
   });
   const { order } = useSelector((store) => store.addOrderSlice);

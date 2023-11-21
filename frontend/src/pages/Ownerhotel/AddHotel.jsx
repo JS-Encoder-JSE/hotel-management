@@ -5,9 +5,14 @@ import { useSelector } from "react-redux";
 import * as yup from "yup";
 import Modal from "../../components/Modal.jsx";
 import HotelAsManager from "../../components/owner/HotelAsManager.jsx";
-import { useAddHotelMutation } from "../../redux/Owner/hotelsAPI.js";
+import {
+  useAddHotelMutation,
+  useHotelQuery,
+  useHotelsQuery,
+} from "../../redux/Owner/hotelsAPI.js";
 import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Rings } from "react-loader-spinner";
 
 // form validation
 const validationSchema = yup.object({
@@ -42,6 +47,15 @@ const AddHotel = () => {
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
   const [showManagers, setShowManagers] = useState([]);
   const [showPass, setShowPass] = useState(false);
+  const {
+    isLoading: hotelsLoading,
+    data: hotels,
+    isError,
+  } = useHotelsQuery({
+    uid: user._id,
+    pid: "",
+    filter: "Active",
+  });
   const { data: managers } = useGetUsersQuery({
     cp: 0,
     filter: "",
@@ -133,7 +147,16 @@ const AddHotel = () => {
       setSave(false);
     }
   }, [save]);
-  console.log(user);
+  if (hotelsLoading) {
+    return (
+      <Rings
+        width="50"
+        height="50"
+        color="#37a000"
+        wrapperClass="justify-center"
+      />
+    );
+  }
   return (
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
@@ -141,11 +164,11 @@ const AddHotel = () => {
           <div className="text-2xl md:flex justify-between items-center">
             <h2>Add Hotel</h2>
             <h2 className="shadow-lg bg-slate-100 px-4 py-2 rounded-md text-green-slimy inline-block space-x-1.5">
-              {user?.maxHotels - user?.assignedHotel.length >= 1 ? (
+              {user?.maxHotels - hotels?.docs?.length >= 1 ? (
                 <>
                   <span>You can add</span>
                   <span className="text-green-slimy font-bold">
-                    {` ${user?.maxHotels - user?.assignedHotel.length}`}
+                    {` ${user?.maxHotels - hotels?.docs?.length}`}
                   </span>
                   <span>hotels.</span>
                 </>
@@ -327,7 +350,7 @@ const AddHotel = () => {
               <button
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                disabled={user?.maxHotels - user?.assignedHotel.length === 0}
+                disabled={user?.maxHotels - hotels?.docs?.length === 0}
               >
                 <span>Create Hotel</span>
                 {isLoading ? (

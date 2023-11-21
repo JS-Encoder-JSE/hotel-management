@@ -20,6 +20,7 @@ import {
   getUsersByParentId,
   getUsersByAssignedHotel,
   getUsersByAdmin,
+  getLicenseDate,
 } from "../controllers/users.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
@@ -50,5 +51,7 @@ router.get(
   checkToken,
   getUsersByAssignedHotel
 );
+
+router.get("/get-license-Date", checkToken, getLicenseDate);
 
 export default router;

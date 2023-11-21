@@ -50,7 +50,6 @@ const AddBooking = () => {
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-    console.log(fieldName);
 
     if (inputValue >= 0) {
       // Update the Formik state
@@ -92,8 +91,8 @@ const AddBooking = () => {
 
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      const obj = { ...values };
-      console.log(obj);
+      const obj = { ...values,from: fromDateIsoConverter(values.from),
+        to: toDateIsoConverter(values.to), };
 
       if (!obj.discount) obj.discount = 0;
 
@@ -108,32 +107,7 @@ const AddBooking = () => {
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
-      console.log(typeof obj.amount);
-
-      console.log({
-        hotel_id: obj.hotel_id,
-        room_ids,
-        bookingMethod: obj.bookingMethod,
-        guestName: obj.guestName,
-        address: obj.address,
-        mobileNumber: obj.mobileNumber,
-        emergency_contact: obj.emergency_contact,
-        adult: obj.adult,
-        children: obj.children,
-        paymentMethod: obj.paymentMethod,
-        transection_id: obj.trxID,
-        from: obj.from,
-        to: obj.to,
-        no_of_days,
-        rent_per_day,
-        total_rent,
-        discount,
-        amount_after_dis,
-        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
-        total_unpaid_amount: amount_after_dis - obj.amount,
-        nationality: obj.nationality,
-        status: "Active",
-      });
+      
 
       const response = await addBooking({
         hotel_id: obj.hotel_id,
@@ -160,7 +134,6 @@ const AddBooking = () => {
         status: "Active",
       });
 
-      console.log(response);
 
       if (response?.error) {
         toast.error(response.error.data.message);

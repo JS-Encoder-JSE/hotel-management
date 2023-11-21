@@ -16,7 +16,6 @@ const SuspendedOwnerConsideration = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
     },
   });
 

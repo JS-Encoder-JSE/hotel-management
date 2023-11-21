@@ -597,12 +597,9 @@ export const login = async (req, res) => {
     if (user.role === "owner") {
       const currentDate = new Date();
       if (currentDate < user.bill_from) {
-        return res
-          .status(403)
-          .json({
-            message:
-              "Login failed, please try to login within your license date",
-          });
+        return res.status(403).json({
+          message: "Login failed, please try to login within your license date",
+        });
       }
     }
     if (["Expired", "Deactive", "Deleted"].includes(user.status)) {
@@ -1612,6 +1609,32 @@ export const updateUser = async (req, res) => {
     }
 
     return res.status(200).json({ message: "Update user successful" });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getLicenseDate = async (req, res) => {
+  try {
+    const user_id = req.user.userId; // Assuming you get the user ID from the request parameters
+
+    // Find the user by ID and update the fields provided in the request body
+    const user = await User.findById(user_id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const parent = await User.findById(user.parent_id);
+    if (!parent) {
+      return res.status(404).json({ message: "Parent not found" });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "License date retrivie successful",
+      startedAt: parent.bill_from,
+      endsIn: parent.bill_to,
+    });
   } catch (error) {
     console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });

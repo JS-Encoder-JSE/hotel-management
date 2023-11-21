@@ -148,7 +148,6 @@ const OwnerProfile = () => {
       });
     }
   }, [user]);
-  console.log(user);
   return (
     <div
       className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}

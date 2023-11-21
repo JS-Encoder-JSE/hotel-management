@@ -41,7 +41,6 @@ const CheckInDyn = ({ data }) => {
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-    console.log(fieldName);
 
     if (inputValue >= 0) {
       // Update the Formik state
@@ -94,16 +93,14 @@ const CheckInDyn = ({ data }) => {
       await upload(formData).then(
         (result) => (tempImg = result.data.imageUrls)
       );
-
+      const paidAmount =
+        typeof obj.amount === "number"
+          ? data.paid_amount + obj.amount
+          : data.paid_amount;
       const response = await updateBooking({
         id: data._id,
         data: {
-          paid_amount:
-            typeof obj.amount === "number"
-              ? obj.amount
-              : 0
-              ? data.paid_amount + obj.amount
-              : data.paid_amount,
+          paid_amount: paidAmount,
           doc_number: obj.doc_number,
           doc_images: {
             [title]: tempImg,
@@ -111,6 +108,7 @@ const CheckInDyn = ({ data }) => {
           status: "CheckedIn",
           paymentMethod: obj.paymentMethod,
           transection_id: obj.transection_id,
+          total_unpaid_amount: data.amount_after_dis - paidAmount,
         },
       });
 

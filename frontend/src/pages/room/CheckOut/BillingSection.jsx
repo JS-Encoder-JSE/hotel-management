@@ -6,11 +6,11 @@ import {
   updateServiceCharge,
   updateAdditionalCharge,
   updateDiscountOffer,
-  grandTotal,
+  setGrandTotal,
+  setRoomPostedBill,
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-
 
 const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   const [discount, setDiscount] = useState(false);
@@ -22,15 +22,11 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   const [barBill, setBarBill] = useState(0);
   const [foodBill, setFoodBill] = useState(0);
   const [gymBill, setGymBill] = useState(0);
-
-// update Subtotal amount
+  // update Subtotal amount
   // useDispatch(updateSubTotal(data?.booking_info?.[0]?.total_unpaid_amount.toFixed(2)))
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const billingState = useSelector((state) => state.checkoutInfoCalSlice);
-    console.log(billingState)
-    const { subTotals } = billingState;
-
-
+  const { subTotals } = billingState;
 
   const handleDiscountChange = (val) => {
     const newValue = Math.min(Math.max(val, 0), 100);
@@ -44,7 +40,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     const arr = [...billing];
     arr.splice(idx, 1, { amount: val });
     setBilling(arr);
-    dispatch(updateServiceCharge(val))
+    dispatch(updateServiceCharge(val));
   };
 
   const handleTaxChange = (idx, val) => {
@@ -54,11 +50,8 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     arr.splice(idx, 1, { amount });
     setBilling(arr);
 
-    const taxMoney =( subTotals * val)/100 
-    console.log(val)
-    console.log(subTotals)
-    console.log(( subTotals * val)/100 )
-    dispatch(updateTax(taxMoney))
+    const taxMoney = (subTotals * val) / 100;
+    dispatch(updateTax(taxMoney));
   };
 
   useEffect(() => {
@@ -101,6 +94,10 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   }, [data]);
 
   useEffect(() => {
+    const totalRoomPostedBill = poolBill + foodBill + gymBill;
+    dispatch(setRoomPostedBill(totalRoomPostedBill));
+  }, [poolBill, foodBill, gymBill, data]);
+  useEffect(() => {
     if (data) {
       const total =
         poolBill +
@@ -124,6 +121,30 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     discount,
     discountAmt,
     breakAmt,
+  ]);
+
+  useEffect(() => {
+    const total = Math.ceil(
+      data?.booking_info?.[0]?.total_unpaid_amount +
+        totalBilling -
+        (discount ? discountAmt : 0) +
+        breakAmt +
+        poolBill +
+        gymBill +
+        foodBill +
+        barBill
+    );
+    dispatch(setGrandTotal(total));
+  }, [
+    data,
+    totalBilling,
+    discount,
+    discountAmt,
+    breakAmt,
+    poolBill,
+    gymBill,
+    foodBill,
+    barBill,
   ]);
 
   return (
@@ -226,7 +247,10 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 <input
                   type="number"
                   className="mb-3 border rounded-md p-2 outline-none"
-                  onChange={(e) => setBreakAmt(+e?.target?.value)}
+                  onChange={(e) => {
+                    setBreakAmt(+e?.target?.value);
+                    dispatch(updateAdditionalCharge(+e?.target?.value));
+                  }}
                 />
               </td>
             </tr>

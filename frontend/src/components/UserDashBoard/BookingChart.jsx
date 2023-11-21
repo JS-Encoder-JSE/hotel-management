@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
+ 
   const [chartProps, setChartProps] = useState({
     series: [
       // !userManager && chartData?.total_active_lic,
@@ -40,10 +41,10 @@ const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
       setChartProps((prev) => ({
         ...prev,
         series: [
-          permanent_datas?.total_checkin,
-          permanent_datas?.total_checkout,
-          permanent_datas?.total_booking,
-          permanent_datas?.total_canceled,
+          permanent_datas ? permanent_datas?.total_checkin : 0,
+          permanent_datas ? permanent_datas?.total_checkout : 0,
+          permanent_datas ? permanent_datas?.total_booking : 0,
+          permanent_datas ? permanent_datas?.total_canceled : 0,
         ],
         options: {
           ...prev.options,
@@ -54,10 +55,10 @@ const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
       setChartProps((prev) => ({
         ...prev,
         series: [
-          daily_datas.length ? daily_datas[0]?.today_active_lic : 0,
-          daily_datas.length ? daily_datas[0]?.today_renew_lic : 0,
-          daily_datas.length ? daily_datas[0]?.today_expired : 0,
-          daily_datas.length ? daily_datas[0]?.today_suspend : 0,
+          permanent_datas ? permanent_datas?.total_active_lic : 0,
+          permanent_datas ? permanent_datas?.total_renew_lic : 0,
+          permanent_datas ? Math.abs(permanent_datas?.total_expired_lic) : 0,
+          permanent_datas ? permanent_datas?.total_suspended_lic : 0,
         ],
         options: {
           ...prev.options,

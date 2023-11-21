@@ -54,7 +54,6 @@ const AddRoom = () => {
 
   const { data: hotelsList, isLoading: loading } = useGetRoomsAndHotelsQuery();
 
-  // console.log({ hotelsList });
 
   const [addRoom] = useAddRoomMutation();
   const [upload] = useUploadMutation();
@@ -80,7 +79,6 @@ const AddRoom = () => {
   
 
       const obj = { ...values };
-      console.log(obj)
       const formData = new FormData();
 
       for (let i = 0; i < values.photos.length; i++) {
@@ -100,7 +98,6 @@ const AddRoom = () => {
         (result) => (obj.images = result.data.imageUrls)
       );
 
-      // console.log(obj);
        const response = await addRoom(obj);
 
       if (response?.error) {

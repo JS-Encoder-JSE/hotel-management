@@ -37,7 +37,7 @@ const OrderList = () => {
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
-    search: "",
+    unique_id: "",
   });
   const formik = useFormik({
     initialValues: {
@@ -52,7 +52,7 @@ const OrderList = () => {
         ...p,
         toDate: getISOStringDate(values.endDate),
         fromDate: getISOStringDate(values.startDate),
-        search: values.search,
+        unique_id: values.search,
       }));
     },
   });
@@ -93,7 +93,6 @@ const OrderList = () => {
   useEffect(() => {
     setPageCount(orders?.data?.totalPages);
   }, [orders]);
-  console.log(orders);
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>

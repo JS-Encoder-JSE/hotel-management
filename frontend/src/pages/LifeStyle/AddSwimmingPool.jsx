@@ -45,7 +45,6 @@ const AddSwimmingPool = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-        console.log(values);
       },
   });
 

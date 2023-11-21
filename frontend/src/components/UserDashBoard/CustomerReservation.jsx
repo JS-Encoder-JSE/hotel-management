@@ -7,13 +7,13 @@ const CustomerReservation = ({ userHotel, monthlyData }) => {
       {
         name: userHotel ? "Checkin Confirmed" : "Total Expired",
         type: "column",
-        data: [23, 24, 40, 27, 13, 22, 37, 21, 44, 22, 30],
+        data: [],
         color: "#fe9302",
       },
       {
         name: userHotel ? "Booking" : "Total Renew",
         type: "line",
-        data: [27, 25, 22, 27, 13, 22, 37, 25, 26],
+        data: [],
         color: "#5c44ab",
       },
     ],

@@ -14,7 +14,6 @@ const Profile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadSingle] = useUploadSingleMutation();
   const [updateUser] = useUpdateUserMutation();
-  console.log(user);
   const formik = useFormik({
     initialValues: {
       userImg: null,
@@ -26,14 +25,14 @@ const Profile = () => {
       const formData = new FormData();
       const photoName = userImg.name.substring(
         0,
-        userImg.name.lastIndexOf("."),
+        userImg.name.lastIndexOf(".")
       );
 
       formData.append(photoName, userImg);
 
       delete obj.userImg;
       await uploadSingle(formData).then(
-        (result) => (obj.profile_img = result.data.imageUrl),
+        (result) => (obj.profile_img = result.data.imageUrl)
       );
 
       const response = await updateUser({
@@ -140,7 +139,7 @@ const Profile = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
               <label className={`min-w-[5.5rem]`}>License</label>
               <span>:</span>
-              <p className="text-slate-600">-</p>
+              <p className="text-slate-600">{user?.license_key}</p>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
               <label className={`min-w-[5.5rem]`}>Expire Date</label>

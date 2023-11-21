@@ -148,7 +148,6 @@ const AddEmployee = () => {
         joining_date,
         images: obj.images,
       });
-      console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {

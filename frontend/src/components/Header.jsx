@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../redux/auth/authSlice.js";
 import { GrLicense } from "react-icons/gr";
+import { useGetLicenseDateQuery } from "../redux/Owner/hotelsAPI.js";
 
 const Header = ({
   isFullscreen,
@@ -18,9 +19,9 @@ const Header = ({
   setHbMenu,
 }) => {
   const { user } = useSelector((store) => store.authSlice);
-  
   const dispatch = useDispatch();
   const [time, setTime] = useState(new Date());
+  const { data: dateData } = useGetLicenseDateQuery();
   useEffect(() => {
     const clearTime = setInterval(() => setTime(new Date()), 1000);
 
@@ -42,10 +43,12 @@ const Header = ({
             </div>
           </div>
           {Math.floor(
-            Math.abs(new Date(user?.bill_from) - new Date()) /
+            Math.abs(
+              new Date(dateData?.startedAt) - new Date(dateData?.endsIn)
+            ) /
               (24 * 60 * 60 * 1000)
           ) <= 30 &&
-          (user.role === "owner" || user.role === "manager") ? (
+          (user?.role === "owner" || user?.role === "manager") ? (
             <h3
               className={`flex gap-1.5 text-xl font-bold animate-pulse text-yellow-500 ml-6`}
             >

@@ -48,7 +48,6 @@ const EditBar = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-        console.log(values);
       },
   });
 

@@ -46,8 +46,6 @@ const EditSwimming = () => {
     },
     validationSchema,
     onSubmit: async (values,) => {
-    console.log(values)
-
 
   
     },

@@ -25,7 +25,6 @@ const SubAdminListView = () => {
   const { id } = useParams();
 
   const { data: userData, error, isLoading } = useGetUserQuery(id);
-  console.log({ userData });
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };

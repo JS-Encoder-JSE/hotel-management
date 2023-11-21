@@ -25,9 +25,8 @@ const validationSchema = yup.object({
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
 
-  children: yup
-    .number()
-    .integer("Children must be an integer"),
+  children: yup.number(),
+  // .integer("Children must be an integer"),
 
   // children: yup
   //   .number()
@@ -80,7 +79,6 @@ const EditBooking = ({ data }) => {
           data: values,
         });
 
-        console.log(response);
 
         if (response?.error) {
           toast.error(response.error.data.message);
@@ -90,12 +88,12 @@ const EditBooking = ({ data }) => {
           toast.success(response.data.message);
         }
       } catch (error) {
-        console.log(error);
+       
       }
     },
   });
 
-  console.log(data);
+
   useEffect(() => {
     if (data) {
       formik.setValues((p) => ({

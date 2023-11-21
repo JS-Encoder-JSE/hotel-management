@@ -16,7 +16,9 @@ const authAPI = baseAPI.injectEndpoints({
       query: () => "users/get-login-user",
       providesTags: ["auth"],
     }),
+    
   }),
 });
 
-export const { useSignInMutation, useUserQuery } = authAPI;
+export const { useSignInMutation, useUserQuery } =
+  authAPI;

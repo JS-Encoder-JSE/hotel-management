@@ -52,7 +52,6 @@ const AddBar = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-        console.log(values);
       },
   });
   const handleChange = (e, index) => {

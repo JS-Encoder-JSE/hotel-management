@@ -18,16 +18,17 @@ const MonitorFinance = () => {
     filter: "Active",
   });
   const [selectedHotel, setselectedHotel] = useState([]);
+  console.log("selectedHotel", selectedHotel);
+  console.log("hotels", hotels);
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
     }
   };
   const transformedHotel = hotels?.docs?.map((hotel) => ({
-    value: hotel?.managers[0]?._id,
+    value: hotel?.manager_acc?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
-  console.log(hotels?.docs);
   if (isLoading || isError) {
     return (
       <Rings

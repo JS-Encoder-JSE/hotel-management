@@ -120,7 +120,6 @@ const OrderListBar = () => {
                     </thead>
                     <tbody>
                       {orders?.data?.docs?.map((order, idx) => {
-                        console.log(orders);
                         return (
                           <tr
                             className={

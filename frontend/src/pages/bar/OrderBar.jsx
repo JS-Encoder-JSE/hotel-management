@@ -24,7 +24,6 @@ const OrderBar = () => {
     },
     validationSchema,
     onSubmit: () => {
-      console.log(order);
     },
   });
 

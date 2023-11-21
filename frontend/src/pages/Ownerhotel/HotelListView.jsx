@@ -111,6 +111,7 @@ const HotelListView = () => {
                 <h6> Address : {hotel?.address}</h6>
                 <h6> Number : {hotel?.phone_no}</h6>
                 <h6> Email : {hotel?.email}</h6>
+                <h6> Username : {hotel?.manager_acc?.username}</h6>
               </div>
             </div>
           </>
@@ -126,7 +127,7 @@ const HotelListView = () => {
       {/* <Modal id={`ol_modal`}>
         <StatusSettings />
       </Modal> */}
-      <div className="card w-full bg-white shadow-xl p-5 mt-8">
+      {/* <div className="card w-full bg-white shadow-xl p-5 mt-8">
         <div className="card-body">
           <h1 className="text-center text-2xl mb-4">Assigned Manager</h1>
           {!isLoading ? (
@@ -186,7 +187,7 @@ const HotelListView = () => {
             />
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

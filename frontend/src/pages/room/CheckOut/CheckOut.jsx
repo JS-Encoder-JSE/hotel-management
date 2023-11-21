@@ -31,8 +31,6 @@ const CheckOut = () => {
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
-  // console.log("checkout info", checkout);
-  // console.log( checkout);
 
   // this is use for Print
   const componentRef = useRef();
@@ -62,7 +60,6 @@ const CheckOut = () => {
         guestName: checkout?.data?.booking_info?.[0]?.guestName,
         payment_method: paymentList[0].method,
       });
-      // console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -89,7 +86,6 @@ const CheckOut = () => {
       e.preventDefault();
     }
   };
-  // console.log(checkout);
   const transformedRooms = rooms?.data?.docs
     ?.filter((room) => room.status === "CheckedIn")
     ?.map((room) => ({
@@ -110,7 +106,6 @@ const CheckOut = () => {
       }
       
   },[checkout])
-  console.log(checkout?.data?.booking_info);
  
   return (
     <div className="space-y-8">
@@ -150,12 +145,14 @@ const CheckOut = () => {
           <div>
             <CustomerInfoSection data={checkout?.data?.booking_info} />
             <RoomDetailsSection data={checkout?.data?.booking_info} />
+            <div className="my-5">
             <BillingSection
               data={checkout?.data}
               totalBilling={totalBilling}
               setTotalBilling={setTotalBilling}
               setPBill={setPBill}
             />
+            </div>
             <PaymentSection
               data={checkout?.data?.booking_info}
               paymentList={paymentList}

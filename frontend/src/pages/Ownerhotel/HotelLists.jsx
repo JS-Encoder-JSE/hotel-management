@@ -32,7 +32,6 @@ const HotelLists = () => {
     pid: "",
     filter: "Active",
   });
-  console.log("hotel list :", hotels);
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -119,11 +118,13 @@ const HotelLists = () => {
                     <th>Sl</th>
                     <th>Name</th>
                     <th>Branch Name</th>
+                    <th>Username</th>
                     {/* <th> Address </th> */}
                     {/* <th className="text-center">Email</th> */}
                     <th>Phone Number</th>
                     {/* <th>License <br /> Number</th> */}
                     {/* <th> Manager</th> */}
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -140,6 +141,7 @@ const HotelLists = () => {
                         <td>{hotel?.branch_name}</td>
                         {/* <td>Kolkata</td> */}
                         {/* <td>jondoe@gmail.com</td> */}
+                        <td>{hotel?.manager_acc?.username}</td>
                         <td>{hotel?.phone_no}</td>
                         {/* <td>{hotel?.status}</td> */}
                         <td>

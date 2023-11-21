@@ -37,7 +37,6 @@ const ManageBooking = () => {
       formik.handleSubmit();
     }
   };
-  // console.log({ bookingList });
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl`}>

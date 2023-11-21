@@ -40,8 +40,11 @@ const validationSchema = yup.object({
 const AddFood = () => {
   const [isLoading, setLoading] = useState(false);
   const [addFood] = useAddFoodMutation();
-  const { data: categories, isLoading: categoryLoading } =
-    useGetCategoryQuery();
+  const {
+    data: categories,
+    isLoading: categoryLoading,
+    isError,
+  } = useGetCategoryQuery();
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const { user } = useSelector((store) => store.authSlice);
@@ -63,7 +66,6 @@ const AddFood = () => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      console.log("hi", values);
       setLoading(true);
 
       const obj = { ...values };
@@ -171,27 +173,27 @@ const AddFood = () => {
     },
     { key: "Curries", value: "Curries", label: "Curries" },
   ];
-  const combinedArray = categoryLoading
-    ? []
-    : [
-        ...predefinedOptions,
-        ...categories?.data?.map((category) => {
-          const categoryExists = predefinedOptions.find(
-            (option) =>
-              option.value === category.category_name &&
-              option.label === category.category_name
-          );
-          if (categoryExists) {
-            return null;
-          }
-          return {
-            key: category?._id,
-            value: category?.category_name,
-            label: category?.category_name,
-          };
-        }),
-      ].filter((item) => item !== null);
-  console.log(combinedArray);
+  const combinedArray =
+    categoryLoading || isError
+      ? [...predefinedOptions]
+      : [
+          ...predefinedOptions,
+          ...categories?.data?.map((category) => {
+            const categoryExists = predefinedOptions.find(
+              (option) =>
+                option.value === category.category_name &&
+                option.label === category.category_name
+            );
+            if (categoryExists) {
+              return null;
+            }
+            return {
+              key: category?._id,
+              value: category?.category_name,
+              label: category?.category_name,
+            };
+          }),
+        ].filter((item) => item !== null);
   if (categoryLoading) {
     return (
       <Rings

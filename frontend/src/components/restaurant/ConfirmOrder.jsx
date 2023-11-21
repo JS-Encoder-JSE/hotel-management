@@ -29,7 +29,6 @@ const validationSchema = yup.object({
 });
 
 const ConfirmOrder = ({selectRoomId,selectTableId}) => {
-  console.log(selectRoomId,selectTableId)
   const componentRef = useRef();
   const closeRef = useRef();
   const [success, setSuccess] = useState(null);
@@ -44,7 +43,6 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      console.log("hello");
     },
   });
   const handlePlaceOrder = async () => {
@@ -77,7 +75,6 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
         ? orderForRoom
         : null
     );
-    console.log(response);
     if (response?.error) {
       toast.error(response.error.data.message);
     } else {

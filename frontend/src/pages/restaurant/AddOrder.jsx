@@ -41,7 +41,6 @@ const AddOrder = () => {
     },
 
     onSubmit: (values) => {
-      console.log("values: ", values);
       // setKeyword(values.search);
     },
   });
@@ -62,7 +61,6 @@ const AddOrder = () => {
     search: "",
     limit: 1000000,
   });
-  console.log("rooms");
   const { data: tables } = useGetTablesQuery();
   const transformedRooms = rooms?.data?.docs?.map((room) => ({
     value: room._id,
@@ -73,7 +71,6 @@ const AddOrder = () => {
     label: table.table_number,
   }));
 
-  console.log(order.roomId,order.tableId)
 
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>

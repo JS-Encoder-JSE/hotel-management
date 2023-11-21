@@ -35,6 +35,7 @@ const CurOrderList = () => {
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const [deleteOrder] = useDeleteOrderMutation();
   const [search, setSearch] = useState("");
+  const [searchTable, setSearchTable] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -42,21 +43,22 @@ const CurOrderList = () => {
       search: "",
       startDate: "",
       endDate: "",
+      tableNumber: "",
       // chooseHotel: "",
     },
     onSubmit: (values) => {
       setSearch(values.search);
+      setSearchTable(values.tableNumber);
       setCurrentPage(0);
     },
   });
-
   const { isLoading, data: orders } = useOrdersQuery({
-    search: search,
+    unique_id: search,
     current_order: true,
     cp: currentPage,
     pp: ordersPerPage,
+    table_number: searchTable,
   });
-  console.log(orders);
   const modifiedData = orders?.data?.docs?.map((order) => ({
     ...order,
     grand_total: order.items.reduce((total, item) => total + item.total, 0),
@@ -95,7 +97,29 @@ const CurOrderList = () => {
         <h3 className={`text-2xl font-semibold text-center`}>
           Current Order List
         </h3>
-        <div className={`flex justify-end mt-5`}>
+        <div className={`flex justify-end mt-5 gap-3`}>
+          <div className={`relative max-w-xs w-full `}>
+            <input
+              type="text"
+              placeholder="Search by Table number..."
+              name="tableNumber"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              value={formik.values.tableNumber}
+              onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
+              onKeyDown={(e) => pressEnter(e)}
+            />
+            <button
+              onClick={formik.handleSubmit}
+              type="button"
+              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            >
+              <FaSearch />
+            </button>
+          </div>
+
           <div className={`relative max-w-xs w-full`}>
             <input
               type="text"

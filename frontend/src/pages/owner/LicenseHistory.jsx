@@ -17,7 +17,6 @@ const LicenseHistory = () => {
       endDate: "",
     },
     onSubmit: (values) => {
-      console.log(values);
       setSearchParams((p) => ({
         ...p,
         toDate: values.endDate,
@@ -41,8 +40,6 @@ const LicenseHistory = () => {
   });
   const { data, error, isLoading, isSuccess } =
     useGetTransactionlogsQuery(searchParams);
-  // 65451c80dd95504ee1047f0b
-  console.log(isSuccess && { data });
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
@@ -62,7 +59,6 @@ const LicenseHistory = () => {
     }
   }, [data]);
 
-  console.log(data);
   return (
     <div className="card w-full bg-white shadow-xl">
       <div className="card-body space-y-10">

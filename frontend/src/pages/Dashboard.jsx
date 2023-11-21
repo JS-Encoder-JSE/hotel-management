@@ -9,7 +9,7 @@ import Header from "../components/Header.jsx";
 import OwnerSBItems from "../components/sidebar/OwnerSBItems.jsx";
 import AdminSBItems from "../components/sidebar/AdminSBItems.jsx";
 import Footer from "../components/Footer.jsx";
-
+import Logo from "../assets/dakLogo.png";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { isLoading, data: user } = useUserQuery();
@@ -35,12 +35,14 @@ const Dashboard = () => {
               isHbMenu ? "-left-96" : "left-0"
             } bg-gray-200 text-lg w-36 md:w-auto h-full md:h-auto px-10 py-5 md:-my-10 z-30 transition-[left] duration-500`}
           >
-            <figure className={`mb-10 max-w-[10rem] mx-auto`}>
-              <img
-                src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png"
-                alt=""
-              />
+            <figure
+              className={` max-w-[10rem] mx-auto flex items-center justify-center `}
+            >
+              <img src={Logo} alt="" className="w-24 h-24 mt-5" />
             </figure>
+            <div className="">
+              <h3 className="text-center text-[20px] mt-5 mb-5 font-medium text-green-slimy">DAK Hospitality LTD</h3>
+            </div>
             <h3
               className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy capitalize`}
             >

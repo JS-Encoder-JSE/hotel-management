@@ -74,7 +74,6 @@ const HotelEdit = () => {
           managers: showManagers,
         },
       });
-      console.log(response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
@@ -121,7 +120,6 @@ const HotelEdit = () => {
       setSave(false);
     }
   }, [save]);
-  console.log(hotel);
   useEffect(() => {
     if (hotel) {
       formik.setValues({
@@ -260,7 +258,7 @@ const HotelEdit = () => {
                 <button
                   onClick={() =>
                     navigate(
-                      `/dashboard/change-hotel-password/${hotel?.managers[0]?._id}`
+                      `/dashboard/change-hotel-password/${hotel?.manager_acc?._id}`
                     )
                   }
                   type="button"

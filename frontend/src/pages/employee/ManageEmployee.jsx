@@ -124,7 +124,6 @@ const ManageEmployee = () => {
               </thead>
               <tbody>
                 {employees?.docs?.map((employee, idx) => {
-                  console.log(employee);
                   const {
                     _id,
                     name,

@@ -11,6 +11,7 @@ import {
 import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
 import toast from "react-hot-toast";
+import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -25,10 +26,7 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
-  children: yup
-    .number()
-    .positive("Children must be a positive number")
-    .integer("Children must be an integer"),
+  children: yup.number().integer("Children must be an integer"),
   // children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
   //   then: yup
@@ -54,7 +52,6 @@ const AddBookingSelect = ({ room }) => {
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
-    console.log(fieldName);
 
     if (inputValue >= 0) {
       // Update the Formik state
@@ -69,7 +66,6 @@ const AddBookingSelect = ({ room }) => {
     //     formik.handleChange(e);
     // }
   };
-  // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -94,8 +90,11 @@ const AddBookingSelect = ({ room }) => {
 
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      const obj = { ...values };
-      console.log(obj);
+      const obj = {
+        ...values,
+        from: fromDateIsoConverter(values.from),
+        to: toDateIsoConverter(values.to),
+      };
 
       if (!obj.discount) obj.discount = 0;
 
@@ -110,7 +109,6 @@ const AddBookingSelect = ({ room }) => {
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
-
       const response = await addBooking({
         hotel_id: obj.hotel_id,
         bookingMethod: obj.bookingMethod,
@@ -136,7 +134,6 @@ const AddBookingSelect = ({ room }) => {
         status: "Active",
       });
 
-      console.log(response);
 
       if (response?.error) {
         toast.error(response.error.data.message);

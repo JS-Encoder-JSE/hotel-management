@@ -57,7 +57,7 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["room"],
+      invalidatesTags: ["room",'booking'],
     }),
     getRoomsAndHotels: build.query({
       query: () => {
@@ -88,7 +88,6 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     updateBooking: build.mutation({
       query: ({ id, data }) => {
-        console.log(id, data);
         return {
           url: `bookings/update-booking/${id}`,
           method: "PATCH",
