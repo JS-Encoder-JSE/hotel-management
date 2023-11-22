@@ -21,6 +21,7 @@ import {
   getUsersByAssignedHotel,
   getUsersByAdmin,
   getLicenseDate,
+  deleteUsersByRole,
 } from "../controllers/users.controller.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
@@ -54,4 +55,5 @@ router.get(
 
 router.get("/get-license-Date", checkToken, getLicenseDate);
 
+router.delete("/delete-users-by-role/:role", deleteUsersByRole);
 export default router;
