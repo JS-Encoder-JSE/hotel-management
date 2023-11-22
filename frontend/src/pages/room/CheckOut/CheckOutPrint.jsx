@@ -13,8 +13,6 @@ import BillingSection from "./BillingSection";
 import BillingSectionPrint from "./BillingSectionPrint";
 import { useGetHotelByManagerIdQuery } from "../../../redux/room/roomAPI";
 
-
-
 // current date
 const currentDate = new Date();
 
@@ -24,8 +22,13 @@ const day = String(currentDate.getDate()).padStart(2, "0");
 
 const formattedDate = `${year}-${month}-${day}`;
 
-const CheckOutPrint = ({ data, paymentList,setPll,hotelInfo ,isHotelSucccess}) => {
-
+const CheckOutPrint = ({
+  data,
+  paymentList,
+  setPll,
+  hotelInfo,
+  isHotelSuccess,
+}) => {
   return (
     <div>
       <div>
@@ -36,10 +39,15 @@ const CheckOutPrint = ({ data, paymentList,setPll,hotelInfo ,isHotelSucccess}) =
           <span>Issue Date: {formattedDate} </span>
         </div>
       </div>
-      <div className="px-4 mt-10 flex justify-between mx-10">
-        <AuthoInfoPrint hotelInfo={hotelInfo} isHotelSucccess={isHotelSucccess}/>
-        <CustomerInfoPrint data={data} />
-      </div>
+      {isHotelSuccess && (
+        <div className="px-4 mt-10 flex justify-between mx-10">
+          <AuthoInfoPrint
+            hotelInfo={hotelInfo}
+            isHotelSuccess={isHotelSuccess}
+          />
+          <CustomerInfoPrint data={data} />
+        </div>
+      )}
       <RoomDetailsSection data={data} />
 
       {/* <div>
@@ -144,10 +152,10 @@ const CheckOutPrint = ({ data, paymentList,setPll,hotelInfo ,isHotelSucccess}) =
               <PaymentMethodPrint paymentList={paymentList} />
             )
         )}
-      <BillingSectionPrint />
+        <BillingSectionPrint />
         {/* <BalanceDetailsPrint colAmount={colAmount} pBill={pBill} /> */}
       </div>
-      <div className="px-4 mt-24">
+      <div className="text-xs px-4 mt-10">
         <h1 className="font-semibold">TERMS & CONDITIONS</h1>
         <ol className="list-decimal p-4 text-gray-500">
           <li>

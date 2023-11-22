@@ -1,13 +1,11 @@
-import React from "react";
-
-const AuthoInfoPrint = ({ hotelInfo,isHotelSuccess }) => {
-  console.log(hotelInfo);
-
-const {name,email,phone_no,address}=hotelInfo !== undefined? hotelInfo[0] : [] ;
-
-  // if(!hotelInfo){
-  //   return <>Loading</>
+const AuthoInfoPrint = ({ hotelInfo, isHotelSuccess }) => {
+  // if (!hotelInfo || hotelInfo.length === 0 || !hotelInfo[0]) {
+  //   return <div>Loading...</div>; // Or handle the loading state appropriately
   // }
+
+  const info = isHotelSuccess && hotelInfo[0] ? hotelInfo[0] : [];
+  console.log(info);
+
   return (
     <div className="py-2">
       <h2 className="font-bold">Invoice From</h2>
@@ -18,13 +16,15 @@ const {name,email,phone_no,address}=hotelInfo !== undefined? hotelInfo[0] : [] ;
           <p>Phone</p>
           <p>Address</p>
         </div>
-       <div>
-          <p>: {name}</p>
-          <p>: {email}</p>
-          <p>: {phone_no}</p>
-          <p>: {address}</p>
-        </div>
-    </div>
+        {isHotelSuccess && (
+          <div>
+            <p>: {info.name}</p>
+            <p>: {info.email}</p>
+            <p>: {info.phone_no}</p>
+            <p>: {info.address}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

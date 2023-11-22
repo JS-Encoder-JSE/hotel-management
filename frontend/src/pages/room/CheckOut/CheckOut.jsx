@@ -29,23 +29,24 @@ const CheckOut = () => {
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
-  const { data: checkout , isLoading:checkoutLoading ,isSuccess } = useGetCOInfoQuery(fetch);
+  const {
+    data: checkout,
+    isLoading: checkoutLoading,
+    isSuccess,
+  } = useGetCOInfoQuery(fetch);
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
 
-
-
-  const handleResetCheckout =()=>{
-    setShowRooms(false)
-  }
+  const handleResetCheckout = () => {
+    setShowRooms(false);
+  };
 
   // this is use for Print
   const componentRef = useRef();
 
   // dispatch
-  const dispatch=useDispatch()
-
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -79,11 +80,14 @@ const CheckOut = () => {
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-console.log(user._id);
+  console.log(user._id);
 
-  const {data:hotelInfo ,isLoading:isHotelLoading, isSuccess:isHotelSuccess}=useGetHotelByManagerIdQuery(user?._id)
-  console.log(hotelInfo)
-
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
+  console.log(hotelInfo);
 
   const { data: rooms } = useRoomsQuery({
     cp: "0",
@@ -111,18 +115,19 @@ console.log(user._id);
   useEffect(() => {
     setFetch(roomFromQuery);
     setShowRooms(true);
-    
-   
   }, [roomFromQuery]);
 
   // set subtotal amount
-  useEffect(()=>{
-      if(isSuccess){
-        dispatch(updateSubTotal(checkout?.data?.booking_info?.[0]?.total_unpaid_amount||0))
-      }
-      
-  },[checkout])
- 
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(
+        updateSubTotal(
+          checkout?.data?.booking_info?.[0]?.total_unpaid_amount || 0
+        )
+      );
+    }
+  }, [checkout]);
+
   return (
     <div className="space-y-8">
       <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center">
@@ -153,11 +158,15 @@ console.log(user._id);
         >
           Go
         </button>
-        <button 
-        onClick={handleResetCheckout}
-        className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
+        <button
+          onClick={handleResetCheckout}
+          className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
             !formik.values.roomNumber ? "btn-disabled" : ""
-          }`}> <BiReset className="text-xl text-white mb-1"/> Reset</button>
+          }`}
+        >
+          {" "}
+          <BiReset className="text-xl text-white mb-1" /> Reset
+        </button>
       </div>
 
       {/* Customer Info and Set them to default */}
@@ -167,12 +176,12 @@ console.log(user._id);
             <CustomerInfoSection data={checkout?.data?.booking_info} />
             <RoomDetailsSection data={checkout?.data?.booking_info} />
             <div className="my-5">
-            <BillingSection
-              data={checkout?.data}
-              totalBilling={totalBilling}
-              setTotalBilling={setTotalBilling}
-              setPBill={setPBill}
-            />
+              <BillingSection
+                data={checkout?.data}
+                totalBilling={totalBilling}
+                setTotalBilling={setTotalBilling}
+                setPBill={setPBill}
+              />
             </div>
             <PaymentSection
               data={checkout?.data?.booking_info}
@@ -180,22 +189,9 @@ console.log(user._id);
               setPaymentList={setPaymentList}
               pBill={pBill}
               formik={formik}
+              hotelInfo={hotelInfo}
+              isHotelSuccess={isHotelSuccess}
             />
-          </div>
-
-          <div style={{ display: "none" }}>
-            <div ref={componentRef}>
-              <CheckOutPrint
-                data={checkout?.data?.booking_info}
-                paymentList={paymentList}
-                totalBilling={totalBilling}
-                setTotalBilling={setTotalBilling}
-                setPBill={setPBill}
-                hotelInfo={hotelInfo}
-                isHotelSuccess={isHotelSuccess}
-               
-              />
-            </div>
           </div>
         </>
       ) : (

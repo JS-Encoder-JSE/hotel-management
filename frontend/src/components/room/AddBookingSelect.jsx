@@ -66,8 +66,6 @@ const AddBookingSelect = ({ room }) => {
     //     formik.handleChange(e);
     // }
   };
-  const [currentDate,setCurrentDate]=useState(new Date())
-
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -82,7 +80,7 @@ const AddBookingSelect = ({ room }) => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from: new Date,
+      from: "",
       to: "",
       amount: "",
       discount: "",
@@ -100,7 +98,7 @@ const AddBookingSelect = ({ room }) => {
 
       if (!obj.discount) obj.discount = 0;
 
-      // const room_ids = obj.room_arr.map((elem) => elem.value);
+      const room_ids = obj.room_arr.map((elem) => elem.value);
       const no_of_days = Math.floor(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
@@ -114,7 +112,7 @@ const AddBookingSelect = ({ room }) => {
       const response = await addBooking({
         hotel_id: obj.hotel_id,
         bookingMethod: obj.bookingMethod,
-        room_ids : room.data._id,
+        room_ids,
         guestName: obj.guestName,
         address: obj.address,
         mobileNumber: obj.mobileNumber,
@@ -135,7 +133,6 @@ const AddBookingSelect = ({ room }) => {
         nationality: obj.nationality,
         status: "Active",
       });
-
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -459,7 +456,6 @@ const AddBookingSelect = ({ room }) => {
             <DatePicker
               dateFormat="dd/MM/yyyy"
               name="to"
-              inputValue={new Date()}
               placeholderText={`To`}
               selected={formik.values.to}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
