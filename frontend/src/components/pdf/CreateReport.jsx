@@ -1,5 +1,6 @@
 import React from "react";
-import { Document, Page, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, View, Text, StyleSheet,Image } from "@react-pdf/renderer";
+import logo from "../../assets/logo.png"
 
 const CreateReport = ({ values, header }) => {
   const styles = StyleSheet.create({
@@ -41,6 +42,12 @@ const CreateReport = ({ values, header }) => {
             alignItems: "center",
           }}
         >
+            <Image src={logo} style={{
+              width:"54px",
+              height:"54px",
+              marginBottom:"10px"
+            }}/>
+
           <View>
             <Text>{header?.title}</Text>
             <Text

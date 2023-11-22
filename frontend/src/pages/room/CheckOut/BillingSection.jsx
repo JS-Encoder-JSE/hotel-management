@@ -34,9 +34,11 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     const amount =
       (data?.booking_info?.[0]?.total_unpaid_amount * newValue) / 100;
 
-    setDiscountAmt(amount);
-    dispatch(setExtraDiscount(val))
-  };
+      setDiscountAmt(amount);
+      dispatch(setExtraDiscount(val))
+    };
+    // discount ammount
+    dispatch(updateDiscountOffer(Math.floor(discountAmt)))
 
   const handleAmountChange = (idx, val) => {
     const arr = [...billing];

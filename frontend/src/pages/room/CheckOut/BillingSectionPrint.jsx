@@ -36,7 +36,7 @@ const BillingSectionPrint = ({
           <p>: ${tax}</p>
           <p>: ${additionalCharge}</p>
           <p>: ${serviceCharge}</p>
-          <p>: ${extraDiscount}</p>
+          <p>: ${discountOffer}</p>
           <p>: ${roomPostedBill}</p> 
           <p>: ${grandTotal}</p>
         </div>
