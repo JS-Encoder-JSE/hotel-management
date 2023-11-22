@@ -11,8 +11,7 @@ import AuthoInfoPrint from "./AuthoInfoPrint";
 import logo from "../../../assets/logo.png";
 import BillingSection from "./BillingSection";
 import BillingSectionPrint from "./BillingSectionPrint";
-
-
+import { useGetHotelByManagerIdQuery } from "../../../redux/room/roomAPI";
 
 // current date
 const currentDate = new Date();
@@ -23,9 +22,13 @@ const day = String(currentDate.getDate()).padStart(2, "0");
 
 const formattedDate = `${year}-${month}-${day}`;
 
-const CheckOutPrint = ({ data, paymentList, totalBilling,setTotalBilling ,setPBill }) => {
-
-  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+const CheckOutPrint = ({
+  data,
+  paymentList,
+  setPll,
+  hotelInfo,
+  isHotelSuccess,
+}) => {
   return (
     <div>
       <div>
@@ -36,10 +39,15 @@ const CheckOutPrint = ({ data, paymentList, totalBilling,setTotalBilling ,setPBi
           <span>Issue Date: {formattedDate} </span>
         </div>
       </div>
-      <div className="px-4 mt-10 flex justify-between ">
-        <AuthoInfoPrint user={user} />
-        <CustomerInfoPrint data={data} />
-      </div>
+      {isHotelSuccess && (
+        <div className="px-4 mt-10 flex justify-between mx-10">
+          <AuthoInfoPrint
+            hotelInfo={hotelInfo}
+            isHotelSuccess={isHotelSuccess}
+          />
+          <CustomerInfoPrint data={data} />
+        </div>
+      )}
       <RoomDetailsSection data={data} />
 
       {/* <div>
@@ -136,7 +144,7 @@ const CheckOutPrint = ({ data, paymentList, totalBilling,setTotalBilling ,setPBi
         ))}
       </div> */}
       {/* payment method */}
-      <div className="w-[700px] mx-auto flex justify-between items-center px-4">
+      <div className="w-[800px] mx-auto flex justify-between items-center px-4">
         {paymentList.map(
           (method) =>
             method.method &&
@@ -144,10 +152,10 @@ const CheckOutPrint = ({ data, paymentList, totalBilling,setTotalBilling ,setPBi
               <PaymentMethodPrint paymentList={paymentList} />
             )
         )}
-      <BillingSectionPrint />
+        <BillingSectionPrint />
         {/* <BalanceDetailsPrint colAmount={colAmount} pBill={pBill} /> */}
       </div>
-      <div className="px-4 mt-24">
+      <div className="text-xs px-4 mt-10">
         <h1 className="font-semibold">TERMS & CONDITIONS</h1>
         <ol className="list-decimal p-4 text-gray-500">
           <li>

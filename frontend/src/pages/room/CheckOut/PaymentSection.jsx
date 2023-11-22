@@ -16,6 +16,8 @@ const PaymentSection = ({
   paymentList,
   setPaymentList,
   data,
+  isHotelSuccess,
+  hotelInfo,
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -116,6 +118,8 @@ const PaymentSection = ({
               colAmount={colAmount}
               data={data}
               paymentList={paymentList}
+              isHotelSuccess={isHotelSuccess}
+              hotelInfo={hotelInfo}
             />
           </div>
         </div>

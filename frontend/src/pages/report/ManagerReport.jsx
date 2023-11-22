@@ -1,5 +1,6 @@
 import React from "react";
-import { Document, Page, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
+import logo from "../../assets/logo.png"
 
 const ManagerReport = ({ values, header }) => {
     const desiredHeaders = ["Serial No", "guestName", "room_numbers", "checked_in", "checked_out", "paid_amount"];
@@ -42,6 +43,11 @@ const ManagerReport = ({ values, header }) => {
             alignItems: "center",
           }}
         >
+           <Image src={logo} style={{
+              width:"54px",
+              height:"54px",
+              marginBottom:"10px"
+            }}/>
           <View>
             <Text>{header?.title}</Text>
             <Text

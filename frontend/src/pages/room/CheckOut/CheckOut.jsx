@@ -4,9 +4,11 @@ import CustomerInfoSection from "./CustomerInfoSection";
 import RoomDetailsSection from "./RoomDetailsSection";
 import BillingSection from "./BillingSection";
 import PaymentSection from "./PaymentSection";
+import { BiReset } from "react-icons/bi";
 import {
   useAddCheckoutMutation,
   useGetCOInfoQuery,
+  useGetHotelByManagerIdQuery,
   useGetRoomsAndHotelsQuery,
   useRoomNumbersQuery,
   useRoomsQuery,
@@ -15,7 +17,7 @@ import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import CheckOutPrint from "./CheckOutPrint";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -28,17 +30,24 @@ const CheckOut = () => {
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
-  const { data: checkout , isLoading:checkoutLoading ,isSuccess } = useGetCOInfoQuery(fetch);
+  const {
+    data: checkout,
+    isLoading: checkoutLoading,
+    isSuccess,
+  } = useGetCOInfoQuery(fetch);
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
+
+  const handleResetCheckout = () => {
+    setShowRooms(false);
+  };
 
   // this is use for Print
   const componentRef = useRef();
 
   // dispatch
-  const dispatch=useDispatch()
-
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -70,6 +79,17 @@ const CheckOut = () => {
     },
   });
 
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+
+  console.log(user._id);
+
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
+  console.log(hotelInfo);
+
   const { data: rooms } = useRoomsQuery({
     cp: "0",
     filter: "",
@@ -96,18 +116,19 @@ const CheckOut = () => {
   useEffect(() => {
     setFetch(roomFromQuery);
     setShowRooms(true);
-    
-   
   }, [roomFromQuery]);
 
   // set subtotal amount
-  useEffect(()=>{
-      if(isSuccess){
-        dispatch(updateSubTotal(checkout?.data?.booking_info?.[0]?.total_unpaid_amount||0))
-      }
-      
-  },[checkout])
- 
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(
+        updateSubTotal(
+          checkout?.data?.booking_info?.[0]?.total_unpaid_amount || 0
+        )
+      );
+    }
+  }, [checkout]);
+
   return (
     <div className="space-y-8">
        <div className="mb-7">
@@ -153,21 +174,30 @@ const CheckOut = () => {
         >
           Go
         </button>
+        <button
+          onClick={handleResetCheckout}
+          className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
+            !formik.values.roomNumber ? "btn-disabled" : ""
+          }`}
+        >
+          {" "}
+          <BiReset className="text-xl text-white mb-1" /> Reset
+        </button>
       </div>
 
       {/* Customer Info and Set them to default */}
-      {showRooms && checkout ? (
+      {showRooms && checkout && isHotelSuccess ? (
         <>
           <div>
             <CustomerInfoSection data={checkout?.data?.booking_info} />
             <RoomDetailsSection data={checkout?.data?.booking_info} />
             <div className="my-5">
-            <BillingSection
-              data={checkout?.data}
-              totalBilling={totalBilling}
-              setTotalBilling={setTotalBilling}
-              setPBill={setPBill}
-            />
+              <BillingSection
+                data={checkout?.data}
+                totalBilling={totalBilling}
+                setTotalBilling={setTotalBilling}
+                setPBill={setPBill}
+              />
             </div>
             <PaymentSection
               data={checkout?.data?.booking_info}
@@ -175,20 +205,9 @@ const CheckOut = () => {
               setPaymentList={setPaymentList}
               pBill={pBill}
               formik={formik}
+              hotelInfo={hotelInfo}
+              isHotelSuccess={isHotelSuccess}
             />
-          </div>
-
-          <div style={{ display: "none" }}>
-            <div ref={componentRef}>
-              <CheckOutPrint
-                data={checkout?.data?.booking_info}
-                paymentList={paymentList}
-                totalBilling={totalBilling}
-                setTotalBilling={setTotalBilling}
-                setPBill={setPBill}
-               
-              />
-            </div>
           </div>
         </>
       ) : (

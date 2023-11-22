@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  FaArrowLeft,
   FaEye,
   FaPrint,
   FaRegEdit,
@@ -33,7 +32,6 @@ const OrderList = () => {
   const [ordersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
-  const [search, setSearch] = useState("");
 
   const [deleteOrder] = useDeleteOrderMutation();
   const [searchParams, setSearchParams] = useState({
@@ -95,29 +93,9 @@ const OrderList = () => {
   useEffect(() => {
     setPageCount(orders?.data?.totalPages);
   }, [orders]);
-
-  const pressEnter = (e) => {
-    if (e.key === "Enter" || e.search === 13) {
-      formik.handleSubmit();
-    }
-  };
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-      <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
         <h3 className={`text-2xl font-semibold text-center`}>Order List</h3>
         <div className={`flex justify-between mt-5`}>
           <div className={`flex gap-3`}>
@@ -273,6 +251,11 @@ const OrderList = () => {
 
                               <span
                                 title={`Print`}
+                                onClick={() =>
+                                  navigate(
+                                    `/dashboard/orderDetails/${order?._id}`
+                                  )
+                                }
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
                               >
                                 <FaPrint />
