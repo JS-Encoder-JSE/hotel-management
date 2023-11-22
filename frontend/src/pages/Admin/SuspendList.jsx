@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FaEye, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
 import { MdOutlineAutorenew } from "react-icons/md";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { useFormik } from "formik";
 import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
@@ -61,8 +61,25 @@ const SuspendList = () => {
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-      <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
         <div className={`text-2xl text-center`}>Suspend List</div>
+      <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
+        <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"
@@ -108,7 +125,7 @@ const SuspendList = () => {
                           ? 1
                           : a.name.toLowerCase() < b.name.toLowerCase()
                           ? -1
-                          : 0,
+                          : 0
                       )
                       ?.map((owner, idx) => {
                         return (
@@ -146,7 +163,7 @@ const SuspendList = () => {
                                 className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
                                 onClick={() =>
                                   navigate(
-                                    `/dashboard/renew-view/${owner?._id}`,
+                                    `/dashboard/renew-view/${owner?._id}`
                                   )
                                 }
                               >
@@ -156,7 +173,7 @@ const SuspendList = () => {
                                 className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                                 onClick={() =>
                                   navigate(
-                                    `/dashboard/edit-renew/${owner?._id}`,
+                                    `/dashboard/edit-renew/${owner?._id}`
                                   )
                                 }
                               >

@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
-import { FaEye, FaEyeSlash, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaEyeSlash, FaPlusCircle, FaUpload } from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -16,6 +16,8 @@ import {
   useUploadSingleMutation,
 } from "../../redux/baseAPI.js";
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
+import { Link } from "react-router-dom";
+import EmployeeView from './EmployeeView';
 
 // form validation
 const validationSchema = yup.object({
@@ -207,7 +209,29 @@ const AddEmployee = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
-          <h2 className={`text-3xl`}>Add Employee</h2>
+        <div className="mb-7">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
+      <div className="w-full">
+              <h3
+                className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
+              >
+                <FaPlusCircle />
+                <span>Add Employee</span>
+              </h3>
+    
+            </div>
           <hr className={`my-5`} />
         </div>
 

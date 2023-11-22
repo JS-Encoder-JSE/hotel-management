@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import {
   useHotelsQuery,
@@ -72,7 +72,23 @@ const HotelLists = () => {
 
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-10`}>
-      <div className={`flex justify-end gap-4`}>
+      <div className={`flex justify-between gap-4`}>
+        <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
         {/* <div>
           <select
             name="filter"

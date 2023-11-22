@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CreateCustomerReceipt from "../../components/pdf/CreateCustomerReceipt.jsx";
 import * as XLSX from "xlsx";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { GrPowerReset } from "react-icons/gr";
 import DatePicker from "react-datepicker";
@@ -92,6 +92,20 @@ const ReportManager = () => {
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
         <div className={`flex flex-wrap gap-1.5 justify-between `}>
+        <div className="mb-7">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
           <h3 className={`text-xl font-semibold`}>All Report</h3>
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>

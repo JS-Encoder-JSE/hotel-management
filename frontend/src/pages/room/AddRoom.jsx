@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -17,6 +17,8 @@ import {
   useGetRoomsAndHotelsQuery,
 } from "../../redux/room/roomAPI.js";
 import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { FaPencil } from "react-icons/fa6";
 
 // form validation
 const validationSchema = yup.object({
@@ -48,12 +50,12 @@ const validationSchema = yup.object({
 });
 
 const AddRoom = () => {
+  // const navigate = useNavigate();
   const { user } = useSelector((store) => store.authSlice);
 
   const [isLoading, setLoading] = useState(false);
 
   const { data: hotelsList, isLoading: loading } = useGetRoomsAndHotelsQuery();
-
 
   const [addRoom] = useAddRoomMutation();
   const [upload] = useUploadMutation();
@@ -76,7 +78,6 @@ const AddRoom = () => {
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       setLoading(true);
-  
 
       const obj = { ...values };
       const formData = new FormData();
@@ -98,7 +99,7 @@ const AddRoom = () => {
         (result) => (obj.images = result.data.imageUrls)
       );
 
-       const response = await addRoom(obj);
+      const response = await addRoom(obj);
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -157,6 +158,21 @@ const AddRoom = () => {
         <div className="card bg-white shadow-xl">
           <div className="card-body">
             <div>
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
+            {/* add room */}
+            <div className="w-full">
               <h3
                 className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
               >
@@ -164,6 +180,7 @@ const AddRoom = () => {
                 <span>Add Room</span>
               </h3>
             </div>
+
             <form
               autoComplete="off"
               className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
@@ -329,6 +346,7 @@ const AddRoom = () => {
                   </option>
                   <option value={1}>1</option>
                   <option value={2}>2</option>
+                  <option value={3}>3</option>
                   <option value={4}>4</option>
                 </select>
                 {formik.touched.capacity && Boolean(formik.errors.capacity) ? (

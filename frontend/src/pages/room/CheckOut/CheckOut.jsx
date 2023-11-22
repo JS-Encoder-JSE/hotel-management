@@ -15,10 +15,11 @@ import {
 } from "../../../redux/room/roomAPI";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import CheckOutPrint from "./CheckOutPrint";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
+import { FaArrowLeft } from "react-icons/fa";
 
 const CheckOut = () => {
   const navigate = useNavigate();
@@ -130,7 +131,22 @@ const CheckOut = () => {
 
   return (
     <div className="space-y-8">
+       <div className="mb-7">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
       <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center">
+   
         <div className="flex flex-col gap-3">
           <Select
             placeholder="Select room"

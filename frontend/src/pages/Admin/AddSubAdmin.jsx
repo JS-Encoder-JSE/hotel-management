@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
-import { FaEye, FaEyeSlash, FaTrash, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaEyeSlash, FaTrash, FaUpload } from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -14,6 +14,7 @@ import * as yup from "yup";
 import imgPlaceHolder from "../../assets/img-placeholder.jpg";
 import { useAddSubAdminMutation } from "../../redux/admin/subadmin/subadminAPI.js";
 import { useUploadMutation } from "../../redux/baseAPI.js";
+import { Link } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -34,7 +35,7 @@ const validationSchema = yup.object({
     .required("Address is required")
     .matches(
       /^[a-zA-Z][a-zA-Z0-9\s]*$/,
-      "Address must start with a character and can include characters and numbers",
+      "Address must start with a character and can include characters and numbers"
     ),
   salary: yup
     .number()
@@ -92,7 +93,7 @@ const AddSubAdmin = () => {
       for (let i = 0; i < documents.length; i++) {
         const photoName = documents[i].name.substring(
           0,
-          documents[i].name.lastIndexOf("."),
+          documents[i].name.lastIndexOf(".")
         );
 
         formData.append(photoName, documents[i]);
@@ -183,7 +184,23 @@ const AddSubAdmin = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
-          <h2 className={`text-3xl`}>Add Sub Admin</h2>
+          <div>
+            <Link to={`/dashboard `}>
+              <button
+                type="button"
+                class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              >
+                <dfn>
+                  <abbr title="Back">
+                    <FaArrowLeft />
+                  </abbr>
+                </dfn>
+
+                <span className="tracking-wider font-semibold text-[1rem]"></span>
+              </button>
+            </Link>
+          </div>
+          <h2 className={`text-3xl text-center`}>Add Sub Admin</h2>
           <hr className={`my-5`} />
         </div>
 

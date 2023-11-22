@@ -18,7 +18,7 @@ const Header = ({
   isHbMenu,
   setHbMenu,
 }) => {
-  const { user } = useSelector((store) => store.authSlice);
+  const { user, } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
   const [time, setTime] = useState(new Date());
   const { data: dateData } = useGetLicenseDateQuery();
@@ -27,6 +27,7 @@ const Header = ({
 
     return () => clearInterval(clearTime);
   }, []);
+  
   return (
     <div>
       <div className="navbar bg-white justify-between">
@@ -44,7 +45,8 @@ const Header = ({
           </div>
           {Math.floor(
             Math.abs(
-              new Date(dateData?.startedAt) - new Date(dateData?.endsIn)
+              new Date(dateData?.endsIn) - new Date()
+          
             ) /
               (24 * 60 * 60 * 1000)
           ) <= 30 &&
@@ -55,16 +57,18 @@ const Header = ({
               <span>
                 <GrLicense />
               </span>
+             
               <span className={`-mt-0.5`}>
                 Your license will expire in{" "}
                 {Math.floor(
-                  Math.abs(new Date(user?.bill_to) - new Date()) /
+                  Math.abs(new Date(dateData?.endsIn) - new Date()) /
                     (24 * 60 * 60 * 1000)
                 )}{" "}
                 days
               </span>
             </h3>
           ) : null}
+          
         </div>
         <div>
           <label

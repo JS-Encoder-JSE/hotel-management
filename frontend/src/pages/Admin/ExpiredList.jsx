@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FaEye, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
 import { MdAutorenew, MdOutlineAutorenew, MdUpdate } from "react-icons/md";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { BiSolidSelectMultiple } from "react-icons/bi";
 import { RxCross2 } from "react-icons/rx";
@@ -75,8 +75,25 @@ const ExpiredList = () => {
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-      <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
         <div className={`text-2xl text-center`}>Expired List</div>
+      <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
+        <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+      
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"
@@ -121,7 +138,7 @@ const ExpiredList = () => {
                         ? 1
                         : a.name.toLowerCase() < b.name.toLowerCase()
                         ? -1
-                        : 0,
+                        : 0
                     )
                     ?.map((owner, idx) => {
                       return (

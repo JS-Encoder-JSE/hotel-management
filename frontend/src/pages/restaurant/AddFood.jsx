@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaEye, FaEyeSlash, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaEyeSlash, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -19,6 +19,7 @@ import {
 import { useSelector } from "react-redux";
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -205,6 +206,22 @@ const AddFood = () => {
     );
   }
   return (
+ <>
+
+<div className="mb-7">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
       <div
         className={`flex justify-between bg-green-slimy max-w-3xl mx-auto py-3 px-6 rounded`}
@@ -581,6 +598,7 @@ const AddFood = () => {
         </div>
       </form>
     </div>
+ </>
   );
 };
 

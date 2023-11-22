@@ -1,10 +1,11 @@
 import { useFormik } from "formik";
 import React from "react";
 import toast from "react-hot-toast";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
 import * as yup from "yup";
 import { useAddInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
+import { Link } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -50,7 +51,23 @@ const AddInventory = () => {
   });
 
   return (
+   <>
+  
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
+    <div className="mb-7">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
       <h3
         className={`flex bg-green-slimy text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded space-x-1.5`}
       >
@@ -136,6 +153,7 @@ const AddInventory = () => {
         </div>
       </form>
     </div>
+   </>
   );
 };
 

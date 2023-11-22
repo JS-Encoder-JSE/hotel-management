@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 // import BookingLists from "../../components/room/BookingLists.jsx";
-import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
 // import AddBooking from "../../components/room/AddBooking.jsx";
 import AddBookingSwimming from "../../components/LifeStyle/AddBookingSwimming.jsx";
@@ -16,6 +16,7 @@ import {
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
+import { Link } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -118,6 +119,20 @@ const PoolReservation = () => {
   };
   return (
     <>
+     <div className="mb-7">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
       <div
         className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
       >

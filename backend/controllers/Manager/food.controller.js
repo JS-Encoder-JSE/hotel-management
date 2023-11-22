@@ -151,6 +151,7 @@ export const getfoodById = async (req, res) => {
 
 export const updateFood = async (req, res) => {
   try {
+    const user_id = req.user.userId;
     const foodId = req.params.food_id; // Assuming you use "food_id" as the parameter name
     const updateData = req.body;
 
@@ -161,6 +162,15 @@ export const updateFood = async (req, res) => {
         success: false,
         message: "Food not found",
       });
+    }
+    if (updateData.category === "Liquor") {
+      const user = await User.findById(user_id);
+      const parent = await User.findById(user.parent_id);
+      // Compare the provided password with the hashed password
+      const isPasswordValid = await parent.comparePassword(updateData.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
     }
 
     // Update the food with the provided data

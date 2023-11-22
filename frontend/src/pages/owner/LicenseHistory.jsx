@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { FaFileDownload } from "react-icons/fa";
+import { FaArrowLeft, FaFileDownload } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import { useGetTransactionlogsQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Rings } from "react-loader-spinner";
 import { GrPowerReset } from "react-icons/gr";
@@ -60,8 +60,25 @@ const LicenseHistory = () => {
   }, [data]);
 
   return (
+   <>
     <div className="card w-full bg-white shadow-xl">
       <div className="card-body space-y-10">
+      <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
         <h1 className="text-2xl text-center ">License History</h1>
         <div className="flex justify-between">
           <div className={`flex gap-3`}>
@@ -204,6 +221,7 @@ const LicenseHistory = () => {
         )}
       </div>
     </div>
+   </>
   );
 };
 

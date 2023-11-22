@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
@@ -90,12 +90,30 @@ const SubAdminList = () => {
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
+      <div>
+        <h3 className={`text-xl font-semibold text-center mb-5`}>
+            Sub Admin List
+          </h3>
+        </div>
         <div
           className={`flex flex-col sm:flex-row justify-between items-center gap-5`}
         >
-          <h3 className={`text-xl font-semibold text-center`}>
-            Sub Admin List
-          </h3>
+          <div>
+            <Link to={`/dashboard `}>
+              <button
+                type="button"
+                class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              >
+                <dfn>
+                  <abbr title="Back">
+                    <FaArrowLeft />
+                  </abbr>
+                </dfn>
+
+                <span className="tracking-wider font-semibold text-[1rem]"></span>
+              </button>
+            </Link>
+          </div>
           <div className={`flex felx-wrap gap-3`}>
             <div>
               <select
@@ -104,7 +122,7 @@ const SubAdminList = () => {
                 value={formik.values.filter}
                 onChange={(e) => {
                   formik.setFieldValue("filter", e.target.value);
-                  setCurrentPage(0)
+                  setCurrentPage(0);
                 }}
               >
                 <option value="">All</option>
