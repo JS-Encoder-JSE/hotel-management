@@ -102,7 +102,7 @@ const AddBooking = () => {
 
       if (!obj.discount) obj.discount = 0;
 
-      const room_ids = obj.room_arr.map((elem) => elem.value);
+      const room_ids = obj.room_arr?.map((elem) => elem.value);
       const no_of_days = Math.floor(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );

@@ -251,6 +251,11 @@ const OrderList = () => {
 
                               <span
                                 title={`Print`}
+                                onClick={() =>
+                                  navigate(
+                                    `/dashboard/orderDetails/${order?._id}`
+                                  )
+                                }
                                 className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
                               >
                                 <FaPrint />

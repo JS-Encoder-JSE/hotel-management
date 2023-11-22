@@ -59,6 +59,9 @@ const validationSchema = yup.object({
 
 const CheckInModal = ({ room }) => {
 
+
+  console.log(room,"checkind")
+
 // current Date
   const [currentDate,setCurrentDate]=useState(new Date())
 
@@ -81,6 +84,7 @@ const CheckInModal = ({ room }) => {
       formik.handleChange(e);
     }
   };
+
 
   const formik = useFormik({
     initialValues: {
@@ -114,7 +118,13 @@ const CheckInModal = ({ room }) => {
 
       if (!obj.discount) obj.discount = 0;
 
-      const room_ids = obj.room_arr.map((elem) => elem.value);
+
+      let room_ids =[];
+      if(room){
+        room_ids.push(room?.data?._id)
+      }
+
+      // const room_ids = obj.room_arr.map((elem) => elem.value);
       const no_of_days = Math.floor(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
@@ -232,20 +242,20 @@ const CheckInModal = ({ room }) => {
   };
   const { data: hotel } = useGetHotelByIdQuery(room?.data?.hotel_id);
 
-  useEffect(() => {
-    if (room?.data) {
-      formik.setValues({
-        room_arr: [
-          {
-            label: `${room.data.roomNumber} - ${room.data.category}`,
-            value: room.data._id,
-            price: room.data.price,
-          },
-        ],
-        hotel_id: room.data.hotel_id,
-      });
-    }
-  }, [room?.data]);
+  // useEffect(() => {
+  //   if (room?.data) {
+  //     formik.setValues({
+  //       room_arr: [
+  //         {
+  //           label: `${room.data.roomNumber} - ${room.data.category}`,
+  //           value: room.data._id,
+  //           price: room.data.price,
+  //         },
+  //       ],
+  //       hotel_id: room.data.hotel_id,
+  //     });
+  //   }
+  // }, [room?.data]);
 
   useEffect(() => {
     if (formik.values.documents) {
@@ -687,7 +697,7 @@ const CheckInModal = ({ room }) => {
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
-              Confirm
+              Confirm To
               {isLoading ? (
                 <span
                   className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"

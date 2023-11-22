@@ -4,7 +4,6 @@ import Select from "react-select";
 import * as yup from "yup";
 import {
   useAddBookingMutation,
-  useGetHotelByIdQuery,
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
@@ -15,7 +14,7 @@ import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
-  // room_arr: yup.array().required("Room IDs are required"),
+  room_arr: yup.array().required("Room IDs are required"),
   // hotel_id: yup.string().required("Hotel ID is required"),
   guestName: yup.string().required("Guest name is required"),
   address: yup.string().required("Address is required"),
@@ -26,16 +25,16 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
-  children: yup.number().integer("Children must be an integer"),
-  // children: yup.number().when([], {
+  //   children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
-  //   then: yup
+  //   children: yup
   //     .number()
   //     .positive("Children must be a positive number")
   //     .integer("Children must be an integer"),
   // }),
-  amount: yup.number(),
-  paymentMethod: yup.string(),
+  children: yup.number(),
+
+  paymentMethod: yup.string().required("Payment method is required"),
   // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
   //   if (paymentMethod !== "cash")
   //     return schema.required("Transaction ID is required");
@@ -43,12 +42,14 @@ const validationSchema = yup.object({
   // }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-
+  amount: yup.number(),
   nationality: yup.string().required("Nationality is required"),
   bookingMethod: yup.string().required("Booking method is required"),
 });
 
-const AddBookingSelect = ({ room }) => {
+const AddBookingSelect = ({room}) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
@@ -66,6 +67,11 @@ const AddBookingSelect = ({ room }) => {
     //     formik.handleChange(e);
     // }
   };
+
+
+
+
+  // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -80,12 +86,13 @@ const AddBookingSelect = ({ room }) => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from: "",
+      from: new Date(),
       to: "",
       amount: "",
       discount: "",
       nationality: "",
       bookingMethod: "",
+      status: "Active",
     },
 
     validationSchema,
@@ -98,7 +105,13 @@ const AddBookingSelect = ({ room }) => {
 
       if (!obj.discount) obj.discount = 0;
 
-      const room_ids = obj.room_arr.map((elem) => elem.value);
+      let room_ids =[];
+      if(room){
+        room_ids.push(room?.data?._id)
+      }
+        
+
+      // const room_ids = obj.room_arr?.map((elem) => elem.value);
       const no_of_days = Math.floor(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
@@ -109,10 +122,11 @@ const AddBookingSelect = ({ room }) => {
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
+
       const response = await addBooking({
         hotel_id: obj.hotel_id,
-        bookingMethod: obj.bookingMethod,
         room_ids,
+        bookingMethod: obj.bookingMethod,
         guestName: obj.guestName,
         address: obj.address,
         mobileNumber: obj.mobileNumber,
@@ -149,23 +163,40 @@ const AddBookingSelect = ({ room }) => {
       e.preventDefault();
     }
   };
+  const { data: rooms } = useRoomsQuery({
+    id: formik.values.hotel_id,
+    limit: 1000000,
+  });
 
-  const { data: hotel } = useGetHotelByIdQuery(room?.data?.hotel_id);
+  const transformedRooms = rooms?.data?.docs
+    ?.filter((i) => i.status === "Available")
+    .map((room) => ({
+      label: `${room.roomNumber} - ${room.category}`,
+      value: room._id,
+      price: room.price,
+    }));
 
-  useEffect(() => {
-    if (room?.data) {
-      formik.setValues({
-        room_arr: [
-          {
-            label: `${room.data.roomNumber} - ${room.data.category}`,
-            value: room.data._id,
-            price: room.data.price,
-          },
-        ],
-        hotel_id: room.data.hotel_id,
-      });
-    }
-  }, [room?.data]);
+  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+
+  // useEffect(() => {
+  //   if (room?.data) {
+  //     formik.setValues({
+  //       room_arr: [
+  //         {
+  //           label: `${room.data.roomNumber} - ${room.data.category}`,
+  //           value: room.data._id,
+  //           price: room.data.price,
+  //         },
+  //       ],
+  //       hotel_id: room.data.hotel_id,
+  //     });
+  //     formik.setValues("from", new Date())
+  //   }
+  // }, [room?.data]);
+
+
+  console.log(room.data._id,"--------Rom")
+
 
   return (
     <>
@@ -196,16 +227,21 @@ const AddBookingSelect = ({ room }) => {
           {/*    onBlur={formik.handleBlur}*/}
           {/*  >*/}
           {/*    <option value="" selected disabled>*/}
-          {/*      {hotel?.name}*/}
+          {/*      Choose Hotel*/}
           {/*    </option>*/}
-          {/*  </select>*/}
-          {/*  /!*{formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*!/*/}
-          {/*  /!*  <small className="text-red-600">*!/*/}
-          {/*  /!*    {formik.touched.hotel_id && formik.errors.hotel_id}*!/*/}
-          {/*  /!*  </small>*!/*/}
-          {/*  /!*) : null}*!/*/}
-          {/*</div>*/}
 
+          {/*    {hotelsList?.map((i) => (*/}
+          {/*      <option key={i._id} value={i._id}>*/}
+          {/*        {i.name}*/}
+          {/*      </option>*/}
+          {/*    ))}*/}
+          {/*  </select>*/}
+          {/*  {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*/}
+          {/*    <small className="text-red-600">*/}
+          {/*      {formik.touched.hotel_id && formik.errors.hotel_id}*/}
+          {/*    </small>*/}
+          {/*  ) : null}*/}
+          {/*</div>*/}
           <div className="flex flex-col gap-3">
             <select
               name="bookingMethod"
@@ -223,11 +259,10 @@ const AddBookingSelect = ({ room }) => {
             {formik.touched.bookingMethod &&
             Boolean(formik.errors.bookingMethod) ? (
               <small className="text-red-600">
-                {formik.touched.bookingMethod && formik.errors.bookingMethod}
+                {formik.touched.method && formik.errors.bookingMethod}
               </small>
             ) : null}
           </div>
-
           <div className="flex flex-col gap-3">
             <select
               name="room_arr"
@@ -246,6 +281,33 @@ const AddBookingSelect = ({ room }) => {
             {/*  </small>*/}
             {/*) : null}*/}
           </div>
+
+          {/* <div className="flex flex-col gap-3">
+            <Select
+              placeholder="Select Rooms"
+              defaultValue={formik.values.room_arr}
+              options={transformedRooms}
+              isMulti
+              isSearchable
+              closeMenuOnSelect={false}
+              // onKeyDown={handleKeyDown}
+              onChange={(e) => formik.setFieldValue("room_arr", e)}
+              noOptionsMessage={() => "No room available"}
+              classNames={{
+                control: (state) =>
+                  `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
+                    state.isFocused ? "!shadow-none" : ""
+                  }`,
+                valueContainer: () => "!p-0",
+                placeholder: () => "!m-0",
+              }}
+            />
+            {formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (
+              <small className="text-red-600">
+                {formik.touched.room_arr && formik.errors.room_arr}
+              </small>
+            ) : null}
+          </div> */}
 
           {/* Guest box */}
           <div className="flex flex-col gap-3">
