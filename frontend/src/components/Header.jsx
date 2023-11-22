@@ -21,7 +21,8 @@ const Header = ({
   const { user, } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
   const [time, setTime] = useState(new Date());
-  const { data: dateData } = useGetLicenseDateQuery();
+  const { data: dateData,date:isLoading } = useGetLicenseDateQuery();
+  console.log("dateData",isLoading)
   useEffect(() => {
     const clearTime = setInterval(() => setTime(new Date()), 1000);
 
@@ -50,18 +51,18 @@ const Header = ({
             ) /
               (24 * 60 * 60 * 1000)
           ) <= 30 &&
-          (user?.role === "owner" || user?.role === "manager") ? (
+
+          (user?.role === "owner") ? (
             <h3
               className={`flex gap-1.5 text-xl font-bold animate-pulse text-yellow-500 ml-6`}
             >
               <span>
                 <GrLicense />
               </span>
-             
-              <span className={`-mt-0.5`}>
+             <span className={`-mt-0.5`}>
                 Your license will expire in{" "}
                 {Math.floor(
-                  Math.abs(new Date(dateData?.endsIn) - new Date()) /
+                 Math.abs(new Date(user?.bill_to) - new Date()) /
                     (24 * 60 * 60 * 1000)
                 )}{" "}
                 days
@@ -69,6 +70,31 @@ const Header = ({
             </h3>
           ) : null}
           
+          {Math.floor(
+            Math.abs(
+              new Date(dateData?.endsIn) - new Date()
+          
+            ) /
+              (24 * 60 * 60 * 1000)
+          ) <= 30 &&
+
+          (user?.role === "manager") ? (
+            <h3
+              className={`flex gap-1.5 text-xl font-bold animate-pulse text-yellow-500 ml-6`}
+            >
+              <span>
+                <GrLicense />
+              </span>
+             <span className={`-mt-0.5`}>
+                Your license will expire in{" "}
+                {Math.floor(
+                 Math.abs(new Date(dateData?.endsIn) - new Date()) /
+                    (24 * 60 * 60 * 1000)
+                )}{" "}
+                days
+              </span>
+            </h3>
+          ) : null}
         </div>
         <div>
           <label

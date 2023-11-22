@@ -602,6 +602,14 @@ export const login = async (req, res) => {
         });
       }
     }
+    if (user.role === "manager") {
+      const parent = await User.findById(user.parent_id);
+      if (["Expired", "Deactive", "Deleted"].includes(parent.status)) {
+        return res
+          .status(403)
+          .json({ message: "You have no permission to login" });
+      }
+    }
     if (["Expired", "Deactive", "Deleted"].includes(user.status)) {
       return res
         .status(403)
@@ -1638,5 +1646,27 @@ export const getLicenseDate = async (req, res) => {
   } catch (error) {
     console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deleteUsersByRole = async (req, res) => {
+  try {
+    const { role } = req.params;
+
+    // Validate the role
+    const validRoles = ["owner", "manager", "admin", "subadmin", "employee"];
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ error: "Invalid role specified" });
+    }
+
+    // Delete users with the specified role
+    const result = await User.deleteMany({ role });
+
+    return res.json({
+      message: `${result.deletedCount} users with role ${role} deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Error deleting users by role:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
