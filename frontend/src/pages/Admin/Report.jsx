@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowLeft, FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
+import { FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
@@ -138,16 +138,6 @@ const Report = () => {
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
         <div className={`flex flex-wrap gap-1.5 justify-between`}>
-        <div>
-      <Link to={`/dashboard `}>
-          <button
-                type="button"
-                class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-              >
-                <FaArrowLeft /> <span className="tracking-wider font-semibold text-[1rem]"></span>
-              </button>
-          </Link>
-      </div>
           <h3 className={`text-xl font-semibold`}>All Report</h3>
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>

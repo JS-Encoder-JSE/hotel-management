@@ -11,8 +11,7 @@ const Footer = () => {
             <Link className={`text-green-slimy text-lg font-semibold`} to={`https://jsencoder.com/`} target="_blank">
               JS Encoder
             </Link>
-            . Copyright &copy; {new Date().getFullYear()}. All rights reserved.
-          </h3>
+            . Copyright &copy; {new Date().getFullYear()}. All rights reserved. Version 01.0.0 </h3>
         </div>
       </div>
     </footer>

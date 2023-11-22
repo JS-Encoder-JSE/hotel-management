@@ -48,6 +48,8 @@ const validationSchema = yup.object({
 });
 
 const AddBooking = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.amount;
@@ -81,7 +83,7 @@ const AddBooking = () => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from: "",
+      from: new Date(),
       to: "",
       amount: "",
       discount: "",
@@ -92,12 +94,15 @@ const AddBooking = () => {
 
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      const obj = { ...values,from: fromDateIsoConverter(values.from),
-        to: toDateIsoConverter(values.to), };
+      const obj = {
+        ...values,
+        from: fromDateIsoConverter(values.from),
+        to: toDateIsoConverter(values.to),
+      };
 
       if (!obj.discount) obj.discount = 0;
 
-      const room_ids = obj.room_arr.map((elem) => elem.value);
+      const room_ids = obj.room_arr?.map((elem) => elem.value);
       const no_of_days = Math.floor(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
@@ -108,7 +113,6 @@ const AddBooking = () => {
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
-      
 
       const response = await addBooking({
         hotel_id: obj.hotel_id,
@@ -134,7 +138,6 @@ const AddBooking = () => {
         nationality: obj.nationality,
         status: "Active",
       });
-
 
       if (response?.error) {
         toast.error(response.error.data.message);

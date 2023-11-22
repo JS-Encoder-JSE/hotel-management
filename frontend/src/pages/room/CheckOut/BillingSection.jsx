@@ -8,6 +8,7 @@ import {
   updateDiscountOffer,
   setGrandTotal,
   setRoomPostedBill,
+  setExtraDiscount,
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -33,8 +34,11 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     const amount =
       (data?.booking_info?.[0]?.total_unpaid_amount * newValue) / 100;
 
-    setDiscountAmt(amount);
-  };
+      setDiscountAmt(amount);
+      dispatch(setExtraDiscount(val))
+    };
+    // discount ammount
+    dispatch(updateDiscountOffer(Math.floor(discountAmt)))
 
   const handleAmountChange = (idx, val) => {
     const arr = [...billing];
@@ -134,7 +138,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
         foodBill +
         barBill
     );
-    dispatch(setGrandTotal(total));
+    dispatch(setGrandTotal(total.toFixed(2)));
   }, [
     data,
     totalBilling,

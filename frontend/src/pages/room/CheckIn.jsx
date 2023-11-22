@@ -17,10 +17,9 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
-import { FaArrowLeft, FaTrash, FaUpload } from "react-icons/fa";
+import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
-import { Link } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -65,6 +64,10 @@ const validationSchema = yup.object({
 });
 
 const CheckIn = () => {
+
+// current date
+  const [currentDate,setCurrentDate]=useState(new Date())
+
   const [isLoading, setLoading] = useState(false);
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
@@ -95,7 +98,7 @@ const CheckIn = () => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from: "",
+      from:currentDate,
       to: "",
       amount: "",
       discount: "",
@@ -108,11 +111,8 @@ const CheckIn = () => {
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       setLoading(true);
-      const obj = {
-        ...values,
-        from: fromDateIsoConverter(values.from),
-        to: toDateIsoConverter(values.to),
-      };
+      const obj = { ...values,from: fromDateIsoConverter(values.from),
+        to: toDateIsoConverter(values.to), };
 
       if (!obj.discount) obj.discount = 0;
 
@@ -174,7 +174,7 @@ const CheckIn = () => {
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
+        paid_amount: typeof(obj.amount)==='number' ? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
         doc_number: obj.doc_number,
@@ -183,6 +183,7 @@ const CheckIn = () => {
         },
         status: "CheckedIn",
       });
+
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -255,23 +256,8 @@ const CheckIn = () => {
   }, [formik.values.documents]);
 
   return (
-   <>
-       <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
-      <h3 className={`text-2xl font-semibold mb-3 text-center`}>Check In</h3>
+      <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
       <hr />
       <form
         autoComplete="off"
@@ -716,7 +702,6 @@ const CheckIn = () => {
         </div>
       </form>
     </div>
-   </>
   );
 };
 
