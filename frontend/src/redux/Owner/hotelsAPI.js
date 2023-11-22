@@ -1,4 +1,5 @@
 import baseAPI from "../baseAPI.js";
+import { Provider } from 'react-redux';
 
 const hotelsAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
@@ -52,6 +53,7 @@ const hotelsAPI = baseAPI.injectEndpoints({
     }),
     getLicenseDate: build.query({
       query: () => "users/get-license-date",
+      providesTags: ["license-date"],
     }),
   }),
 });
