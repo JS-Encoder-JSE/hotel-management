@@ -90,6 +90,11 @@ const SubAdminList = () => {
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
+      <div>
+        <h3 className={`text-xl font-semibold text-center mb-5`}>
+            Sub Admin List
+          </h3>
+        </div>
         <div
           className={`flex flex-col sm:flex-row justify-between items-center gap-5`}
         >
@@ -109,9 +114,6 @@ const SubAdminList = () => {
               </button>
             </Link>
           </div>
-          <h3 className={`text-xl font-semibold text-center`}>
-            Sub Admin List
-          </h3>
           <div className={`flex felx-wrap gap-3`}>
             <div>
               <select

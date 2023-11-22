@@ -75,6 +75,7 @@ const ExpiredList = () => {
 
   return (
     <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
+        <div className={`text-2xl text-center`}>Expired List</div>
       <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
         <div>
           <Link to={`/dashboard `}>
@@ -92,7 +93,7 @@ const ExpiredList = () => {
             </button>
           </Link>
         </div>
-        <div className={`text-2xl text-center`}>Expired List</div>
+      
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"
