@@ -1,18 +1,7 @@
 version: "3.9"
 
 services:
-  mongo_db:
-    image: mongo:latest
-    container_name: db_container
-    volumes:
-      - mongo_db:/data/db
-    restart: always
-    networks:
-      - nodeNETWORK
-
   nodejs-app:
-    depends_on:
-      - mongo_db
     build:
       context: .
       dockerfile: Dockerfile-nodejs
@@ -29,14 +18,12 @@ services:
       - DB_CONNECTION_STR=mongodb+srv://jsencoder:hellofromtheotherside@cluster0.onulisf.mongodb.net/hotels?authMechanism=SCRAM-SHA-1
     networks:
       - nodeNETWORK
+
   nginx:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./app:/var/www/html
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile-nginx
     ports:
       - "80:80"
     depends_on:
@@ -47,6 +34,3 @@ services:
 networks:
   nodeNETWORK:
     external: true
-
-volumes:
-  mongo_db: {}
