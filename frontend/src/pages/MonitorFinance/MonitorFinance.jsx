@@ -19,7 +19,7 @@ const MonitorFinance = () => {
     pid: "",
     filter: "Active",
   });
-  const [selectedHotel, setselectedHotel] = useState([]);
+  const [selectedHotel, setselectedHotel] = useState(null);
   console.log("selectedHotel", selectedHotel);
   console.log("hotels", hotels);
   const handleKeyDown = (e) => {
@@ -27,10 +27,21 @@ const MonitorFinance = () => {
       e.preventDefault();
     }
   };
+
+
+
+
+
+
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?.manager_acc?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
+  const handleReset=()=>{
+    setselectedHotel("")
+
+  }
+
   if (isLoading || isError) {
     return (
       <Rings
@@ -63,9 +74,9 @@ const MonitorFinance = () => {
       </div>
       <div className="space-y-20">
         {/* Select Room Section */}
-        <section className="max-w-3xl mx-auto flex gap-5 items-center">
+        <section className="max-w-full mx-auto flex gap-5 items-center">
           <p className="whitespace-nowrap">Hotel Name :</p>
-          <div className="w-[353px]">
+          <div className="w-[353px] flex gap-3">
             <Select
               placeholder="Search with hotel name"
               defaultValue={selectedHotel}
@@ -83,6 +94,7 @@ const MonitorFinance = () => {
                 placeholder: () => "!m-0",
               }}
             />
+            <button onClick={handleReset} className={`${selectedHotel?"bg-green-slimy px-3 border text-white": "bg-gray-300 px-3 border"}`}>Reset</button>
           </div>
         </section>
 
@@ -90,7 +102,7 @@ const MonitorFinance = () => {
           {selectedHotel ? (
             <UserDashBoard managerId={selectedHotel?.value}></UserDashBoard>
           ) : (
-            ""
+          <p className="text-center">Please Select your hotel</p>
           )}
         </section>
       </div>
