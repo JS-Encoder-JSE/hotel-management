@@ -205,6 +205,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Manage Items
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to={`/dashboard/add-expense`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Add Expence
+            </NavLink>
+          </li>
         </ul>
       </li>
       <li className={`group p-2`}>

@@ -85,6 +85,8 @@ import CurOrderList from "./pages/restaurant/CurOrderList.jsx";
 import AddTable from "./pages/restaurant/AddTable.jsx";
 import FoodCheckout from "./pages/restaurant/FoodCheckout.jsx";
 import ChangeManagerPassword from "./components/HotelEdit/ChangeManagerPassword.jsx";
+import AddExpence from "./pages/Inventory/AddExpense.jsx";
+import AddExpense from "./pages/Inventory/AddExpense.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -284,6 +286,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <ManageInventory />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-expense",
+              element: (
+                <ManagerRoute>
+                  <AddExpense/>
                 </ManagerRoute>
               ),
             },
