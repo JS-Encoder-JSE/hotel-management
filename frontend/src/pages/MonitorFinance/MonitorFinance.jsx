@@ -41,6 +41,8 @@ const MonitorFinance = () => {
       />
     );
   }
+
+  console.log(selectedHotel?.value,"------------------")
   return (
     <>
       <div className={`mb-5`}>
@@ -68,12 +70,10 @@ const MonitorFinance = () => {
               placeholder="Search with hotel name"
               defaultValue={selectedHotel}
               options={transformedHotel}
-              isMulti
+              isMulti={false}
               isSearchable
-              closeMenuOnSelect={false}
               onKeyDown={handleKeyDown}
-              onChange={setselectedHotel}
-              noOptionsMessage={() => "No Hotel available"}
+              onChange={(selectedOption) => setselectedHotel(selectedOption)}
               classNames={{
                 control: (state) =>
                   `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
@@ -87,8 +87,8 @@ const MonitorFinance = () => {
         </section>
 
         <section>
-          {selectedHotel?.length ? (
-            <UserDashBoard managerId={selectedHotel[0]?.value}></UserDashBoard>
+          {selectedHotel ? (
+            <UserDashBoard managerId={selectedHotel?.value}></UserDashBoard>
           ) : (
             ""
           )}
