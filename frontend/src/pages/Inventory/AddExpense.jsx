@@ -83,78 +83,9 @@ const AddExpense = () => {
             setLoading(false);
             setUpdate(false)
           },
-    
-        //   for (let i = 0; i < values.photos.length; i++) {
-        //     const photoName = values.photos[i].name.substring(
-        //       0,
-        //       values.photos[i].name.lastIndexOf(".")
-        //     );
-    
-        //     formData.append(photoName, values.photos[i]);
-        //   }
-    
-          // obj.hotel_id = user.assignedHotel;
-        //   obj.air_conditioned = obj.ac;
-        //   delete obj.photos;
-        //   delete obj.ac;
-        //   await upload(formData).then(
-        //     (result) => (obj.images = result.data.imageUrls)
-        //   );
-    
-        //   const response = await addRoom(obj);
-    
-        //   if (response?.error) {
-        //     toast.error(response.error.data.message);
-        //   } else {
-        //     toast.success(response.data.message);
-        //     formikHelpers.resetForm();
-        //     setSelectedImages([]);
-        //   }
-    
-        //   setLoading(false);
       });
-    
-    //   // Image delete
-    //   const handleDelete = (idx) => {
-    //     const tempImgs = [
-    //       ...selectedImages.slice(0, idx),
-    //       ...selectedImages.slice(idx + 1),
-    //     ];
-    //     const dataTransfer = new DataTransfer();
-    
-    //     for (const file of tempImgs) {
-    //       dataTransfer.items.add(file);
-    //     }
-    
-    //     formik.setFieldValue("photos", dataTransfer.files);
-    //     setSelectedImages(tempImgs);
-    //   };
-    
-    //   // HandleChange
-    //   const handleChange = (idx, newFile) => {
-    //     const updatedImages = [...selectedImages];
-    //     updatedImages[idx] = newFile;
-    
-    //     const dataTransfer = new DataTransfer();
-    
-    //     for (const file of updatedImages) {
-    //       dataTransfer.items.add(file);
-    //     }
-    
-    //     formik.setFieldValue("photos", dataTransfer.files);
-    //     setSelectedImages(updatedImages);
-    //   };
-    
-    //   // Update Image
-    //   useEffect(() => {
-    //     if (formik.values.photos) {
-    //       const selectedImagesArray = Array.from(formik.values.photos);
-    //       setSelectedImages(selectedImagesArray);
-    //     }
-    //   }, [formik.values.photos]);
 
-
-
+      // handle edit each item
     const handleEdit = (index) => {
     const itemToEdit = totalItems[index];
     formik.setValues({ ...itemToEdit });
@@ -166,7 +97,7 @@ const AddExpense = () => {
 
 
 
-// handle delete
+// handle delete each item
     const handleDelete = (index) => {
         setTotalItems((prevItems) => {
           const updatedItems = [...prevItems];
@@ -175,7 +106,7 @@ const AddExpense = () => {
         });
       };
 
-
+// each item price calculate
  const calculateTotal = () => {
         return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
       };
