@@ -467,19 +467,15 @@ export const updateBooking = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    const existingBooking = await Booking.findById(bookingId);
+    if (!existingBooking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
     const updatedBooking = await Booking.findByIdAndUpdate(
       bookingId,
       updateData,
       { new: true }
     );
-
-    if (!updatedBooking) {
-      return res.status(404).json({
-        success: false,
-        message: "Booking not found",
-      });
-    }
 
     // Check if the update includes changing the status to "CheckedIn" or "CheckedOut" or "Canceled"
     if (
@@ -496,6 +492,8 @@ export const updateBooking = async (req, res) => {
           { _id: { $in: roomIds } },
           { $set: { status: roomStatus } }
         );
+        const newPaidAmount =
+          updateData.paid_amount - existingBooking.paid_amount;
         const ownerDashboard = await Dashboard.findOne({
           user_id: user.parent_id,
         });
@@ -505,13 +503,13 @@ export const updateBooking = async (req, res) => {
 
         // ownerDashboard.total_booking -= 1;
         ownerDashboard.total_checkin += 1;
-        ownerDashboard.total_amount += updateData.paid_amount;
+        ownerDashboard.total_amount += newPaidAmount;
 
         await ownerDashboard.save();
 
         // managerDashboard.total_booking -= 1;
         managerDashboard.total_checkin += 1;
-        managerDashboard.total_amount += updateData.paid_amount;
+        managerDashboard.total_amount += newPaidAmount;
 
         await managerDashboard.save();
 
