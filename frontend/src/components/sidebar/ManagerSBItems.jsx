@@ -164,6 +164,28 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Order List
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to={`/dashboard/show-all-sell`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Restaurant Sales
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/show-all-expense`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+             Restaurant Expenses
+            </NavLink>
+          </li>
         </ul>
       </li>
       <li className={`group p-2`}>
@@ -205,6 +227,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Manage Items
             </NavLink>
           </li>
+          
         </ul>
       </li>
       <li className={`group p-2`}>

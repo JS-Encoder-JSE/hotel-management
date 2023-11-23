@@ -85,6 +85,10 @@ import CurOrderList from "./pages/restaurant/CurOrderList.jsx";
 import AddTable from "./pages/restaurant/AddTable.jsx";
 import FoodCheckout from "./pages/restaurant/FoodCheckout.jsx";
 import ChangeManagerPassword from "./components/HotelEdit/ChangeManagerPassword.jsx";
+import ShowAllExpense from "./components/inventory/ShowAllExpense.jsx";
+import ShowAllExpenseView from "./components/inventory/ShowAllExpenseView.jsx";
+import ShowAllSell from "./pages/restaurant/ShowAllSell.jsx";
+import ShowALlSellView from "./pages/restaurant/ShowALlSellView.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -264,6 +268,22 @@ const App = () => {
               ),
             },
             {
+              path: "show-all-sell",
+              element: (
+                <ManagerRoute>
+                  <ShowAllSell />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "show-all-sell/:id",
+              element: (
+                <ManagerRoute>
+                  <ShowALlSellView />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "food-inventory",
               element: (
                 <ManagerRoute>
@@ -292,6 +312,22 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <EditInventory />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "show-all-expense",
+              element: (
+                <ManagerRoute>
+                  <ShowAllExpense />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "show-all-expense/:id",
+              element: (
+                <ManagerRoute>
+                  <ShowAllExpenseView />
                 </ManagerRoute>
               ),
             },
