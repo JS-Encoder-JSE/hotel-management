@@ -89,6 +89,8 @@ import ShowAllExpense from "./components/inventory/ShowAllExpense.jsx";
 import ShowAllExpenseView from "./components/inventory/ShowAllExpenseView.jsx";
 import ShowAllSell from "./pages/restaurant/ShowAllSell.jsx";
 import ShowALlSellView from "./pages/restaurant/ShowALlSellView.jsx";
+import RestaurantDashboard from "./pages/restaurant/restaurantDashboard.jsx";
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -200,6 +202,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <CheckOut />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "restaurant-dashboard",
+              element: (
+                <ManagerRoute>
+                  <RestaurantDashboard />
                 </ManagerRoute>
               ),
             },

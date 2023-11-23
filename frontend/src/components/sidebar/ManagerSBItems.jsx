@@ -109,6 +109,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </span>
         </div>
         <ul className={`group-[.active]:block hidden`}>
+        <li>
+            <NavLink
+                to={`/dashboard/restaurant-dashboard`}
+                className={({ isActive }) =>
+                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                    (isActive ? " bg-gray-300" : "")
+                }
+            >
+              Restaurant Dashboard
+            </NavLink>
+          </li>
           <li>
             <NavLink
                 to={`/dashboard/add-table`}
