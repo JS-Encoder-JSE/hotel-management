@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: dak-hotel-frontend  # Set the custom container name
+    image: dak-hotel-frontend  # Set the custom container name
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # Map the container's port 3033 to the host
+    networks:
+      - nodeNETWORK
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./app:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - nodeNETWORK
+
+networks:
+  nodeNETWORK:
+    external: true
+
