@@ -31,13 +31,17 @@ const validationSchema = yup.object({
 const AddExpense = () => {
 
     const { user } = useSelector((store) => store.authSlice);
-
+    
+// lodading
     const [isLoading, setLoading] = useState(false);
 
+// set total items
     const [totalItems,setTotalItems]=useState([])
 
-
+// edit item
     const [editIndex, setEditIndex] = useState(null);
+
+    // update button toggle
     const [isUpadet, setUpdate] = useState(false);
 
 
