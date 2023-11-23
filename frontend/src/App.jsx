@@ -87,6 +87,13 @@ import FoodCheckout from "./pages/restaurant/FoodCheckout.jsx";
 import ChangeManagerPassword from "./components/HotelEdit/ChangeManagerPassword.jsx";
 import AddExpence from "./pages/Inventory/AddExpense.jsx";
 import AddExpense from "./pages/Inventory/AddExpense.jsx";
+import ShowAllExpense from "./components/inventory/ShowAllExpense.jsx";
+import ShowAllExpenseView from "./components/inventory/ShowAllExpenseView.jsx";
+import ShowAllSell from "./pages/restaurant/ShowAllSell.jsx";
+import ShowALlSellView from "./pages/restaurant/ShowALlSellView.jsx";
+import RestaurantDashboard from "./pages/restaurant/RestaurantDashboard.jsx";
+
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -202,6 +209,14 @@ const App = () => {
               ),
             },
             {
+              path: "restaurant-dashboard",
+              element: (
+                <ManagerRoute>
+                  <RestaurantDashboard />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "add-food",
               element: (
                 <ManagerRoute>
@@ -266,6 +281,22 @@ const App = () => {
               ),
             },
             {
+              path: "show-all-sell",
+              element: (
+                <ManagerRoute>
+                  <ShowAllSell />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "show-all-sell/:id",
+              element: (
+                <ManagerRoute>
+                  <ShowALlSellView />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "food-inventory",
               element: (
                 <ManagerRoute>
@@ -302,6 +333,22 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <EditInventory />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "show-all-expense",
+              element: (
+                <ManagerRoute>
+                  <ShowAllExpense />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "show-all-expense/:id",
+              element: (
+                <ManagerRoute>
+                  <ShowAllExpenseView />
                 </ManagerRoute>
               ),
             },
