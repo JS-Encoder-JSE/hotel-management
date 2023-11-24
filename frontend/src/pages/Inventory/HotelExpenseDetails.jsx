@@ -6,6 +6,13 @@ import EditExpensesView from "../../components/inventory/EditExpensesView";
 
 
 const HotelExpenseDetails = () => {
+
+  const [pageCount, setPageCount] = useState(10);
+
+  const handlePageClick = ({ selected: page }) => {
+     setCurrentPage(page);
+   };
+
     const formik = useFormik({
         initialValues: {
           startDate: "",
@@ -16,7 +23,7 @@ const HotelExpenseDetails = () => {
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
-      <div className={`flex justify-between `}>
+      <div className={`flex justify-between`}>
         <div
           className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
           onClick={() => navigate(-1)}
@@ -24,7 +31,7 @@ const HotelExpenseDetails = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <div className={`flex`}>
+        <div className={`flex justify-end`}>
         <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
           {" "}
           <FaRegFilePdf />
@@ -58,8 +65,7 @@ const HotelExpenseDetails = () => {
                     >
                       <th>{++idx}</th>
                       <td>23-11-2023</td>
-                      <td>Rice</td>
-                      <td>25 Kg</td>
+                      <td>Fried Rice</td>
                       <td>Nice Product</td>
                       <td>
                         <div className="flex">
@@ -111,6 +117,7 @@ const HotelExpenseDetails = () => {
                         </div>
            </div>
           </div>
+          {/* Pagination */}
 
      
     </div>
