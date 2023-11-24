@@ -28,6 +28,12 @@ const validationSchema = yup.object({
   doc_number: yup.string().required("Document number is required"),
   documents: yup.string().required("Documents is required"),
   amount: yup.number(),
+  paymentMethod: yup.string().required("Payment method is required"),
+  transection_id: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
+    if (paymentMethod !== "Cash")
+      return schema.required("Transaction ID is required");
+    else return schema;
+  }),
 });
 
 const CheckInDyn = ({ data }) => {
@@ -286,6 +292,12 @@ const CheckInDyn = ({ data }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+               {formik.touched.transection_id &&
+            Boolean(formik.errors.transection_id) ? (
+              <small className="text-red-600">
+                {formik.touched.transection_id && formik.errors.transection_id}
+              </small>
+            ) : null}
             </div>
           ) : (
             <></>

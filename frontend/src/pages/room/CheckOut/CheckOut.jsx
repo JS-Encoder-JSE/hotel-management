@@ -13,13 +13,14 @@ import {
   useRoomNumbersQuery,
   useRoomsQuery,
 } from "../../../redux/room/roomAPI";
-import { useFormik } from "formik";
+import { useFormik, yupToFormErrors } from "formik";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import CheckOutPrint from "./CheckOutPrint";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
+import * as yup from "yup";
 
 const CheckOut = () => {
   const navigate = useNavigate();

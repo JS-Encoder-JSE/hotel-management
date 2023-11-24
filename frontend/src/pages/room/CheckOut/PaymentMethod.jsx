@@ -2,6 +2,8 @@ import React from "react";
 import { MdOutlineClear } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import DatePicker from "react-datepicker";
+import { useFormik } from "formik";
+import * as yup from "yup";
 // const [discount, setDiscount] = useState(false);
 
 const PaymentMethod = ({
@@ -10,6 +12,25 @@ const PaymentMethod = ({
   handleRemove,
   handleChange,
 }) => {
+
+  // const paymentSchema = yup.object({
+  //   method: yup.string().required("Payment method is required"),
+  //   amount: yup.number().required("Amount is required"),
+  //   trx: yup.string().when(["method"], ([method], schema) => {
+  //     if (method !== "Cash")
+  //       return schema.required("Transaction ID is required");
+  //     else return schema;
+  //   }),
+  
+  //   date: yup.date().required("Date is required"),
+  // });
+
+  // const formik = useFormik({
+  //   initialValues: paymentList,
+  //   validationSchema: yup.array().of(paymentSchema),
+  // });
+  
+
   return (
     <div className={`mt-5 space-y-3`}>
       {paymentList.map((elem, idx) => {

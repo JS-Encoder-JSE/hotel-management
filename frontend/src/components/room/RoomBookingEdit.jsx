@@ -17,7 +17,7 @@ const validationSchema = yup.object({
     .integer("Adult must be an integer"),
   paymentMethod: yup.string().required("Payment method is required"),
   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-    if (paymentMethod !== "cash")
+    if (paymentMethod !== "Cash")
       return schema.required("Transaction ID is required");
     else return schema;
   }),

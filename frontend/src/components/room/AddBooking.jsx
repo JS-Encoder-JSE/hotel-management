@@ -34,12 +34,13 @@ const validationSchema = yup.object({
   // }),
   children: yup.number(),
 
-  paymentMethod: yup.string().required("Payment method is required"),
-  // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-  //   if (paymentMethod !== "cash")
-  //     return schema.required("Transaction ID is required");
-  //   else return schema;
-  // }),
+  paymentMethod: yup.string().required("Payment method is required"), 
+   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
+    if (paymentMethod !== "Cash")
+      return schema.required("Transaction ID is required");
+    else return schema;
+  }),
+
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
   amount: yup.number(),

@@ -92,6 +92,7 @@ import ShowAllExpenseView from "./components/inventory/ShowAllExpenseView.jsx";
 import ShowAllSell from "./pages/restaurant/ShowAllSell.jsx";
 import ShowALlSellView from "./pages/restaurant/ShowALlSellView.jsx";
 import RestaurantDashboard from "./pages/restaurant/RestaurantDashboard.jsx";
+import AddHotelExpense from "./pages/Inventory/AddHotelExpense.jsx";
 
 
 
@@ -325,6 +326,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <AddExpense/>
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "add-hotel-expnese",
+              element: (
+                <ManagerRoute>
+                  <AddHotelExpense/>
                 </ManagerRoute>
               ),
             },
