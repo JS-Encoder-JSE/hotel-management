@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
-import { getFormateDateAndTime } from '../../utils/utils';
+import { getformatDateTime } from '../../utils/utils';
 import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
 
@@ -64,6 +64,7 @@ const AddExpense = () => {
             setLoading(true);
           
             const obj = { ...values };
+            console.log(obj.date)
           
             if (editIndex !== null) {
               // Update existing item
@@ -149,6 +150,8 @@ const AddExpense = () => {
         });
       };
 
+      
+
 // total calculation
  const calculateTotal = () => {
         return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
@@ -201,10 +204,11 @@ const AddExpense = () => {
                 {totalExpense.map((item, idx) => {
                   return (
                     <tr
+                    key={idx}
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{getFormateDateAndTime(item?.date)}</td>
+                      <td>{getformatDateTime(item?.date)}</td>
                       <td>{item?.itemName}</td>
                       <td>{item?.quantity}</td>
                       <td>{item?.price}</td>
