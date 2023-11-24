@@ -56,3 +56,46 @@ export const updateExpense = async (req, res) => {
     res.status(500).json({ message: "Failed to update Expense" });
   }
 };
+
+export const getExpenses = async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 10,
+      expendedfor,
+      hotel_id,
+      fromDate,
+      toDate,
+    } = req.query;
+
+    // Build the query object based on the provided filters
+    const query = {};
+    if (hotel_id) {
+      query.hotel_id = hotel_id;
+    }
+    if (expendedfor) {
+      query.expendedfor = expendedfor;
+    }
+    if (fromDate && toDate) {
+      // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
+      query.createdAt = { $gte: new Date(fromDate), $lte: new Date(toDate) };
+    } else if (fromDate) {
+      // If only fromDate is provided, use $gte for the minimum date filter
+      query.createdAt = { $gte: new Date(fromDate) };
+    } else if (toDate) {
+      // If only toDate is provided, use $lte for the maximum date filter
+      query.createdAt = { $lte: new Date(toDate) };
+    }
+    // Use the paginate function to get paginated results
+    const options = {
+      page: parseInt(page),
+      limit: parseInt(limit),
+    };
+    const expenses = await Expense.paginate(query, options);
+
+    return res.status(200).json(expenses);
+  } catch (error) {
+    console.error("Error fetching expenses:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
