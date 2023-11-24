@@ -133,7 +133,7 @@ const ShowAllSell = () => {
                       <th>{++idx}</th>
                       <td>23-11-2023</td>
                       <td>$5000</td>
-                      {/* <td className={`space-x-1.5`}>
+                      <td className={`space-x-1.5`}>
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
@@ -148,7 +148,7 @@ const ShowAllSell = () => {
                         >
                           <AiTwotoneDelete />
                         </span>
-                      </td> */}
+                      </td>
                     </tr>
                   );
                 })}
