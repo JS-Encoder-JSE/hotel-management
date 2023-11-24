@@ -3,9 +3,16 @@ import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/f
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import EditHotelExpense from "./EditHotelExpense";
-// import EditSalesView from "./EditSalesView";
+import ReactPaginate from "react-paginate";
 
 const HotelExpenseDetails = () => {
+
+  const [pageCount, setPageCount] = useState(10);
+
+  const handlePageClick = ({ selected: page }) => {
+     setCurrentPage(page);
+   };
+
     const formik = useFormik({
         initialValues: {
           startDate: "",
@@ -110,7 +117,27 @@ const HotelExpenseDetails = () => {
                         </div>
            </div>
           </div>
-  
+          {/* Pagination */}
+
+   <div className="flex justify-center mt-10">
+            <ReactPaginate
+              containerClassName="join rounded-none"
+              pageLinkClassName="join-item btn btn-md bg-transparent"
+              activeLinkClassName="btn-active !bg-green-slimy text-white"
+              disabledLinkClassName="btn-disabled"
+              previousLinkClassName="join-item btn btn-md bg-transparent"
+              nextLinkClassName="join-item btn btn-md bg-transparent"
+              breakLinkClassName="join-item btn btn-md bg-transparent"
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel="..."
+              pageCount={pageCount}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              onPageChange={handlePageClick}
+              renderOnZeroPageCount={null}
+            />
+          </div>
     </div>
   );
 };

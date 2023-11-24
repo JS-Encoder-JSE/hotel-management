@@ -147,6 +147,27 @@ const HotelExpenses = () => {
           </div>
         </div>
 
+        {/* Pagination */}
+        <div className="flex justify-center mt-10">
+            <ReactPaginate
+              containerClassName="join rounded-none"
+              pageLinkClassName="join-item btn btn-md bg-transparent"
+              activeLinkClassName="btn-active !bg-green-slimy text-white"
+              disabledLinkClassName="btn-disabled"
+              previousLinkClassName="join-item btn btn-md bg-transparent"
+              nextLinkClassName="join-item btn btn-md bg-transparent"
+              breakLinkClassName="join-item btn btn-md bg-transparent"
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel="..."
+              pageCount={pageCount}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              onPageChange={handlePageClick}
+              renderOnZeroPageCount={null}
+            />
+          </div>
+
         {/* Restaurant Expenses */}
 
         <div className={`mb-10 mt-10`}>
