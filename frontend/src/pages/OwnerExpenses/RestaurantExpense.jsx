@@ -7,8 +7,9 @@ import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpenseShow.jsx";
 
-const MonitorFinance = () => {
+const RestaurantExpense = () => {
   const { user } = useSelector((store) => store.authSlice);
   const {
     isLoading,
@@ -19,8 +20,8 @@ const MonitorFinance = () => {
     pid: "",
     filter: "Active",
   });
-  const [selectedHotel, setselectedHotel] = useState(null);
-  console.log("selectedHotel", selectedHotel);
+  const [selectedHotel1, setselectedHotel1] = useState(null);
+  console.log("selectedHotel1", selectedHotel1);
   console.log("hotels", hotels);
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
@@ -34,7 +35,7 @@ const MonitorFinance = () => {
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
   const handleReset=()=>{
-    setselectedHotel("")
+    setselectedHotel1("")
 
   }
 
@@ -49,9 +50,10 @@ const MonitorFinance = () => {
     );
   }
 
-  console.log(selectedHotel?.value,"------------------")
+  console.log(selectedHotel1?.value,"------------------")
   return (
     <>
+    {/* back button */}
       <div className={`mb-5`}>
         <Link to={`/dashboard `}>
           <button
@@ -75,12 +77,12 @@ const MonitorFinance = () => {
           <div className="w-[353px] flex gap-3">
             <Select
               placeholder="Search with hotel name"
-              defaultValue={selectedHotel}
+              defaultValue={selectedHotel1}
               options={transformedHotel}
               isMulti={false}
               isSearchable
               onKeyDown={handleKeyDown}
-              onChange={(selectedOption) => setselectedHotel(selectedOption)}
+              onChange={(selectedOption) => setselectedHotel1(selectedOption)}
               classNames={{
                 control: (state) =>
                   `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
@@ -90,13 +92,13 @@ const MonitorFinance = () => {
                 placeholder: () => "!m-0",
               }}
             />
-            <button onClick={handleReset} className={`${selectedHotel?"bg-green-slimy px-3 border text-white": "bg-gray-300 px-3 border"}`}>Reset</button>
+            <button onClick={handleReset} className={`${selectedHotel1?"bg-green-slimy px-3 border text-white": "bg-gray-300 px-3 border"}`}>Reset</button>
           </div>
         </section>
 
         <section>
-          {selectedHotel ? (
-            <UserDashBoard managerId={selectedHotel?.value}></UserDashBoard>
+          {selectedHotel1 ? (
+            <RestaurantExpenseShow managerId={selectedHotel1?.value}></RestaurantExpenseShow>
           ) : (
           <p className="text-center">Please Select your hotel</p>
           )}
@@ -106,4 +108,4 @@ const MonitorFinance = () => {
   );
 };
 
-export default MonitorFinance;
+export default RestaurantExpense;

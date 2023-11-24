@@ -7,8 +7,12 @@ import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpenseShow.jsx";
+import HotelExpensesShow from "../../components/OwnerExpenses/HotelExpensesShow.jsx";
+import HotelSalesShow from "../../components/OwnerExpenses/HotelSalesShow.jsx";
+import HotelAnalyticsShow from "../../components/OwnerExpenses/HotelAnalyticsShow.jsx";
 
-const MonitorFinance = () => {
+const HotelSales = () => {
   const { user } = useSelector((store) => store.authSlice);
   const {
     isLoading,
@@ -52,6 +56,7 @@ const MonitorFinance = () => {
   console.log(selectedHotel?.value,"------------------")
   return (
     <>
+    {/* back button */}
       <div className={`mb-5`}>
         <Link to={`/dashboard `}>
           <button
@@ -68,6 +73,7 @@ const MonitorFinance = () => {
           </button>
         </Link>
       </div>
+      
       <div className="space-y-20">
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex gap-5 items-center">
@@ -96,7 +102,7 @@ const MonitorFinance = () => {
 
         <section>
           {selectedHotel ? (
-            <UserDashBoard managerId={selectedHotel?.value}></UserDashBoard>
+            <HotelAnalyticsShow managerId={selectedHotel?.value}></HotelAnalyticsShow>
           ) : (
           <p className="text-center">Please Select your hotel</p>
           )}
@@ -106,4 +112,4 @@ const MonitorFinance = () => {
   );
 };
 
-export default MonitorFinance;
+export default HotelSales;

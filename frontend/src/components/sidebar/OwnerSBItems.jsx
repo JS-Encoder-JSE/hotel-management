@@ -74,18 +74,18 @@ const OwnerSBItems = ({ handleSBItems }) => {
         <ul className={`group-[.active]:block hidden`}>
           <li>
             <NavLink
-              to={`/dashboard/add-hotel`}
+              to={`/dashboard/restaurant-expenses`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Restaurent Expense
+              Restaurant Expense
             </NavLink>
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/restaurant-sales`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -96,7 +96,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/hotel-expenses`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -107,7 +107,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/hotel-sales`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -118,7 +118,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/restaurants-analytics`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -129,7 +129,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/hotel-analytics`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
