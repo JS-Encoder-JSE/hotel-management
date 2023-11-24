@@ -580,7 +580,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdBarChart />
-            <span>Report</span>
+            <span>Hotel Report</span>
           </div>
         </NavLink>
       </li>
