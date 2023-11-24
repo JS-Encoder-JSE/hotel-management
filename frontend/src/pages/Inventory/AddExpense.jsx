@@ -84,7 +84,51 @@ const AddExpense = () => {
           },
       });
 
+
       // handle edit each item
+
+    
+    //   // Image delete
+    //   const handleDelete = (idx) => {
+    //     const tempImgs = [
+    //       ...selectedImages.slice(0, idx),
+    //       ...selectedImages.slice(idx + 1),
+    //     ];
+    //     const dataTransfer = new DataTransfer();
+    
+    //     for (const file of tempImgs) {
+    //       dataTransfer.items.add(file);
+    //     }
+    
+    //     formik.setFieldValue("photos", dataTransfer.files);
+    //     setSelectedImages(tempImgs);
+    //   };
+    
+    //   // HandleChange
+    //   const handleChange = (idx, newFile) => {
+    //     const updatedImages = [...selectedImages];
+    //     updatedImages[idx] = newFile;
+    
+    //     const dataTransfer = new DataTransfer();
+    
+    //     for (const file of updatedImages) {
+    //       dataTransfer.items.add(file);
+    //     }
+    
+    //     formik.setFieldValue("photos", dataTransfer.files);
+    //     setSelectedImages(updatedImages);
+    //   };
+    
+    //   // Update Image
+    //   useEffect(() => {
+    //     if (formik.values.photos) {
+    //       const selectedImagesArray = Array.from(formik.values.photos);
+    //       setSelectedImages(selectedImagesArray);
+    //     }
+    //   }, [formik.values.photos]);
+
+
+// handle update
     const handleEdit = (index) => {
     const itemToEdit = totalItems[index];
     formik.setValues({ ...itemToEdit });
@@ -105,7 +149,7 @@ const AddExpense = () => {
         });
       };
 
-// each item price calculate
+// total calculation
  const calculateTotal = () => {
         return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
       };
