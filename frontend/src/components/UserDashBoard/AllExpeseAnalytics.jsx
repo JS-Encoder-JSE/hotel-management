@@ -20,12 +20,12 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
             <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
             <GiCoins className={`db-currency text-white`} />
             </div>
-            <h6 className="text-xs text-slate-400">
+            <h6 className="text-xs text-slate-400 uppercase">
               Total Restaurant Expense
             </h6>
             <p className="text-2xl font-semibold mt-3">
-             $5000
-            </p>
+              <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />10000</span>
+              </p> 
           </div>
             <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
@@ -35,7 +35,7 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
                Total Restaurant Sale
               </h6>
               <p className="text-2xl font-semibold mt-3">
-               $10000
+              <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />120000</span>
               </p> 
             </div>
           
@@ -44,10 +44,10 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
             <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
               <GiCoins className={`db-currency text-white`} />
             </div>
-            <h6 className="text-xs text-slate-400 ">TOTAL Hotel Expense</h6>
-            <p className="text-2xl font-semibold mt-4">
-              $3000
-            </p>
+            <h6 className="text-xs text-slate-400 uppercase">TOTAL Hotel Expense</h6>
+            <p className="text-2xl font-semibold mt-3">
+              <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />13000</span>
+              </p> 
           </div>
           
             <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
@@ -55,10 +55,10 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
               <GiCoins className={`db-currency text-white`} />
               </div>
               <div>
-                <h6 className="text-xs text-slate-400">Total Hotel Sale</h6>
-                <p className="text-2xl font-semibold mt-4">
-                 $12000
-                </p>
+                <h6 className="text-xs text-slate-400 uppercase">Total Hotel Sale</h6>
+                <p className="text-2xl font-semibold mt-3">
+              <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />80000</span>
+              </p> 
               </div>
             </div>
           {/* <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mt-3">
@@ -78,11 +78,11 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
               <MdCurrencyRupee />
               </div>
-              <h6 className=" text-slate-400 uppercase text-xl font-bold">
+              <h6 className="text-xs text-slate-400 uppercase">
                Net Profit
               </h6>
               <p className="text-2xl font-semibold mt-3">
-               $10000
+              <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />10000</span>
               </p> 
             </div>
     </section>

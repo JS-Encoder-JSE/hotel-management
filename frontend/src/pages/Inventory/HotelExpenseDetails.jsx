@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowLeft, FaRegFilePdf } from "react-icons/fa";
+import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
+import EditExpensesView from "../../components/inventory/EditExpensesView";
+
 
 const HotelExpenseDetails = () => {
     const formik = useFormik({
@@ -32,7 +34,7 @@ const HotelExpenseDetails = () => {
        
       </div>
       <div>
-          <h1 className={`text-2xl text-center`}> Expenses Information</h1>
+          <h1 className={`text-2xl text-center`}>Hotel Expenses Information</h1>
         </div>
         <div className="overflow-x-auto">
             <table className="table">
@@ -41,9 +43,11 @@ const HotelExpenseDetails = () => {
                   <th>SL</th>
                   <th>Date</th>
                   <th>Items Name</th>
-                  <th>Quantity</th>
                   <th>Description</th>
+                  <th>Quantity</th>
                   <th>Price</th>
+                  <th>Remark</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -57,44 +61,58 @@ const HotelExpenseDetails = () => {
                       <td>Rice</td>
                       <td>25 Kg</td>
                       <td>Nice Product</td>
-                      <td>$5000</td>
+                      <td>
+                        <div className="flex">
+                          <div>
+                          <FaRupeeSign />
+                          </div>
+                          <div>
+                            <span>5000</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>Remark</td>
+                      <td>
+                        <button
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                          onClick={() =>
+                            document.getElementById("my_modal_3").showModal()
+                          }
+                        >
+                          <FaRegEdit />
+                        </button>
+                        <dialog id="my_modal_3" className="modal">
+                          <div className="modal-box">
+                            <form method="dialog">
+                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                                ✕
+                              </button>
+                            </form>
+                            <EditExpensesView />
+                          </div>
+                        </dialog>
+                      </td>
+                     
                     </tr>
                   );
                 })}
               </tbody>
               
             </table>
-           <div className={`flex justify-end md:me-[100px] mt-5`}>
-           <h1>Grand Total :  $25000</h1>
+           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
+            <h1>Grand Total :</h1>
+           <div className="flex">
+                          <div>
+                          <FaRupeeSign />
+                          </div>
+                          <div>
+                            <span>25000</span>
+                          </div>
+                        </div>
            </div>
           </div>
 
-      {/* <div className="overflow-x-auto border mt-3">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>
-                Surveyor <br /> Quantity
-              </th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>Grand Total</td>
-              <td>5000</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div> */}
-      
+     
     </div>
   );
 };

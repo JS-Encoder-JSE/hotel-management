@@ -387,9 +387,9 @@ const UserDashBoard = ({ managerId }) => {
           <AllExpeseAnalytics user={user} userHotel={userHotel} dashboardData={dashboardData} dummyData={dummyData}/>
         </section>}
 
-        {/* { user?.role ==="owner" &&<section>
+        { user?.role ==="owner" &&<section>
           <OwnerExpeseAnalytics user={user} userHotel={userHotel} dashboardData={dashboardData} dummyData={dummyData}/>
-        </section>} */}
+        </section>}
       </div>
 
     </>
