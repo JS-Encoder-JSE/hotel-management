@@ -3,17 +3,20 @@ import { useState } from "react";
 import { FaDollarSign, FaUsers } from "react-icons/fa";
 import { GiExpense } from "react-icons/gi";
 import { SiSellfy } from "react-icons/si";
-import { MdOutlineLastPage } from "react-icons/md";
+import { MdAttachMoney, MdOutlineLastPage } from "react-icons/md";
 import { LiaSellsy } from "react-icons/lia";
 import { GrMoney } from "react-icons/gr";
 import { useFormik } from "formik";
+import { TbCurrencyTaka } from "react-icons/tb";
+import { HiOutlineCurrencyRupee } from "react-icons/hi2";
+
 
 const RestaurantDashboard = () => {
+  const [profit,setProfit] = useState(false);
   const formik = useFormik({
     initialValues: {
-      filter: "",
-      search: "",
-      // hotel_id: "",
+     
+     
     },
     onSubmit: (values) => {
       setKeyword(values.search);
@@ -41,6 +44,14 @@ const RestaurantDashboard = () => {
             <p className="text-2xl font-semibold mt-4">$ 850</p>
             <hr />
           </div>
+        </div>
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-3 rounded-md text-white">
+          <TbCurrencyTaka />
+          </div>
+          <h6 className="text-xs text-slate-400 ">TODAY PROFIT</h6>
+          <p className="text-2xl font-semibold mt-4">$ 850</p>
+          <hr />
         </div>
       </div>
 
@@ -82,10 +93,22 @@ const RestaurantDashboard = () => {
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md text-white">
-            <GrMoney />
+          <HiOutlineCurrencyRupee />
           </div>
+          
           <h6 className="text-xs text-slate-400 ">PROFIT</h6>
-          <p className="text-2xl font-semibold mt-4">$ 2500</p>
+          {/* <div>
+                    {profit === "positive" ? (
+                      <div className="text-2xl font-semibold mt-4">
+                        $ 2500
+                      </div>
+                    ) : (
+                      <div className="badge min-w-[6rem] bg-red-600 border-red-600 text-white">
+                        Negative
+                      </div>
+                    )}
+                  </div> */}
+            <p className="text-2xl font-semibold mt-4">$ 1650</p>
           <hr />
         </div>
       </div>
