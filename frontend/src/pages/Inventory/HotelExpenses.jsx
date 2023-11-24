@@ -13,9 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
-import EditTodayExpenses from "./EditTodayExpenses";
-// import Modal from "../Modal";
-// import EditExpenses from "./EditExpenses";
+import EditExpenses from "../../components/inventory/EditExpenses";
 
 const HotelExpenses = () => {
   const navigate = useNavigate();
@@ -63,7 +61,7 @@ const HotelExpenses = () => {
         <div>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-            Today  Hotel Expenses
+              Today Expenses
             </h3>
           </div>
           <div className={`flex justify-end mb-5`}>
@@ -123,7 +121,7 @@ const HotelExpenses = () => {
                                 ✕
                               </button>
                             </form>
-                            < EditTodayExpenses/>
+                            <EditExpenses />
                           </div>
                         </dialog>
                       </td>
@@ -152,7 +150,7 @@ const HotelExpenses = () => {
         <div className={`mb-10 mt-10`}>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-             Hotel Restaurant Expenses
+              Hotel Expenses
             </h3>
           </div>
           <div className="flex justify-end">
@@ -245,7 +243,8 @@ const HotelExpenses = () => {
                           <span>5000</span>
                         </div>
                         </div> 
-                      
+                       
+                       
                       </td>
                       <td className={`space-x-1.5`}>
                         <span

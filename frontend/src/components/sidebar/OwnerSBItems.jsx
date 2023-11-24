@@ -51,7 +51,94 @@ const OwnerSBItems = ({ handleSBItems }) => {
               Hotel List
             </NavLink>
           </li>
-        </ul>
+        </ul>   
+      </li>
+
+
+      <li className={`group p-2`}>
+        <div
+          className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
+          onClick={(e) => handleSBItems(e)}
+        >
+          <div className={`flex space-x-1.5`}>
+            <MdOutlineMeetingRoom />
+            <span className={`-mt-0.5`}>Expense/Profit</span>
+          </div>
+          <span className={`group-[.active]:hidden`}>
+            <MdKeyboardArrowDown />
+          </span>
+          <span className={`hidden group-[.active]:inline`}>
+            <MdKeyboardArrowUp />
+          </span>
+        </div>
+        <ul className={`group-[.active]:block hidden`}>
+          <li>
+            <NavLink
+              to={`/dashboard/add-hotel`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Restaurent Expense
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/hotel-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+             Restaurant Sales
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/hotel-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+             Hotel Expense
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/hotel-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+             Hotel Sales
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/hotel-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+            Restaurant Analytics
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/hotel-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+           Hotel Analytics
+            </NavLink>
+          </li>
+        </ul>   
       </li>
       {/* <li className={`group p-2`}>
         <div
@@ -105,7 +192,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           <MdOutlineKitchen />
           <span className={`-mt-0.5`}>Monitor Finances</span>
         </NavLink>
-      </li>
+      </li> 
       <li className={`group p-2`}>
         <NavLink
             to={`/dashboard/license-history`}

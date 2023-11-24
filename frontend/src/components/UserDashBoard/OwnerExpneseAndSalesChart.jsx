@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const ExpensesChart = ({ userHotel, monthlyData }) => {
+const OwnerExpenseAndSalesChart = ({ userHotel, monthlyData }) => {
   const [chartProps, setChartProps] = useState({
     series: [
       {
@@ -130,4 +130,4 @@ const ExpensesChart = ({ userHotel, monthlyData }) => {
   );
 };
 
-export default ExpensesChart;
+export default OwnerExpenseAndSalesChart;

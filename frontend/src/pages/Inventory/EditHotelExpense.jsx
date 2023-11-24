@@ -46,7 +46,7 @@ const EditHotelExpense = () => {
   };
   return (
     <div className={`space-y-10  p-10 rounded-2xl`}>
-     <h1 className="text-2xl text-center">Edit Hotel Expenses</h1>
+     <h1  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>Edit Hotel Expenses</h1>
       <form
         className="form-control md:grid-cols-2 gap-4 "
         onSubmit={formik.handleSubmit}

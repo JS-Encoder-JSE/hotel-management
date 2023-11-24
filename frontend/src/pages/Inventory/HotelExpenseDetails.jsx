@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import EditHotelExpense from "./EditHotelExpense";
-// import EditSalesView from "./EditSalesView";
+import EditExpensesView from "../../components/inventory/EditExpensesView";
+
 
 const HotelExpenseDetails = () => {
+
+  const [pageCount, setPageCount] = useState(10);
+
+  const handlePageClick = ({ selected: page }) => {
+     setCurrentPage(page);
+   };
+
     const formik = useFormik({
         initialValues: {
           startDate: "",
@@ -34,7 +41,7 @@ const HotelExpenseDetails = () => {
        
       </div>
       <div>
-          <h1 className={`text-2xl text-center`}> All Hotel Expenses Information</h1>
+          <h1 className={`text-2xl text-center`}>Hotel Expenses Information</h1>
         </div>
         <div className="overflow-x-auto">
             <table className="table">
@@ -60,14 +67,13 @@ const HotelExpenseDetails = () => {
                       <td>23-11-2023</td>
                       <td>Fried Rice</td>
                       <td>Nice Product</td>
-                      <td>10</td>
                       <td>
-                      <div className="flex">
+                        <div className="flex">
                           <div>
                           <FaRupeeSign />
                           </div>
                           <div>
-                            <span>25000</span>
+                            <span>5000</span>
                           </div>
                         </div>
                       </td>
@@ -88,17 +94,18 @@ const HotelExpenseDetails = () => {
                                 ✕
                               </button>
                             </form>
-                           <EditHotelExpense/>
+                            <EditExpensesView />
                           </div>
                         </dialog>
                       </td>
+                     
                     </tr>
                   );
                 })}
               </tbody>
               
             </table>
-           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-1`}>
+           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
             <h1>Grand Total :</h1>
            <div className="flex">
                           <div>
@@ -110,7 +117,9 @@ const HotelExpenseDetails = () => {
                         </div>
            </div>
           </div>
-  
+          {/* Pagination */}
+
+     
     </div>
   );
 };
