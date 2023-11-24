@@ -1,21 +1,5 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-const expenseSchema = new mongoose.Schema({
-  hotel_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: false,
-  },
-  expendedfor: {
-    type: String,
-    required: true,
-    enum: ["restaurant", "hotel"],
-  },
-  date: {
-    type: Date,
-    required: true,
-  },
-  items: [itemSchema],
-});
 const itemSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -33,6 +17,22 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+});
+const expenseSchema = new mongoose.Schema({
+  hotel_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: false,
+  },
+  expendedfor: {
+    type: String,
+    required: true,
+    enum: ["restaurant", "hotel"],
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
+  items: [itemSchema],
 });
 
 // Apply the mongoose-paginate-v2 plugin to your schema
