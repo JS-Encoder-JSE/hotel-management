@@ -20,6 +20,8 @@ import { GiCoins } from "react-icons/gi";
 import { GrCurrency } from "react-icons/gr";
 import { useGetDashboardInfoQuery } from "../../redux/dashboard/dashboardApi";
 import { Rings } from "react-loader-spinner";
+import AllExpeseAnalytics from "./AllExpeseAnalytics";
+import OwnerExpeseAnalytics from "./OwnerExpeseAnalytics";
 const dummyData = [
   {
     month_name: "November",
@@ -381,7 +383,15 @@ const UserDashBoard = ({ managerId }) => {
         </div>
       )} */}
         </section>
+      { user?.role ==="manager" &&<section>
+          <AllExpeseAnalytics user={user} userHotel={userHotel} dashboardData={dashboardData} dummyData={dummyData}/>
+        </section>}
+
+        {/* { user?.role ==="owner" &&<section>
+          <OwnerExpeseAnalytics user={user} userHotel={userHotel} dashboardData={dashboardData} dummyData={dummyData}/>
+        </section>} */}
       </div>
+
     </>
   );
 };

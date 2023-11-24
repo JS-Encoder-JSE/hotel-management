@@ -93,6 +93,9 @@ import ShowAllSell from "./pages/restaurant/ShowAllSell.jsx";
 import ShowALlSellView from "./pages/restaurant/ShowALlSellView.jsx";
 import RestaurantDashboard from "./pages/restaurant/RestaurantDashboard.jsx";
 import AddHotelExpense from "./pages/Inventory/AddHotelExpense.jsx";
+import HotelExpenses from "./pages/Inventory/HotelExpenses.jsx";
+import HotelExpenseDetails from "./pages/Inventory/HotelExpenseDetails.jsx";
+import HotelDashboard from "./pages/Inventory/HotelDashboard.jsx";
 
 
 
@@ -330,6 +333,22 @@ const App = () => {
               ),
             },
             {
+              path: "all-hotel-expneses",
+              element: (
+                <ManagerRoute>
+                  <HotelExpenses/>
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "hotel-expense/:id",
+              element: (
+                <ManagerRoute>
+                 <HotelExpenseDetails/>
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "add-hotel-expnese",
               element: (
                 <ManagerRoute>
@@ -358,6 +377,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <ShowAllExpenseView />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "hotel-dashboard",
+              element: (
+                <ManagerRoute>
+                  <HotelDashboard/>
                 </ManagerRoute>
               ),
             },

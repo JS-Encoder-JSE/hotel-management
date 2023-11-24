@@ -217,7 +217,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineInventory2 />
-            <span className={`-mt-0.5`}>Inventory</span>
+            <span className={`-mt-0.5`}>Inventory/Hotel Expense</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
@@ -259,7 +259,29 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Add Hotel Expense
             </NavLink>
-          </li>      
+          </li> 
+          <li>
+            <NavLink
+              to={`/dashboard/all-hotel-expneses`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Hotel Expenses
+            </NavLink>
+          </li> 
+          <li>
+            <NavLink
+              to={`/dashboard/hotel-dashboard`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Hotel Dashboard
+            </NavLink>
+          </li>               
         </ul>
       </li>
       <li className={`group p-2`}>
