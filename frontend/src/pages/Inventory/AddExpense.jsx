@@ -53,7 +53,6 @@ const AddExpense = () => {
 
     const formik = useFormik({
         initialValues: {
-          // hotel_id: "",
           date: new Date(),
           itemName: "",
           quantity: "",
@@ -185,7 +184,7 @@ const AddExpense = () => {
                   );
                 })}
               </tbody>}
-              <tfoot className={`text-xl font-bold mr-28`}>
+              <tfoot className={`text-xl font-bold`}>
                 <tr>
                   <td colSpan={5} className={`text-end text-md font-bold`}>
                     Total

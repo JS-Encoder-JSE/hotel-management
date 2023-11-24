@@ -5,7 +5,7 @@ const ReservationChart = ({ userManager, monthlyData }) => {
   const [chartProps, setChartProps] = useState({
     series: [
       {
-        name: "Check in",
+        name:userManager? "Check in" :"Sale",
         data: [],
         color: "#359b00",
       },
