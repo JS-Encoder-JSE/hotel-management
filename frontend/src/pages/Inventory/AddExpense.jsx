@@ -154,7 +154,7 @@ const AddExpense = () => {
     //   }, [formik.values.photos]);
 
 
-
+// handle update
     const handleEdit = (index) => {
     const itemToEdit = totalItems[index];
     formik.setValues({ ...itemToEdit });
@@ -175,7 +175,7 @@ const AddExpense = () => {
         });
       };
 
-
+// total calculation
  const calculateTotal = () => {
         return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
       };
