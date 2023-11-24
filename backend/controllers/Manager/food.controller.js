@@ -738,3 +738,34 @@ export const getFoodCategoryById = async (req, res) => {
     });
   }
 };
+
+export const getOrdersByDates = async (req, res) => {
+  try {
+    const { fromDate, toDate, order_status } = req.query;
+
+    // Build the query object based on the provided filters
+    const query = {};
+    if (order_status) {
+      query.order_status = order_status;
+    }
+    if (fromDate && toDate) {
+      // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
+      query.createdAt = { $gte: new Date(fromDate), $lte: new Date(toDate) };
+    } else if (fromDate) {
+      // If only fromDate is provided, use $gte for the minimum date filter
+      query.createdAt = { $gte: new Date(fromDate) };
+    } else if (toDate) {
+      // If only toDate is provided, use $lte for the maximum date filter
+      query.createdAt = { $lte: new Date(toDate) };
+    }
+    // Find checked-out orders without pagination
+    const checkedOutOrders = await FoodOrder.find(query).sort({
+      createdAt: "desc",
+    });
+
+    return res.status(200).json(checkedOutOrders);
+  } catch (error) {
+    console.error("Error fetching checked-out food orders:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
