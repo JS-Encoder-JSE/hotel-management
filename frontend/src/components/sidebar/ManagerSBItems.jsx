@@ -109,24 +109,24 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </span>
         </div>
         <ul className={`group-[.active]:block hidden`}>
-        <li>
+          <li>
             <NavLink
-                to={`/dashboard/restaurant-dashboard`}
-                className={({ isActive }) =>
-                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                    (isActive ? " bg-gray-300" : "")
-                }
+              to={`/dashboard/restaurant-dashboard`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Restaurant Dashboard
             </NavLink>
           </li>
           <li>
             <NavLink
-                to={`/dashboard/add-table`}
-                className={({ isActive }) =>
-                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                    (isActive ? " bg-gray-300" : "")
-                }
+              to={`/dashboard/add-table`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Add Table
             </NavLink>
@@ -155,11 +155,11 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-                to={`/dashboard/current-order-list`}
-                className={({ isActive }) =>
-                    "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                    (isActive ? " bg-gray-300" : "")
-                }
+              to={`/dashboard/current-order-list`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
             >
               Current Order List
             </NavLink>
@@ -184,6 +184,28 @@ const ManagerSbItems = ({ handleSBItems }) => {
               }
             >
               Add Expence
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/show-all-sell`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Restaurant Sales
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/show-all-expense`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Restaurant Expenses
             </NavLink>
           </li>
         </ul>
@@ -389,7 +411,6 @@ const ManagerSbItems = ({ handleSBItems }) => {
           }
         >
           <div className={`flex space-x-1.5`}>
-           
             <MdOutlineSportsGymnastics />
             <span>Gym Reservation</span>
           </div>
@@ -520,7 +541,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           }
         >
           <div className={`flex space-x-1.5`}>
-          <MdPool />
+            <MdPool />
             <span>Pool Reservation</span>
           </div>
         </NavLink>
