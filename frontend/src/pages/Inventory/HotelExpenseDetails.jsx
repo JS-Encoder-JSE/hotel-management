@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowLeft, FaRegFilePdf } from "react-icons/fa";
+import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
+import EditHotelExpense from "./EditHotelExpense";
+// import EditSalesView from "./EditSalesView";
 
 const HotelExpenseDetails = () => {
     const formik = useFormik({
@@ -14,7 +16,7 @@ const HotelExpenseDetails = () => {
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
-      <div className={`flex justify-between `}>
+      <div className={`flex justify-between`}>
         <div
           className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
           onClick={() => navigate(-1)}
@@ -22,7 +24,7 @@ const HotelExpenseDetails = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <div className={`flex`}>
+        <div className={`flex justify-end`}>
         <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
           {" "}
           <FaRegFilePdf />
@@ -32,7 +34,7 @@ const HotelExpenseDetails = () => {
        
       </div>
       <div>
-          <h1 className={`text-2xl text-center`}> Expenses Information</h1>
+          <h1 className={`text-2xl text-center`}> All Hotel Expenses Information</h1>
         </div>
         <div className="overflow-x-auto">
             <table className="table">
@@ -41,9 +43,11 @@ const HotelExpenseDetails = () => {
                   <th>SL</th>
                   <th>Date</th>
                   <th>Items Name</th>
-                  <th>Quantity</th>
                   <th>Description</th>
+                  <th>Quantity</th>
                   <th>Price</th>
+                  <th>Remark</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -54,47 +58,59 @@ const HotelExpenseDetails = () => {
                     >
                       <th>{++idx}</th>
                       <td>23-11-2023</td>
-                      <td>Rice</td>
-                      <td>25 Kg</td>
+                      <td>Fried Rice</td>
                       <td>Nice Product</td>
-                      <td>$5000</td>
+                      <td>10</td>
+                      <td>
+                      <div className="flex">
+                          <div>
+                          <FaRupeeSign />
+                          </div>
+                          <div>
+                            <span>25000</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>Remark</td>
+                      <td>
+                        <button
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                          onClick={() =>
+                            document.getElementById("my_modal_3").showModal()
+                          }
+                        >
+                          <FaRegEdit />
+                        </button>
+                        <dialog id="my_modal_3" className="modal">
+                          <div className="modal-box">
+                            <form method="dialog">
+                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                                ✕
+                              </button>
+                            </form>
+                           <EditHotelExpense/>
+                          </div>
+                        </dialog>
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
               
             </table>
-           <div className={`flex justify-end md:me-[100px] mt-5`}>
-           <h1>Grand Total :  $25000</h1>
+           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-1`}>
+            <h1>Grand Total :</h1>
+           <div className="flex">
+                          <div>
+                          <FaRupeeSign />
+                          </div>
+                          <div>
+                            <span>25000</span>
+                          </div>
+                        </div>
            </div>
           </div>
-
-      {/* <div className="overflow-x-auto border mt-3">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>
-                Surveyor <br /> Quantity
-              </th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>Grand Total</td>
-              <td>5000</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div> */}
-      
+  
     </div>
   );
 };
