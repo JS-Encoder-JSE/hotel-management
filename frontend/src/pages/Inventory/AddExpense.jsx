@@ -8,11 +8,13 @@ import DatePicker from "react-datepicker";
 import { getformatDateTime } from '../../utils/utils';
 import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
+import { useAddExpensesMutation, useGetHotelByManagerIdQuery } from '../../redux/room/roomAPI';
+import toast from 'react-hot-toast';
 
 // form validation
 const validationSchema = yup.object({
     // date: yup.string().required("Date is required"),
-    itemName: yup.string().required("Name is required"),
+    name: yup.string().required("Name is required"),
     quantity: yup.string().required("Quantity is required"),
     price: yup
       .number()
@@ -30,7 +32,20 @@ const validationSchema = yup.object({
 
 const AddExpense = () => {
 
-    const { user } = useSelector((store) => store.authSlice);
+const { isUserLoading, user } = useSelector((store) => store.authSlice);
+
+  // console.log(user._id);
+
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
+  // console.log(hotelInfo[0]?._id);
+
+    // add expense
+    const[AddExpense]=useAddExpensesMutation()
+
     
 // lodading
     const [isLoading, setLoading] = useState(false);
@@ -51,10 +66,13 @@ const AddExpense = () => {
 
 
 
+
+
+
     const formik = useFormik({
         initialValues: {
           date: new Date(),
-          itemName: "",
+          name: "",
           quantity: "",
           price: "",
           description: "",
@@ -78,13 +96,32 @@ const AddExpense = () => {
               // Add new item
               setTotalItems((prevItems) => [...prevItems, obj]);
             }
-          
             formik.resetForm();
             setLoading(false);
             setUpdate(false)
           },
       });
 
+
+
+      // handle AddExpense submit:
+
+      const handleAddExpensesResponse = async()=>{
+        setLoading(true)
+        const response= await AddExpense({
+          hotel_id:isHotelSuccess && hotelInfo[0]?._id,
+          date:new Date(),
+          spendedfor:"restaurant",
+          items: totalExpense 
+        })
+        setLoading(false)
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          toast.success(response.data.message);
+          totalExpense=[]
+        }  
+      }
 
       // handle edit each item
 
@@ -182,7 +219,7 @@ const AddExpense = () => {
                 className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
               >
                 <FaPlusCircle />
-                <span>Add Expense</span>
+                <span>Add Restaurant Expenses</span>
               </h3>
             </div>
             <div>
@@ -209,7 +246,7 @@ const AddExpense = () => {
                     >
                       <th>{++idx}</th>
                       <td>{getformatDateTime(item?.date)}</td>
-                      <td>{item?.itemName}</td>
+                      <td>{item?.name}</td>
                       <td>{item?.quantity}</td>
                       <td>{item?.price}</td>
                       <td className={`flex flex-wrap gap-1.5`}>
@@ -270,15 +307,15 @@ const AddExpense = () => {
                 <input
                   type="text"
                   placeholder="Item Name"
-                  name="itemName"
+                  name="name"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.itemName}
+                  value={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.price && Boolean(formik.errors.itemName) ? (
+                {formik.touched.name && Boolean(formik.errors.name) ? (
                   <small className="text-red-600">
-                    {formik.touched.itemName && formik.errors.itemName}
+                    {formik.touched.name && formik.errors.name}
                   </small>
                 ) : null}
               </div>
@@ -375,7 +412,7 @@ const AddExpense = () => {
             {/* submit button */}
             <div className=" mx-auto">
                 <button
-                  
+                  onClick={handleAddExpensesResponse}
                   disabled={totalItems.length? false : true}
                   className=" btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
                 >

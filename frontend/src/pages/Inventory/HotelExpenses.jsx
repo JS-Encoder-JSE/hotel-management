@@ -90,6 +90,7 @@ const HotelExpenses = () => {
                 {[...Array(+formik.values.entries || 5)].map((_, idx) => {
                   return (
                     <tr
+                    key={idx}
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>

@@ -183,7 +183,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Expence
+              Add Expense
             </NavLink>
           </li>
           <li>

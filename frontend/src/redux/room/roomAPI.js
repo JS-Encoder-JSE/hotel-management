@@ -59,6 +59,19 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["room",'booking'],
     }),
+
+    addExpenses: build.mutation({
+      query: (data) => {
+        return {
+          url: "expenses/add-expense",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["addExpenses"],
+    }),
+
+
     getRoomsAndHotels: build.query({
       query: () => {
         const { user } = store.getState().authSlice;
@@ -120,6 +133,7 @@ const roomAPI = baseAPI.injectEndpoints({
     getHotelByManagerId:build.query({
       query:(id)=>`hotels/get-hotel-by-manager/${id}`
     }),
+    
   }),
 });
 
@@ -141,4 +155,5 @@ export const {
   useGetTablesQuery,
   useGetItemsQuery,
   useGetHotelByManagerIdQuery,
+  useAddExpensesMutation,
 } = roomAPI;
