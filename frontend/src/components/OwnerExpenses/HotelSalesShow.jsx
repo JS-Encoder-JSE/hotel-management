@@ -14,6 +14,9 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import EditTodayHotelSales from "./EditTodayHotelSales";
+import { BiRupee } from "react-icons/bi";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+
 
 
 const HotelSalesShow = () => {
@@ -62,7 +65,7 @@ const HotelSalesShow = () => {
         <div>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-              Today Hotel Sales 
+              Today Checkout
             </h3>
           </div>
           <div className={`flex justify-end mb-5`}>
@@ -74,67 +77,77 @@ const HotelSalesShow = () => {
           </div>
 
           <div className="overflow-x-auto">
+          <div className="overflow-x-auto mt-10">
             <table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
-                  <th>Date</th>
-                  <th>Items Name</th>
-                  <th>Description</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Remark</th>
+          
+                  <th>Guest Name</th>
+                  <th>Room Numbers</th>
+                  <th>Check In</th>
+                  <th>Check Out</th>
+                  <th>Amount</th>
                   <th>Action</th>
+                
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+              {[...Array(+formik.values.entries || 5)].map((_, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
-                      <td>Fried Rice</td>
-                      <td>Good </td>
-                      <td>10</td>
-                      <td className="flex">
-                        <div>
-                        <FaRupeeSign /></div>
-                        <div>
-                          <span>5000</span>
-                        </div>
-                      </td>
-                      <td>Remark</td>
                       <td>
-                        <button
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                        Jon Doe
+                        {/* {report.guestName} */}
+                        </td>
+                      <td>101
+                        {/* {report?.room_numbers.join(",")} */}
+                        </td>
+                      <td>
+                        25-11-23
+                        {/* {getFormateDateAndTime(report?.checked_in)} */}
+                        </td>
+                      <td>26-11-23
+                        {/* {getFormateDateAndTime(report?.checked_out)} */}
+                        </td>
+                      <td>5000
+                        
+                        {/* {report?.paid_amount} */}
+                        </td>
+                      <td className={`space-x-1.5`}>
+                      <span
+                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            document.getElementById("my_modal_3").showModal()
+                            navigate(`/dashboard/restaurant-sales/${idx}`)
                           }
                         >
-                          <FaRegEdit />
-                        </button>
-                        <dialog id="my_modal_3" className="modal">
-                          <div className="modal-box">
-                            <form method="dialog">
-                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                ✕
-                              </button>
-                            </form>
-                            {/*  */}
-                          {/* <EditSales/> */}
-                          <EditTodayHotelSales/>
-                          </div>
-                        </dialog>
+                          <FaEye />
+                        </span>
                       </td>
-                     
+                      
                     </tr>
                   );
                 })}
               </tbody>
+              <tfoot className={`text-sm`}>
+                <tr>
+                  <td colSpan={5} className={`text-end `}>
+                   Grand Total :
+                  </td>
+                  <td>
+                 <div className="flex">
+                  <div><BiRupee/></div>
+                  <div>25000</div>
+                 </div>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
-            <div className={`flex justify-center md:ms-[20rem] mt-4`}>
+          </div>
+            {/* <div className={`flex justify-center md:ms-[20rem] mt-4`}>
               <h1>Grand Total :</h1>
               <div className="flex ">
               <div>
@@ -144,7 +157,7 @@ const HotelSalesShow = () => {
                 <span>25000</span>
               </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex justify-center mt-10">
@@ -172,7 +185,7 @@ const HotelSalesShow = () => {
         <div className={`mb-10 mt-10`}>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-             Hotel Sales 
+             All Checkout
             </h3>
           </div>
           <div className="flex justify-end">
@@ -236,57 +249,73 @@ const HotelSalesShow = () => {
         </div>
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
-          <div className="overflow-x-auto">
+        <div className="overflow-x-auto mt-10">
             <table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
-                  <th>Date</th>
+          
+                  <th>Guest Name</th>
+                  <th>Room Numbers</th>
+                  <th>Check In</th>
+                  <th>Check Out</th>
                   <th>Amount</th>
                   <th>Action</th>
+                
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+              {[...Array(+formik.values.entries || 5)].map((_, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
                       <td>
-                       <div className="flex">
-                        <div>
+                        Jon Doe
+                        {/* {report.guestName} */}
+                        </td>
+                      <td>101
+                        {/* {report?.room_numbers.join(",")} */}
+                        </td>
+                      <td>
+                        25-11-23
+                        {/* {getFormateDateAndTime(report?.checked_in)} */}
+                        </td>
+                      <td>26-11-23
+                        {/* {getFormateDateAndTime(report?.checked_out)} */}
+                        </td>
+                      <td>5000
                         
-                          <FaRupeeSign />
-                        
-                        </div>
-                        <div>
-                          <span>5000</span>
-                        </div>
-                        </div> 
-                       
-                       
-                      </td>
+                        {/* {report?.paid_amount} */}
+                        </td>
                       <td className={`space-x-1.5`}>
-                        <span
+                      <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/hotel-sales/${idx}`)
+                            navigate(`/dashboard/restaurant-sales/${idx}`)
                           }
                         >
                           <FaEye />
                         </span>
-                        {/* <span
-                          className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                        >
-                          <AiTwotoneDelete />
-                        </span> */}
                       </td>
                     </tr>
                   );
                 })}
               </tbody>
+              <tfoot className={`text-sm`}>
+                <tr>
+                  <td colSpan={5} className={`text-end`}>
+                    Total
+                  </td>
+               <td>
+               <div className="flex">
+                  <div><BiRupee/></div>
+                  <div>25000</div>
+                 </div>
+               </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
           <div className="flex justify-center mt-10">
