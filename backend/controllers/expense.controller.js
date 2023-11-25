@@ -2,20 +2,13 @@ import Expense from "../models/expense.model.js"; // Adjust the path based on yo
 
 export const addExpense = async (req, res) => {
   try {
-    const { hotel_id, date, expendedfor, items } = req.body;
-
-    // Validate the request body
-    if (!date || !items || items.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Invalid request. Date and items are required." });
-    }
+    const { hotel_id, date, spendedfor, items } = req.body;
 
     // Create a new expense instance
     const newExpense = new Expense({
       hotel_id,
       date,
-      expendedfor,
+      spendedfor,
       items,
     });
 
@@ -62,7 +55,7 @@ export const getExpenses = async (req, res) => {
     const {
       page = 1,
       limit = 10,
-      expendedfor,
+      spendedfor,
       hotel_id,
       fromDate,
       toDate,
@@ -73,8 +66,8 @@ export const getExpenses = async (req, res) => {
     if (hotel_id) {
       query.hotel_id = hotel_id;
     }
-    if (expendedfor) {
-      query.expendedfor = expendedfor;
+    if (spendedfor) {
+      query.spendedfor = spendedfor;
     }
     if (fromDate && toDate) {
       // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
@@ -101,19 +94,19 @@ export const getExpenses = async (req, res) => {
 };
 
 export const getExpenseById = async (req, res) => {
-    try {
-      const { expense_id } = req.params;
-  
-      // Find the expense by ID
-      const expense = await Expense.findById(expense_id);
-  
-      if (!expense) {
-        return res.status(404).json({ error: 'Expense not found' });
-      }
-  
-      return res.status(200).json(expense);
-    } catch (error) {
-      console.error('Error fetching expense by ID:', error);
-      return res.status(500).json({ message: 'Internal Server Error' });
+  try {
+    const { expense_id } = req.params;
+
+    // Find the expense by ID
+    const expense = await Expense.findById(expense_id);
+
+    if (!expense) {
+      return res.status(404).json({ error: "Expense not found" });
     }
-  };
+
+    return res.status(200).json(expense);
+  } catch (error) {
+    console.error("Error fetching expense by ID:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

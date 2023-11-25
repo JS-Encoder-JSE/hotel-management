@@ -24,7 +24,7 @@ const expenseSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: false,
     },
-    expendedfor: {
+    spendedfor: {
       type: String,
       required: true,
       enum: ["restaurant", "hotel"],
