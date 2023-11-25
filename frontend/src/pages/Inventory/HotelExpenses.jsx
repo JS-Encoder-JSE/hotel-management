@@ -132,7 +132,7 @@ const HotelExpenses = () => {
                 })}
               </tbody>
             </table>
-            <div className={`flex justify-center md:ms-[20rem] mt-4`}>
+            <div className={`flex justify-end md:ms-[20rem] mt-4 mx-[20rem]`}>
               <h1>Grand Total :</h1>
               <div className="flex ">
               <div>

@@ -62,10 +62,13 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
     console.log(totalItems,"items---------")
 
-    const totalExpense =[...totalItems]
+    let totalExpense =[...totalItems]
 
 
-
+// total calculation
+const calculateTotal = () => {
+  return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
+};
 
 
 
@@ -112,7 +115,8 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
           hotel_id:isHotelSuccess && hotelInfo[0]?._id,
           date:new Date(),
           spendedfor:"hotel",
-          items: totalExpense 
+          items: totalExpense,
+          total_amount:calculateTotal(),  
         })
         setLoading(false)
         if (response?.error) {
@@ -189,10 +193,7 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
       
 
-// total calculation
- const calculateTotal = () => {
-        return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
-      };
+
 
     return (
         <div>

@@ -10,6 +10,8 @@ import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
 import { useAddExpensesMutation, useGetHotelByManagerIdQuery } from '../../redux/room/roomAPI';
 import toast from 'react-hot-toast';
+import { GiRopeBridge } from 'react-icons/gi';
+import { BsCurrencyRupee } from 'react-icons/bs';
 
 // form validation
 const validationSchema = yup.object({
@@ -62,9 +64,12 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
     console.log(totalItems,"items---------")
 
-    const totalExpense =[...totalItems]
+    let totalExpense =[...totalItems]
 
-
+// total calculation
+const calculateTotal = () => {
+  return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
+};
 
 
 
@@ -112,7 +117,8 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
           hotel_id:isHotelSuccess && hotelInfo[0]?._id,
           date:new Date(),
           spendedfor:"restaurant",
-          items: totalExpense 
+          items: totalExpense,
+          total_amount:calculateTotal(), 
         })
         setLoading(false)
         if (response?.error) {
@@ -120,50 +126,10 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
         } else {
           toast.success(response.data.message);
           totalExpense=[]
+          setTotalItems([])
         }  
       }
 
-      // handle edit each item
-
-    
-    //   // Image delete
-    //   const handleDelete = (idx) => {
-    //     const tempImgs = [
-    //       ...selectedImages.slice(0, idx),
-    //       ...selectedImages.slice(idx + 1),
-    //     ];
-    //     const dataTransfer = new DataTransfer();
-    
-    //     for (const file of tempImgs) {
-    //       dataTransfer.items.add(file);
-    //     }
-    
-    //     formik.setFieldValue("photos", dataTransfer.files);
-    //     setSelectedImages(tempImgs);
-    //   };
-    
-    //   // HandleChange
-    //   const handleChange = (idx, newFile) => {
-    //     const updatedImages = [...selectedImages];
-    //     updatedImages[idx] = newFile;
-    
-    //     const dataTransfer = new DataTransfer();
-    
-    //     for (const file of updatedImages) {
-    //       dataTransfer.items.add(file);
-    //     }
-    
-    //     formik.setFieldValue("photos", dataTransfer.files);
-    //     setSelectedImages(updatedImages);
-    //   };
-    
-    //   // Update Image
-    //   useEffect(() => {
-    //     if (formik.values.photos) {
-    //       const selectedImagesArray = Array.from(formik.values.photos);
-    //       setSelectedImages(selectedImagesArray);
-    //     }
-    //   }, [formik.values.photos]);
 
 
 // handle update
@@ -189,10 +155,7 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
       
 
-// total calculation
- const calculateTotal = () => {
-        return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
-      };
+
 
     return (
         <div>
@@ -274,7 +237,7 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
                   <td colSpan={5} className={`text-end text-md font-bold`}>
                     Total
                   </td>
-                  <td>$ {calculateTotal()}</td>
+                  <td><BsCurrencyRupee  className='inline'/> {calculateTotal()}</td>
                 </tr>
               </tfoot>
             </table>

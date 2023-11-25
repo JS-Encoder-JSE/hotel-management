@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaEye,
@@ -15,30 +15,157 @@ import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import Modal from "../Modal";
 import EditExpenses from "./EditExpenses";
+import { useGetExpensesQuery, useGetHotelByManagerIdQuery } from "../../redux/room/roomAPI";
+import { useSelector } from "react-redux";
+import { fromDateIsoConverter, getISOStringDate } from "../../utils/utils";
 
 const ShowAllExpense = () => {
+
+  const [forcePage, setForcePage] = useState(null);
   const navigate = useNavigate();
-  const [managersPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
+  const [reportsPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
-  const [search, setSearch] = useState("");
+
+
+const { isUserLoading, user } = useSelector((store) => store.authSlice);
+
+// console.log(user._id);
+
+const {
+  data: hotelInfo,
+  isLoading: isHotelLoading,
+  isSuccess: isHotelSuccess,
+} = useGetHotelByManagerIdQuery(user?._id);
+// console.log(hotelInfo[0]?._id);
+
+
+const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
+
+
+// const { data: resExpenses, isLoading, isSuccess } = useGetExpensesQuery({
+//   cp: 1,
+//   fromDate: fromDateIsoConverter(new Date()),
+//   hotel_id: hotelId,
+//   spendedfor: "restaurant",
+//   limit: 10,
+// });
+
+
+
+// // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
+//   const {data:resExpenses, isLoading,isSuccess} = useGetExpensesQuery({
+//     cp: 1,
+//     fromDate: fromDateIsoConverter(new Date()),
+//     hotel_id: hotelId,
+//     spendedfor: "restaurant",
+//     limit: 10,
+//   });
+
+  // console.log(resExpenses,"expnessfor resto")
+  
+
+ 
+  const [searchParams, setSearchParams] = useState({
+    fromDate: "",
+    toDate: "",
+  });
+
+  console.log(searchParams)
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
 
   const formik = useFormik({
     initialValues: {
       startDate: "",
       endDate: "",
     },
+    onSubmit: (values) => {
+
+     
+      setSearchParams((p) => ({
+        ...p,
+        toDate: getISOStringDate(values.endDate),
+        fromDate: getISOStringDate(values.startDate),
+      }));
+    },
+    onReset: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
+    },
+  });
+  const { data: resExpenses, isLoading, isSuccess } = useGetExpensesQuery({
+    cp: 1,
+    fromDate:fromDateIsoConverter(new Date()),
+    hotel_id: hotelId,
+    spendedfor: "restaurant",
+    limit: 10,
   });
 
-  const handlePageClick = ({ selected: page }) => {
-    setCurrentPage(page);
-  };
+
+  const { data: filteredExpenses, isLoading: isFilterDataLoading, isSuccess: filterExSuccess } = useGetExpensesQuery({
+    cp: currentPage,
+    fromDate: searchParams?.fromDate,
+    toDate: searchParams?.toDate,
+    hotel_id: hotelId,
+    spendedfor: "restaurant",
+    limit: 10,
+  });
+
+  
+  useEffect(() => {
+    if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
+  }, [filteredExpenses]);
+
+
+  // const { data: filteredExpenses, isLoading:isFilterDataLoading, isSuccess:filterExSuccess } = useGetExpensesQuery({
+  //   cp: 1,
+  //   fromDate:searchParams?.fromDate,
+  //   toDate: searchParams?.toDate, 
+  //   hotel_id: hotelId,
+  //   spendedfor: "restaurant",
+  //   limit: 10,
+  // });
+
+  console.log(resExpenses,"History")
+
+  console.log(filteredExpenses,"filtered expenses.......")
+  
+//   // const [resExHistory,setExHistory]=useState([])
+//   const handleExpensesHistory = async () =>{
+//     let fromDate = formik.values.startDate;
+//     let toDate = formik.values.endDate;
+
+//   const { data: resExpensesHistory, isLoading, isSuccess } = await useGetExpensesQuery({
+//     cp: 1,
+//     fromDate:fromDate,
+//     toDate: toDate,
+//     hotel_id: hotelId,
+//     spendedfor: "restaurant",
+//     limit: 10,
+//   });
+// //  if(isSuccess) setExHistory(resExpensesHistory);
+//   }
+
+
+ // State to hold the filtered expenses
+
+
+  // console.log(resExHistory,"history")
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
       formik.handleSubmit();
     }
   };
+
+
+  const totalItemPrice = resExpenses?.docs[0]?.items?.reduce((total, item) => {
+    // Add the price of each item to the total
+    return total + (item?.price || 0);
+  }, 0);
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -83,29 +210,27 @@ const ShowAllExpense = () => {
                   <th>Description</th>
                   <th>Quantity</th>
                   <th>Price</th>
-                  <th>Remark</th>
+                  {resExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {resExpenses?.docs[0]?.items?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
-                      <td>Rice</td>
-                      <td>Nice Product</td>
-                      <td>25 Kg</td>
-                      <td className="flex">
-                        <div>
-                        <FaRupeeSign /></div>
-                        <div>
-                          <span>5000</span>
-                        </div>
+                      <td>{resExpenses?.docs[0]?.date}</td>
+                      <td>{item?.name}</td>
+                      <td>{item?.description}</td>
+                      <td>{item?.quantity}</td>
+                      <td>
+                        
+                        <FaRupeeSign className="inline" />
+                          <span>{item?.price}</span>   
                       </td>
-                      <td>Remark</td>
+                      {item?.remark&&<td>Remark</td>}
                       <td>
                         <button
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
@@ -132,14 +257,14 @@ const ShowAllExpense = () => {
                 })}
               </tbody>
             </table>
-            <div className={`flex justify-center md:ms-[20rem] mt-4`}>
+            <div className={`flex justify-end md:ms-[20rem] mt-4 mx-[15rem]`}>
               <h1>Grand Total :</h1>
               <div className="flex ">
               <div>
               <FaRupeeSign />
               </div>
               <div>
-                <span>25000</span>
+                <span>{totalItemPrice}</span>
               </div>
               </div>
             </div>
@@ -160,7 +285,7 @@ const ShowAllExpense = () => {
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={pageCount}
+              pageCount={resExpenses?.pagingCounter}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
@@ -173,7 +298,7 @@ const ShowAllExpense = () => {
         <div className={`mb-10 mt-10`}>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-              Restaurant Expenses
+              Restaurant Expenses History
             </h3>
           </div>
           <div className="flex justify-end">
@@ -225,11 +350,12 @@ const ShowAllExpense = () => {
           </button>
           <button
             type={"button"}
-            onClick={() => {
-              setCurrentPage(0);
-              setForcePage(0);
-              formik.handleSubmit();
-            }}
+            onClick={formik.handleSubmit}
+            // onClick={() => {
+            //   setCurrentPage(0);
+            //   setForcePage(0);
+            //   formik.handleSubmit();
+            // }}
             className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
           >
             Apply Filter
@@ -243,31 +369,21 @@ const ShowAllExpense = () => {
                 <tr>
                   <th>SL</th>
                   <th>Date</th>
-                  <th>Amount</th>
+                  <th>Total Amount</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {filteredExpenses?.docs.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
+                      <td>{filteredExpenses?.docs[0]?.date}</td>
                       <td>
-                       <div className="flex">
-                        <div>
-                        
-                          <FaRupeeSign />
-                        
-                        </div>
-                        <div>
-                          <span>5000</span>
-                        </div>
-                        </div> 
-                       
-                       
+                          <FaRupeeSign className="inline"/>                       
+                          <span>{item?.price}</span>
                       </td>
                       <td className={`space-x-1.5`}>
                         <span
@@ -307,6 +423,7 @@ const ShowAllExpense = () => {
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
               renderOnZeroPageCount={null}
+              forcePage={forcePage}
             />
           </div>
         </div>
