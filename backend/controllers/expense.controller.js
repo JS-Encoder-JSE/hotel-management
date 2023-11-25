@@ -2,20 +2,13 @@ import Expense from "../models/expense.model.js"; // Adjust the path based on yo
 
 export const addExpense = async (req, res) => {
   try {
-    const { hotel_id, date, expendedfor, items } = req.body;
-
-    // Validate the request body
-    if (!date || !items || items.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Invalid request. Date and items are required." });
-    }
+    const { hotel_id, date, spendedfor, items } = req.body;
 
     // Create a new expense instance
     const newExpense = new Expense({
       hotel_id,
       date,
-      expendedfor,
+      spendedfor,
       items,
     });
 
