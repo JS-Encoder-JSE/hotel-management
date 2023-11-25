@@ -121,7 +121,7 @@ const HotelSalesShow = () => {
                       <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/restaurant-sales/${idx}`)
+                            navigate(`/dashboard/sales-hotel-view/${idx}`)
                           }
                         >
                           <FaEye />

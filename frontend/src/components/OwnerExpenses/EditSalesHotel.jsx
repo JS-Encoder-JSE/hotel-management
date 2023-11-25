@@ -1,9 +1,14 @@
 import React from "react";
+import { useRef } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ReactToPrint from "react-to-print";
+import CheckOutPrint from "../../pages/room/CheckOut/CheckOutPrint";
 
-const RestaurantSalesView = () => {
+const EditSalesHotel = () => {
   const navigate = useNavigate();
+    // for printing
+    const componentRef = useRef();
   return (
     <div>
       {/* Customer details */}
@@ -21,6 +26,32 @@ const RestaurantSalesView = () => {
             <div className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
               <button>Print</button>
             </div>
+                  {/* <ReactToPrint
+          trigger={() => (
+            <button
+              title="please select payment method"
+              className="bg-green-slimy text-white px-2 rounded-sm"
+            >
+              Print
+            </button>
+          )}
+          content={() => componentRef.current}
+        /> */}
+        {/* <div style={{ display: "none" }}>
+          <div ref={componentRef}>
+            <CheckOutPrint
+              pBill={pBill}
+              colAmount={colAmount}
+              data={data}
+              paymentList={paymentList}
+              isHotelSuccess={isHotelSuccess}
+              hotelInfo={hotelInfo}
+            />
+          </div>
+        </div> */}
+
+
+{/* Checkout information */}
           </div>
           <h1 className="text-2xl text-center mt-2 mb-2">
             CheckOut Information
@@ -31,54 +62,33 @@ const RestaurantSalesView = () => {
               <div className="space-y-3">
                 <h3 className="p-5 text-xl">Invoice From</h3>
                 <p className="text-center">
-                  Name <span>:</span>
+                  Name <span>: Jon doe</span>
                 </p>
                 <p className="text-center">
-                  Email <span>:</span>
+                  Email <span>:jondoe@xyz.com</span>
                 </p>
 
                 <p className="text-center">
-                  Phone <span>:</span>
+                  Phone <span>:+99946546</span>
                 </p>
                 <p className="text-center">
-                  Address <span>:</span>{" "}
+                  Address <span>:Kolkata</span>{" "}
                 </p>
               </div>
               <div className="space-y-3">
                 <h3 className="p-5 text-xl">Invoice To</h3>
                 <p className="text-center">
-                  Name <span>:</span>
+                  Name <span>:sumit</span>
                 </p>
                 <p className="text-center">
-                  Phone <span>:</span>
+                  Phone <span>:+945485</span>
                 </p>
                 <p className="text-center">
-                  Address <span>:</span>{" "}
+                  Address <span>:India,kolkata</span>{" "}
                 </p>
               </div>
             </div>
-            <div className="col-span-3 space-y-3">
-              <p>{/* {data?.[0]?.guestName} */}</p>
-              <p>
-                {/* {data?.[0]?.room_ids?.map((i) => i?.roomNumber).join(", ")} */}
-              </p>
-              {/*<p>dev.tajkir@gmail.com</p>*/}
-              <p>{/* {data?.[0]?.mobileNumber} */}</p>
-              <p>{/* {data?.[0]?.address} */}</p>
-              {/* <p>24 hrs</p> */}
-              {/*<input*/}
-              {/*  type="text"*/}
-              {/*  disabled*/}
-              {/*  placeholder="Instant"*/}
-              {/*  className="pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block"*/}
-              {/*/>*/}
-              {/* <input
-            type="text"
-            disabled
-            placeholder="JS Encoder"
-            className="pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block"
-          /> */}
-            </div>
+     
           </div>
         </section>
       </div>
@@ -207,19 +217,7 @@ const RestaurantSalesView = () => {
                 {/*<p>dev.tajkir@gmail.com</p>*/}
                 <p>{/* {data?.[0]?.mobileNumber} */}</p>
                 <p>{/* {data?.[0]?.address} */}</p>
-                {/* <p>24 hrs</p> */}
-                {/*<input*/}
-                {/*  type="text"*/}
-                {/*  disabled*/}
-                {/*  placeholder="Instant"*/}
-                {/*  className="pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block"*/}
-                {/*/>*/}
-                {/* <input
-            type="text"
-            disabled
-            placeholder="JS Encoder"
-            className="pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block"
-          /> */}
+     
               </div>
             </div>
           </section>
@@ -229,4 +227,4 @@ const RestaurantSalesView = () => {
   );
 };
 
-export default RestaurantSalesView;
+export default EditSalesHotel;

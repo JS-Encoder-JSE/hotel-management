@@ -28,6 +28,7 @@ import { getISOStringDate } from "../../utils/utils.js";
 // import StatusSettings from "./StatusSettings.jsx";
 
 const OrderList = () => {
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const [ordersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
@@ -48,11 +49,13 @@ const OrderList = () => {
       // chooseHotel: "",
     },
     onSubmit: (values) => {
+      setSearch(values.search);
       setSearchParams((p) => ({
         ...p,
         toDate: getISOStringDate(values.endDate),
         fromDate: getISOStringDate(values.startDate),
         unique_id: values.search,
+       
       }));
     },
   });
@@ -61,6 +64,7 @@ const OrderList = () => {
     ...searchParams,
     cp: currentPage,
     pp: ordersPerPage,
+    unique_id: search,
   });
 
   const handlePageClick = ({ selected: page }) => {
@@ -93,6 +97,14 @@ const OrderList = () => {
   useEffect(() => {
     setPageCount(orders?.data?.totalPages);
   }, [orders]);
+
+  const pressEnter2 = (e) => {
+    if (e.key === "Enter" || e.search === 13) {
+      formik.handleSubmit();
+    }
+  };
+  console.log("search",search)
+
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
@@ -159,7 +171,7 @@ const OrderList = () => {
               onKeyUp={(e) => {
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
-              onKeyDown={(e) => pressEnter(e)}
+              onKeyDown={(e) => pressEnter2(e)}
             />
             <button
               onClick={formik.handleSubmit}
