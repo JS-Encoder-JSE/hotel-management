@@ -75,10 +75,10 @@ const RestaurantsAnalytics = () => {
       <div className="space-y-20">
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex gap-5 items-center">
-          <p className="whitespace-nowrap">Hotel Name :</p>
+          <p className="whitespace-nowrap">Hotel Branch Name :</p>
           <div className="w-[353px] flex gap-3">
             <Select
-              placeholder="Search with hotel name"
+              placeholder="Search with hotel branch name"
               defaultValue={selectedHotel}
               options={transformedHotel}
               isMulti={false}
@@ -111,7 +111,7 @@ const RestaurantsAnalytics = () => {
           {selectedHotel ? (
             <RestaurantAnalyticsShow managerId={selectedHotel?.value}></RestaurantAnalyticsShow>
           ) : (
-            <p className="text-center">Please Select your hotel</p>
+            <p className="text-center">Please Select your Hotel Branch !!</p>
           )}
         </section>
       </div>

@@ -227,6 +227,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </span>
         </div>
         <ul className={`group-[.active]:block hidden`}>
+        <li>
+            <NavLink
+              to={`/dashboard/hotel-dashboard`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Hotel Dashboard
+            </NavLink>
+          </li> 
           <li>
             <NavLink
               to={`/dashboard/add-inventory`}
@@ -269,17 +280,6 @@ const ManagerSbItems = ({ handleSBItems }) => {
               }
             >
               Hotel Expenses
-            </NavLink>
-          </li> 
-          <li>
-            <NavLink
-              to={`/dashboard/hotel-dashboard`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-              Hotel Dashboard
             </NavLink>
           </li>               
         </ul>
