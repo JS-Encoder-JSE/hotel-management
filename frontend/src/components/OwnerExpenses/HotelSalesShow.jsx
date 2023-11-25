@@ -13,8 +13,8 @@ import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
-import EditSales from "../../components/inventory/EditSales";
-// import EditExpenses from "./EditExpenses";
+import EditTodayHotelSales from "./EditTodayHotelSales";
+
 
 const HotelSalesShow = () => {
   const navigate = useNavigate();
@@ -122,7 +122,9 @@ const HotelSalesShow = () => {
                                 ✕
                               </button>
                             </form>
-                          <EditSales/>
+                            {/*  */}
+                          {/* <EditSales/> */}
+                          <EditTodayHotelSales/>
                           </div>
                         </dialog>
                       </td>
@@ -170,7 +172,7 @@ const HotelSalesShow = () => {
         <div className={`mb-10 mt-10`}>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-             Hotel Sales Restaurant
+             Hotel Sales 
             </h3>
           </div>
           <div className="flex justify-end">
@@ -270,7 +272,7 @@ const HotelSalesShow = () => {
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/show-all-sell/${idx}`)
+                            navigate(`/dashboard/hotel-sales/${idx}`)
                           }
                         >
                           <FaEye />

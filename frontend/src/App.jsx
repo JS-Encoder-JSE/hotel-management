@@ -102,6 +102,10 @@ import HotelExpense from "./pages/OwnerExpenses/HotelExpense.jsx";
 import HotelSales from "./pages/OwnerExpenses/HotelSales.jsx";
 import RestaurantsAnalytics from "./pages/OwnerExpenses/RestaurantsAnalytics.jsx";
 import HotelAnalytics from "./pages/OwnerExpenses/HotelAnalytics.jsx";
+import RestaurantExpensesView from "./pages/OwnerExpenses/RestaurantExpensesView.jsx";
+import RestaurantSalesView from "./pages/OwnerExpenses/RestaurantSalesView.jsx";
+import HotelExpensesView from "./pages/OwnerExpenses/HotelExpensesView.jsx";
+import HotelSalesView from "./pages/OwnerExpenses/HotelSalesView.jsx";
 
 
 
@@ -623,10 +627,26 @@ const App = () => {
               ),
             },
             {
+              path: "restaurant-expenses/:id",
+              element: (
+                <OwnerRoute>
+                  <RestaurantExpensesView />
+                </OwnerRoute>
+              ),
+            },
+            {
               path: "restaurant-sales",
               element: (
                 <OwnerRoute>
                   <RestaurantSales />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "restaurant-sales/:id",
+              element: (
+                <OwnerRoute>
+                  <RestaurantSalesView />
                 </OwnerRoute>
               ),
             },
@@ -639,10 +659,26 @@ const App = () => {
               ),
             },
             {
+              path: "hotel-expenses/:id",
+              element: (
+                <OwnerRoute>
+                  <HotelExpensesView />
+                </OwnerRoute>
+              ),
+            },
+            {
               path: "hotel-sales",
               element: (
                 <OwnerRoute>
                   <HotelSales />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "hotel-sales/:id",
+              element: (
+                <OwnerRoute>
+                  <HotelSalesView />
                 </OwnerRoute>
               ),
             },

@@ -62,7 +62,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineMeetingRoom />
-            <span className={`-mt-0.5`}>Expense/Profit</span>
+            <span className={`-mt-0.5`}>Expenses/Profit</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
@@ -80,7 +80,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Restaurant Expense
+              Restaurant Expenses
             </NavLink>
           </li>
           <li>
@@ -102,7 +102,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-             Hotel Expense
+             Hotel Expenses
             </NavLink>
           </li>
           <li>
