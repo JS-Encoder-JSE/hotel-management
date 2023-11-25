@@ -62,7 +62,7 @@ export const getExpenses = async (req, res) => {
     const {
       page = 1,
       limit = 10,
-      expendedfor,
+      spendedfor,
       hotel_id,
       fromDate,
       toDate,
@@ -73,8 +73,8 @@ export const getExpenses = async (req, res) => {
     if (hotel_id) {
       query.hotel_id = hotel_id;
     }
-    if (expendedfor) {
-      query.expendedfor = expendedfor;
+    if (spendedfor) {
+      query.spendedfor = spendedfor;
     }
     if (fromDate && toDate) {
       // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
@@ -101,19 +101,19 @@ export const getExpenses = async (req, res) => {
 };
 
 export const getExpenseById = async (req, res) => {
-    try {
-      const { expense_id } = req.params;
-  
-      // Find the expense by ID
-      const expense = await Expense.findById(expense_id);
-  
-      if (!expense) {
-        return res.status(404).json({ error: 'Expense not found' });
-      }
-  
-      return res.status(200).json(expense);
-    } catch (error) {
-      console.error('Error fetching expense by ID:', error);
-      return res.status(500).json({ message: 'Internal Server Error' });
+  try {
+    const { expense_id } = req.params;
+
+    // Find the expense by ID
+    const expense = await Expense.findById(expense_id);
+
+    if (!expense) {
+      return res.status(404).json({ error: "Expense not found" });
     }
-  };
+
+    return res.status(200).json(expense);
+  } catch (error) {
+    console.error("Error fetching expense by ID:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
