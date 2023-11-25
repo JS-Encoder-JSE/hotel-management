@@ -67,6 +67,7 @@ const HotelExpenseDetails = () => {
                       <td>23-11-2023</td>
                       <td>Fried Rice</td>
                       <td>Nice Product</td>
+                      <td>10</td>
                       <td>
                         <div className="flex">
                           <div>

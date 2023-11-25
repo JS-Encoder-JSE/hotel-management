@@ -92,6 +92,7 @@ const ShowALlSellView = () => {
                                 ✕
                               </button>
                             </form>
+                            {/* edit sales */}
                             <EditSalesView/>
                           </div>
                         </dialog>

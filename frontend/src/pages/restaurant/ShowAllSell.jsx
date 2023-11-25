@@ -122,6 +122,7 @@ const ShowAllSell = () => {
                                 ✕
                               </button>
                             </form>
+                            {/* Edit sales */}
                           <EditSales/>
                           </div>
                         </dialog>

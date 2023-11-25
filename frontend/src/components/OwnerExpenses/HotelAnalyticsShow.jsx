@@ -7,7 +7,7 @@ import { MdOutlineLastPage } from "react-icons/md";
 import { LiaSellsy } from "react-icons/lia";
 import { GrMoney } from "react-icons/gr";
 import { useFormik } from "formik";
-import { BiDollar } from "react-icons/bi";
+import { BiDollar,BiRupee  } from "react-icons/bi";
 
 const HotelAnalyticsShow = () => {
   const formik = useFormik({
@@ -30,7 +30,12 @@ const HotelAnalyticsShow = () => {
             <GiExpense />
           </div>
           <h6 className="text-xs text-slate-400 ">TODAY EXPENSES</h6>
-          <p className="text-2xl font-semibold mt-4">$ 850</p>
+          <p className="text-2xl font-semibold mt-4"> 
+          <div className="flex justify-end">
+            <div><BiRupee /></div>
+            <div><span>600</span></div>
+          </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
@@ -38,18 +43,28 @@ const HotelAnalyticsShow = () => {
             <SiSellfy />
           </div>
           <div>
-            <h6 className="text-xs text-slate-400">TODAY SALES</h6>
-            <p className="text-2xl font-semibold mt-4">$ 850</p>
+            <h6 className="text-xs text-slate-400">TODAY'S CHECKOUT REVENUE</h6>
+            <p className="text-2xl font-semibold mt-4"> 
+          <div className="flex justify-end">
+            <div><BiRupee /></div>
+            <div><span>600</span></div>
+          </div>
+          </p>
             <hr />
           </div>
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
-            <BiDollar/>
+          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#0aae56] to-[#09c256] p-3 rounded-md">
+          <BiRupee />
           </div>
           <div>
             <h6 className="text-xs text-slate-400">Today's Profit</h6>
-            <p className="text-2xl font-semibold mt-4">$ 850</p>
+            <p className="text-2xl font-semibold mt-4"> 
+          <div className="flex justify-end">
+            <div><BiRupee /></div>
+            <div><span>600</span></div>
+          </div>
+          </p>
             <hr />
           </div>
         </div>
@@ -66,6 +81,7 @@ const HotelAnalyticsShow = () => {
             <option value="">All</option>
             <option value="lastWeek">Last Week</option>
             <option value="lastMonth">Last Month</option>
+            <option value="lastMonth3">Last 3 Month</option>
             <option value="lastYear">Last Year</option>
           </select>
         </div>
@@ -79,23 +95,38 @@ const HotelAnalyticsShow = () => {
             <GiExpense />
           </div>
           <h6 className="text-xs text-slate-400 ">LAST WEEK EXPENSES</h6>
-          <p className="text-2xl font-semibold mt-4">$550</p>
+          <p className="text-2xl font-semibold mt-4"> 
+          <div className="flex justify-end">
+            <div><BiRupee /></div>
+            <div><span>600</span></div>
+          </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#453092] to-[#5c08a5] p-3 rounded-md text-white">
             <LiaSellsy />
           </div>
-          <h6 className="text-xs text-slate-400 ">LAST WEEK SALES</h6>
-          <p className="text-2xl font-semibold mt-4">$ 1650</p>
+          <h6 className="text-xs text-slate-400 ">LAST WEEK CHECKOUT REVENUE</h6>
+          <p className="text-2xl font-semibold mt-4"> 
+          <div className="flex justify-end">
+            <div><BiRupee /></div>
+            <div><span>600</span></div>
+          </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md text-white">
-            <BiDollar/>
+          <BiRupee />
           </div>
           <h6 className="text-xs text-slate-400 ">PROFIT</h6>
-          <p className="text-2xl font-semibold mt-4">$ 2500</p>
+          <p className="text-2xl font-semibold mt-4"> 
+          <div className="flex justify-end">
+            <div><BiRupee /></div>
+            <div><span>600</span></div>
+          </div>
+          </p>
           <hr />
         </div>
       </div>

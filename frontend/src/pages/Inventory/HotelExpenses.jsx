@@ -121,6 +121,7 @@ const HotelExpenses = () => {
                                 ✕
                               </button>
                             </form>
+                            {/* edit expenses */}
                             <EditExpenses />
                           </div>
                         </dialog>

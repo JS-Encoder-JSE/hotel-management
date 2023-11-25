@@ -122,6 +122,7 @@ const ShowAllExpense = () => {
                                 ✕
                               </button>
                             </form>
+                            {/* edit expenses */}
                             <EditExpenses />
                           </div>
                         </dialog>

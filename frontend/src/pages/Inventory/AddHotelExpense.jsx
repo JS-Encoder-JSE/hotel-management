@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import { getFormateDateAndTime } from '../../utils/utils';
 import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
+import { BiRupee } from "react-icons/bi";
 
 // form validation
 const validationSchema = yup.object({
@@ -188,7 +189,18 @@ const AddHotelExpense = () => {
                   <td colSpan={5} className={`text-end text-md font-bold`}>
                     Total
                   </td>
-                  <td>$ {calculateTotal()}</td>
+                  <td> 
+                    <div className='flex'>
+                      <div>
+                      <BiRupee />
+                      </div>
+                      <div>
+                        <span> {calculateTotal()}</span>
+                      </div>
+                    </div>
+                    
+                    
+                    </td>
                 </tr>
               </tfoot>
             </table>

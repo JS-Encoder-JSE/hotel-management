@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import { getformatDateTime } from '../../utils/utils';
 import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
+import { BiRupee } from "react-icons/bi";
 
 // form validation
 const validationSchema = yup.object({

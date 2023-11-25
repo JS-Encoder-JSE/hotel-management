@@ -55,7 +55,7 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
               <GiCoins className={`db-currency text-white`} />
               </div>
               <div>
-                <h6 className="text-xs text-slate-400 uppercase">Total Hotel Sale</h6>
+                <h6 className="text-xs text-slate-400 uppercase">TOTAL CHECKOUT REVENUE</h6>
                 <p className="text-2xl font-semibold mt-3">
               <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />80000</span>
               </p> 
