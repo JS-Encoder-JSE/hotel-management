@@ -111,7 +111,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
     toDate: searchParams?.toDate,
     hotel_id: hotelId,
     spendedfor: "restaurant",
-    limit: 10,
+    limit: formik.values.entries,
   });
 
   
@@ -120,40 +120,11 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
   }, [filteredExpenses]);
 
 
-  // const { data: filteredExpenses, isLoading:isFilterDataLoading, isSuccess:filterExSuccess } = useGetExpensesQuery({
-  //   cp: 1,
-  //   fromDate:searchParams?.fromDate,
-  //   toDate: searchParams?.toDate, 
-  //   hotel_id: hotelId,
-  //   spendedfor: "restaurant",
-  //   limit: 10,
-  // });
 
   console.log(resExpenses,"History")
 
   console.log(filteredExpenses,"filtered expenses.......")
-  
-//   // const [resExHistory,setExHistory]=useState([])
-//   const handleExpensesHistory = async () =>{
-//     let fromDate = formik.values.startDate;
-//     let toDate = formik.values.endDate;
 
-//   const { data: resExpensesHistory, isLoading, isSuccess } = await useGetExpensesQuery({
-//     cp: 1,
-//     fromDate:fromDate,
-//     toDate: toDate,
-//     hotel_id: hotelId,
-//     spendedfor: "restaurant",
-//     limit: 10,
-//   });
-// //  if(isSuccess) setExHistory(resExpensesHistory);
-//   }
-
-
- // State to hold the filtered expenses
-
-
-  // console.log(resExHistory,"history")
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -186,7 +157,9 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
             </button>
           </Link>
         </div>
-        <div>
+        {/* today's expense */}
+   <div>
+     <div>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
               Today Expenses
@@ -200,7 +173,8 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
             </button>
           </div>
 
-          <div className="overflow-x-auto">
+        <div className="h-96">
+        {resExpenses&& resExpenses?.docs[0]?.items.length ?<div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -268,7 +242,8 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
               </div>
               </div>
             </div>
-          </div>
+          </div> : <p className="flex justify-center items-center mt-96">No Expenses Today</p>}
+        </div>
         </div>
 
         {/* pagination */}
@@ -292,6 +267,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
               renderOnZeroPageCount={null}
             />
           </div>
+     </div>
 
         {/* Restaurant Expenses */}
 
@@ -309,6 +285,23 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
             </button>
           </div>
         </div>
+        <div className={`flex justify-between my-5`}>
+            <div className={`space-x-1.5`}>
+              <span>Show</span>
+              <select
+                name="entries"
+                className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+                value={formik.values.entries}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+              </select>
+              <span>entries</span>
+            </div>
+          </div>
         <div className={`flex gap-3 `}>
           <DatePicker
             autoComplete={`off`}
@@ -380,7 +373,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{filteredExpenses?.docs[0]?.date}</td>
+                      <td>{item?.date}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
                           <span>{item?.price}</span>
@@ -389,7 +382,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/show-all-expense/${idx}`)
+                            navigate(`/dashboard/show-all-expense/${item?._id}`)
                           }
                         >
                           <FaEye />

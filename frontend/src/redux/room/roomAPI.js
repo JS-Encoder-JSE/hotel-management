@@ -82,6 +82,12 @@ const roomAPI = baseAPI.injectEndpoints({
       providesTags: ["GetExpenses"],
     }),
     
+    getExpenseById:build.query({
+      query:(id)=>{
+        return `expenses/get-expense-by-id/${id}`
+      },
+      providesTags:["restaurantExpenseById"]
+    }),
 
     getRoomsAndHotels: build.query({
       query: () => {
@@ -168,4 +174,5 @@ export const {
   useGetHotelByManagerIdQuery,
   useAddExpensesMutation,
   useGetExpensesQuery,
+  useGetExpenseByIdQuery
 } = roomAPI;
