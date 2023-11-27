@@ -12,12 +12,17 @@ import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
-import { MdCurrencyRupee } from "react-icons/md";
-import Modal from "../Modal";
-import EditExpenses from "./EditExpenses";
+
 import { useGetExpensesQuery, useGetHotelByManagerIdQuery } from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
-import { fromDateIsoConverter, getISOStringDate } from "../../utils/utils";
+import { fromDateIsoConverter, getISOStringDate, getformatDateTime } from "../../utils/utils";
+import EditExpenses from "../../components/inventory/EditExpenses";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
+import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
+import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
+
 
 const ShowAllExpense = () => {
 
@@ -26,6 +31,7 @@ const ShowAllExpense = () => {
   const [reportsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
+  const [PDF,setPdf]=useState([])
 
 
 const { isUserLoading, user } = useSelector((store) => store.authSlice);
@@ -43,7 +49,7 @@ const {
 const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
 
-// const { data: resExpenses, isLoading, isSuccess } = useGetExpensesQuery({
+// const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
 //   cp: 1,
 //   fromDate: fromDateIsoConverter(new Date()),
 //   hotel_id: hotelId,
@@ -54,7 +60,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
 
 // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
-//   const {data:resExpenses, isLoading,isSuccess} = useGetExpensesQuery({
+//   const {data:hotelExpenses, isLoading,isSuccess} = useGetExpensesQuery({
 //     cp: 1,
 //     fromDate: fromDateIsoConverter(new Date()),
 //     hotel_id: hotelId,
@@ -62,7 +68,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 //     limit: 10,
 //   });
 
-  // console.log(resExpenses,"expnessfor resto")
+  // console.log(hotelExpenses,"expnessfor resto")
   
 
  
@@ -96,7 +102,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
       setForcePage(0);
     },
   });
-  const { data: resExpenses, isLoading, isSuccess } = useGetExpensesQuery({
+  const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
     cp: 1,
     fromDate:fromDateIsoConverter(new Date()),
     hotel_id: hotelId,
@@ -121,7 +127,12 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
 
 
-  console.log(resExpenses,"History")
+  console.log(hotelExpenses,"History")
+
+  useEffect(()=>{
+setPdf(hotelExpenses?.docs[0]?.items)
+  },[hotelExpenses])
+ 
 
   console.log(filteredExpenses,"filtered expenses.......")
 
@@ -133,14 +144,14 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
   };
 
 
-  const totalItemPrice = resExpenses?.docs[0]?.items?.reduce((total, item) => {
+  const totalItemPrice = hotelExpenses?.docs[0]?.items?.reduce((total, item) => {
     // Add the price of each item to the total
     return total + (item?.price || 0);
   }, 0);
 
   return (
     <div className={`px-5 space-y-5`}>
-      <div className={`bg-white px-10 py-5 rounded`}>
+      {hotelExpenses && filteredExpenses && <div className={`bg-white px-10 py-5 rounded`}>
         <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
@@ -166,15 +177,22 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
             </h3>
           </div>
           <div className={`flex justify-end mb-5`}>
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
+          {PDF?.length ? (
+                <PDFDownloadLink
+                document={<RestaurantExpenseReport date={hotelExpenses?.docs[0]?.date} values={hotelExpenses?.docs[0]?.items} header={{
+                  title: "DAK Hospitality LTD",
+                  name: "Today's Hotel Expenses",
+                }} />}
+                fileName={`${new Date().toLocaleDateString()}.pdf`}
+                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              >
+                PDF
+              </PDFDownloadLink>
+              ) : null}
           </div>
 
         <div className="h-96">
-        {resExpenses&& resExpenses?.docs[0]?.items.length ?<div className="overflow-x-auto">
+        {hotelExpenses&& hotelExpenses?.docs[0]?.items.length ?<div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -184,18 +202,18 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
                   <th>Description</th>
                   <th>Quantity</th>
                   <th>Price</th>
-                  {resExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
+                  {hotelExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {resExpenses?.docs[0]?.items?.map((item, idx) => {
+                {hotelExpenses?.docs[0]?.items?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{resExpenses?.docs[0]?.date}</td>
+                      <td>{getformatDateTime(hotelExpenses?.docs[0]?.date)}</td>
                       <td>{item?.name}</td>
                       <td>{item?.description}</td>
                       <td>{item?.quantity}</td>
@@ -231,17 +249,19 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
                 })}
               </tbody>
             </table>
-            <div className={`flex justify-end md:ms-[20rem] mt-4 mx-[15rem]`}>
-              <h1>Grand Total :</h1>
-              <div className="flex ">
-              <div>
-              <FaRupeeSign />
-              </div>
-              <div>
-                <span>{totalItemPrice}</span>
-              </div>
-              </div>
-            </div>
+            <div className="flex justify-end max-w-[81%]">
+           <div className={`flex gap-2`}>
+            <h1>Grand Total :</h1>
+           <div className="flex">
+                          <div>
+                          <FaRupeeSign />
+                          </div>
+                          <div>
+                            <span>{totalItemPrice}</span>
+                          </div>
+                        </div>
+           </div>
+           </div>
           </div> : <p className="flex justify-center items-center mt-96">No Expenses Today</p>}
         </div>
         </div>
@@ -260,7 +280,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={resExpenses?.pagingCounter}
+              pageCount={hotelExpenses?.pagingCounter}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
@@ -274,15 +294,23 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
         <div className={`mb-10 mt-10`}>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-              Restaurant Expenses History
+              Hotel Expenses History
             </h3>
           </div>
           <div className="flex justify-end">
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
+          {PDF?.length ? (
+                <PDFDownloadLink
+                document={<ExpensesHistoryReport date={hotelExpenses?.docs[0]?.date} values={filteredExpenses?.docs} header={{
+                  title: "DAK Hospitality LTD",
+                  name: "Hotel Expenses History",
+                }} />}
+                fileName={`${new Date().toLocaleDateString()}.pdf`}
+                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              >
+                <BsFileEarmarkPdfFill/>
+                PDF
+              </PDFDownloadLink>
+              ) : null}
           </div>
         </div>
         <div className={`flex justify-between my-5`}>
@@ -373,7 +401,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{item?.date}</td>
+                      <td>{getformatDateTime(item?.date)}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
                           <span>{item?.price}</span>
@@ -420,7 +448,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
             />
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

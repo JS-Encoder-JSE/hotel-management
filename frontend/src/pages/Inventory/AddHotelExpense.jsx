@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 const validationSchema = yup.object({
     // date: yup.string().required("Date is required"),
     name: yup.string().required("Name is required"),
-    quantity: yup.string().required("Quantity is required"),
+    // quantity: yup.string().required("Quantity is required"),
     price: yup
       .number()
       .required("Price is required")

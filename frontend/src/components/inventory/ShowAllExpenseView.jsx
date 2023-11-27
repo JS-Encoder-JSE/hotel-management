@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
@@ -6,9 +6,15 @@ import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
 import { useGetExpenseByIdQuery } from "../../redux/room/roomAPI";
 import { getformatDateTime } from "../../utils/utils";
+import FoodCheckoutPrint from "../../pages/restaurant/FoodCheckoutPrint";
+import ReactToPrint from "react-to-print";
+import ShowAllExpenseViewPrint from "./ShowAllExpenseViewPrint";
+import { FaPrint } from "react-icons/fa6";
 
 const ShowAllExpenseView = () => {
 
+
+const componentRef= useRef()
 
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
@@ -57,14 +63,25 @@ const ShowAllExpenseView = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <div className={`flex`}>
-        <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-          {" "}
-          <FaRegFilePdf />
-          PDF
-        </button>
-      </div>
-       
+       {/* Pdf */}
+       <div className={`flex gap-4 justify-end mt-4`}>
+        <div style={{display:"none"}} >
+          <div className="p-4" ref={componentRef}>
+           <ShowAllExpenseViewPrint itemExpense={itemExpense} totalItemsAmount={totalItemsAmount} />
+          </div>   
+        </div>
+        </div>
+      <ReactToPrint
+          trigger={() => (
+            <button
+              title="please select payment method"
+              className="bg-green-slimy text-white px-2 rounded-sm"
+            >
+             <FaPrint className="inline"/> Print
+            </button>
+          )}
+          content={() => componentRef.current}
+        />
       </div>
       <div>
           <h1 className={`text-2xl text-center`}> Expenses Information</h1>
@@ -126,7 +143,8 @@ const ShowAllExpenseView = () => {
               </tbody>
               
             </table>
-           <div className={`flex justify-end mr-0  md:mr-[22rem] md:ms-[20rem] mt-4 gap-2`}>
+           <div className="flex justify-end max-w-[73%]">
+           <div className={`flex gap-2`}>
             <h1>Grand Total :</h1>
            <div className="flex">
                           <div>
@@ -136,6 +154,7 @@ const ShowAllExpenseView = () => {
                             <span>{totalItemsAmount}</span>
                           </div>
                         </div>
+           </div>
            </div>
           </div>
           {/* pagination */}
