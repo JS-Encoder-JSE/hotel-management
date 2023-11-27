@@ -181,7 +181,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                 <PDFDownloadLink
                 document={<RestaurantExpenseReport date={hotelExpenses?.docs[0]?.date} values={hotelExpenses?.docs[0]?.items} header={{
                   title: "DAK Hospitality LTD",
-                  name: "Today's Hotel Expenses",
+                  name: "Today's Restaurant Expenses",
                 }} />}
                 fileName={`${new Date().toLocaleDateString()}.pdf`}
                 className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
@@ -302,7 +302,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                 <PDFDownloadLink
                 document={<ExpensesHistoryReport date={hotelExpenses?.docs[0]?.date} values={filteredExpenses?.docs} header={{
                   title: "DAK Hospitality LTD",
-                  name: "Hotel Expenses History",
+                  name: "Restaurant Expenses History",
                 }} />}
                 fileName={`${new Date().toLocaleDateString()}.pdf`}
                 className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"

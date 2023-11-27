@@ -8,6 +8,7 @@ import { GiCoins } from 'react-icons/gi';
 import { MdAutorenew, MdCurrencyRupee } from 'react-icons/md';
 import { BiDollar } from 'react-icons/bi';
 import ExpensesChart from './ExpesesChart';
+import ThreeBarChart from './ThreeBarChart';
 
 const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
     return (
@@ -41,9 +42,9 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
           
           {/* Total Amount */}
           <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-            <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
+          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
               <GiCoins className={`db-currency text-white`} />
-            </div>
+              </div>
             <h6 className="text-xs text-slate-400 uppercase">TOTAL Hotel Expense</h6>
             <p className="text-2xl font-semibold mt-3">
               <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />13000</span>
@@ -51,11 +52,13 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
           </div>
           
             <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-              <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
+
+            <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
               <GiCoins className={`db-currency text-white`} />
-              </div>
+            </div>
+            
               <div>
-                <h6 className="text-xs text-slate-400 uppercase">Total Hotel Sale</h6>
+                <h6 className="text-xs text-slate-400 uppercase">Total Hotel Revenue</h6>
                 <p className="text-2xl font-semibold mt-3">
               <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />80000</span>
               </p> 
@@ -88,10 +91,11 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
     </section>
 
         <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
-          <ExpensesChart
+          {/* <ExpensesChart
             monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
             userHotel={userHotel}
-          />
+          /> */}
+          <ThreeBarChart/>
         </section>
 
         <section className="mt-8 grid md:grid-cols-2 gap-5">
