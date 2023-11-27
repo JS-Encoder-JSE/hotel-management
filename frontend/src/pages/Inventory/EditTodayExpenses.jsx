@@ -15,6 +15,10 @@ const validationSchema = yup.object({
       .required("Price is required")
       .positive("Price must be a positive number")
       .integer("Price must be an integer"),
+      password: yup
+      .string()
+      .min(8, "Password should be of minimum 8 characters length")
+      .required("Password is required"),
     description: yup
       .string()
       .required("Description is required")

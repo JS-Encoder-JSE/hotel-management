@@ -15,9 +15,11 @@ const validationSchema = yup.object({
   quantity: yup.string().required("Quantity is required"),
   price: yup
     .number()
-    .required("Price is required")
-    .positive("Price must be a positive number")
-    .integer("Price must be an integer"),
+,
+password: yup
+.string()
+.min(8, "Password should be of minimum 8 characters length")
+.required("Password is required"),
   description: yup
     .string()
     .required("Description is required")
@@ -44,6 +46,21 @@ const EditSalesView = () => {
   const handleShowPass = () => {
     setShowPass(!showPass);
   };
+
+   // Price Validation
+   const handlePrice = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.price;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
+
   return (
     <div className={`space-y-10  p-10 rounded-2xl`}>
       <h1  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>Edit Sales Order</h1>
@@ -92,7 +109,7 @@ const EditSalesView = () => {
             name="price"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.price}
-            onChange={formik.handleChange}
+            onChange={handlePrice}
             onBlur={formik.handleBlur}
           />
           {formik.touched.price && Boolean(formik.errors.price) ? (

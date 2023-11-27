@@ -7,8 +7,12 @@ import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpenseShow.jsx";
+import HotelExpensesShow from "../../components/OwnerExpenses/HotelExpensesShow.jsx";
+import HotelSalesShow from "../../components/OwnerExpenses/HotelSalesShow.jsx";
+import RestaurantAnalyticsShow from "../../components/OwnerExpenses/RestaurantAnalyticsShow.jsx";
 
-const MonitorFinance = () => {
+const RestaurantsAnalytics = () => {
   const { user } = useSelector((store) => store.authSlice);
   const {
     isLoading,
@@ -28,15 +32,13 @@ const MonitorFinance = () => {
     }
   };
 
-
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?.manager_acc?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
-  const handleReset=()=>{
-    setselectedHotel("")
-
-  }
+  const handleReset = () => {
+    setselectedHotel("");
+  };
 
   if (isLoading || isError) {
     return (
@@ -49,9 +51,10 @@ const MonitorFinance = () => {
     );
   }
 
-  console.log(selectedHotel?.value,"------------------")
+  console.log(selectedHotel?.value, "------------------");
   return (
     <>
+      {/* back button */}
       <div className={`mb-5`}>
         <Link to={`/dashboard `}>
           <button
@@ -68,13 +71,14 @@ const MonitorFinance = () => {
           </button>
         </Link>
       </div>
+
       <div className="space-y-20">
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex gap-5 items-center">
-          <p className="whitespace-nowrap">Hotel Name :</p>
+          <p className="whitespace-nowrap">Hotel Branch Name :</p>
           <div className="w-[353px] flex gap-3">
             <Select
-              placeholder="Search with hotel name"
+              placeholder="Search with hotel branch name"
               defaultValue={selectedHotel}
               options={transformedHotel}
               isMulti={false}
@@ -90,15 +94,24 @@ const MonitorFinance = () => {
                 placeholder: () => "!m-0",
               }}
             />
-            <button onClick={handleReset} className={`${selectedHotel?"bg-green-slimy px-3 border text-white": "bg-gray-300 px-3 border"}`}>Reset</button>
+            <button
+              onClick={handleReset}
+              className={`${
+                selectedHotel
+                  ? "bg-green-slimy px-3 border text-white"
+                  : "bg-gray-300 px-3 border"
+              }`}
+            >
+              Reset
+            </button>
           </div>
         </section>
 
         <section>
           {selectedHotel ? (
-            <UserDashBoard managerId={selectedHotel?.value}></UserDashBoard>
+            <RestaurantAnalyticsShow managerId={selectedHotel?.value}></RestaurantAnalyticsShow>
           ) : (
-          <p className="text-center">Please Select your hotel</p>
+            <p className="text-center">Please Select your Hotel Branch !!</p>
           )}
         </section>
       </div>
@@ -106,4 +119,4 @@ const MonitorFinance = () => {
   );
 };
 
-export default MonitorFinance;
+export default RestaurantsAnalytics;

@@ -96,6 +96,16 @@ import AddHotelExpense from "./pages/Inventory/AddHotelExpense.jsx";
 import HotelExpenses from "./pages/Inventory/HotelExpenses.jsx";
 import HotelExpenseDetails from "./pages/Inventory/HotelExpenseDetails.jsx";
 import HotelDashboard from "./pages/Inventory/HotelDashboard.jsx";
+import RestaurantSales from "./pages/OwnerExpenses/RestaurantSales.jsx";
+import RestaurantExpense from "./pages/OwnerExpenses/RestaurantExpense.jsx";
+import HotelExpense from "./pages/OwnerExpenses/HotelExpense.jsx";
+import HotelSales from "./pages/OwnerExpenses/HotelSales.jsx";
+import RestaurantsAnalytics from "./pages/OwnerExpenses/RestaurantsAnalytics.jsx";
+import HotelAnalytics from "./pages/OwnerExpenses/HotelAnalytics.jsx";
+import RestaurantExpensesView from "./pages/OwnerExpenses/RestaurantExpensesView.jsx";
+import RestaurantSalesView from "./pages/OwnerExpenses/RestaurantSalesView.jsx";
+import HotelExpensesView from "./pages/OwnerExpenses/HotelExpensesView.jsx";
+import HotelSalesView from "./pages/OwnerExpenses/HotelSalesView.jsx";
 
 
 
@@ -603,6 +613,88 @@ const App = () => {
               element: (
                 <OwnerRoute>
                   <HotelEdit />
+                </OwnerRoute>
+              ),
+            },
+            // expenses Hotel
+
+            {
+              path: "restaurant-expenses",
+              element: (
+                <OwnerRoute>
+                  <RestaurantExpense />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "restaurant-expenses/:id",
+              element: (
+                <OwnerRoute>
+                  <RestaurantExpensesView />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "restaurant-sales",
+              element: (
+                <OwnerRoute>
+                  <RestaurantSales />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "restaurant-sales/:id",
+              element: (
+                <OwnerRoute>
+                  <RestaurantSalesView />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "hotel-expenses",
+              element: (
+                <OwnerRoute>
+                  <HotelExpense />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "hotel-expenses/:id",
+              element: (
+                <OwnerRoute>
+                  <HotelExpensesView />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "hotel-sales",
+              element: (
+                <OwnerRoute>
+                  <HotelSales />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "hotel-sales/:id",
+              element: (
+                <OwnerRoute>
+                  <HotelSalesView />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "restaurants-analytics",
+              element: (
+                <OwnerRoute>
+                  <RestaurantsAnalytics />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "hotel-analytics",
+              element: (
+                <OwnerRoute>
+                  <HotelAnalytics />
                 </OwnerRoute>
               ),
             },

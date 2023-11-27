@@ -15,6 +15,7 @@ import {
   getFoodCategoryById,
   updateOrder,
   getOrderById,
+  getOrdersByDates,
 } from "../../controllers/Manager/food.controller.js";
 import { checkToken } from "../../middlewares/checkToken.js";
 
@@ -24,6 +25,7 @@ const router = Router();
 router.post("/add-food", checkToken, addFood);
 router.get("/get-foods-by-hotel", checkToken, getFoodByHotelId);
 router.get("/get-orders-by-hotel", checkToken, getOrdersByHotelId);
+router.get("/get-orders-by-dates", checkToken, getOrdersByDates);
 router.get("/get-food-by-id/:foodId", checkToken, getfoodById);
 router.patch("/update-food/:food_id", checkToken, updateFood);
 router.delete("/delete-food/:food_id", checkToken, deleteFood);

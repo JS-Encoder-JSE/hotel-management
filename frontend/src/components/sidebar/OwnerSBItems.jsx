@@ -62,7 +62,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineMeetingRoom />
-            <span className={`-mt-0.5`}>Expense/Profit</span>
+            <span className={`-mt-0.5`}>Expenses/Profit</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
@@ -74,18 +74,18 @@ const OwnerSBItems = ({ handleSBItems }) => {
         <ul className={`group-[.active]:block hidden`}>
           <li>
             <NavLink
-              to={`/dashboard/add-hotel`}
+              to={`/dashboard/restaurant-expenses`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Restaurent Expense
+              Restaurant Expenses
             </NavLink>
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/restaurant-sales`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -96,18 +96,18 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/hotel-expenses`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
               }
             >
-             Hotel Expense
+             Hotel Expenses
             </NavLink>
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/hotel-sales`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -118,7 +118,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/restaurants-analytics`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -129,7 +129,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
-              to={`/dashboard/hotel-list`}
+              to={`/dashboard/hotel-analytics`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")

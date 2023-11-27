@@ -48,7 +48,7 @@ const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
         ],
         options: {
           ...prev.options,
-          labels: ["Check in", "Checkout", "Booking", "Booking cancel"],
+          labels: ["Check in", "Checkout", "Booking", "Booking canceled"],
         },
       }));
     } else {

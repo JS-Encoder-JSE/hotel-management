@@ -2,11 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import EditSalesView from "./EditSalesView";
 import ReactPaginate from "react-paginate";
+import EditRestaurantExpenses from "./EditRestaurantExpenses";
 
-const ShowALlSellView = () => {
+const RestaurantExpensesView = () => {
+
   const [pageCount, setPageCount] = useState(10);
+
+ const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
+
     const formik = useFormik({
         initialValues: {
           startDate: "",
@@ -14,13 +20,10 @@ const ShowALlSellView = () => {
         },
       });
   const navigate = useNavigate();
-  const handlePageClick = ({ selected: page }) => {
-    setCurrentPage(page);
-  };
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
-      <div className={`flex justify-between`}>
+      <div className={`flex justify-between `}>
         <div
           className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
           onClick={() => navigate(-1)}
@@ -28,7 +31,7 @@ const ShowALlSellView = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <div className={`flex justify-end`}>
+        <div className={`flex`}>
         <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
           {" "}
           <FaRegFilePdf />
@@ -38,7 +41,7 @@ const ShowALlSellView = () => {
        
       </div>
       <div>
-          <h1 className={`text-2xl text-center`}> All Order Information</h1>
+          <h1 className={`text-2xl text-center`}> Expenses Information</h1>
         </div>
         <div className="overflow-x-auto">
             <table className="table">
@@ -58,21 +61,20 @@ const ShowALlSellView = () => {
                 {[...Array(+formik.values.entries || 5)].map((_, idx) => {
                   return (
                     <tr
-                    key={idx}
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
                       <td>23-11-2023</td>
-                      <td>Fried Rice</td>
+                      <td>Rice</td>
+                      <td>25 Kg</td>
                       <td>Nice Product</td>
-                      <td>10</td>
                       <td>
-                      <div className="flex">
+                        <div className="flex">
                           <div>
                           <FaRupeeSign />
                           </div>
                           <div>
-                            <span>25000</span>
+                            <span>5000</span>
                           </div>
                         </div>
                       </td>
@@ -93,18 +95,19 @@ const ShowALlSellView = () => {
                                 ✕
                               </button>
                             </form>
-                            {/* edit sales */}
-                            <EditSalesView/>
+                           
+                            <EditRestaurantExpenses/>
                           </div>
                         </dialog>
                       </td>
+                     
                     </tr>
                   );
                 })}
               </tbody>
               
             </table>
-           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-1`}>
+           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
             <h1>Grand Total :</h1>
            <div className="flex">
                           <div>
@@ -116,6 +119,7 @@ const ShowALlSellView = () => {
                         </div>
            </div>
           </div>
+          {/* pagination */}
           <div className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
@@ -135,9 +139,10 @@ const ShowALlSellView = () => {
               renderOnZeroPageCount={null}
             />
           </div>
-  
+
+     
     </div>
   );
 };
 
-export default ShowALlSellView;
+export default RestaurantExpensesView;

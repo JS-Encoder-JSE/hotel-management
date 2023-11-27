@@ -11,6 +11,9 @@ import { RxUpdate } from "react-icons/rx";
 import { useAddExpensesMutation, useGetHotelByManagerIdQuery } from '../../redux/room/roomAPI';
 import toast from 'react-hot-toast';
 
+import { BiRupee } from "react-icons/bi";
+
+
 // form validation
 const validationSchema = yup.object({
     // date: yup.string().required("Date is required"),
@@ -275,7 +278,18 @@ const calculateTotal = () => {
                   <td colSpan={5} className={`text-end text-md font-bold`}>
                     Total
                   </td>
-                  <td>$ {calculateTotal()}</td>
+                  <td> 
+                    <div className='flex'>
+                      <div>
+                      <BiRupee />
+                      </div>
+                      <div>
+                        <span> {calculateTotal()}</span>
+                      </div>
+                    </div>
+                    
+                    
+                    </td>
                 </tr>
               </tfoot>
             </table>

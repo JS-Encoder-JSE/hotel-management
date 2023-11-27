@@ -239,6 +239,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                                 ✕
                               </button>
                             </form>
+                            {/* edit expenses */}
                             <EditExpenses />
                           </div>
                         </dialog>

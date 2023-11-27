@@ -12,20 +12,18 @@ const validationSchema = yup.object({
     quantity: yup.string().required("Quantity is required"),
     price: yup
       .number()
-    ,
-
-    password: yup
-    .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
-
+   ,
+   password: yup
+   .string()
+   .min(8, "Password should be of minimum 8 characters length")
+   .required("Password is required"),
     description: yup
       .string()
       .required("Description is required")
       .min(10, "Description at least 10 characters length"),
   });
   
-const EditExpensesView = () => {
+const EditRestaurantExpenses = () => {
  
     const [showPass, setShowPass] = useState(false);
 
@@ -49,20 +47,19 @@ const EditExpensesView = () => {
     setShowPass(!showPass);
   };
 
-   // Price Validation
-   const handlePrice = (e) => {
-    const inputValue = e.target.value;
-    const fieldName = e.target.price;
-    if (inputValue >= 0) {
-      // Update the Formik state
-      formik.handleChange(e);
-    } else if (inputValue === "") {
-      e.target.value = 0;
-      formik.handleChange(e);
-    }
-  };
-
-
+     // Price Validation
+     const handlePrice = (e) => {
+      const inputValue = e.target.value;
+      const fieldName = e.target.price;
+      if (inputValue >= 0) {
+        // Update the Formik state
+        formik.handleChange(e);
+      } else if (inputValue === "") {
+        e.target.value = 0;
+        formik.handleChange(e);
+      }
+    };
+  
   return (
     <div className={`space-y-10  p-10 rounded-2xl`}>
      <h1  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>Edit Expenses</h1>
@@ -188,4 +185,4 @@ const EditExpensesView = () => {
   );
 };
 
-export default EditExpensesView;
+export default EditRestaurantExpenses;

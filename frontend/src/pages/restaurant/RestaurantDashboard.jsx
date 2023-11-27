@@ -9,6 +9,7 @@ import { GrMoney } from "react-icons/gr";
 import { useFormik } from "formik";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { HiOutlineCurrencyRupee } from "react-icons/hi2";
+import { BiRupee } from "react-icons/bi";
 
 
 const RestaurantDashboard = () => {
@@ -32,7 +33,16 @@ const RestaurantDashboard = () => {
             <GiExpense />
           </div>
           <h6 className="text-xs text-slate-400 ">TODAY EXPENSES</h6>
-          <p className="text-2xl font-semibold mt-4">$ 850</p>
+          <p className="text-2xl font-semibold mt-4">
+              <div className="flex justify-end">
+              <div>
+              <BiRupee />
+              </div>
+              <div>
+                <span>850</span>
+              </div>
+              </div>
+              </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
@@ -41,16 +51,34 @@ const RestaurantDashboard = () => {
           </div>
           <div>
             <h6 className="text-xs text-slate-400">TODAY SALES</h6>
-            <p className="text-2xl font-semibold mt-4">$ 850</p>
+            <p className="text-2xl font-semibold mt-4">
+              <div className="flex justify-end">
+              <div>
+              <BiRupee />
+              </div>
+              <div>
+                <span>850</span>
+              </div>
+              </div>
+              </p>
             <hr />
           </div>
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-3 rounded-md text-white">
-          <TbCurrencyTaka />
+          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#309873] p-3 rounded-md text-white">
+          <HiOutlineCurrencyRupee />
           </div>
           <h6 className="text-xs text-slate-400 ">TODAY PROFIT</h6>
-          <p className="text-2xl font-semibold mt-4">$ 850</p>
+          <p className="text-2xl font-semibold mt-4">
+              <div className="flex justify-end">
+              <div>
+              <BiRupee />
+              </div>
+              <div>
+                <span>850</span>
+              </div>
+              </div>
+              </p>
           <hr />
         </div>
       </div>
@@ -80,7 +108,16 @@ const RestaurantDashboard = () => {
             <GiExpense />
           </div>
           <h6 className="text-xs text-slate-400 ">LAST WEEK EXPENSES</h6>
-          <p className="text-2xl font-semibold mt-4">$550</p>
+          <p className="text-2xl font-semibold mt-4">
+              <div className="flex justify-end">
+              <div>
+              <BiRupee />
+              </div>
+              <div>
+                <span>850</span>
+              </div>
+              </div>
+              </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
@@ -88,7 +125,16 @@ const RestaurantDashboard = () => {
             <LiaSellsy />
           </div>
           <h6 className="text-xs text-slate-400 ">LAST WEEK SALES</h6>
-          <p className="text-2xl font-semibold mt-4">$ 1650</p>
+          <p className="text-2xl font-semibold mt-4">
+              <div className="flex justify-end">
+              <div>
+              <BiRupee />
+              </div>
+              <div>
+                <span>850</span>
+              </div>
+              </div>
+              </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
@@ -108,7 +154,16 @@ const RestaurantDashboard = () => {
                       </div>
                     )}
                   </div> */}
-            <p className="text-2xl font-semibold mt-4">$ 1650</p>
+            <p className="text-2xl font-semibold mt-4">
+              <div className="flex justify-end">
+              <div>
+              <BiRupee />
+              </div>
+              <div>
+                <span>850</span>
+              </div>
+              </div>
+              </p>
           <hr />
         </div>
       </div>

@@ -7,9 +7,9 @@ import { MdOutlineLastPage } from "react-icons/md";
 import { LiaSellsy } from "react-icons/lia";
 import { GrMoney } from "react-icons/gr";
 import { useFormik } from "formik";
-import { BiDollar,BiRupee } from "react-icons/bi";
+import { BiDollar, BiRupee } from "react-icons/bi";
 
-const HotelDashboard = () => {
+const RestaurantAnalyticsShow = () => {
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -31,15 +31,15 @@ const HotelDashboard = () => {
           </div>
           <h6 className="text-xs text-slate-400 ">TODAY EXPENSES</h6>
           <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
                 <span>850</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
@@ -47,36 +47,36 @@ const HotelDashboard = () => {
             <SiSellfy />
           </div>
           <div>
-            <h6 className="text-xs text-slate-400">TODAY'S CHECKOUT REVENUE</h6>
+            <h6 className="text-xs text-slate-400">TODAY'S SALES</h6>
             <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
                 <span>850</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
             <hr />
           </div>
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#0f874d] to-[#15d251] p-3 rounded-md">
+          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#07c576] to-[#0a8b2e] p-3 rounded-md">
           <BiRupee />
           </div>
           <div>
             <h6 className="text-xs text-slate-400">TODAY'S PROFIT</h6>
             <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
                 <span>850</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
             <hr />
           </div>
         </div>
@@ -108,49 +108,51 @@ const HotelDashboard = () => {
           </div>
           <h6 className="text-xs text-slate-400 ">LAST WEEK EXPENSES</h6>
           <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
                 <span>850</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#453092] to-[#5c08a5] p-3 rounded-md text-white">
             <LiaSellsy />
           </div>
-          <h6 className="text-xs text-slate-400 ">LAST WEEK CHECKOUT REVENUE</h6>
+          <h6 className="text-xs text-slate-400 ">
+            LAST WEEK SALES
+          </h6>
           <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
                 <span>850</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#079758] to-[#1eae2f] p-3 rounded-md text-white">
+          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#0bb96e] to-[#4ba555] p-3 rounded-md text-white">
           <BiRupee />
           </div>
           <h6 className="text-xs text-slate-400 ">PROFIT</h6>
           <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
                 <span>850</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
       </div>
@@ -158,4 +160,4 @@ const HotelDashboard = () => {
   );
 };
 
-export default HotelDashboard;
+export default RestaurantAnalyticsShow;
