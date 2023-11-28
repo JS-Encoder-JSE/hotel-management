@@ -79,7 +79,7 @@ const CheckOut = () => {
       }
     },
   });
-
+  console.log("total checkout", checkout);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   console.log(user._id);
@@ -132,22 +132,23 @@ const CheckOut = () => {
 
   return (
     <div className="space-y-8">
-       <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
+      <div className="mb-7">
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
       <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center">
-   
         <div className="flex flex-col gap-3">
           <Select
             placeholder="Select room"

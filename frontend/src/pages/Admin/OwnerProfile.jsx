@@ -304,6 +304,7 @@ const OwnerProfile = () => {
             <label className={`w-24 break-words`}>Hotel Limit: </label>
             <div className="flex flex-col w-full space-y-2">
               <input
+              onWheel={ event => event.currentTarget.blur() }
                 type="number"
                 placeholder="Hotel Limit"
                 name="numberOfHotel"

@@ -416,6 +416,7 @@ const AddSubAdmin = () => {
             {/*Sub Admin salary  box */}
             <div className="flex flex-col gap-3">
               <input
+              onWheel={ event => event.currentTarget.blur() }
                 type="number"
                 placeholder="Salary"
                 name="salary"

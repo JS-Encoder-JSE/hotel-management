@@ -169,6 +169,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 <span>Discount (Max-100%)</span>
                 <div className="grid grid-cols-2 mb-1">
                   <input
+                  onWheel={ event => event.currentTarget.blur() }
                     disabled={!discount}
                     type="number"
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500 ${
@@ -206,6 +207,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 <div className={`flex gap-1 items-center`}>
                   <span>$</span>
                   <input
+                  onWheel={ event => event.currentTarget.blur() }
                     type="number"
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
                     onChange={(e) => handleAmountChange(0, +e.target.value)}
@@ -219,6 +221,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 <div className={`flex gap-1 items-center`}>
                   <span>%</span>
                   <input
+                  onWheel={ event => event.currentTarget.blur() }
                     type="number"
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
                     onChange={(e) => handleTaxChange(1, +e.target.value)}
@@ -249,6 +252,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
               <td className="align-top">Additional Charges</td>
               <td className="pl-5">
                 <input
+                onWheel={ event => event.currentTarget.blur() }
                   type="number"
                   className="mb-3 border rounded-md p-2 outline-none"
                   onChange={(e) => {

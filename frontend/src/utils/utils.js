@@ -37,15 +37,28 @@ export const toDateIsoConverter = (date) => {
 
 export const getformatDateTime = (date) => {
   const options = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
     hour12: true,
   };
-  
-  const formattedDateTime = new Date(date || new Date()).toLocaleString('en-US', options);
+
+  const formattedDateTime = new Date(date || new Date()).toLocaleString(
+    "en-US",
+    options
+  );
   return formattedDateTime;
+};
+
+export const getNumberOfDays = (fromDate, toDate) => {
+  const calculateDays =
+    Math.abs(new Date(toDate) - new Date(fromDate)) / (24 * 60 * 60 * 1000);
+  if (1 > calculateDays > 0) {
+    return 1;
+  } else {
+    return Math.floor(calculateDays);
+  }
 };

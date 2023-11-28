@@ -387,6 +387,7 @@ const AddBookingSelect = ({room}) => {
           {/* adult box */}
           <div className="flex flex-col gap-3">
             <input
+            onWheel={ event => event.currentTarget.blur() }
               type="number"
               placeholder="Adult"
               name="adult"
@@ -405,6 +406,7 @@ const AddBookingSelect = ({room}) => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
+            onWheel={ event => event.currentTarget.blur() }
               type="number"
               placeholder="Children"
               name="children"
@@ -423,6 +425,7 @@ const AddBookingSelect = ({room}) => {
           {/* advanced amount */}
           <div className="flex flex-col gap-3">
             <input
+            onWheel={ event => event.currentTarget.blur() }
               type="number"
               placeholder="Advanced Amount"
               name="amount"
@@ -483,6 +486,7 @@ const AddBookingSelect = ({room}) => {
 
           <div className="flex flex-col gap-3">
             <input
+            onWheel={ event => event.currentTarget.blur() }
               type="number"
               placeholder="Discount"
               name="discount"

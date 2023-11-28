@@ -163,7 +163,8 @@ const CheckIn = () => {
         (result) => (tempImg = result.data.imageUrls)
       );
 
-      const response = await addBooking({
+
+      console.log('check in res',{
         hotel_id: obj.hotel_id,
         room_ids,
         guestName: obj.guestName,
@@ -190,15 +191,42 @@ const CheckIn = () => {
         },
         status: "CheckedIn",
       });
+      // const response = await addBooking({
+      //   hotel_id: obj.hotel_id,
+      //   room_ids,
+      //   guestName: obj.guestName,
+      //   address: obj.address,
+      //   mobileNumber: obj.mobileNumber,
+      //   emergency_contact: obj.emergency_contact,
+      //   adult: obj.adult,
+      //   children: obj.children,
+      //   paymentMethod: obj.paymentMethod,
+      //   transection_id: obj.trxID,
+      //   from: obj.from,
+      //   to: obj.to,
+      //   no_of_days,
+      //   rent_per_day,
+      //   total_rent,
+      //   discount,
+      //   amount_after_dis,
+      //   paid_amount: typeof(obj.amount)==='number' ? obj.amount : 0,
+      //   total_unpaid_amount: amount_after_dis - obj.amount,
+      //   nationality: obj.nationality,
+      //   doc_number: obj.doc_number,
+      //   doc_images: {
+      //     [title]: tempImg,
+      //   },
+      //   status: "CheckedIn",
+      // });
 
 
-      if (response?.error) {
-        toast.error(response.error.data.message);
-      } else {
-        formikHelpers.resetForm();
-        setSelectedImages([]);
-        toast.success(response.data.message);
-      }
+      // if (response?.error) {
+      //   toast.error(response.error.data.message);
+      // } else {
+      //   formikHelpers.resetForm();
+      //   setSelectedImages([]);
+      //   toast.success(response.data.message);
+      // }
 
       setLoading(false);
       formReset();
@@ -454,6 +482,7 @@ const CheckIn = () => {
         {/* adult box */}
         <div className="flex flex-col gap-3">
           <input
+          onWheel={ event => event.currentTarget.blur() }
             type="number"
             placeholder="Adult"
             name="adult"
@@ -472,6 +501,7 @@ const CheckIn = () => {
         {/* children box */}
         <div className="flex flex-col gap-3">
           <input
+          onWheel={ event => event.currentTarget.blur() }
             type="number"
             placeholder="Children"
             name="children"
@@ -550,6 +580,7 @@ const CheckIn = () => {
 
         <div className="flex flex-col gap-3">
           <input
+          onWheel={ event => event.currentTarget.blur() }
             type="number"
             placeholder="Discount"
             name="discount"
