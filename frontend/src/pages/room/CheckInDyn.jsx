@@ -43,6 +43,8 @@ const CheckInDyn = ({ data }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [updateBooking] = useUpdateBookingMutation();
 
+  console.log(data);
+
   // handle advanceAmoun
   const handleAmount = (e) => {
     const inputValue = e.target.value;
@@ -182,6 +184,11 @@ const CheckInDyn = ({ data }) => {
           Check In ({data?.guestName})
         </h3>
         <hr />
+     <div className="mt-4">
+     <h1> Room Rent : {data?.rent_per_day}</h1>
+      
+      <h1> Advanced Amount :{data?.paid_amount} </h1>
+     </div>
         <form
           autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 mt-5"
