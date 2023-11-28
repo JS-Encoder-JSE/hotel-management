@@ -15,6 +15,8 @@ import FoodCheckoutPrint from "../../pages/restaurant/FoodCheckoutPrint";
 import ReactToPrint from "react-to-print";
 import ShowAllExpenseViewPrint from "./ShowAllExpenseViewPrint";
 import { FaPrint } from "react-icons/fa6";
+import AddBooking from "../room/AddBooking";
+import Modal from "../Modal";
 
 const ShowAllExpenseView = () => {
   const componentRef = useRef();
@@ -54,6 +56,9 @@ const ShowAllExpenseView = () => {
     setCurrentPage(page);
   };
   const navigate = useNavigate();
+  const handle = () =>{
+    console.log("console")
+  }
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -110,35 +115,35 @@ const ShowAllExpenseView = () => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <th>{++idx}</th>
-                  <td>{getformatDateTime(itemExpense?.date)}</td>
-                  <td>{item?.name}</td>
-                  <td>{item?.quantity}</td>
-                  <td>{item?.description}</td>
+                  <td>
+                    {/* {getformatDateTime(itemExpense?.date)} */}
+                    </td>
+                  <td>
+                    {/* {item?.name} */}
+                    </td>
+                  <td>
+                    {/* {item?.quantity} */}
+                    </td>
+                  <td>
+                    {/* {item?.description} */}
+                    </td>
                   <td>
                     <FaRupeeSign className="inline" />
-                    <span>{item?.price}</span>
+                    <span>
+                      {/* {item?.price} */}
+                      </span>
                   </td>
                   <td>Remark</td>
                   <td>
                     <button
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                      onClick={() =>
-                        document.getElementById("my_modal_3").showModal()
-                      }
+                      onClick={() => window.eb_modal.showModal()}
+                   
                     >
                       <FaRegEdit />
                     </button>
-                    <dialog id="my_modal_3" className="modal">
-                      <div className="modal-box">
-                        <form method="dialog">
-                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                            ✕
-                          </button>
-                        </form>
-                        <EditExpensesView />
-                      </div>
-                    </dialog>
                   </td>
+                
                 </tr>
               );
             })}
@@ -163,20 +168,10 @@ const ShowAllExpenseView = () => {
             </tr>
           </tfoot>
         </table>
-        {/* <div className="flex justify-end max-w-[73%]">
-           <div className={`flex gap-2`}>
-            <h1>Grand Total :</h1>
-           <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
-                            <span>{totalItemsAmount}</span>
-                          </div>
-                        </div>
-           </div>
-           </div> */}
       </div>
+      <Modal id={`eb_modal`}>
+      <EditExpensesView />
+      </Modal>
       {/* pagination */}
       <div className="flex justify-center mt-10">
         <ReactPaginate
