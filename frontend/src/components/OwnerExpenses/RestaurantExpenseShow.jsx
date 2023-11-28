@@ -46,6 +46,8 @@ const {
 // console.log(hotelInfo[0]?._id);
 
 
+// 1st commit
+
 // const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
 
@@ -130,7 +132,11 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
 
   return (
     <div className={`px-5 space-y-5`}>
-      {RestaurantExpenses && filteredExpenses && <div className={`bg-white px-10 py-5 rounded`}>
+
+      {/* 2nd Commit */}
+
+      {/* {RestaurantExpenses && filteredExpenses &&  */}
+      <div className={`bg-white px-10 py-5 rounded`}>
         <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
@@ -172,7 +178,11 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
           </div>
 
         <div className="h-96">
-        {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ?<div className="overflow-x-auto">
+
+          {/* 3rd commit  */}
+          
+        {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
+        <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -229,21 +239,38 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                   );
                 })}
               </tbody>
+              <tfoot className={`text-[1.2rem] font-bold`}>
+                <tr>
+                  <td colSpan={5} className={`text-end text-md font-bold`}>
+                    Total :
+                  </td>
+                  <td>
+                    <div className="flex">
+                      <div>
+                        <FaRupeeSign />
+                      </div>
+                      <div>
+                        {" "}
+                      25000
+                        {/* {totalItemPrice} */}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
-            <div className="flex justify-end max-w-[81%]">
-           <div className={`flex gap-2`}>
-            <h1>Grand Total :</h1>
-           <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
-                            <span>{totalItemPrice}</span>
-                          </div>
-                        </div>
-           </div>
-           </div>
-          </div> : <p className="flex justify-center items-center mt-96">No Expenses Today</p>}
+            {/* <div className={`flex justify-center md:ms-[20rem] mt-4`}>
+              <h1>Grand Total :</h1>
+              <div className="flex ">
+              <div>
+              <FaRupeeSign />
+              </div>
+              <div>
+                <span>25000</span>
+              </div>
+              </div>
+            </div> */}
+          </div>
         </div>
         </div>
 
@@ -429,7 +456,7 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
             />
           </div>
         </div>
-      </div>}
+      </div>
     </div>
   );
 };

@@ -135,8 +135,6 @@ setPdf(hotelExpenses?.docs[0]?.items)
  
 
   console.log(filteredExpenses,"filtered expenses.......")
-
-
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
       formik.handleSubmit();
@@ -250,8 +248,27 @@ setPdf(hotelExpenses?.docs[0]?.items)
                   );
                 })}
               </tbody>
+              <tfoot className={`text-[1.2rem] font-bold`}>
+                <tr>
+                  <td colSpan={5} className={`text-end text-md font-bold`}>
+                    Total :
+                  </td>
+                  <td>
+                    <div className="flex">
+                      <div>
+                        <FaRupeeSign />
+                      </div>
+                      <div>
+                        {" "}
+                        65464
+                        {/* {totalItemPrice} */}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
-            <div className="flex justify-end max-w-[81%]">
+            {/* <div className="flex justify-end max-w-[81%]">
            <div className={`flex gap-2`}>
             <h1>Grand Total :</h1>
            <div className="flex">
@@ -263,7 +280,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                           </div>
                         </div>
            </div>
-           </div>
+           </div> */}
           </div> : <p className="flex justify-center items-center mt-96">No Expenses Today</p>}
         </div>
         </div>

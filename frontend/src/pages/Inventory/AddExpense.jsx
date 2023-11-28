@@ -190,7 +190,7 @@ const calculateTotal = () => {
               </h3>
             </div>
             <div>
-          {totalItems?.length ?  <div className="overflow-x-auto overflow-y-auto h-56 max-w-[50rem] mx-auto mt-10">
+          {totalItems?.length ?  <div className="overflow-x-auto overflow-y-auto h-56 max-w-[48rem] mx-auto mt-10">
             <table className="table">
               <thead>
                 <tr>

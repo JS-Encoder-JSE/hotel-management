@@ -4,22 +4,36 @@ import {
   MonthlySubDashData,
   StaticSubDashData,
 } from "../models/subdashboard.model.js";
+import User from "../models/user.model.js";
 
 export const addExpense = async (req, res) => {
   try {
     const userId = req.user.userId;
     const { hotel_id, date, spendedfor, items, total_amount } = req.body;
+    console.log("Request Body:", req.body);
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     const newDate = new Date(date);
+    const Year = newDate.getFullYear();
+    const month = (newDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+    const day = newDate.getDate().toString().padStart(2, "0");
+
+    const formattedDate = `${day}-${month}-${Year}`;
+
     const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = newDate.getFullYear().toString();
 
     const existingExpense = await Expense.findOne({
-      date,
+      date: formattedDate,
       hotel_id,
       spendedfor,
     });
     if (existingExpense) {
+      console.log("aise");
       existingExpense.items = [...existingExpense.items, ...items];
       existingExpense.total_amount += total_amount;
       await existingExpense.save();
@@ -29,8 +43,10 @@ export const addExpense = async (req, res) => {
       });
       const existingDailySubDashData = await DailySubDashData.findOne({
         user_id: userId,
-        date,
+        date: formattedDate,
       });
+      console.log(existingDailySubDashData);
+      console.log(formattedDate);
       const existingMonthlySubDashData = await MonthlySubDashData.findOne({
         user_id: userId,
         month_name,
@@ -57,19 +73,27 @@ export const addExpense = async (req, res) => {
       await existingStaticSubDashData.save();
     }
     if (!existingExpense) {
+      console.log("aise2");
       // Create a new expense instance
       const newExpense = new Expense({
         hotel_id,
-        date,
+        date: formattedDate,
         spendedfor,
         items,
         total_amount,
       });
-      // Save the expense to the database
-      await newExpense.save();
+      try {
+        // Save the expense to the database
+        await newExpense.save();
+      } catch (saveError) {
+        console.error("Error saving to database:", saveError);
+        return res.status(500).json({ message: "Error saving to database" });
+      }
       const existingStaticSubDashData = await StaticSubDashData.findOne({
         user_id: userId,
       });
+      console.log(userId);
+      console.log(existingStaticSubDashData);
       if (spendedfor === "hotel") {
         existingStaticSubDashData.total_hotel_expenses += total_amount;
         existingStaticSubDashData.total_hotel_profit -= total_amount;
@@ -78,9 +102,10 @@ export const addExpense = async (req, res) => {
         existingStaticSubDashData.total_restaurant_expenses += total_amount;
         existingStaticSubDashData.total_restaurant_profit -= total_amount;
       }
+      await existingStaticSubDashData.save();
       const existingDailySubDashData = await DailySubDashData.findOne({
         user_id: userId,
-        date,
+        date: formattedDate,
       });
       if (existingDailySubDashData) {
         if (spendedfor === "hotel") {
@@ -97,7 +122,8 @@ export const addExpense = async (req, res) => {
         if (spendedfor === "hotel") {
           const newDailySubDashData = new DailySubDashData({
             user_id: userId,
-            date,
+            user_role: user.role,
+            date: formattedDate,
             today_hotel_expenses: total_amount,
           });
           await newDailySubDashData.save();
@@ -105,7 +131,8 @@ export const addExpense = async (req, res) => {
         if (spendedfor === "restaurant") {
           const newDailySubDashData = new DailySubDashData({
             user_id: userId,
-            date,
+            user_role: user.role,
+            date: formattedDate,
             today_restaurant_expenses: total_amount,
           });
           await newDailySubDashData.save();
@@ -129,17 +156,17 @@ export const addExpense = async (req, res) => {
       }
       if (!existingMonthlySubDashData) {
         if (spendedfor === "hotel") {
-          const newMonthlySubDashData = new DailySubDashData({
+          const newMonthlySubDashData = new MonthlySubDashData({
             user_id: userId,
-            date,
+            user_role: user.role,
             total_hotel_expenses: total_amount,
           });
           await newMonthlySubDashData.save();
         }
         if (spendedfor === "restaurant") {
-          const newMonthlySubDashData = new DailySubDashData({
+          const newMonthlySubDashData = new MonthlySubDashData({
             user_id: userId,
-            date,
+            user_role: user.role,
             total_restaurant_expenses: total_amount,
           });
           await newMonthlySubDashData.save();
@@ -148,6 +175,7 @@ export const addExpense = async (req, res) => {
     }
     return res.status(201).json({ message: "Successfully added expenses" });
   } catch (error) {
+    // console.error("Error saving to database:", saveError);
     console.error("Error adding expense:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }

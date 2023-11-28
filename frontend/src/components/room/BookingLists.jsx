@@ -65,7 +65,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
               <th>Name</th>
               <th>Phone</th>
               <th>
-                Booking <br /> Amount
+              Advanced <br /> Amount
               </th>
               <th>
                 Booking <br /> Date
