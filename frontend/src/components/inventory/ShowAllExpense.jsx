@@ -29,6 +29,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
+import EditExpensesView from "./EditExpensesView";
 
 const ShowAllExpense = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -281,11 +282,12 @@ const ShowAllExpense = () => {
                                         ✕
                                       </button>
                                     </form>
-                                    {/* edit expenses */}
+                               
                                     <EditExpenses />
                                   </div>
                                 </dialog>
                               </td>
+                
                             </tr>
                           );
                         })}
@@ -309,19 +311,6 @@ const ShowAllExpense = () => {
                         </tr>
                       </tfoot>
                     </table>
-                    {/* <div className="flex justify-end max-w-[81%]">
-           <div className={`flex gap-2`}>
-            <h1>Grand Total :</h1>
-           <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
-                            <span>{totalItemPrice}</span>
-                          </div>
-                        </div>
-           </div>
-           </div> */}
                   </div>
                 ) : (
                   <p className="flex justify-center items-center mt-96">
