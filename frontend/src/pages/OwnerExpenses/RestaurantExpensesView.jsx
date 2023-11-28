@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import ReactPaginate from "react-paginate";
 import EditRestaurantExpenses from "./EditRestaurantExpenses";
 
+
 const RestaurantExpensesView = () => {
 
   const [pageCount, setPageCount] = useState(10);
@@ -105,9 +106,28 @@ const RestaurantExpensesView = () => {
                   );
                 })}
               </tbody>
+              <tfoot className={`text-[1.2rem] font-bold`}>
+                <tr>
+                  <td colSpan={5} className={`text-end text-md font-bold`}>
+                    Total :
+                  </td>
+                  <td>
+                    <div className="flex">
+                      <div>
+                        <FaRupeeSign />
+                      </div>
+                      <div>
+                        {" "}
+                        65464
+                        {/* {totalItemPrice} */}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
               
             </table>
-           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
+           {/* <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
             <h1>Grand Total :</h1>
            <div className="flex">
                           <div>
@@ -117,7 +137,7 @@ const RestaurantExpensesView = () => {
                             <span>25000</span>
                           </div>
                         </div>
-           </div>
+           </div> */}
           </div>
           {/* pagination */}
           <div className="flex justify-center mt-10">

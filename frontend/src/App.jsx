@@ -106,6 +106,7 @@ import RestaurantExpensesView from "./pages/OwnerExpenses/RestaurantExpensesView
 import RestaurantSalesView from "./pages/OwnerExpenses/RestaurantSalesView.jsx";
 import HotelExpensesView from "./pages/OwnerExpenses/HotelExpensesView.jsx";
 import HotelSalesView from "./pages/OwnerExpenses/HotelSalesView.jsx";
+import EditSalesHotel from "./components/OwnerExpenses/EditSalesHotel.jsx";
 
 
 
@@ -343,7 +344,7 @@ const App = () => {
               ),
             },
             {
-              path: "all-hotel-expneses",
+              path: "all-hotel-expenses",
               element: (
                 <ManagerRoute>
                   <HotelExpenses/>
@@ -359,7 +360,7 @@ const App = () => {
               ),
             },
             {
-              path: "add-hotel-expnese",
+              path: "add-hotel-expense",
               element: (
                 <ManagerRoute>
                   <AddHotelExpense/>
@@ -630,7 +631,8 @@ const App = () => {
               path: "restaurant-expenses/:id",
               element: (
                 <OwnerRoute>
-                  <RestaurantExpensesView />
+                  <ShowAllExpenseView/>
+                  {/* <RestaurantExpensesView /> */}
                 </OwnerRoute>
               ),
             },
@@ -662,7 +664,8 @@ const App = () => {
               path: "hotel-expenses/:id",
               element: (
                 <OwnerRoute>
-                  <HotelExpensesView />
+                   <ShowAllExpenseView />
+                  {/* <HotelExpensesView /> */}
                 </OwnerRoute>
               ),
             },
@@ -679,6 +682,14 @@ const App = () => {
               element: (
                 <OwnerRoute>
                   <HotelSalesView />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "sales-hotel-view/:id",
+              element: (
+                <OwnerRoute>
+                  <EditSalesHotel />
                 </OwnerRoute>
               ),
             },

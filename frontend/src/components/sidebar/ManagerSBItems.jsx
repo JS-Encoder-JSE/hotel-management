@@ -183,7 +183,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Expence
+              Add Expense
             </NavLink>
           </li> */}
           {/* <li>
@@ -262,7 +262,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>  
           {/* <li>
             <NavLink
-              to={`/dashboard/add-hotel-expnese`}
+              to={`/dashboard/add-hotel-expense`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -273,7 +273,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>  */}
           {/* <li>
             <NavLink
-              to={`/dashboard/all-hotel-expneses`}
+              to={`/dashboard/all-hotel-expenses`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")

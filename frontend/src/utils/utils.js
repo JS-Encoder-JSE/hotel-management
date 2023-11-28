@@ -49,3 +49,15 @@ export const getformatDateTime = (date) => {
   const formattedDateTime = new Date(date || new Date()).toLocaleString('en-US', options);
   return formattedDateTime;
 };
+
+
+export function getCurrentDateWithDay() {
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const currentDate = new Date();
+  const dayOfWeek = daysOfWeek[currentDate.getDay()];
+
+  const formattedDate = `${currentDate.toDateString()}`;
+
+  return formattedDate;
+}

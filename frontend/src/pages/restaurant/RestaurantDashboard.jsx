@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { HiOutlineCurrencyRupee } from "react-icons/hi2";
 import { BiRupee } from "react-icons/bi";
+import RestaurantDashboardChart from "../../components/UserDashBoard/RestaurantDashboardChart";
 
 
 const RestaurantDashboard = () => {
@@ -26,7 +27,7 @@ const RestaurantDashboard = () => {
   return (
     <>
       <div
-        className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-8`}
+        className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-20`}
       >
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-3 rounded-md text-white">
@@ -83,7 +84,7 @@ const RestaurantDashboard = () => {
         </div>
       </div>
 
-      <div className={`flex justify-center mb-20 mt-20`}>
+      {/* <div className={`flex justify-center mb-20 mt-20`}>
         <div>
           <select
             name="filter"
@@ -98,7 +99,7 @@ const RestaurantDashboard = () => {
             <option value="lastYear">Last Year</option>
           </select>
         </div>
-      </div>
+      </div> */}
 
       <div
         className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
@@ -166,6 +167,13 @@ const RestaurantDashboard = () => {
               </p>
           <hr />
         </div>
+      </div>
+      <div>
+      <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
+        <h1  className='text-[1.2rem] text-center font-bold'>Financial Overview</h1>
+       
+         <RestaurantDashboardChart/>
+        </section>
       </div>
     </>
   );
