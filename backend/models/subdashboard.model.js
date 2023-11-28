@@ -65,10 +65,10 @@ const dailySchema = new mongoose.Schema({
     enum: ["owner", "manager"],
   },
   date: {
-    type: Date,
+    type: String,
     required: false,
   },
-  today_hotel_expense: {
+  today_hotel_expenses: {
     type: Number,
     required: false,
     default: 0,
@@ -83,7 +83,7 @@ const dailySchema = new mongoose.Schema({
     required: false,
     default: 0,
   },
-  today_restaurant_expense: {
+  today_restaurant_expenses: {
     type: Number,
     required: false,
     default: 0,
@@ -154,13 +154,16 @@ monthlySchema.pre("save", function (next) {
   next();
 });
 
-dailySchema.pre("save", function (next) {
-  const currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
-  const formattedDate = currentDate.toISOString();
-  this.date = formattedDate;
-  next();
-});
+// dailySchema.pre("save", function (next) {
+//   const currentDate = new Date();
+//   const year = currentDate.getFullYear();
+//   const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+//   const day = currentDate.getDate().toString().padStart(2, "0");
+
+//   const formattedDate = `${day}-${month}-${year}`;
+//   this.date = formattedDate;
+//   next();
+// });
 
 // Apply the mongoose-paginate-v2 plugin to your schema
 staticSchema.plugin(mongoosePaginate);
