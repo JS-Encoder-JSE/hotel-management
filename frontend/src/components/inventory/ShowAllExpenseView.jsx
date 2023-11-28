@@ -11,6 +11,8 @@ import ReactToPrint from "react-to-print";
 import ShowAllExpenseViewPrint from "./ShowAllExpenseViewPrint";
 import { FaPrint } from "react-icons/fa6";
 
+
+
 const ShowAllExpenseView = () => {
 
 
@@ -104,6 +106,7 @@ const componentRef= useRef()
                 {itemExpense?.items.map((item, idx) => {
                   return (
                     <tr
+                    key={idx}
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
@@ -132,7 +135,8 @@ const componentRef= useRef()
                                 ✕
                               </button>
                             </form>
-                            <EditExpensesView />
+                            {/* edit expenses */}
+                            <EditExpensesView/>
                           </div>
                         </dialog>
                       </td>
