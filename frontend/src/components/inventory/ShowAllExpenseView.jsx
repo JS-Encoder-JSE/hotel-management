@@ -116,21 +116,21 @@ const ShowAllExpenseView = () => {
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <th>{++idx}</th>
                   <td>
-                    {/* {getformatDateTime(itemExpense?.date)} */}
+                    {getformatDateTime(itemExpense?.date)}
                     </td>
                   <td>
-                    {/* {item?.name} */}
+                    {item?.name}
                     </td>
                   <td>
-                    {/* {item?.quantity} */}
+                    {item?.quantity}
                     </td>
                   <td>
-                    {/* {item?.description} */}
+                    {item?.description}
                     </td>
                   <td>
                     <FaRupeeSign className="inline" />
                     <span>
-                      {/* {item?.price} */}
+                      {item?.price}
                       </span>
                   </td>
                   <td>Remark</td>
