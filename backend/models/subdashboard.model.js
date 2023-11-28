@@ -65,7 +65,7 @@ const dailySchema = new mongoose.Schema({
     enum: ["owner", "manager"],
   },
   date: {
-    type: String,
+    type: Date,
     required: false,
   },
   today_hotel_expense: {
