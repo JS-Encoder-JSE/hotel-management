@@ -406,7 +406,7 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                       <td>{getformatDateTime(item?.date)}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
-                          <span>{item?.price}</span>
+                          <span>{item?.total_amount}</span>
                       </td>
                       <td className={`space-x-1.5`}>
                         <span

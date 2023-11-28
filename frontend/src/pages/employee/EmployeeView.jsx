@@ -19,6 +19,13 @@ const EmployeeView = () => {
     }
   }, []);
 
+  const downloadFile = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    saveAs(blob, `${new Date().toLocaleDateString()}.jpg`);
+  };
+  
+
   return (
     <>
       <div>
@@ -99,12 +106,7 @@ const EmployeeView = () => {
                               Attachment {++idx}
                             </span>
                             <span
-                              onClick={() =>
-                                saveAs(
-                                  img,
-                                  new Date().toLocaleDateString() + ".jpg",
-                                )
-                              }
+                              onClick={() => downloadFile(img)}
                               className={`hover:text-green-slimy transition-colors duration-500 cursor-pointer`}
                             >
                               <FaDownload />

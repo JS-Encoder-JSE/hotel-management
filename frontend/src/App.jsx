@@ -106,6 +106,8 @@ import RestaurantExpensesView from "./pages/OwnerExpenses/RestaurantExpensesView
 import RestaurantSalesView from "./pages/OwnerExpenses/RestaurantSalesView.jsx";
 import HotelExpensesView from "./pages/OwnerExpenses/HotelExpensesView.jsx";
 import HotelSalesView from "./pages/OwnerExpenses/HotelSalesView.jsx";
+import ManageCheckin from "./pages/room/ManageCheckin.jsx";
+import CheckinPersonInfo from "./pages/room/CheckinPersonInfo.jsx";
 
 
 
@@ -191,10 +193,26 @@ const App = () => {
               ),
             },
             {
+              path: "manage-checkin",
+              element: (
+                <ManagerRoute>
+                  <ManageCheckin/>
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "manage-booking/:id",
               element: (
                 <ManagerRoute>
                   <BookingView />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "manage-checkin/:id",
+              element: (
+                <ManagerRoute>
+                  <CheckinPersonInfo/>
                 </ManagerRoute>
               ),
             },

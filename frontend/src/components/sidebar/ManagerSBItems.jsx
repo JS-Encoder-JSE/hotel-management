@@ -70,6 +70,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
+              to={`/dashboard/manage-checkin`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Manage CheckIn
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to={`/dashboard/checkin`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +

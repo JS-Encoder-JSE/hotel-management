@@ -168,7 +168,7 @@ const CheckInModal = ({ room }) => {
       }
 
       await upload(formData).then(
-        (result) => (tempImg = result.data.imageUrls)
+        (result) => (tempImg = result.data?.imageUrls)
       );
 
       const response = await addBooking({

@@ -207,14 +207,14 @@ setPdf(hotelExpenses?.docs[0]?.items)
                 </tr>
               </thead>
               <tbody>
-                {hotelExpenses?.docs[0]?.items?.map((item, idx) => {
+                {hotelExpenses?.docs?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
                       <td>{getformatDateTime(hotelExpenses?.docs[0]?.date)}</td>
-                      <td>{item?.name}</td>
+                      <td>{item?.items?.name}</td>
                       <td>{item?.description}</td>
                       <td>{item?.quantity}</td>
                       <td>
@@ -405,7 +405,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                       <td>{getformatDateTime(item?.date)}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
-                          <span>{item?.price}</span>
+                          <span>{item?.total_amount}</span>
                       </td>
                       <td className={`space-x-1.5`}>
                         <span
