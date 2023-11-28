@@ -7,6 +7,11 @@ import Room from "../../models/Manager/room.model.js";
 import Table from "../../models/Manager/table.model.js";
 import { Dashboard } from "../../models/dashboard.model.js";
 import Hotel from "../../models/hotel.model.js";
+import {
+  DailySubDashData,
+  MonthlySubDashData,
+  StaticSubDashData,
+} from "../../models/subdashboard.model.js";
 import User from "../../models/user.model.js";
 
 export const addFood = async (req, res) => {
@@ -291,9 +296,17 @@ export const updateOrder = async (req, res) => {
       });
     }
     if ((updateData.order_status = "CheckedOut")) {
+      const newDate = new Date();
+      newDate.setHours(0, 0, 0, 0);
+      const date = newDate.toISOString();
+      const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
+      const year = newDate.getFullYear().toString();
+
       const new_paid_amount =
         updateData.paid_amount - existingOrder.paid_amount;
+
       const user = await User.findById(user_id);
+
       if (!user) {
         return res.status(404).json({
           success: false,
@@ -310,6 +323,45 @@ export const updateOrder = async (req, res) => {
 
       await ownerDashboard.save();
       await managerDashboard.save();
+      const existingStaticSubDashData = await StaticSubDashData.findOne({
+        user_id: user_id,
+      });
+      existingStaticSubDashData.total_restaurant_income += new_paid_amount;
+      existingStaticSubDashData.total_restaurant_profit += new_paid_amount;
+      await existingStaticSubDashData.save();
+      const existingDailySubDashData = await DailySubDashData.findOne({
+        user_id: user_id,
+        date,
+      });
+      if (existingDailySubDashData) {
+        existingDailySubDashData.today_restaurant_income += new_paid_amount;
+        existingDailySubDashData.today_restaurant_profit += new_paid_amount;
+        await existingDailySubDashData.save();
+      }
+      if (!existingDailySubDashData) {
+        const newDailySubDashData = new DailySubDashData({
+          user_id: user_id,
+          today_restaurant_expenses: new_paid_amount,
+        });
+        await newDailySubDashData.save();
+      }
+      const existingMonthlySubDashData = await MonthlySubDashData.findOne({
+        user_id: user_id,
+        month_name,
+        year,
+      });
+      if (existingMonthlySubDashData) {
+        existingDailySubDashData.total_restaurant_income += new_paid_amount;
+        existingDailySubDashData.total_restaurant_profit += new_paid_amount;
+        await existingMonthlySubDashData.save();
+      }
+      if (!existingMonthlySubDashData) {
+        const newMonthlySubDashData = new DailySubDashData({
+          user_id: user_id,
+          total_restaurant_expenses: new_paid_amount,
+        });
+        await newMonthlySubDashData.save();
+      }
     }
     // Update the order with the provided data
     const updatedOrder = await FoodOrder.findByIdAndUpdate(

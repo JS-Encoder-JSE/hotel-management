@@ -78,6 +78,7 @@ export const addExpense = async (req, res) => {
         existingStaticSubDashData.total_restaurant_expenses += total_amount;
         existingStaticSubDashData.total_restaurant_profit -= total_amount;
       }
+      await existingStaticSubDashData.save();
       const existingDailySubDashData = await DailySubDashData.findOne({
         user_id: userId,
         date,
@@ -97,7 +98,6 @@ export const addExpense = async (req, res) => {
         if (spendedfor === "hotel") {
           const newDailySubDashData = new DailySubDashData({
             user_id: userId,
-            date,
             today_hotel_expenses: total_amount,
           });
           await newDailySubDashData.save();
@@ -105,7 +105,6 @@ export const addExpense = async (req, res) => {
         if (spendedfor === "restaurant") {
           const newDailySubDashData = new DailySubDashData({
             user_id: userId,
-            date,
             today_restaurant_expenses: total_amount,
           });
           await newDailySubDashData.save();
@@ -131,7 +130,6 @@ export const addExpense = async (req, res) => {
         if (spendedfor === "hotel") {
           const newMonthlySubDashData = new DailySubDashData({
             user_id: userId,
-            date,
             total_hotel_expenses: total_amount,
           });
           await newMonthlySubDashData.save();
@@ -139,7 +137,6 @@ export const addExpense = async (req, res) => {
         if (spendedfor === "restaurant") {
           const newMonthlySubDashData = new DailySubDashData({
             user_id: userId,
-            date,
             total_restaurant_expenses: total_amount,
           });
           await newMonthlySubDashData.save();
