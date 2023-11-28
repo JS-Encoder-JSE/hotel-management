@@ -1,24 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
+import { useGetExpenseByIdQuery } from "../../redux/room/roomAPI";
+import { getformatDateTime } from "../../utils/utils";
+import FoodCheckoutPrint from "../../pages/restaurant/FoodCheckoutPrint";
+import ReactToPrint from "react-to-print";
+import ShowAllExpenseViewPrint from "./ShowAllExpenseViewPrint";
+import { FaPrint } from "react-icons/fa6";
 
 const ShowAllExpenseView = () => {
 
-  const [pageCount, setPageCount] = useState(10);
+
+const componentRef= useRef()
+
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const {id }= useParams()
+  console.log(id,"expense by id")
+
+
+  const {data:itemExpense}= useGetExpenseByIdQuery(id)
+
+  console.log(itemExpense,"Nissan")
+
+  function calculateTotalPrice(items) {
+    // Ensure items is not null or undefined
+    if (!items) {
+      return 0;
+    }
+  
+    // Use the reduce function to sum up the prices
+    const totalPrice = items.reduce((total, item) => {
+      // Ensure each item has a price property
+      if (item && item.price) {
+        return total + item.price;
+      }
+      // If item or price is missing, return total without adding anything
+      return total;
+    }, 0);
+  
+    return totalPrice;
+  }
+  
+  let totalItemsAmount = calculateTotalPrice(itemExpense?.items)
 
  const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
-
-    const formik = useFormik({
-        initialValues: {
-          startDate: "",
-          endDate: "",
-        },
-      });
   const navigate = useNavigate();
 
   return (
@@ -31,14 +63,25 @@ const ShowAllExpenseView = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <div className={`flex`}>
-        <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-          {" "}
-          <FaRegFilePdf />
-          PDF
-        </button>
-      </div>
-       
+       {/* Pdf */}
+       <div className={`flex gap-4 justify-end mt-4`}>
+        <div style={{display:"none"}} >
+          <div className="p-4" ref={componentRef}>
+           <ShowAllExpenseViewPrint itemExpense={itemExpense} totalItemsAmount={totalItemsAmount} />
+          </div>   
+        </div>
+        </div>
+      <ReactToPrint
+          trigger={() => (
+            <button
+              title="please select payment method"
+              className="bg-green-slimy text-white px-2 rounded-sm"
+            >
+             <FaPrint className="inline"/> Print
+            </button>
+          )}
+          content={() => componentRef.current}
+        />
       </div>
       <div>
           <h1 className={`text-2xl text-center`}> Expenses Information</h1>
@@ -50,33 +93,27 @@ const ShowAllExpenseView = () => {
                   <th>SL</th>
                   <th>Date</th>
                   <th>Items Name</th>
-                  <th>Description</th>
                   <th>Quantity</th>
+                  <th>Description</th>
                   <th>Price</th>
                   <th>Remark</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {itemExpense?.items.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
-                      <td>Rice</td>
-                      <td>25 Kg</td>
-                      <td>Nice Product</td>
+                      <td>{getformatDateTime(itemExpense?.date)}</td>
+                      <td>{item?.name}</td>
+                      <td>{item?.quantity}</td>
+                      <td>{item?.description}</td>
                       <td>
-                        <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
-                            <span>5000</span>
-                          </div>
-                        </div>
+                          <FaRupeeSign className="inline" />
+                            <span>{item?.price}</span>
                       </td>
                       <td>Remark</td>
                       <td>
@@ -106,16 +143,18 @@ const ShowAllExpenseView = () => {
               </tbody>
               
             </table>
-           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
+           <div className="flex justify-end max-w-[73%]">
+           <div className={`flex gap-2`}>
             <h1>Grand Total :</h1>
            <div className="flex">
                           <div>
                           <FaRupeeSign />
                           </div>
                           <div>
-                            <span>25000</span>
+                            <span>{totalItemsAmount}</span>
                           </div>
                         </div>
+           </div>
            </div>
           </div>
           {/* pagination */}

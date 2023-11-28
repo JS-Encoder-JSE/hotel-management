@@ -344,7 +344,7 @@ const App = () => {
               ),
             },
             {
-              path: "all-hotel-expneses",
+              path: "all-hotel-expenses",
               element: (
                 <ManagerRoute>
                   <HotelExpenses/>
@@ -360,7 +360,7 @@ const App = () => {
               ),
             },
             {
-              path: "add-hotel-expnese",
+              path: "add-hotel-expense",
               element: (
                 <ManagerRoute>
                   <AddHotelExpense/>

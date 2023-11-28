@@ -8,12 +8,19 @@ import DatePicker from "react-datepicker";
 import { getformatDateTime } from '../../utils/utils';
 import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
+
+import { useAddExpensesMutation, useGetHotelByManagerIdQuery } from '../../redux/room/roomAPI';
+import toast from 'react-hot-toast';
+import { GiRopeBridge } from 'react-icons/gi';
+import { BsCurrencyRupee } from 'react-icons/bs';
+
 import { BiRupee } from "react-icons/bi";
+
 
 // form validation
 const validationSchema = yup.object({
     // date: yup.string().required("Date is required"),
-    itemName: yup.string().required("Name is required"),
+    name: yup.string().required("Name is required"),
     quantity: yup.string().required("Quantity is required"),
     price: yup
       .number()
@@ -31,7 +38,20 @@ const validationSchema = yup.object({
 
 const AddExpense = () => {
 
-    const { user } = useSelector((store) => store.authSlice);
+const { isUserLoading, user } = useSelector((store) => store.authSlice);
+
+  // console.log(user._id);
+
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
+  // console.log(hotelInfo[0]?._id);
+
+    // add expense
+    const[AddExpense]=useAddExpensesMutation()
+
     
 // lodading
     const [isLoading, setLoading] = useState(false);
@@ -48,14 +68,20 @@ const AddExpense = () => {
 
     console.log(totalItems,"items---------")
 
-    const totalExpense =[...totalItems]
+    let totalExpense =[...totalItems]
+
+// total calculation
+const calculateTotal = () => {
+  return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
+};
+
 
 
 
     const formik = useFormik({
         initialValues: {
           date: new Date(),
-          itemName: "",
+          name: "",
           quantity: "",
           price: "",
           description: "",
@@ -79,7 +105,6 @@ const AddExpense = () => {
               // Add new item
               setTotalItems((prevItems) => [...prevItems, obj]);
             }
-          
             formik.resetForm();
             setLoading(false);
             setUpdate(false)
@@ -87,47 +112,28 @@ const AddExpense = () => {
       });
 
 
-      // handle edit each item
 
-    
-    //   // Image delete
-    //   const handleDelete = (idx) => {
-    //     const tempImgs = [
-    //       ...selectedImages.slice(0, idx),
-    //       ...selectedImages.slice(idx + 1),
-    //     ];
-    //     const dataTransfer = new DataTransfer();
-    
-    //     for (const file of tempImgs) {
-    //       dataTransfer.items.add(file);
-    //     }
-    
-    //     formik.setFieldValue("photos", dataTransfer.files);
-    //     setSelectedImages(tempImgs);
-    //   };
-    
-    //   // HandleChange
-    //   const handleChange = (idx, newFile) => {
-    //     const updatedImages = [...selectedImages];
-    //     updatedImages[idx] = newFile;
-    
-    //     const dataTransfer = new DataTransfer();
-    
-    //     for (const file of updatedImages) {
-    //       dataTransfer.items.add(file);
-    //     }
-    
-    //     formik.setFieldValue("photos", dataTransfer.files);
-    //     setSelectedImages(updatedImages);
-    //   };
-    
-    //   // Update Image
-    //   useEffect(() => {
-    //     if (formik.values.photos) {
-    //       const selectedImagesArray = Array.from(formik.values.photos);
-    //       setSelectedImages(selectedImagesArray);
-    //     }
-    //   }, [formik.values.photos]);
+      // handle AddExpense submit:
+
+      const handleAddExpensesResponse = async()=>{
+        setLoading(true)
+        const response= await AddExpense({
+          hotel_id:isHotelSuccess && hotelInfo[0]?._id,
+          date:new Date(),
+          spendedfor:"restaurant",
+          items: totalExpense,
+          total_amount:calculateTotal(), 
+        })
+        setLoading(false)
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          toast.success(response.data.message);
+          totalExpense=[]
+          setTotalItems([])
+        }  
+      }
+
 
 
 // handle update
@@ -153,10 +159,7 @@ const AddExpense = () => {
 
       
 
-// total calculation
- const calculateTotal = () => {
-        return totalItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
-      };
+
 
     return (
         <div>
@@ -183,7 +186,7 @@ const AddExpense = () => {
                 className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
               >
                 <FaPlusCircle />
-                <span>Add Expense</span>
+                <span>Add Restaurant Expenses</span>
               </h3>
             </div>
             <div>
@@ -210,7 +213,7 @@ const AddExpense = () => {
                     >
                       <th>{++idx}</th>
                       <td>{getformatDateTime(item?.date)}</td>
-                      <td>{item?.itemName}</td>
+                      <td>{item?.name}</td>
                       <td>{item?.quantity}</td>
                       <td>{item?.price}</td>
                       <td className={`flex flex-wrap gap-1.5`}>
@@ -238,7 +241,7 @@ const AddExpense = () => {
                   <td colSpan={5} className={`text-end text-md font-bold`}>
                     Total
                   </td>
-                  <td>$ {calculateTotal()}</td>
+                  <td><BsCurrencyRupee  className='inline'/> {calculateTotal()}</td>
                 </tr>
               </tfoot>
             </table>
@@ -271,15 +274,15 @@ const AddExpense = () => {
                 <input
                   type="text"
                   placeholder="Item Name"
-                  name="itemName"
+                  name="name"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.itemName}
+                  value={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.price && Boolean(formik.errors.itemName) ? (
+                {formik.touched.name && Boolean(formik.errors.name) ? (
                   <small className="text-red-600">
-                    {formik.touched.itemName && formik.errors.itemName}
+                    {formik.touched.name && formik.errors.name}
                   </small>
                 ) : null}
               </div>
@@ -376,7 +379,7 @@ const AddExpense = () => {
             {/* submit button */}
             <div className=" mx-auto">
                 <button
-                  
+                  onClick={handleAddExpensesResponse}
                   disabled={totalItems.length? false : true}
                   className=" btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
                 >
