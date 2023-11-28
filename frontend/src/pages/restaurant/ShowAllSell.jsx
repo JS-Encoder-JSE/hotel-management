@@ -61,7 +61,9 @@ const ShowAllSell = () => {
         </div>
         <div>
           <div>
-            <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+            <h3
+              className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+            >
               Today Sales
             </h3>
           </div>
@@ -100,7 +102,8 @@ const ShowAllSell = () => {
                       <td>10</td>
                       <td className="flex">
                         <div>
-                        <FaRupeeSign /></div>
+                          <FaRupeeSign />
+                        </div>
                         <div>
                           <span>5000</span>
                         </div>
@@ -123,54 +126,63 @@ const ShowAllSell = () => {
                               </button>
                             </form>
                             {/* Edit sales */}
-                          <EditSales/>
+                            <EditSales />
                           </div>
                         </dialog>
                       </td>
-                     
                     </tr>
                   );
                 })}
               </tbody>
+              <tfoot className={`text-[1.2rem] font-bold`}>
+                <tr>
+                  <td colSpan={5} className={`text-end text-md font-bold`}>
+                    Total :
+                  </td>
+                  <td>
+                    <div className="flex">
+                      <div>
+                        <FaRupeeSign />
+                      </div>
+                      <div>
+                        {" "}
+                        65464
+                        {/* {totalItemPrice} */}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
-            <div className={`flex justify-center md:ms-[20rem] mt-4`}>
-              <h1>Grand Total :</h1>
-              <div className="flex ">
-              <div>
-              <FaRupeeSign />
-              </div>
-              <div>
-                <span>25000</span>
-              </div>
-              </div>
-            </div>
           </div>
         </div>
         <div className="flex justify-center mt-10">
-            <ReactPaginate
-              containerClassName="join rounded-none"
-              pageLinkClassName="join-item btn btn-md bg-transparent"
-              activeLinkClassName="btn-active !bg-green-slimy text-white"
-              disabledLinkClassName="btn-disabled"
-              previousLinkClassName="join-item btn btn-md bg-transparent"
-              nextLinkClassName="join-item btn btn-md bg-transparent"
-              breakLinkClassName="join-item btn btn-md bg-transparent"
-              previousLabel="<"
-              nextLabel=">"
-              breakLabel="..."
-              pageCount={pageCount}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
-              renderOnZeroPageCount={null}
-            />
-          </div>
+          <ReactPaginate
+            containerClassName="join rounded-none"
+            pageLinkClassName="join-item btn btn-md bg-transparent"
+            activeLinkClassName="btn-active !bg-green-slimy text-white"
+            disabledLinkClassName="btn-disabled"
+            previousLinkClassName="join-item btn btn-md bg-transparent"
+            nextLinkClassName="join-item btn btn-md bg-transparent"
+            breakLinkClassName="join-item btn btn-md bg-transparent"
+            previousLabel="<"
+            nextLabel=">"
+            breakLabel="..."
+            pageCount={pageCount}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageClick}
+            renderOnZeroPageCount={null}
+          />
+        </div>
 
         {/* Restaurant Expenses */}
 
         <div className={`mb-10 mt-10`}>
           <div>
-            <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+            <h3
+              className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+            >
               Restaurant sales
             </h3>
           </div>
@@ -254,18 +266,14 @@ const ShowAllSell = () => {
                       <th>{++idx}</th>
                       <td>23-11-2023</td>
                       <td>
-                       <div className="flex">
-                        <div>
-                        
-                          <FaRupeeSign />
-                        
+                        <div className="flex">
+                          <div>
+                            <FaRupeeSign />
+                          </div>
+                          <div>
+                            <span>5000</span>
+                          </div>
                         </div>
-                        <div>
-                          <span>5000</span>
-                        </div>
-                        </div> 
-                       
-                       
                       </td>
                       <td className={`space-x-1.5`}>
                         <span
@@ -307,7 +315,6 @@ const ShowAllSell = () => {
               renderOnZeroPageCount={null}
             />
           </div>
-       
         </div>
       </div>
     </div>

@@ -133,8 +133,27 @@ const HotelExpensesShow = () => {
                   );
                 })}
               </tbody>
+              <tfoot className={`text-[1.2rem] font-bold`}>
+                <tr>
+                  <td colSpan={5} className={`text-end text-md font-bold`}>
+                    Total :
+                  </td>
+                  <td>
+                    <div className="flex">
+                      <div>
+                        <FaRupeeSign />
+                      </div>
+                      <div>
+                        {" "}
+                        65464
+                        {/* {totalItemPrice} */}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
-            <div className={`flex justify-center md:ms-[20rem] mt-4`}>
+            {/* <div className={`flex justify-center md:ms-[20rem] mt-4`}>
               <h1>Grand Total :</h1>
               <div className="flex ">
               <div>
@@ -144,7 +163,7 @@ const HotelExpensesShow = () => {
                 <span>25000</span>
               </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex justify-center mt-10">

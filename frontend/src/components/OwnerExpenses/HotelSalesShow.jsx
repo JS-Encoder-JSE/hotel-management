@@ -132,10 +132,10 @@ const HotelSalesShow = () => {
                   );
                 })}
               </tbody>
-              <tfoot className={`text-sm`}>
+              <tfoot className={`text-[1.2rem] font-bold`}>
                 <tr>
                   <td colSpan={5} className={`text-end `}>
-                   Grand Total :
+                  Total :
                   </td>
                   <td>
                  <div className="flex">
@@ -303,10 +303,10 @@ const HotelSalesShow = () => {
                   );
                 })}
               </tbody>
-              <tfoot className={`text-sm`}>
+              <tfoot className={`text-[1.2rem] font-bold`}>
                 <tr>
                   <td colSpan={5} className={`text-end`}>
-                    Total
+                    Total :
                   </td>
                <td>
                <div className="flex">
