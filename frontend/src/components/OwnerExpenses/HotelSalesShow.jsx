@@ -121,7 +121,7 @@ const HotelSalesShow = () => {
                       <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/restaurant-sales/${idx}`)
+                            navigate(`/dashboard/sales-hotel-view/${idx}`)
                           }
                         >
                           <FaEye />
@@ -132,10 +132,10 @@ const HotelSalesShow = () => {
                   );
                 })}
               </tbody>
-              <tfoot className={`text-sm`}>
+              <tfoot className={`text-[1.2rem] font-bold`}>
                 <tr>
                   <td colSpan={5} className={`text-end `}>
-                   Grand Total :
+                  Total :
                   </td>
                   <td>
                  <div className="flex">
@@ -293,7 +293,7 @@ const HotelSalesShow = () => {
                       <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/restaurant-sales/${idx}`)
+                            navigate(`/dashboard/sales-hotel-view/${idx}`)
                           }
                         >
                           <FaEye />
@@ -303,10 +303,10 @@ const HotelSalesShow = () => {
                   );
                 })}
               </tbody>
-              <tfoot className={`text-sm`}>
+              <tfoot className={`text-[1.2rem] font-bold`}>
                 <tr>
                   <td colSpan={5} className={`text-end`}>
-                    Total
+                    Total :
                   </td>
                <td>
                <div className="flex">

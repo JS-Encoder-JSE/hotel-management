@@ -75,9 +75,24 @@ const AddOrder = () => {
 
   return (
     <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
+   
       <div
-        className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
+        className={`flex flex-col-reverse  sm:flex-row gap-3 sm:justify-between`}
       >
+           <div>
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                    <dfn>
+                      <abbr title="Back"><FaArrowLeft /></abbr>
+                    </dfn>
+                 
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
         {/*<div className="flex flex-col gap-3">*/}
         {/*  <select*/}
         {/*    name="chooseHotel"*/}
@@ -98,21 +113,7 @@ const AddOrder = () => {
         {/*</div>*/}
       
         <div className={`flex gap-1.5`}>
-          <div className="flex ">
-          <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
+          <div className="">
             <select
               name="type"
               className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy !h-[2.35rem]"
@@ -125,7 +126,8 @@ const AddOrder = () => {
               <option value="Room">Room</option>
               <option value="Table">Table</option>
             </select>
-            { error && <span className="text-red-600 "><small>{error}</small></span>}
+           { error && <span className="text-red-600 ms-2"><small>{error}</small></span>}
+        
           </div>
           
           {formik.values.type && formik.values.type === "Room" ? (
@@ -193,14 +195,17 @@ const AddOrder = () => {
               if(formik.values.type && formik.values.type === "Table"){
                 dispatch(setTableId(formik.values.tableId))
                 window.fp_modal.showModal();
+              
                 setError("")
               }else if(formik.values.type && formik.values.type === "Room"){
                 dispatch(setRoomId(formik.values.roomId))
                 window.fp_modal.showModal();
+               
                 setError("")
-              }
+              } 
               else{
-                setError("please Choose the type")
+             
+                setError(" please Choose the type")
               }
               // formik.values.type && formik.values.type === "Table"
               //   ? dispatch(setTableId(formik.values.tableId))

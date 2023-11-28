@@ -90,7 +90,10 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
             </div>
     </section>
 
+
+
         <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
+        <h1  className='text-[1.2rem] text-center font-bold'>Financial OverView</h1>
           {/* <ExpensesChart
             monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
             userHotel={userHotel}
