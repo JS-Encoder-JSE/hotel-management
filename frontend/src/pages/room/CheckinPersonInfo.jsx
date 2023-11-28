@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaDoorOpen, FaEdit } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import EditBooking from "../../components/room/EditBooking.jsx";
 import Modal from "../../components/Modal.jsx";
 import { useGetBookingByIdQuery } from "../../redux/room/roomAPI.js";
@@ -31,16 +31,17 @@ const CheckinPersonInfo = () => {
           <span>Back</span>
         </div>
         <div className={`space-x-1.5`}>
-          <span
+         <Link
+         to={"/dashboard/checkin"}
+         >
+         <span
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
             title={`Check In`}
-            onClick={() => {
-              setData(booking?.data);
-              setModalOpen(true);
-            }}
+            
           >
             <FaDoorOpen />
           </span>
+         </Link>
           <span
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
             title={`Edit`}
