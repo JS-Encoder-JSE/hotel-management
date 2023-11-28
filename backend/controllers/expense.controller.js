@@ -9,6 +9,7 @@ export const addExpense = async (req, res) => {
   try {
     const userId = req.user.userId;
     const { hotel_id, date, spendedfor, items, total_amount } = req.body;
+    console.log("Request Body:", req.body);
 
     const newDate = new Date(date);
     const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
@@ -20,6 +21,7 @@ export const addExpense = async (req, res) => {
       spendedfor,
     });
     if (existingExpense) {
+      console.log("aise");
       existingExpense.items = [...existingExpense.items, ...items];
       existingExpense.total_amount += total_amount;
       await existingExpense.save();
@@ -57,6 +59,7 @@ export const addExpense = async (req, res) => {
       await existingStaticSubDashData.save();
     }
     if (!existingExpense) {
+      console.log("aise2");
       // Create a new expense instance
       const newExpense = new Expense({
         hotel_id,
@@ -65,6 +68,14 @@ export const addExpense = async (req, res) => {
         items,
         total_amount,
       });
+      try {
+        // Save the expense to the database
+        await newExpense.save();
+      } catch (saveError) {
+        console.error("Error saving to database:", saveError);
+        return res.status(500).json({ message: "Error saving to database" });
+      }
+
       // Save the expense to the database
       await newExpense.save();
       const existingStaticSubDashData = await StaticSubDashData.findOne({
@@ -145,6 +156,7 @@ export const addExpense = async (req, res) => {
     }
     return res.status(201).json({ message: "Successfully added expenses" });
   } catch (error) {
+    // console.error("Error saving to database:", saveError);
     console.error("Error adding expense:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
