@@ -80,7 +80,7 @@ const RestaurantExpenseReport = ({ values, header,date }) => {
               </Text>
             ))}
           </View>
-          {values.map((item, rowIndex) => (
+          { values && values.map((item, rowIndex) => (
             <View key={rowIndex} style={styles.tableRow}>
               {desiredHeaders.map((key, cellIndex) => (
                 <Text key={cellIndex} style={[styles.tableCell, styles.text]}>

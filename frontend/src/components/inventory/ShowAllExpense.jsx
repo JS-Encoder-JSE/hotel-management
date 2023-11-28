@@ -49,7 +49,7 @@ const {
 const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
 
-// const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
+// const { data: RestaurantExpenses, isLoading, isSuccess } = useGetExpensesQuery({
 //   cp: 1,
 //   fromDate: fromDateIsoConverter(new Date()),
 //   hotel_id: hotelId,
@@ -60,7 +60,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
 
 // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
-//   const {data:hotelExpenses, isLoading,isSuccess} = useGetExpensesQuery({
+//   const {data:RestaurantExpenses, isLoading,isSuccess} = useGetExpensesQuery({
 //     cp: 1,
 //     fromDate: fromDateIsoConverter(new Date()),
 //     hotel_id: hotelId,
@@ -68,7 +68,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 //     limit: 10,
 //   });
 
-  // console.log(hotelExpenses,"expnessfor resto")
+  // console.log(RestaurantExpenses,"expnessfor resto")
   
 
  
@@ -102,7 +102,7 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
       setForcePage(0);
     },
   });
-  const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
+  const { data: RestaurantExpenses, isLoading, isSuccess } = useGetExpensesQuery({
     cp: 1,
     fromDate:fromDateIsoConverter(new Date()),
     hotel_id: hotelId,
@@ -127,11 +127,11 @@ const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
 
 
-  console.log(hotelExpenses,"History")
+  console.log(RestaurantExpenses,"History")
 
   useEffect(()=>{
-setPdf(hotelExpenses?.docs[0]?.items)
-  },[hotelExpenses])
+setPdf(RestaurantExpenses?.docs[0]?.items)
+  },[RestaurantExpenses])
  
 
   console.log(filteredExpenses,"filtered expenses.......")
@@ -144,14 +144,14 @@ setPdf(hotelExpenses?.docs[0]?.items)
   };
 
 
-  const totalItemPrice = hotelExpenses?.docs[0]?.items?.reduce((total, item) => {
+  const totalItemPrice = RestaurantExpenses?.docs[0]?.items?.reduce((total, item) => {
     // Add the price of each item to the total
     return total + (item?.price || 0);
   }, 0);
 
   return (
     <div className={`px-5 space-y-5`}>
-      {hotelExpenses && filteredExpenses && <div className={`bg-white px-10 py-5 rounded`}>
+      {RestaurantExpenses && filteredExpenses && <div className={`bg-white px-10 py-5 rounded`}>
         <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
@@ -179,20 +179,21 @@ setPdf(hotelExpenses?.docs[0]?.items)
           <div className={`flex justify-end mb-5`}>
           {PDF?.length ? (
                 <PDFDownloadLink
-                document={<RestaurantExpenseReport date={hotelExpenses?.docs[0]?.date} values={hotelExpenses?.docs[0]?.items} header={{
+                document={<RestaurantExpenseReport date={RestaurantExpenses?.docs[0]?.date} values={RestaurantExpenses?.docs[0]?.items} header={{
                   title: "DAK Hospitality LTD",
                   name: "Today's Restaurant Expenses",
                 }} />}
                 fileName={`${new Date().toLocaleDateString()}.pdf`}
                 className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
+                <BsFileEarmarkPdfFill/>
                 PDF
               </PDFDownloadLink>
               ) : null}
           </div>
 
         <div className="h-96">
-        {hotelExpenses&& hotelExpenses?.docs[0]?.items.length ?<div className="overflow-x-auto">
+        {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ?<div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -202,18 +203,18 @@ setPdf(hotelExpenses?.docs[0]?.items)
                   <th>Description</th>
                   <th>Quantity</th>
                   <th>Price</th>
-                  {hotelExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
+                  {RestaurantExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {hotelExpenses?.docs[0]?.items?.map((item, idx) => {
+                {RestaurantExpenses?.docs[0]?.items?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{getformatDateTime(hotelExpenses?.docs[0]?.date)}</td>
+                      <td>{getformatDateTime(RestaurantExpenses?.docs[0]?.date)}</td>
                       <td>{item?.name}</td>
                       <td>{item?.description}</td>
                       <td>{item?.quantity}</td>
@@ -281,7 +282,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={hotelExpenses?.pagingCounter}
+              pageCount={RestaurantExpenses?.pagingCounter}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
@@ -295,13 +296,13 @@ setPdf(hotelExpenses?.docs[0]?.items)
         <div className={`mb-10 mt-10`}>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-              Hotel Expenses History
+              Restaurant Expenses History
             </h3>
           </div>
           <div className="flex justify-end">
           {PDF?.length ? (
                 <PDFDownloadLink
-                document={<ExpensesHistoryReport date={hotelExpenses?.docs[0]?.date} values={filteredExpenses?.docs} header={{
+                document={<ExpensesHistoryReport date={RestaurantExpenses?.docs[0]?.date} values={filteredExpenses?.docs} header={{
                   title: "DAK Hospitality LTD",
                   name: "Restaurant Expenses History",
                 }} />}

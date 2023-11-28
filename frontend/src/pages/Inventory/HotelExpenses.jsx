@@ -185,6 +185,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                 fileName={`${new Date().toLocaleDateString()}.pdf`}
                 className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
+                <BsFileEarmarkPdfFill/>
                 PDF
               </PDFDownloadLink>
               ) : null}

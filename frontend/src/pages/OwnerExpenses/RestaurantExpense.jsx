@@ -29,9 +29,10 @@ const RestaurantExpense = () => {
     }
   };
 
+  console.log(hotels,"hotelll--------")
 
   const transformedHotel = hotels?.docs?.map((hotel) => ({
-    value: hotel?.manager_acc?._id,
+    value: hotel?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
   const handleReset=()=>{
@@ -98,7 +99,7 @@ const RestaurantExpense = () => {
 
         <section>
           {selectedHotel1 ? (
-            <RestaurantExpenseShow managerId={selectedHotel1?.value}></RestaurantExpenseShow>
+            <RestaurantExpenseShow hotelId={selectedHotel1?.value}></RestaurantExpenseShow>
           ) : (
           <p className="text-center">Please Select your Hotel Branch !!</p>
           )}

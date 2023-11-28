@@ -630,7 +630,8 @@ const App = () => {
               path: "restaurant-expenses/:id",
               element: (
                 <OwnerRoute>
-                  <RestaurantExpensesView />
+                  <ShowAllExpenseView/>
+                  {/* <RestaurantExpensesView /> */}
                 </OwnerRoute>
               ),
             },
@@ -662,7 +663,8 @@ const App = () => {
               path: "hotel-expenses/:id",
               element: (
                 <OwnerRoute>
-                  <HotelExpensesView />
+                   <ShowAllExpenseView />
+                  {/* <HotelExpensesView /> */}
                 </OwnerRoute>
               ),
             },
