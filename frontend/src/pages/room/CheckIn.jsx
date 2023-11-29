@@ -19,7 +19,11 @@ import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
-import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import {
+  fromDateIsoConverter,
+  getNumberOfDays,
+  toDateIsoConverter,
+} from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -71,9 +75,8 @@ const validationSchema = yup.object({
 });
 
 const CheckIn = () => {
-
-// current date
-  const [currentDate,setCurrentDate]=useState(new Date())
+  // current date
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const [isLoading, setLoading] = useState(false);
   const [upload] = useUploadMutation();
@@ -105,7 +108,7 @@ const CheckIn = () => {
       children: "",
       paymentMethod: "",
       trxID: "",
-      from:currentDate,
+      from: currentDate,
       to: "",
       amount: "",
       discount: "",
@@ -118,15 +121,16 @@ const CheckIn = () => {
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       setLoading(true);
-      const obj = { ...values,from: fromDateIsoConverter(values.from),
-        to: toDateIsoConverter(values.to), };
+      const obj = {
+        ...values,
+        from: fromDateIsoConverter(values.from),
+        to: toDateIsoConverter(values.to),
+      };
 
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
-      const no_of_days = Math.floor(
-        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
-      );
+      const no_of_days = getNumberOfDays(obj.from, obj.to);
       const rent_per_day = obj.room_arr.reduce(
         (init, current) => init + current.price,
         0
@@ -163,8 +167,7 @@ const CheckIn = () => {
         (result) => (tempImg = result.data.imageUrls)
       );
 
-
-      console.log('check in res',{
+      console.log("check in res", {
         hotel_id: obj.hotel_id,
         room_ids,
         guestName: obj.guestName,
@@ -182,7 +185,7 @@ const CheckIn = () => {
         total_rent,
         discount,
         amount_after_dis,
-        paid_amount: typeof(obj.amount)==='number' ? obj.amount : 0,
+        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
         doc_number: obj.doc_number,
@@ -218,7 +221,6 @@ const CheckIn = () => {
       //   },
       //   status: "CheckedIn",
       // });
-
 
       // if (response?.error) {
       //   toast.error(response.error.data.message);
@@ -482,7 +484,7 @@ const CheckIn = () => {
         {/* adult box */}
         <div className="flex flex-col gap-3">
           <input
-          onWheel={ event => event.currentTarget.blur() }
+            onWheel={(event) => event.currentTarget.blur()}
             type="number"
             placeholder="Adult"
             name="adult"
@@ -501,7 +503,7 @@ const CheckIn = () => {
         {/* children box */}
         <div className="flex flex-col gap-3">
           <input
-          onWheel={ event => event.currentTarget.blur() }
+            onWheel={(event) => event.currentTarget.blur()}
             type="number"
             placeholder="Children"
             name="children"
@@ -580,7 +582,7 @@ const CheckIn = () => {
 
         <div className="flex flex-col gap-3">
           <input
-          onWheel={ event => event.currentTarget.blur() }
+            onWheel={(event) => event.currentTarget.blur()}
             type="number"
             placeholder="Discount"
             name="discount"

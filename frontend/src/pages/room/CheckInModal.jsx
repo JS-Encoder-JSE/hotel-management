@@ -128,7 +128,6 @@ const CheckInModal = ({ room }) => {
       if (!obj.discount) obj.discount = 0;
 
       const no_of_days = getNumberOfDays(obj.from, obj.to);
-      console.log({ no_of_days });
       const rent_per_day = room?.data?.price;
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
