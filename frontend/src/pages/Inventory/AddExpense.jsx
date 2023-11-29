@@ -65,6 +65,9 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
     // update button toggle
     const [isUpadet, setUpdate] = useState(false);
 
+    const [selectDate,setSelectDate]=useState(null)
+
+    console.log(selectDate,"selectedddd")
 
     console.log(totalItems,"items---------")
 
@@ -80,7 +83,7 @@ const calculateTotal = () => {
 
     const formik = useFormik({
         initialValues: {
-          date: new Date(),
+          date: "",
           name: "",
           quantity: "",
           price: "",
@@ -90,7 +93,11 @@ const calculateTotal = () => {
         onSubmit: async (values, formikHelpers) => {
             setLoading(true);
           
-            const obj = { ...values };
+            const selectedDate = values.date || new Date();
+            setSelectDate(selectedDate)
+
+            const obj = { ...values, date: selectedDate };
+            // const obj = { ...values };
             console.log(obj.date)
           
             if (editIndex !== null) {
@@ -118,11 +125,19 @@ const calculateTotal = () => {
       const handleAddExpensesResponse = async()=>{
         setLoading(true)
         const response= await AddExpense({
-          hotel_id:isHotelSuccess && hotelInfo[0]?._id,
-          date:new Date(),
-          spendedfor:"restaurant",
-          items: totalExpense,
-          total_amount:calculateTotal(), 
+          
+            hotel_id: isHotelSuccess && hotelInfo[0]?._id,
+            date: selectDate || new Date(),
+            spendedfor: "restaurant",
+            items: totalExpense,
+            total_amount: parseInt(calculateTotal())
+          
+          
+          // hotel_id:isHotelSuccess && hotelInfo[0]?._id,
+          // date:new Date(),
+          // spendedfor:"restaurant",
+          // items: totalExpense,
+          // total_amount:parseInt(calculateTotal()), 
         })
         setLoading(false)
         if (response?.error) {

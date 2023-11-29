@@ -226,7 +226,7 @@ const ShowAllExpense = () => {
 
               <div className="h-96">
                 {hotelExpenses && hotelExpenses?.docs[0]?.items.length ? (
-                  <div className="overflow-x-auto">
+                  <div className="h-[20rem] overflow-x-auto overflow-y-auto">
                     <table className="table">
                       <thead>
                         <tr>
@@ -252,9 +252,9 @@ const ShowAllExpense = () => {
                             >
                               <th>{++idx}</th>
                               <td>
-                                {getformatDateTime(
+                                {
                                   hotelExpenses?.docs[0]?.date
-                                )}
+                                }
                               </td>
                               <td>{item?.name}</td>
                               <td>{item?.description}</td>
@@ -446,7 +446,7 @@ const ShowAllExpense = () => {
         </div>
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
-          <div className="overflow-x-auto">
+          <div className="h-[20rem] overflow-x-auto overflow-y-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -463,7 +463,7 @@ const ShowAllExpense = () => {
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{getformatDateTime(item?.date)}</td>
+                      <td>{item?.date}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
                           <span>{item?.total_amount}</span>
