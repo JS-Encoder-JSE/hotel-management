@@ -188,10 +188,11 @@ const CheckinPersonInfo = () => {
             <PaymentMethodCard/>
       </div>
       {/* Room rent */}
-      <div className="mt-20">
+      {/* <div className="mt-20">
         <RoomRentDetails/>
-      </div>
-      {/*  */}
+      </div> */}
+      
+      {/*  Bill system*/}
       <div className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}>
 <div>
 <RestaurantBillsCard/>
@@ -204,9 +205,9 @@ const CheckinPersonInfo = () => {
 </div>
       </div>
       {/*  TransactionHistoryCard*/}
-    <div>
+    {/* <div>
       <TransactionHistoryCard/>
-    </div>
+    </div> */}
    </>
   );
 };
