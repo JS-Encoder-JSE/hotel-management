@@ -6,9 +6,13 @@ import {
   updateBooking,
   deleteBooking,
   getActiveBookingByRoomId,
+  cancelBooking,
 } from "../../controllers/Manager/booking.controller.js";
 import { checkToken } from "../../middlewares/checkToken.js";
-import { checkedOut, getCheckoutInfoByRoom } from "../../controllers/Manager/checkout.controller.js";
+import {
+  checkedOut,
+  getCheckoutInfoByRoom,
+} from "../../controllers/Manager/checkout.controller.js";
 
 const router = Router();
 
@@ -24,6 +28,7 @@ router.get(
   getCheckoutInfoByRoom
 );
 router.post("/checkout", checkToken, checkedOut);
+router.delete("/cancel-booking/:booking_id", cancelBooking);
 // router.delete('/delete-booking/:booking_id', checkToken, deleteBooking);
 
 export default router;

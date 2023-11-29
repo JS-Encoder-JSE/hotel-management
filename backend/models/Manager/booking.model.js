@@ -19,6 +19,13 @@ const bookingInfoSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    booking_ids: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Booking",
+      },
+    ],
     guestName: {
       type: String,
       required: true,
@@ -104,6 +111,11 @@ const bookingSchema = new mongoose.Schema(
     hotel_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+    },
+    booking_info_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+      ref: "BookingInfo"
     },
     from: { type: Date, required: true },
     to: { type: Date, required: true },
