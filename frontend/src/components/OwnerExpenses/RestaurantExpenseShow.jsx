@@ -143,7 +143,7 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
 
 
 
-  const totalItemPrice = isTodayItems[0]?.items?.reduce((total, item) => {
+  const totalItemPrice = isTodayItems && isTodayItems[0]?.items?.reduce((total, item) => {
     // Add the price of each item to the total
     return total + (item?.price || 0);
   }, 0);
@@ -214,7 +214,7 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody>
+              {isTodayItems&&<tbody>
                 {isTodayItems[0]?.items?.map((item, idx) => {
                   return (
                     <tr
@@ -256,7 +256,7 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                     </tr>
                   );
                 })}
-              </tbody>
+              </tbody>}
               <tfoot className={`text-[1.2rem] font-bold`}>
                 <tr>
                   <td colSpan={5} className={`text-end text-md font-bold`}>
