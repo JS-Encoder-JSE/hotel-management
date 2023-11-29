@@ -84,7 +84,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                       <div>
                         <div className="font-bold">{item.guestName}</div>
                         <div className="text-sm opacity-50">
-                          Rooms: {item.room_ids.map((i) => i.roomNumber)}
+                          Rooms: {item.room_ids?.map((i) => i.roomNumber)}
                         </div>
                       </div>
                     </div>

@@ -60,6 +60,9 @@ const ShowAllExpenseView = () => {
     console.log("console")
   }
 
+
+  const [editItemData, setEditItemData] = useState(null);
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between `}>
@@ -137,7 +140,11 @@ const ShowAllExpenseView = () => {
                   <td>
                     <button
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                      onClick={() => window.eb_modal.showModal()}
+                      onClick={() =>{
+                        setEditItemData(item);
+                         window.eb_modal.showModal()
+                      }
+                    }
                    
                     >
                       <FaRegEdit />
@@ -170,7 +177,7 @@ const ShowAllExpenseView = () => {
         </table>
       </div>
       <Modal id={`eb_modal`}>
-      <EditExpensesView />
+      <EditExpensesView data={editItemData}/>
       </Modal>
       {/* pagination */}
       <div className="flex justify-center mt-10">

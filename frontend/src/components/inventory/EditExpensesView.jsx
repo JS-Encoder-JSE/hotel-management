@@ -8,46 +8,50 @@ import { FaEye, FaEyeSlash, FaPlusCircle, FaTrash, FaUpload } from "react-icons/
 // form validation
 const validationSchema = yup.object({
  
-    itemName: yup.string().required("Name is required"),
-    quantity: yup.string().required("Quantity is required"),
-    price: yup
-      .number()
-    ,
-
-    password: yup
+  name: yup.string().required("Name is required"),
+  quantity: yup.string().required("Quantity is required"),
+  price: yup
+    .number(),
+    
+    // password: yup
+    // .string()
+    // .min(8, "Password should be of minimum 8 characters length")
+    // .required("Password is required"),
+  description: yup
     .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
-
-    description: yup
-      .string()
-      .required("Description is required")
-      .min(10, "Description at least 10 characters length"),
-  });
+    .required("Description is required")
+    .min(10, "Description at least 10 characters length"),
+});
   
-const EditExpensesView = () => {
- 
+const EditExpensesView = ({data}) => {
+ console.log(data,"....")
     const [showPass, setShowPass] = useState(false);
     const closeRef = useRef(null);
-  const formik = useFormik({
-    initialValues: {
-        itemName: "",
-        quantity: "",
-        price: "",
-        password:"",
-        description: "",
+    const formik = useFormik({
+      initialValues: {
+            name:"",
+            quantity:"",
+            price:"",
+            password: "",
+            description:"",
+          },
+  
+      validationSchema,
+      onSubmit: async (values, formikHelpers) => {
+       console.log(values)
+      },
+    });
 
-    },
-    validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
 
-
-  const handleShowPass = () => {
-    setShowPass(!showPass);
-  };
+    useEffect(() => {
+      if (data) {
+        formik.setValues((p) => ({
+          ...p,
+          ...data,
+          
+        }));
+      }
+    }, [data]);
 
    // Price Validation
    const handlePrice = (e) => {
@@ -61,7 +65,9 @@ const EditExpensesView = () => {
       formik.handleChange(e);
     }
   };
-
+  const handleShowPass = () => {
+    setShowPass(!showPass);
+  };
 
   return (
     <div className={`space-y-10  p-10 rounded-2xl`}>
@@ -84,15 +90,15 @@ const EditExpensesView = () => {
                 <input
                   type="text"
                   placeholder="Item Name"
-                  name="itemName"
+                  name="name"
                   className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.itemName}
+                  value={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.price && Boolean(formik.errors.itemName) ? (
+                {formik.touched.name && Boolean(formik.errors.name) ? (
                   <small className="text-red-600">
-                    {formik.touched.itemName && formik.errors.itemName}
+                    {formik.touched.name && formik.errors.name}
                   </small>
                 ) : null}
               </div>
@@ -107,7 +113,7 @@ const EditExpensesView = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.price && Boolean(formik.errors.quantity) ? (
+                {formik.touched.quantity & Boolean(formik.errors.quantity) ? (
                   <small className="text-red-600">
                     {formik.touched.quantity && formik.errors.quantity}
                   </small>

@@ -115,9 +115,8 @@ const GymBooking = () => {
   });
   const transformedRooms = rooms?.data?.docs?.map((room) => ({
     value: room._id,
-    label: room.roomNumber,
+    label: `${room.roomNumber} - ${room.category}`,
   }));
-
   return (
     <>
       <div className="mb-7">

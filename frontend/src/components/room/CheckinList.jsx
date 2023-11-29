@@ -84,7 +84,7 @@ if(!checkinList){
             </tr>
           </thead>
           <tbody>
-        {checkinList.map((item,idx)=>{
+        {checkinList?.map((item,idx)=>{
             return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <td>
@@ -92,7 +92,7 @@ if(!checkinList){
                       <div>
                         <div className="font-bold">{item.guestName}</div>
                         <div className="text-sm opacity-50">
-                          Rooms: {item?.room_ids.map((i) => i.roomNumber)}
+                          Rooms: {item?.room_ids?.map((i) => i.roomNumber)}
                         </div>
                       </div>
                     </div>
