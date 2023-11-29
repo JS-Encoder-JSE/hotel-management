@@ -80,7 +80,8 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
                 Phone <br />
                 Number
               </th>
-              <th>Booking</th>
+              {/* <th>Booking <br />Date
+              </th> */}
               <th>From</th>
               <th>To</th>
               <th>Action</th>
@@ -103,7 +104,7 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
                   <td>{item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
                   {/* <td>{item?.paid_amount}</td> */}
-                  <td>{new Date(item?.createdAt).toLocaleString()}</td>
+                  {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
                   <td>{new Date(item?.from).toLocaleString()}</td>
                   <td>{new Date(item?.to).toLocaleString()}</td>
 
