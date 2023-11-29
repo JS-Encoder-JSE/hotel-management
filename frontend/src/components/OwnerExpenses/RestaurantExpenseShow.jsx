@@ -125,7 +125,25 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
   };
 
 
-  const totalItemPrice = RestaurantExpenses?.docs[0]?.items?.reduce((total, item) => {
+  const isTodayItems = RestaurantExpenses?.docs?.filter((item) => {
+    const itemDate = item.date;
+  
+    const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).replace(/\//g, '-');
+  
+    // Check if the item's date is the same as the current date
+    return itemDate === formattedCurrentDate;
+  });
+
+  console.log(isTodayItems,"itemssssssssssss")
+
+
+
+  const totalItemPrice = isTodayItems[0]?.items?.reduce((total, item) => {
     // Add the price of each item to the total
     return total + (item?.price || 0);
   }, 0);
@@ -197,13 +215,13 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                 </tr>
               </thead>
               <tbody>
-                {RestaurantExpenses?.docs[0]?.items?.map((item, idx) => {
+                {isTodayItems[0]?.items?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{RestaurantExpenses?.docs[0]?.date}</td>
+                      <td>{isTodayItems[0]?.date}</td>
                       <td>{item?.name}</td>
                       <td>{item?.description}</td>
                       <td>{item?.quantity}</td>

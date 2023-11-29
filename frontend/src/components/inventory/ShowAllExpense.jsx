@@ -151,7 +151,7 @@ const ShowAllExpense = () => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
-  console.log(hotelExpenses, "History");
+  console.log(hotelExpenses, "TodayHistory");
 
   useEffect(() => {
     setPdf(hotelExpenses?.docs[0]?.items);
@@ -165,13 +165,41 @@ const ShowAllExpense = () => {
     }
   };
 
-  const totalItemPrice = hotelExpenses?.docs[0]?.items?.reduce(
+  
+
+
+  const isTodayItems = hotelExpenses?.docs?.filter((item) => {
+    const itemDate = item.date;
+  
+    const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).replace(/\//g, '-');
+  
+    // Check if the item's date is the same as the current date
+    return itemDate === formattedCurrentDate;
+  });
+
+  console.log(isTodayItems,"itemssssssssssss")
+
+  const totalItemPrice = isTodayItems[0]?.items?.reduce(
     (total, item) => {
       // Add the price of each item to the total
       return total + (item?.price || 0);
     },
     0
   );
+
+  // const isTodayItems = hotelExpenses?.docs?.map((itemDate)=> itemDate)
+
+
+  // let isCurrentDate = isTodayItems.filter(item)
+
+  console.log(isTodayItems,"isHotel")
+
+
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -243,7 +271,7 @@ const ShowAllExpense = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {hotelExpenses?.docs[0]?.items?.map((item, idx) => {
+                        {isTodayItems[0]?.items?.map((item, idx) => {
                           return (
                             <tr
                               className={
@@ -253,7 +281,7 @@ const ShowAllExpense = () => {
                               <th>{++idx}</th>
                               <td>
                                 {
-                                  hotelExpenses?.docs[0]?.date
+                                  isTodayItems[0]?.date
                                 }
                               </td>
                               <td>{item?.name}</td>
@@ -350,7 +378,7 @@ const ShowAllExpense = () => {
               <h3
                 className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
               >
-                Hotel Expenses History
+                Restaurant Expenses History
               </h3>
             </div>
             <div className="flex justify-end">

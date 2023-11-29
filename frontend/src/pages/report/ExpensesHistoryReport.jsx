@@ -5,7 +5,7 @@ import { getformatDateTime } from "../../utils/utils";
 
 const ExpensesHistoryReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
-    const desiredHeaders = ["Serial No", "date", "spendedfor","totalAmount"];
+    const desiredHeaders = ["Serial No", "date", "spendedfor","total_amount"];
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -87,7 +87,7 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ? getformatDateTime(date) // Use the date prop here
+                    ? date // Use the date prop here
                     : item[key]}
                 </Text>
               ))}
