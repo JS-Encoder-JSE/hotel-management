@@ -159,7 +159,6 @@ export const addBooking = async (req, res) => {
         return booking._id; // Return the booking id
       })
     );
-    console.log(bookings);
     const total_rent_after_dis = total_rent - discount;
     const newBookingInfo = new BookingInfo({
       room_ids,
@@ -406,8 +405,6 @@ export const cancelBooking = async (req, res) => {
   try {
     const bookingId = req.params.booking_id; // Assuming you pass bookingId as a route parameter
 
-    // Check if the user has the authority to cancel the booking (you might want to implement your own logic for this)
-
     // Fetch the booking to be canceled
     const booking = await Booking.findById(bookingId);
     if (!booking) {
@@ -418,6 +415,10 @@ export const cancelBooking = async (req, res) => {
     }
 
     const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
+
+    // Remove the canceled room_id from bookingInfo.room_ids
+    bookingInfo.room_ids.pull(booking.room_id);
+
     const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
     const new_amount_after_dis = new_total_rent - bookingInfo.discount;
 
@@ -427,6 +428,7 @@ export const cancelBooking = async (req, res) => {
       new_amount_after_dis - bookingInfo.paid_amount;
 
     await bookingInfo.save();
+
     // Check if the booking is already canceled
     if (booking.status === "Canceled") {
       return res.status(400).json({
@@ -553,7 +555,7 @@ export const getBookingDetailsById = async (req, res) => {
   try {
     const bookingId = req.params.booking_id;
 
-    const booking = await Booking.findById(bookingId);
+    const booking = await Booking.findById(bookingId).populate("room_id", "roomNumber floorNumber");
     if (!booking) {
       return res.status(404).json({
         success: false,
@@ -879,4 +881,3 @@ export const getActiveBookingByRoomId = async (req, res) => {
     });
   }
 };
-

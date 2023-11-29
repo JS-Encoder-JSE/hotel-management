@@ -104,7 +104,7 @@ export const checkedOut = async (req, res) => {
   try {
     // Extract data from the request body
     const {
-      booking_id,
+      booking_ids,
       guestName,
       room_numbers,
       payment_method,
@@ -131,29 +131,48 @@ export const checkedOut = async (req, res) => {
 
     const formattedDate = `${day}-${month}-${Year}`;
 
-    // Create a new Report instance
-    const newReport = new ManagerReport({
-      hotel_id,
-      booking_id,
-      guestName,
-      room_numbers,
-      payment_method,
-      checked_in,
-      checked_out,
-      payable_amount,
-      paid_amount,
-      unpaid_amount,
-    });
+    const reports = await Promise.all(
+      booking_ids.map(async (booking_id) => {
+        // Create a new Report instance
+        const newReport = new ManagerReport({
+          hotel_id,
+          booking_id,
+          guestName,
+          room_numbers,
+          payment_method,
+          checked_in,
+          checked_out,
+          payable_amount,
+          paid_amount,
+          unpaid_amount,
+        });
+        await newReport.save(); // Save the booking document
+        return newReport._id; // Return the booking id
+      })
+    );
 
     // Update the booking status to "CheckedOut"
-    const updatedBooking = await Booking.findByIdAndUpdate(
-      booking_id,
-      { status: "CheckedOut" }, // Fix: wrap in an object
+    const updatedBooking = await Booking.updateMany(
+      { _id: { $in: booking_ids } },
+      { $set: { status: "CheckedOut" } }, // Wrap the update in $set
       { new: true }
     );
 
-    // Get room IDs from the updated booking
-    const roomIds = updatedBooking.room_ids;
+    // Retrieve the updated documents
+    const updatedDocuments = await Booking.find({ _id: { $in: booking_ids } });
+
+    // Extract room_ids from the updated documents
+    const roomIds = updatedDocuments.map((doc) => doc.room_id);
+
+    const bookingInfo = await BookingInfo.findOne({
+      room_ids: { $in: roomIds },
+    });
+    // Remove the canceled room_id from bookingInfo.room_ids
+    bookingInfo.room_ids.pull(...roomIds);
+    bookingInfo.paid_amount += paid_amount;
+    bookingInfo.total_unpaid_amount -= paid_amount;
+    // Save the updated BookingInfo
+    await bookingInfo.save();
 
     // Define roomStatus (replace 'YOUR_ROOM_STATUS' with the actual status)
     const roomStatus = "Available";
@@ -164,8 +183,6 @@ export const checkedOut = async (req, res) => {
       { $set: { status: roomStatus } }
     );
     await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
-    // Save the report to the database
-    const savedReport = await newReport.save();
 
     const ownerDashboard = await Dashboard.findOne({
       user_id: user.parent_id,
@@ -256,22 +273,24 @@ export const checkedOut = async (req, res) => {
     const existingStaticSubDashData = await StaticSubDashData.findOne({
       user_id: userId,
     });
-    existingStaticSubDashData.total_hotel_income += new_paid_amount;
-    existingStaticSubDashData.total_hotel_profit += new_paid_amount;
+    existingStaticSubDashData.total_hotel_income += paid_amount;
+    existingStaticSubDashData.total_hotel_profit += paid_amount;
     await existingStaticSubDashData.save();
     const existingDailySubDashData = await DailySubDashData.findOne({
       user_id: userId,
-      date,
+      date:formattedDate,
     });
     if (existingDailySubDashData) {
-      existingDailySubDashData.today_hotel_income += new_paid_amount;
-      existingDailySubDashData.today_hotel_profit += new_paid_amount;
+      existingDailySubDashData.today_hotel_income += paid_amount;
+      existingDailySubDashData.today_hotel_profit += paid_amount;
       await existingDailySubDashData.save();
     }
     if (!existingDailySubDashData) {
       const newDailySubDashData = new DailySubDashData({
         user_id: userId,
-        today_hotel_expenses: new_paid_amount,
+        user_role: user.role,
+        today_hotel_expenses: paid_amount,
+        date:formattedDate,
       });
       await newDailySubDashData.save();
     }
@@ -280,20 +299,22 @@ export const checkedOut = async (req, res) => {
       month_name,
       year,
     });
+    console.log(existingMonthlySubDashData);
     if (existingMonthlySubDashData) {
-      existingDailySubDashData.total_hotel_income += new_paid_amount;
-      existingDailySubDashData.total_hotel_profit += new_paid_amount;
+      existingMonthlySubDashData.total_hotel_income += paid_amount;
+      existingMonthlySubDashData.total_hotel_profit += paid_amount;
       await existingMonthlySubDashData.save();
     }
     if (!existingMonthlySubDashData) {
       const newMonthlySubDashData = new DailySubDashData({
         user_id: userId,
-        total_hotel_expenses: new_paid_amount,
+        user_role: user.role,
+        total_hotel_expenses: paid_amount,
       });
       await newMonthlySubDashData.save();
     }
     // Respond with the saved report
-    res.status(201).json(savedReport);
+    res.status(201).json({message:"Successfully Checked-In"});
   } catch (error) {
     // Handle errors
     console.error(error);

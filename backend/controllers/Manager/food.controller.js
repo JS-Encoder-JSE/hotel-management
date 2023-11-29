@@ -218,7 +218,11 @@ export const addOrder = async (req, res) => {
     // Format the number to have exactly 8 digits as a string
     const unique_id = randomNumber.toString().slice(0, 8);
     if (room_id) {
-      const bookingInfo = await BookingInfo.find
+      const bookingInfo = await BookingInfo.findOne({ room_ids: room_id });
+      bookingInfo.total_posted_bills += unpaid_amount;
+      bookingInfo.total_payable_amount += unpaid_amount;
+      bookingInfo.total_unpaid_amount += unpaid_amount;
+      await bookingInfo.save();
     }
     const newFoodOrder = new FoodOrder({
       room_id,
