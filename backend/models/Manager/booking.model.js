@@ -117,6 +117,15 @@ const bookingSchema = new mongoose.Schema(
       required: false,
       ref: "BookingInfo"
     },
+    guestName: {
+      type: String,
+      required: true,
+    },
+    mobileNumber: {
+      type: String,
+      required: false,
+      default: "",
+    },
     from: { type: Date, required: true },
     to: { type: Date, required: true },
     no_of_days: {
