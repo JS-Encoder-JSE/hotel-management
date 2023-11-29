@@ -555,7 +555,10 @@ export const getBookingDetailsById = async (req, res) => {
   try {
     const bookingId = req.params.booking_id;
 
-    const booking = await Booking.findById(bookingId).populate("room_id", "roomNumber floorNumber");
+    const booking = await Booking.findById(bookingId).populate(
+      "room_id",
+      "roomNumber floorNumber"
+    );
     if (!booking) {
       return res.status(404).json({
         success: false,
@@ -614,15 +617,12 @@ export const updateBooking = async (req, res) => {
       updateData.status === "CheckedOut" ||
       updateData.status === "Canceled"
     ) {
-      const roomIds = updatedBooking.room_ids;
+      const roomId = updatedBooking.room_id;
 
       // Update room status based on the updated status
       if (updateData.status === "CheckedIn") {
         const roomStatus = "CheckedIn";
-        await Room.updateMany(
-          { _id: { $in: roomIds } },
-          { $set: { status: roomStatus } }
-        );
+        await Room.updateOne({ _id: roomId }, { $set: { status: roomStatus } });
         const newPaidAmount =
           updateData.paid_amount - existingBooking.paid_amount;
         const ownerDashboard = await Dashboard.findOne({
@@ -719,8 +719,8 @@ export const updateBooking = async (req, res) => {
         }
       }
       if (updateData.status === "Canceled") {
-        await Room.updateMany(
-          { _id: { $in: roomIds } },
+        await Room.updateOne(
+          { _id: roomId },
           { $set: { status: "Available" } }
         );
         const ownerDashboard = await Dashboard.findOne({
