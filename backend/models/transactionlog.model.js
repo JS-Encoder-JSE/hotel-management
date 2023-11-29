@@ -2,6 +2,19 @@ import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 const transactionlogSchema = new mongoose.Schema(
   {
+    manager_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+    },
+    booking_info_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+    },
+    dedicated_to: {
+      type: String,
+      required: true,
+      enum: ["license", "hotel"],
+    },
     tran_id: {
       type: String,
       required: false,
@@ -13,11 +26,11 @@ const transactionlogSchema = new mongoose.Schema(
     },
     bill_from: {
       type: Date,
-      required: true,
+      required: false,
     },
     bill_to: {
       type: Date,
-      required: true,
+      required: false,
     },
     from: {
       type: String,

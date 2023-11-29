@@ -1,4 +1,4 @@
-﻿import Booking from "../../models/Manager/booking.model.js";
+﻿import { Booking, BookingInfo } from "../../models/Manager/booking.model.js";
 import { FoodOrder } from "../../models/Manager/food.model.js";
 import Room from "../../models/Manager/room.model.js";
 import {
@@ -6,6 +6,7 @@ import {
   Dashboard,
   DashboardTable,
 } from "../../models/dashboard.model.js";
+import TransactionLog from "../../models/transactionlog.model.js";
 import User from "../../models/user.model.js";
 
 export const addBooking = async (req, res) => {
@@ -21,15 +22,12 @@ export const addBooking = async (req, res) => {
       bookingMethod,
       paymentMethod,
       transection_id,
+      remark,
       from,
       to,
       no_of_days,
-      rent_per_day,
-      total_rent,
       discount,
-      amount_after_dis,
       paid_amount = 0,
-      total_unpaid_amount,
       status,
       nationality,
       doc_number,
@@ -52,6 +50,8 @@ export const addBooking = async (req, res) => {
 
     const formattedDate = `${day}-${month}-${Year}`;
 
+    let total_rent = 0;
+
     if (!room_ids || !Array.isArray(room_ids) || room_ids.length === 0) {
       return res.status(400).json({
         success: false,
@@ -68,58 +68,76 @@ export const addBooking = async (req, res) => {
       });
     }
 
-    // Check room availability for the requested dates, excluding deleted bookings or check-ins
-    const overlappingBookings = await Booking.find({
-      room_ids: { $in: room_ids },
-      deleted: false,
-      status: { $ne: "Canceled" },
-      $or: [
-        {
-          from: { $lte: new Date(to) },
-          to: { $gte: new Date(from) },
-        },
-        {
-          from: { $gte: new Date(from) },
-          to: { $lte: new Date(to) },
-        },
-      ],
-    });
+    // // Check room availability for the requested dates, excluding deleted bookings or check-ins
+    // const overlappingBookings = await Booking.find({
+    //   room_ids: { $in: room_ids },
+    //   deleted: false,
+    //   status: { $ne: "Canceled" },
+    //   $or: [
+    //     {
+    //       from: { $lte: new Date(to) },
+    //       to: { $gte: new Date(from) },
+    //     },
+    //     {
+    //       from: { $gte: new Date(from) },
+    //       to: { $lte: new Date(to) },
+    //     },
+    //   ],
+    // });
 
-    if (overlappingBookings.length > 0) {
-      const unavailableRooms = overlappingBookings.map(
-        (booking) => booking.room_ids
-      );
+    // if (overlappingBookings.length > 0) {
+    //   const unavailableRooms = overlappingBookings.map(
+    //     (booking) => booking.room_ids
+    //   );
 
-      // Find the next available dates for each room, excluding deleted bookings or check-ins
-      const nextAvailableDates = await Promise.all(
-        unavailableRooms.map(async (roomId) => {
-          const bookingsForRoom = await Booking.find({
-            room_ids: roomId,
-            to: { $lte: new Date(from) },
-            status: { $ne: "Canceled" },
-            deleted: false,
-          })
-            .sort({ to: -1 })
-            .limit(1);
+    //   // Find the next available dates for each room, excluding deleted bookings or check-ins
+    //   const nextAvailableDates = await Promise.all(
+    //     unavailableRooms.map(async (roomId) => {
+    //       const bookingsForRoom = await Booking.find({
+    //         room_ids: roomId,
+    //         to: { $lte: new Date(from) },
+    //         status: { $ne: "Canceled" },
+    //         deleted: false,
+    //       })
+    //         .sort({ to: -1 })
+    //         .limit(1);
 
-          if (bookingsForRoom.length > 0) {
-            return bookingsForRoom[0].to;
-          } else {
-            // If no previous bookings, room is available from today
-            return new Date();
-          }
-        })
-      );
+    //       if (bookingsForRoom.length > 0) {
+    //         return bookingsForRoom[0].to;
+    //       } else {
+    //         // If no previous bookings, room is available from today
+    //         return new Date();
+    //       }
+    //     })
+    //   );
 
-      return res.status(400).json({
-        success: false,
-        message: "One or more rooms are not available for the requested dates",
-        unavailableRooms,
-        nextAvailableDates,
-      });
-    }
-
-    const newBooking = new Booking({
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "One or more rooms are not available for the requested dates",
+    //     unavailableRooms,
+    //     nextAvailableDates,
+    //   });
+    // }
+    const bookings = await Promise.all(
+      room_ids.map(async (room_id) => {
+        const room = await Room.findById(room_id);
+        const rent_per_day = room.price;
+        const total_room_rent = rent_per_day * no_of_days;
+        total_rent += total_room_rent;
+        return new Booking({
+          room_id,
+          hotel_id,
+          from,
+          to,
+          no_of_days,
+          rent_per_day: rent_per_day,
+          total_room_rent: total_room_rent,
+          status,
+        });
+      })
+    );
+    const amount_after_dis = total_rent - discount;
+    const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
       guestName,
@@ -129,30 +147,31 @@ export const addBooking = async (req, res) => {
       adult,
       children,
       bookingMethod,
-      paymentMethod,
-      transection_id,
-      from,
-      to,
-      no_of_days,
-      rent_per_day,
-      total_rent,
+      total_rent: total_rent,
       discount,
-      amount_after_dis,
+      amount_after_dis: amount_after_dis,
       paid_amount,
-      total_unpaid_amount,
-      status,
+      total_unpaid_amount: amount_after_dis - paid_amount,
       nationality,
       doc_number,
       doc_images,
     });
 
+    // const newBooking = new Booking({
+    //   room_id,
+    //   hotel_id,
+    //   from,
+    //   to,
+    //   no_of_days,
+    //   rent_per_day,
+    //   total_rent,
+    //   status,
+    // });
+
     if (status === "CheckedIn") {
-      console.log("aise");
-      console.log(user.parent_id);
       const ownerDashboard = await Dashboard.findOne({
         user_id: user.parent_id,
       });
-      console.log(ownerDashboard);
       ownerDashboard.total_checkin += 1;
       ownerDashboard.total_amount += paid_amount;
 
@@ -160,18 +179,15 @@ export const addBooking = async (req, res) => {
       const managerDashboard = await Dashboard.findOne({
         user_id: userId,
       });
-      console.log(managerDashboard);
       managerDashboard.total_checkin += 1;
       managerDashboard.total_amount += paid_amount;
 
       await managerDashboard.save();
-      console.log(managerDashboard);
       const managerDashboardTable = await DashboardTable.findOne({
         user_id: userId,
         month_name: month_name,
         year: year,
       });
-      console.log(managerDashboardTable);
 
       if (managerDashboardTable) {
         managerDashboardTable.total_checkin += 1;
@@ -191,7 +207,6 @@ export const addBooking = async (req, res) => {
         month_name: month_name,
         year: year,
       });
-      console.log(ownerDashboardTable);
 
       if (ownerDashboardTable) {
         ownerDashboardTable.total_checkin += 1;
@@ -209,8 +224,6 @@ export const addBooking = async (req, res) => {
         user_id: userId,
         date: formattedDate,
       });
-      console.log(managerCheckInfo);
-      console.log(user.role);
       if (managerCheckInfo) {
         managerCheckInfo.today_checkin += 1;
         await managerCheckInfo.save();
@@ -220,10 +233,8 @@ export const addBooking = async (req, res) => {
           user_role: user.role,
           today_checkin: 1,
         });
-        console.log(1);
         await newCheckInfo.save();
       }
-      console.log(2);
       const ownerCheckInfo = await CheckInfo.findOne({
         user_id: user.parent_id,
         date: formattedDate,
@@ -240,7 +251,6 @@ export const addBooking = async (req, res) => {
         });
         await newCheckInfo.save();
       }
-      console.log("finished");
     }
     if (status === "Active") {
       const ownerDashboard = await Dashboard.findOne({
@@ -249,8 +259,6 @@ export const addBooking = async (req, res) => {
       const managerDashboard = await Dashboard.findOne({
         user_id: userId,
       });
-      console.log(ownerDashboard);
-      console.log(managerDashboard);
       ownerDashboard.total_booking += 1;
       ownerDashboard.total_amount += paid_amount;
 
@@ -302,14 +310,10 @@ export const addBooking = async (req, res) => {
         user_id: userId,
         date: formattedDate,
       });
-      console.log(managerCheckInfo);
-      console.log(user.role);
       if (managerCheckInfo) {
-        console.log(1);
         managerCheckInfo.today_booking += 1;
         await managerCheckInfo.save();
       } else {
-        console.log(2);
         const newCheckInfo = new CheckInfo({
           user_id: userId,
           user_role: user.role,
@@ -322,7 +326,6 @@ export const addBooking = async (req, res) => {
         user_id: user.parent_id,
         date: formattedDate,
       });
-      console.log(ownerCheckInfo);
 
       if (ownerCheckInfo) {
         ownerCheckInfo.today_booking += 1;
@@ -336,7 +339,24 @@ export const addBooking = async (req, res) => {
         await newCheckInfo.save();
       }
     }
-    const savedBooking = await newBooking.save();
+    await Booking.create(bookings);
+    const savedNewBookingInfo = await newBookingInfo.save();
+    // Create a new transaction log entry
+    if (paid_amount > 0) {
+      const newTransactionLog = new TransactionLog({
+        manager_id: userId,
+        booking_info_id: savedNewBookingInfo._id,
+        dedicated_to: "hotel",
+        tran_id: transection_id,
+        payment_method: paymentMethod,
+        from: guestName,
+        to: user.username,
+        amount: paid_amount,
+        remark,
+      });
+      // Save the transaction log entry to the database
+      await newTransactionLog.save();
+    }
     // Update the status of booked rooms based on booking status
     const roomStatus = status === "CheckedIn" ? "CheckedIn" : "Booked";
     await Room.updateMany(
@@ -345,7 +365,6 @@ export const addBooking = async (req, res) => {
     );
     res.status(201).json({
       success: true,
-      data: savedBooking,
       message: "Booking added successfully",
     });
   } catch (error) {

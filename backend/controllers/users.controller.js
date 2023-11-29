@@ -266,6 +266,7 @@ export const addLicense = async (req, res) => {
 
     // Create a new transaction log entry
     const newTransactionLog = new TransactionLog({
+      dedicated_to:"license",
       tran_id,
       payment_method,
       bill_from,

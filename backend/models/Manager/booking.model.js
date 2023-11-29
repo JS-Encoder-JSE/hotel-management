@@ -6,7 +6,7 @@ const ImageSchema = new mongoose.Schema({
   passport: { type: Array, required: false, default: "" },
   nid: { type: Array, required: false, default: "" },
 });
-const bookingSchema = new mongoose.Schema(
+const bookingInfoSchema = new mongoose.Schema(
   {
     room_ids: [
       {
@@ -52,26 +52,6 @@ const bookingSchema = new mongoose.Schema(
       enum: ["Online", "Offline"],
       required: false,
     },
-    paymentMethod: {
-      type: String,
-      enum: ["Card", "Cash", "Mobile_Banking"],
-      required: true,
-    },
-    transection_id: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    from: { type: Date, required: true },
-    to: { type: Date, required: true },
-    no_of_days: {
-      type: Number,
-      required: true,
-    },
-    rent_per_day: {
-      type: Number,
-      required: true,
-    },
     total_rent: {
       type: Number,
       required: true,
@@ -95,11 +75,6 @@ const bookingSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
-    status: {
-      type: String,
-      enum: ["Active", "CheckedIn", "CheckedOut", "Canceled"],
-      required: true,
-    },
     deleted: {
       type: Boolean,
       required: false,
@@ -119,8 +94,42 @@ const bookingSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+const bookingSchema = new mongoose.Schema(
+  {
+    room_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Room",
+    },
+    hotel_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    from: { type: Date, required: true },
+    to: { type: Date, required: true },
+    no_of_days: {
+      type: Number,
+      required: true,
+    },
+    rent_per_day: {
+      type: Number,
+      required: true,
+    },
+    total_room_rent: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["Active", "CheckedIn", "CheckedOut", "Canceled"],
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 // Apply the mongoose-paginate-v2 plugin to your schema
 bookingSchema.plugin(mongoosePaginate);
 const Booking = mongoose.model("Booking", bookingSchema);
+const BookingInfo = mongoose.model("BookingInfo", bookingInfoSchema);
 
-export default Booking;
+export { Booking, BookingInfo };
