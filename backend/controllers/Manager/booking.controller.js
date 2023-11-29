@@ -548,6 +548,32 @@ export const getBookingById = async (req, res) => {
     });
   }
 };
+export const getBookingDetailsById = async (req, res) => {
+  try {
+    const bookingId = req.params.booking_id;
+
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+    const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
+    res.status(200).json({
+      success: true,
+      data: { ...booking._doc, ...bookingInfo._doc },
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
 
 export const updateBooking = async (req, res) => {
   try {
