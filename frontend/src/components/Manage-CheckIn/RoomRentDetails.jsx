@@ -9,11 +9,7 @@ const RoomRentDetails = () => {
       <table className="w-full border border-black/20 text-sm">
         <tbody>
           <tr className="grid grid-cols-3 text-left">
-            <td className="py-1 px-3 border-r border-black/20">
-              {/* {data?.[0]?.room_ids
-                ?.map((i) => `${i?.roomNumber} - ${i?.category}`)
-                .join(", ")} */}
-            </td>
+          
 
             <td className="col-span-7 p-1 overflow-x-auto">
               <table className="bg-[#e5e7eb] w-full">

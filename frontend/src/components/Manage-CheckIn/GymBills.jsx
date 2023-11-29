@@ -41,7 +41,7 @@ const GymBills = () => {
   };
 
   return (
-    <div className={`px-5 space-y-5 mt-20`}>
+    <div className={`pr-2 space-y-5 mt-20`}>
     <div  >
     <div className={`bg-white px-10 py-5 rounded`}>     
         <div>
@@ -77,7 +77,7 @@ const GymBills = () => {
                   );
                 })}
               </tbody>
-              {/* <tfoot className={`text-[1.2rem] font-bold`}>
+              <tfoot className={`text-[1.2rem] font-bold`}>
                 <tr>
                   <td colSpan={4} className={`text-end `}>
                   Total :
@@ -89,7 +89,7 @@ const GymBills = () => {
                  </div>
                   </td>
                 </tr>
-              </tfoot> */}
+              </tfoot>
             </table>
           </div>
         </div>

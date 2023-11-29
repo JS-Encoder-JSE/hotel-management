@@ -13,56 +13,56 @@ import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 
-import { useGetExpensesQuery, useGetHotelByManagerIdQuery } from "../../redux/room/roomAPI";
+import {
+  useGetExpensesQuery,
+  useGetHotelByManagerIdQuery,
+} from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
-import { fromDateIsoConverter, getISOStringDate, getformatDateTime } from "../../utils/utils";
+import {
+  fromDateIsoConverter,
+  getISOStringDate,
+  getformatDateTime,
+} from "../../utils/utils";
 import EditExpenses from "../../components/inventory/EditExpenses";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
+import {
+  useHotelsQuery,
+  useUpdateHotelMutation,
+} from "../../redux/Owner/hotelsAPI";
 
-
-const  RestaurantExpenseShow = ({hotelId}) => {
-
+const RestaurantExpenseShow = ({ hotelId }) => {
   const [forcePage, setForcePage] = useState(null);
+  const [PDF, setPdf] = useState([]);
   const navigate = useNavigate();
-  const [reportsPerPage] = useState(10);
+  const [hotelsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
-  const [PDF,setPdf]=useState([])
 
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-const { isUserLoading, user } = useSelector((store) => store.authSlice);
+  // console.log(user._id);
 
-// console.log(user._id);
+  // const {
+  //   data: hotelInfo,
+  //   isLoading: isHotelLoading,
+  //   isSuccess: isHotelSuccess,
+  // } = useGetHotelByManagerIdQuery(user?._id);
+  // console.log(hotelInfo[0]?._id);
 
-const {
-  data: hotelInfo,
-  isLoading: isHotelLoading,
-  isSuccess: isHotelSuccess,
-} = useGetHotelByManagerIdQuery(user?._id);
-// console.log(hotelInfo[0]?._id);
+  // 1st commit
 
+  // const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
-// 1st commit
-
-// const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
-
-
-
- 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
   });
 
-  console.log(searchParams)
-
-  const handlePageClick = ({ selected: page }) => {
-    setCurrentPage(page);
-  };
+  console.log(searchParams);
 
   const formik = useFormik({
     initialValues: {
@@ -70,8 +70,6 @@ const {
       endDate: "",
     },
     onSubmit: (values) => {
-
-     
       setSearchParams((p) => ({
         ...p,
         toDate: getISOStringDate(values.endDate),
@@ -83,16 +81,12 @@ const {
       setForcePage(0);
     },
   });
-  const { data: RestaurantExpenses, isLoading, isSuccess } = useGetExpensesQuery({
-    cp: 1,
-    fromDate:fromDateIsoConverter(new Date()),
-    hotel_id: hotelId,
-    spendedfor: "restaurant",
-    limit: 10,
-  });
 
-
-  const { data: filteredExpenses, isLoading: isFilterDataLoading, isSuccess: filterExSuccess } = useGetExpensesQuery({
+  const {
+    data: filteredExpenses,
+    isLoading: isFilterDataLoading,
+    isSuccess: filterExSuccess,
+  } = useGetExpensesQuery({
     cp: currentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
@@ -100,23 +94,31 @@ const {
     spendedfor: "restaurant",
     limit: formik.values.entries,
   });
-
   
+  const {
+    data: RestaurantExpenses,
+    isLoading,
+    isSuccess,
+  } = useGetExpensesQuery({
+    cp: 1,
+    fromDate: fromDateIsoConverter(new Date()),
+    hotel_id: hotelId,
+    spendedfor: "restaurant",
+    limit: 10,
+  });
+
+
   useEffect(() => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
+  console.log(RestaurantExpenses, "History");
 
+  useEffect(() => {
+    setPdf(RestaurantExpenses?.docs[0]?.items);
+  }, [RestaurantExpenses]);
 
-  console.log(RestaurantExpenses,"History")
-
-  useEffect(()=>{
-setPdf(RestaurantExpenses?.docs[0]?.items)
-  },[RestaurantExpenses])
- 
-
-  console.log(filteredExpenses,"filtered expenses.......")
-
+  console.log(filteredExpenses, "filtered expenses.......");
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -124,15 +126,20 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
     }
   };
 
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
 
-  const totalItemPrice = RestaurantExpenses?.docs[0]?.items?.reduce((total, item) => {
-    // Add the price of each item to the total
-    return total + (item?.price || 0);
-  }, 0);
+  const totalItemPrice = RestaurantExpenses?.docs[0]?.items?.reduce(
+    (total, item) => {
+      // Add the price of each item to the total
+      return total + (item?.price || 0);
+    },
+    0
+  );
 
   return (
     <div className={`px-5 space-y-5`}>
-
       {/* 2nd Commit */}
 
       {/* {RestaurantExpenses && filteredExpenses &&  */}
@@ -153,130 +160,129 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
             </button>
           </Link>
         </div> */}
-        {/* today's expense */}
-   <div>
-     <div>
+
+        <div>
           <div>
-            <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
-              Today Expenses
-            </h3>
-          </div>
-          <div className={`flex justify-end mb-5`}>
-          {PDF?.length ? (
-                <PDFDownloadLink
-                document={<RestaurantExpenseReport date={RestaurantExpenses?.docs[0]?.date} values={RestaurantExpenses?.docs[0]?.items} header={{
-                  title: "DAK Hospitality LTD",
-                  name: "Today's Restaurant Expenses",
-                }} />}
-                fileName={`${new Date().toLocaleDateString()}.pdf`}
-                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            <div>
+              <h3
+                className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
               >
-                <BsFileEarmarkPdfFill/>
-                PDF
-              </PDFDownloadLink>
+                Today Expenses
+              </h3>
+            </div>
+            <div className={`flex justify-end mb-5`}>
+              {PDF?.length ? (
+                <PDFDownloadLink
+                  document={
+                    <RestaurantExpenseReport
+                      date={RestaurantExpenses?.docs[0]?.date}
+                      values={RestaurantExpenses?.docs[0]?.items}
+                      header={{
+                        title: "DAK Hospitality LTD",
+                        name: "Today's Restaurant Expenses",
+                      }}
+                    />
+                  }
+                  fileName={`${new Date().toLocaleDateString()}.pdf`}
+                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                >
+                  <BsFileEarmarkPdfFill />
+                  PDF
+                </PDFDownloadLink>
               ) : null}
-          </div>
+            </div>
 
-        <div className="h-96">
+            <div className="h-96">
+              {/* 3rd commit  */}
 
-          {/* 3rd commit  */}
-          
-        {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
-        <div className="overflow-x-auto">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Date</th>
-                  <th>Items Name</th>
-                  <th>Description</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  {RestaurantExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {RestaurantExpenses?.docs[0]?.items?.map((item, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>{getformatDateTime(RestaurantExpenses?.docs[0]?.date)}</td>
-                      <td>{item?.name}</td>
-                      <td>{item?.description}</td>
-                      <td>{item?.quantity}</td>
-                      <td>
-                        
-                        <FaRupeeSign className="inline" />
-                          <span>{item?.price}</span>   
-                      </td>
-                      {item?.remark&&<td>Remark</td>}
-                      <td>
-                        <button
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                          onClick={() =>
-                            document.getElementById("my_modal_3").showModal()
+              {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
+              <div className="overflow-x-auto">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>SL</th>
+                      <th>Date</th>
+                      <th>Items Name</th>
+                      <th>Description</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      {RestaurantExpenses?.docs[0]?.items?.map(
+                        (item, idx) => item?.remark && <th>Remark</th>
+                      )}
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {RestaurantExpenses?.docs[0]?.items?.map((item, idx) => {
+                      return (
+                        <tr
+                          className={
+                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
                           }
                         >
-                          <FaRegEdit />
-                        </button>
-                        <dialog id="my_modal_3" className="modal">
-                          <div className="modal-box">
-                            <form method="dialog">
-                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                ✕
-                              </button>
-                            </form>
-                            {/* edit expenses */}
-                            <EditExpenses />
-                          </div>
-                        </dialog>
+                          <th>{++idx}</th>
+                          <td>
+                            {getformatDateTime(
+                              RestaurantExpenses?.docs[0]?.date
+                            )}
+                          </td>
+                          <td>{item?.name}</td>
+                          <td>{item?.description}</td>
+                          <td>{item?.quantity}</td>
+                          <td>
+                            <FaRupeeSign className="inline" />
+                            <span>{item?.price}</span>
+                          </td>
+                          {item?.remark && <td>Remark</td>}
+                          <td>
+                            <button
+                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                              onClick={() =>
+                                document
+                                  .getElementById("my_modal_3")
+                                  .showModal()
+                              }
+                            >
+                              <FaRegEdit />
+                            </button>
+                            <dialog id="my_modal_3" className="modal">
+                              <div className="modal-box">
+                                <form method="dialog">
+                                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                                    ✕
+                                  </button>
+                                </form>
+                                <EditExpenses />
+                              </div>
+                            </dialog>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                  <tfoot className={`text-[1.2rem] font-bold`}>
+                    <tr>
+                      <td colSpan={5} className={`text-end text-md font-bold`}>
+                        Total :
                       </td>
-                     
+                      <td>
+                        <div className="flex">
+                          <div>
+                            <FaRupeeSign />
+                          </div>
+                          <div> 25000</div>
+                        </div>
+                      </td>
                     </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot className={`text-[1.2rem] font-bold`}>
-                <tr>
-                  <td colSpan={5} className={`text-end text-md font-bold`}>
-                    Total :
-                  </td>
-                  <td>
-                    <div className="flex">
-                      <div>
-                        <FaRupeeSign />
-                      </div>
-                      <div>
-                        {" "}
-                      25000
-                        {/* {totalItemPrice} */}
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-            {/* <div className={`flex justify-center md:ms-[20rem] mt-4`}>
-              <h1>Grand Total :</h1>
-              <div className="flex ">
-              <div>
-              <FaRupeeSign />
+                  </tfoot>
+                </table>
               </div>
-              <div>
-                <span>25000</span>
-              </div>
-              </div>
-            </div> */}
+            </div>
           </div>
-        </div>
-        </div>
 
-        {/* pagination */}
+          {/* pagination */}
 
-        <div className="flex justify-center mt-10">
+          <div className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -295,49 +301,57 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
               renderOnZeroPageCount={null}
             />
           </div>
-     </div>
+        </div>
 
         {/* Restaurant Expenses */}
 
         <div className={`mb-10 mt-10`}>
           <div>
-            <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+            <h3
+              className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+            >
               Restaurant Expenses History
             </h3>
           </div>
           <div className="flex justify-end">
-          {PDF?.length ? (
-                <PDFDownloadLink
-                document={<ExpensesHistoryReport date={RestaurantExpenses?.docs[0]?.date} values={filteredExpenses?.docs} header={{
-                  title: "DAK Hospitality LTD",
-                  name: "Restaurant Expenses History",
-                }} />}
+            {PDF?.length ? (
+              <PDFDownloadLink
+                document={
+                  <ExpensesHistoryReport
+                    date={RestaurantExpenses?.docs[0]?.date}
+                    values={filteredExpenses?.docs}
+                    header={{
+                      title: "DAK Hospitality LTD",
+                      name: "Restaurant Expenses History",
+                    }}
+                  />
+                }
                 fileName={`${new Date().toLocaleDateString()}.pdf`}
                 className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
-                <BsFileEarmarkPdfFill/>
+                <BsFileEarmarkPdfFill />
                 PDF
               </PDFDownloadLink>
-              ) : null}
+            ) : null}
           </div>
         </div>
         <div className={`flex justify-between my-5`}>
-            <div className={`space-x-1.5`}>
-              <span>Show</span>
-              <select
-                name="entries"
-                className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-                value={formik.values.entries}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-              </select>
-              <span>entries</span>
-            </div>
+          <div className={`space-x-1.5`}>
+            <span>Show</span>
+            <select
+              name="entries"
+              className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+              value={formik.values.entries}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+            <span>entries</span>
           </div>
+        </div>
         <div className={`flex gap-3 `}>
           <DatePicker
             autoComplete={`off`}
@@ -411,14 +425,16 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                       <th>{++idx}</th>
                       <td>{getformatDateTime(item?.date)}</td>
                       <td>
-                          <FaRupeeSign className="inline"/>                       
-                          <span>{item?.price}</span>
+                        <FaRupeeSign className="inline" />
+                        <span>{item?.price}</span>
                       </td>
                       <td className={`space-x-1.5`}>
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/restaurant-expenses/${item?._id}`)
+                            navigate(
+                              `/dashboard/restaurant-expenses/${item?._id}`
+                            )
                           }
                         >
                           <FaEye />
