@@ -60,7 +60,7 @@ const CurOrderList = () => {
     pp: ordersPerPage,
     table_number: searchTable,
   });
- 
+
   const modifiedData = orders?.data?.docs?.map((order) => ({
     ...order,
     grand_total: order.items.reduce((total, item) => total + item.total, 0),
@@ -102,75 +102,78 @@ const CurOrderList = () => {
       formik.handleSubmit();
     }
   };
- 
+
   // console.log("search",search)
 
   return (
     <div className={`px-5 space-y-5`}>
-      <div className={`bg-white px-10 py-5 rounded`}>
+      <div className={`bg-white p-5 rounded`}>
+        <div className="mb-7">
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+
         <h3 className={`text-2xl font-semibold text-center`}>
           Current Order List
         </h3>
-        <div className={`flex justify-between mt-5 gap-3`}>
-        <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
-       <div className="flex gap-4">
-       <div className={`relative max-w-xs w-full `}>
-            <input
-              type="text"
-              placeholder="Search by Table number..."
-              name="tableNumber"
-              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-              value={formik.values.tableNumber}
-              onChange={formik.handleChange}
-              onKeyUp={(e) => {
-                e.target.value === "" ? formik.handleSubmit() : null;
-              }}
-              onKeyDown={(e) => pressEnter(e)}
-            />
-            <button
+        <div className={`flex justify-end mt-5 gap-3`}>
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className={`relative max-w-xs w-full `}>
+              <input
+                type="text"
+                placeholder="Search by Table number..."
+                name="tableNumber"
+                className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+                value={formik.values.tableNumber}
+                onChange={formik.handleChange}
+                onKeyUp={(e) => {
+                  e.target.value === "" ? formik.handleSubmit() : null;
+                }}
+                onKeyDown={(e) => pressEnter(e)}
+              />
+              <button
                 onClick={() => formik.handleSubmit()}
-              type="button"
-              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-            >
-              <FaSearch />
-            </button>
-          </div>
+                type="button"
+                className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              >
+                <FaSearch />
+              </button>
+            </div>
 
-          <div className={`relative max-w-xs w-full`}>
-            <input
-              type="text"
-              placeholder="Search by invoice number..."
-              name="search"
-              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-              value={formik.values.search}
-              onChange={formik.handleChange}
-              onKeyUp={(e) => {
-                e.target.value === "" ? formik.handleSubmit() : null;
-              }}
-              onKeyDown={(e) => pressEnter2(e)}
-            />
-            <button
-              onClick={formik.handleSubmit}
-              type="button"
-              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-            >
-              <FaSearch />
-            </button>
+            <div className={`relative max-w-xs w-full`}>
+              <input
+                type="text"
+                placeholder="Search by invoice number..."
+                name="search"
+                className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+                value={formik.values.search}
+                onChange={formik.handleChange}
+                onKeyUp={(e) => {
+                  e.target.value === "" ? formik.handleSubmit() : null;
+                }}
+                onKeyDown={(e) => pressEnter2(e)}
+              />
+              <button
+                onClick={formik.handleSubmit}
+                type="button"
+                className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              >
+                <FaSearch />
+              </button>
+            </div>
           </div>
-       </div>
         </div>
         {/*<div className={`flex `}>*/}
         {/*  <div className="flex flex-col gap-3">*/}

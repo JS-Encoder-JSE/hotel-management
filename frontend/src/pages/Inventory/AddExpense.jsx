@@ -181,7 +181,7 @@ const calculateTotal = () => {
           <div className={`space-y-10`}>
         <div className="card bg-white shadow-xl">
           <div className="card-body">
-          <div>
+          <div className='mb-5'>
               <Link to={`/dashboard `}>
                 <button
                   type="button"
@@ -376,7 +376,7 @@ const calculateTotal = () => {
               </div> : <div className="flex flex-col-3 justify-end">
                 <button
                   type="submit"
-                  className=" flex justify-center items-center btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
+                  className=" flex justify-center items-center btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem] mb-4"
                 >
                      <FaPlusCircle className='text-xl' />
                   <span>Add</span>
