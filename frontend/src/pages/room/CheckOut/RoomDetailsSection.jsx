@@ -17,9 +17,10 @@ const RoomDetailsSection = ({ data }) => {
         <tbody>
           <tr className="grid grid-cols-8 text-left">
             <td className="py-1 px-3 border-r border-black/20">
-              {data?.[0]?.room_ids
+              {/* {data?.[0]?.room_ids
                 ?.map((i) => `${i?.roomNumber} - ${i?.category}`)
-                .join(", ")}
+                .join(", ")} */}
+              {data?.room_id?.roomNumber}
               {/*{selectedRooms.map((room, index) => (*/}
               {/*  <div key={index}>*/}
               {/*    <p className="font-semibold">{room.label}</p>*/}
@@ -48,7 +49,7 @@ const RoomDetailsSection = ({ data }) => {
                     <td className="p-2 border border-black/20 align-bottom font-medium">
                       ($) Total Rent
                     </td>
-                    <td className="p-2 border border-black/20 align-bottom font-medium">
+                    {/* <td className="p-2 border border-black/20 align-bottom font-medium">
                       ($) Discount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
@@ -56,27 +57,27 @@ const RoomDetailsSection = ({ data }) => {
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
                       ($) Unpaid Amount
-                    </td>
+                    </td> */}
                   </tr>
                 </tbody>
                 <tbody>
                   <tr>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {new Date(data?.[0]?.from).toLocaleDateString()}
+                      {new Date(data?.from).toLocaleDateString()}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {new Date(data?.[0]?.to).toLocaleDateString()}
+                      {new Date(data?.to).toLocaleDateString()}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.[0]?.no_of_days}
+                      {data?.no_of_days}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.[0]?.rent_per_day.toFixed(2)}
+                      {data?.rent_per_day}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.[0]?.total_rent.toFixed(2)}
+                      {data?.total_room_rent}
                     </td>
-                    <td className="p-2 border border-black/20 align-top text-xs">
+                    {/* <td className="p-2 border border-black/20 align-top text-xs">
                       {data?.[0]?.discount.toFixed(2)}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
@@ -84,7 +85,7 @@ const RoomDetailsSection = ({ data }) => {
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
                       {data?.[0]?.total_unpaid_amount.toFixed(2)}
-                    </td>
+                    </td> */}
                   </tr>
                 </tbody>
               </table>

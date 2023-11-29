@@ -17,11 +17,11 @@ const CustomerInfoSection = ({ data }) => {
           {/* <p>Booking Source</p> */}
         </div>
         <div className="col-span-3 space-y-3">
-          <p>{data?.[0]?.guestName}</p>
-          <p>{data?.[0]?.room_ids?.map((i) => i?.roomNumber).join(", ")}</p>
+          <p>{data?.guestName}</p>
+          <p>{data?.room_ids?.map((i) => i?.roomNumber).join(", ")}</p>
           {/*<p>dev.tajkir@gmail.com</p>*/}
-          <p>{data?.[0]?.mobileNumber}</p>
-          <p>{data?.[0]?.address}</p>
+          <p>{data?.mobileNumber}</p>
+          <p>{data?.address}</p>
           {/* <p>24 hrs</p> */}
           {/*<input*/}
           {/*  type="text"*/}

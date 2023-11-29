@@ -191,7 +191,11 @@ const CheckOut = () => {
         <>
           <div>
             <CustomerInfoSection data={checkout?.data?.booking_info} />
-            <RoomDetailsSection data={checkout?.data?.booking_info} />
+            {checkout?.data?.room_bookings?.length
+              ? checkout?.data?.room_bookings?.map((roomInfo, i) => (
+                  <RoomDetailsSection data={roomInfo} key={i} />
+                ))
+              : null}
             <div className="my-5">
               <BillingSection
                 data={checkout?.data}
