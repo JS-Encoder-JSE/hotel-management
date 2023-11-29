@@ -150,7 +150,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
   return (
     <div className={`px-5 space-y-5`}>
       {hotelExpenses && filteredExpenses && <div className={`bg-white px-10 py-5 rounded`}>
-        <div className="mb-10">
+        {/* <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -165,7 +165,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
               <span className="tracking-wider font-semibold text-[1rem]"></span>
             </button>
           </Link>
-        </div>
+        </div> */}
         {/* today's expense */}
    <div>
      <div>

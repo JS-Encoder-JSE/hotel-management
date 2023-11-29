@@ -66,6 +66,7 @@ const roomAPI = baseAPI.injectEndpoints({
           url: "expenses/add-expense",
           method: "POST",
           body: data,
+          invalidatesTags: ["GetExpenses"],
         };
       },
       invalidatesTags: ["addRestaurantExpenses"],
@@ -86,7 +87,7 @@ const roomAPI = baseAPI.injectEndpoints({
       query:(id)=>{
         return `expenses/get-expense-by-id/${id}`
       },
-      providesTags:["restaurantExpenseById"]
+      providesTags:["restaurantExpenseById","GetExpenses"]
     }),
 
     getRoomsAndHotels: build.query({
