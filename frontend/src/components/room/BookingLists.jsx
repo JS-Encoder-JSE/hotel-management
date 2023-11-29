@@ -120,7 +120,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                     >
                       <FaDoorOpen />
                     </span> */}
-                    <span>
+                    {/* <span>
                       <button
                         title={`Check In`}
                         className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
@@ -131,8 +131,8 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                       >
                         <FaDoorOpen />
                       </button>
-                    </span>
-                    <span
+                    </span> */}
+                    {/* <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                       title={`Edit`}
                       onClick={() => {
@@ -141,7 +141,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                       }}
                     >
                       <FaEdit />
-                    </span>
+                    </span> */}
                     <button
                       onClick={() => {
                         handleDelete(item?._id);
@@ -177,12 +177,12 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
           renderOnZeroPageCount={null}
         />
       </div>
-      <Modal id={`eb_modal`}>
+      {/* <Modal id={`eb_modal`}>
         {editBookedData && <EditBooking data={editBookedData} />}
-      </Modal>
-      <Modal id={`ci_modal`}>
+      </Modal> */}
+      {/* <Modal id={`ci_modal`}>
         <CheckInDyn data={data} />
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

@@ -52,8 +52,9 @@ const validationSchema = yup.object({
 });
 
 const EditBooking = ({ data }) => {
-// current date for from
-  const [currentDate,setCurrentDate]=useState(new Date())
+  console.log("data", data);
+  // current date for from
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const [updateBooking, { isLoading }] = useUpdateBookingMutation();
   const closeRef = useRef(null);
@@ -69,7 +70,7 @@ const EditBooking = ({ data }) => {
       children: "",
       // paymentMethod: "",
       // discount: "",
-      from:currentDate,
+      from: currentDate,
       to: "",
       nationality: "",
     },
@@ -82,7 +83,6 @@ const EditBooking = ({ data }) => {
           data: values,
         });
 
-
         if (response?.error) {
           toast.error(response.error.data.message);
         } else {
@@ -90,12 +90,9 @@ const EditBooking = ({ data }) => {
           closeRef.current.click();
           toast.success(response.data.message);
         }
-      } catch (error) {
-       
-      }
+      } catch (error) {}
     },
   });
-
 
   useEffect(() => {
     if (data) {
@@ -219,7 +216,7 @@ const EditBooking = ({ data }) => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
-            onWheel={ event => event.currentTarget.blur() }
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Children"
               name="children"
