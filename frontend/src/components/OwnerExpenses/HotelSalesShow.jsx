@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaEye,
@@ -16,15 +16,21 @@ import { MdCurrencyRupee } from "react-icons/md";
 import EditTodayHotelSales from "./EditTodayHotelSales";
 import { BiRupee } from "react-icons/bi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 
 
 const HotelSalesShow = () => {
+  const [forcePage, setForcePage] = useState(null);
+  const [hotelsPerPage] = useState(10);
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+
+
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   const formik = useFormik({
     initialValues: {
@@ -43,10 +49,13 @@ const HotelSalesShow = () => {
     }
   };
 
+  
+
   return (
+    <>
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-        <div className="mb-10">
+        {/* <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -61,7 +70,7 @@ const HotelSalesShow = () => {
               <span className="tracking-wider font-semibold text-[1rem]"></span>
             </button>
           </Link>
-        </div>
+        </div> */}
         <div>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
@@ -341,6 +350,8 @@ const HotelSalesShow = () => {
         </div>
       </div>
     </div>
+
+    </>
   );
 };
 

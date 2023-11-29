@@ -146,6 +146,8 @@ export const addBooking = async (req, res) => {
         const booking = new Booking({
           room_id,
           hotel_id,
+          guestName,
+          mobileNumber,
           from,
           to,
           no_of_days,
@@ -158,7 +160,7 @@ export const addBooking = async (req, res) => {
       })
     );
     console.log(bookings);
-    const amount_after_dis = total_rent - discount;
+    const total_rent_after_dis = total_rent - discount;
     const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
@@ -172,9 +174,10 @@ export const addBooking = async (req, res) => {
       bookingMethod,
       total_rent: total_rent,
       discount,
-      amount_after_dis: amount_after_dis,
+      total_rent_after_dis: total_rent_after_dis,
+      total_payable_amount: total_rent_after_dis,
       paid_amount,
-      total_unpaid_amount: amount_after_dis - paid_amount,
+      total_unpaid_amount: total_rent_after_dis - paid_amount,
       nationality,
       doc_number,
       doc_images,
@@ -458,6 +461,7 @@ export const cancelBooking = async (req, res) => {
     });
   }
 };
+
 export const getBookingsByHotel = async (req, res) => {
   try {
     const { limit = 10, page = 1, search, filter } = req.query;
@@ -493,7 +497,7 @@ export const getBookingsByHotel = async (req, res) => {
     const result = await Booking.find(query)
       .limit(options.limit)
       .skip((options.page - 1) * options.limit)
-      .populate("room_ids", "roomNumber floorNumber");
+      .populate("room_id", "roomNumber floorNumber");
 
     const totalDocuments = await Booking.countDocuments(query);
 
@@ -542,6 +546,32 @@ export const getBookingById = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
+    });
+  }
+};
+export const getBookingDetailsById = async (req, res) => {
+  try {
+    const bookingId = req.params.booking_id;
+
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+    const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
+    res.status(200).json({
+      success: true,
+      data: { ...booking._doc, ...bookingInfo._doc },
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
@@ -849,3 +879,4 @@ export const getActiveBookingByRoomId = async (req, res) => {
     });
   }
 };
+

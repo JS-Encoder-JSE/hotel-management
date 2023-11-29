@@ -262,10 +262,9 @@ const AddBookingSelect = ({room}) => {
               <option value="Online">Online</option>
               <option value="Offline">Offline</option>
             </select>
-            {formik.touched.bookingMethod &&
-            Boolean(formik.errors.bookingMethod) ? (
+            {formik.touched.bookingMethod && (formik.errors.bookingMethod) ? (
               <small className="text-red-600">
-                {formik.touched.method && formik.errors.bookingMethod}
+                {formik.errors.bookingMethod}
               </small>
             ) : null}
           </div>

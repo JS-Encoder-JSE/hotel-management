@@ -60,7 +60,7 @@ const CheckinPersonInfo = () => {
           </span>
         </div>
       </div>
-      <div className={`flex flex-col lg:flex-row gap-10 lg:gap-16`}>
+      <div className={`flex justify-around flex-col lg:flex-row gap-10 lg:gap-16`}>
         <div>
           <h3 className={`text-2xl font-semibold mb-3`}>
             Customer Information
@@ -71,6 +71,7 @@ const CheckinPersonInfo = () => {
                 <th className={`text-start`}>Name</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.guestName}</td>
+                {/* {console.log("data",booking.data)} */}
               </tr>
               <tr>
                 <th className={`text-start`}>Phone</th>
@@ -84,6 +85,27 @@ const CheckinPersonInfo = () => {
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.emergency_contact}</td>
               </tr>
+              <tr>
+                <th className={`text-start `}>
+                  Document <br /> Type
+                </th>
+                <td className={`w-4 text-center`}>:</td>
+                <td>{booking?.data?.passport}</td>
+              </tr>
+              <tr>
+                <th className={`text-start `}>
+                  Document <br /> Number
+                </th>
+                <td className={`w-4 text-center`}>:</td>
+                <td>{booking?.data?.doc_number}</td>
+              </tr>
+              <tr>
+                <th className={`text-start `}>
+                  Document <br /> Download
+                </th>
+                <td className={`w-4 text-center`}>:</td>
+                <td>{booking?.data?.emergency_contact}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -91,16 +113,16 @@ const CheckinPersonInfo = () => {
           <h3 className={`text-2xl font-semibold mb-3`}>CheckIn Information</h3>
           <table>
             <tbody>
-            <tr>
+            {/* <tr>
                 <th className={`text-start`}>Booking Mathod</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.bookingMethod}</td>
-              </tr>
-              <tr>
+              </tr> */}
+              {/* <tr>
                 <th className={`text-start`}>Booking Date</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{new Date(booking?.data?.createdAt).toLocaleString()}</td>
-              </tr>
+              </tr> */}
               {/* <tr>
                 <th className={`text-start`}>Booking No</th>
                 <td className={`w-4 text-center`}>:</td>
@@ -122,16 +144,16 @@ const CheckinPersonInfo = () => {
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.children}</td>
               </tr>
-              <tr>
+              {/* <tr>
                 <th className={`text-start`}>Payment Method</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.paymentMethod}</td>
-              </tr>
-              <tr>
+              </tr> */}
+              {/* <tr>
                 <th className={`text-start`}>Advanced payment</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.paid_amount}</td>
-              </tr>
+              </tr> */}
               <tr>
                 <th className={`text-start`}>From</th>
                 <td className={`w-4 text-center`}>:</td>
@@ -170,7 +192,7 @@ const CheckinPersonInfo = () => {
         <RoomRentDetails/>
       </div>
       {/*  */}
-      <div className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-1 mb-20`}>
+      <div className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}>
 <div>
 <RestaurantBillsCard/>
 </div>

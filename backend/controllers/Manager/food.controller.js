@@ -1,4 +1,5 @@
-﻿import {
+﻿import { BookingInfo } from "../../models/Manager/booking.model.js";
+import {
   Food,
   FoodCategory,
   FoodOrder,
@@ -216,7 +217,9 @@ export const addOrder = async (req, res) => {
 
     // Format the number to have exactly 8 digits as a string
     const unique_id = randomNumber.toString().slice(0, 8);
-
+    if (room_id) {
+      const bookingInfo = await BookingInfo.find
+    }
     const newFoodOrder = new FoodOrder({
       room_id,
       table_id,

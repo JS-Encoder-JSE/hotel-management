@@ -63,14 +63,24 @@ const bookingInfoSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    discount: {
+    room_discount: {
       type: Number,
       required: false,
       default: 0,
     },
-    amount_after_dis: {
+    total_rent_after_dis: {
       type: Number,
       required: true,
+    },
+    total_posted_bills: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    total_payable_amount: {
+      type: Number,
+      required: false,
+      default: 0,
     },
     paid_amount: {
       type: Number,
@@ -115,7 +125,16 @@ const bookingSchema = new mongoose.Schema(
     booking_info_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
-      ref: "BookingInfo"
+      ref: "BookingInfo",
+    },
+    guestName: {
+      type: String,
+      required: true,
+    },
+    mobileNumber: {
+      type: String,
+      required: false,
+      default: "",
     },
     from: { type: Date, required: true },
     to: { type: Date, required: true },
