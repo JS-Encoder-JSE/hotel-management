@@ -62,3 +62,14 @@ export const getNumberOfDays = (fromDate, toDate) => {
     return Math.ceil(calculateDays);
   }
 };
+
+export function getCurrentDateWithDay() {
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const currentDate = new Date();
+  const dayOfWeek = daysOfWeek[currentDate.getDay()];
+
+  const formattedDate = `${currentDate.toDateString()}`;
+
+  return formattedDate;
+}

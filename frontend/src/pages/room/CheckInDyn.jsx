@@ -21,6 +21,7 @@ import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
+import SuspendAndLockList from './../Admin/SuspendAndLockList';
 
 // form validation
 const validationSchema = yup.object({
@@ -42,6 +43,8 @@ const CheckInDyn = ({ data }) => {
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [updateBooking] = useUpdateBookingMutation();
+
+  console.log(data);
 
   // handle advanceAmoun
   const handleAmount = (e) => {
@@ -182,6 +185,11 @@ const CheckInDyn = ({ data }) => {
           Check In ({data?.guestName})
         </h3>
         <hr />
+     <div className="mt-4">
+     <h1 className="mb-2"> Room Rent : <span className="font-semibold">{data?.rent_per_day}</span></h1>
+      
+      <h1> Paid Amount : <span className="font-semibold">{data?.paid_amount}</span> </h1>
+     </div>
         <form
           autoComplete="off"
           className="form-control grid grid-cols-1 gap-4 mt-5"

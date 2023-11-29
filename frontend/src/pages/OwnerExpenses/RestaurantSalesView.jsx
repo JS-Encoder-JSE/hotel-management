@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
-// import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
 import EditRestaurantSales from "./EditRestaurantSales";
 
@@ -42,7 +41,7 @@ const RestaurantSalesView = () => {
        
       </div>
       <div>
-          <h1 className={`text-2xl text-center`}> Restaurant Sales Information</h1>
+          <h1 className={`text-2xl text-center`}>Sales Information</h1>
         </div>
         <div className="overflow-x-auto">
             <table className="table">
@@ -96,7 +95,7 @@ const RestaurantSalesView = () => {
                                 ✕
                               </button>
                             </form>
-                            {/* <EditExpensesView /> */}
+                           
                             <EditRestaurantSales/>
                           </div>
                         </dialog>
@@ -106,9 +105,27 @@ const RestaurantSalesView = () => {
                   );
                 })}
               </tbody>
-              
+              <tfoot className={`text-[1.2rem] font-bold`}>
+                <tr>
+                  <td colSpan={5} className={`text-end text-md font-bold`}>
+                    Total :
+                  </td>
+                  <td>
+                    <div className="flex">
+                      <div>
+                        <FaRupeeSign />
+                      </div>
+                      <div>
+                        {" "}
+                        65464
+                        {/* {totalItemPrice} */}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
-           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
+           {/* <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
             <h1>Grand Total :</h1>
            <div className="flex">
                           <div>
@@ -118,7 +135,7 @@ const RestaurantSalesView = () => {
                             <span>25000</span>
                           </div>
                         </div>
-           </div>
+           </div> */}
           </div>
           {/* pagination */}
           <div className="flex justify-center mt-10">

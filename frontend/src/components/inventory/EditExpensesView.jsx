@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaEye, FaEyeSlash, FaPlusCircle, FaTrash, FaUpload } from "react-icons/fa";
@@ -28,7 +28,7 @@ const validationSchema = yup.object({
 const EditExpensesView = () => {
  
     const [showPass, setShowPass] = useState(false);
-
+    const closeRef = useRef(null);
   const formik = useFormik({
     initialValues: {
         itemName: "",
@@ -65,7 +65,17 @@ const EditExpensesView = () => {
 
   return (
     <div className={`space-y-10  p-10 rounded-2xl`}>
+         <form autoComplete="off" method="dialog">
+        <button
+          ref={closeRef}
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          onClick={() => formik.handleReset()}
+        >
+          ✕
+        </button>
+      </form>
      <h1  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>Edit Expenses</h1>
+
       <form
         className="form-control md:grid-cols-2 gap-4 "
         onSubmit={formik.handleSubmit}

@@ -17,6 +17,10 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  remark: {
+    type: String,
+    required: false,
+  },
 });
 const expenseSchema = new mongoose.Schema(
   {
@@ -30,10 +34,14 @@ const expenseSchema = new mongoose.Schema(
       enum: ["restaurant", "hotel"],
     },
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     items: [itemSchema],
+    total_amount: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

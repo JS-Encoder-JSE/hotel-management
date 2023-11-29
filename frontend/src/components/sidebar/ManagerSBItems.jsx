@@ -70,6 +70,17 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </li>
           <li>
             <NavLink
+              to={`/dashboard/manage-checkin`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+              Manage CheckIn
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to={`/dashboard/checkin`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
@@ -175,7 +186,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Order List
             </NavLink>
           </li>
-          {/* <li>
+          <li>
             <NavLink
               to={`/dashboard/add-expense`}
               className={({ isActive }) =>
@@ -183,10 +194,10 @@ const ManagerSbItems = ({ handleSBItems }) => {
                 (isActive ? " bg-gray-300" : "")
               }
             >
-              Add Expence
+              Add Expense
             </NavLink>
-          </li> */}
-          {/* <li>
+          </li> 
+          <li>
             <NavLink
               to={`/dashboard/show-all-sell`}
               className={({ isActive }) =>
@@ -196,8 +207,8 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Restaurant Sales
             </NavLink>
-          </li> */}
-          {/* <li>
+          </li>
+          <li>
             <NavLink
               to={`/dashboard/show-all-expense`}
               className={({ isActive }) =>
@@ -207,7 +218,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Restaurant Expenses
             </NavLink>
-          </li> */}
+          </li>
         </ul>
       </li>
       <li className={`group p-2`}>
@@ -227,7 +238,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           </span>
         </div>
         <ul className={`group-[.active]:block hidden`}>
-        {/* <li>
+        <li>
             <NavLink
               to={`/dashboard/hotel-dashboard`}
               className={({ isActive }) =>
@@ -237,7 +248,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Hotel Dashboard
             </NavLink>
-          </li>  */}
+          </li> 
           <li>
             <NavLink
               to={`/dashboard/add-inventory`}
@@ -260,9 +271,9 @@ const ManagerSbItems = ({ handleSBItems }) => {
               Manage Items
             </NavLink>
           </li>  
-          {/* <li>
+          <li>
             <NavLink
-              to={`/dashboard/add-hotel-expnese`}
+              to={`/dashboard/add-hotel-expense`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -270,10 +281,10 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Add Hotel Expense
             </NavLink>
-          </li>  */}
-          {/* <li>
+          </li> 
+          <li>
             <NavLink
-              to={`/dashboard/all-hotel-expneses`}
+              to={`/dashboard/all-hotel-expenses`}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -281,7 +292,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Hotel Expenses
             </NavLink>
-          </li>                */}
+          </li>               
         </ul>
       </li>
       <li className={`group p-2`}>

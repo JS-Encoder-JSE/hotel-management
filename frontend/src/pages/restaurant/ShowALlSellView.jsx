@@ -58,6 +58,7 @@ const ShowALlSellView = () => {
                 {[...Array(+formik.values.entries || 5)].map((_, idx) => {
                   return (
                     <tr
+                    key={idx}
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
@@ -101,19 +102,28 @@ const ShowALlSellView = () => {
                   );
                 })}
               </tbody>
-              
+              <tfoot className={`text-[1.2rem] font-bold`}>
+                        <tr>
+                          <td
+                            colSpan={5}
+                            className={`text-end text-md font-bold`}
+                          >
+                            Total :
+                          </td>
+                          <td>
+                            <div className="flex">
+                              <div>
+                                <FaRupeeSign />
+                              </div>
+                              <div> 65464
+                                {/* {totalItemPrice} */}
+                                </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tfoot>
             </table>
-           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-1`}>
-            <h1>Grand Total :</h1>
-           <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
-                            <span>25000</span>
-                          </div>
-                        </div>
-           </div>
+         
           </div>
           <div className="flex justify-center mt-10">
             <ReactPaginate
