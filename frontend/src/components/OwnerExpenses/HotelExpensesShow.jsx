@@ -212,7 +212,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{getformatDateTime(hotelExpenses?.docs[0]?.date)}</td>
+                      <td>{hotelExpenses?.docs[0]?.date}</td>
                       <td>{item?.name}</td>
                       <td>{item?.description}</td>
                       <td>{item?.quantity}</td>
@@ -260,8 +260,8 @@ setPdf(hotelExpenses?.docs[0]?.items)
                       </div>
                       <div>
                         {" "}
-                        65464
-                        {/* {totalItemPrice} */}
+                      
+                        {totalItemPrice}
                       </div>
                     </div>
                   </td>
@@ -420,10 +420,10 @@ setPdf(hotelExpenses?.docs[0]?.items)
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{getformatDateTime(item?.date)}</td>
+                      <td>{item?.date}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
-                          <span>{item?.price}</span>
+                          <span>{item?.total_amount}</span>
                       </td>
                       <td className={`space-x-1.5`}>
                         <span

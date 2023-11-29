@@ -182,7 +182,7 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
           {/* 3rd commit  */}
           
         {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
-        <div className="overflow-x-auto">
+        <div className="h-[20rem] overflow-y-auto overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -203,7 +203,7 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{getformatDateTime(RestaurantExpenses?.docs[0]?.date)}</td>
+                      <td>{RestaurantExpenses?.docs[0]?.date}</td>
                       <td>{item?.name}</td>
                       <td>{item?.description}</td>
                       <td>{item?.quantity}</td>
@@ -251,8 +251,8 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                       </div>
                       <div>
                         {" "}
-                      25000
-                        {/* {totalItemPrice} */}
+                      
+                        {totalItemPrice}
                       </div>
                     </div>
                   </td>
@@ -409,10 +409,10 @@ setPdf(RestaurantExpenses?.docs[0]?.items)
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{getformatDateTime(item?.date)}</td>
+                      <td>{item?.date}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
-                          <span>{item?.price}</span>
+                          <span>{item?.total_amount}</span>
                       </td>
                       <td className={`space-x-1.5`}>
                         <span

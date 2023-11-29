@@ -383,13 +383,13 @@ const UserDashBoard = ({ managerId }) => {
         </div>
       )} */}
         </section>
-      {/* { user?.role ==="manager" &&<section>
+   { user?.role ==="manager" &&<section>
           <AllExpeseAnalytics user={user} userHotel={userHotel} dashboardData={dashboardData} dummyData={dummyData}/>
         </section>}
 
         { user?.role ==="owner" &&<section>
           <OwnerExpeseAnalytics user={user} userHotel={userHotel} dashboardData={dashboardData} dummyData={dummyData}/>
-        </section>} */}
+        </section>}
       </div>
 
     </>

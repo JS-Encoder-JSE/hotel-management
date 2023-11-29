@@ -4,6 +4,7 @@ import { MdCurrencyRupee } from 'react-icons/md';
 import ExpensesChart from './ExpesesChart';
 import OwnerExpenseAndSalesChart from './OwnerExpneseAndSalesChart';
 import { BiRupee } from "react-icons/bi";
+import ThreeBarChart from './ThreeBarChart';
 
 
 const OwnerExpeseAnalytics = ({monthlyData, userHotel,dashboardData,dummyData}) => {
@@ -70,10 +71,11 @@ const OwnerExpeseAnalytics = ({monthlyData, userHotel,dashboardData,dummyData}) 
         </section>
 
         <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
-          <OwnerExpenseAndSalesChart
+          {/* <OwnerExpenseAndSalesChart
             monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
             userHotel={userHotel}
-          />
+          /> */}
+          <ThreeBarChart/>
         </section>
 
 
