@@ -118,13 +118,32 @@ export const addBooking = async (req, res) => {
     //     nextAvailableDates,
     //   });
     // }
+    // const bookings = await Promise.all(
+    //   room_ids.map(async (room_id) => {
+    //     const room = await Room.findById(room_id);
+    //     const rent_per_day = room.price;
+    //     const total_room_rent = rent_per_day * no_of_days;
+    //     total_rent += total_room_rent;
+    //     return new Booking({
+    //       room_id,
+    //       hotel_id,
+    //       from,
+    //       to,
+    //       no_of_days,
+    //       rent_per_day: rent_per_day,
+    //       total_room_rent: total_room_rent,
+    //       status,
+    //     });
+    //   })
+    // );
+    // await Booking.create(bookings);
     const bookings = await Promise.all(
       room_ids.map(async (room_id) => {
         const room = await Room.findById(room_id);
         const rent_per_day = room.price;
         const total_room_rent = rent_per_day * no_of_days;
         total_rent += total_room_rent;
-        return new Booking({
+        const booking = new Booking({
           room_id,
           hotel_id,
           from,
@@ -134,12 +153,16 @@ export const addBooking = async (req, res) => {
           total_room_rent: total_room_rent,
           status,
         });
+        await booking.save(); // Save the booking document
+        return booking._id; // Return the booking id
       })
     );
+    console.log(bookings);
     const amount_after_dis = total_rent - discount;
     const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
+      booking_ids: bookings,
       guestName,
       address,
       mobileNumber,
@@ -157,6 +180,7 @@ export const addBooking = async (req, res) => {
       doc_images,
     });
 
+    const savedNewBookingInfo = await newBookingInfo.save();
     // const newBooking = new Booking({
     //   room_id,
     //   hotel_id,
@@ -339,8 +363,6 @@ export const addBooking = async (req, res) => {
         await newCheckInfo.save();
       }
     }
-    await Booking.create(bookings);
-    const savedNewBookingInfo = await newBookingInfo.save();
     // Create a new transaction log entry
     if (paid_amount > 0) {
       const newTransactionLog = new TransactionLog({
@@ -377,7 +399,65 @@ export const addBooking = async (req, res) => {
     });
   }
 };
+export const cancelBooking = async (req, res) => {
+  try {
+    const bookingId = req.params.booking_id; // Assuming you pass bookingId as a route parameter
 
+    // Check if the user has the authority to cancel the booking (you might want to implement your own logic for this)
+
+    // Fetch the booking to be canceled
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+
+    const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
+    const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
+    const new_amount_after_dis = new_total_rent - bookingInfo.discount;
+
+    bookingInfo.total_rent = new_total_rent;
+    bookingInfo.amount_after_dis = new_amount_after_dis;
+    bookingInfo.total_unpaid_amount =
+      new_amount_after_dis - bookingInfo.paid_amount;
+
+    await bookingInfo.save();
+    // Check if the booking is already canceled
+    if (booking.status === "Canceled") {
+      return res.status(400).json({
+        success: false,
+        message: "Booking is already canceled",
+      });
+    }
+
+    // Update the booking status to Canceled
+    booking.status = "Canceled";
+    await booking.save();
+
+    // Update the status of booked rooms
+    await Room.updateOne(
+      { _id: { $in: booking.room_id } },
+      { $set: { status: "Available" } }
+    );
+
+    // Update dashboard and checkInfo accordingly based on the cancellation
+    // ... (implement your logic here)
+
+    res.status(200).json({
+      success: true,
+      message: "Booking canceled successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
 export const getBookingsByHotel = async (req, res) => {
   try {
     const { limit = 10, page = 1, search, filter } = req.query;
