@@ -85,7 +85,7 @@ const documentType =
                 <th className={`text-start`}>Name</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.guestName}</td>
-                {/* {console.log("data",booking.data)} */}
+                {console.log("data",booking)}
               </tr>
               <tr>
                 <th className={`text-start`}>Phone</th>
@@ -202,10 +202,11 @@ const documentType =
             <PaymentMethodCard/>
       </div>
       {/* Room rent */}
-      <div className="mt-20">
+      {/* <div className="mt-20">
         <RoomRentDetails/>
-      </div>
-      {/*  */}
+      </div> */}
+      
+      {/*  Bill system*/}
       <div className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}>
 <div>
 <RestaurantBillsCard/>
@@ -218,9 +219,9 @@ const documentType =
 </div>
       </div>
       {/*  TransactionHistoryCard*/}
-    <div>
+    {/* <div>
       <TransactionHistoryCard/>
-    </div>
+    </div> */}
    </>
   );
 };

@@ -75,7 +75,7 @@ const HotelSales = () => {
       
       <div className="space-y-20">
         {/* Select Room Section */}
-        <section className="max-w-full mx-auto flex gap-5 items-center">
+        <section className="max-w-full mx-auto flex gap-5 items-center justify-center">
           <p className="whitespace-nowrap">Hotel Branch Name :</p>
           <div className="w-[353px] flex gap-3">
             <Select

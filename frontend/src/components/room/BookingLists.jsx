@@ -35,21 +35,14 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
       confirmButtonText: "Yes, Cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        
-        cancelBooking(id)
-        .then(() => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Deleted!",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        })
-        .catch((error) => {
-          // Handle error if cancelBooking fails
-          console.error("Error cancelling booking:", error);
-          // You might want to show another Swal.fire with an error message here
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Canceled!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          updateBooking({ id, data: { status: "Canceled" } });
         });
       }
     });
@@ -77,7 +70,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
               <th>
                 Room <br /> Number
               </th>
-              <th>Phone</th>
+              <th>Phone <br />Number</th>
               <th>
                 Booking <br /> Date
               </th>

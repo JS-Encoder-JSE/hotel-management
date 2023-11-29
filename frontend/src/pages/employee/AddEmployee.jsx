@@ -39,10 +39,7 @@ const validationSchema = yup.object({
   shift: yup.string().required("Shift is required"),
   designation: yup.string().required("Designation is required"),
   salary: yup
-    .number()
-    .required("Salary is required")
-    .positive("Salary must be a positive number")
-    .integer("Salary must be an integer"),
+    .number(),
   joiningDate: yup.string().required("Joining Date is required"),
   documentsType: yup.string().required("Documents type is required"),
   documents: yup.string().when(["documentsType"], ([documentsType], schema) => {
@@ -204,6 +201,20 @@ const AddEmployee = () => {
       }
     }
   }, [formik.values.documents, formik.values.userImg]);
+
+
+  // Price Validation
+  const handleSalary = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.salary;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
 
   return (
     <div className={`space-y-10`}>
@@ -414,7 +425,7 @@ const AddEmployee = () => {
                 name="salary"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.salary}
-                onChange={formik.handleChange}
+                onChange={handleSalary}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.salary && Boolean(formik.errors.salary) ? (
