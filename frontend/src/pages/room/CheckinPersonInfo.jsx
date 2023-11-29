@@ -5,6 +5,14 @@ import EditBooking from "../../components/room/EditBooking.jsx";
 import Modal from "../../components/Modal.jsx";
 import { useGetBookingByIdQuery } from "../../redux/room/roomAPI.js";
 import CheckInDyn from "./CheckInDyn.jsx";
+import CheckinCardDetails from "./CheckOut/CheckinCardDetails.jsx";
+import TransactionHistoryCard from "../../components/Manage-CheckIn/TransactionHistoryCard.jsx";
+import PaymentMethodCard from "../../components/Manage-CheckIn/PaymentMethodCard.jsx";
+import RoomRentDetails from "../../components/Manage-CheckIn/RoomRentDetails.jsx";
+import TransactionHistory from "../../components/Admin/TransactionHistory.jsx";
+import RestaurantBillsCard from "../../components/Manage-CheckIn/RestaurantBillsCard.jsx";
+import GymBills from "../../components/Manage-CheckIn/GymBills.jsx";
+import PoolsBill from "../../components/Manage-CheckIn/PoolsBill.jsx";
 
 const CheckinPersonInfo = () => {
   const navigate = useNavigate();
@@ -21,6 +29,7 @@ const CheckinPersonInfo = () => {
   }, [modalOpen]);
 
   return (
+   <>
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between`}>
         <div
@@ -149,6 +158,34 @@ const CheckinPersonInfo = () => {
         {booking?.data && <EditBooking data={booking?.data} />}
       </Modal>
     </div>
+    <div className="mt-20">
+      <CheckinCardDetails/>
+    </div>
+    {/* payment system */}
+    <div >
+            <PaymentMethodCard/>
+      </div>
+      {/* Room rent */}
+      <div className="mt-20">
+        <RoomRentDetails/>
+      </div>
+      {/*  */}
+      <div className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-1 mb-20`}>
+<div>
+<RestaurantBillsCard/>
+</div>
+<div>
+  <GymBills/>
+</div>
+<div>
+  <PoolsBill/>
+</div>
+      </div>
+      {/*  TransactionHistoryCard*/}
+    <div>
+      <TransactionHistoryCard/>
+    </div>
+   </>
   );
 };
 
