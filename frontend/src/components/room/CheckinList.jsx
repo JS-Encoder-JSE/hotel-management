@@ -20,7 +20,7 @@ const CheckinList = ({checkinList,page,handlePageClick}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
 
-
+console.log(checkinList,"checkinglist form chekinpersioninfo")
 
 
 //   const [updateBooking, { isLoading: isCancelledLoading, error }] =

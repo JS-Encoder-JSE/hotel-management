@@ -129,6 +129,13 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       providesTags: ["booking"],
     }),
+
+    getBookingInfoById: build.query({
+      query: (id) => {
+        return `bookings/get-booking-details/${id}`;
+      },
+      providesTags: ["bookingInfo"],
+    }),
     getHotelById: build.query({
       query: (id) => {
         return `hotels/get-hotel-by-id/${id}`;
@@ -200,6 +207,7 @@ export const {
   useUpdateRoomMutation,
   useAddBookingMutation,
   useGetBookingByIdQuery,
+  useGetBookingInfoByIdQuery,
   useGetCOInfoQuery,
   useAddCheckoutMutation,
   useGetTablesQuery,
