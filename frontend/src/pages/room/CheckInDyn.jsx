@@ -277,6 +277,7 @@ const CheckInDyn = ({ data }) => {
           {formik.values.paymentMethod.length ? (
             <div className="flex flex-col gap-3">
               <input
+              onWheel={ event => event.currentTarget.blur() }
                 type="number"
                 placeholder="Advanced Amount"
                 name="amount"

@@ -22,7 +22,6 @@ const Header = ({
   const dispatch = useDispatch();
   const [time, setTime] = useState(new Date());
   const { data: dateData,date:isLoading } = useGetLicenseDateQuery();
-  console.log("dateData",isLoading)
   useEffect(() => {
     const clearTime = setInterval(() => setTime(new Date()), 1000);
 

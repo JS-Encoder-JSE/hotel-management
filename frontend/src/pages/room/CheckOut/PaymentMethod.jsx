@@ -56,6 +56,7 @@ const PaymentMethod = ({
                 <input
                   type="number"
                   value={elem.amount}
+                  onWheel={ event => event.currentTarget.blur() }
                   disabled={!elem?.method}
                   placeholder="Amount"
                   name="amount"

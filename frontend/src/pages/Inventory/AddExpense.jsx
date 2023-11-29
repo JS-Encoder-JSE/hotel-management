@@ -321,6 +321,7 @@ const calculateTotal = () => {
               {/* price box */}
               <div className="flex flex-col gap-3">
                 <input
+                onWheel={ event => event.currentTarget.blur() }
                   type="number"
                   placeholder="Price"
                   name="price"

@@ -107,6 +107,7 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
           <FaMinus />
         </button>
         <input
+        onWheel={ event => event.currentTarget.blur() }
           type="number"
           value={input}
           className="input-hide_Arrows w-12 flex outline-none text-center rounded-md p-1 placeholder:text-black border focus:border-green-slimy"

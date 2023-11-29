@@ -90,6 +90,7 @@ const ChangeShift = () => {
                   <div>
                     {!selectCashPayment && (
                       <input
+                      onWheel={ event => event.currentTarget.blur() }
                         type="number"
                         required
                         placeholder="Transaction ID"
@@ -106,6 +107,7 @@ const ChangeShift = () => {
                 <React.Fragment key={index}>
                   <div>
                     <input
+                    onWheel={ event => event.currentTarget.blur() }
                       type="number"
                       required
                       placeholder="Amount"

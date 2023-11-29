@@ -35,7 +35,7 @@ const validationSchema = yup.object({
   children: yup.number(),
 
   paymentMethod: yup.string().required("Payment method is required"),
-  
+
   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
     if (paymentMethod !== "Cash")
       return schema.required("Transaction ID is required");
@@ -50,7 +50,7 @@ const validationSchema = yup.object({
   // trxID: yup.string().required("Transection code is required")
 });
 
-const AddBookingSelect = ({room}) => {
+const AddBookingSelect = ({ room }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const handleAmount = (e) => {
@@ -70,9 +70,6 @@ const AddBookingSelect = ({room}) => {
     //     formik.handleChange(e);
     // }
   };
-
-
-
 
   // console.log(user)
   const [addBooking, { isLoading }] = useAddBookingMutation();
@@ -111,20 +108,14 @@ const AddBookingSelect = ({room}) => {
 
       if (!obj.discount) obj.discount = 0;
 
-      let room_ids =[];
-      if(room){
-        room_ids.push(room?.data?._id)
+      let room_ids = [];
+      if (room) {
+        room_ids.push(room?.data?._id);
       }
-        
 
       // const room_ids = obj.room_arr?.map((elem) => elem.value);
-      const no_of_days = Math.floor(
-        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
-      );
-      const rent_per_day = obj.room_arr.reduce(
-        (init, current) => init + current.price,
-        0
-      );
+      const no_of_days = getNumberOfDays(obj.from, obj.to);
+      const rent_per_day = room?.data?.price;
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
@@ -200,9 +191,7 @@ const AddBookingSelect = ({room}) => {
   //   }
   // }, [room?.data]);
 
-
-  console.log(room.data._id,"--------Rom")
-
+  console.log(room.data._id, "--------Rom");
 
   return (
     <>
@@ -389,6 +378,7 @@ const AddBookingSelect = ({room}) => {
           {/* adult box */}
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Adult"
               name="adult"
@@ -407,6 +397,7 @@ const AddBookingSelect = ({room}) => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Children"
               name="children"
@@ -425,6 +416,7 @@ const AddBookingSelect = ({room}) => {
           {/* advanced amount */}
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Advanced Amount"
               name="amount"
@@ -485,6 +477,7 @@ const AddBookingSelect = ({room}) => {
 
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Discount"
               name="discount"

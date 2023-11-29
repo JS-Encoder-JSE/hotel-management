@@ -81,7 +81,7 @@ const CheckOut = () => {
       // }
     },
   });
-
+  console.log("total checkout", checkout);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   console.log(user._id);

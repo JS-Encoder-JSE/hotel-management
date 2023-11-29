@@ -243,6 +243,7 @@ const OrderBarItem = () => {
           {/*Paid Amount  */}
           <div className="flex flex-col gap-3">
             <input
+            onWheel={ event => event.currentTarget.blur() }
               type="number"
               placeholder="Price"
               name="price"
@@ -259,6 +260,7 @@ const OrderBarItem = () => {
           </div>
           <div className="flex flex-col gap-3">
             <input
+            onWheel={ event => event.currentTarget.blur() }
               type="number"
               placeholder="Paid Amount"
               name="paid_amount"

@@ -1,6 +1,7 @@
 import React from "react";
 
 const RoomDetailsSection = ({ data }) => {
+  console.log('checkout data',data);
   return (
     <section className="bg-white p-4 rounded">
       <table className="w-full border border-black/20 text-sm">
@@ -53,6 +54,9 @@ const RoomDetailsSection = ({ data }) => {
                       ($) Discount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
+                      ($) Amount After Discount
+                    </td>
+                    <td className="p-2 border border-black/20 align-bottom font-medium">
                       ($) Paid Amount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
@@ -79,6 +83,9 @@ const RoomDetailsSection = ({ data }) => {
                     </td>
                     {/* <td className="p-2 border border-black/20 align-top text-xs">
                       {data?.[0]?.discount.toFixed(2)}
+                    </td>
+                    <td className="p-2 border border-black/20 align-top text-xs">
+                      {data?.[0]?.amount_after_dis.toFixed(2)}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
                       {data?.[0]?.paid_amount.toFixed(2)}
