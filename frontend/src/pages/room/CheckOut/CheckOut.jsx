@@ -8,6 +8,7 @@ import { BiReset } from "react-icons/bi";
 import {
   useAddCheckoutMutation,
   useGetCOInfoQuery,
+  useGetCheckoutMutation,
   useGetHotelByManagerIdQuery,
   useGetRoomsAndHotelsQuery,
   useRoomNumbersQuery,
@@ -31,15 +32,16 @@ const CheckOut = () => {
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
-  const {
-    data: checkout,
-    isLoading: checkoutLoading,
-    isSuccess,
-  } = useGetCOInfoQuery(fetch);
+  // const {
+  //   data: checkout,
+  //   isLoading: checkoutLoading,
+  //   isSuccess,
+  // } = useGetCOInfoQuery(fetch);
+  const [getCheckout, { data: checkout, isSuccess }] = useGetCheckoutMutation();
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
-
+  console.log("data :", checkout);
   const handleResetCheckout = () => {
     setShowRooms(false);
   };
@@ -56,27 +58,27 @@ const CheckOut = () => {
       roomNumber: "",
     },
     onSubmit: async () => {
-      const room_numbers = checkout?.data?.booking_info?.[0]?.room_ids?.map(
-        (i) => i?.roomNumber
-      );
-      const unpaid = pBill - Number(paymentList[0].amount);
-      const response = await addCheckout({
-        booking_id: checkout?.data?.booking_info?.[0]?._id,
-        room_numbers,
-        checked_in: checkout?.data?.booking_info?.[0]?.from,
-        checked_out: new Date(),
-        payable_amount: pBill,
-        paid_amount: Number(paymentList[0].amount),
-        unpaid_amount: unpaid < 0 ? 0 : unpaid,
-        guestName: checkout?.data?.booking_info?.[0]?.guestName,
-        payment_method: paymentList[0].method,
-      });
-      if (response?.error) {
-        toast.error(response.error.data.message);
-      } else {
-        toast.success("Checkout Successful");
-        // navigate("/dashboard/checkout");
-      }
+      // const room_numbers = checkout?.data?.booking_info?.[0]?.room_ids?.map(
+      //   (i) => i?.roomNumber
+      // );
+      // const unpaid = pBill - Number(paymentList[0].amount);
+      // const response = await addCheckout({
+      //   booking_id: checkout?.data?.booking_info?.[0]?._id,
+      //   room_numbers,
+      //   checked_in: checkout?.data?.booking_info?.[0]?.from,
+      //   checked_out: new Date(),
+      //   payable_amount: pBill,
+      //   paid_amount: Number(paymentList[0].amount),
+      //   unpaid_amount: unpaid < 0 ? 0 : unpaid,
+      //   guestName: checkout?.data?.booking_info?.[0]?.guestName,
+      //   payment_method: paymentList[0].method,
+      // });
+      // if (response?.error) {
+      //   toast.error(response.error.data.message);
+      // } else {
+      //   toast.success("Checkout Successful");
+      //   // navigate("/dashboard/checkout");
+      // }
     },
   });
 
@@ -99,6 +101,7 @@ const CheckOut = () => {
   });
 
   const handleGetRooms = () => {
+    getCheckout({ room_ids: formik.values.roomNumber });
     setFetch(formik.values.roomNumber);
     setShowRooms(true);
   };
@@ -122,32 +125,29 @@ const CheckOut = () => {
   // set subtotal amount
   useEffect(() => {
     if (isSuccess) {
-      dispatch(
-        updateSubTotal(
-          checkout?.data?.booking_info?.[0]?.total_unpaid_amount || 0
-        )
-      );
+      dispatch(updateSubTotal(0));
     }
-  }, [checkout]);
+  }, []);
 
   return (
     <div className="space-y-8">
-       <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
+      <div className="mb-7">
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
       <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center">
-   
         <div className="flex flex-col gap-3">
           <Select
             placeholder="Select room"

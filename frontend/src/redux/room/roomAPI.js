@@ -80,6 +80,17 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["addRestaurantExpenses"],
     }),
+    getCheckout: build.mutation({
+      query: (ids) => {
+        return {
+          url: "bookings/get-checkoutinfo-by-rooms",
+          method: "POST",
+          body: ids,
+          // invalidatesTags: ["GetExpenses"],
+        };
+      },
+      invalidatesTags: ["addRestaurantExpenses"],
+    }),
     getExpenses: build.query({
       query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit }) =>
         `expenses/get-expenses?page=${cp}${limit ? `&limit=${limit}` : ""}${
@@ -182,5 +193,6 @@ export const {
   useAddExpensesMutation,
   useGetExpensesQuery,
   useGetExpenseByIdQuery,
-  useCancelBookingMutation
+  useCancelBookingMutation,
+  useGetCheckoutMutation
 } = roomAPI;
