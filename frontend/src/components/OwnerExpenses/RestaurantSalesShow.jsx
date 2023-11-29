@@ -43,7 +43,7 @@ const RestaurantSalesShow = () => {
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white px-10 py-5 rounded`}>
-        <div className="mb-10">
+        {/* <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -58,7 +58,7 @@ const RestaurantSalesShow = () => {
               <span className="tracking-wider font-semibold text-[1rem]"></span>
             </button>
           </Link>
-        </div>
+        </div> */}
         <div>
           <div>
             <h3  className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
