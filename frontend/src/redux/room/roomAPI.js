@@ -57,7 +57,16 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["room",'booking'],
+      invalidatesTags: ["room", "booking"],
+    }),
+    cancelBooking: build.mutation({
+      query: (id) => {
+        return {
+          url: `bookings/cancel-booking/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["booking"],
     }),
 
     addExpenses: build.mutation({
@@ -73,21 +82,19 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     getExpenses: build.query({
       query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit }) =>
-        `expenses/get-expenses?page=${cp}${
-          limit ? `&limit=${limit}` : ""
-        }${fromDate ? `&fromDate=${fromDate}` : ""}${
-          toDate ? `&toDate=${toDate}` : ""
-        }${hotel_id ? `&hotel_id=${hotel_id}` : ""}${
-          spendedfor ? `&spendedfor=${spendedfor}` : ""
-        }`,
+        `expenses/get-expenses?page=${cp}${limit ? `&limit=${limit}` : ""}${
+          fromDate ? `&fromDate=${fromDate}` : ""
+        }${toDate ? `&toDate=${toDate}` : ""}${
+          hotel_id ? `&hotel_id=${hotel_id}` : ""
+        }${spendedfor ? `&spendedfor=${spendedfor}` : ""}`,
       providesTags: ["GetExpenses"],
     }),
-    
-    getExpenseById:build.query({
-      query:(id)=>{
-        return `expenses/get-expense-by-id/${id}`
+
+    getExpenseById: build.query({
+      query: (id) => {
+        return `expenses/get-expense-by-id/${id}`;
       },
-      providesTags:["restaurantExpenseById","GetExpenses"]
+      providesTags: ["restaurantExpenseById", "GetExpenses"],
     }),
 
     getRoomsAndHotels: build.query({
@@ -99,9 +106,9 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     getBookingsByHotel: build.query({
       query: ({ hotel_id, page, limit, filter, search }) => {
-        return `bookings/get-bookings-by-hotel?search=${
-          search || ""
-        }&page=${page + 1}${filter ? `&filter=${filter}` : ""}`;
+        return `bookings/get-bookings-by-hotel?search=${search || ""}&page=${
+          page + 1
+        }${filter ? `&filter=${filter}` : ""}`;
       },
       providesTags: ["booking", "room"],
     }),
@@ -145,13 +152,12 @@ const roomAPI = baseAPI.injectEndpoints({
       query: () => `tables/get-tables-by-hotel`,
       providesTags: ["room"],
     }),
-    getItems:build.query({
-      query:()=>'items/get-items-by-hotel'
+    getItems: build.query({
+      query: () => "items/get-items-by-hotel",
     }),
-    getHotelByManagerId:build.query({
-      query:(id)=>`hotels/get-hotel-by-manager/${id}`
+    getHotelByManagerId: build.query({
+      query: (id) => `hotels/get-hotel-by-manager/${id}`,
     }),
-    
   }),
 });
 
@@ -175,5 +181,6 @@ export const {
   useGetHotelByManagerIdQuery,
   useAddExpensesMutation,
   useGetExpensesQuery,
-  useGetExpenseByIdQuery
+  useGetExpenseByIdQuery,
+  useCancelBookingMutation
 } = roomAPI;

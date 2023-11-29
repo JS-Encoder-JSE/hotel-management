@@ -5,7 +5,7 @@ import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Modal.jsx";
 import EditBooking from "./EditBooking.jsx";
-import { useUpdateBookingMutation } from "../../redux/room/roomAPI.js";
+import { useCancelBookingMutation, useUpdateBookingMutation } from "../../redux/room/roomAPI.js";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import CheckInModal from "../../pages/room/CheckInModal.jsx";
@@ -17,6 +17,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [updateBooking, { isLoading: isCancelledLoading, error }] =
     useUpdateBookingMutation();
+    const [cancelBooking]=useCancelBookingMutation()
   // const [bookingPerPage] = useState(10);
   // const [pageCount, setPageCount] = useState(0);
   const handlePageClick = ({ selected: page }) => {
@@ -34,14 +35,21 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
       confirmButtonText: "Yes, Cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Deleted!",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          updateBooking({ id, data: { status: "Canceled" } });
+        
+        cancelBooking(id)
+        .then(() => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Deleted!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        })
+        .catch((error) => {
+          // Handle error if cancelBooking fails
+          console.error("Error cancelling booking:", error);
+          // You might want to show another Swal.fire with an error message here
         });
       }
     });
