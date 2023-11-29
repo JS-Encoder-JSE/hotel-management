@@ -184,7 +184,7 @@ const ShowAllExpense = () => {
 
   console.log(isTodayItems,"itemssssssssssss")
 
-  const totalItemPrice = isTodayItems[0]?.items?.reduce(
+  const totalItemPrice = isTodayItems && isTodayItems[0]?.items?.reduce(
     (total, item) => {
       // Add the price of each item to the total
       return total + (item?.price || 0);
@@ -271,7 +271,7 @@ const ShowAllExpense = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {isTodayItems[0]?.items?.map((item, idx) => {
+                        {isTodayItems && isTodayItems[0]?.items?.map((item, idx) => {
                           return (
                             <tr
                               className={
