@@ -412,7 +412,7 @@ const HotelExpenses = () => {
               <span>entries</span>
             </div>
           </div>
-        <div className={`flex gap-3 `}>
+        <div className={`flex flex-col md:flex-row gap-4`}>
           <DatePicker
             autoComplete={`off`}
             dateFormat="dd/MM/yyyy"

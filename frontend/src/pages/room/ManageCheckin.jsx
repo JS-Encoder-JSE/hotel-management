@@ -53,9 +53,8 @@ const ManageCheckin = () => {
   };
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
-    <div className={`space-y-10 bg-white p-16 rounded-2xl`}>
-      <div className="flex justify-between" >
-      <div>
+    <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
+        <div>
               <Link to={`/dashboard `}>
                 <button
                   type="button"
@@ -69,6 +68,8 @@ const ManageCheckin = () => {
                 </button>
               </Link>
             </div>
+      <div className="flex justify-end" >
+    
         {/* filter by hotels  */}
         {/*<div className="flex items-center gap-2">*/}
         {/*  /!* <p>Please choose a hotel : </p> *!/*/}
@@ -110,7 +111,7 @@ const ManageCheckin = () => {
                     </button>
           </select>
         </div> */}
-        <div className={`flex gap-3 `}>
+        <div className={`flex flex-col md:flex-row gap-4 `}>
           <button
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
             onClick={() => window.cci_modal.showModal()}

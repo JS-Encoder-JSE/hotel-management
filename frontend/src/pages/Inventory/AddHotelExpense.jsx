@@ -207,7 +207,7 @@ const calculateTotal = () => {
           <div className={`space-y-10`}>
         <div className="card bg-white shadow-xl">
           <div className="card-body">
-          <div>
+          <div className='mb-'>
               <Link to={`/dashboard `}>
                 <button
                   type="button"
@@ -224,7 +224,7 @@ const calculateTotal = () => {
             {/* add Expense */}
             <div className="w-full">
               <h3
-                className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
+                className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5`}
               >
                 <FaPlusCircle />
                 <span>Add Hotel Expenses</span>
@@ -413,7 +413,7 @@ const calculateTotal = () => {
               </div> : <div className="flex flex-col-3 justify-end">
                 <button
                   type="submit"
-                  className=" flex justify-center items-center btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
+                  className=" flex justify-center items-center btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem] mb-5"
                 >
                      <FaPlusCircle className='text-xl' />
                   <span>Add</span>

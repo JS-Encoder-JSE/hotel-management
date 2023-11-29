@@ -41,8 +41,8 @@ const ShowAllSell = () => {
   };
 
   return (
-    <div className={`px-5 space-y-5`}>
-      <div className={`bg-white px-10 py-5 rounded`}>
+    <div className={`space-y-5`}>
+      <div className={`bg-white p-4 rounded`}>
         <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
@@ -156,7 +156,7 @@ const ShowAllSell = () => {
             </table>
           </div>
         </div>
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center ">
           <ReactPaginate
             containerClassName="join rounded-none"
             pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -194,7 +194,7 @@ const ShowAllSell = () => {
             </button>
           </div>
         </div>
-        <div className={`flex gap-3 `}>
+        <div className={`flex flex-col md:flex-row gap-4 `}>
           <DatePicker
             autoComplete={`off`}
             dateFormat="dd/MM/yyyy"

@@ -36,7 +36,8 @@ const validationSchema = yup.object({
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
 
-  children: yup.number().integer("children must be an integer"),
+  children: yup.number(),
+  discount: yup.number(),
   // children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
   //   then: yup
@@ -268,6 +269,30 @@ const ManageCheckinModal = () => {
     }
   }, [formik.values.documents]);
 
+
+  const handleChildrenCheckIn = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.children;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+  const handleDiscountCheckIn = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.discount;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
   return (
     <>
     <form autoComplete="off" method="dialog">
@@ -493,7 +518,7 @@ const ManageCheckinModal = () => {
             name="children"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
             value={formik.values.children}
-            onChange={formik.handleChange}
+            onChange={handleChildrenCheckIn}
             onBlur={formik.handleBlur}
           />
           {formik.touched.children && Boolean(formik.errors.children) ? (
@@ -571,7 +596,7 @@ const ManageCheckinModal = () => {
             name="discount"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
             value={formik.values.discount}
-            onChange={formik.handleChange}
+            onChange={handleDiscountCheckIn}
             onBlur={formik.handleBlur}
           />
           {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
