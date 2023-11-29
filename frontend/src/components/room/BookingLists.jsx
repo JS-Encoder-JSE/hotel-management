@@ -87,9 +87,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                     <div className="flex items-center space-x-3">
                       <div>
                         <div className="font-bold">{item.guestName}</div>
-                        <div className="text-sm opacity-50">
-                          Rooms: {item.room_ids?.map((i) => i.roomNumber)}
-                        </div>
+                        
                       </div>
                     </div>
                   </td>
