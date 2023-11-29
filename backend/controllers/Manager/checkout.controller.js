@@ -20,23 +20,21 @@ import User from "../../models/user.model.js";
 
 export const getCheckoutInfoByRoom = async (req, res) => {
   try {
-    const { room_id } = req.params;
+    const { room_ids } = req.body;
 
-    // Get the current date in the required format
-    const currentDate = new Date().toISOString();
-    // Get the date for the previous day
-    const previousDay = new Date();
-    previousDay.setDate(previousDay.getDate() - 1);
-    const previousDayString = previousDay.toISOString();
+    // // Get the current date in the required format
+    // const currentDate = new Date().toISOString();
+    // // Get the date for the previous day
+    // const previousDay = new Date();
+    // previousDay.setDate(previousDay.getDate() - 1);
+    // const previousDayString = previousDay.toISOString();
 
     // Find active bookings for the given room_id
     const activeBookings = await Booking.find({
-      room_ids: room_id,
+      room_id: { $in: room_ids },
       status: "CheckedIn",
-      from: { $lte: currentDate },
-      to: { $gte: previousDayString },
     }).populate({
-      path: "room_ids",
+      path: "room_id",
       model: "Room",
       select: "roomNumber category",
     });
@@ -46,26 +44,20 @@ export const getCheckoutInfoByRoom = async (req, res) => {
         message: "No active CheckIns found for the given room",
       });
     }
-    // Extract room_ids from each active booking
-    const roomIds = activeBookings.map((booking) => booking.room_ids).flat();
-    const barOrders = await BarOrder.find({
-      room_id: { $in: roomIds },
-      status: { $in: ["Partial", "Pending"] },
-    });
     // Find food orders for the given room_id
     const foodOrders = await FoodOrder.find({
-      room_id: { $in: roomIds },
+      room_id: { $in: room_ids },
       // You may add other conditions if needed
     });
     // Find gym bills for the given room_id
     const gymBills = await GymBills.find({
-      room_id: { $in: roomIds },
+      room_id: { $in: room_ids },
       status: { $in: ["Partial", "Pending"] },
       // You may add other conditions if needed
     });
     // Find pool bills for the given room_id
     const poolBills = await PoolBills.find({
-      room_id: { $in: roomIds },
+      room_id: { $in: room_ids },
       status: { $in: ["Partial", "Pending"] },
       // You may add other conditions if needed
     });
@@ -75,7 +67,6 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       data: {
         booking_info: activeBookings,
         food_bills: foodOrders,
-        bar_bills: barOrders,
         gym_bills: gymBills,
         pool_bills: poolBills,
       },
