@@ -69,7 +69,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
               <th>
                 Room <br /> Number
               </th>
-              <th>Phone</th>
+              <th>Phone <br />Number</th>
               <th>
                 Booking <br /> Date
               </th>

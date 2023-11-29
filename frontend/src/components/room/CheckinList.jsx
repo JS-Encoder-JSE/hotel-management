@@ -14,58 +14,54 @@ import { GiDoorHandle } from "react-icons/gi";
 import { FaRegEdit } from "react-icons/fa";
 import { BiSolidDoorOpen } from "react-icons/bi";
 
-const CheckinList = ({checkinList,page,handlePageClick}) => {
+const CheckinList = ({ checkinList, page, handlePageClick }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  //   const [updateBooking, { isLoading: isCancelledLoading, error }] =
+  //     useUpdateBookingMutation();
+  //   // const [bookingPerPage] = useState(10);
+  //   // const [pageCount, setPageCount] = useState(0);
+  //   const handlePageClick = ({ selected: page }) => {
+  //     setCurrentPage(page);
+  //   };
 
+  //   const handleDelete = (id) => {
+  //     Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "Booking will be Cancel.",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#35bef0",
+  //       cancelButtonColor: "#d33",
+  //       confirmButtonText: "Yes, Cancel it!",
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         Swal.fire({
+  //           position: "center",
+  //           icon: "success",
+  //           title: "Deleted!",
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         }).then(() => {
+  //           updateBooking({ id, data: { status: "Canceled" } });
+  //         });
+  //       }
+  //     });
+  //   };
 
+  //   const [editBookedData, setEditBookedData] = useState(null);
 
-
-//   const [updateBooking, { isLoading: isCancelledLoading, error }] =
-//     useUpdateBookingMutation();
-//   // const [bookingPerPage] = useState(10);
-//   // const [pageCount, setPageCount] = useState(0);
-//   const handlePageClick = ({ selected: page }) => {
-//     setCurrentPage(page);
-//   };
-
-//   const handleDelete = (id) => {
-//     Swal.fire({
-//       title: "Are you sure?",
-//       text: "Booking will be Cancel.",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonColor: "#35bef0",
-//       cancelButtonColor: "#d33",
-//       confirmButtonText: "Yes, Cancel it!",
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         Swal.fire({
-//           position: "center",
-//           icon: "success",
-//           title: "Deleted!",
-//           showConfirmButton: false,
-//           timer: 1500,
-//         }).then(() => {
-//           updateBooking({ id, data: { status: "Canceled" } });
-//         });
-//       }
-//     });
-//   };
-
-//   const [editBookedData, setEditBookedData] = useState(null);
-
-//   useEffect(() => {
-//     if (data && modalOpen) {
-//       window.ci_modal.showModal();
-//       setModalOpen(false);
-//     }
-//   }, [modalOpen]);
-if(!checkinList){
-    return <p>Loading</p>
-}
+  //   useEffect(() => {
+  //     if (data && modalOpen) {
+  //       window.ci_modal.showModal();
+  //       setModalOpen(false);
+  //     }
+  //   }, [modalOpen]);
+  if (!checkinList) {
+    return <p>Loading</p>;
+  }
 
   return (
     <div>
@@ -73,33 +69,41 @@ if(!checkinList){
         <table className="table">
           <thead>
             <tr className={`text-lg`}>
-              <th>Name</th>
-              <th>Phone</th>
               <th>
-                Paid Amount
-              </th> 
+                Guest <br /> Name
+              </th>
+              <th>
+                Room <br />
+                Number
+              </th>
+              <th>
+                Phone <br />
+                Number
+              </th>
+              <th>Booking</th>
               <th>From</th>
               <th>To</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-        {checkinList.map((item,idx)=>{
-            return (
+            {checkinList.map((item, idx) => {
+              return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <td>
                     <div className="flex items-center space-x-3">
                       <div>
                         <div className="font-bold">{item.guestName}</div>
                         <div className="text-sm opacity-50">
-                          Rooms: 
-                          {/* {item?.room_ids.map((i) => i.roomNumber)} */}
+                          {console.log("item", item)}
                         </div>
                       </div>
                     </div>
                   </td>
+                  <td>{item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
-                  <td>{item?.paid_amount}</td>
+                  {/* <td>{item?.paid_amount}</td> */}
+                  <td>{new Date(item?.createdAt).toLocaleString()}</td>
                   <td>{new Date(item?.from).toLocaleString()}</td>
                   <td>{new Date(item?.to).toLocaleString()}</td>
 
@@ -111,28 +115,27 @@ if(!checkinList){
                     >
                       <FaEye />
                     </span>
-                    
+
                     <Link
-                    to={"/dashboard/checkin"}
-                    className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                      to={"/dashboard/checkin"}
+                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                     >
-                    <BiSolidDoorOpen />
+                      <BiSolidDoorOpen />
                     </Link>
                     <span
-                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`} 
+                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                     >
                       <FaEdit />
                     </span>
-                    
                   </td>
                 </tr>
               );
-        })}
+            })}
           </tbody>
         </table>
       </div>
       <div className="flex justify-center mt-10">
-      <ReactPaginate
+        <ReactPaginate
           containerClassName="join rounded-none"
           pageLinkClassName="join-item btn btn-md bg-transparent"
           activeLinkClassName="btn-active !bg-green-slimy text-white"
