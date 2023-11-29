@@ -251,10 +251,6 @@ export const deleteRoom = async (req, res) => {
 export const getRoomPostedBills = async (req, res) => {
   try {
     const room_id = req.params.room_id;
-    const barOrders = await BarOrder.find({
-      room_id,
-      status: { $in: ["Partial", "Pending"] },
-    });
     // Find food orders for the given room_id
     const foodOrders = await FoodOrder.find({
       room_id,
@@ -277,7 +273,6 @@ export const getRoomPostedBills = async (req, res) => {
       success: true,
       data: {
         food_bills: foodOrders,
-        bar_bills: barOrders,
         gym_bills: gymBills,
         pool_bills: poolBills,
       },
