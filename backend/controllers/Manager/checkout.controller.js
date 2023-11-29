@@ -20,7 +20,7 @@ import User from "../../models/user.model.js";
 
 export const getCheckoutInfoByRoom = async (req, res) => {
   try {
-    const { room_ids } = req.params;
+    const { room_ids } = req.body;
 
     // // Get the current date in the required format
     // const currentDate = new Date().toISOString();
@@ -31,7 +31,7 @@ export const getCheckoutInfoByRoom = async (req, res) => {
 
     // Find active bookings for the given room_id
     const activeBookings = await Booking.find({
-      room_ids: { $in: room_ids },
+      room_id: { $in: room_ids },
       status: "CheckedIn",
     }).populate({
       path: "room_id",
