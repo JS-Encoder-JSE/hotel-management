@@ -44,6 +44,15 @@ export const getCheckoutInfoByRoom = async (req, res) => {
         message: "No active CheckIns found for the given room",
       });
     }
+    const activeBookingIds = activeBookings.map((booking) => booking._id);
+
+    const bookingInfo = await BookingInfo.findOne({
+      booking_ids: { $in: activeBookingIds },
+    }).populate({
+      path: "room_ids",
+      model: "Room",
+      select: "roomNumber category",
+    });
     // Find food orders for the given room_id
     const foodOrders = await FoodOrder.find({
       room_id: { $in: room_ids },
@@ -65,7 +74,8 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     res.status(200).json({
       success: true,
       data: {
-        booking_info: activeBookings,
+        booking_info: bookingInfo,
+        room_bookings: activeBookings,
         food_bills: foodOrders,
         gym_bills: gymBills,
         pool_bills: poolBills,
