@@ -28,7 +28,7 @@ router.get(
   getBookingDetailsById
 );
 router.patch("/update-booking/:booking_id", checkToken, updateBooking);
-router.get(
+router.post(
   "/get-checkoutinfo-by-rooms",
   checkToken,
   getCheckoutInfoByRoom
