@@ -118,7 +118,7 @@ const CheckOut = () => {
       label: `${room.roomNumber} - ${room.category}`,
     }));
   useEffect(() => {
-    setFetch(roomFromQuery);
+    getCheckout({ room_ids: roomFromQuery });
     setShowRooms(true);
   }, [roomFromQuery]);
 
