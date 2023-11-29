@@ -146,6 +146,8 @@ export const addBooking = async (req, res) => {
         const booking = new Booking({
           room_id,
           hotel_id,
+          guestName,
+          mobileNumber,
           from,
           to,
           no_of_days,
@@ -458,6 +460,7 @@ export const cancelBooking = async (req, res) => {
     });
   }
 };
+
 export const getBookingsByHotel = async (req, res) => {
   try {
     const { limit = 10, page = 1, search, filter } = req.query;
@@ -493,7 +496,7 @@ export const getBookingsByHotel = async (req, res) => {
     const result = await Booking.find(query)
       .limit(options.limit)
       .skip((options.page - 1) * options.limit)
-      .populate("room_ids", "roomNumber floorNumber");
+      .populate("room_id", "roomNumber floorNumber");
 
     const totalDocuments = await Booking.countDocuments(query);
 
