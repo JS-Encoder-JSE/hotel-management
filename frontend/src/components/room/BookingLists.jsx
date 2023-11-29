@@ -37,7 +37,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Deleted!",
+          title: "Canceled!",
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {

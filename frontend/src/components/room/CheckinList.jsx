@@ -18,7 +18,7 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-
+  console.log("checkinList", checkinList);
   //   const [updateBooking, { isLoading: isCancelledLoading, error }] =
   //     useUpdateBookingMutation();
   //   // const [bookingPerPage] = useState(10);

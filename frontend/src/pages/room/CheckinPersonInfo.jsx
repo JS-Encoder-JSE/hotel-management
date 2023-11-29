@@ -18,6 +18,7 @@ const CheckinPersonInfo = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data: booking, isLoading } = useGetBookingByIdQuery(id);
+  console.log("booking",booking)
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -71,7 +72,7 @@ const CheckinPersonInfo = () => {
                 <th className={`text-start`}>Name</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.guestName}</td>
-                {/* {console.log("data",booking.data)} */}
+                {console.log("data",booking)}
               </tr>
               <tr>
                 <th className={`text-start`}>Phone</th>
