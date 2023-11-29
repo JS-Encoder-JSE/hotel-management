@@ -29,7 +29,7 @@ router.get(
 );
 router.patch("/update-booking/:booking_id", checkToken, updateBooking);
 router.get(
-  "/get-checkoutinfo-by-room/:room_id",
+  "/get-checkoutinfo-by-rooms",
   checkToken,
   getCheckoutInfoByRoom
 );

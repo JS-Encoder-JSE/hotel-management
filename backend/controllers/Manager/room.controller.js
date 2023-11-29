@@ -1,4 +1,8 @@
-﻿import Room from "../../models/Manager/room.model.js"; // Assuming the Room model file path
+﻿import BarOrder from "../../models/Manager/bar.model.js";
+import { FoodOrder } from "../../models/Manager/food.model.js";
+import GymBills from "../../models/Manager/gym.model.js";
+import PoolBills from "../../models/Manager/pool.model.js";
+import Room from "../../models/Manager/room.model.js"; // Assuming the Room model file path
 import User from "../../models/user.model.js";
 
 //add room
@@ -237,6 +241,45 @@ export const deleteRoom = async (req, res) => {
       message: "Room deleted successfully",
     });
   } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const getRoomPostedBills = async (req, res) => {
+  try {
+    const room_id = req.params.room_id;
+    // Find food orders for the given room_id
+    const foodOrders = await FoodOrder.find({
+      room_id,
+      // You may add other conditions if needed
+    });
+    // Find gym bills for the given room_id
+    const gymBills = await GymBills.find({
+      room_id,
+      status: { $in: ["Partial", "Pending"] },
+      // You may add other conditions if needed
+    });
+    // Find pool bills for the given room_id
+    const poolBills = await PoolBills.find({
+      room_id,
+      status: { $in: ["Partial", "Pending"] },
+      // You may add other conditions if needed
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        food_bills: foodOrders,
+        gym_bills: gymBills,
+        pool_bills: poolBills,
+      },
+      message: "Room posted bills retrieved successfully",
+    });
+  } catch {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",

@@ -38,6 +38,7 @@ const baseAPI = createApi({
     "checkout",
     "category",
     "booking",
+    "GetExpenses",
   ],
   baseQuery: baseQueryWithReAuth,
   endpoints: (build) => ({
