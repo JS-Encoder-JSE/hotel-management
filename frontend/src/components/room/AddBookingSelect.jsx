@@ -204,6 +204,20 @@ const AddBookingSelect = ({room}) => {
   console.log(room.data._id,"--------Rom")
 
 
+  // Price Validation
+  const handleChildren = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.children;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
+
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -413,7 +427,7 @@ const AddBookingSelect = ({room}) => {
               name="children"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.children}
-              onChange={formik.handleChange}
+              onChange={handleChildren}
               onBlur={formik.handleBlur}
             />
             {formik.touched.children && Boolean(formik.errors.children) ? (

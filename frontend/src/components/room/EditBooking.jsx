@@ -108,6 +108,19 @@ const EditBooking = ({ data }) => {
     }
   }, [data]);
 
+// children validation
+  const handleChildrenEditBooking = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.children;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -224,7 +237,7 @@ const EditBooking = ({ data }) => {
               name="children"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
               value={formik.values.children}
-              onChange={formik.handleChange}
+              onChange={handleChildrenEditBooking}
               onBlur={formik.handleBlur}
             />
             {formik.touched.children && Boolean(formik.errors.children) ? (
