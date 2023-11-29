@@ -56,15 +56,20 @@ export const getformatDateTime = (date) => {
 export const getNumberOfDays = (fromDate, toDate) => {
   const calculateDays =
     Math.abs(new Date(toDate) - new Date(fromDate)) / (24 * 60 * 60 * 1000);
-  if (1 > calculateDays > 0) {
-    return 1;
-  } else {
-    return Math.ceil(calculateDays);
-  }
+
+  return Math.ceil(calculateDays);
 };
 
 export function getCurrentDateWithDay() {
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   const currentDate = new Date();
   const dayOfWeek = daysOfWeek[currentDate.getDay()];

@@ -126,7 +126,10 @@ const CheckInModal = ({ room }) => {
       };
 
       if (!obj.discount) obj.discount = 0;
-
+      let room_ids = [];
+      if (room) {
+        room_ids.push(room?.data?._id);
+      }
       const no_of_days = getNumberOfDays(obj.from, obj.to);
       const rent_per_day = room?.data?.price;
       const total_rent = no_of_days * rent_per_day;
@@ -161,7 +164,7 @@ const CheckInModal = ({ room }) => {
       );
       const response = await addBooking({
         hotel_id: obj.hotel_id,
-        room_ids: room?.data?._id,
+        room_ids,
         guestName: obj.guestName,
         address: obj.address,
         mobileNumber: obj.mobileNumber,
@@ -184,7 +187,7 @@ const CheckInModal = ({ room }) => {
         doc_images: {
           [title]: tempImg,
         },
-        remark:"advancePaymentForCheckIn",
+        remark: "advancePaymentForCheckIn",
         status: "CheckedIn",
       });
 

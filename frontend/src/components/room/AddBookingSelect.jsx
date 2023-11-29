@@ -10,7 +10,7 @@ import {
 import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
 import toast from "react-hot-toast";
-import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import { fromDateIsoConverter, getNumberOfDays, toDateIsoConverter } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
