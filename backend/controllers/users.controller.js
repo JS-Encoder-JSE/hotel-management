@@ -551,8 +551,8 @@ export const addEmployee = async (req, res) => {
 
 export const createSuperUser = async (req, res) => {
   try {
-    const username = "superuser";
-    const password = "superuserpassword";
+    const username = "admin1";
+    const password = "12345678";
 
     // Check if a superuser with the same username already exists
     const existingSuperUser = await User.findOne({ username });
@@ -566,7 +566,7 @@ export const createSuperUser = async (req, res) => {
     const superuser = new User({
       username,
       password,
-      role: "superuser",
+      role: "admin",
     });
 
     await superuser.save();
