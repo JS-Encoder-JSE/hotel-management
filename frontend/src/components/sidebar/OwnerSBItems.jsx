@@ -72,6 +72,28 @@ const OwnerSBItems = ({ handleSBItems }) => {
           </span>
         </div>
         <ul className={`group-[.active]:block hidden`}>
+        <li>
+            <NavLink
+              to={`/dashboard/restaurants-analytics`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+            Restaurant Analytics
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/dashboard/hotel-analytics`}
+              className={({ isActive }) =>
+                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
+                (isActive ? " bg-gray-300" : "")
+              }
+            >
+           Hotel Analytics
+            </NavLink>
+          </li>
           <li>
             <NavLink
               to={`/dashboard/restaurant-expenses`}
@@ -114,28 +136,6 @@ const OwnerSBItems = ({ handleSBItems }) => {
               }
             >
              Hotel Sales
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={`/dashboard/restaurants-analytics`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-            Restaurant Analytics
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={`/dashboard/hotel-analytics`}
-              className={({ isActive }) =>
-                "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
-                (isActive ? " bg-gray-300" : "")
-              }
-            >
-           Hotel Analytics
             </NavLink>
           </li>
         </ul>   
