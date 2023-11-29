@@ -62,11 +62,14 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
         <table className="table">
           <thead>
             <tr className={`text-lg`}>
-              <th>Name</th>
-              <th>Phone</th>
               <th>
-              Advanced <br /> Amount
+                Guest <br /> Name
               </th>
+
+              <th>
+                Room <br /> Number
+              </th>
+              <th>Phone</th>
               <th>
                 Booking <br /> Date
               </th>
@@ -83,14 +86,13 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                     <div className="flex items-center space-x-3">
                       <div>
                         <div className="font-bold">{item.guestName}</div>
-                        <div className="text-sm opacity-50">
-                          Rooms: {item.room_ids.map((i) => i.roomNumber)}
-                        </div>
+                        <div className="text-sm opacity-50"></div>
                       </div>
                     </div>
                   </td>
+                  <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
-                  <td>{item?.paid_amount}</td>
+                  {/* <td>{item?.paid_amount}</td> */}
                   <td>{new Date(item?.createdAt).toLocaleString()}</td>
                   <td>{new Date(item?.from).toLocaleString()}</td>
                   <td>{new Date(item?.to).toLocaleString()}</td>
@@ -139,7 +141,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                       className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                       title={`Cancel`}
                     >
-                     <MdOutlineCancel className="text-[17px]"  />
+                      <MdOutlineCancel className="text-[17px]" />
                     </button>
                   </td>
                 </tr>
