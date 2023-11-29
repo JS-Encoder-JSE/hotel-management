@@ -814,6 +814,44 @@ export const updateBooking = async (req, res) => {
   }
 };
 
+export const updateBookingInfo = async (req, res) => {
+  try {
+    const { booking_id } = req.params;
+    const updateData = req.body;
+
+    // Find the BookingInfo document by ID
+    const bookingInfo = await BookingInfo.findOne({
+      booking_ids: booking_id,
+    });
+
+    if (!bookingInfo) {
+      return res.status(404).json({
+        success: false,
+        message: "BookingInfo not found",
+      });
+    }
+
+    // Update the BookingInfo document with the provided data
+    Object.assign(bookingInfo, updateData);
+
+    // Save the updated BookingInfo document
+    await bookingInfo.save();
+
+    res.status(200).json({
+      success: true,
+      message: "BookingInfo updated successfully",
+      updatedBookingInfo: bookingInfo,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
 export const deleteBooking = async (req, res) => {
   try {
     const bookingId = req.params.bookingId; // Assuming you pass the booking ID in the request body
