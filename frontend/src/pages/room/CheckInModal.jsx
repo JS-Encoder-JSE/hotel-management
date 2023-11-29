@@ -185,17 +185,18 @@ const CheckInModal = ({ room }) => {
         from: obj.from,
         to: obj.to,
         no_of_days,
-        rent_per_day,
-        total_rent,
+        // rent_per_day,
+        // total_rent,
         discount,
-        amount_after_dis,
+        // amount_after_dis,
         paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
-        total_unpaid_amount: amount_after_dis - obj.amount,
+        // total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
         doc_number: obj.doc_number,
         doc_images: {
           [title]: tempImg,
         },
+        remark:"advancePaymentForCheckIn",
         status: "CheckedIn",
       });
 

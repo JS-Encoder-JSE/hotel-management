@@ -117,7 +117,8 @@ const CheckInDyn = ({ data }) => {
           status: "CheckedIn",
           paymentMethod: obj.paymentMethod,
           transection_id: obj.transection_id,
-          total_unpaid_amount: data.amount_after_dis - paidAmount,
+          // total_unpaid_amount: data.amount_after_dis - paidAmount,
+          remark:"advancePaymentForCheckIn"
         },
       });
 
