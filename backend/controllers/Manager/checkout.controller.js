@@ -1,5 +1,5 @@
 import BarOrder from "../../models/Manager/bar.model.js";
-import Booking from "../../models/Manager/booking.model.js";
+import { Booking, BookingInfo } from "../../models/Manager/booking.model.js";
 import { FoodOrder } from "../../models/Manager/food.model.js";
 import GymBills from "../../models/Manager/gym.model.js";
 import PoolBills from "../../models/Manager/pool.model.js";
@@ -11,6 +11,11 @@ import {
   Dashboard,
   DashboardTable,
 } from "../../models/dashboard.model.js";
+import {
+  DailySubDashData,
+  MonthlySubDashData,
+  StaticSubDashData,
+} from "../../models/subdashboard.model.js";
 import User from "../../models/user.model.js";
 
 export const getCheckoutInfoByRoom = async (req, res) => {
@@ -246,6 +251,45 @@ export const checkedOut = async (req, res) => {
         today_checkout: 1,
       });
       await newCheckInfo.save();
+    }
+    const existingStaticSubDashData = await StaticSubDashData.findOne({
+      user_id: userId,
+    });
+    existingStaticSubDashData.total_hotel_income += new_paid_amount;
+    existingStaticSubDashData.total_hotel_profit += new_paid_amount;
+    await existingStaticSubDashData.save();
+    const existingDailySubDashData = await DailySubDashData.findOne({
+      user_id: userId,
+      date,
+    });
+    if (existingDailySubDashData) {
+      existingDailySubDashData.today_hotel_income += new_paid_amount;
+      existingDailySubDashData.today_hotel_profit += new_paid_amount;
+      await existingDailySubDashData.save();
+    }
+    if (!existingDailySubDashData) {
+      const newDailySubDashData = new DailySubDashData({
+        user_id: userId,
+        today_hotel_expenses: new_paid_amount,
+      });
+      await newDailySubDashData.save();
+    }
+    const existingMonthlySubDashData = await MonthlySubDashData.findOne({
+      user_id: userId,
+      month_name,
+      year,
+    });
+    if (existingMonthlySubDashData) {
+      existingDailySubDashData.total_hotel_income += new_paid_amount;
+      existingDailySubDashData.total_hotel_profit += new_paid_amount;
+      await existingMonthlySubDashData.save();
+    }
+    if (!existingMonthlySubDashData) {
+      const newMonthlySubDashData = new DailySubDashData({
+        user_id: userId,
+        total_hotel_expenses: new_paid_amount,
+      });
+      await newMonthlySubDashData.save();
     }
     // Respond with the saved report
     res.status(201).json(savedReport);
