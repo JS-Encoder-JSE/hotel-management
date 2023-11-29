@@ -35,7 +35,8 @@ const validationSchema = yup.object({
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
 
-  children: yup.number().integer("children must be an integer"),
+  children: yup.number(),
+  discount: yup.number(),
   // children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
   //   then: yup
@@ -263,6 +264,31 @@ const CheckIn = () => {
     }
   }, [formik.values.documents]);
 
+  // Children Validation
+  const handleChildrenCheckIn = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.children;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+  // Discount Validation
+  const handleDiscountCheckIn = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.discount;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
   return (
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
       <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
@@ -478,7 +504,7 @@ const CheckIn = () => {
             name="children"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
             value={formik.values.children}
-            onChange={formik.handleChange}
+            onChange={handleChildrenCheckIn}
             onBlur={formik.handleBlur}
           />
           {formik.touched.children && Boolean(formik.errors.children) ? (
@@ -556,7 +582,7 @@ const CheckIn = () => {
             name="discount"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
             value={formik.values.discount}
-            onChange={formik.handleChange}
+            onChange={handleDiscountCheckIn}
             onBlur={formik.handleBlur}
           />
           {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
