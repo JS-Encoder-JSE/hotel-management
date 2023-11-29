@@ -16,6 +16,7 @@ import DatePicker from "react-datepicker";
 import {
   useGetExpensesQuery,
   useGetHotelByManagerIdQuery,
+  useUpdateExpenseMutation,
 } from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
 import {
@@ -38,6 +39,10 @@ const ShowAllExpense = () => {
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [PDF, setPdf] = useState([]);
+
+  // editItemData
+  const [editItemData, setEditItemData] = useState(null);
+
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
@@ -134,6 +139,9 @@ const ShowAllExpense = () => {
     limit: 10,
   });
 
+console.log(hotelExpenses,"hotelex")
+
+
   const {
     data: filteredExpenses,
     isLoading: isFilterDataLoading,
@@ -184,14 +192,15 @@ const ShowAllExpense = () => {
 
   console.log(isTodayItems,"itemssssssssssss")
 
-  const totalItemPrice = isTodayItems && isTodayItems[0]?.items?.reduce(
+  const totalItemPrice =filteredExpenses && filteredExpenses?.docs[2]?.items?.reduce(
     (total, item) => {
       // Add the price of each item to the total
       return total + (item?.price || 0);
     },
     0
   );
-
+ 
+  console.log(totalItemPrice,"price")
   // const isTodayItems = hotelExpenses?.docs?.map((itemDate)=> itemDate)
 
 
@@ -199,7 +208,7 @@ const ShowAllExpense = () => {
 
   console.log(isTodayItems,"isHotel")
 
-
+console.log(filteredExpenses?.docs)
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -231,7 +240,7 @@ const ShowAllExpense = () => {
                   Today Expenses
                 </h3>
               </div>
-              <div className={`flex justify-end mb-5`}>
+              {/* <div className={`flex justify-end mb-5`}>
                 {PDF?.length ? (
                   <PDFDownloadLink
                     document={
@@ -250,10 +259,18 @@ const ShowAllExpense = () => {
                     PDF
                   </PDFDownloadLink>
                 ) : null}
-              </div>
+              </div> */}
+
+<div className={`flex justify-end mb-5`}>
+            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+              {" "}
+              <FaRegFilePdf />
+              PDF
+            </button>
+          </div>
 
               <div className="h-96">
-                {hotelExpenses && hotelExpenses?.docs[0]?.items.length ? (
+                {hotelExpenses && filteredExpenses?.docs[2]?.items.length ? (
                   <div className="h-[20rem] overflow-x-auto overflow-y-auto">
                     <table className="table">
                       <thead>
@@ -271,7 +288,7 @@ const ShowAllExpense = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {isTodayItems && isTodayItems[0]?.items?.map((item, idx) => {
+                        {filteredExpenses && filteredExpenses?.docs[2]?.items?.map((item, idx) => {
                           return (
                             <tr
                               className={
@@ -295,10 +312,12 @@ const ShowAllExpense = () => {
                               <td>
                                 <button
                                   className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                                  onClick={() =>
+                                  onClick={() =>{
+                                    setEditItemData(item);
                                     document
                                       .getElementById("my_modal_3")
                                       .showModal()
+                                  }    
                                   }
                                 >
                                   <FaRegEdit />
@@ -311,7 +330,7 @@ const ShowAllExpense = () => {
                                       </button>
                                     </form>
                                
-                                    <EditExpenses />
+                                    <EditExpenses data={editItemData} />
                                   </div>
                                 </dialog>
                               </td>
@@ -381,7 +400,7 @@ const ShowAllExpense = () => {
                 Restaurant Expenses History
               </h3>
             </div>
-            <div className="flex justify-end">
+            {/* <div className="flex justify-end">
               {PDF?.length ? (
                 <PDFDownloadLink
                   document={
@@ -401,7 +420,14 @@ const ShowAllExpense = () => {
                   PDF
                 </PDFDownloadLink>
               ) : null}
-            </div>
+            </div> */}
+            <div className={`flex justify-end mb-5`}>
+            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+              {" "}
+              <FaRegFilePdf />
+              PDF
+            </button>
+          </div>
           </div>
           <div className={`flex justify-between my-5`}>
             <div className={`space-x-1.5`}>

@@ -185,7 +185,9 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                 Today Expenses
               </h3>
             </div>
-            <div className={`flex justify-end mb-5`}>
+             {/* all pdf comment out kora ase  */}
+
+            {/* <div className={`flex justify-end mb-5`}>
               {PDF?.length ? (
                 <PDFDownloadLink
                   document={
@@ -205,7 +207,16 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                   PDF
                 </PDFDownloadLink>
               ) : null}
-            </div>
+            </div> */}
+
+            {/* all pdf comment out kora ase upore */}
+             <div className={`flex justify-end mb-5`}>
+            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+              {" "}
+              <FaRegFilePdf />
+              PDF
+            </button>
+          </div>
 
             <div className="h-96">
               {/* 3rd commit  */}
@@ -328,7 +339,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
               Restaurant Expenses History
             </h3>
           </div>
-          <div className="flex justify-end">
+          {/* <div className="flex justify-end">
             {PDF?.length ? (
               <PDFDownloadLink
                 document={
@@ -348,6 +359,13 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                 PDF
               </PDFDownloadLink>
             ) : null}
+          </div> */}
+           <div className={`flex justify-end mb-5`}>
+            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+              {" "}
+              <FaRegFilePdf />
+              PDF
+            </button>
           </div>
         </div>
         <div className={`flex justify-between my-5`}>

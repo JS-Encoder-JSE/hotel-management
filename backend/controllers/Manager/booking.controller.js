@@ -160,7 +160,7 @@ export const addBooking = async (req, res) => {
       })
     );
     console.log(bookings);
-    const amount_after_dis = total_rent - discount;
+    const total_rent_after_dis = total_rent - discount;
     const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
@@ -174,9 +174,10 @@ export const addBooking = async (req, res) => {
       bookingMethod,
       total_rent: total_rent,
       discount,
-      amount_after_dis: amount_after_dis,
+      total_rent_after_dis: total_rent_after_dis,
+      total_payable_amount: total_rent_after_dis,
       paid_amount,
-      total_unpaid_amount: amount_after_dis - paid_amount,
+      total_unpaid_amount: total_rent_after_dis - paid_amount,
       nationality,
       doc_number,
       doc_images,
@@ -878,3 +879,4 @@ export const getActiveBookingByRoomId = async (req, res) => {
     });
   }
 };
+

@@ -40,6 +40,8 @@ const HotelExpenses = () => {
   const [PDF, setPdf] = useState([]);
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
+  // editItemData
+  const [editItemData, setEditItemData] = useState(null);
 
   // console.log(user._id);
 
@@ -165,7 +167,8 @@ const HotelExpenses = () => {
     }
   };
 
-  const totalItemPrice = hotelExpenses?.docs[0]?.items?.reduce(
+ 
+  const totalItemPrice =filteredExpenses && filteredExpenses?.docs[2]?.items?.reduce(
     (total, item) => {
       // Add the price of each item to the total
       return total + (item?.price || 0);
@@ -203,7 +206,7 @@ const HotelExpenses = () => {
                   Today Expenses
                 </h3>
               </div>
-              <div className={`flex justify-end mb-5`}>
+              {/* <div className={`flex justify-end mb-5`}>
                 {PDF?.length ? (
                   <PDFDownloadLink
                     document={
@@ -222,10 +225,18 @@ const HotelExpenses = () => {
                     PDF
                   </PDFDownloadLink>
                 ) : null}
-              </div>
+              </div> */}
+
+<div className={`flex justify-end mb-5`}>
+            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+              {" "}
+              <FaRegFilePdf />
+              PDF
+            </button>
+          </div>
 
               <div className="h-96">
-                {hotelExpenses && hotelExpenses?.docs[0]?.items.length ? (
+                {hotelExpenses && filteredExpenses?.docs[0]?.items.length ? (
                   <div className="h-[20rem] overflow-x-auto overflow-y-auto">
                     <table className="table">
                       <thead>
@@ -243,7 +254,7 @@ const HotelExpenses = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {hotelExpenses?.docs[0]?.items?.map((item, idx) => {
+                        {filteredExpenses && filteredExpenses?.docs[0]?.items?.map((item, idx) => {
                           return (
                             <tr
                               className={
@@ -267,10 +278,12 @@ const HotelExpenses = () => {
                               <td>
                                 <button
                                   className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                                  onClick={() =>
+                                  onClick={() =>{
+                                    setEditItemData(item);
                                     document
                                       .getElementById("my_modal_3")
                                       .showModal()
+                                  }
                                   }
                                 >
                                   <FaRegEdit />
@@ -283,7 +296,7 @@ const HotelExpenses = () => {
                                       </button>
                                     </form>
                                
-                                    <EditExpenses />
+                                    <EditExpenses data={editItemData} />
                                   </div>
                                 </dialog>
                               </td>
@@ -353,7 +366,7 @@ const HotelExpenses = () => {
                 Hotel Expenses History
               </h3>
             </div>
-            <div className="flex justify-end">
+            {/* <div className="flex justify-end">
               {PDF?.length ? (
                 <PDFDownloadLink
                   document={
@@ -373,7 +386,14 @@ const HotelExpenses = () => {
                   PDF
                 </PDFDownloadLink>
               ) : null}
-            </div>
+            </div> */}
+             <div className={`flex justify-end mb-5`}>
+            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+              {" "}
+              <FaRegFilePdf />
+              PDF
+            </button>
+          </div>
           </div>
           <div className={`flex justify-between my-5`}>
             <div className={`space-x-1.5`}>

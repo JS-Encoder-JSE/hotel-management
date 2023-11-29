@@ -35,21 +35,14 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
       confirmButtonText: "Yes, Cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        
-        cancelBooking(id)
-        .then(() => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Deleted!",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        })
-        .catch((error) => {
-          // Handle error if cancelBooking fails
-          console.error("Error cancelling booking:", error);
-          // You might want to show another Swal.fire with an error message here
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Canceled!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          updateBooking({ id, data: { status: "Canceled" } });
         });
       }
     });
@@ -77,7 +70,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
               <th>
                 Room <br /> Number
               </th>
-              <th>Phone</th>
+              <th>Phone <br />Number</th>
               <th>
                 Booking <br /> Date
               </th>
@@ -94,7 +87,9 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                     <div className="flex items-center space-x-3">
                       <div>
                         <div className="font-bold">{item.guestName}</div>
-                        <div className="text-sm opacity-50"></div>
+                        <div className="text-sm opacity-50">
+                          Rooms: {item.room_ids?.map((i) => i.roomNumber)}
+                        </div>
                       </div>
                     </div>
                   </td>

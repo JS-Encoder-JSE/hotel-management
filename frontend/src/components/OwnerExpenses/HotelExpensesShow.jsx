@@ -174,7 +174,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
               Today Expenses
             </h3>
           </div>
-          <div className={`flex justify-end mb-5`}>
+          {/* <div className={`flex justify-end mb-5`}>
           {PDF?.length ? (
                 <PDFDownloadLink
                 document={<RestaurantExpenseReport date={hotelExpenses?.docs[0]?.date} values={hotelExpenses?.docs[0]?.items} header={{
@@ -188,6 +188,14 @@ setPdf(hotelExpenses?.docs[0]?.items)
                 PDF
               </PDFDownloadLink>
               ) : null}
+          </div> */}
+
+<div className={`flex justify-end mb-5`}>
+            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+              {" "}
+              <FaRegFilePdf />
+              PDF
+            </button>
           </div>
 
         <div className="h-96">
@@ -316,7 +324,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
               Hotel Expenses History
             </h3>
           </div>
-          <div className="flex justify-end">
+          {/* <div className="flex justify-end">
           {PDF?.length ? (
                 <PDFDownloadLink
                 document={<ExpensesHistoryReport date={hotelExpenses?.docs[0]?.date} values={filteredExpenses?.docs} header={{
@@ -330,6 +338,13 @@ setPdf(hotelExpenses?.docs[0]?.items)
                 PDF
               </PDFDownloadLink>
               ) : null}
+          </div> */}
+           <div className={`flex justify-end mb-5`}>
+            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
+              {" "}
+              <FaRegFilePdf />
+              PDF
+            </button>
           </div>
         </div>
         <div className={`flex justify-between my-5`}>

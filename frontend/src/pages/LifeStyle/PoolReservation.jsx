@@ -38,16 +38,11 @@ const validationSchema = yup.object({
   //     else return schema;
   //   }),
   price: yup
-    .number()
-    .required("Price is required")
-    .positive(" Price must be a positive number")
-    .integer(" Price must be an integer"),
+    .number(),
     
     paidamount: yup
     .number()
-    .required("Paid Amount is required")
-    .positive(" Paid Amount must be a positive number")
-    .integer(" Paid Amount must be an integer"),
+  ,
 });
 
 const PoolReservation = () => {
@@ -117,6 +112,32 @@ const PoolReservation = () => {
       e.preventDefault();
     }
   };
+
+// Price Validation
+const handlePrice = (e) => {
+  const inputValue = e.target.value;
+  const fieldName = e.target.price;
+  if (inputValue >= 0) {
+    // Update the Formik state
+    formik.handleChange(e);
+  } else if (inputValue === "") {
+    e.target.value = 0;
+    formik.handleChange(e);
+  }
+};
+// Price Validation
+const handlePaidAmount = (e) => {
+  const inputValue = e.target.value;
+  const fieldName = e.target.price;
+  if (inputValue >= 0) {
+    // Update the Formik state
+    formik.handleChange(e);
+  } else if (inputValue === "") {
+    e.target.value = 0;
+    formik.handleChange(e);
+  }
+};
+
   return (
     <>
      <div className="mb-7">
@@ -325,7 +346,7 @@ const PoolReservation = () => {
                 name="price"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.price}
-                onChange={formik.handleChange}
+                onChange={handlePrice}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.price && Boolean(formik.errors.price) ? (
@@ -343,7 +364,7 @@ const PoolReservation = () => {
                 name="paidamount"
                 className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                 value={formik.values.paidamount}
-                onChange={formik.handleChange}
+                onChange={handlePaidAmount}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.paidamount &&

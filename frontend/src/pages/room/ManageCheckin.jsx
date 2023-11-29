@@ -38,7 +38,7 @@ const ManageCheckin = () => {
     filter: "CheckedIn",
   });
 
-  console.log(checkinList,"checkinglist")
+  // console.log(checkinList,"checkinglist")
 
 
   const handlePageClick = ({ selected: page }) => {

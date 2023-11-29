@@ -129,12 +129,20 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       providesTags: ["booking"],
     }),
+
+    getBookingInfoById: build.query({
+      query: (id) => {
+        return `bookings/get-booking-details/${id}`;
+      },
+      providesTags: ["bookingInfo"],
+    }),
     getHotelById: build.query({
       query: (id) => {
         return `hotels/get-hotel-by-id/${id}`;
       },
       providesTags: ["room"],
     }),
+
     updateBooking: build.mutation({
       query: ({ id, data }) => {
         return {
@@ -145,6 +153,19 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["booking"],
     }),
+
+// update Expenses
+  updateExpense:build.mutation({
+    query:({id,data})=>{
+      return {
+        url: `/expenses/update-expense/${id}`,
+        method: 'PATCH',
+        body:data,
+      }
+    },
+    invalidatesTags:["expenses"]
+  }),
+
     getCOInfo: build.query({
       query: (id) => `bookings/get-checkoutinfo-by-room/${id}`,
       // providesTags: ["room"],
@@ -179,12 +200,14 @@ export const {
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
   useUpdateBookingMutation,
+  useUpdateExpenseMutation,
   useAddRoomMutation,
   useGetBookingsByHotelQuery,
   useDeleteRoomMutation,
   useUpdateRoomMutation,
   useAddBookingMutation,
   useGetBookingByIdQuery,
+  useGetBookingInfoByIdQuery,
   useGetCOInfoQuery,
   useAddCheckoutMutation,
   useGetTablesQuery,

@@ -3,7 +3,7 @@ import { FaArrowLeft, FaDoorOpen, FaEdit } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EditBooking from "../../components/room/EditBooking.jsx";
 import Modal from "../../components/Modal.jsx";
-import { useGetBookingByIdQuery } from "../../redux/room/roomAPI.js";
+import { useGetBookingByIdQuery, useGetBookingInfoByIdQuery } from "../../redux/room/roomAPI.js";
 import CheckInDyn from "./CheckInDyn.jsx";
 import CheckinCardDetails from "./CheckOut/CheckinCardDetails.jsx";
 import TransactionHistoryCard from "../../components/Manage-CheckIn/TransactionHistoryCard.jsx";
@@ -17,7 +17,8 @@ import PoolsBill from "../../components/Manage-CheckIn/PoolsBill.jsx";
 const CheckinPersonInfo = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: booking, isLoading } = useGetBookingByIdQuery(id);
+  console.log(id)
+  const { data: booking, isLoading } = useGetBookingInfoByIdQuery(id);
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -27,6 +28,19 @@ const CheckinPersonInfo = () => {
       setModalOpen(false);
     }
   }, [modalOpen]);
+
+console.log(booking,"bokingdata")
+
+const documentType =
+  booking?.data?.doc_images?.driving_lic_img?.length
+    ? "Driving License"
+    : booking?.data?.doc_images?.nid?.length
+    ? "NID"
+    : booking?.data?.doc_images?.passport?.length
+    ? "Passport"
+    : "";
+
+
 
   return (
    <>
@@ -71,7 +85,7 @@ const CheckinPersonInfo = () => {
                 <th className={`text-start`}>Name</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.guestName}</td>
-                {/* {console.log("data",booking.data)} */}
+                {console.log("data",booking)}
               </tr>
               <tr>
                 <th className={`text-start`}>Phone</th>
@@ -90,7 +104,7 @@ const CheckinPersonInfo = () => {
                   Document <br /> Type
                 </th>
                 <td className={`w-4 text-center`}>:</td>
-                <td>{booking?.data?.passport}</td>
+                <td>{documentType}</td>
               </tr>
               <tr>
                 <th className={`text-start `}>
@@ -188,10 +202,11 @@ const CheckinPersonInfo = () => {
             <PaymentMethodCard/>
       </div>
       {/* Room rent */}
-      <div className="mt-20">
+      {/* <div className="mt-20">
         <RoomRentDetails/>
-      </div>
-      {/*  */}
+      </div> */}
+      
+      {/*  Bill system*/}
       <div className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}>
 <div>
 <RestaurantBillsCard/>
@@ -204,9 +219,9 @@ const CheckinPersonInfo = () => {
 </div>
       </div>
       {/*  TransactionHistoryCard*/}
-    <div>
+    {/* <div>
       <TransactionHistoryCard/>
-    </div>
+    </div> */}
    </>
   );
 };

@@ -171,6 +171,32 @@ const AddBooking = () => {
     }));
 
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
+
+  // Price Validation
+  const handleChildrenBooking = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.children;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
+  const handleDiscount= (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.discount;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -363,7 +389,7 @@ const AddBooking = () => {
               name="children"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.children}
-              onChange={formik.handleChange}
+              onChange={handleChildrenBooking}
               onBlur={formik.handleBlur}
             />
             {formik.touched.children && Boolean(formik.errors.children) ? (
@@ -443,7 +469,7 @@ const AddBooking = () => {
               name="discount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.discount}
-              onChange={formik.handleChange}
+              onChange={handleDiscount}
               onBlur={formik.handleBlur}
             />
             {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
