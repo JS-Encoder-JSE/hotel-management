@@ -101,6 +101,7 @@ const AddBooking = () => {
         to: toDateIsoConverter(values.to),
       };
 
+      console.log(obj.discount)
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr?.map((elem) => elem.value);
@@ -130,13 +131,14 @@ const AddBooking = () => {
         from: obj.from,
         to: obj.to,
         no_of_days,
-        rent_per_day,
-        total_rent,
+        // rent_per_day,
+        // total_rent,
         discount,
-        amount_after_dis,
+        // amount_after_dis,
         paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
-        total_unpaid_amount: amount_after_dis - obj.amount,
+        // total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
+        remark:"advancePaymentForBooking",
         status: "Active",
       });
 
