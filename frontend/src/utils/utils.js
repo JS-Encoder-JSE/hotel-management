@@ -59,6 +59,6 @@ export const getNumberOfDays = (fromDate, toDate) => {
   if (1 > calculateDays > 0) {
     return 1;
   } else {
-    return Math.floor(calculateDays);
+    return Math.ceil(calculateDays);
   }
 };
