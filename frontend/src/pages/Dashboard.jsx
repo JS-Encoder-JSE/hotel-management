@@ -33,7 +33,7 @@ const Dashboard = () => {
           <div
             className={`md:self-start fixed md:sticky top-0 ${
               isHbMenu ? "-left-96" : "left-0"
-            } bg-gray-200 text-lg w-36 md:w-auto h-full md:h-auto md:-my-10 z-30 px-10 py-5 transition-[left] duration-500`}
+            } bg-gray-200 text-lg w-[17rem] md:w-auto h-full md:h-auto md:-my-10 z-30 px-10 py-5 transition-[left] duration-500`}
           >
             <figure
               className={` max-w-[10rem] mx-auto flex items-center justify-center `}
@@ -55,7 +55,14 @@ const Dashboard = () => {
                 className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`}
                 onClick={() => setHbMenu(!isHbMenu)}
               >
-                <MdKeyboardArrowLeft />
+              <div className="flex">
+              <div>
+               <MdKeyboardArrowLeft />
+               </div> 
+               <div>
+                <h6>Back</h6>
+               </div>
+              </div>
               </div>
               <ul className={`space-y-1.5`}>
                 <li>
