@@ -215,8 +215,8 @@ console.log("Valid Document Type:", validDocumentType);
         {booking?.data && <EditBooking data={booking?.data} />}
       </Modal>
     </div>
-    <div className="mt-20">
-      <CheckinCardDetails data={booking?.data}/>
+    <div className="mb-20 mt-10">
+      <CheckinCardDetails/>
     </div>
     {/* payment system */}
     <div >
@@ -228,7 +228,10 @@ console.log("Valid Document Type:", validDocumentType);
       </div> */}
       
       {/*  Bill system*/}
-      <div className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}>
+      <div 
+      // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}
+      className="grid md:grid-cols-3 gap-3 mt-4"
+      >
 <div>
 <RestaurantBillsCard foodBill ={postedBill?.data?.food_bills}/>
 </div>

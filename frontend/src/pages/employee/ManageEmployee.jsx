@@ -83,8 +83,7 @@ const ManageEmployee = () => {
   }, [employees]);
 
   return (
-    <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-      <div className={`flex justify-between gap-4`}>
+    <div className={`space-y-8 bg-white p-4 rounded-2xl`}>
       <div className="mb-7">
               <Link to={`/dashboard `}>
                 <button
@@ -99,6 +98,8 @@ const ManageEmployee = () => {
                 </button>
               </Link>
             </div>
+      <div className={`flex justify-end gap-4`}>
+      
         <div className={`relative sm:min-w-[20rem]`}>
           <input
             type="text"

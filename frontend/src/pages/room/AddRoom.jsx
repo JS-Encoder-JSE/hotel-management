@@ -157,7 +157,7 @@ const AddRoom = () => {
       <div className={`space-y-10`}>
         <div className="card bg-white shadow-xl">
           <div className="card-body">
-            <div>
+            <div className="mb-8">
               <Link to={`/dashboard `}>
                 <button
                   type="button"

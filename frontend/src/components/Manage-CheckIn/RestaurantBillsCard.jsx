@@ -49,9 +49,9 @@ const RestaurantBillsCard = ({foodBill}) => {
   };
 
   return (
-    <div className={`pr-2 space-y-5 mt-20`}>
+    <div className={`space-y-5 mt-20`}>
       <div>
-        <div className={`bg-white py-7 rounded`}>
+        <div className={`bg-white py-5 rounded`}>
           <div>
             <div>
               <h3 className="text-2xl font-semibold text-center">
