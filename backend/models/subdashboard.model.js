@@ -166,6 +166,7 @@ const staticSchema = new mongoose.Schema(
 // });
 
 // Apply the mongoose-paginate-v2 plugin to your schema
+dailySchema.plugin(mongoosePaginate);
 staticSchema.plugin(mongoosePaginate);
 monthlySchema.plugin(mongoosePaginate);
 
