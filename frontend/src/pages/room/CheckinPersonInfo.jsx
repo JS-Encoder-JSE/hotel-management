@@ -70,8 +70,8 @@ console.log("Valid Document Type:", validDocumentType);
           <span>Back</span>
         </div>
         <div className={`space-x-1.5`}>
-         <Link
-         to={"/dashboard/checkin"}
+         <span
+       onClick={()=> navigate(`/dashboard/checkout?room=${roomId}`)}
          >
          <span
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
@@ -80,7 +80,7 @@ console.log("Valid Document Type:", validDocumentType);
           >
             <FaDoorOpen />
           </span>
-         </Link>
+         </span>
           <span
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
             title={`Edit`}
