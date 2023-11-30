@@ -65,3 +65,51 @@ export const getReportsByHotelId = async (req, res) => {
     });
   }
 };
+
+export const getReportsByDate = async (req, res) => {
+  try {
+    const { date, hotel_id, page = 1, limit = 10 } = req.query;
+
+    // Build the query object based on the provided filters
+    const query = { hotel_id };
+
+    if (date) {
+      // Check if the date is in a valid format
+      const isValidDate = !isNaN(Date.parse(date));
+
+      if (!isValidDate) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid date format. Please provide a valid date.",
+        });
+      }
+
+      // Convert date to a Date object and set time range for the entire day
+      const startDate = new Date(date);
+      startDate.setHours(0, 0, 0, 0);
+      startDate.toISOString(); // Set the time to the beginning of the day
+      const endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + 1);
+      endDate.toISOString(); // Set the end date to the next day
+
+      // Add a createdAt filter to match orders created between start and end dates
+      query.createdAt = { $gte: startDate, $lt: endDate };
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    // Find orders without pagination and sort by createdAt in descending order
+    const reports = await ManagerReport.paginate(query, options);
+    return res.status(200).json({
+      success: true,
+      data: reports,
+      message: "Food orders retrieved successfully",
+    });
+  } catch (error) {
+    console.error("Error fetching food orders:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

@@ -230,16 +230,16 @@ console.log("Valid Document Type:", validDocumentType);
       {/*  Bill system*/}
       <div 
       // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}
-      className="grid md:grid-cols-3 gap-3 mt-4"
+      className="grid md:grid-cols-3 gap-3  "
       >
-<div>
-<RestaurantBillsCard foodBill ={postedBill?.data?.food_bills}/>
+<div >
+<RestaurantBillsCard/>
 </div>
-<div>
-  <GymBills GymBill ={postedBill?.data?.gym_bills}/>
+<div >
+  <GymBills/>
 </div>
-<div>
-  <PoolsBill poolBills ={postedBill?.data?.pool_bills}/>
+<div >
+  <PoolsBill/>
 </div>
       </div>
       {/*  TransactionHistoryCard*/}

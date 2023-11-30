@@ -804,7 +804,6 @@ export const getOrdersByDate = async (req, res) => {
 
     // Build the query object based on the provided filters
     const query = { hotel_id };
-    console.log(hotel_id);
     if (order_status) {
       query.order_status = order_status;
     }
@@ -834,7 +833,6 @@ export const getOrdersByDate = async (req, res) => {
 
     // Find orders without pagination and sort by createdAt in descending order
     const orders = await FoodOrder.find(query);
-    console.log(orders);
     return res.status(200).json({
       success: true,
       data: orders,
