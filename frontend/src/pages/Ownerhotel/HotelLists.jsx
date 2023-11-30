@@ -71,9 +71,8 @@ const HotelLists = () => {
   }, [hotels]);
 
   return (
-    <div className={`space-y-10 bg-white rounded-2xl p-10`}>
-      <div className={`flex justify-between gap-4`}>
-        <div>
+    <div className={`space-y-10 bg-white rounded-2xl p-4`}>
+       <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -89,6 +88,8 @@ const HotelLists = () => {
             </button>
           </Link>
         </div>
+      <div className={`flex justify-end gap-4`}>
+       
         {/* <div>
           <select
             name="filter"

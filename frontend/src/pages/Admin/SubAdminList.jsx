@@ -88,17 +88,10 @@ const SubAdminList = () => {
     }
   }, [modalOpen]);
   return (
-    <div className={`px-5 space-y-5`}>
-      <div className={`bg-white px-10 py-5 rounded`}>
+    <div className={` space-y-5`}>
+       
+      <div className={`bg-white p-4 rounded`}>
       <div>
-        <h3 className={`text-xl font-semibold text-center mb-5`}>
-            Sub Admin List
-          </h3>
-        </div>
-        <div
-          className={`flex flex-col sm:flex-row justify-between items-center gap-5`}
-        >
-          <div>
             <Link to={`/dashboard `}>
               <button
                 type="button"
@@ -114,6 +107,15 @@ const SubAdminList = () => {
               </button>
             </Link>
           </div>
+      <div>
+        <h3 className={`text-xl font-semibold text-center mb-5`}>
+            Sub Admin List
+          </h3>
+        </div>
+        <div
+          className={`flex flex-col sm:flex-row justify-between items-center gap-5`}
+        >
+      
           <div className={`flex felx-wrap gap-3`}>
             <div>
               <select
