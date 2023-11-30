@@ -74,10 +74,8 @@ const ExpiredList = () => {
   }, [modalOpen]);
 
   return (
-    <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-        <div className={`text-2xl text-center`}>Expired List</div>
-      <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
-        <div>
+    <div className={`space-y-8 bg-white p-4 rounded-2xl`}>
+       <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -93,6 +91,9 @@ const ExpiredList = () => {
             </button>
           </Link>
         </div>
+        <div className={`text-2xl text-center`}>Expired List</div>
+      <div className={`flex justify-end flex-col sm:flex-row gap-5`}>
+       
       
         <div className={`relative sm:min-w-[20rem]`}>
           <input
