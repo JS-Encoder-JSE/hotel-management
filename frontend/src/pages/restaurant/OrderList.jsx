@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  FaArrowLeft,
   FaEye,
   FaPrint,
   FaRegEdit,
@@ -55,7 +56,6 @@ const OrderList = () => {
         toDate: getISOStringDate(values.endDate),
         fromDate: getISOStringDate(values.startDate),
         unique_id: values.search,
-       
       }));
     },
   });
@@ -103,14 +103,30 @@ const OrderList = () => {
       formik.handleSubmit();
     }
   };
-  console.log("search",search)
+  console.log("search", search);
 
   return (
     <div className={`px-5 space-y-5`}>
-      <div className={`bg-white px-10 py-5 rounded`}>
-        <h3 className={`text-2xl font-semibold text-center`}>Order List</h3>
-        <div className={`flex justify-between mt-5`}>
-          <div className={`flex gap-3`}>
+      <div className={`bg-white p-4 rounded`}>
+        <div className="mb-5">
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+        <h3 className={`text-2xl font-semibold text-center mb-4`}>Order List</h3>
+        <div className={``}>
+          <div className={`flex flex-col md:flex-row gap-3`}>
             <DatePicker
               autoComplete={`off`}
               dateFormat="dd/MM/yyyy"
@@ -155,7 +171,7 @@ const OrderList = () => {
                 setCurrentPage(0);
                 formik.handleSubmit();
               }}
-              className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+              className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-4"
             >
               Apply Filter
             </button>

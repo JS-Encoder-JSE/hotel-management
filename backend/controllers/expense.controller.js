@@ -77,7 +77,7 @@ export const addExpense = async (req, res) => {
       // Create a new expense instance
       const newExpense = new Expense({
         hotel_id,
-        date: formattedDate,
+        date: newDate,
         spendedfor,
         items,
         total_amount,
@@ -149,8 +149,8 @@ export const addExpense = async (req, res) => {
           existingMonthlySubDashData.total_hotel_profit -= total_amount;
         }
         if (spendedfor === "restaurant") {
-          existingDailySubDashData.total_restaurant_expenses += total_amount;
-          existingDailySubDashData.total_restaurant_profit -= total_amount;
+          existingMonthlySubDashData.total_restaurant_expenses += total_amount;
+          existingMonthlySubDashData.total_restaurant_profit -= total_amount;
         }
         await existingMonthlySubDashData.save();
       }
@@ -159,6 +159,8 @@ export const addExpense = async (req, res) => {
           const newMonthlySubDashData = new MonthlySubDashData({
             user_id: userId,
             user_role: user.role,
+            month_name,
+            year,
             total_hotel_expenses: total_amount,
           });
           await newMonthlySubDashData.save();
@@ -167,6 +169,8 @@ export const addExpense = async (req, res) => {
           const newMonthlySubDashData = new MonthlySubDashData({
             user_id: userId,
             user_role: user.role,
+            month_name,
+            year,
             total_restaurant_expenses: total_amount,
           });
           await newMonthlySubDashData.save();

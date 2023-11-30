@@ -217,7 +217,7 @@ const AddEmployee = () => {
   };
 
   return (
-    <div className={`space-y-10`}>
+    <div className={`space-y-10 md:p-6`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
         <div className="mb-7">
@@ -246,10 +246,10 @@ const AddEmployee = () => {
           <hr className={`my-5`} />
         </div>
 
-        <div className="max-auto">
+        <div className="max-auto ">
           <form
             autoComplete="off"
-            className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
+            className="form-control grid grid-cols-1 md:grid-cols-2 gap-6 p-5 max-w-3xl mx-auto"
             onSubmit={formik.handleSubmit}
           >
             {selectedImages?.length ? (

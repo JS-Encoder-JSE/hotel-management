@@ -74,16 +74,16 @@ const AddOrder = () => {
 
 
   return (
-    <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
+    <div className={`space-y-10 bg-white rounded-2xl p-5`}>
    
       <div
-        className={`flex flex-col-reverse  sm:flex-row gap-3 sm:justify-between`}
+        className={`flex flex-col md:flex-row justify-between`}
       >
            <div>
               <Link to={`/dashboard `}>
                 <button
                   type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
                 >
                     <dfn>
                       <abbr title="Back"><FaArrowLeft /></abbr>
@@ -112,7 +112,7 @@ const AddOrder = () => {
         {/*  </select>*/}
         {/*</div>*/}
       
-        <div className={`flex gap-1.5`}>
+        <div className={`flex flex-col md:flex-row gap-4 mb-4`}>
           <div className="">
             <select
               name="type"
@@ -176,7 +176,7 @@ const AddOrder = () => {
           ) : null}
         </div>
        
-        <div className={`flex space-x-1.5`}>
+        <div className={`flex flex-col md:flex-row gap-6`}>
           <button
             onClick={() => {
               dispatch(resetFoodOrder());

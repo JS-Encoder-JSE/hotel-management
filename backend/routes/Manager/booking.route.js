@@ -8,6 +8,7 @@ import {
   getActiveBookingByRoomId,
   cancelBooking,
   getBookingDetailsById,
+  updateBookingInfo,
 } from "../../controllers/Manager/booking.controller.js";
 import { checkToken } from "../../middlewares/checkToken.js";
 import {
@@ -28,11 +29,8 @@ router.get(
   getBookingDetailsById
 );
 router.patch("/update-booking/:booking_id", checkToken, updateBooking);
-router.post(
-  "/get-checkoutinfo-by-rooms",
-  checkToken,
-  getCheckoutInfoByRoom
-);
+router.patch("/update-booking-info/:booking_id", checkToken, updateBookingInfo);
+router.post("/get-checkoutinfo-by-rooms", checkToken, getCheckoutInfoByRoom);
 router.post("/checkout", checkToken, checkedOut);
 router.delete("/cancel-booking/:booking_id", checkToken, cancelBooking);
 // router.delete('/delete-booking/:booking_id', checkToken, deleteBooking);
