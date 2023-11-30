@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, useOutletContext } from "react-router-dom";
 import {
   MdBarChart,
   MdKeyboardArrowDown,
@@ -15,7 +15,8 @@ import { FaGlassMartini, FaUsers } from "react-icons/fa";
 import { SiMomenteo } from "react-icons/si";
 import { TbToolsKitchen2 } from "react-icons/tb";
 
-const ManagerSbItems = ({ handleSBItems }) => {
+
+const ManagerSbItems = ({ handleSBItems,isHbMenu,setHbMenu }) => {
   return (
     <>
       <li className={`group p-2`}>
@@ -38,6 +39,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-room`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -49,6 +51,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/manage-room`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -60,6 +63,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/manage-booking`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -67,10 +71,12 @@ const ManagerSbItems = ({ handleSBItems }) => {
             >
               Manage Booking
             </NavLink>
+            
           </li>
           <li>
             <NavLink
               to={`/dashboard/manage-checkin`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -82,6 +88,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/checkin`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -93,6 +100,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/checkout`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -123,6 +131,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/restaurant-dashboard`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -134,6 +143,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-table`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -145,6 +155,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-food`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -156,6 +167,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-order`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -167,6 +179,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/current-order-list`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -178,6 +191,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/order-list`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -189,6 +203,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-expense`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -200,6 +215,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/show-all-sell`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -211,6 +227,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/show-all-expense`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -224,6 +241,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
       <li className={`group p-2`}>
         <div
           onClick={(e) => handleSBItems(e)}
+
           className={`flex justify-between hover:text-green-slimy cursor-pointer transition-colors duration-500`}
         >
           <div className={`flex space-x-1.5`}>
@@ -241,6 +259,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
         <li>
             <NavLink
               to={`/dashboard/hotel-dashboard`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -252,6 +271,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-inventory`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -263,6 +283,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/all-inventory`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -274,6 +295,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-hotel-expense`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -285,6 +307,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/all-hotel-expenses`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -315,6 +338,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-employee`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -326,6 +350,7 @@ const ManagerSbItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/manage-employee`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -443,7 +468,10 @@ const ManagerSbItems = ({ handleSBItems }) => {
             (isActive ? " bg-gray-300" : "")
           }
         >
-          <div className={`flex space-x-1.5`}>
+          <div 
+          className={`flex space-x-1.5`}
+          onClick={() => setHbMenu(!isHbMenu)}
+          >
             <MdOutlineSportsGymnastics />
             <span>Gym Reservation</span>
           </div>
@@ -573,7 +601,9 @@ const ManagerSbItems = ({ handleSBItems }) => {
             (isActive ? " bg-gray-300" : "")
           }
         >
-          <div className={`flex space-x-1.5`}>
+          <div 
+           onClick={() => setHbMenu(!isHbMenu)}
+          className={`flex space-x-1.5`}>
             <MdPool />
             <span>Pool Reservation</span>
           </div>
@@ -589,7 +619,9 @@ const ManagerSbItems = ({ handleSBItems }) => {
             (isActive ? " bg-gray-300" : "")
           }
         >
-          <div className={`flex space-x-1.5`}>
+          <div 
+           onClick={() => setHbMenu(!isHbMenu)}
+          className={`flex space-x-1.5`}>
             <MdBarChart />
             <span>Hotel Report</span>
           </div>
