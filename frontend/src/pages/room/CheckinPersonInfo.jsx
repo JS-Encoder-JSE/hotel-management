@@ -3,7 +3,7 @@ import { FaArrowLeft, FaDoorOpen, FaEdit } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EditBooking from "../../components/room/EditBooking.jsx";
 import Modal from "../../components/Modal.jsx";
-import { useGetBookingByIdQuery, useGetBookingInfoByIdQuery } from "../../redux/room/roomAPI.js";
+import { useGetBookingByIdQuery, useGetBookingInfoByIdQuery, useGetRoomPostedBillsQuery } from "../../redux/room/roomAPI.js";
 import CheckInDyn from "./CheckInDyn.jsx";
 import CheckinCardDetails from "./CheckOut/CheckinCardDetails.jsx";
 import TransactionHistoryCard from "../../components/Manage-CheckIn/TransactionHistoryCard.jsx";
@@ -19,6 +19,16 @@ const CheckinPersonInfo = () => {
   const { id } = useParams();
   console.log(id)
   const { data: booking, isLoading } = useGetBookingInfoByIdQuery(id);
+
+  const roomId = booking?.data?.room_id?._id
+
+  console.log(roomId)
+
+  const { data:postedBill, error, isLoadingPostedBill } = useGetRoomPostedBillsQuery(roomId);
+
+
+  console.log(postedBill,"postedBill")
+
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -31,14 +41,20 @@ const CheckinPersonInfo = () => {
 
 console.log(booking,"bokingdata")
 
-const documentType =
-  booking?.data?.doc_images?.driving_lic_img?.length
-    ? "Driving License"
-    : booking?.data?.doc_images?.nid?.length
-    ? "NID"
-    : booking?.data?.doc_images?.passport?.length
-    ? "Passport"
-    : "";
+const documentTypes = {
+  driving_lic_img: booking?.data?.doc_images?.driving_lic_img,
+  nid: booking?.data?.doc_images?.nid,
+  passport: booking?.data?.doc_images?.passport
+};
+
+const validDocumentTypeKey = Object.keys(documentTypes).find(
+  key => documentTypes[key] && documentTypes[key].length !== 0
+);
+
+const validDocumentType = documentTypes[validDocumentTypeKey]?.filter(value => value !== "") || [];
+
+console.log("Valid Document Type Field Name:", validDocumentTypeKey);
+console.log("Valid Document Type:", validDocumentType);
 
 
 
@@ -104,7 +120,7 @@ const documentType =
                   Document <br /> Type
                 </th>
                 <td className={`w-4 text-center`}>:</td>
-                <td>{documentType}</td>
+                <td>{validDocumentType}</td>
               </tr>
               <tr>
                 <th className={`text-start `}>
@@ -146,7 +162,12 @@ const documentType =
               <tr>
                 <th className={`text-start`}>Room No</th>
                 <td className={`w-4 text-center`}>:</td>
-                <td>{booking?.data?.room_ids?.map((i) => i.roomNumber)}</td>
+                <td>{booking?.data?.room_id?.roomNumber}</td>
+              </tr>
+              <tr>
+                <th className={`text-start`}>Floor No</th>
+                <td className={`w-4 text-center`}>:</td>
+                <td>{booking?.data?.room_id?.floorNumber}</td>
               </tr>
               <tr>
                 <th className={`text-start`}>Adult</th>
@@ -195,7 +216,7 @@ const documentType =
       </Modal>
     </div>
     <div className="mt-20">
-      <CheckinCardDetails/>
+      <CheckinCardDetails data={booking?.data}/>
     </div>
     {/* payment system */}
     <div >
@@ -209,13 +230,13 @@ const documentType =
       {/*  Bill system*/}
       <div className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}>
 <div>
-<RestaurantBillsCard/>
+<RestaurantBillsCard foodBill ={postedBill?.data?.food_bills}/>
 </div>
 <div>
-  <GymBills/>
+  <GymBills GymBill ={postedBill?.data?.gym_bills}/>
 </div>
 <div>
-  <PoolsBill/>
+  <PoolsBill poolBills ={postedBill?.data?.pool_bills}/>
 </div>
       </div>
       {/*  TransactionHistoryCard*/}

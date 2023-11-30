@@ -15,7 +15,17 @@ import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
 
-const RestaurantBillsCard = () => {
+const RestaurantBillsCard = ({foodBill}) => {
+
+
+  console.log("foodBills",foodBill)
+
+  const totalPrice = foodBill?.reduce((total, bill) => {
+    // Use another reduce to calculate the total price of items in each bill
+    const billTotal = bill?.items?.reduce((itemTotal, item) => itemTotal + item.price, 0);
+    return total + billTotal;
+  }, 0);
+
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
@@ -61,7 +71,7 @@ const RestaurantBillsCard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                  {foodBill?.map((itemBill, idx) => {
                     return (
                       <tr
                         className={
@@ -69,10 +79,10 @@ const RestaurantBillsCard = () => {
                         }
                       >
                         <th>{++idx}</th>
-                        <td>29-11-23</td>
-                        <td>Rice</td>
-                        <td>5kg</td>
-                        <td>2500</td>
+                        <td>{new Date(itemBill?.createdAt).toLocaleDateString()}</td>
+                        <td>{itemBill?.items?.map((item)=> item?.item)}</td>
+                        <td>{itemBill?.items?.map((item)=> item?.quantity)}</td>
+                        <td>{itemBill?.items?.map((item)=> item?.price)}</td>
                       </tr>
                     );
                   })}
@@ -85,7 +95,7 @@ const RestaurantBillsCard = () => {
                   <td>
                  <div className="flex ">
                   <div><BiRupee/></div>
-                  <div>25000</div>
+                  <div>{totalPrice}</div>
                  </div>
                   </td>
                 </tr>
