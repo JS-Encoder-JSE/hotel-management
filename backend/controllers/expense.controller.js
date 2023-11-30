@@ -105,7 +105,7 @@ export const addExpense = async (req, res) => {
       await existingStaticSubDashData.save();
       const existingDailySubDashData = await DailySubDashData.findOne({
         user_id: userId,
-        date: formattedDate,
+        date,
       });
       if (existingDailySubDashData) {
         if (spendedfor === "hotel") {
@@ -123,7 +123,7 @@ export const addExpense = async (req, res) => {
           const newDailySubDashData = new DailySubDashData({
             user_id: userId,
             user_role: user.role,
-            date: formattedDate,
+            date,
             today_hotel_expenses: total_amount,
           });
           await newDailySubDashData.save();
@@ -132,7 +132,7 @@ export const addExpense = async (req, res) => {
           const newDailySubDashData = new DailySubDashData({
             user_id: userId,
             user_role: user.role,
-            date: formattedDate,
+            date,
             today_restaurant_expenses: total_amount,
           });
           await newDailySubDashData.save();
