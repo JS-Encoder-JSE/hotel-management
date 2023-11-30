@@ -11,7 +11,7 @@ import {
 } from "react-icons/md";
 import { FaPeopleGroup } from "react-icons/fa6";
 
-const AdminSBItems = ({ handleSBItems }) => {
+const AdminSBItems = ({ handleSBItems,isHbMenu,setHbMenu }) => {
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const [subAdmin, setSubAdmin] = useState(false);
 
@@ -39,7 +39,9 @@ const AdminSBItems = ({ handleSBItems }) => {
           <span className={`w-5`}>
             <FaPeopleGroup />
           </span>
-          <span className={`-mt-0.5`}>Owner List</span>
+          <span 
+           onClick={() => setHbMenu(!isHbMenu)}
+          className={`-mt-0.5`}>Owner List</span>
         </NavLink>
       </li>
       <li className={`group p-2`}>
@@ -64,6 +66,7 @@ const AdminSBItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/new-license`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -77,6 +80,7 @@ const AdminSBItems = ({ handleSBItems }) => {
               <li>
                 <NavLink
                   to={`/dashboard/suspend-list`}
+                  onClick={() => setHbMenu(!isHbMenu)}
                   className={({ isActive }) =>
                     "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                     (isActive ? " bg-gray-300" : "")
@@ -88,6 +92,7 @@ const AdminSBItems = ({ handleSBItems }) => {
               <li>
                 <NavLink
                   to={`/dashboard/expired-list`}
+                  onClick={() => setHbMenu(!isHbMenu)}
                   className={({ isActive }) =>
                     "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                     (isActive ? " bg-gray-300" : "")
@@ -103,6 +108,7 @@ const AdminSBItems = ({ handleSBItems }) => {
               <li>
                 <NavLink
                   to={`/dashboard/suspend-list`}
+                  onClick={() => setHbMenu(!isHbMenu)}
                   className={({ isActive }) =>
                     "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                     (isActive ? " bg-gray-300" : "")
@@ -114,6 +120,7 @@ const AdminSBItems = ({ handleSBItems }) => {
               <li>
                 <NavLink
                   to={`/dashboard/expired-list`}
+                  onClick={() => setHbMenu(!isHbMenu)}
                   className={({ isActive }) =>
                     "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                     (isActive ? " bg-gray-300" : "")
@@ -164,6 +171,7 @@ const AdminSBItems = ({ handleSBItems }) => {
             <li>
               <NavLink
                 to={`/dashboard/add-sub-admin`}
+                onClick={() => setHbMenu(!isHbMenu)}
                 className={({ isActive }) =>
                   "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                   (isActive ? " bg-gray-300" : "")
@@ -175,6 +183,7 @@ const AdminSBItems = ({ handleSBItems }) => {
             <li>
               <NavLink
                 to={`/dashboard/sub-admin-list`}
+                onClick={() => setHbMenu(!isHbMenu)}
                 className={({ isActive }) =>
                   "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                   (isActive ? " bg-gray-300" : "")
@@ -198,7 +207,9 @@ const AdminSBItems = ({ handleSBItems }) => {
           <span className={`w-5`}>
             <MdBarChart />
           </span>
-          <span className={`-mt-0.5`}>Report</span>
+          <span 
+           onClick={() => setHbMenu(!isHbMenu)}
+          className={`-mt-0.5`}>Report</span>
         </NavLink>
       </li>
     </>

@@ -909,3 +909,196 @@ export const getActiveBookingByRoomId = async (req, res) => {
     });
   }
 };
+
+export const addToCheckin = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { booking_id } = req.params;
+    const {
+      doc_images,
+      doc_number,
+      paid_amount,
+      paymentMethod,
+      remark,
+      status,
+      total_unpaid_amount,
+      transection_id,
+    } = req.body;
+
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const date = currentDate.toISOString();
+
+    const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
+    const year = currentDate.getFullYear().toString();
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+
+    // Find the Booking document by ID
+    const booking = await Booking.findById(booking_id);
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+    // Update the booking status to "CheckedIn"
+    booking.status = "CheckedIn";
+
+    // Save the updated Booking document
+    await booking.save();
+
+    // Find the associated BookingInfo document
+    const bookingInfo = await BookingInfo.findOne({
+      booking_ids: booking_id,
+    });
+
+    if (!bookingInfo) {
+      return res.status(404).json({
+        success: false,
+        message: "BookingInfo not found",
+      });
+    }
+
+    bookingInfo.doc_images = doc_images;
+    bookingInfo.doc_number = doc_number;
+    bookingInfo.paid_amount += paid_amount;
+    bookingInfo.total_unpaid_amount -= paid_amount;
+    await bookingInfo.save();
+
+    const roomStatus = "CheckedIn";
+    await Room.updateOne(
+      { _id: booking._id },
+      { $set: { status: roomStatus } }
+    );
+    // Perform additional actions on BookingInfo if needed
+    if (paid_amount > 0) {
+      const newTransactionLog = new TransactionLog({
+        manager_id: userId,
+        booking_info_id: bookingInfo._id,
+        dedicated_to: "hotel",
+        tran_id: transection_id,
+        payment_method: paymentMethod,
+        from: bookingInfo.guestName,
+        to: user.username,
+        amount: paid_amount,
+        remark,
+      });
+      // Save the transaction log entry to the database
+      await newTransactionLog.save();
+    }
+    const newPaidAmount = paid_amount;
+    const ownerDashboard = await Dashboard.findOne({
+      user_id: user.parent_id,
+    });
+    const managerDashboard = await Dashboard.findOne({
+      user_id: userId,
+    });
+
+    // ownerDashboard.total_booking -= 1;
+    ownerDashboard.total_checkin += 1;
+    ownerDashboard.total_amount += newPaidAmount;
+
+    await ownerDashboard.save();
+
+    // managerDashboard.total_booking -= 1;
+    managerDashboard.total_checkin += 1;
+    managerDashboard.total_amount += newPaidAmount;
+
+    await managerDashboard.save();
+
+    const managerDashboardTable = await DashboardTable.findOne({
+      user_id: userId,
+      month_name: month_name,
+      year: year,
+    });
+
+    if (managerDashboardTable) {
+      // managerDashboardTable.total_booking -= 1;
+      managerDashboardTable.total_checkin += 1;
+      await managerDashboardTable.save();
+    } else {
+      // Create a new dashboard table entry
+      const newDashboardTable = new DashboardTable({
+        user_id: userId,
+        user_role: user.role,
+        total_checkin: 1,
+      });
+      // Save the new dashboard table to the database
+      await newDashboardTable.save();
+    }
+    const ownerDashboardTable = await DashboardTable.findOne({
+      user_id: user.parent_id,
+      month_name: month_name,
+      year: year,
+    });
+
+    if (ownerDashboardTable) {
+      // ownerDashboardTable.total_booking -= 1;
+      ownerDashboardTable.total_checkin += 1;
+      await ownerDashboardTable.save();
+    } else {
+      const newDashboardTable = new DashboardTable({
+        user_id: user.parent_id,
+        user_role: "owner",
+        total_checkin: 1,
+      });
+      // Save the new dashboard table to the database
+      await newDashboardTable.save();
+    }
+    const managerCheckInfo = await CheckInfo.findOne({
+      user_id: userId,
+      date,
+    });
+
+    if (managerCheckInfo) {
+      managerCheckInfo.today_booking -= 1;
+      managerCheckInfo.today_checkin += 1;
+      await managerCheckInfo.save();
+    } else {
+      const newCheckInfo = new CheckInfo({
+        user_id: userId,
+        user_role: user.role,
+        today_checkin: 1,
+      });
+      await newCheckInfo.save();
+    }
+    const ownerCheckInfo = await CheckInfo.findOne({
+      user_id: user.parent_id,
+      date,
+    });
+
+    if (ownerCheckInfo) {
+      ownerCheckInfo.today_booking -= 1;
+      ownerCheckInfo.today_checkin += 1;
+      await ownerCheckInfo.save();
+    } else {
+      const newCheckInfo = new CheckInfo({
+        user_id: user.parent_id,
+        user_role: "owner",
+        today_checkin: 1,
+      });
+      await newCheckInfo.save();
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Booking updated to CheckedIn successfully",
+      updatedBooking: booking,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};

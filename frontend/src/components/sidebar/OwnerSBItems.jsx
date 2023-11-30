@@ -9,7 +9,7 @@ import {
   MdOutlineMeetingRoom,
 } from "react-icons/md";
 
-const OwnerSBItems = ({ handleSBItems }) => {
+const OwnerSBItems = ({ handleSBItems,isHbMenu,setHbMenu }) => {
   return (
     <>
       <li className={`group p-2`}>
@@ -32,6 +32,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/add-hotel`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -43,6 +44,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/hotel-list`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -75,6 +77,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
         <li>
             <NavLink
               to={`/dashboard/restaurants-analytics`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -86,6 +89,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/hotel-analytics`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -97,6 +101,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/restaurant-expenses`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -108,6 +113,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/restaurant-sales`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -119,6 +125,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/hotel-expenses`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -130,6 +137,7 @@ const OwnerSBItems = ({ handleSBItems }) => {
           <li>
             <NavLink
               to={`/dashboard/hotel-sales`}
+              onClick={() => setHbMenu(!isHbMenu)}
               className={({ isActive }) =>
                 "block p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 pl-5" +
                 (isActive ? " bg-gray-300" : "")
@@ -190,7 +198,9 @@ const OwnerSBItems = ({ handleSBItems }) => {
           }
         >
           <MdOutlineKitchen />
-          <span className={`-mt-0.5`}>Monitor Finances</span>
+          <span 
+          onClick={() => setHbMenu(!isHbMenu)}
+          className={`-mt-0.5`}>Monitor Finances</span>
         </NavLink>
       </li> 
       <li className={`group p-2`}>
@@ -202,7 +212,9 @@ const OwnerSBItems = ({ handleSBItems }) => {
             }
         >
           <MdHistory />
-          <span className={`-mt-0.5`}>License History</span>
+          <span 
+          onClick={() => setHbMenu(!isHbMenu)}
+          className={`-mt-0.5`}>License History</span>
         </NavLink>
       </li>
     </>

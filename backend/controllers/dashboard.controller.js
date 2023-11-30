@@ -169,15 +169,8 @@ export const getDashboardInfo = async (req, res) => {
   try {
     const userId = req.params.user_id;
     const currentDate = new Date();
-
-    const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
-    const year = currentDate.getFullYear().toString();
-
-    const Year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const day = currentDate.getDate().toString().padStart(2, "0");
-
-    const formattedDate = `${day}-${month}-${Year}`;
+    currentDate.setHours(0, 0, 0, 0);
+    const date = currentDate.toISOString();
 
     const dashboard = await Dashboard.findOne({ user_id: userId });
 
@@ -196,7 +189,7 @@ export const getDashboardInfo = async (req, res) => {
     }
     const checkInfo = await CheckInfo.find({
       user_id: userId,
-      date: formattedDate,
+      date,
     });
 
     res.status(200).json({

@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 import Hotel from "../models/hotel.model.js";
 import User from "../models/user.model.js";
 import { Dashboard, DashboardTable } from "../models/dashboard.model.js";
-import { DailySubDashData } from "../models/subdashboard.model.js";
+import {
+  DailySubDashData,
+  StaticSubDashData,
+} from "../models/subdashboard.model.js";
 
 // Controller to add a new hotel
 // export const addHotel = async (req, res) => {
@@ -135,6 +138,12 @@ export const addHotel = async (req, res) => {
     });
     // Save the new dashboard table to the database
     await newDashboardTable.save();
+    const newStaticSubDashData = new StaticSubDashData({
+      user_id: savedNewUser._id,
+      user_role: "manager",
+    });
+    await newStaticSubDashData.save();
+
     // Update the owner's assignedHotel array
     owner.assignedHotel.push(savedHotel._id);
     await owner.save();

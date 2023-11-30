@@ -49,7 +49,7 @@ const Dashboard = () => {
               {user?.data?.role}
             </h3>
             <div
-              className={`h-full md:h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar-none`}
+              className={`h-full md:h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar`}
             >
               <div
                 className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`}
@@ -75,17 +75,19 @@ const Dashboard = () => {
                     end
                   >
                     <MdOutlineDashboard />
-                    <span className={`-mt-0.5`}>Dashboard</span>
+                    <span 
+                     onClick={() => setHbMenu(!isHbMenu)}
+                    className={`-mt-0.5`}>Dashboard</span>
                   </NavLink>
                 </li>
                 {!isLoading ? (
                   user?.data?.role === "admin" ||
                   user?.data?.role === "subadmin" ? (
-                    <AdminSBItems handleSBItems={handleSBItems} />
+                    <AdminSBItems handleSBItems={handleSBItems}  setHbMenu={setHbMenu} isHbMenu={isHbMenu}/>
                   ) : user?.data?.role === "owner" ? (
-                    <OwnerSBItems handleSBItems={handleSBItems} />
+                    <OwnerSBItems handleSBItems={handleSBItems}  setHbMenu={setHbMenu} isHbMenu={isHbMenu}/>
                   ) : (
-                    <ManagerSBItems handleSBItems={handleSBItems} />
+                    <ManagerSBItems handleSBItems={handleSBItems} setHbMenu={setHbMenu} isHbMenu={isHbMenu} />
                   )
                 ) : null}
               </ul>
@@ -102,7 +104,7 @@ const Dashboard = () => {
                 setHbMenu={setHbMenu}
               />
             </div>
-            <div className={`px-10`}>
+            <div className={`px-4`}>
               <Outlet />
             </div>
             <div className={`mt-auto`}>

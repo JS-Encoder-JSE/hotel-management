@@ -43,9 +43,9 @@ const PoolsBill = ({poolBills}) => {
   };
   const totalPoolBill = poolBills?.reduce((total, bill) => total + (bill.price || 0), 0);
   return (
-    <div className={` space-y-5 mt-20`}>
+    <div className={`space-y-5 mt-20`}>
     <div  >
-    <div className={`bg-white  py-5 rounded`}>     
+    <div className={`bg-white md:h-full py-2 rounded`}>     
         <div>
           <div>
             <h3 className="text-2xl font-semibold text-center">

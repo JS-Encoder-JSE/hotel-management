@@ -206,7 +206,7 @@ const HotelExpenses = () => {
                   Today Expenses
                 </h3>
               </div>
-              {/* <div className={`flex justify-end mb-5`}>
+              <div className={`flex justify-end mb-5`}>
                 {PDF?.length ? (
                   <PDFDownloadLink
                     document={
@@ -225,15 +225,7 @@ const HotelExpenses = () => {
                     PDF
                   </PDFDownloadLink>
                 ) : null}
-              </div> */}
-
-<div className={`flex justify-end mb-5`}>
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
-          </div>
+              </div>
 
               <div className="h-96">
                 {hotelExpenses && filteredExpenses?.docs[0]?.items.length ? (
@@ -366,7 +358,7 @@ const HotelExpenses = () => {
                 Hotel Expenses History
               </h3>
             </div>
-            {/* <div className="flex justify-end">
+            <div className="flex justify-end">
               {PDF?.length ? (
                 <PDFDownloadLink
                   document={
@@ -386,14 +378,8 @@ const HotelExpenses = () => {
                   PDF
                 </PDFDownloadLink>
               ) : null}
-            </div> */}
-             <div className={`flex justify-end mb-5`}>
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
-          </div>
+            </div>
+    
           </div>
           <div className={`flex justify-between my-5`}>
             <div className={`space-x-1.5`}>

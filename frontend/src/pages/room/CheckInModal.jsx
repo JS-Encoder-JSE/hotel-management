@@ -132,7 +132,7 @@ const CheckInModal = ({ room }) => {
       }
 
       // const room_ids = obj.room_arr.map((elem) => elem.value);
-      const no_of_days = Math.floor(
+      const no_of_days = Math.ceil(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
       const rent_per_day = obj.room_arr.reduce(
@@ -140,10 +140,15 @@ const CheckInModal = ({ room }) => {
         0
       );
       const total_rent = no_of_days * rent_per_day;
+
+
+
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
       let title;
       let tempImg;
+
+      console.log(total_rent,"totalRent","||",rent_per_day, "||",obj.discount,"||", no_of_days,"||", room,"||",obj.room_arr)
 
       switch (obj.documentsType) {
         case "Aadhar Card":

@@ -53,13 +53,55 @@ export const getSubDashboardInfo = async (req, res) => {
       user_id: userId,
       date,
     });
+    // Fetch daily datas for the last 7 days
+    const lastWeekStartDate = new Date(currentDate);
+    lastWeekStartDate.setDate(lastWeekStartDate.getDate() - 6);
+    const one_day_datas = await DailySubDashData.find({
+      user_id: userId,
+      date: { $gte: lastWeekStartDate.toISOString(), $lte: date },
+    });
 
+    // Calculate last_week_expenses as the sum of today_expenses for the last 7 days
+    const last_week_hotel_expenses = one_day_datas.reduce(
+      (sum, dailyData) => sum + dailyData.today_hotel_expenses,
+      0
+    );
+    const last_week_hotel_income = one_day_datas.reduce(
+      (sum, dailyData) => sum + dailyData.today_hotel_income,
+      0
+    );
+    const last_week_hotel_profit = one_day_datas.reduce(
+      (sum, dailyData) => sum + dailyData.today_hotel_income,
+      0
+    );
+    const last_week_restaurant_expenses = one_day_datas.reduce(
+      (sum, dailyData) => sum + dailyData.today_restaurant_expenses,
+      0
+    );
+    const last_week_restaurant_income = one_day_datas.reduce(
+      (sum, dailyData) => sum + dailyData.today_restaurant_income,
+      0
+    );
+    const last_week_restaurant_profit = one_day_datas.reduce(
+      (sum, dailyData) => sum + dailyData.today_restaurant_income,
+      0
+    );
+
+    console.log(last_week_hotel_expenses);
     res.status(200).json({
       success: true,
       message: "Succesfully fetched subdashboard informations",
       daily_datas: daily_datas,
       permanent_datas: permanent_datas,
       monthly_datas: monthly_datas,
+      last_week_data: {
+        last_week_hotel_expenses: last_week_hotel_expenses,
+        last_week_hotel_income: last_week_hotel_income,
+        last_week_hotel_profit: last_week_hotel_profit,
+        last_week_restaurant_expenses: last_week_restaurant_expenses,
+        last_week_restaurant_income: last_week_restaurant_income,
+        last_week_restaurant_profit: last_week_restaurant_profit,
+      },
     });
   } catch (error) {
     console.error(error);

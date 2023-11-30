@@ -13,6 +13,7 @@ import TransactionHistory from "../../components/Admin/TransactionHistory.jsx";
 import RestaurantBillsCard from "../../components/Manage-CheckIn/RestaurantBillsCard.jsx";
 import GymBills from "../../components/Manage-CheckIn/GymBills.jsx";
 import PoolsBill from "../../components/Manage-CheckIn/PoolsBill.jsx";
+import { MdOutlineHail } from "react-icons/md";
 
 const CheckinPersonInfo = () => {
   const navigate = useNavigate();
@@ -70,17 +71,17 @@ console.log("Valid Document Type:", validDocumentType);
           <span>Back</span>
         </div>
         <div className={`space-x-1.5`}>
-         <Link
-         to={"/dashboard/checkin"}
+         <span
+       onClick={()=> navigate(`/dashboard/checkout?room=${roomId}`)}
          >
          <span
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
             title={`Check In`}
             
           >
-            <FaDoorOpen />
+           <MdOutlineHail />
           </span>
-         </Link>
+         </span>
           <span
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
             title={`Edit`}
@@ -230,16 +231,16 @@ console.log("Valid Document Type:", validDocumentType);
       {/*  Bill system*/}
       <div 
       // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}
-      className="grid md:grid-cols-3 gap-3 mt-4"
+      className="grid md:grid-cols-3 gap-3  "
       >
-<div>
-<RestaurantBillsCard foodBill ={postedBill?.data?.food_bills}/>
+<div >
+<RestaurantBillsCard/>
 </div>
-<div>
-  <GymBills GymBill ={postedBill?.data?.gym_bills}/>
+<div >
+  <GymBills/>
 </div>
-<div>
-  <PoolsBill poolBills ={postedBill?.data?.pool_bills}/>
+<div >
+  <PoolsBill/>
 </div>
       </div>
       {/*  TransactionHistoryCard*/}
