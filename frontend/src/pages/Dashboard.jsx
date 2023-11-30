@@ -102,7 +102,7 @@ const Dashboard = () => {
                 setHbMenu={setHbMenu}
               />
             </div>
-            <div className={`px-10`}>
+            <div className={`px-4`}>
               <Outlet />
             </div>
             <div className={`mt-auto`}>
