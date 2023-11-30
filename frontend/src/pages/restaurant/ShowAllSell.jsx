@@ -14,6 +14,9 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import EditSales from "../../components/inventory/EditSales";
+import { useGetDailyDataQuery } from "../../redux/room/roomAPI";
+import { useSelector } from "react-redux";
+import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
 // import EditExpenses from "./EditExpenses";
 
 const ShowAllSell = () => {
@@ -22,6 +25,17 @@ const ShowAllSell = () => {
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+
+  const { user } = useSelector((store) => store.authSlice);
+
+
+  const { data:restaurantSales, error, isLoading } = useGetDailyDataQuery({
+    // managerId: user?._id,
+    fromDate: fromDateIsoConverterForAddExpenses(new Date().toLocaleDateString())
+  });
+
+  console.log(restaurantSales?.data?.docs,"dailyData")
+
 
   const formik = useFormik({
     initialValues: {
@@ -258,20 +272,20 @@ const ShowAllSell = () => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {restaurantSales && restaurantSales?.data?.docs?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
+                      <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>
                         <div className="flex">
                           <div>
                             <FaRupeeSign />
                           </div>
                           <div>
-                            <span>5000</span>
+                            <span>{item?.today_restaurant_income}</span>
                           </div>
                         </div>
                       </td>
