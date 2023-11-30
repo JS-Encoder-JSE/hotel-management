@@ -8,6 +8,7 @@ import {
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
   useUpdateBookingMutation,
+  useUpdateBookingTOCheckInMutation,
 } from "../../redux/room/roomAPI.js";
 import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
@@ -39,10 +40,10 @@ const validationSchema = yup.object({
 
 const CheckInDyn = ({ data }) => {
   const closeRef = useRef(null);
-  const [isLoading, setLoading] = useState(false);
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
-  const [updateBooking] = useUpdateBookingMutation();
+  const [updateBookingTOCheckIn, { isLoading }] =
+    useUpdateBookingTOCheckInMutation();
 
   console.log({ data });
 
@@ -71,8 +72,6 @@ const CheckInDyn = ({ data }) => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      setLoading(true);
-
       const obj = { ...values };
       let title;
       let tempImg;
@@ -102,11 +101,9 @@ const CheckInDyn = ({ data }) => {
       await upload(formData).then(
         (result) => (tempImg = result.data.imageUrls)
       );
-      const paidAmount =
-        typeof obj.amount === "number"
-          ? data.paid_amount + obj.amount
-          : data.paid_amount;
-      const response = await updateBooking({
+      const paidAmount = typeof obj.amount === "number" ? obj.amount : 0;
+
+      const response = await updateBookingTOCheckIn({
         id: data?.booking_ids[0],
         data: {
           paid_amount: paidAmount,
@@ -129,8 +126,6 @@ const CheckInDyn = ({ data }) => {
         closeRef.current.click();
         toast.success(response.data.message);
       }
-
-      setLoading(false);
     },
   });
 

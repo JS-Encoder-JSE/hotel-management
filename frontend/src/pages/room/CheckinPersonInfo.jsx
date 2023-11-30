@@ -115,8 +115,8 @@ console.log("Valid Document Type:", validDocumentType);
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.emergency_contact}</td>
               </tr>
-              <tr>
-                <th className={`text-start `}>
+              {/* <tr> */}
+                {/* <th className={`text-start `}>
                   Document <br /> Type
                 </th>
                 <td className={`w-4 text-center`}>:</td>
@@ -128,14 +128,14 @@ console.log("Valid Document Type:", validDocumentType);
                 </th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.doc_number}</td>
-              </tr>
-              <tr>
+              </tr> */}
+              {/* <tr>
                 <th className={`text-start `}>
                   Document <br /> Download
                 </th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.emergency_contact}</td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
         </div>
@@ -216,7 +216,7 @@ console.log("Valid Document Type:", validDocumentType);
       </Modal>
     </div>
     <div className="mb-20 mt-10">
-      <CheckinCardDetails/>
+      <CheckinCardDetails data={booking?.data} />
     </div>
     {/* payment system */}
     <div >

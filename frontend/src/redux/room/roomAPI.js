@@ -172,6 +172,17 @@ const roomAPI = baseAPI.injectEndpoints({
       invalidatesTags: ["booking"],
     }),
 
+    updateBookingTOCheckIn: build.mutation({
+      query: ({ id, updatedData }) => {
+        return {
+          url: `bookings/add-to-checkin/${id}`,
+          method: "POST",
+          body: updatedData,
+        };
+      },
+      invalidatesTags: ["booking"],
+    }),
+
     // update Expenses
     updateExpense: build.mutation({
       query: ({ id, data }) => {
@@ -238,4 +249,5 @@ export const {
   useCancelBookingMutation,
   useGetCheckoutMutation,
   useUpdateBookingInfoMutation,
+  useUpdateBookingTOCheckInMutation,
 } = roomAPI;
