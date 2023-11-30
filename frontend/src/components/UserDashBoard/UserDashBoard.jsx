@@ -206,7 +206,7 @@ const UserDashBoard = ({ managerId }) => {
     <>
       <div>
         <section
-          // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+          // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5 `}
           className="grid md:grid-cols-4 gap-4 mt-4"
 
         >

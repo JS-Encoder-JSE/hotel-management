@@ -12,9 +12,10 @@ const CheckinCardDetails = () => {
   return (
     <div>
       <div
-        className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-20`}
+        // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-20`}
+        className="grid md:grid-cols-4 gap-4 mt-4"
       >
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-2 rounded-md text-white">
           <HiOutlineCurrencyRupee />
           </div>
@@ -33,7 +34,7 @@ const CheckinCardDetails = () => {
           </p>
           <hr />
         </div>
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
           <LuWallet />
           </div>
@@ -52,7 +53,7 @@ const CheckinCardDetails = () => {
             <hr />
           </div>
         </div>
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#32cf8b] to-[#0d835a] p-3 rounded-md text-white">
           <TbCalendarDue />
           </div>
@@ -69,7 +70,7 @@ const CheckinCardDetails = () => {
           </p>
           <hr />
         </div>
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#c6c624] to-[#4e7107] p-3 rounded-md text-white">
           <MdOutlineAccountBalance />
           </div>

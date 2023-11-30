@@ -33,7 +33,7 @@ const Dashboard = () => {
           <div
             className={`md:self-start fixed md:sticky top-0 ${
               isHbMenu ? "-left-96" : "left-0"
-            } bg-gray-200 text-lg w-36 md:w-auto h-full md:h-auto md:-my-10 z-30 transition-[left] duration-500`}
+            } bg-gray-200 text-lg w-36 md:w-auto h-full md:h-auto md:-my-10 z-30 px-10 py-5 transition-[left] duration-500`}
           >
             <figure
               className={` max-w-[10rem] mx-auto flex items-center justify-center `}
