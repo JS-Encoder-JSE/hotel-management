@@ -149,8 +149,8 @@ export const addExpense = async (req, res) => {
           existingMonthlySubDashData.total_hotel_profit -= total_amount;
         }
         if (spendedfor === "restaurant") {
-          existingDailySubDashData.total_restaurant_expenses += total_amount;
-          existingDailySubDashData.total_restaurant_profit -= total_amount;
+          existingMonthlySubDashData.total_restaurant_expenses += total_amount;
+          existingMonthlySubDashData.total_restaurant_profit -= total_amount;
         }
         await existingMonthlySubDashData.save();
       }
