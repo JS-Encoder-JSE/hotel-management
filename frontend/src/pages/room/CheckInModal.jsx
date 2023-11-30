@@ -40,6 +40,12 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
+    children: yup
+    .number()
+  ,
+  discount: yup
+    .number()
+  ,
   // children: yup.number().when([], {
   //   is: (children) => children && children.length > 0,
   //   then: yup
@@ -263,6 +269,29 @@ const CheckInModal = ({ room }) => {
     }
   }, [formik.values.documents]);
 
+  const handleChildrenRoomCheckIn = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.children;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+  const handleDiscountRoomCheckIn = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.discoun;t
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -476,7 +505,7 @@ const CheckInModal = ({ room }) => {
               name="children"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.children}
-              onChange={formik.handleChange}
+              onChange={handleChildrenRoomCheckIn}
               onBlur={formik.handleBlur}
             />
             {formik.touched.children && Boolean(formik.errors.children) ? (
@@ -556,7 +585,7 @@ const CheckInModal = ({ room }) => {
               name="discount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.discount}
-              onChange={formik.handleChange}
+              onChange={handleDiscountRoomCheckIn}
               onBlur={formik.handleBlur}
             />
             {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Hotel from "../models/hotel.model.js";
 import User from "../models/user.model.js";
 import { Dashboard, DashboardTable } from "../models/dashboard.model.js";
+import { DailySubDashData } from "../models/subdashboard.model.js";
 
 // Controller to add a new hotel
 // export const addHotel = async (req, res) => {
@@ -329,5 +330,49 @@ export const getAllHotels = async (req, res) => {
     res.status(200).json(items);
   } catch (error) {
     res.status(500).json({ message: "Failed to retrieve items" });
+  }
+};
+
+export const getDailyDatas = async (req, res) => {
+  try {
+    const { page = 1, limit = 10, fromDate, toDate, manager_id } = req.query;
+
+    // Construct the filters
+    const query = {};
+
+    if (fromDate && toDate) {
+      // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
+      query.date = { $gte: fromDate, $lte: toDate };
+    } else if (fromDate) {
+      // If only fromDate is provided, use $gte for the minimum date filter
+      query.date = { $gte: fromDate };
+    } else if (toDate) {
+      // If only toDate is provided, use $lte for the maximum date filter
+      query.date = { $lte: toDate };
+    }
+
+    // Filter by user_id
+    if (manager_id) {
+      query.manager_id = manager_id;
+    }
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+    // Use the paginate method with the constructed filters
+    const result = await DailySubDashData.paginate(query, options);
+
+    res.status(200).json({
+      success: true,
+      message: "DailySubDashData fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
