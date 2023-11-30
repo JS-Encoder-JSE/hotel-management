@@ -43,7 +43,7 @@ export const addExpense = async (req, res) => {
       });
       const existingDailySubDashData = await DailySubDashData.findOne({
         user_id: userId,
-        date: formattedDate,
+        date,
       });
       console.log(existingDailySubDashData);
       console.log(formattedDate);
