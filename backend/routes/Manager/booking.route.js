@@ -9,6 +9,7 @@ import {
   cancelBooking,
   getBookingDetailsById,
   updateBookingInfo,
+  addToCheckin,
 } from "../../controllers/Manager/booking.controller.js";
 import { checkToken } from "../../middlewares/checkToken.js";
 import {
@@ -32,6 +33,7 @@ router.patch("/update-booking/:booking_id", checkToken, updateBooking);
 router.patch("/update-booking-info/:booking_id", checkToken, updateBookingInfo);
 router.post("/get-checkoutinfo-by-rooms", checkToken, getCheckoutInfoByRoom);
 router.post("/checkout", checkToken, checkedOut);
+router.post("/add-to-checkin/:booking_id", checkToken, addToCheckin);
 router.delete("/cancel-booking/:booking_id", checkToken, cancelBooking);
 // router.delete('/delete-booking/:booking_id', checkToken, deleteBooking);
 
