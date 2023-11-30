@@ -37,6 +37,7 @@ const validationSchema = yup.object({
   //     .integer("Children must be an integer"),
   // }),
   children: yup.number(),
+  discount: yup.number(),
 
   paymentMethod: yup.string().required("Payment method is required"),
 
@@ -200,6 +201,19 @@ const AddBookingSelect = ({ room }) => {
   const handleChildren = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.children;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+
+  // Price Validation
+  const handleDiscountRoom = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.discount;
     if (inputValue >= 0) {
       // Update the Formik state
       formik.handleChange(e);
@@ -499,7 +513,7 @@ const AddBookingSelect = ({ room }) => {
               name="discount"
               className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
               value={formik.values.discount}
-              onChange={formik.handleChange}
+              onChange={handleDiscountRoom}
               onBlur={formik.handleBlur}
             />
             {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
