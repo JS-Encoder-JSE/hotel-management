@@ -28,7 +28,9 @@ const CheckOutPrint = ({
   setPll,
   hotelInfo,
   isHotelSuccess,
+  roomData,
 }) => {
+  console.log("data ----", data);
   return (
     <div>
       <div>
@@ -45,10 +47,14 @@ const CheckOutPrint = ({
             hotelInfo={hotelInfo}
             isHotelSuccess={isHotelSuccess}
           />
-          <CustomerInfoPrint data={data} />
+          {/* <CustomerInfoPrint data={data} /> */}
         </div>
       )}
-      <RoomDetailsSection data={data} />
+      {roomData?.length
+        ? roomData?.map((roomInfo, i) => (
+            <RoomDetailsSection roomData={roomInfo} />
+          ))
+        : null}
 
       {/* <div>
         <div className={`mt-5 space-y-3`}>

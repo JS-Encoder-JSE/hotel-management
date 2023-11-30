@@ -340,6 +340,7 @@ const handlePaidAmount = (e) => {
             {/* Price */}
             <div className="flex flex-col gap-3">
               <input
+              onWheel={ event => event.currentTarget.blur() }
                 type="number"
                 placeholder="Price"
                 name="price"
@@ -357,6 +358,7 @@ const handlePaidAmount = (e) => {
             {/*Paid Amount  */}
             <div className="flex flex-col gap-3">
               <input
+              onWheel={ event => event.currentTarget.blur() }
                 type="number"
                 placeholder="Paid Amount"
                 name="paidamount"

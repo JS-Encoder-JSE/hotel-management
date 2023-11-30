@@ -1,6 +1,7 @@
 import React from "react";
 
-const RoomDetailsSection = ({ data }) => {
+const RoomDetailsSection = ({ data,roomData }) => {
+  console.log('checkout data',data);
   return (
     <section className="bg-white p-4 rounded">
       <table className="w-full border border-black/20 text-sm">
@@ -20,7 +21,7 @@ const RoomDetailsSection = ({ data }) => {
               {/* {data?.[0]?.room_ids
                 ?.map((i) => `${i?.roomNumber} - ${i?.category}`)
                 .join(", ")} */}
-              {data?.room_id?.roomNumber}
+              {roomData?.room_id?.roomNumber}
               {/*{selectedRooms.map((room, index) => (*/}
               {/*  <div key={index}>*/}
               {/*    <p className="font-semibold">{room.label}</p>*/}
@@ -53,6 +54,9 @@ const RoomDetailsSection = ({ data }) => {
                       ($) Discount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
+                      ($) Amount After Discount
+                    </td>
+                    <td className="p-2 border border-black/20 align-bottom font-medium">
                       ($) Paid Amount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
@@ -63,22 +67,25 @@ const RoomDetailsSection = ({ data }) => {
                 <tbody>
                   <tr>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {new Date(data?.from).toLocaleDateString()}
+                      {new Date(roomData?.from).toLocaleDateString()}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {new Date(data?.to).toLocaleDateString()}
+                      {new Date(roomData?.to).toLocaleDateString()}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.no_of_days}
+                      {roomData?.no_of_days}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.rent_per_day}
+                      {roomData?.rent_per_day}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {data?.total_room_rent}
+                      {roomData?.total_room_rent}
                     </td>
                     {/* <td className="p-2 border border-black/20 align-top text-xs">
                       {data?.[0]?.discount.toFixed(2)}
+                    </td>
+                    <td className="p-2 border border-black/20 align-top text-xs">
+                      {data?.[0]?.amount_after_dis.toFixed(2)}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
                       {data?.[0]?.paid_amount.toFixed(2)}

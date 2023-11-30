@@ -125,6 +125,7 @@ const RoomEdit = () => {
               {/* price box */}
               <div className="flex flex-col gap-3">
                 <input
+                onWheel={ event => event.currentTarget.blur() }
                   type="number"
                   placeholder="Price"
                   name="price"
@@ -164,6 +165,7 @@ const RoomEdit = () => {
               {/* floor number box */}
               <div className="flex flex-col gap-3">
                 <input
+                onWheel={ event => event.currentTarget.blur() }
                   type="number"
                   placeholder="Floor Number"
                   name="floorNumber"
@@ -182,6 +184,7 @@ const RoomEdit = () => {
               {/* room number box */}
               <div className="flex flex-col gap-3">
                 <input
+                onWheel={ event => event.currentTarget.blur() }
                   type="number"
                   placeholder="Room Number"
                   name="roomNumber"

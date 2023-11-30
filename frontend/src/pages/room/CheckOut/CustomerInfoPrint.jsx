@@ -12,9 +12,9 @@ const CustomerInfoPrint = ({ data }) => {
           <p>Address</p>
         </div>
         <div>
-          <p>: {data[0]?.guestName}</p>
-          <p>: {data[0]?.mobileNumber}</p>
-          <p>: {data[0]?.address}</p>
+          <p>: {data.guestName}</p>
+          <p>: {data.mobileNumber}</p>
+          <p>: {data.address}</p>
         </div>
     </div>
     </div>

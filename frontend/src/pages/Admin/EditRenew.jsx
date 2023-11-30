@@ -123,6 +123,7 @@ const EditRenew = () => {
           {/* Amount box */}
           <div className="flex flex-col gap-3">
             <input
+            onWheel={ event => event.currentTarget.blur() }
               type="number"
               placeholder="Amount"
               name="amount"

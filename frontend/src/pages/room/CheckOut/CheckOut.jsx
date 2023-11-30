@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
 import * as yup from "yup";
+import { getISOStringDate } from "../../../utils/utils";
 
 const CheckOut = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const CheckOut = () => {
     { method: "", amount: "", trx: "", date: "" },
   ]);
   console.log("data :", checkout);
+  console.log("pBillpBillpBill :", pBill);
   const handleResetCheckout = () => {
     setShowRooms(false);
   };
@@ -58,30 +60,47 @@ const CheckOut = () => {
       roomNumber: "",
     },
     onSubmit: async () => {
-      // const room_numbers = checkout?.data?.booking_info?.[0]?.room_ids?.map(
-      //   (i) => i?.roomNumber
-      // );
-      // const unpaid = pBill - Number(paymentList[0].amount);
-      // const response = await addCheckout({
-      //   booking_id: checkout?.data?.booking_info?.[0]?._id,
-      //   room_numbers,
-      //   checked_in: checkout?.data?.booking_info?.[0]?.from,
-      //   checked_out: new Date(),
-      //   payable_amount: pBill,
-      //   paid_amount: Number(paymentList[0].amount),
-      //   unpaid_amount: unpaid < 0 ? 0 : unpaid,
-      //   guestName: checkout?.data?.booking_info?.[0]?.guestName,
-      //   payment_method: paymentList[0].method,
-      // });
-      // if (response?.error) {
-      //   toast.error(response.error.data.message);
-      // } else {
-      //   toast.success("Checkout Successful");
-      //   // navigate("/dashboard/checkout");
-      // }
+      const room_numbers = checkout?.data?.booking_info?.room_ids?.map(
+        (i) => i?.roomNumber
+      );
+
+      const paidAmount =
+        checkout?.data?.booking_info?.paid_amount <= pBill
+          ? Number(paymentList[0].amount)
+          : pBill;
+      const payableAmount =
+        checkout?.data?.booking_info?.paid_amount <= pBill
+          ? Number(paymentList[0].amount)
+          : pBill;
+
+      const unpaid =
+        checkout?.data?.booking_info?.total_payable_amount -
+        (checkout?.data?.booking_info?.paid_amount + paidAmount);
+      const response = await addCheckout({
+        hotel_id: "6551df3ac2c94ba179b05977",
+        // hotel_id: checkout?.data?.booking_info?.hotel_id,
+        booking_ids: ["6567b9fbd02d69c3004babd0"],
+        // booking_ids: checkout?.data?.booking_info?.booking_ids,
+        guestName: "John Doe",
+        // guestName: checkout?.data?.booking_info?.[0]?.guestName,
+        room_numbers: ["Room1", "Room2"],
+        payment_method: "Card",
+        // payment_method: paymentList[0].method,
+        checked_in: "2023-01-01T12:00:00Z",
+        checked_out: "2023-01-02T12:00:00Z",
+        payable_amount: 100,
+        paid_amount: 80,
+        unpaid_amount: 20,
+      });
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success("Checkout Successful");
+        // navigate("/dashboard/checkout");
+      }
     },
   });
-
+  console.log("total checkout", checkout);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   console.log(user._id);
@@ -118,8 +137,10 @@ const CheckOut = () => {
       label: `${room.roomNumber} - ${room.category}`,
     }));
   useEffect(() => {
-    setFetch(roomFromQuery);
-    setShowRooms(true);
+    if (roomFromQuery?.length) {
+      getCheckout({ room_ids: roomFromQuery });
+      setShowRooms(true);
+    }
   }, [roomFromQuery]);
 
   // set subtotal amount
@@ -147,8 +168,8 @@ const CheckOut = () => {
           </button>
         </Link>
       </div>
-      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center flex-col md:flex-row">
-        <div className="flex flex-col md:flex-row">
+      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center">
+        <div className="flex flex-col gap-3">
           <Select
             placeholder="Select room"
             name={`roomNumber`}
@@ -193,7 +214,11 @@ const CheckOut = () => {
             <CustomerInfoSection data={checkout?.data?.booking_info} />
             {checkout?.data?.room_bookings?.length
               ? checkout?.data?.room_bookings?.map((roomInfo, i) => (
-                  <RoomDetailsSection data={roomInfo} key={i} />
+                  <RoomDetailsSection
+                    roomData={roomInfo}
+                    data={roomInfo}
+                    key={i}
+                  />
                 ))
               : null}
             <div className="my-5">
@@ -212,6 +237,7 @@ const CheckOut = () => {
               formik={formik}
               hotelInfo={hotelInfo}
               isHotelSuccess={isHotelSuccess}
+              roomData={checkout?.data?.room_bookings}
             />
           </div>
         </>

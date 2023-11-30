@@ -20,7 +20,12 @@ import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
-import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import {
+  fromDateIsoConverter,
+  getNumberOfDays,
+  getformatDateTime,
+  toDateIsoConverter,
+} from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -65,12 +70,10 @@ const validationSchema = yup.object({
 });
 
 const CheckInModal = ({ room }) => {
+  console.log(room, "checkind");
 
-
-  console.log(room,"checkind")
-
-// current Date
-  const [currentDate,setCurrentDate]=useState(new Date())
+  // current Date
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const closeRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
@@ -91,7 +94,6 @@ const CheckInModal = ({ room }) => {
       formik.handleChange(e);
     }
   };
-
 
   const formik = useFormik({
     initialValues: {
@@ -124,21 +126,12 @@ const CheckInModal = ({ room }) => {
       };
 
       if (!obj.discount) obj.discount = 0;
-
-
-      let room_ids =[];
-      if(room){
-        room_ids.push(room?.data?._id)
+      let room_ids = [];
+      if (room) {
+        room_ids.push(room?.data?._id);
       }
-
-      // const room_ids = obj.room_arr.map((elem) => elem.value);
-      const no_of_days = Math.floor(
-        Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
-      );
-      const rent_per_day = obj.room_arr.reduce(
-        (init, current) => init + current.price,
-        0
-      );
+      const no_of_days = getNumberOfDays(obj.from, obj.to);
+      const rent_per_day = room?.data?.price;
       const total_rent = no_of_days * rent_per_day;
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
@@ -155,7 +148,6 @@ const CheckInModal = ({ room }) => {
         case "Driving Licence":
           title = "driving_lic_img";
       }
-
       const formData = new FormData();
 
       for (let i = 0; i < obj.documents.length; i++) {
@@ -170,7 +162,6 @@ const CheckInModal = ({ room }) => {
       await upload(formData).then(
         (result) => (tempImg = result.data?.imageUrls)
       );
-
       const response = await addBooking({
         hotel_id: obj.hotel_id,
         room_ids,
@@ -187,7 +178,7 @@ const CheckInModal = ({ room }) => {
         no_of_days,
         // rent_per_day,
         // total_rent,
-        discount,
+        room_discount: discount,
         // amount_after_dis,
         paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         // total_unpaid_amount: amount_after_dis - obj.amount,
@@ -196,7 +187,7 @@ const CheckInModal = ({ room }) => {
         doc_images: {
           [title]: tempImg,
         },
-        remark:"advancePaymentForCheckIn",
+        remark: "advancePaymentForCheckIn",
         status: "CheckedIn",
       });
 
@@ -460,6 +451,7 @@ const CheckInModal = ({ room }) => {
           {/* adult box */}
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Adult"
               name="adult"
@@ -478,6 +470,7 @@ const CheckInModal = ({ room }) => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Children"
               name="children"
@@ -496,6 +489,7 @@ const CheckInModal = ({ room }) => {
           {/* advanced amount */}
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Advanced Amount"
               name="amount"
@@ -556,6 +550,7 @@ const CheckInModal = ({ room }) => {
 
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Discount"
               name="discount"

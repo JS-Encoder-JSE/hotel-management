@@ -26,7 +26,7 @@ export const addBooking = async (req, res) => {
       from,
       to,
       no_of_days,
-      discount,
+      room_discount,
       paid_amount = 0,
       status,
       nationality,
@@ -41,15 +41,10 @@ export const addBooking = async (req, res) => {
 
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
+    const date = currentDate.toISOString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
-
-    const Year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const day = currentDate.getDate().toString().padStart(2, "0");
-
-    const formattedDate = `${day}-${month}-${Year}`;
 
     let total_rent = 0;
 
@@ -160,7 +155,7 @@ export const addBooking = async (req, res) => {
         return booking._id; // Return the booking id
       })
     );
-    const total_rent_after_dis = total_rent - discount;
+    const total_rent_after_dis = total_rent - room_discount;
     const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
@@ -173,7 +168,7 @@ export const addBooking = async (req, res) => {
       children,
       bookingMethod,
       total_rent: total_rent,
-      discount,
+      room_discount,
       total_rent_after_dis: total_rent_after_dis,
       total_payable_amount: total_rent_after_dis,
       paid_amount,
@@ -249,7 +244,7 @@ export const addBooking = async (req, res) => {
       }
       const managerCheckInfo = await CheckInfo.findOne({
         user_id: userId,
-        date: currentDate,
+        date,
       });
       if (managerCheckInfo) {
         managerCheckInfo.today_checkin += 1;
@@ -264,7 +259,7 @@ export const addBooking = async (req, res) => {
       }
       const ownerCheckInfo = await CheckInfo.findOne({
         user_id: user.parent_id,
-        date: currentDate,
+        date,
       });
 
       if (ownerCheckInfo) {
@@ -335,7 +330,7 @@ export const addBooking = async (req, res) => {
       }
       const managerCheckInfo = await CheckInfo.findOne({
         user_id: userId,
-        date: currentDate,
+        date,
       });
       if (managerCheckInfo) {
         managerCheckInfo.today_booking += 1;
@@ -351,7 +346,7 @@ export const addBooking = async (req, res) => {
       console.log("aise");
       const ownerCheckInfo = await CheckInfo.findOne({
         user_id: user.parent_id,
-        date: currentDate,
+        date,
       });
 
       if (ownerCheckInfo) {
@@ -589,15 +584,10 @@ export const updateBooking = async (req, res) => {
     const userId = req.user.userId;
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
+    const date = currentDate.toISOString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
-
-    const Year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const day = currentDate.getDate().toString().padStart(2, "0");
-
-    const formattedDate = `${day}-${month}-${Year}`;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -687,7 +677,7 @@ export const updateBooking = async (req, res) => {
         }
         const managerCheckInfo = await CheckInfo.findOne({
           user_id: userId,
-          date: currentDate,
+          date,
         });
 
         if (managerCheckInfo) {
@@ -704,7 +694,7 @@ export const updateBooking = async (req, res) => {
         }
         const ownerCheckInfo = await CheckInfo.findOne({
           user_id: user.parent_id,
-          date: currentDate,
+          date,
         });
 
         if (ownerCheckInfo) {
@@ -766,7 +756,7 @@ export const updateBooking = async (req, res) => {
         }
         const managerCheckInfo = await CheckInfo.findOne({
           user_id: userId,
-          date: currentDate,
+          date,
         });
 
         if (managerCheckInfo) {
@@ -783,7 +773,7 @@ export const updateBooking = async (req, res) => {
         }
         const ownerCheckInfo = await CheckInfo.findOne({
           user_id: user.parent_id,
-          date: formattedDate,
+          date,
         });
 
         if (ownerCheckInfo) {

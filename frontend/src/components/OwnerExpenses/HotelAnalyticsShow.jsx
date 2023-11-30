@@ -24,9 +24,10 @@ const HotelAnalyticsShow = () => {
   return (
     <>
       <div
-        className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-20`}
+        // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-20`}
+        className="grid md:grid-cols-3 gap-4 mb-20"
       >
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-3 rounded-md text-white">
             <GiExpense />
           </div>
@@ -39,7 +40,7 @@ const HotelAnalyticsShow = () => {
           </p>
           <hr />
         </div>
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
             <SiSellfy />
           </div>
@@ -54,7 +55,7 @@ const HotelAnalyticsShow = () => {
             <hr />
           </div>
         </div>
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#0aae56] to-[#09c256] p-3 rounded-md">
           <BiRupee />
           </div>
@@ -89,9 +90,10 @@ const HotelAnalyticsShow = () => {
       </div> */}
 
       <div
-        className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+        // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+        className="grid md:grid-cols-3 gap-4 mb-20"
       >
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#e5e50b] p-3 rounded-md text-white">
             <GiExpense />
           </div>
@@ -104,7 +106,7 @@ const HotelAnalyticsShow = () => {
           </p>
           <hr />
         </div>
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#453092] to-[#5c08a5] p-3 rounded-md text-white">
             <LiaSellsy />
           </div>
@@ -117,7 +119,7 @@ const HotelAnalyticsShow = () => {
           </p>
           <hr />
         </div>
-        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+        <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md text-white">
           <BiRupee />
           </div>

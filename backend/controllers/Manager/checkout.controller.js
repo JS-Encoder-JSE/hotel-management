@@ -122,6 +122,7 @@ export const checkedOut = async (req, res) => {
 
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
+    const date = currentDate.toISOString();
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
@@ -165,7 +166,7 @@ export const checkedOut = async (req, res) => {
     const roomIds = updatedDocuments.map((doc) => doc.room_id);
 
     const bookingInfo = await BookingInfo.findOne({
-      room_ids: { $in: roomIds },
+      booking_ids: { $in: booking_ids },
     });
     // Remove the canceled room_id from bookingInfo.room_ids
     bookingInfo.room_ids.pull(...roomIds);
@@ -240,7 +241,7 @@ export const checkedOut = async (req, res) => {
     }
     const managerCheckInfo = await CheckInfo.findOne({
       user_id: userId,
-      date: formattedDate,
+      date,
     });
 
     if (managerCheckInfo) {
@@ -256,7 +257,7 @@ export const checkedOut = async (req, res) => {
     }
     const ownerCheckInfo = await CheckInfo.findOne({
       user_id: user.parent_id,
-      date: formattedDate,
+      date,
     });
 
     if (ownerCheckInfo) {
@@ -278,7 +279,7 @@ export const checkedOut = async (req, res) => {
     await existingStaticSubDashData.save();
     const existingDailySubDashData = await DailySubDashData.findOne({
       user_id: userId,
-      date: currentDate,
+      date,
     });
     if (existingDailySubDashData) {
       existingDailySubDashData.today_hotel_income += paid_amount;
@@ -290,7 +291,7 @@ export const checkedOut = async (req, res) => {
         user_id: userId,
         user_role: user.role,
         today_hotel_expenses: paid_amount,
-        date: currentDate,
+        date,
       });
       await newDailySubDashData.save();
     }

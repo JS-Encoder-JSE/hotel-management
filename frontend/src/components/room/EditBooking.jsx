@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { useUpdateBookingMutation } from "../../redux/room/roomAPI";
 import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
+import { useParams } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -51,9 +52,11 @@ const validationSchema = yup.object({
   to: yup.string().required("To Date is required"),
 });
 
-const EditBooking = ({ data }) => {
-// current date for from
-  const [currentDate,setCurrentDate]=useState(new Date())
+const EditBooking = ({ data, bookingId }) => {
+  const { id } = useParams();
+  console.log("data", data);
+  // current date for from
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const [updateBooking, { isLoading }] = useUpdateBookingMutation();
   const closeRef = useRef(null);
@@ -69,19 +72,27 @@ const EditBooking = ({ data }) => {
       children: "",
       // paymentMethod: "",
       // discount: "",
-      from:currentDate,
+      from: currentDate,
       to: "",
       nationality: "",
     },
 
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
+      console.log("values", values);
+      const obj = {
+        guestName: values.guestName,
+        address: values.address,
+        mobileNumber: values.mobileNumber,
+        emergency_contact: values.emergency_contact,
+        adult: Number(values.adult),
+        children: Number(values.children),
+      };
       try {
         const response = await updateBooking({
-          id: values._id,
-          data: values,
+          id: id,
+          data: obj,
         });
-
 
         if (response?.error) {
           toast.error(response.error.data.message);
@@ -90,12 +101,9 @@ const EditBooking = ({ data }) => {
           closeRef.current.click();
           toast.success(response.data.message);
         }
-      } catch (error) {
-       
-      }
+      } catch (error) {}
     },
   });
-
 
   useEffect(() => {
     if (data) {
@@ -108,7 +116,7 @@ const EditBooking = ({ data }) => {
     }
   }, [data]);
 
-// children validation
+  // children validation
   const handleChildrenEditBooking = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.children;
@@ -232,6 +240,7 @@ const EditBooking = ({ data }) => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Children"
               name="children"

@@ -51,22 +51,39 @@ export const toDateIsoConverter = (date) => {
 
 export const getformatDateTime = (date) => {
   const options = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
     hour12: true,
   };
-  
-  const formattedDateTime = new Date(date || new Date()).toLocaleString('en-US', options);
+
+  const formattedDateTime = new Date(date || new Date()).toLocaleString(
+    "en-US",
+    options
+  );
   return formattedDateTime;
 };
 
+export const getNumberOfDays = (fromDate, toDate) => {
+  const calculateDays =
+    Math.abs(new Date(toDate) - new Date(fromDate)) / (24 * 60 * 60 * 1000);
+
+  return Math.ceil(calculateDays);
+};
 
 export function getCurrentDateWithDay() {
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   const currentDate = new Date();
   const dayOfWeek = daysOfWeek[currentDate.getDay()];

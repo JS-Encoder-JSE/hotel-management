@@ -37,8 +37,10 @@ const COIBarItem = ({ idx, food }) => {
           <FaMinus />
         </button>
         <input
+        
           type="number"
           value={input}
+          onWheel={(event) => event.currentTarget.blur()}
           className="input-hide_Arrows w-12 flex outline-none text-center rounded-md p-1 placeholder:text-black border focus:border-green-slimy"
           onChange={(e) => {
             if (e.target.value > 0 || e.target.value === "")
