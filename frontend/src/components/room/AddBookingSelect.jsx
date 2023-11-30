@@ -10,7 +10,11 @@ import {
 import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
 import toast from "react-hot-toast";
-import { fromDateIsoConverter, getNumberOfDays, toDateIsoConverter } from "../../utils/utils.js";
+import {
+  fromDateIsoConverter,
+  getNumberOfDays,
+  toDateIsoConverter,
+} from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -103,8 +107,7 @@ const AddBookingSelect = ({ room }) => {
         to: toDateIsoConverter(values.to),
       };
 
-
-      console.log(obj.discount)
+      console.log(obj.discount);
 
       if (!obj.discount) obj.discount = 0;
 
@@ -137,11 +140,11 @@ const AddBookingSelect = ({ room }) => {
         no_of_days,
         // rent_per_day,
         // total_rent,
-        discount,
+        room_discount: discount,
         paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         // total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
-        remark:"advancePaymentForBooking",
+        remark: "advancePaymentForBooking",
         status: "Active",
       });
 
@@ -206,7 +209,6 @@ const AddBookingSelect = ({ room }) => {
     }
   };
 
-
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -265,7 +267,7 @@ const AddBookingSelect = ({ room }) => {
               <option value="Online">Online</option>
               <option value="Offline">Offline</option>
             </select>
-            {formik.touched.bookingMethod && (formik.errors.bookingMethod) ? (
+            {formik.touched.bookingMethod && formik.errors.bookingMethod ? (
               <small className="text-red-600">
                 {formik.errors.bookingMethod}
               </small>

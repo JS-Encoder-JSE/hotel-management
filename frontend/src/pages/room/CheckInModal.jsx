@@ -178,7 +178,7 @@ const CheckInModal = ({ room }) => {
         no_of_days,
         // rent_per_day,
         // total_rent,
-        discount,
+        room_discount: discount,
         // amount_after_dis,
         paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         // total_unpaid_amount: amount_after_dis - obj.amount,

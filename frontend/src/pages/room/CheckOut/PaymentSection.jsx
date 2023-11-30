@@ -18,6 +18,7 @@ const PaymentSection = ({
   data,
   isHotelSuccess,
   hotelInfo,
+  roomData
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -44,7 +45,10 @@ const PaymentSection = ({
       { method: "", amount: "", trx: "", date: "" },
     ]);
   };
-
+  console.log(
+    "pBill > data?.booking_info?.paid_amount && pBill < colAmount",
+    data?.paid_amount
+  );
   useEffect(() => {
     const totalCol = paymentList.reduce(
       (total, current) =>
@@ -86,13 +90,13 @@ const PaymentSection = ({
             </div>
             <div className="col-span-2 space-y-3">
               <p>
-                {pBill > colAmount || pBill > data?.booking_info?.paid_amount
+                {pBill > colAmount && pBill > data?.paid_amount
                   ? Math.abs(Math.ceil(pBill - colAmount))
                   : 0}
               </p>
               <p>{Math.ceil(colAmount)}</p>
               <p>
-                {pBill > data?.booking_info?.paid_amount && pBill < colAmount
+                {pBill > data?.paid_amount && pBill < colAmount
                   ? Math.abs(Math.ceil(pBill - colAmount))
                   : 0}
               </p>
@@ -122,6 +126,7 @@ const PaymentSection = ({
               paymentList={paymentList}
               isHotelSuccess={isHotelSuccess}
               hotelInfo={hotelInfo}
+              roomData={roomData}
             />
           </div>
         </div>
