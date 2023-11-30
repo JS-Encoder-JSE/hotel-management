@@ -481,8 +481,6 @@ export const getBookingsByHotel = async (req, res) => {
       query.$or = [
         { guestName: { $regex: search, $options: "i" } },
         { mobileNumber: { $regex: search, $options: "i" } },
-        { nationality: { $regex: search, $options: "i" } },
-        { doc_number: { $regex: search, $options: "i" } },
       ];
     }
 

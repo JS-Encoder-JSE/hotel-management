@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { checkToken } from "../middlewares/checkToken.js";
 import { getAllReport, getReport } from "../controllers/report.controller.js";
-import { getReportsByHotelId } from "../controllers/Manager/report.controller.js";
+import { getReportsByDate, getReportsByHotelId } from "../controllers/Manager/report.controller.js";
 
 const router = Router();
 
@@ -12,5 +12,6 @@ router.get(
   checkToken,
   getReportsByHotelId
 );
+router.get("/get-reports-by-date", getReportsByDate);
 
 export default router;

@@ -24,8 +24,10 @@ const validationSchema = yup.object({
       .min(10, "Description at least 10 characters length"),
   });
   
-const EditExpenses = ({data}) => {
+const EditExpenses = ({data,allItems,index}) => {
 
+
+  console.log(allItems,data,index)
 
   console.log(data,"----------------")
 
@@ -36,6 +38,10 @@ const EditExpenses = ({data}) => {
 // // console.log("------",singleItem)
 //     // update expenses data
     const [updateExpense, { isLoading:isUpdatedDataLoad }] = useUpdateExpenseMutation();
+
+    const [updatedItem,setUpdatedItem]=useState([])
+
+    console.log(updatedItem,"updated Item")
 
  
     const [showPass, setShowPass] = useState(false);
@@ -51,7 +57,9 @@ const EditExpenses = ({data}) => {
   
       validationSchema,
       onSubmit: async (values, formikHelpers) => {
-       console.log(values)
+      //  console.log(values)
+
+       setUpdatedItem(values)
         // try {
         //   const response = useUpdateExpenseMutation({
         //     id: values._id,
