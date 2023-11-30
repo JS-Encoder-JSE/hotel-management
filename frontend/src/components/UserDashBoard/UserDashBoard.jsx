@@ -247,7 +247,7 @@ const UserDashBoard = ({ managerId }) => {
             )}
           </div>
           {user?.role === "manager" || user?.role === "owner" ? (
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
                 
                 <BsClipboard2DataFill />
@@ -273,7 +273,7 @@ const UserDashBoard = ({ managerId }) => {
             ""
           )}
           {/* Total Amount */}
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
+          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
             <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
               {/* <FaDollarSign /> */}
               <GiCoins className={`db-currency text-white`} />
@@ -287,7 +287,7 @@ const UserDashBoard = ({ managerId }) => {
             <hr />
           </div>
           {user.role === "admin" || user.role === "subadmin" ? (
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
                 <FaUsers />
               </div>
