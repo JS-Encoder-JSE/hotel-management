@@ -28,7 +28,7 @@ export const addExpense = async (req, res) => {
     const year = newDate.getFullYear().toString();
 
     const existingExpense = await Expense.findOne({
-      date: formattedDate,
+      date,
       hotel_id,
       spendedfor,
     });
@@ -77,7 +77,7 @@ export const addExpense = async (req, res) => {
       // Create a new expense instance
       const newExpense = new Expense({
         hotel_id,
-        date: newDate,
+        date,
         spendedfor,
         items,
         total_amount,
@@ -105,7 +105,7 @@ export const addExpense = async (req, res) => {
       await existingStaticSubDashData.save();
       const existingDailySubDashData = await DailySubDashData.findOne({
         user_id: userId,
-        date: formattedDate,
+        date,
       });
       if (existingDailySubDashData) {
         if (spendedfor === "hotel") {
@@ -123,7 +123,7 @@ export const addExpense = async (req, res) => {
           const newDailySubDashData = new DailySubDashData({
             user_id: userId,
             user_role: user.role,
-            date: formattedDate,
+            date,
             today_hotel_expenses: total_amount,
           });
           await newDailySubDashData.save();
@@ -132,7 +132,7 @@ export const addExpense = async (req, res) => {
           const newDailySubDashData = new DailySubDashData({
             user_id: userId,
             user_role: user.role,
-            date: formattedDate,
+            date,
             today_restaurant_expenses: total_amount,
           });
           await newDailySubDashData.save();
@@ -234,13 +234,13 @@ export const getExpenses = async (req, res) => {
     }
     if (fromDate && toDate) {
       // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
-      query.createdAt = { $gte: new Date(fromDate), $lte: new Date(toDate) };
+      query.date = { $gte: fromDate, $lte: toDate };
     } else if (fromDate) {
       // If only fromDate is provided, use $gte for the minimum date filter
-      query.createdAt = { $gte: new Date(fromDate) };
+      query.date = { $gte: fromDate };
     } else if (toDate) {
       // If only toDate is provided, use $lte for the maximum date filter
-      query.createdAt = { $lte: new Date(toDate) };
+      query.date = { $lte: toDate };
     }
     // Use the paginate function to get paginated results
     const options = {

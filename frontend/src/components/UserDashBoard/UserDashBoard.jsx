@@ -208,8 +208,8 @@ const UserDashBoard = ({ managerId }) => {
         <section
           className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
         >
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-            <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
+          <div className="relative bg-white p-3  text-right rounded shadow hover:shadow-md duration-200 ">
+            <div className="absolute -top-[15px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
               {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
             </div>
             <h6 className="text-xs text-slate-400">
@@ -295,7 +295,7 @@ const UserDashBoard = ({ managerId }) => {
           ) : (
             ""
           )}
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200  ">
             <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
               {userHotel ? <FaRegCalendarAlt /> : <MdAutorenew />}
             </div>

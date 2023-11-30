@@ -121,7 +121,7 @@ export const checkedOut = async (req, res) => {
       user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const currentDate = new Date();
-
+    currentDate.setHours(0, 0, 0, 0);
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
@@ -278,7 +278,7 @@ export const checkedOut = async (req, res) => {
     await existingStaticSubDashData.save();
     const existingDailySubDashData = await DailySubDashData.findOne({
       user_id: userId,
-      date:formattedDate,
+      date: currentDate,
     });
     if (existingDailySubDashData) {
       existingDailySubDashData.today_hotel_income += paid_amount;
@@ -290,7 +290,7 @@ export const checkedOut = async (req, res) => {
         user_id: userId,
         user_role: user.role,
         today_hotel_expenses: paid_amount,
-        date:formattedDate,
+        date: currentDate,
       });
       await newDailySubDashData.save();
     }
@@ -314,7 +314,7 @@ export const checkedOut = async (req, res) => {
       await newMonthlySubDashData.save();
     }
     // Respond with the saved report
-    res.status(201).json({message:"Successfully Checked-In"});
+    res.status(201).json({ message: "Successfully Checked-In" });
   } catch (error) {
     // Handle errors
     console.error(error);
