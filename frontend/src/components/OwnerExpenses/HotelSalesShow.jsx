@@ -53,8 +53,8 @@ const HotelSalesShow = () => {
 
   return (
     <>
-    <div className={`px-5 space-y-5`}>
-      <div className={`bg-white px-10 py-5 rounded`}>
+    <div className={`space-y-5`}>
+      <div className={`bg-white p-4 rounded`}>
         {/* <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
@@ -205,7 +205,7 @@ const HotelSalesShow = () => {
             </button>
           </div>
         </div>
-        <div className={`flex gap-3 `}>
+        <div className={`flex flex-col md:flex-row gap-4 `}>
           <DatePicker
             autoComplete={`off`}
             dateFormat="dd/MM/yyyy"
