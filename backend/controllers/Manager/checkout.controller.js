@@ -166,7 +166,7 @@ export const checkedOut = async (req, res) => {
     const roomIds = updatedDocuments.map((doc) => doc.room_id);
 
     const bookingInfo = await BookingInfo.findOne({
-      room_ids: { $in: roomIds },
+      booking_ids: { $in: booking_ids },
     });
     // Remove the canceled room_id from bookingInfo.room_ids
     bookingInfo.room_ids.pull(...roomIds);
