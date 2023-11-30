@@ -56,7 +56,7 @@ console.log("Total Due Amount:", totalDueAmount);
                   <BiRupee />
                 </div>
                 <div>
-                  <span>{data?.total_payable_amount}</span>
+                  <span>{Math.ceil(data?.total_payable_amount)}</span>
                 </div>
               </div>
             </p>
@@ -74,7 +74,7 @@ console.log("Total Due Amount:", totalDueAmount);
                 <BiRupee />
               </div>
               <div>
-                <span>{data?.paid_amount<data?.total_payable_amount?  data?.total_payable_amount - data?.paid_amount :0}</span>
+                <span>{data?.paid_amount<data?.total_payable_amount?  (data?.total_payable_amount - data?.paid_amount).toFixed(2) :0}</span>
               </div>
             </div>
           </p>
@@ -91,7 +91,7 @@ console.log("Total Due Amount:", totalDueAmount);
                 <BiRupee />
               </div>
               <div>
-              <span>{data?.paid_amount>data?.total_payable_amount? data?.paid_amount - data?.total_payable_amount :0}</span>
+              <span>{data?.paid_amount>data?.total_payable_amount? (data?.paid_amount - data?.total_payable_amount).toFixed(2):0}</span>
               </div>
             </div>
           </p>

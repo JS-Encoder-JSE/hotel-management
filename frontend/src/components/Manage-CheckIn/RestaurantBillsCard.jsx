@@ -70,8 +70,23 @@ const RestaurantBillsCard = ({foodBill}) => {
                     <th>Price</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {foodBill?.map((itemBill, idx) => {
+                
+                 <tbody>
+                  {foodBill && foodBill[0]?.items?.map((itemBill,idx)=>{
+                    return (
+                      <tr   
+                      className={
+                      idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                      } >
+                        <td>{++idx}</td>
+                        <td>{foodBill && new Date(foodBill[0]?.createdAt).toLocaleDateString()}</td>
+                        <td>{itemBill?.item}</td>
+                        <td>{itemBill?.quantity}</td>
+                        <td>{itemBill?.total}</td>
+                      </tr>
+                    )
+                  })}
+                  {/* {foodBill?.map((itemBill, idx) => {
                     return (
                       <tr
                         className={
@@ -85,8 +100,8 @@ const RestaurantBillsCard = ({foodBill}) => {
                         <td>{itemBill?.items?.map((item)=> item?.price)}</td>
                       </tr>
                     );
-                  })}
-                </tbody>
+                  })} */}
+                </tbody> 
                 <tfoot className={`text-[1.2rem] font-bold`}>
                 <tr>
                   <td colSpan={4} className={`text-end `}>
@@ -95,7 +110,7 @@ const RestaurantBillsCard = ({foodBill}) => {
                   <td>
                  <div className="flex ">
                   <div><BiRupee/></div>
-                  <div>{totalPrice}</div>
+                  <div>{foodBill && foodBill[0]?.total_price}</div>
                  </div>
                   </td>
                 </tr>
