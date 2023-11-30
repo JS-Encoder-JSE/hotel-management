@@ -196,15 +196,15 @@ const CheckinPersonInfo = () => {
       {/*  Bill system*/}
       <div 
       // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}
-      className="grid md:grid-cols-3 gap-3 mt-4"
+      className="grid md:grid-cols-3 gap-3  "
       >
-<div>
+<div className="h-full">
 <RestaurantBillsCard/>
 </div>
-<div>
+<div className="h-full">
   <GymBills/>
 </div>
-<div>
+<div className="h-full">
   <PoolsBill/>
 </div>
       </div>
