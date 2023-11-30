@@ -102,7 +102,7 @@ const ManageCheckinModal = () => {
   const formik = useFormik({
     initialValues: {
       room_arr: [],
-      // hotel_id: "",
+      hotel_id: "",
       guestName: "",
       address: "",
       mobileNumber: "",
@@ -184,10 +184,10 @@ const ManageCheckinModal = () => {
         to: obj.to,
         no_of_days,
         // rent_per_day,
-        // total_rent,
-        discount,
+        total_rent,
+       room_discount:discount,
         // amount_after_dis,
-        paid_amount: typeof(obj.amount)==='number' ? obj.amount : 0,
+        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         // total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
         doc_number: obj.doc_number,
@@ -197,7 +197,6 @@ const ManageCheckinModal = () => {
         remark:"advancePaymentForCheckIn",
         status: "CheckedIn",
       });
-
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -281,7 +280,7 @@ const ManageCheckinModal = () => {
       formik.handleChange(e);
     }
   };
-  const handleDiscountCheckIn = (e) => {
+  const handleDiscount= (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.discount;
     if (inputValue >= 0) {
@@ -292,7 +291,6 @@ const ManageCheckinModal = () => {
       formik.handleChange(e);
     }
   };
-
   return (
     <>
     <form autoComplete="off" method="dialog">
@@ -596,7 +594,7 @@ const ManageCheckinModal = () => {
             name="discount"
             className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
             value={formik.values.discount}
-            onChange={handleDiscountCheckIn}
+            onChange={handleDiscount}
             onBlur={formik.handleBlur}
           />
           {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
@@ -739,7 +737,7 @@ const ManageCheckinModal = () => {
             type={"submit"}
             className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
           >
-            Confirm
+            Confirm to
             {isLoading ? (
               <span
                 className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
