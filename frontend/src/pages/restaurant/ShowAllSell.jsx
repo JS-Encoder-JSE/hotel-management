@@ -6,6 +6,7 @@ import {
   FaRegFilePdf,
   FaRupeeSign,
 } from "react-icons/fa";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { GrPowerReset } from "react-icons/gr";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
@@ -22,6 +23,7 @@ const ShowAllSell = () => {
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+  const [PDF, setPdf] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -67,13 +69,35 @@ const ShowAllSell = () => {
               Today Sales
             </h3>
           </div>
-          <div className={`flex justify-end mb-5`}>
+
+          <div className="flex justify-end">
+              {PDF?.length ? (
+                <PDFDownloadLink
+                  document={
+                    <ExpensesHistoryReport
+                      date={hotelExpenses?.docs[0]?.date}
+                      values={filteredExpenses?.docs}
+                      header={{
+                        title: "DAK Hospitality LTD",
+                        name: "Restaurant Expenses History",
+                      }}
+                    />
+                  }
+                  fileName={`${new Date().toLocaleDateString()}.pdf`}
+                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded  uppercase"
+                >
+                  <BsFileEarmarkPdfFill />
+                  PDF
+                </PDFDownloadLink>
+              ) : null}
+            </div>
+          {/* <div className={`flex justify-end mb-5`}>
             <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
               {" "}
               <FaRegFilePdf />
               PDF
             </button>
-          </div>
+          </div> */}
 
           <div className="overflow-x-auto">
             <table className="table">

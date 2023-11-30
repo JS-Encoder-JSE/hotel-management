@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaDoorOpen, FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import { MdOutlineCancel } from "react-icons/md";
+import { MdOutlineCancel, MdOutlineHail } from "react-icons/md";
 import ReactPaginate from "react-paginate";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "../Modal.jsx";
@@ -121,7 +121,7 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
                       to={"/dashboard/checkin"}
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                     >
-                      <BiSolidDoorOpen />
+                      <MdOutlineHail />
                     </Link>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}

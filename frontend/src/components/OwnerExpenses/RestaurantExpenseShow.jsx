@@ -94,7 +94,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     spendedfor: "restaurant",
     limit: formik.values.entries,
   });
-  
+
   const {
     data: RestaurantExpenses,
     isLoading,
@@ -106,7 +106,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     spendedfor: "restaurant",
     limit: 10,
   });
-
 
   useEffect(() => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
@@ -132,50 +131,32 @@ const RestaurantExpenseShow = ({ hotelId }) => {
 
   const isTodayItems = RestaurantExpenses?.docs?.filter((item) => {
     const itemDate = item.date;
-  
+
     const currentDate = new Date();
-    const formattedCurrentDate = currentDate.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).replace(/\//g, '-');
-  
+    const formattedCurrentDate = currentDate
+      .toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+      .replace(/\//g, "-");
+
     // Check if the item's date is the same as the current date
     return itemDate === formattedCurrentDate;
   });
 
-  console.log(isTodayItems,"itemssssssssssss")
+  console.log(isTodayItems, "itemssssssssssss");
 
-
-
-  const totalItemPrice = isTodayItems && isTodayItems[0]?.items?.reduce((total, item) => {
-    // Add the price of each item to the total
-    return total + (item?.price || 0);
-  }, 0);
+  const totalItemPrice =
+    isTodayItems &&
+    isTodayItems[0]?.items?.reduce((total, item) => {
+      // Add the price of each item to the total
+      return total + (item?.price || 0);
+    }, 0);
 
   return (
     <div className={` space-y-5`}>
-      {/* 2nd Commit */}
-
-      {/* {RestaurantExpenses && filteredExpenses &&  */}
       <div className={`bg-white  p-4 rounded`}>
-        {/* <div className="mb-10">
-          <Link to={`/dashboard `}>
-            <button
-              type="button"
-              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-            >
-              <dfn>
-                <abbr title="Back">
-                  <FaArrowLeft />
-                </abbr>
-              </dfn>
-
-              <span className="tracking-wider font-semibold text-[1rem]"></span>
-            </button>
-          </Link>
-        </div> */}
-
         <div>
           <div>
             <div>
@@ -185,9 +166,8 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                 Today Expenses
               </h3>
             </div>
-             {/* all pdf comment out kora ase  */}
 
-            {/* <div className={`flex justify-end mb-5`}>
+            <div className={`flex justify-end mb-5`}>
               {PDF?.length ? (
                 <PDFDownloadLink
                   document={
@@ -207,16 +187,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                   PDF
                 </PDFDownloadLink>
               ) : null}
-            </div> */}
-
-            {/* all pdf comment out kora ase upore */}
-             <div className={`flex justify-end mb-5`}>
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
-          </div>
+            </div>
 
             <div className="h-96">
               {/* 3rd commit  */}
@@ -339,7 +310,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
               Restaurant Expenses History
             </h3>
           </div>
-          {/* <div className="flex justify-end">
+          <div className="flex justify-end">
             {PDF?.length ? (
               <PDFDownloadLink
                 document={
@@ -359,8 +330,8 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                 PDF
               </PDFDownloadLink>
             ) : null}
-          </div> */}
-           <div className={`flex justify-end mb-5`}>
+          </div>
+          <div className={`flex justify-end mb-5`}>
             <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
               {" "}
               <FaRegFilePdf />

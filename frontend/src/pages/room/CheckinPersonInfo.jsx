@@ -13,6 +13,7 @@ import TransactionHistory from "../../components/Admin/TransactionHistory.jsx";
 import RestaurantBillsCard from "../../components/Manage-CheckIn/RestaurantBillsCard.jsx";
 import GymBills from "../../components/Manage-CheckIn/GymBills.jsx";
 import PoolsBill from "../../components/Manage-CheckIn/PoolsBill.jsx";
+import { MdOutlineHail } from "react-icons/md";
 
 const CheckinPersonInfo = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const CheckinPersonInfo = () => {
             title={`Check In`}
             
           >
-            <FaDoorOpen />
+           <MdOutlineHail />
           </span>
          </Link>
           <span
