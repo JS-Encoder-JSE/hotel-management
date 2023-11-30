@@ -177,17 +177,17 @@ const AddHotel = () => {
               </Link>
             </div>
             <div>
-            <h2 className="text-2xl text-center">Add Hotel</h2>
+            <h2 className="text-2xl text-center md:mt-4">Add Hotel</h2>
             </div>
           <div className="text-2xl md:flex justify-end items-center">
-            <h2 className="shadow-lg bg-slate-100 px-4 py-2 rounded-md text-green-slimy inline-block space-x-1.5">
+            <h2 className="shadow-lg bg-slate-100 px-4 py-2 rounded-md text-green-slimy inline-block space-x-1.5 text-base">
               {user?.maxHotels - hotels?.docs?.length >= 1 ? (
                 <>
-                  <span>You can add</span>
+                  <span className="text-base " >You can add</span>
                   <span className="text-green-slimy font-bold">
                     {` ${user?.maxHotels - hotels?.docs?.length}`}
                   </span>
-                  <span>hotels.</span>
+                  <span className="text-base" >hotels.</span>
                 </>
               ) : (
                 <span className="text-sm font-semibold uppercase text-red-600">
@@ -202,7 +202,7 @@ const AddHotel = () => {
         <div className="max-auto">
           <form
             autoComplete="off"
-            className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10"
+            className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10 p-4"
             onSubmit={formik.handleSubmit}
           >
             {/* Hotel Name box */}
