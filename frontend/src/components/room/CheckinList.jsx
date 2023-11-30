@@ -152,12 +152,12 @@ if(!checkinList){
                       <FaEye />
                     </span>
 
-                    <Link
-                      to={"/dashboard/checkin"}
+                    <span
+                      onClick={()=> navigate(`/dashboard/checkout?room=${item?.room_id?._id}`)}
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                     >
                       <BiSolidDoorOpen />
-                    </Link>
+                    </span>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                     >

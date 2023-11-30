@@ -41,7 +41,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
   const [hotelsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
-
+  const [editItemData, setEditItemData] = useState(null);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   // console.log(user._id);
@@ -148,7 +148,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
 
 
 
-  const totalItemPrice = isTodayItems && isTodayItems[0]?.items?.reduce((total, item) => {
+  const totalItemPrice = RestaurantExpenses && RestaurantExpenses?.docs[0]?.items?.reduce((total, item) => {
     // Add the price of each item to the total
     return total + (item?.price || 0);
   }, 0);
@@ -263,10 +263,12 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                           <td>
                             <button
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                              onClick={() =>
+                              onClick={() =>{
+                                setEditItemData(item);
                                 document
                                   .getElementById("my_modal_3")
                                   .showModal()
+                              }
                               }
                             >
                               <FaRegEdit />
@@ -278,7 +280,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                                     ✕
                                   </button>
                                 </form>
-                                <EditExpenses />
+                                <EditExpenses data={editItemData} />
                               </div>
                             </dialog>
                           </td>
@@ -296,7 +298,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                           <div>
                             <FaRupeeSign />
                           </div>
-                          <div> 25000</div>
+                          <div>{totalItemPrice}</div>
                         </div>
                       </td>
                     </tr>
@@ -459,7 +461,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                       <td>{item?.date}</td>
                       <td>
                         <FaRupeeSign className="inline" />
-                        <span>{item?.price}</span>
+                        <span>{item?.total_amount}</span>
                       </td>
                       <td className={`space-x-1.5`}>
                         <span

@@ -76,7 +76,7 @@ const HotelExpense = () => {
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex gap-5 items-center justify-center">
           <p >Hotel Branch Name :</p>
-          <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col md:flex-row gap-4">
             <Select
               placeholder="Search with hotel branch name"
               defaultValue={selectedHotel}

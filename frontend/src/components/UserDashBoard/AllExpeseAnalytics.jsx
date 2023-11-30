@@ -15,9 +15,10 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
         <div className='mt-10'>
              <div>
         <section
-          className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+          // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+          className="grid md:grid-cols-4 gap-4 mt-4"
         >
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
             <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
             <GiCoins className={`db-currency text-white`} />
             </div>
@@ -28,7 +29,7 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
               <span className='text-end flex justify-end items-center'><MdCurrencyRupee  />10000</span>
               </p> 
           </div>
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
               <GiCoins className={`db-currency text-white`} />
               </div>
@@ -41,7 +42,7 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
             </div>
           
           {/* Total Amount */}
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
               <GiCoins className={`db-currency text-white`} />
               </div>
@@ -51,7 +52,7 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
               </p> 
           </div>
           
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
 
             <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
               <GiCoins className={`db-currency text-white`} />
@@ -77,7 +78,7 @@ const AllExpeseAnalytics = ({dashboardData,dummyData,userHotel,user}) => {
         </section>
 
     <section className='mt-10 max-w-[25rem] mx-auto'>
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
               <MdCurrencyRupee />
               </div>
