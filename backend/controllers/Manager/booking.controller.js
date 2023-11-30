@@ -26,7 +26,7 @@ export const addBooking = async (req, res) => {
       from,
       to,
       no_of_days,
-      discount,
+      room_discount,
       paid_amount = 0,
       status,
       nationality,
@@ -155,7 +155,7 @@ export const addBooking = async (req, res) => {
         return booking._id; // Return the booking id
       })
     );
-    const total_rent_after_dis = total_rent - discount;
+    const total_rent_after_dis = total_rent - room_discount;
     const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
@@ -168,7 +168,7 @@ export const addBooking = async (req, res) => {
       children,
       bookingMethod,
       total_rent: total_rent,
-      discount,
+      room_discount,
       total_rent_after_dis: total_rent_after_dis,
       total_payable_amount: total_rent_after_dis,
       paid_amount,
