@@ -162,7 +162,7 @@ const BookingView = () => {
         <CheckInDyn data={data} />
       </Modal>
       <Modal id={`eb_modal`}>
-        {booking?.data && <EditBooking data={booking?.data} />}
+        {booking?.data && <EditBooking bookingId={id} data={booking?.data} />}
       </Modal>
     </div>
   );

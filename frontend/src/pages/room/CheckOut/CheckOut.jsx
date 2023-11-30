@@ -43,7 +43,6 @@ const CheckOut = () => {
     { method: "", amount: "", trx: "", date: "" },
   ]);
   console.log("data :", checkout);
-  console.log("pBillpBillpBill :", pBill);
   const handleResetCheckout = () => {
     setShowRooms(false);
   };
@@ -60,8 +59,8 @@ const CheckOut = () => {
       roomNumber: "",
     },
     onSubmit: async () => {
-      const room_numbers = checkout?.data?.booking_info?.room_ids?.map(
-        (i) => i?.roomNumber
+      const room_numbers = checkout?.data?.room_bookings?.map(
+        (i) => i?.room_id?.roomNumber
       );
 
       const paidAmount =
@@ -77,20 +76,16 @@ const CheckOut = () => {
         checkout?.data?.booking_info?.total_payable_amount -
         (checkout?.data?.booking_info?.paid_amount + paidAmount);
       const response = await addCheckout({
-        hotel_id: "6551df3ac2c94ba179b05977",
-        // hotel_id: checkout?.data?.booking_info?.hotel_id,
-        booking_ids: ["6567b9fbd02d69c3004babd0"],
-        // booking_ids: checkout?.data?.booking_info?.booking_ids,
-        guestName: "John Doe",
-        // guestName: checkout?.data?.booking_info?.[0]?.guestName,
-        room_numbers: ["Room1", "Room2"],
-        payment_method: "Card",
-        // payment_method: paymentList[0].method,
-        checked_in: "2023-01-01T12:00:00Z",
-        checked_out: "2023-01-02T12:00:00Z",
-        payable_amount: 100,
-        paid_amount: 80,
-        unpaid_amount: 20,
+        hotel_id: checkout?.data?.booking_info?.hotel_id,
+        booking_ids: checkout?.data?.booking_info?.booking_ids,
+        guestName: checkout?.data?.booking_info?.guestName,
+        room_numbers,
+        payment_method: paymentList[0].method,
+        checked_in: checkout?.data?.room_bookings[0]?.from,
+        checked_out: checkout?.data?.room_bookings[0]?.to,
+        payable_amount: payableAmount,
+        paid_amount: paidAmount,
+        unpaid_amount: unpaid < 0 ? 0 : unpaid,
       });
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -100,17 +95,13 @@ const CheckOut = () => {
       }
     },
   });
-  console.log("total checkout", checkout);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
-
-  console.log(user._id);
 
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
-  console.log(hotelInfo);
 
   const { data: rooms } = useRoomsQuery({
     cp: "0",
