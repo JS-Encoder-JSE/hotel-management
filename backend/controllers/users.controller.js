@@ -8,6 +8,7 @@ import TransactionLog from "../models/transactionlog.model.js";
 import StatusLog from "../models/statuslog.model.js";
 import Report from "../models/report.model.js";
 import { Dashboard, DashboardTable } from "../models/dashboard.model.js";
+import { StaticSubDashData } from "../models/subdashboard.model.js";
 
 // Create a function to handle user creation
 export const addUser = async (req, res) => {
@@ -94,8 +95,8 @@ export const addUser = async (req, res) => {
       await newDashboardTable.save();
       if (role === "manager") {
         const newStaticSubDashData = new StaticSubDashData({
-          user_id:savedNewUser._id,
-          user_role:role,
+          user_id: savedNewUser._id,
+          user_role: role,
         });
         await newStaticSubDashData.save();
       }
@@ -273,7 +274,7 @@ export const addLicense = async (req, res) => {
 
     // Create a new transaction log entry
     const newTransactionLog = new TransactionLog({
-      dedicated_to:"license",
+      dedicated_to: "license",
       tran_id,
       payment_method,
       bill_from,
