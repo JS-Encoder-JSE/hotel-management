@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Hotel from "../models/hotel.model.js";
 import User from "../models/user.model.js";
 import { Dashboard, DashboardTable } from "../models/dashboard.model.js";
+import { DailySubDashData } from "../models/subdashboard.model.js";
 
 // Controller to add a new hotel
 // export const addHotel = async (req, res) => {
