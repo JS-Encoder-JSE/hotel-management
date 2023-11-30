@@ -1,11 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useFormik } from "formik";
 import EditSalesView from "./EditSalesView";
 import ReactPaginate from "react-paginate";
+import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
+import { useSelector } from "react-redux";
 
 const ShowALlSellView = () => {
+
+  const [searchParams] = useSearchParams();
+
+  const dateParam = searchParams.get('date');
+
+  const { user } = useSelector((store) => store.authSlice);
+
+  
+
+// query by searchParams
+  const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
+    date: dateParam,
+    order_status: 'CheckedOut',
+    hotel_id: user?.assignedHotel[0]
+  });
+
+  console.log(orderedDataByDate,"orderedData")
+
   const [pageCount, setPageCount] = useState(10);
     const formik = useFormik({
         initialValues: {

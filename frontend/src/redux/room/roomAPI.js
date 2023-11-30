@@ -111,7 +111,10 @@ const roomAPI = baseAPI.injectEndpoints({
       providesTags: ["GetExpenses"],
     }),
 
-
+    getOrdersByDate: build.query({
+      query: ({ date, order_status, hotel_id }) =>
+        `foods/get-orders-by-date?date=${date}&order_status=${order_status}&hotel_id=${hotel_id}`,
+    }),
     // getDailyData:build.query({
     //   query: ({ managerId, fromDate, toDate }) =>
     //   `hotels/get-daily-datas?managerId=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,}),
@@ -237,6 +240,7 @@ export const {
   useUpdateRoomMutation,
   useAddBookingMutation,
   useGetBookingByIdQuery,
+  useGetOrdersByDateQuery,
   useGetBookingInfoByIdQuery,
   useGetRoomPostedBillsQuery,
   useGetCOInfoQuery,

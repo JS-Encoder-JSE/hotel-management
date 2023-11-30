@@ -322,7 +322,7 @@ const App = () => {
               ),
             },
             {
-              path: "show-all-sell/:id",
+              path: "show-all-sell-Details",
               element: (
                 <ManagerRoute>
                   <ShowALlSellView />
