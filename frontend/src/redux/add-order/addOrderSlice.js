@@ -11,6 +11,7 @@ const initialState = {
     tax: 0,
     grandTotal: 0,
   },
+  amountAfterDiscount: 0,
 };
 
 const addOrderSlice = createSlice({
@@ -90,6 +91,9 @@ const addOrderSlice = createSlice({
       //   grandTotal: 0,
       // };
     },
+    setAmountAfterDis: (state, action) => {
+      state.amountAfterDiscount = action.payload;
+    },
   },
 });
 
@@ -102,5 +106,6 @@ export const {
   resetFoodOrder,
   setRoomId,
   setTableId,
+  setAmountAfterDis,
 } = addOrderSlice.actions;
 export default addOrderSlice.reducer;

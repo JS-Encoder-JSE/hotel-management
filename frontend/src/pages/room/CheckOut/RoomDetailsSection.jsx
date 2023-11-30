@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setAmountAfterDis } from "../../../redux/add-order/addOrderSlice";
 
-const RoomDetailsSection = ({ data,roomData }) => {
-  console.log('checkout data',data);
+const RoomDetailsSection = ({
+  data,
+  roomData,
+  bookingInfo,
+}) => {
+  console.log("checkout data", data);
+  const dispatch = useDispatch();
+  const discountPerRoom = Math.ceil(
+    bookingInfo?.room_discount / bookingInfo?.room_ids.length
+  );
+  useEffect(() => {
+    const discountPerRoom = Math.ceil(
+      bookingInfo?.room_discount / bookingInfo?.room_ids.length
+    );
+    const amountAfterDis = Math.ceil(
+      roomData?.total_room_rent - discountPerRoom
+    );
+    !isNaN(amountAfterDis) ? dispatch(setAmountAfterDis(amountAfterDis)) : "";
+  }, [data]);
   return (
     <section className="bg-white p-4 rounded">
       <table className="w-full border border-black/20 text-sm">
@@ -50,6 +69,12 @@ const RoomDetailsSection = ({ data,roomData }) => {
                     <td className="p-2 border border-black/20 align-bottom font-medium">
                       ($) Total Rent
                     </td>
+                    <td className="p-2 border border-black/20 align-bottom font-medium">
+                      ($) Discount/Room
+                    </td>
+                    <td className="p-2 border border-black/20 align-bottom font-medium">
+                      ($) Amount After Discount
+                    </td>
                     {/* <td className="p-2 border border-black/20 align-bottom font-medium">
                       ($) Discount
                     </td>
@@ -80,6 +105,12 @@ const RoomDetailsSection = ({ data,roomData }) => {
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
                       {roomData?.total_room_rent}
+                    </td>
+                    <td className="p-2 border border-black/20 align-top text-xs">
+                      {discountPerRoom}
+                    </td>
+                    <td className="p-2 border border-black/20 align-top text-xs">
+                      {Math.ceil(roomData?.total_room_rent - discountPerRoom)}
                     </td>
                     {/* <td className="p-2 border border-black/20 align-top text-xs">
                       {data?.[0]?.discount.toFixed(2)}

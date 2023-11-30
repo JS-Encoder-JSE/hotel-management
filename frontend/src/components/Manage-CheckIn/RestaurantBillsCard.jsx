@@ -15,14 +15,15 @@ import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
 
-const RestaurantBillsCard = ({foodBill}) => {
-
-
-  console.log("foodBills",foodBill)
+const RestaurantBillsCard = ({ foodBill }) => {
+  console.log("foodBills", foodBill);
 
   const totalPrice = foodBill?.reduce((total, bill) => {
     // Use another reduce to calculate the total price of items in each bill
-    const billTotal = bill?.items?.reduce((itemTotal, item) => itemTotal + item.price, 0);
+    const billTotal = bill?.items?.reduce(
+      (itemTotal, item) => itemTotal + item.price,
+      0
+    );
     return total + billTotal;
   }, 0);
 
@@ -70,22 +71,31 @@ const RestaurantBillsCard = ({foodBill}) => {
                     <th>Price</th>
                   </tr>
                 </thead>
-                
-                 <tbody>
-                  {foodBill && foodBill[0]?.items?.map((itemBill,idx)=>{
-                    return (
-                      <tr   
-                      className={
-                      idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                      } >
-                        <td>{++idx}</td>
-                        <td>{foodBill && new Date(foodBill[0]?.createdAt).toLocaleDateString()}</td>
-                        <td>{itemBill?.item}</td>
-                        <td>{itemBill?.quantity}</td>
-                        <td>{itemBill?.total}</td>
-                      </tr>
-                    )
-                  })}
+
+                <tbody>
+                  {foodBill &&
+                    foodBill[0]?.items?.map((itemBill, idx) => {
+                      return (
+                        <tr
+                          className={
+                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                          }
+                        >
+                          <td>{++idx}</td>
+                          <td>
+                            {foodBill &&
+                              new Date(
+                                foodBill[0]?.createdAt
+                              ).toLocaleDateString()}
+                          </td>
+                          <td className="whitespace-nowrap">
+                            {itemBill?.item}
+                          </td>
+                          <td>{itemBill?.quantity}</td>
+                          <td>{itemBill?.total}</td>
+                        </tr>
+                      );
+                    })}
                   {/* {foodBill?.map((itemBill, idx) => {
                     return (
                       <tr
@@ -101,20 +111,22 @@ const RestaurantBillsCard = ({foodBill}) => {
                       </tr>
                     );
                   })} */}
-                </tbody> 
+                </tbody>
                 <tfoot className={`text-[1.2rem] font-bold`}>
-                <tr>
-                  <td colSpan={4} className={`text-end `}>
-                  Total :
-                  </td>
-                  <td>
-                 <div className="flex ">
-                  <div><BiRupee/></div>
-                  <div>{foodBill && foodBill[0]?.total_price}</div>
-                 </div>
-                  </td>
-                </tr>
-              </tfoot>
+                  <tr>
+                    <td colSpan={4} className={`text-end `}>
+                      Total :
+                    </td>
+                    <td>
+                      <div className="flex ">
+                        <div>
+                          <BiRupee />
+                        </div>
+                        <div>{foodBill && foodBill[0]?.total_price}</div>
+                      </div>
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>
