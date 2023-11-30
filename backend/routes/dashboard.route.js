@@ -4,8 +4,8 @@ import { addDashboard, addDashboardTable, getDashboardInfo } from "../controller
 
 const router = Router();
 
-router.post("/add-dashboard/:user_id", checkToken, addDashboard);
-router.post("/add-dashboard-table/:user_id", checkToken, addDashboardTable);
+router.post("/add-dashboard/:user_id", addDashboard);
+router.post("/add-dashboard-table/:user_id", addDashboardTable);
 router.get("/get-dashboard-info/:user_id", checkToken, getDashboardInfo);
 
 export default router;
