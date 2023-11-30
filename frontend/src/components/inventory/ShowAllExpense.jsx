@@ -44,6 +44,10 @@ const ShowAllExpense = () => {
   const [editItemData, setEditItemData] = useState(null);
 
 
+  const [itemIndex, setItemIndex] = useState(null);
+
+
+
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   // console.log(user._id);
@@ -314,6 +318,7 @@ console.log(filteredExpenses?.docs)
                                   className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                                   onClick={() =>{
                                     setEditItemData(item);
+                                    setItemIndex(idx); 
                                     document
                                       .getElementById("my_modal_3")
                                       .showModal()
@@ -330,7 +335,7 @@ console.log(filteredExpenses?.docs)
                                       </button>
                                     </form>
                                
-                                    <EditExpenses data={editItemData} />
+                                    <EditExpenses allItems={resExpenses?.docs[0]?.items} index={itemIndex-1} data={editItemData} />
                                   </div>
                                 </dialog>
                               </td>
