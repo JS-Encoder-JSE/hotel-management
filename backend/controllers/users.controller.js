@@ -93,13 +93,6 @@ export const addUser = async (req, res) => {
       });
       // Save the new dashboard table to the database
       await newDashboardTable.save();
-      if (role === "manager") {
-        const newStaticSubDashData = new StaticSubDashData({
-          user_id: savedNewUser._id,
-          user_role: role,
-        });
-        await newStaticSubDashData.save();
-      }
     }
 
     // Respond with a success message or the created user object
