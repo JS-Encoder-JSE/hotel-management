@@ -77,7 +77,7 @@ export const addExpense = async (req, res) => {
       // Create a new expense instance
       const newExpense = new Expense({
         hotel_id,
-        date: formattedDate,
+        date: newDate,
         spendedfor,
         items,
         total_amount,
