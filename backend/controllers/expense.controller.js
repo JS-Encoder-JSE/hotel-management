@@ -159,6 +159,8 @@ export const addExpense = async (req, res) => {
           const newMonthlySubDashData = new MonthlySubDashData({
             user_id: userId,
             user_role: user.role,
+            month_name,
+            year,
             total_hotel_expenses: total_amount,
           });
           await newMonthlySubDashData.save();
@@ -167,6 +169,8 @@ export const addExpense = async (req, res) => {
           const newMonthlySubDashData = new MonthlySubDashData({
             user_id: userId,
             user_role: user.role,
+            month_name,
+            year,
             total_restaurant_expenses: total_amount,
           });
           await newMonthlySubDashData.save();

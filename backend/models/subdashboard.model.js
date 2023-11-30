@@ -146,13 +146,13 @@ const staticSchema = new mongoose.Schema(
 );
 
 // Pre-save middleware to set current date and year before saving
-monthlySchema.pre("save", function (next) {
-  const currentDate = new Date();
-  this.month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
-  this.year = currentDate.getFullYear().toString();
+// monthlySchema.pre("save", function (next) {
+//   const currentDate = new Date();
+//   this.month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
+//   this.year = currentDate.getFullYear().toString();
 
-  next();
-});
+//   next();
+// });
 
 // dailySchema.pre("save", function (next) {
 //   const currentDate = new Date();
