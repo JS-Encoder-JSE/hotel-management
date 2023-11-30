@@ -45,10 +45,6 @@ const PaymentSection = ({
       { method: "", amount: "", trx: "", date: "" },
     ]);
   };
-  console.log(
-    "pBill > data?.booking_info?.paid_amount && pBill < colAmount",
-    data?.paid_amount
-  );
   useEffect(() => {
     const totalCol = paymentList.reduce(
       (total, current) =>

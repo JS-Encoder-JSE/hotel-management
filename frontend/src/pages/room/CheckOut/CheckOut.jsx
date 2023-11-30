@@ -80,7 +80,7 @@ const CheckOut = () => {
         booking_ids: checkout?.data?.booking_info?.booking_ids,
         guestName: checkout?.data?.booking_info?.guestName,
         room_numbers,
-        payment_method: paymentList[0].method,
+        payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
         checked_in: checkout?.data?.room_bookings[0]?.from,
         checked_out: checkout?.data?.room_bookings[0]?.to,
         payable_amount: payableAmount,

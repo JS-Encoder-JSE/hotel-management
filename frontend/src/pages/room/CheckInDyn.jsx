@@ -21,7 +21,7 @@ import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
-import SuspendAndLockList from './../Admin/SuspendAndLockList';
+import SuspendAndLockList from "./../Admin/SuspendAndLockList";
 
 // form validation
 const validationSchema = yup.object({
@@ -44,7 +44,7 @@ const CheckInDyn = ({ data }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [updateBooking] = useUpdateBookingMutation();
 
-  console.log(data);
+  console.log({ data });
 
   // handle advanceAmoun
   const handleAmount = (e) => {
@@ -107,7 +107,7 @@ const CheckInDyn = ({ data }) => {
           ? data.paid_amount + obj.amount
           : data.paid_amount;
       const response = await updateBooking({
-        id: data._id,
+        id: data?.booking_ids[0],
         data: {
           paid_amount: paidAmount,
           doc_number: obj.doc_number,
@@ -117,8 +117,9 @@ const CheckInDyn = ({ data }) => {
           status: "CheckedIn",
           paymentMethod: obj.paymentMethod,
           transection_id: obj.transection_id,
+          total_unpaid_amount: data?.total_unpaid_amount - paidAmount,
           // total_unpaid_amount: data.amount_after_dis - paidAmount,
-          remark:"advancePaymentForCheckIn"
+          remark: "advancePaymentForCheckIn",
         },
       });
 
@@ -186,7 +187,7 @@ const CheckInDyn = ({ data }) => {
           Check In ({data?.guestName})
         </h3>
         <hr />
-     {/* <div className="mt-4">
+        {/* <div className="mt-4">
      <h1 className="mb-2"> Room Rent : <span className="font-semibold">{data?.rent_per_day}</span></h1>
       
       <h1> Paid Amount : <span className="font-semibold">{data?.paid_amount}</span> </h1>
@@ -277,7 +278,7 @@ const CheckInDyn = ({ data }) => {
           {formik.values.paymentMethod.length ? (
             <div className="flex flex-col gap-3">
               <input
-              onWheel={ event => event.currentTarget.blur() }
+                onWheel={(event) => event.currentTarget.blur()}
                 type="number"
                 placeholder="Advanced Amount"
                 name="amount"
@@ -302,12 +303,13 @@ const CheckInDyn = ({ data }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-               {formik.touched.transection_id &&
-            Boolean(formik.errors.transection_id) ? (
-              <small className="text-red-600">
-                {formik.touched.transection_id && formik.errors.transection_id}
-              </small>
-            ) : null}
+              {formik.touched.transection_id &&
+              Boolean(formik.errors.transection_id) ? (
+                <small className="text-red-600">
+                  {formik.touched.transection_id &&
+                    formik.errors.transection_id}
+                </small>
+              ) : null}
             </div>
           ) : (
             <></>
