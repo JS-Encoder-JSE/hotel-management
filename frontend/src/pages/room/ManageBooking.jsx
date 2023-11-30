@@ -16,7 +16,6 @@ const ManageBooking = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const formik = useFormik({
     initialValues: {
-      filter: "",
       search: "",
       // hotel_id: "",
     },
@@ -28,7 +27,7 @@ const ManageBooking = () => {
 
   const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
-    search: formik.values.search,
+    search: search,
     page: currentPage,
     filter: "Active",
   });
@@ -37,26 +36,30 @@ const ManageBooking = () => {
     if (e.key === "Enter" || e.keyCode === 13) {
       formik.handleSubmit();
     }
+    if (formik.values.search.length === 0) {
+      formik.handleSubmit();
+    }
   };
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
       <div>
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
-      <div className="flex justify-end" >
-      
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
+      <div className="flex justify-end">
         {/* filter by hotels  */}
         {/*<div className="flex items-center gap-2">*/}
         {/*  /!* <p>Please choose a hotel : </p> *!/*/}

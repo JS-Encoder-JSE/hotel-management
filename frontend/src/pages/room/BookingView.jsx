@@ -107,7 +107,7 @@ const BookingView = () => {
               <tr>
                 <th className={`text-start`}>Room No</th>
                 <td className={`w-4 text-center`}>:</td>
-                <td>{booking?.data?.room_ids?.map((i) => i.roomNumber)}</td>
+                <td>{booking?.data?.room_id?.roomNumber}</td>
               </tr>
               <tr>
                 <th className={`text-start`}>Number of Days</th>

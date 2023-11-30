@@ -87,7 +87,6 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                     <div className="flex items-center space-x-3">
                       <div>
                         <div className="font-bold">{item.guestName}</div>
-                        {console.log("item.....",item)}
                         
                       </div>
                     </div>

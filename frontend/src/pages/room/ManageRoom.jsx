@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 const ManageRoom = () => {
   const { user } = useSelector((store) => store.authSlice);
   const [keyword, setKeyword] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -21,10 +22,10 @@ const ManageRoom = () => {
     },
     onSubmit: (values) => {
       setKeyword(values.search);
+      setCurrentPage(0);
     },
   });
 
-  const [currentPage, setCurrentPage] = useState(0);
   const { isLoading, data: rooms } = useRoomsQuery({
     id: formik.values.hotel_id,
     cp: currentPage,
@@ -48,22 +49,23 @@ const ManageRoom = () => {
 
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl `}>
-       <div>
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
+      <div>
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
       <div className="flex justify-end">
-     
         {/* filter by hotels  */}
         {/*<div className="flex  items-center gap-2">*/}
         {/*  /!* <p className="">Please choose hotel : </p> *!/*/}
