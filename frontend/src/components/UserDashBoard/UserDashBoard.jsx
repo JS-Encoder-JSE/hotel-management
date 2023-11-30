@@ -206,13 +206,16 @@ const UserDashBoard = ({ managerId }) => {
     <>
       <div>
         <section
-          className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+          // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+          className="grid md:grid-cols-4 gap-4 mt-4"
+
         >
-          <div className="relative bg-white p-3  text-right rounded shadow hover:shadow-md duration-200 ">
-            <div className="absolute -top-[15px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
+          <div className="relative bg-white p-3  text-right rounded shadow hover:shadow-md duration-200  mb-4">
+            <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
               {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
             </div>
-            <h6 className="text-xs text-slate-400">
+            <h6 className="text-xs text-slate-400 ">
+             
               {userHotel ? "TODAY'S CHECK IN" : "TOTAL SELL"}
             </h6>
             <p className="text-2xl font-semibold mt-3">
@@ -244,11 +247,13 @@ const UserDashBoard = ({ managerId }) => {
             )}
           </div>
           {user?.role === "manager" || user?.role === "owner" ? (
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
+                
                 <BsClipboard2DataFill />
               </div>
               <h6 className="text-xs text-slate-400 uppercase">
+               
                 TODAY'S Booking
               </h6>
               <p className="text-2xl font-semibold mt-3">
@@ -268,12 +273,14 @@ const UserDashBoard = ({ managerId }) => {
             ""
           )}
           {/* Total Amount */}
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-5">
             <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
               {/* <FaDollarSign /> */}
               <GiCoins className={`db-currency text-white`} />
             </div>
-            <h6 className="text-xs text-slate-400 ">TOTAL AMOUNT</h6>
+            <h6 className="text-xs text-slate-400 ">
+             
+              TOTAL AMOUNT</h6>
             <p className="text-2xl font-semibold mt-4">
               {Math.floor(dashboardData?.permanent_datas?.total_amount || 0)}
             </p>
@@ -295,11 +302,12 @@ const UserDashBoard = ({ managerId }) => {
           ) : (
             ""
           )}
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200  ">
-            <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
+          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200  mb-5">
+            <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md ">
               {userHotel ? <FaRegCalendarAlt /> : <MdAutorenew />}
             </div>
             <h6 className="text-xs text-slate-400 ">
+              
               TOTAL {userHotel ? "CHECK IN" : "RENEW"}
             </h6>
             <p className="text-2xl font-semibold mt-4">
