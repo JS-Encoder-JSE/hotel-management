@@ -1,7 +1,10 @@
 import { useFormik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import * as yup from "yup";
-import { useUpdateBookingMutation } from "../../redux/room/roomAPI";
+import {
+  useUpdateBookingInfoMutation,
+  useUpdateBookingMutation,
+} from "../../redux/room/roomAPI";
 import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
@@ -48,8 +51,8 @@ const validationSchema = yup.object({
   //   else return schema;
   // }),
 
-  from: yup.string().required("From Date is required"),
-  to: yup.string().required("To Date is required"),
+  // from: yup.string().required("From Date is required"),
+  // to: yup.string().required("To Date is required"),
 });
 
 const EditBooking = ({ data, bookingId }) => {
@@ -57,8 +60,8 @@ const EditBooking = ({ data, bookingId }) => {
   console.log("data", data);
   // current date for from
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [updateBookingInfo, { isLoading }] = useUpdateBookingInfoMutation();
 
-  const [updateBooking, { isLoading }] = useUpdateBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
     initialValues: {
@@ -72,14 +75,11 @@ const EditBooking = ({ data, bookingId }) => {
       children: "",
       // paymentMethod: "",
       // discount: "",
-      from: currentDate,
-      to: "",
       nationality: "",
     },
 
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      console.log("values", values);
       const obj = {
         guestName: values.guestName,
         address: values.address,
@@ -88,8 +88,9 @@ const EditBooking = ({ data, bookingId }) => {
         adult: Number(values.adult),
         children: Number(values.children),
       };
+      console.log({ obj });
       try {
-        const response = await updateBooking({
+        const response = await updateBookingInfo({
           id: id,
           data: obj,
         });
@@ -316,7 +317,7 @@ const EditBooking = ({ data, bookingId }) => {
           </div> */}
           {/* from data */}
           {/* From Date */}
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             <DatePicker
               dateFormat="dd/MM/yyyy"
               name="from"
@@ -331,10 +332,10 @@ const EditBooking = ({ data, bookingId }) => {
                 {formik.touched.from && formik.errors.from}
               </small>
             ) : null}
-          </div>
+          </div> */}
 
           {/* Billing To box */}
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             <DatePicker
               dateFormat="dd/MM/yyyy"
               name="to"
@@ -349,7 +350,7 @@ const EditBooking = ({ data, bookingId }) => {
                 {formik.touched.to && formik.errors.to}
               </small>
             ) : null}
-          </div>
+          </div> */}
 
           {/* Nationality box */}
           <div className="flex flex-col gap-3">

@@ -91,6 +91,16 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["addRestaurantExpenses"],
     }),
+    updateBookingInfo: build.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `bookings/update-booking-info/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["booking"],
+    }),
     getExpenses: build.query({
       query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit }) =>
         `expenses/get-expenses?page=${cp}${limit ? `&limit=${limit}` : ""}${
@@ -134,16 +144,15 @@ const roomAPI = baseAPI.injectEndpoints({
       query: (id) => {
         return `bookings/get-booking-details/${id}`;
       },
-      providesTags: ["bookingInfo"],
+      providesTags: ["bookingInfo", "booking"],
     }),
 
     getRoomPostedBills: build.query({
       query: (roomId) => {
-        return `rooms/get-room-posted-bills/${roomId}`
+        return `rooms/get-room-posted-bills/${roomId}`;
       },
-      providesTags: ["roomPostedBill"]
+      providesTags: ["roomPostedBill"],
     }),
-
 
     getHotelById: build.query({
       query: (id) => {
@@ -163,17 +172,17 @@ const roomAPI = baseAPI.injectEndpoints({
       invalidatesTags: ["booking"],
     }),
 
-// update Expenses
-  updateExpense:build.mutation({
-    query:({id,data})=>{
-      return {
-        url: `/expenses/update-expense/${id}`,
-        method: 'PATCH',
-        body:data,
-      }
-    },
-    invalidatesTags:["expenses"]
-  }),
+    // update Expenses
+    updateExpense: build.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/expenses/update-expense/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["expenses"],
+    }),
 
     getCOInfo: build.query({
       query: (id) => `bookings/get-checkoutinfo-by-room/${id}`,
@@ -227,5 +236,6 @@ export const {
   useGetExpensesQuery,
   useGetExpenseByIdQuery,
   useCancelBookingMutation,
-  useGetCheckoutMutation
+  useGetCheckoutMutation,
+  useUpdateBookingInfoMutation,
 } = roomAPI;
