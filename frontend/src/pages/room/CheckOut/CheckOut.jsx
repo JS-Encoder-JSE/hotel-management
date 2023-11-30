@@ -118,8 +118,10 @@ const CheckOut = () => {
       label: `${room.roomNumber} - ${room.category}`,
     }));
   useEffect(() => {
-    getCheckout({ room_ids: roomFromQuery });
-    setShowRooms(true);
+    if (roomFromQuery?.length) {
+      getCheckout({ room_ids: roomFromQuery });
+      setShowRooms(true);
+    }
   }, [roomFromQuery]);
 
   // set subtotal amount

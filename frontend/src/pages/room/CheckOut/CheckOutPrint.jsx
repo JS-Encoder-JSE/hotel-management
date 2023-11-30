@@ -29,6 +29,7 @@ const CheckOutPrint = ({
   hotelInfo,
   isHotelSuccess,
 }) => {
+  console.log('data ----',data);
   return (
     <div>
       <div>
@@ -45,7 +46,7 @@ const CheckOutPrint = ({
             hotelInfo={hotelInfo}
             isHotelSuccess={isHotelSuccess}
           />
-          <CustomerInfoPrint data={data} />
+          {/* <CustomerInfoPrint data={data} /> */}
         </div>
       )}
       <RoomDetailsSection data={data} />

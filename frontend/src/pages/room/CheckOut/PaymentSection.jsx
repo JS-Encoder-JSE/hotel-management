@@ -25,7 +25,6 @@ const PaymentSection = ({
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
-
   const handleChange = (e, index) => {
     const { name, value } = e.target;
 
@@ -39,7 +38,6 @@ const PaymentSection = ({
     list.splice(index, 1);
     setPaymentList(list);
   };
-
   const handleAdd = () => {
     setPaymentList([
       ...paymentList,
@@ -59,7 +57,7 @@ const PaymentSection = ({
 
   // for printing
   const componentRef = useRef();
-
+  console.log("---data:", data);
   return (
     <section>
       <div className="grid lg:grid-cols-2 gap-5">
@@ -88,11 +86,15 @@ const PaymentSection = ({
             </div>
             <div className="col-span-2 space-y-3">
               <p>
-                {pBill > colAmount ? Math.abs(Math.ceil(pBill - colAmount)) : 0}
+                {pBill > colAmount || pBill > data?.booking_info?.paid_amount
+                  ? Math.abs(Math.ceil(pBill - colAmount))
+                  : 0}
               </p>
               <p>{Math.ceil(colAmount)}</p>
               <p>
-                {pBill < colAmount ? Math.abs(Math.ceil(pBill - colAmount)) : 0}
+                {pBill > data?.booking_info?.paid_amount && pBill < colAmount
+                  ? Math.abs(Math.ceil(pBill - colAmount))
+                  : 0}
               </p>
             </div>
           </div>
@@ -156,7 +158,11 @@ const PaymentSection = ({
           type={`button`}
           onClick={() => formik.handleSubmit()}
           className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
-            pBill.toFixed(2) > colAmount.toFixed(2) ? "btn-disabled" : ""
+            data?.paid_amount >= pBill
+              ? ""
+              : pBill > colAmount
+              ? "btn-disabled"
+              : ""
           }`}
         >
           Checkout

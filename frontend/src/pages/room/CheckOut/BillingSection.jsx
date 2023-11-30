@@ -14,13 +14,13 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
 const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
+  console.log("totalBilling", totalBilling);
   const [discount, setDiscount] = useState(false);
   const [discountAmt, setDiscountAmt] = useState(0);
   const [breakAmt, setBreakAmt] = useState(0);
   const [billing, setBilling] = useState([{ amount: "" }, { amount: "" }]);
-
+  console.log({ breakAmt });
   const [poolBill, setPollBill] = useState(0);
-  const [barBill, setBarBill] = useState(0);
   const [foodBill, setFoodBill] = useState(0);
   const [gymBill, setGymBill] = useState(0);
   // update Subtotal amount
@@ -31,14 +31,13 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
 
   const handleDiscountChange = (val) => {
     const newValue = Math.min(Math.max(val, 0), 100);
-    const amount =
-      (data?.booking_info?.[0]?.total_unpaid_amount * newValue) / 100;
+    const amount = (data?.booking_info?.total_unpaid_amount * newValue) / 100;
 
-      setDiscountAmt(amount);
-      dispatch(setExtraDiscount(val))
-    };
-    // discount ammount
-    dispatch(updateDiscountOffer(Math.floor(discountAmt)))
+    setDiscountAmt(amount);
+    dispatch(setExtraDiscount(val));
+  };
+  // discount ammount
+  dispatch(updateDiscountOffer(Math.ceil(discountAmt)));
 
   const handleAmountChange = (idx, val) => {
     const arr = [...billing];
@@ -49,7 +48,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
 
   const handleTaxChange = (idx, val) => {
     const arr = [...billing];
-    const amount = (data?.booking_info?.[0]?.total_unpaid_amount * val) / 100;
+    const amount = (data?.booking_info?.total_unpaid_amount * val) / 100;
 
     arr.splice(idx, 1, { amount });
     setBilling(arr);
@@ -82,12 +81,6 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
           0
         )
       );
-      setBarBill(
-        data?.bar_bills?.reduce(
-          (total, current) => total + current?.unpaid_amount,
-          0
-        )
-      );
       setGymBill(
         data?.gym_bills?.reduce(
           (total, current) => total + current?.unpaid_amount,
@@ -100,26 +93,23 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   useEffect(() => {
     const totalRoomPostedBill = poolBill + foodBill + gymBill;
     dispatch(setRoomPostedBill(totalRoomPostedBill));
-  }, [poolBill, foodBill, gymBill, data]);
-  useEffect(() => {
     if (data) {
-      const total =
-        poolBill +
-        foodBill +
-        barBill +
-        gymBill +
-        (data?.booking_info?.[0]?.total_unpaid_amount +
-          totalBilling -
-          (discount ? discountAmt : 0) +
-          breakAmt);
-
-      setPBill(total);
+      const total = Math.ceil(
+        data?.booking_info?.total_rent_after_dis +
+          poolBill +
+          gymBill +
+          foodBill +
+          totalBilling +
+          breakAmt -
+          (discount ? discountAmt : 0) -
+          data?.booking_info?.paid_amount
+      );
+      setPBill(Math.ceil(total));
     }
   }, [
     data,
     poolBill,
     foodBill,
-    barBill,
     gymBill,
     totalBilling,
     discount,
@@ -128,17 +118,30 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   ]);
 
   useEffect(() => {
-    const total = Math.ceil(
-      data?.booking_info?.[0]?.total_unpaid_amount +
-        totalBilling -
-        (discount ? discountAmt : 0) +
-        breakAmt +
-        poolBill +
-        gymBill +
-        foodBill +
-        barBill
-    );
-    dispatch(setGrandTotal(total.toFixed(2)));
+    const total =
+      data?.booking_info?.paid_amount >=
+      Math.ceil(
+        data?.booking_info?.total_rent_after_dis +
+          poolBill +
+          gymBill +
+          foodBill +
+          totalBilling +
+          breakAmt -
+          (discount ? discountAmt : 0) -
+          data?.booking_info?.paid_amount
+      )
+        ? 0
+        : Math.ceil(
+            data?.booking_info?.total_rent_after_dis +
+              poolBill +
+              gymBill +
+              foodBill +
+              totalBilling +
+              breakAmt -
+              (discount ? discountAmt : 0) -
+              data?.booking_info?.paid_amount
+          );
+    dispatch(setGrandTotal(total));
   }, [
     data,
     totalBilling,
@@ -148,7 +151,6 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     poolBill,
     gymBill,
     foodBill,
-    barBill,
   ]);
 
   return (
@@ -161,7 +163,12 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
             <tr>
               <td>Total Unpaid Amount</td>
               <td className="align-top pl-2 pb-2">
-                {data?.booking_info?.[0]?.total_unpaid_amount.toFixed(2)}
+                {Math.ceil(
+                  data?.booking_info?.total_rent_after_dis +
+                    poolBill +
+                    gymBill +
+                    foodBill
+                )}
               </td>
             </tr>
             <tr>
@@ -169,7 +176,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 <span>Discount (Max-100%)</span>
                 <div className="grid grid-cols-2 mb-1">
                   <input
-                  onWheel={ event => event.currentTarget.blur() }
+                    onWheel={(event) => event.currentTarget.blur()}
                     disabled={!discount}
                     type="number"
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500 ${
@@ -198,7 +205,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
             <tr>
               <td>Discount Amount</td>
               <td className="align-top pl-2 pb-2">
-                {discount ? Math.floor(discountAmt) : 0}
+                {discount ? Math.ceil(discountAmt) : 0}
               </td>
             </tr>
             <tr>
@@ -207,7 +214,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 <div className={`flex gap-1 items-center`}>
                   <span>$</span>
                   <input
-                  onWheel={ event => event.currentTarget.blur() }
+                    onWheel={(event) => event.currentTarget.blur()}
                     type="number"
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
                     onChange={(e) => handleAmountChange(0, +e.target.value)}
@@ -221,7 +228,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 <div className={`flex gap-1 items-center`}>
                   <span>%</span>
                   <input
-                  onWheel={ event => event.currentTarget.blur() }
+                    onWheel={(event) => event.currentTarget.blur()}
                     type="number"
                     className={`outline-none border rounded mr-1 pl-2 text-slate-500`}
                     onChange={(e) => handleTaxChange(1, +e.target.value)}
@@ -233,7 +240,10 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
               <td>Payable Amount</td>
               <td className="align-top pl-2 pb-2">
                 {Math.ceil(
-                  data?.booking_info?.[0]?.total_unpaid_amount +
+                  data?.booking_info?.total_rent_after_dis +
+                    poolBill +
+                    gymBill +
+                    foodBill +
                     totalBilling -
                     (discount ? discountAmt : 0)
                 )}
@@ -252,7 +262,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
               <td className="align-top">Additional Charges</td>
               <td className="pl-5">
                 <input
-                onWheel={ event => event.currentTarget.blur() }
+                  onWheel={(event) => event.currentTarget.blur()}
                   type="number"
                   className="mb-3 border rounded-md p-2 outline-none"
                   onChange={(e) => {
@@ -276,28 +286,44 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
         <table className="text-sm font-semibold m-5">
           <tbody className="flex flex-col gap-3">
             <tr>
-              <td>Net Payable Amount</td>
+              <td>Payable Amount</td>
               <td>
                 {Math.ceil(
-                  data?.booking_info?.[0]?.total_unpaid_amount +
-                    totalBilling -
+                  data?.booking_info?.total_rent_after_dis +
+                    poolBill +
+                    gymBill +
+                    foodBill +
+                    totalBilling +
+                    breakAmt -
                     (discount ? discountAmt : 0)
                 )}
               </td>
             </tr>
             <tr>
-              <td>Payable Amount</td>
+              <td>Net Payable Amount</td>
               <td>
-                {Math.ceil(
-                  data?.booking_info?.[0]?.total_unpaid_amount +
-                    totalBilling -
-                    (discount ? discountAmt : 0) +
-                    breakAmt +
+                {data?.booking_info?.paid_amount >=
+                Math.ceil(
+                  data?.booking_info?.total_rent_after_dis +
                     poolBill +
                     gymBill +
                     foodBill +
-                    barBill
-                )}
+                    totalBilling +
+                    breakAmt -
+                    (discount ? discountAmt : 0) -
+                    data?.booking_info?.paid_amount
+                )
+                  ? 0
+                  : Math.ceil(
+                      data?.booking_info?.total_rent_after_dis +
+                        poolBill +
+                        gymBill +
+                        foodBill +
+                        totalBilling +
+                        breakAmt -
+                        (discount ? discountAmt : 0) -
+                        data?.booking_info?.paid_amount
+                    )}
               </td>
             </tr>
           </tbody>
@@ -322,10 +348,6 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
             </p>
             <p>{foodBill}</p>
           </div>
-          {/* <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight border-b border-black/20 pb-2 px-2">
-            <p className="capitalize whitespace-nowrap col-span-2">Bar</p>
-            <p>{barBill}</p>
-          </div> */}
           <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight pb-2 px-2">
             <p className="capitalize whitespace-nowrap col-span-2">Gym</p>
             <p>{gymBill}</p>
