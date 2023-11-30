@@ -74,9 +74,9 @@ const RestaurantsAnalytics = () => {
 
       <div className="space-y-20">
         {/* Select Room Section */}
-        <section className="max-w-full mx-auto flex gap-5 items-center">
-          <p className="whitespace-nowrap">Hotel Branch Name :</p>
-          <div className="w-[353px] flex gap-3">
+        <section className="max-w-full mx-auto flex gap-5 items-center justify-center">
+          <p className=" ">Hotel Branch Name :</p>
+          <div className="flex flex-col md:flex-row gap-3">
             <Select
               placeholder="Search with hotel branch name"
               defaultValue={selectedHotel}

@@ -38,9 +38,9 @@ const ManageInventory = () => {
   };
 
   return (
-    <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
+    <div className={`space-y-10 bg-white p-5  rounded-2xl `}>
       <div
-        className={`flex flex-col-reverse sm:flex-row gap-3 sm:justify-between`}
+        className={`flex flex-col md:flex-row sm:justify-between`}
       >
         <div className={`flex space-x-1.5 gap-2  `}>
         <div className="mb-7">
@@ -99,7 +99,7 @@ const ManageInventory = () => {
           >
             Assign Items
           </button>
-          <div className={`relative sm:min-w-[10rem]`}>
+          <div className={`relative sm:min-w-[10rem `}>
             <input
               type="text"
               placeholder="Search by name..."

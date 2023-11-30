@@ -207,7 +207,7 @@ const AddSubAdmin = () => {
         <div className="max-auto pb-5">
           <form
             autoComplete="off"
-            className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
+            className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto p-3"
             onSubmit={formik.handleSubmit}
           >
             {selectedImages.length ? (

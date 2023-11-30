@@ -40,15 +40,11 @@ export const addBooking = async (req, res) => {
       user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const date = currentDate.toISOString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
-
-    const Year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const day = currentDate.getDate().toString().padStart(2, "0");
-
-    const formattedDate = `${day}-${month}-${Year}`;
 
     let total_rent = 0;
 
@@ -159,7 +155,6 @@ export const addBooking = async (req, res) => {
         return booking._id; // Return the booking id
       })
     );
-    console.log(bookings);
     const total_rent_after_dis = total_rent - discount;
     const newBookingInfo = new BookingInfo({
       room_ids,
@@ -249,7 +244,7 @@ export const addBooking = async (req, res) => {
       }
       const managerCheckInfo = await CheckInfo.findOne({
         user_id: userId,
-        date: formattedDate,
+        date,
       });
       if (managerCheckInfo) {
         managerCheckInfo.today_checkin += 1;
@@ -264,7 +259,7 @@ export const addBooking = async (req, res) => {
       }
       const ownerCheckInfo = await CheckInfo.findOne({
         user_id: user.parent_id,
-        date: formattedDate,
+        date,
       });
 
       if (ownerCheckInfo) {
@@ -335,7 +330,7 @@ export const addBooking = async (req, res) => {
       }
       const managerCheckInfo = await CheckInfo.findOne({
         user_id: userId,
-        date: formattedDate,
+        date,
       });
       if (managerCheckInfo) {
         managerCheckInfo.today_booking += 1;
@@ -351,7 +346,7 @@ export const addBooking = async (req, res) => {
       console.log("aise");
       const ownerCheckInfo = await CheckInfo.findOne({
         user_id: user.parent_id,
-        date: formattedDate,
+        date,
       });
 
       if (ownerCheckInfo) {
@@ -406,8 +401,6 @@ export const cancelBooking = async (req, res) => {
   try {
     const bookingId = req.params.booking_id; // Assuming you pass bookingId as a route parameter
 
-    // Check if the user has the authority to cancel the booking (you might want to implement your own logic for this)
-
     // Fetch the booking to be canceled
     const booking = await Booking.findById(bookingId);
     if (!booking) {
@@ -418,6 +411,10 @@ export const cancelBooking = async (req, res) => {
     }
 
     const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
+
+    // Remove the canceled room_id from bookingInfo.room_ids
+    bookingInfo.room_ids.pull(booking.room_id);
+
     const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
     const new_amount_after_dis = new_total_rent - bookingInfo.discount;
 
@@ -427,6 +424,7 @@ export const cancelBooking = async (req, res) => {
       new_amount_after_dis - bookingInfo.paid_amount;
 
     await bookingInfo.save();
+
     // Check if the booking is already canceled
     if (booking.status === "Canceled") {
       return res.status(400).json({
@@ -553,7 +551,10 @@ export const getBookingDetailsById = async (req, res) => {
   try {
     const bookingId = req.params.booking_id;
 
-    const booking = await Booking.findById(bookingId);
+    const booking = await Booking.findById(bookingId).populate(
+      "room_id",
+      "roomNumber floorNumber"
+    );
     if (!booking) {
       return res.status(404).json({
         success: false,
@@ -582,15 +583,11 @@ export const updateBooking = async (req, res) => {
     const updateData = req.body;
     const userId = req.user.userId;
     const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const date = currentDate.toISOString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
-
-    const Year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const day = currentDate.getDate().toString().padStart(2, "0");
-
-    const formattedDate = `${day}-${month}-${Year}`;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -612,15 +609,12 @@ export const updateBooking = async (req, res) => {
       updateData.status === "CheckedOut" ||
       updateData.status === "Canceled"
     ) {
-      const roomIds = updatedBooking.room_ids;
+      const roomId = updatedBooking.room_id;
 
       // Update room status based on the updated status
       if (updateData.status === "CheckedIn") {
         const roomStatus = "CheckedIn";
-        await Room.updateMany(
-          { _id: { $in: roomIds } },
-          { $set: { status: roomStatus } }
-        );
+        await Room.updateOne({ _id: roomId }, { $set: { status: roomStatus } });
         const newPaidAmount =
           updateData.paid_amount - existingBooking.paid_amount;
         const ownerDashboard = await Dashboard.findOne({
@@ -683,7 +677,7 @@ export const updateBooking = async (req, res) => {
         }
         const managerCheckInfo = await CheckInfo.findOne({
           user_id: userId,
-          date: formattedDate,
+          date,
         });
 
         if (managerCheckInfo) {
@@ -700,7 +694,7 @@ export const updateBooking = async (req, res) => {
         }
         const ownerCheckInfo = await CheckInfo.findOne({
           user_id: user.parent_id,
-          date: formattedDate,
+          date,
         });
 
         if (ownerCheckInfo) {
@@ -717,8 +711,8 @@ export const updateBooking = async (req, res) => {
         }
       }
       if (updateData.status === "Canceled") {
-        await Room.updateMany(
-          { _id: { $in: roomIds } },
+        await Room.updateOne(
+          { _id: roomId },
           { $set: { status: "Available" } }
         );
         const ownerDashboard = await Dashboard.findOne({
@@ -762,7 +756,7 @@ export const updateBooking = async (req, res) => {
         }
         const managerCheckInfo = await CheckInfo.findOne({
           user_id: userId,
-          date: formattedDate,
+          date,
         });
 
         if (managerCheckInfo) {
@@ -779,7 +773,7 @@ export const updateBooking = async (req, res) => {
         }
         const ownerCheckInfo = await CheckInfo.findOne({
           user_id: user.parent_id,
-          date: formattedDate,
+          date,
         });
 
         if (ownerCheckInfo) {
@@ -804,6 +798,44 @@ export const updateBooking = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+export const updateBookingInfo = async (req, res) => {
+  try {
+    const { booking_id } = req.params;
+    const updateData = req.body;
+
+    // Find the BookingInfo document by ID
+    const bookingInfo = await BookingInfo.findOne({
+      booking_ids: booking_id,
+    });
+
+    if (!bookingInfo) {
+      return res.status(404).json({
+        success: false,
+        message: "BookingInfo not found",
+      });
+    }
+
+    // Update the BookingInfo document with the provided data
+    Object.assign(bookingInfo, updateData);
+
+    // Save the updated BookingInfo document
+    await bookingInfo.save();
+
+    res.status(200).json({
+      success: true,
+      message: "BookingInfo updated successfully",
+      updatedBookingInfo: bookingInfo,
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -879,4 +911,3 @@ export const getActiveBookingByRoomId = async (req, res) => {
     });
   }
 };
-

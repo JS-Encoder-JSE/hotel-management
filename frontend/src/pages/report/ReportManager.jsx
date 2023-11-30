@@ -89,9 +89,9 @@ const ReportManager = () => {
 
 
   return (
-    <div className={`px-5 space-y-5`}>
-      <div className={`bg-white px-10 py-5 rounded`}>
-        <div className={`flex flex-wrap gap-1.5 justify-between `}>
+    <div className={` space-y-5`}>
+      <div className={`bg-white p-5 py-5 rounded `}>
+        <div className={`flex flex-wrap gap-1.5 justify-between flex-col md:flex-row `}>
         <div className="mb-7">
               <Link to={`/dashboard `}>
                 <button
@@ -151,7 +151,7 @@ const ReportManager = () => {
               <span>entries</span>
             </div>
           </div>
-          <div className={`flex gap-3`}>
+          <div className={`flex flex-col md:flex-row gap-4`}>
             <DatePicker
               autoComplete={`off`}
               dateFormat="dd/MM/yyyy"

@@ -17,7 +17,10 @@ import { BiRupee } from "react-icons/bi";
 
 
 
-const GymBills = () => {
+const GymBills = ({GymBill}) => {
+
+console.log(GymBill,"gymBill")
+
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
@@ -39,6 +42,8 @@ const GymBills = () => {
       formik.handleSubmit();
     }
   };
+
+  const totalGymBill = GymBill?.reduce((total, bill) => total + (bill.price || 0), 0);
 
   return (
     <div className={`pr-2 space-y-5 mt-20`}>
@@ -63,16 +68,16 @@ const GymBills = () => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {GymBill?.map((gym, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>29-11-23</td>
-                      <td>1000</td>
-                      <td >250</td>  
-                      <td >750</td>  
+                      <td>{new Date(gym?.createdAt).toLocaleDateString()}</td>
+                      <td>{gym?.price}</td>
+                      <td >{gym?.paid_amount}</td>  
+                      <td >{gym?.unpaid_amount}</td>  
                     </tr>
                   );
                 })}
@@ -85,7 +90,7 @@ const GymBills = () => {
                   <td>
                  <div className="flex">
                   <div><BiRupee/></div>
-                  <div>25000</div>
+                  <div>{totalGymBill}</div>
                  </div>
                   </td>
                 </tr>

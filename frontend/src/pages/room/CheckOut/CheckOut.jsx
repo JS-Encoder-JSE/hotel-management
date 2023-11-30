@@ -149,8 +149,8 @@ const CheckOut = () => {
           </button>
         </Link>
       </div>
-      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center">
-        <div className="flex flex-col gap-3">
+      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row">
           <Select
             placeholder="Select room"
             name={`roomNumber`}

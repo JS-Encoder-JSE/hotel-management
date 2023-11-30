@@ -8,7 +8,18 @@ import { TbCalendarDue } from "react-icons/tb";
 import { MdOutlineAccountBalance } from "react-icons/md";
 import { LuWallet } from "react-icons/lu";
 
-const CheckinCardDetails = () => {
+const CheckinCardDetails = ({data}) => {
+
+
+  let totalDueAmount;
+
+if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined) {
+  totalDueAmount = Math.max(data.total_payable_amount - data.paid_amount, 0);
+}
+
+console.log("Total Due Amount:", totalDueAmount);
+
+  console.log(data,"from chekincardDetails")
   return (
     <div>
       <div
@@ -27,7 +38,7 @@ const CheckinCardDetails = () => {
                 <BiRupee />
               </div>
               <div>
-                <span>650</span>
+                <span>{data?.paid_amount}</span>
               </div>
             </div>
           </p>
@@ -45,7 +56,7 @@ const CheckinCardDetails = () => {
                   <BiRupee />
                 </div>
                 <div>
-                  <span>750</span>
+                  <span>{Math.ceil(data?.total_payable_amount)}</span>
                 </div>
               </div>
             </p>
@@ -63,7 +74,7 @@ const CheckinCardDetails = () => {
                 <BiRupee />
               </div>
               <div>
-                <span>850</span>
+                <span>{data?.paid_amount<data?.total_payable_amount?  (data?.total_payable_amount - data?.paid_amount).toFixed(2) :0}</span>
               </div>
             </div>
           </p>
@@ -80,7 +91,7 @@ const CheckinCardDetails = () => {
                 <BiRupee />
               </div>
               <div>
-                <span>950</span>
+              <span>{data?.paid_amount>data?.total_payable_amount? (data?.paid_amount - data?.total_payable_amount).toFixed(2):0}</span>
               </div>
             </div>
           </p>

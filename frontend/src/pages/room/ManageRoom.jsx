@@ -47,9 +47,8 @@ const ManageRoom = () => {
   }, [formik.values.filter]);
 
   return (
-    <div className={`space-y-10 bg-white p-16 rounded-2xl mx-10`}>
-      <div className="flex justify-between">
-      <div>
+    <div className={`space-y-10 bg-white p-4 rounded-2xl `}>
+       <div>
               <Link to={`/dashboard `}>
                 <button
                   type="button"
@@ -63,6 +62,8 @@ const ManageRoom = () => {
                 </button>
               </Link>
             </div>
+      <div className="flex justify-end">
+     
         {/* filter by hotels  */}
         {/*<div className="flex  items-center gap-2">*/}
         {/*  /!* <p className="">Please choose hotel : </p> *!/*/}

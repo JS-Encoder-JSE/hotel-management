@@ -110,11 +110,8 @@ const AdminOwnerList = ({ title }) => {
 
   return (
     <div>
-      <div className={`space-y-8 bg-white p-10 rounded-2xl`}>
-        {title && <h1 className="text-center text-2xl">{title}</h1>}
-      
-        <div className={`flex justify-between gap-4`}>
-        <div>
+      <div className={`space-y-8 bg-white p-4 rounded-2xl`}>
+      <div>
               <Link to={`/dashboard `}>
                 <button
                   type="button"
@@ -128,7 +125,11 @@ const AdminOwnerList = ({ title }) => {
                 </button>
               </Link>
             </div>
-         <div className={`flex gap-5`}>
+        {title && <h1 className="text-center text-2xl">{title}</h1>}
+      
+        <div className={`flex justify-end gap-4`}>
+      
+         <div className={`flex justify-end flex-col sm:flex-row gap-5`}>
          <div>
             <select
               name="filter"

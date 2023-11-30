@@ -109,7 +109,7 @@ const Header = ({
           </label>
 
           {/* time setUp */}
-          <div className="inline-flex justify-center border me-3 p-3 w-52">
+          <div className=" justify-center border me-3 p-3 w-52  hidden md:inline-flex">
             <span className="text-2xl">{time.toLocaleTimeString()}</span>
           </div>
           {/* time setUp */}

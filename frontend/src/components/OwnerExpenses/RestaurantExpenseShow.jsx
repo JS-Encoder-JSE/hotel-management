@@ -154,11 +154,11 @@ const RestaurantExpenseShow = ({ hotelId }) => {
   }, 0);
 
   return (
-    <div className={`px-5 space-y-5`}>
+    <div className={` space-y-5`}>
       {/* 2nd Commit */}
 
       {/* {RestaurantExpenses && filteredExpenses &&  */}
-      <div className={`bg-white px-10 py-5 rounded`}>
+      <div className={`bg-white  p-4 rounded`}>
         {/* <div className="mb-10">
           <Link to={`/dashboard `}>
             <button
@@ -385,7 +385,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
             <span>entries</span>
           </div>
         </div>
-        <div className={`flex gap-3 `}>
+        <div className={`flex flex-col md:flex-row gap-3 `}>
           <DatePicker
             autoComplete={`off`}
             dateFormat="dd/MM/yyyy"

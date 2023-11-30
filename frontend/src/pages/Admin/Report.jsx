@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
@@ -135,10 +135,26 @@ const Report = () => {
   };
 
   return (
-    <div className={`px-5 space-y-5`}>
-      <div className={`bg-white px-10 py-5 rounded`}>
+    <div className={`space-y-5`}>
+      <div className={`bg-white p-4 rounded`}>
+      <div>
+            <Link to={`/dashboard `}>
+              <button
+                type="button"
+                class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              >
+                <dfn>
+                  <abbr title="Back">
+                    <FaArrowLeft />
+                  </abbr>
+                </dfn>
+
+                <span className="tracking-wider font-semibold text-[1rem]"></span>
+              </button>
+            </Link>
+          </div>
         <div className={`flex flex-wrap gap-1.5 justify-between`}>
-          <h3 className={`text-xl font-semibold`}>All Report</h3>
+          <h3 className={`text-xl font-semibold mb-3 mt-3 `}>All Report</h3>
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>
               <button
@@ -167,7 +183,7 @@ const Report = () => {
         </div>
         <hr className={`my-5`} />
         <div className={`flex flex-col gap-5`}>
-          <div className={`flex justify-between`}>
+          <div    className={`flex flex-col md:flex-row gap-3`}>
             <div className={`space-x-1.5`}>
               <span>Show</span>
               <select
@@ -200,7 +216,7 @@ const Report = () => {
               </select>
             </div>
           </div>
-          <div className={`flex gap-3`}>
+          <div className={`flex flex-col md:flex-row gap-3`}>
             <DatePicker
               autoComplete={`off`}
               dateFormat="dd/MM/yyyy"

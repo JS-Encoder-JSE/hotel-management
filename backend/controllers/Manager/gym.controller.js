@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import GymBills from "../../models/Manager/gym.model.js";
 import Room from "../../models/Manager/room.model.js";
 import User from "../../models/user.model.js";
+import { BookingInfo } from "../../models/Manager/booking.model.js";
 
 export const addGymBill = async (req, res) => {
   try {
@@ -19,7 +20,13 @@ export const addGymBill = async (req, res) => {
     } else if (paid_amount > 0) {
       status = "Partial";
     }
-
+    if (room_id) {
+      const bookingInfo = await BookingInfo.findOne({ room_ids: room_id });
+      bookingInfo.total_posted_bills += unpaid_amount;
+      bookingInfo.total_payable_amount += unpaid_amount;
+      bookingInfo.total_unpaid_amount += unpaid_amount;
+      await bookingInfo.save();
+    }
     const newGymBill = new GymBills({
       name,
       hotel_id: hotel_id,
