@@ -15,7 +15,7 @@ import DatePicker from "react-datepicker";
 
 import { useGetExpensesQuery, useGetHotelByManagerIdQuery } from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
-import { fromDateIsoConverter, getISOStringDate, getformatDateTime } from "../../utils/utils";
+import { fromDateIsoConverter, fromDateIsoConverterForAddExpenses, getISOStringDate, getformatDateTime } from "../../utils/utils";
 import EditExpenses from "../../components/inventory/EditExpenses";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CreateReport from "../../components/pdf/CreateReport";
@@ -93,8 +93,8 @@ const {
      
       setSearchParams((p) => ({
         ...p,
-        toDate: getISOStringDate(values.endDate),
-        fromDate: getISOStringDate(values.startDate),
+        toDate: fromDateIsoConverterForAddExpenses(values.endDate),
+        fromDate: fromDateIsoConverterForAddExpenses(values.startDate),
       }));
     },
     onReset: (values) => {
@@ -104,7 +104,7 @@ const {
   });
   const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
     cp: 1,
-    fromDate:fromDateIsoConverter(new Date()),
+    fromDate:fromDateIsoConverterForAddExpenses(new Date()),
     hotel_id: hotelId,
     spendedfor: "hotel",
     limit: 10,
@@ -220,7 +220,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{hotelExpenses?.docs[0]?.date}</td>
+                      <td>{new Date(hotelExpenses?.docs[0]?.date).toLocaleDateString()}</td>
                       <td>{item?.name}</td>
                       <td>{item?.description}</td>
                       <td>{item?.quantity}</td>
@@ -435,7 +435,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{item?.date}</td>
+                      <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
                           <span>{item?.total_amount}</span>

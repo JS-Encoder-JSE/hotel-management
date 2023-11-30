@@ -168,7 +168,7 @@ const HotelExpenses = () => {
   };
 
  
-  const totalItemPrice =filteredExpenses && filteredExpenses?.docs[2]?.items?.reduce(
+  const totalItemPrice =hotelExpenses && hotelExpenses?.docs[0]?.items?.reduce(
     (total, item) => {
       // Add the price of each item to the total
       return total + (item?.price || 0);
@@ -264,7 +264,7 @@ const HotelExpenses = () => {
                               <th>{++idx}</th>
                               <td>
                                 {
-                                  hotelExpenses?.docs[0]?.date
+                                  new Date(hotelExpenses?.docs[0]?.date).toLocaleDateString()
                                 }
                               </td>
                               <td>{item?.name}</td>
@@ -483,7 +483,7 @@ const HotelExpenses = () => {
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{item?.date}</td>
+                      <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
                           <span>{item?.total_amount}</span>

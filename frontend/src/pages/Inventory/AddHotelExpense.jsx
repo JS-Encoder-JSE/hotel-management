@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
-import { getformatDateTime } from '../../utils/utils';
+import { fromDateIsoConverterForAddExpenses, getformatDateTime } from '../../utils/utils';
 import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
 import { useAddExpensesMutation, useGetHotelByManagerIdQuery } from '../../redux/room/roomAPI';
@@ -120,7 +120,7 @@ const calculateTotal = () => {
         setLoading(true)
         const response= await AddExpense({
           hotel_id: isHotelSuccess && hotelInfo[0]?._id,
-          date: selectDate || new Date(),
+          date: fromDateIsoConverterForAddExpenses(selectDate) || fromDateIsoConverterForAddExpenses(new Date()),
           spendedfor: "hotel",
           items: totalExpense,
           total_amount: parseInt(calculateTotal())

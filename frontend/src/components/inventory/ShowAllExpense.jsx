@@ -57,7 +57,7 @@ const ShowAllExpense = () => {
 
   const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
-  // const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
+  // const { data: resExpenses, isLoading, isSuccess } = useGetExpensesQuery({
   //   cp: 1,
   //   fromDate: fromDateIsoConverter(new Date()),
   //   hotel_id: hotelId,
@@ -89,7 +89,7 @@ const ShowAllExpense = () => {
   // console.log(RestaurantExpenses,"expnessfor resto")
   
   // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
-  //   const {data:hotelExpenses, isLoading,isSuccess} = useGetExpensesQuery({
+  //   const {data:resExpenses, isLoading,isSuccess} = useGetExpensesQuery({
   //     cp: 1,
   //     fromDate: fromDateIsoConverter(new Date()),
   //     hotel_id: hotelId,
@@ -97,7 +97,7 @@ const ShowAllExpense = () => {
   //     limit: 10,
   //   });
 
-  // console.log(hotelExpenses,"expnessfor resto")
+  // console.log(resExpenses,"expnessfor resto")
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
@@ -128,7 +128,7 @@ const ShowAllExpense = () => {
     },
   });
   const {
-    data: hotelExpenses,
+    data: resExpenses,
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
@@ -139,7 +139,7 @@ const ShowAllExpense = () => {
     limit: 10,
   });
 
-console.log(hotelExpenses,"hotelex")
+console.log(resExpenses,"hotelex")
 
 
   const {
@@ -149,7 +149,7 @@ console.log(hotelExpenses,"hotelex")
   } = useGetExpensesQuery({
     cp: currentPage,
     fromDate: searchParams?.fromDate,
-    toDate: searchParams?.toDate,
+    toDate: (searchParams?.toDate),
     hotel_id: hotelId,
     spendedfor: "restaurant",
     limit: formik.values.entries,
@@ -159,11 +159,11 @@ console.log(hotelExpenses,"hotelex")
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
-  console.log(hotelExpenses, "TodayHistory");
+  console.log(resExpenses, "TodayHistory");
 
   useEffect(() => {
-    setPdf(hotelExpenses?.docs[0]?.items);
-  }, [hotelExpenses]);
+    setPdf(resExpenses?.docs[0]?.items);
+  }, [resExpenses]);
 
   console.log(filteredExpenses, "filtered expenses.......");
 
@@ -176,7 +176,7 @@ console.log(hotelExpenses,"hotelex")
   
 
 
-  const isTodayItems = hotelExpenses?.docs?.filter((item) => {
+  const isTodayItems = resExpenses?.docs?.filter((item) => {
     const itemDate = item.date;
   
     const currentDate = new Date();
@@ -201,7 +201,7 @@ console.log(hotelExpenses,"hotelex")
   );
  
   console.log(totalItemPrice,"price")
-  // const isTodayItems = hotelExpenses?.docs?.map((itemDate)=> itemDate)
+  // const isTodayItems = resExpenses?.docs?.map((itemDate)=> itemDate)
 
 
   // let isCurrentDate = isTodayItems.filter(item)
@@ -212,7 +212,7 @@ console.log(filteredExpenses?.docs)
 
   return (
     <div className={`space-y-5`}>
-      {hotelExpenses && filteredExpenses && (
+      {resExpenses && filteredExpenses && (
         <div className={`bg-white p-4 rounded`}>
           <div className="mb-10">
             <Link to={`/dashboard `}>
@@ -245,8 +245,8 @@ console.log(filteredExpenses?.docs)
                   <PDFDownloadLink
                     document={
                       <RestaurantExpenseReport
-                        date={hotelExpenses?.docs[0]?.date}
-                        values={hotelExpenses?.docs[0]?.items}
+                        date={resExpenses?.docs[0]?.date}
+                        values={resExpenses?.docs[0]?.items}
                         header={{
                           title: "DAK Hospitality LTD",
                           name: "Today's Restaurant Expenses",
@@ -270,7 +270,7 @@ console.log(filteredExpenses?.docs)
           </div>
 
               <div className="h-96">
-                {hotelExpenses && filteredExpenses?.docs[2]?.items.length ? (
+                {resExpenses && resExpenses?.docs[0]?.items.length ? (
                   <div className="h-[20rem] overflow-x-auto overflow-y-auto">
                     <table className="table">
                       <thead>
@@ -281,14 +281,14 @@ console.log(filteredExpenses?.docs)
                           <th>Description</th>
                           <th>Quantity</th>
                           <th>Price</th>
-                          {hotelExpenses?.docs[0]?.items?.map(
+                          {resExpenses?.docs[0]?.items?.map(
                             (item, idx) => item?.remark && <th>Remark</th>
                           )}
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredExpenses && filteredExpenses?.docs[2]?.items?.map((item, idx) => {
+                        {resExpenses && resExpenses?.docs[0]?.items?.map((item, idx) => {
                           return (
                             <tr
                               className={
@@ -298,7 +298,7 @@ console.log(filteredExpenses?.docs)
                               <th>{++idx}</th>
                               <td>
                                 {
-                                  isTodayItems[0]?.date
+                                 new Date( resExpenses?.docs[0]?.date).toLocaleDateString()
                                 }
                               </td>
                               <td>{item?.name}</td>
@@ -352,7 +352,7 @@ console.log(filteredExpenses?.docs)
                               <div>
                                 <FaRupeeSign />
                               </div>
-                              <div>{totalItemPrice}</div>
+                              <div>{ resExpenses?.docs[0]?.total_amount}</div>
                             </div>
                           </td>
                         </tr>
@@ -381,7 +381,7 @@ console.log(filteredExpenses?.docs)
                 previousLabel="<"
                 nextLabel=">"
                 breakLabel="..."
-                pageCount={hotelExpenses?.pagingCounter}
+                pageCount={resExpenses?.pagingCounter}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
@@ -405,7 +405,7 @@ console.log(filteredExpenses?.docs)
                 <PDFDownloadLink
                   document={
                     <ExpensesHistoryReport
-                      date={hotelExpenses?.docs[0]?.date}
+                      date={resExpenses?.docs[0]?.date}
                       values={filteredExpenses?.docs}
                       header={{
                         title: "DAK Hospitality LTD",
@@ -517,7 +517,7 @@ console.log(filteredExpenses?.docs)
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{item?.date}</td>
+                      <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>
                           <FaRupeeSign className="inline"/>                       
                           <span>{item?.total_amount}</span>

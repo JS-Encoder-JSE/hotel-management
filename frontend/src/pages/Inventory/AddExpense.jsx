@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
-import { getformatDateTime } from '../../utils/utils';
+import { fromDateIsoConverter, fromDateIsoConverterForAddExpenses, getformatDateTime } from '../../utils/utils';
 import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
 
@@ -127,7 +127,7 @@ const calculateTotal = () => {
         const response= await AddExpense({
           
             hotel_id: isHotelSuccess && hotelInfo[0]?._id,
-            date: selectDate || new Date(),
+            date: fromDateIsoConverterForAddExpenses(selectDate) || fromDateIsoConverterForAddExpenses(new Date().toLocaleDateString),
             spendedfor: "restaurant",
             items: totalExpense,
             total_amount: parseInt(calculateTotal())
