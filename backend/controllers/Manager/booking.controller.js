@@ -1030,6 +1030,8 @@ export const addToCheckin = async (req, res) => {
         user_id: userId,
         user_role: user.role,
         total_checkin: 1,
+        month_name,
+        year,
       });
       // Save the new dashboard table to the database
       await newDashboardTable.save();
@@ -1049,6 +1051,8 @@ export const addToCheckin = async (req, res) => {
         user_id: user.parent_id,
         user_role: "owner",
         total_checkin: 1,
+        month_name,
+        year,
       });
       // Save the new dashboard table to the database
       await newDashboardTable.save();
@@ -1067,6 +1071,7 @@ export const addToCheckin = async (req, res) => {
         user_id: userId,
         user_role: user.role,
         today_checkin: 1,
+        date,
       });
       await newCheckInfo.save();
     }
@@ -1084,6 +1089,7 @@ export const addToCheckin = async (req, res) => {
         user_id: user.parent_id,
         user_role: "owner",
         today_checkin: 1,
+        date,
       });
       await newCheckInfo.save();
     }
@@ -1098,7 +1104,7 @@ export const addToCheckin = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
-      error: error.message,
+      error: error,
     });
   }
 };
