@@ -158,11 +158,11 @@ if(!checkinList){
                     >
                       <MdOutlineHail />
                     </Link>
-                    <span
+                    {/* <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                     >
                       <FaEdit />
-                    </span>
+                    </span> */}
                   </td>
                 </tr>
               );
