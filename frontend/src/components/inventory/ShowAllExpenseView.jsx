@@ -10,7 +10,6 @@ import { useFormik } from "formik";
 import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
 import { useGetExpenseByIdQuery } from "../../redux/room/roomAPI";
-import { getformatDateTime } from "../../utils/utils";
 import FoodCheckoutPrint from "../../pages/restaurant/FoodCheckoutPrint";
 import ReactToPrint from "react-to-print";
 import ShowAllExpenseViewPrint from "./ShowAllExpenseViewPrint";
@@ -62,6 +61,13 @@ const ShowAllExpenseView = () => {
 
 
   const [editItemData, setEditItemData] = useState(null);
+
+  const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).replace(/\//g, '-');
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -119,7 +125,10 @@ const ShowAllExpenseView = () => {
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <th>{++idx}</th>
                   <td>
-                    {itemExpense?.date}
+                    {/* {itemExpense?.date.toLocaleDateString()} */}
+                    {
+                                 new Date( itemExpense?.date).toLocaleDateString()
+                                }
                     </td>
                   <td>
                     {item?.name}
