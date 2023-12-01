@@ -28,7 +28,7 @@ const CheckOut = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomFromQuery = searchParams.get("room");
-  const [addCheckout] = useAddCheckoutMutation();
+  const [addCheckout,{isLoading:addCheckOutLoading}] = useAddCheckoutMutation();
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
@@ -40,6 +40,7 @@ const CheckOut = () => {
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
   const [getCheckout, { data: checkout, isSuccess, isLoading}] = useGetCheckoutMutation();
+  // console.log("Isloading",isLoading)
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
@@ -238,7 +239,7 @@ const CheckOut = () => {
               hotelInfo={hotelInfo}
               isHotelSuccess={isHotelSuccess}
               roomData={checkout?.data?.room_bookings}
-              // isLoading={isLoading}
+              addCheckOutLoading={addCheckOutLoading}
             />
           </div>
         </>

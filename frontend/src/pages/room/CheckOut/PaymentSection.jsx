@@ -10,6 +10,7 @@ import { jsPDF } from "jspdf";
 import ReactToPrint from "react-to-print";
 import CheckOutPrint from "./CheckOutPrint.jsx";
 
+
 const PaymentSection = ({
   pBill,
   formik,
@@ -19,14 +20,17 @@ const PaymentSection = ({
   isHotelSuccess,
   hotelInfo,
   roomData,
-  // isLoading
+  addCheckOutLoading
 }) => {
+  console.log("Isloading",addCheckOutLoading)
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
+  
+
   const handleChange = (e, index) => {
     const { name, value } = e.target;
 
@@ -168,12 +172,12 @@ const PaymentSection = ({
           }`}
         >
           Checkout
-          {/* {isLoading ? (
+          {addCheckOutLoading ? (
                   <span
                     className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
                     role="status"
                   ></span>
-                ) : null} */}
+                ) : null}
         </button>
       </div>
     </section>
