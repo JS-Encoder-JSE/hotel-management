@@ -15,7 +15,6 @@ const ShowALlSellView = () => {
 
   const { user } = useSelector((store) => store.authSlice);
 
-  console.log(user?.assignedHotel[0])
 
 // query by searchParams
   const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
@@ -24,7 +23,7 @@ const ShowALlSellView = () => {
     hotel_id: user?.assignedHotel[0]
   });
 
-  console.log(orderedDataByDate,"orderedData")
+
 
 
     const formik = useFormik({
@@ -69,7 +68,6 @@ const handleScrollToTop = () => {
 window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-console.log(currentItems,"cu")
 const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
 
   return (

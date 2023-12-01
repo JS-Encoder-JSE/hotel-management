@@ -20,7 +20,7 @@ const CheckinPersonInfo = () => {
   const [roomId, setRoomId] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id)
+
   const { data: booking, isLoading } = useGetBookingInfoByIdQuery(id);
 
   
@@ -30,18 +30,18 @@ const CheckinPersonInfo = () => {
 
     if (roomId) {
       
-      console.log("Success roomId:", roomId);
+      
     } else {
-      console.log("Invalid roomId");
+      
     }
   }, [booking]);
   
-  console.log("roomId...................",roomId)
+ 
   
 
   const { data:postedBill, error, isLoadingPostedBill } = useGetRoomPostedBillsQuery(roomId);
 
-  console.log(postedBill,"postedBill")
+ 
 
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -53,7 +53,7 @@ const CheckinPersonInfo = () => {
     }
   }, [modalOpen]);
 
-// console.log(booking,"bokingdata............")
+
 
 const documentTypes = {
   driving_lic_img: booking?.data?.doc_images?.driving_lic_img,
@@ -67,8 +67,7 @@ const validDocumentTypeKey = Object.keys(documentTypes).find(
 
 const validDocumentType = documentTypes[validDocumentTypeKey]?.filter(value => value !== "") || [];
 
-console.log("Valid Document Type Field Name:", validDocumentTypeKey);
-console.log("Valid Document Type:", postedBill?.data?.gym_bills);
+
 
 
 
@@ -115,7 +114,7 @@ console.log("Valid Document Type:", postedBill?.data?.gym_bills);
                 <th className={`text-start`}>Name</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.guestName}</td>
-                {console.log("data",booking)}
+               
               </tr>
               <tr>
                 <th className={`text-start`}>Phone</th>

@@ -38,7 +38,7 @@ const EditHotelExpenses = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      
     },
   });
 

@@ -50,8 +50,6 @@ const ManageCheckin = () => {
     
   });
 
-  // console.log(checkinList,"checkinglist")
-
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);

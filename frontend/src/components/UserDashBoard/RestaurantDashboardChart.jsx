@@ -6,7 +6,6 @@ import { isValidUrl } from "../../utils/utils";
 const generateRandomData = () => {
   return Array.from({ length: 12 }, () => Math.floor(Math.random() * 100) + 1);
 };
-console.log("generateRandomData", generateRandomData());
 const RestaurantDashboardChart = ({ monthlyData }) => {
   const months = [
     "Jan",

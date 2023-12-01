@@ -9,13 +9,13 @@ import CheckInDyn from "./CheckInDyn.jsx";
 const BookingView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
+
   const {
     data: booking,
     isLoading,
     isSuccess,
   } = useGetBookingInfoByIdQuery(id);
-  console.log("booking", booking);
+ 
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 

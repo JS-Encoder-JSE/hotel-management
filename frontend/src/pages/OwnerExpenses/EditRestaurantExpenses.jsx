@@ -38,7 +38,7 @@ const EditRestaurantExpenses = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      
     },
   });
 

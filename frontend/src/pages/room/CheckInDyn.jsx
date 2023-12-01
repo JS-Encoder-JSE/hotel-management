@@ -45,7 +45,6 @@ const CheckInDyn = ({ data }) => {
   const [updateBookingTOCheckIn, { isLoading }] =
     useUpdateBookingTOCheckInMutation();
 
-  console.log({ data });
 
   // handle advanceAmoun
   const handleAmount = (e) => {

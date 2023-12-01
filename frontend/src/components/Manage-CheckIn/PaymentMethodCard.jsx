@@ -33,7 +33,7 @@ const PaymentMethodCard = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+     
     },
   });
     // Price Validation

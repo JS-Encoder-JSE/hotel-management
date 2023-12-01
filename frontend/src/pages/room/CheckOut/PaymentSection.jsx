@@ -22,7 +22,7 @@ const PaymentSection = ({
   roomData,
   addCheckOutLoading
 }) => {
-  console.log("Isloading",addCheckOutLoading)
+
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
@@ -62,7 +62,7 @@ const PaymentSection = ({
 
   // for printing
   const componentRef = useRef();
-  console.log("---data:", data);
+  
   return (
     <section>
       <div className="grid lg:grid-cols-2 gap-5">

@@ -43,14 +43,14 @@ const validationSchema = yup.object({
 const AddExpense = () => {
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  // console.log(user._id);
+ 
 
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
-  // console.log(hotelInfo[0]?._id);
+
 
   // add expense
   const [AddExpense] = useAddExpensesMutation();
@@ -69,7 +69,7 @@ const AddExpense = () => {
 
   const [selectDate, setSelectDate] = useState(null);
 
-  console.log(totalItems, "items---------");
+
 
   let totalExpense = [...totalItems];
 
@@ -98,7 +98,7 @@ const AddExpense = () => {
       const obj = { ...values };
       delete obj.date;  
       // const obj = { ...values };
-      console.log(obj);
+  
 
       if (editIndex !== null) {
         // Update existing item

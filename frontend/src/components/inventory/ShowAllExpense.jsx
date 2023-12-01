@@ -53,14 +53,14 @@ const ShowAllExpense = () => {
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  // console.log(user._id);
+ 
 
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
-  // console.log(hotelInfo[0]?._id);
+ 
 
   const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
@@ -93,7 +93,7 @@ const ShowAllExpense = () => {
 //     limit: 10,
 //   });
 
-  // console.log(RestaurantExpenses,"expnessfor resto")
+ 
   
   // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
   //   const {data:resExpenses, isLoading,isSuccess} = useGetExpensesQuery({
@@ -104,14 +104,14 @@ const ShowAllExpense = () => {
   //     limit: 10,
   //   });
 
-  // console.log(resExpenses,"expnessfor resto")
+ 
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
   });
 
-  console.log(searchParams);
+
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -166,13 +166,13 @@ const ShowAllExpense = () => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
-  console.log(resExpenses, "TodayHistory");
+ 
 
   useEffect(() => {
     setPdf(resExpenses?.docs[0]?.items);
   }, [resExpenses]);
 
-  console.log(filteredExpenses, "filtered expenses.......");
+ 
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -205,7 +205,7 @@ const handleScrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-// console.log(currentItems,"currentItems")
+
 
   return (
     <div className={`space-y-5`}>
@@ -260,8 +260,8 @@ const handleScrollToTop = () => {
 
               <div className="">
                 {resExpenses && resExpenses?.docs[0]?.items.length ? (
-                  <div className=" overflow-x-auto overflow-y-auto">
-                    <table className="table">
+                  <div className=" overflow-x-auto overflow-y-auto overflow-auto md:overflow-scroll">
+                    <table className="table h-24 min-h-0 md:min-h-full">
                       <thead>
                         <tr>
                           <th>SL</th>
@@ -297,7 +297,8 @@ const handleScrollToTop = () => {
                                 <FaRupeeSign className="inline" />
                                 <span>{item?.price}</span>
                               </td>
-                              {item?.remark && <td>Remark</td>}
+                              <td>{item?.remark ? item?.remark : ""}</td>
+                              
                               <td>
                                 <button
                                   className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}

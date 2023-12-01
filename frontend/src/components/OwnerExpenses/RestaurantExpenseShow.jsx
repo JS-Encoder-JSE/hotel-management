@@ -44,14 +44,14 @@ const RestaurantExpenseShow = ({ hotelId }) => {
   const [editItemData, setEditItemData] = useState(null);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  // console.log(user._id);
+ 
 
   // const {
   //   data: hotelInfo,
   //   isLoading: isHotelLoading,
   //   isSuccess: isHotelSuccess,
   // } = useGetHotelByManagerIdQuery(user?._id);
-  // console.log(hotelInfo[0]?._id);
+ 
 
   // 1st commit
 
@@ -62,7 +62,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     toDate: "",
   });
 
-  console.log(searchParams);
+  
 
   const formik = useFormik({
     initialValues: {
@@ -109,13 +109,13 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
-  console.log(RestaurantExpenses, "History");
+ 
 
   useEffect(() => {
     setPdf(RestaurantExpenses?.docs[0]?.items);
   }, [RestaurantExpenses]);
 
-  console.log(filteredExpenses, "filtered expenses.......");
+
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -143,7 +143,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     return itemDate === formattedCurrentDate;
   });
 
-  console.log(isTodayItems, "itemssssssssssss");
+ 
 
   const totalItemPrice =
     isTodayItems &&
@@ -176,8 +176,6 @@ const handleScrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-
-console.log(currentItems)
 
   return (
     <div className={` space-y-5`}>
