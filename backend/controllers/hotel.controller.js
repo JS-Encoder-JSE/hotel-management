@@ -362,7 +362,7 @@ export const getDailyDatas = async (req, res) => {
 
     // Filter by user_id
     if (manager_id) {
-      query.manager_id = manager_id;
+      query.user_id = manager_id;
     }
     const options = {
       page: parseInt(page, 10),
