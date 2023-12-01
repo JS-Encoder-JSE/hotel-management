@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 import { Rings } from "react-loader-spinner";
 
 const RestaurantDashboard = () => {
+  const url = window.location.href;
+
   const { user } = useSelector((state) => state.authSlice);
   const { data, isLoading, isError } = useGetSubDashBoardInfoQuery(user._id);
   console.log(data);
@@ -26,6 +28,9 @@ const RestaurantDashboard = () => {
       setKeyword(values.search);
     },
   });
+  const isValidUrl = (pageName) => {
+    return url.includes(pageName);
+  };
   if (isLoading || isError) {
     return (
       <div>
@@ -48,14 +53,18 @@ const RestaurantDashboard = () => {
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-3 rounded-md text-white">
             <GiExpense />
           </div>
-          <h6 className="text-xs text-slate-400 ">TODAY EXPENSES</h6>
+          <h6 className="text-xs text-slate-400 ">TODAY'S EXPENSES</h6>
           <p className="text-2xl font-semibold mt-4">
             <div className="flex justify-end">
               <div>
                 <BiRupee />
               </div>
               <div>
-                <span>{data?.daily_datas[0]?.today_restaurant_expenses}</span>
+                <span>
+                  {isValidUrl("restaurant")
+                    ? data?.daily_datas[0]?.today_restaurant_expenses
+                    : data?.daily_datas[0]?.today_hotel_expenses}
+                </span>
               </div>
             </div>
           </p>
@@ -66,14 +75,20 @@ const RestaurantDashboard = () => {
             <SiSellfy />
           </div>
           <div>
-            <h6 className="text-xs text-slate-400">TODAY SALES</h6>
+            <h6 className="text-xs text-slate-400">
+              TODAY'S {isValidUrl("restaurant") ? "SALES" : "CHECKOUT REVENUE"}
+            </h6>
             <p className="text-2xl font-semibold mt-4">
               <div className="flex justify-end">
                 <div>
                   <BiRupee />
                 </div>
                 <div>
-                  <span>{data?.daily_datas[0]?.today_restaurant_income}</span>
+                  <span>
+                    {isValidUrl("restaurant")
+                      ? data?.daily_datas[0]?.today_restaurant_income
+                      : data?.daily_datas[0]?.today_hotel_income}
+                  </span>
                 </div>
               </div>
             </p>
@@ -84,14 +99,18 @@ const RestaurantDashboard = () => {
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#309873] p-3 rounded-md text-white">
             <HiOutlineCurrencyRupee />
           </div>
-          <h6 className="text-xs text-slate-400 ">TODAY PROFIT</h6>
+          <h6 className="text-xs text-slate-400 ">TODAY'S PROFIT</h6>
           <p className="text-2xl font-semibold mt-4">
             <div className="flex justify-end">
               <div>
                 <BiRupee />
               </div>
               <div>
-                <span>{data?.daily_datas[0]?.today_restaurant_profit}</span>
+                <span>
+                  {isValidUrl("restaurant")
+                    ? data?.daily_datas[0]?.today_restaurant_profit
+                    : data?.daily_datas[0]?.today_hotel_profit}
+                </span>
               </div>
             </div>
           </p>
@@ -132,7 +151,9 @@ const RestaurantDashboard = () => {
               </div>
               <div>
                 <span>
-                  {data?.last_week_data?.last_week_restaurant_expenses}
+                  {isValidUrl("restaurant")
+                    ? data?.last_week_data?.last_week_restaurant_expenses
+                    : data?.last_week_data?.last_week_hotel_expenses}
                 </span>
               </div>
             </div>
@@ -143,14 +164,20 @@ const RestaurantDashboard = () => {
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#453092] to-[#5c08a5] p-3 rounded-md text-white">
             <LiaSellsy />
           </div>
-          <h6 className="text-xs text-slate-400 ">LAST WEEK SALES</h6>
+          <h6 className="text-xs text-slate-400 ">
+            LAST WEEK {isValidUrl("restaurant") ? "SALES" : "CHECKOUT REVENUE"}
+          </h6>
           <p className="text-2xl font-semibold mt-4">
             <div className="flex justify-end">
               <div>
                 <BiRupee />
               </div>
               <div>
-                <span>{data?.last_week_data?.last_week_restaurant_income}</span>
+                <span>
+                  {isValidUrl("restaurant")
+                    ? data?.last_week_data?.last_week_restaurant_income
+                    : data?.last_week_data?.last_week_hotel_income}
+                </span>
               </div>
             </div>
           </p>
@@ -179,7 +206,11 @@ const RestaurantDashboard = () => {
                 <BiRupee />
               </div>
               <div>
-                <span>{data?.last_week_data?.last_week_restaurant_profit}</span>
+                <span>
+                  {isValidUrl("restaurant")
+                    ? data?.last_week_data?.last_week_restaurant_profit
+                    : data?.last_week_data?.last_week_hotel_profit}
+                </span>
               </div>
             </div>
           </p>
