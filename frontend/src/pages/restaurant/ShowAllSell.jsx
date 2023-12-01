@@ -15,9 +15,16 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import EditSales from "../../components/inventory/EditSales";
-import { useGetDailyDataQuery, useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
+import {
+  useGetDailyDataQuery,
+  useGetOrdersByDateQuery,
+} from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
-import { fromDateIsoConverter, fromDateIsoConverterForAddExpenses, getISOStringDate } from "../../utils/utils";
+import {
+  fromDateIsoConverter,
+  fromDateIsoConverterForAddExpenses,
+  getISOStringDate,
+} from "../../utils/utils";
 // import EditExpenses from "./EditExpenses";
 
 const ShowAllSell = () => {
@@ -31,12 +38,7 @@ const ShowAllSell = () => {
 
   const { user } = useSelector((store) => store.authSlice);
 
-
   // console.log(user?.assignedHotel[0],"user")
-
-  
-
-  
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
@@ -53,7 +55,7 @@ const ShowAllSell = () => {
     initialValues: {
       startDate: "",
       endDate: "",
-      filter:"",
+      filter: "",
     },
     onSubmit: (values) => {
       setSearchParams((p) => ({
@@ -68,38 +70,39 @@ const ShowAllSell = () => {
     },
   });
 
-
   // / query by searchParams
-  const {  data:restaurantSalesToday, error:restaurantSaleEx, isLoading:dataLoading } = useGetOrdersByDateQuery({
+  const {
+    data: restaurantSalesToday,
+    error: restaurantSaleEx,
+    isLoading: dataLoading,
+  } = useGetOrdersByDateQuery({
     date: fromDateIsoConverterForAddExpenses(new Date()),
-    order_status: 'CheckedOut',
-    hotel_id:user?.assignedHotel[0],
+    order_status: "CheckedOut",
+    hotel_id: user?.assignedHotel[0],
   });
-// console.log(restaurantSalesToday,"todaysale")
+  console.log("restaurantSalesToday", restaurantSalesToday);
 
-
-
-
-
-
-// filtered data
-  const { data:restaurantSalesHistory, error, isLoading } = useGetDailyDataQuery({
+  // filtered data
+  const {
+    data: restaurantSalesHistory,
+    error,
+    isLoading,
+  } = useGetDailyDataQuery({
     ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
-    managerId:user?._id,
+    managerId: user?._id,
     limit: formik.values.entries,
-    filter:formik.values.filter,
+    filter: formik.values.filter,
   });
 
-  console.log(restaurantSalesHistory?.data,"dailyData ")
+  console.log(restaurantSalesHistory?.data, "dailyData ");
 
   useEffect(() => {
-    if (restaurantSalesHistory) setPageCount(restaurantSalesHistory?.data?.totalPages);
+    if (restaurantSalesHistory)
+      setPageCount(restaurantSalesHistory?.data?.totalPages);
   }, [restaurantSalesHistory]);
-
-
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -107,47 +110,42 @@ const ShowAllSell = () => {
     }
   };
 
-
   const [todayItem, setTodayItem] = useState([]);
 
   useEffect(() => {
-    const todayItems = restaurantSalesToday?.data?.map((obj) => obj?.items).flat();
+    const todayItems = restaurantSalesToday?.data
+      ?.map((obj) => obj?.items)
+      .flat();
     setTodayItem(todayItems);
   }, [restaurantSalesToday]);
-  
-  
-
 
   // pagination setup for today's expenses
-const itemsPerPage = 10;
-const [currentPageItem, setCurrentPageItem] = useState(0);
+  const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
 
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
 
-const handlePageChange = ({ selected }) => {
-  setCurrentPageItem(selected);
-};
+  const totalPage = todayItem && Math.ceil(todayItem?.length / itemsPerPage);
 
+  const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
-const totalPage =
-todayItem && Math.ceil(todayItem?.length / itemsPerPage);
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+  const currentItems = todayItem?.slice(indexOfFirstItem, indexOfLastItem);
 
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const handleScrollToTop = () => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-const currentItems = todayItem?.slice(
-indexOfFirstItem,
-indexOfLastItem
-);
+  // console.log(currentItems,"currenttem")
 
-const handleScrollToTop = () => {
-// Scroll to the top of the page
-window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
-// console.log(currentItems,"currenttem")
-
-const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
+  const totalPrice = currentItems?.reduce(
+    (total, item) => total + item.price,
+    0
+  );
 
   return (
     <div className={`space-y-5`}>
@@ -178,26 +176,26 @@ const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
           </div>
 
           <div className="flex justify-end">
-              {PDF?.length ? (
-                <PDFDownloadLink
-                  document={
-                    <ExpensesHistoryReport
-                      date={hotelExpenses?.docs[0]?.date}
-                      values={filteredExpenses?.docs}
-                      header={{
-                        title: "DAK Hospitality LTD",
-                        name: "Restaurant Expenses History",
-                      }}
-                    />
-                  }
-                  fileName={`${new Date().toLocaleDateString()}.pdf`}
-                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded  uppercase"
-                >
-                  <BsFileEarmarkPdfFill />
-                  PDF
-                </PDFDownloadLink>
-              ) : null}
-            </div>
+            {PDF?.length ? (
+              <PDFDownloadLink
+                document={
+                  <ExpensesHistoryReport
+                    date={hotelExpenses?.docs[0]?.date}
+                    values={filteredExpenses?.docs}
+                    header={{
+                      title: "DAK Hospitality LTD",
+                      name: "Restaurant Expenses History",
+                    }}
+                  />
+                }
+                fileName={`${new Date().toLocaleDateString()}.pdf`}
+                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded  uppercase"
+              >
+                <BsFileEarmarkPdfFill />
+                PDF
+              </PDFDownloadLink>
+            ) : null}
+          </div>
           {/* <div className={`flex justify-end mb-5`}>
             <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
               {" "}
@@ -206,55 +204,61 @@ const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
             </button>
           </div> */}
 
-        <div className="overflow-x-auto">
-           {currentItems && currentItems.length? <table className="table">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Item</th>
-                  <th>Surveyor Quantity</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                {restaurantSalesToday&& currentItems?.map((item, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>{item?.item}</td>
-                      <td>{item?.serveyor_quantity}</td> 
-                      <td>{item?.quantity}</td> 
-                      <td>{item?.price}</td> 
-                    </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot className={`text-[1.2rem] font-bold`}>
-                <tr>
-                  <td colSpan={4} className={`text-end text-md font-bold`}>
-                    Total :
-                  </td>
-                  <td>
-                    <div className="flex">
-                      <div>
-                        <FaRupeeSign />
+          <div className="overflow-x-auto">
+            {currentItems && currentItems.length ? (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>SL</th>
+                    <th>Item</th>
+                    <th>Surveyor Quantity</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {restaurantSalesToday &&
+                    currentItems?.map((item, idx) => {
+                      return (
+                        <tr
+                          className={
+                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                          }
+                        >
+                          <th>{++idx}</th>
+                          <td>{item?.item}</td>
+                          <td>{item?.serveyor_quantity}</td>
+                          <td>{item?.quantity}</td>
+                          <td>{item?.price}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+                <tfoot className={`text-[1.2rem] font-bold`}>
+                  <tr>
+                    <td colSpan={4} className={`text-end text-md font-bold`}>
+                      Total :
+                    </td>
+                    <td>
+                      <div className="flex">
+                        <div>
+                          <FaRupeeSign />
+                        </div>
+                        <div>
+                          {" "}
+                          {totalPrice}
+                          {/* {totalItemPrice} */}
+                        </div>
                       </div>
-                      <div>
-                        {" "}
-                        {totalPrice}
-                        {/* {totalItemPrice} */}
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>: <p className="flex justify-center items-center my-48">
-                    No Expenses Today
-                  </p>}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            ) : (
+              <p className="flex justify-center items-center my-48">
+                No Expenses Today
+              </p>
+            )}
           </div>
         </div>
         <div onClick={handleScrollToTop} className="flex justify-center ">
@@ -296,22 +300,22 @@ const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
           </div>
         </div>
         <div className={`flex justify-between my-5`}>
-            <div className={`space-x-1.5`}>
-              <span>Show</span>
-              <select
-                name="entries"
-                className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-                value={formik.values.entries}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-              </select>
-              <span>entries</span>
-            </div>
+          <div className={`space-x-1.5`}>
+            <span>Show</span>
+            <select
+              name="entries"
+              className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+              value={formik.values.entries}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+            <span>entries</span>
           </div>
+        </div>
         <div className={`flex flex-col md:flex-row gap-4 `}>
           <DatePicker
             autoComplete={`off`}
@@ -376,62 +380,67 @@ const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
                 </tr>
               </thead>
               <tbody>
-                {restaurantSalesHistory && restaurantSalesHistory?.data?.docs?.map((item, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>{new Date(item?.date).toLocaleDateString()}</td>
-                      <td>
-                        <div className="flex">
-                          <div>
-                            <FaRupeeSign />
+                {restaurantSalesHistory &&
+                  restaurantSalesHistory?.data?.docs?.map((item, idx) => {
+                    return (
+                      <tr
+                        className={
+                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                        }
+                      >
+                        <th>{++idx}</th>
+                        <td>{new Date(item?.date).toLocaleDateString()}</td>
+                        <td>
+                          <div className="flex">
+                            <div>
+                              <FaRupeeSign />
+                            </div>
+                            <div>
+                              <span>{item?.today_restaurant_income}</span>
+                            </div>
                           </div>
-                          <div>
-                            <span>{item?.today_restaurant_income}</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className={`space-x-1.5`}>
-                        <span
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() =>
-                            navigate(`/dashboard/show-all-sell-details?date=${item?.date}`)
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                        {/* <span
+                        </td>
+                        <td className={`space-x-1.5`}>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                            onClick={() =>
+                              navigate(
+                                `/dashboard/show-all-sell-details?date=${item?.date}`
+                              )
+                            }
+                          >
+                            <FaEye />
+                          </span>
+                          {/* <span
                           className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                         >
                           <AiTwotoneDelete />
                         </span> */}
-                      </td>
-                    </tr>
-                  );
-                })}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
           <div className="flex justify-center mt-10">
             <ReactPaginate
-               containerClassName="join rounded-none"
-               pageLinkClassName="join-item btn btn-md bg-transparent"
-               activeLinkClassName="btn-active !bg-green-slimy text-white"
-               disabledLinkClassName="btn-disabled"
-               previousLinkClassName="join-item btn btn-md bg-transparent"
-               nextLinkClassName="join-item btn btn-md bg-transparent"
-               breakLinkClassName="join-item btn btn-md bg-transparent"
-               previousLabel="<"
-               nextLabel=">"
-               breakLabel="..."
-               pageCount={pageCount}
-               pageRangeDisplayed={2}
-               marginPagesDisplayed={2}
-               onPageChange={handlePageClick}
-               renderOnZeroPageCount={null}
-               forcePage={currentPage}
+              containerClassName="join rounded-none"
+              pageLinkClassName="join-item btn btn-md bg-transparent"
+              activeLinkClassName="btn-active !bg-green-slimy text-white"
+              disabledLinkClassName="btn-disabled"
+              previousLinkClassName="join-item btn btn-md bg-transparent"
+              nextLinkClassName="join-item btn btn-md bg-transparent"
+              breakLinkClassName="join-item btn btn-md bg-transparent"
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel="..."
+              pageCount={pageCount}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              onPageChange={handlePageClick}
+              renderOnZeroPageCount={null}
+              forcePage={currentPage}
             />
           </div>
         </div>
