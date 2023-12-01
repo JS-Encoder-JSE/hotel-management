@@ -111,6 +111,7 @@ const HotelExpenses = () => {
     initialValues: {
       startDate: "",
       endDate: "",
+      filter:"",
     },
     onSubmit: (values) => {
       setSearchParams((p) => ({
@@ -129,24 +130,26 @@ const HotelExpenses = () => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    cp: 1,
     fromDate: fromDateIsoConverter(new Date()),
     hotel_id: hotelId,
     spendedfor: "hotel",
-    limit: 10,
   });
+
+  // console.log("hotelExpenses,", hotelExpenses)
 
   const {
     data: filteredExpenses,
     isLoading: isFilterDataLoading,
     isSuccess: filterExSuccess,
   } = useGetExpensesQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
     hotel_id: hotelId,
     spendedfor: "hotel",
     limit: formik.values.entries,
+    filter: formik.values.filter,
   });
 
   useEffect(() => {
@@ -175,6 +178,33 @@ const HotelExpenses = () => {
     },
     0
   );
+
+// pagination setup for today's expenses
+const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+  const totalPage =
+  hotelExpenses && Math.ceil(hotelExpenses?.docs[0]?.items.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems = hotelExpenses?.docs[0]?.items.slice(
+  indexOfFirstItem,
+  indexOfLastItem
+);
+
+const handleScrollToTop = () => {
+  // Scroll to the top of the page
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+console.log(currentItems,"currenttem")
+
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -227,9 +257,9 @@ const HotelExpenses = () => {
                 ) : null}
               </div>
 
-              <div className="h-96">
-                {hotelExpenses && filteredExpenses?.docs[0]?.items.length ? (
-                  <div className="h-[20rem] overflow-x-auto overflow-y-auto">
+              <div>
+                {hotelExpenses && hotelExpenses?.docs[0]?.items.length ? (
+                  <div className=" overflow-x-auto overflow-y-auto">
                     <table className="table">
                       <thead>
                         <tr>
@@ -246,7 +276,7 @@ const HotelExpenses = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredExpenses && filteredExpenses?.docs[0]?.items?.map((item, idx) => {
+                        {hotelExpenses && currentItems.map((item, idx) => {
                           return (
                             <tr
                               className={
@@ -327,7 +357,7 @@ const HotelExpenses = () => {
 
             {/* pagination */}
 
-            <div className="flex justify-center mt-10">
+            <div onClick={handleScrollToTop} className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -339,10 +369,10 @@ const HotelExpenses = () => {
                 previousLabel="<"
                 nextLabel=">"
                 breakLabel="..."
-                pageCount={hotelExpenses?.pagingCounter}
+                pageCount={totalPage}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
+                onPageChange={handlePageChange}
                 renderOnZeroPageCount={null}
               />
             </div>
@@ -512,7 +542,7 @@ const HotelExpenses = () => {
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
-                forcePage={forcePage}
+                forcePage={currentPage}
               />
             </div>
           </div>

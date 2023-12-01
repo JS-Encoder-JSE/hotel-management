@@ -102,8 +102,9 @@ const roomAPI = baseAPI.injectEndpoints({
       invalidatesTags: ["booking"],
     }),
     getExpenses: build.query({
-      query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit }) =>
-        `expenses/get-expenses?page=${cp}${limit ? `&limit=${limit}` : ""}${
+      query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit, filter }) =>
+        `expenses/get-expenses?page=${++cp}${limit ? `&limit=${limit}` : ""} ${filter ? `&filter=${filter}` : ""}
+        ${
           fromDate ? `&fromDate=${fromDate}` : ""
         }${toDate ? `&toDate=${toDate}` : ""}${
           hotel_id ? `&hotel_id=${hotel_id}` : ""

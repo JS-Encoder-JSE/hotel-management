@@ -190,37 +190,7 @@ console.log(restaurantSalesToday,"todaysale")
                       <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>Fried Rice</td>
                       <td>Good </td>
-                      <td>10</td>
-                      {/* <td className="flex">
-                        <div>
-                          <FaRupeeSign />
-                        </div>
-                        <div>
-                          <span>5000</span>
-                        </div>
-                      </td>
-                      <td>Remark</td> */}
-                      <td>
-                        <button
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                          onClick={() =>
-                            document.getElementById("my_modal_3").showModal()
-                          }
-                        >
-                          <FaRegEdit />
-                        </button>
-                        <dialog id="my_modal_3" className="modal">
-                          <div className="modal-box">
-                            <form method="dialog">
-                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                ✕
-                              </button>
-                            </form>
-                            {/* Edit sales */}
-                            <EditSales />
-                          </div>
-                        </dialog>
-                      </td>
+                      <td>10</td>  
                     </tr>
                   );
                 })}
@@ -237,7 +207,7 @@ console.log(restaurantSalesToday,"todaysale")
                       </div>
                       <div>
                         {" "}
-                        65464
+                        65464 fake data
                         {/* {totalItemPrice} */}
                       </div>
                     </div>
@@ -372,7 +342,7 @@ console.log(restaurantSalesToday,"todaysale")
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/show-all-sell-Details?date=${item?.date}`)
+                            navigate(`/dashboard/show-all-sell-details?date=${item?.date}`)
                           }
                         >
                           <FaEye />

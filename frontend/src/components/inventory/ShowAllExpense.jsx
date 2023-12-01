@@ -35,10 +35,13 @@ import EditExpensesView from "./EditExpensesView";
 const ShowAllExpense = () => {
   const [forcePage, setForcePage] = useState(null);
   const navigate = useNavigate();
-  const [reportsPerPage] = useState(10);
+  const [itemPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [PDF, setPdf] = useState([]);
+
+
+
 
   // editItemData
   const [editItemData, setEditItemData] = useState(null);
@@ -116,6 +119,7 @@ const ShowAllExpense = () => {
 
   const formik = useFormik({
     initialValues: {
+      filter:"",
       startDate: "",
       endDate: "",
     },
@@ -136,11 +140,9 @@ const ShowAllExpense = () => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    cp: 1,
     fromDate: fromDateIsoConverter(new Date()),
     hotel_id: hotelId,
     spendedfor: "restaurant",
-    limit: 10,
   });
 
 console.log(resExpenses,"hotelex")
@@ -151,12 +153,14 @@ console.log(resExpenses,"hotelex")
     isLoading: isFilterDataLoading,
     isSuccess: filterExSuccess,
   } = useGetExpensesQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
-    toDate: (searchParams?.toDate),
+    toDate: searchParams?.toDate,
     hotel_id: hotelId,
     spendedfor: "restaurant",
     limit: formik.values.entries,
+    filter:formik.values.filter,
   });
 
   useEffect(() => {
@@ -177,42 +181,32 @@ console.log(resExpenses,"hotelex")
     }
   };
 
-  
 
+// pagination setup for today's expenses
+const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
 
-  const isTodayItems = resExpenses?.docs?.filter((item) => {
-    const itemDate = item.date;
-  
-    const currentDate = new Date();
-    const formattedCurrentDate = currentDate.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).replace(/\//g, '-');
-  
-    // Check if the item's date is the same as the current date
-    return itemDate === formattedCurrentDate;
-  });
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+  const totalPage =
+  resExpenses && Math.ceil(resExpenses?.docs[0]?.items.length / itemsPerPage);
 
-  console.log(isTodayItems,"itemssssssssssss")
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
-  const totalItemPrice =filteredExpenses && filteredExpenses?.docs[2]?.items?.reduce(
-    (total, item) => {
-      // Add the price of each item to the total
-      return total + (item?.price || 0);
-    },
-    0
-  );
- 
-  console.log(totalItemPrice,"price")
-  // const isTodayItems = resExpenses?.docs?.map((itemDate)=> itemDate)
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
+const currentItems = resExpenses?.docs[0]?.items.slice(
+  indexOfFirstItem,
+  indexOfLastItem
+);
 
-  // let isCurrentDate = isTodayItems.filter(item)
+const handleScrollToTop = () => {
+  // Scroll to the top of the page
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
-  console.log(isTodayItems,"isHotel")
-
-console.log(filteredExpenses?.docs)
+// console.log(currentItems,"currentItems")
 
   return (
     <div className={`space-y-5`}>
@@ -265,9 +259,9 @@ console.log(filteredExpenses?.docs)
                 ) : null}
               </div>
 
-              <div className="h-96">
+              <div className="">
                 {resExpenses && resExpenses?.docs[0]?.items.length ? (
-                  <div className="h-[20rem] overflow-x-auto overflow-y-auto">
+                  <div className=" overflow-x-auto overflow-y-auto">
                     <table className="table">
                       <thead>
                         <tr>
@@ -284,7 +278,7 @@ console.log(filteredExpenses?.docs)
                         </tr>
                       </thead>
                       <tbody>
-                        {resExpenses && resExpenses?.docs[0]?.items?.map((item, idx) => {
+                        {resExpenses && currentItems.map((item, idx) => {
                           return (
                             <tr
                               className={
@@ -366,7 +360,7 @@ console.log(filteredExpenses?.docs)
 
             {/* pagination */}
 
-            <div className="flex justify-center mt-10">
+            <div onClick={handleScrollToTop} className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -378,10 +372,10 @@ console.log(filteredExpenses?.docs)
                 previousLabel="<"
                 nextLabel=">"
                 breakLabel="..."
-                pageCount={resExpenses?.pagingCounter}
+                pageCount={totalPage}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
+                onPageChange={handlePageChange}
                 renderOnZeroPageCount={null}
               />
             </div>
@@ -479,11 +473,6 @@ console.log(filteredExpenses?.docs)
           <button
             type={"button"}
             onClick={formik.handleSubmit}
-            // onClick={() => {
-            //   setCurrentPage(0);
-            //   setForcePage(0);
-            //   formik.handleSubmit();
-            // }}
             className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
           >
             Apply Filter
@@ -491,7 +480,7 @@ console.log(filteredExpenses?.docs)
         </div>
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
-          <div className="h-[20rem] overflow-x-auto overflow-y-auto">
+          <div className=" overflow-x-auto overflow-y-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -551,7 +540,7 @@ console.log(filteredExpenses?.docs)
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
-                forcePage={forcePage}
+                forcePage={currentPage}
               />
             </div>
           </div>
