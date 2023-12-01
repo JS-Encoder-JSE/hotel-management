@@ -301,7 +301,7 @@ const ManageCheckinModal = () => {
           ✕ 
         </button>
       </form>
-    <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>
+    <div className={`max-w-xl rounded-2xl mx-auto p-8`}>
       <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
       <hr />
       <form
