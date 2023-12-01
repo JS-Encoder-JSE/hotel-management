@@ -14,6 +14,7 @@ import { MdAutorenew, MdCurrencyRupee } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
 import ExpensesChart from "./ExpesesChart";
 import ThreeBarChart from "./ThreeBarChart";
+import RestaurantDashboardChart from "./RestaurantDashboardChart";
 
 const AllExpeseAnalytics = ({ dashboardData, dummyData, userHotel, user }) => {
   return (
@@ -120,7 +121,9 @@ const AllExpeseAnalytics = ({ dashboardData, dummyData, userHotel, user }) => {
             monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
             userHotel={userHotel}
           /> */}
-          <ThreeBarChart />
+          <RestaurantDashboardChart
+            monthlyData={[...dummyData, ...dashboardData?.monthly_datas]}
+          />
         </section>
 
         <section className="mt-8 grid md:grid-cols-2 gap-5">

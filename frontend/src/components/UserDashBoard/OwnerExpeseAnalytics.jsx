@@ -5,6 +5,7 @@ import ExpensesChart from "./ExpesesChart";
 import OwnerExpenseAndSalesChart from "./OwnerExpneseAndSalesChart";
 import { BiRupee } from "react-icons/bi";
 import ThreeBarChart from "./ThreeBarChart";
+import RestaurantDashboardChart from "./RestaurantDashboardChart";
 
 const OwnerExpeseAnalytics = ({
   monthlyData,
@@ -70,50 +71,15 @@ const OwnerExpeseAnalytics = ({
                 </div>
               </p>
             </div>
-
-            {/* <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mt-3">
-        <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
-          {userHotel ? <BsFillSendCheckFill /> : <MdAutorenew />}
-        </div>
-        <h6 className="text-xs text-slate-400">
-          TOTAL {userHotel ? "CHECK Out" : "RENEW"}
-        </h6>
-        <p className="text-2xl font-semibold mb-5">750</p>
-        <hr />
-      </div> */}
           </section>
 
           <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
-            {/* <OwnerExpenseAndSalesChart
-            monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
-            userHotel={userHotel}
-          /> */}
-            <ThreeBarChart />
+            <RestaurantDashboardChart
+              monthlyData={[...dummyData, ...dashboardData?.monthly_datas]}
+            />
           </section>
 
-          <section className="mt-8 grid md:grid-cols-2 gap-5">
-            {/* <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-        <TotalBookingAmountAndNumber />
-      </div> */}
-
-            {/* customer list */}
-            {/* <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-        <CustomerList />
-      </div> */}
-            {/* </section> */}
-
-            {/* <section className="mt-8 grid md:grid-cols-2 gap-5"> */}
-            {/* <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-        <TodaysBooking />
-      </div> */}
-
-            {/* NextBooking box */}
-            {/* {userHotel && (
-        <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-          <NextBooking />
-        </div>
-      )} */}
-          </section>
+          <section className="mt-8 grid md:grid-cols-2 gap-5"></section>
         </div>
       </div>
     </div>
