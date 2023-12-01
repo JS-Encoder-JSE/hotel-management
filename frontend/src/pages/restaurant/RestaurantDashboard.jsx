@@ -11,19 +11,33 @@ import { TbCurrencyTaka } from "react-icons/tb";
 import { HiOutlineCurrencyRupee } from "react-icons/hi2";
 import { BiRupee } from "react-icons/bi";
 import RestaurantDashboardChart from "../../components/UserDashBoard/RestaurantDashboardChart";
-
+import { useGetSubDashBoardInfoQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
+import { useSelector } from "react-redux";
+import { Rings } from "react-loader-spinner";
 
 const RestaurantDashboard = () => {
-  const [profit,setProfit] = useState(false);
+  const { user } = useSelector((state) => state.authSlice);
+  const { data, isLoading, isError } = useGetSubDashBoardInfoQuery(user._id);
+  console.log(data);
+  const [profit, setProfit] = useState(false);
   const formik = useFormik({
-    initialValues: {
-     
-     
-    },
+    initialValues: {},
     onSubmit: (values) => {
       setKeyword(values.search);
     },
   });
+  if (isLoading || isError) {
+    return (
+      <div>
+        <Rings
+          width="50"
+          height="50"
+          color="#37a000"
+          wrapperClass="justify-center"
+        />
+      </div>
+    );
+  }
   return (
     <>
       <div
@@ -36,15 +50,15 @@ const RestaurantDashboard = () => {
           </div>
           <h6 className="text-xs text-slate-400 ">TODAY EXPENSES</h6>
           <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
-                <span>850</span>
+                <span>{data?.daily_datas[0]?.today_restaurant_expenses}</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
@@ -55,32 +69,32 @@ const RestaurantDashboard = () => {
             <h6 className="text-xs text-slate-400">TODAY SALES</h6>
             <p className="text-2xl font-semibold mt-4">
               <div className="flex justify-end">
-              <div>
-              <BiRupee />
+                <div>
+                  <BiRupee />
+                </div>
+                <div>
+                  <span>{data?.daily_datas[0]?.today_restaurant_income}</span>
+                </div>
               </div>
-              <div>
-                <span>850</span>
-              </div>
-              </div>
-              </p>
+            </p>
             <hr />
           </div>
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#309873] p-3 rounded-md text-white">
-          <HiOutlineCurrencyRupee />
+            <HiOutlineCurrencyRupee />
           </div>
           <h6 className="text-xs text-slate-400 ">TODAY PROFIT</h6>
           <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
-                <span>850</span>
+                <span>{data?.daily_datas[0]?.today_restaurant_profit}</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
       </div>
@@ -112,15 +126,17 @@ const RestaurantDashboard = () => {
           </div>
           <h6 className="text-xs text-slate-400 ">LAST WEEK EXPENSES</h6>
           <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
-                <span>850</span>
+                <span>
+                  {data?.last_week_data?.last_week_restaurant_expenses}
+                </span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
@@ -129,22 +145,22 @@ const RestaurantDashboard = () => {
           </div>
           <h6 className="text-xs text-slate-400 ">LAST WEEK SALES</h6>
           <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
-                <span>850</span>
+                <span>{data?.last_week_data?.last_week_restaurant_income}</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md text-white">
-          <HiOutlineCurrencyRupee />
+            <HiOutlineCurrencyRupee />
           </div>
-          
+
           <h6 className="text-xs text-slate-400 ">PROFIT</h6>
           {/* <div>
                     {profit === "positive" ? (
@@ -157,24 +173,26 @@ const RestaurantDashboard = () => {
                       </div>
                     )}
                   </div> */}
-            <p className="text-2xl font-semibold mt-4">
-              <div className="flex justify-end">
+          <p className="text-2xl font-semibold mt-4">
+            <div className="flex justify-end">
               <div>
-              <BiRupee />
+                <BiRupee />
               </div>
               <div>
-                <span>850</span>
+                <span>{data?.last_week_data?.last_week_restaurant_profit}</span>
               </div>
-              </div>
-              </p>
+            </div>
+          </p>
           <hr />
         </div>
       </div>
       <div>
-      <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200 mb-4">
-        <h1  className='text-[1.2rem] text-center font-bold'>Financial Overview</h1>
-       
-         <RestaurantDashboardChart/>
+        <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200 mb-4">
+          <h1 className="text-[1.2rem] text-center font-bold">
+            Financial Overview
+          </h1>
+
+          <RestaurantDashboardChart />
         </section>
       </div>
     </>

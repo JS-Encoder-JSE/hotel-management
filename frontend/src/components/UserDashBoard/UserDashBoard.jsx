@@ -22,164 +22,8 @@ import { useGetDashboardInfoQuery } from "../../redux/dashboard/dashboardApi";
 import { Rings } from "react-loader-spinner";
 import AllExpeseAnalytics from "./AllExpeseAnalytics";
 import OwnerExpeseAnalytics from "./OwnerExpeseAnalytics";
-const dummyData = [
-  {
-    month_name: "November",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2022",
-  },
-  {
-    month_name: "December",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2022",
-  },
-  {
-    month_name: "January",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "February",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "March",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "April",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "May",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "June",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "July",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "August",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "September",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-  {
-    month_name: "October",
-    total_booking: 0,
-    total_checkin: 0,
-    total_checkout: 6,
-    total_expired: 0,
-    total_renew: 0,
-    total_sale: 0,
-    updatedAt: "2023-11-18T15:46:21.952Z",
-    user_id: "65586d2f9250d89c1bac2d5b",
-    user_role: "manager",
-    year: "2023",
-  },
-];
+import { dummyData } from "../../utils/utils";
+
 const UserDashBoard = ({ managerId }) => {
   const { user } = useSelector((store) => store.authSlice);
   const {
@@ -188,7 +32,6 @@ const UserDashBoard = ({ managerId }) => {
     isLoading,
     isError,
   } = useGetDashboardInfoQuery(managerId ? managerId : user?._id);
-
   const [userHotel, setUserHotel] = useState(
     user?.role === "manager" || user?.role === "owner"
   );
@@ -208,14 +51,12 @@ const UserDashBoard = ({ managerId }) => {
         <section
           // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5 `}
           className="grid md:grid-cols-4 gap-4 mt-4"
-
         >
           <div className="relative bg-white p-3  text-right rounded shadow hover:shadow-md duration-200  mb-4">
             <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
               {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
             </div>
             <h6 className="text-xs text-slate-400 ">
-             
               {userHotel ? "TODAY'S CHECK IN" : "TOTAL SELL"}
             </h6>
             <p className="text-2xl font-semibold mt-3">
@@ -249,11 +90,9 @@ const UserDashBoard = ({ managerId }) => {
           {user?.role === "manager" || user?.role === "owner" ? (
             <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
-                
                 <BsClipboard2DataFill />
               </div>
               <h6 className="text-xs text-slate-400 uppercase">
-               
                 TODAY'S Booking
               </h6>
               <p className="text-2xl font-semibold mt-3">
@@ -278,9 +117,7 @@ const UserDashBoard = ({ managerId }) => {
               {/* <FaDollarSign /> */}
               <GiCoins className={`db-currency text-white`} />
             </div>
-            <h6 className="text-xs text-slate-400 ">
-             
-              TOTAL AMOUNT</h6>
+            <h6 className="text-xs text-slate-400 ">TOTAL AMOUNT</h6>
             <p className="text-2xl font-semibold mt-4">
               {Math.floor(dashboardData?.permanent_datas?.total_amount || 0)}
             </p>
@@ -307,7 +144,6 @@ const UserDashBoard = ({ managerId }) => {
               {userHotel ? <FaRegCalendarAlt /> : <MdAutorenew />}
             </div>
             <h6 className="text-xs text-slate-400 ">
-              
               TOTAL {userHotel ? "CHECK IN" : "RENEW"}
             </h6>
             <p className="text-2xl font-semibold mt-4">
@@ -391,15 +227,28 @@ const UserDashBoard = ({ managerId }) => {
         </div>
       )} */}
         </section>
-   { user?.role ==="manager" &&<section>
-          <AllExpeseAnalytics user={user} userHotel={userHotel} dashboardData={dashboardData} dummyData={dummyData}/>
-        </section>}
+        {user?.role === "manager" && (
+          <section>
+            <AllExpeseAnalytics
+              user={user}
+              userHotel={userHotel}
+              dashboardData={dashboardData}
+              dummyData={dummyData}
+            />
+          </section>
+        )}
 
-        { user?.role ==="owner" &&<section>
-          <OwnerExpeseAnalytics user={user} userHotel={userHotel} dashboardData={dashboardData} dummyData={dummyData}/>
-        </section>}
+        {user?.role === "owner" && (
+          <section>
+            <OwnerExpeseAnalytics
+              user={user}
+              userHotel={userHotel}
+              dashboardData={dashboardData}
+              dummyData={dummyData}
+            />
+          </section>
+        )}
       </div>
-
     </>
   );
 };
