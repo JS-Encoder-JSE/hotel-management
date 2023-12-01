@@ -68,7 +68,7 @@ const validDocumentTypeKey = Object.keys(documentTypes).find(
 const validDocumentType = documentTypes[validDocumentTypeKey]?.filter(value => value !== "") || [];
 
 console.log("Valid Document Type Field Name:", validDocumentTypeKey);
-console.log("Valid Document Type:", validDocumentType);
+console.log("Valid Document Type:", postedBill?.data?.gym_bills);
 
 
 
@@ -244,7 +244,7 @@ console.log("Valid Document Type:", validDocumentType);
       {/*  Bill system*/}
       <div 
       // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}
-      className="grid md:grid-cols-3 gap-3  "
+      className="grid md:grid-cols-3 gap-3"
       >
 <div >
 <RestaurantBillsCard food_bills={postedBill?.data?.food_bills}/>
@@ -253,15 +253,11 @@ console.log("Valid Document Type:", validDocumentType);
   <GymBills GymBill={postedBill?.data?.gym_bills
 }/>
 </div>
-<div >
+<div>
   <PoolsBill poolBills={postedBill?.data?.pool_bills
 }/>
 </div>
       </div>
-      {/*  TransactionHistoryCard*/}
-    {/* <div>
-      <TransactionHistoryCard/>
-    </div> */}
    </>
   );
 };
