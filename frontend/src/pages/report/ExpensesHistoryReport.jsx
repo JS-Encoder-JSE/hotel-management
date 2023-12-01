@@ -1,7 +1,7 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
-import { getformatDateTime } from "../../utils/utils";
+import { getFormateDateAndTime } from "../../utils/utils";
 
 const ExpensesHistoryReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
@@ -87,7 +87,7 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ? date // Use the date prop here
+                    ? getFormateDateAndTime(item[key]) // Use the date prop here
                     : item[key]}
                 </Text>
               ))}

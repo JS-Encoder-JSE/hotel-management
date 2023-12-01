@@ -70,8 +70,8 @@ const ShowALlSellView = () => {
                   <th>Description</th>
                   <th>Quantity</th>
                   <th>Price</th>
-                  <th>Remark</th>
-                  <th>Action</th>
+                  {/* <th>Remark</th>
+                  <th>Action</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -96,8 +96,8 @@ const ShowALlSellView = () => {
                           </div>
                         </div>
                       </td>
-                      <td>Remark</td>
-                      <td>
+                      {/* <td>Remark</td> */}
+                      {/* <td>
                         <button
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                           onClick={() =>
@@ -113,11 +113,11 @@ const ShowALlSellView = () => {
                                 ✕
                               </button>
                             </form>
-                            {/* edit sales */}
+                           
                             <EditSalesView/>
                           </div>
                         </dialog>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}

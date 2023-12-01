@@ -15,18 +15,31 @@ import GymBills from "../../components/Manage-CheckIn/GymBills.jsx";
 import PoolsBill from "../../components/Manage-CheckIn/PoolsBill.jsx";
 import { MdOutlineHail } from "react-icons/md";
 
+
 const CheckinPersonInfo = () => {
+  const [roomId, setRoomId] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   console.log(id)
   const { data: booking, isLoading } = useGetBookingInfoByIdQuery(id);
 
-  const roomId = booking?.data?.room_id?._id
+  
+  useEffect(() => {
+    const roomId = booking?.data?.room_id?._id;
+    setRoomId(roomId);
 
-  console.log(roomId)
+    if (roomId) {
+      
+      console.log("Success roomId:", roomId);
+    } else {
+      console.log("Invalid roomId");
+    }
+  }, [booking]);
+  
+  console.log("roomId...................",roomId)
+  
 
   const { data:postedBill, error, isLoadingPostedBill } = useGetRoomPostedBillsQuery(roomId);
-
 
   console.log(postedBill,"postedBill")
 
@@ -40,7 +53,7 @@ const CheckinPersonInfo = () => {
     }
   }, [modalOpen]);
 
-console.log(booking,"bokingdata")
+// console.log(booking,"bokingdata............")
 
 const documentTypes = {
   driving_lic_img: booking?.data?.doc_images?.driving_lic_img,
@@ -234,13 +247,15 @@ console.log("Valid Document Type:", validDocumentType);
       className="grid md:grid-cols-3 gap-3  "
       >
 <div >
-<RestaurantBillsCard/>
+<RestaurantBillsCard food_bills={postedBill?.data?.food_bills}/>
 </div>
 <div >
-  <GymBills/>
+  <GymBills GymBill={postedBill?.data?.gym_bills
+}/>
 </div>
 <div >
-  <PoolsBill/>
+  <PoolsBill poolBills={postedBill?.data?.pool_bills
+}/>
 </div>
       </div>
       {/*  TransactionHistoryCard*/}

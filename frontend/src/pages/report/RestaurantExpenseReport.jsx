@@ -1,7 +1,7 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
-import { getformatDateTime } from "../../utils/utils";
+import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils";
 
 const RestaurantExpenseReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
@@ -87,7 +87,7 @@ const RestaurantExpenseReport = ({ values, header,date }) => {
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ? getformatDateTime(date) // Use the date prop here
+                    ?getformatDateTime(date) // Use the date prop here
                     : item[key]}
                 </Text>
               ))}
