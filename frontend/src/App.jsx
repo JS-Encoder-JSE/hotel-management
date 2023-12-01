@@ -110,8 +110,6 @@ import ManageCheckin from "./pages/room/ManageCheckin.jsx";
 import CheckinPersonInfo from "./pages/room/CheckinPersonInfo.jsx";
 import EditSalesHotel from "./components/OwnerExpenses/EditSalesHotel.jsx";
 
-
-
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -197,7 +195,7 @@ const App = () => {
               path: "manage-checkin",
               element: (
                 <ManagerRoute>
-                  <ManageCheckin/>
+                  <ManageCheckin />
                 </ManagerRoute>
               ),
             },
@@ -213,7 +211,7 @@ const App = () => {
               path: "manage-checkin/:id",
               element: (
                 <ManagerRoute>
-                  <CheckinPersonInfo/>
+                  <CheckinPersonInfo />
                 </ManagerRoute>
               ),
             },
@@ -357,7 +355,7 @@ const App = () => {
               path: "add-expense",
               element: (
                 <ManagerRoute>
-                  <AddExpense/>
+                  <AddExpense />
                 </ManagerRoute>
               ),
             },
@@ -365,7 +363,7 @@ const App = () => {
               path: "all-hotel-expenses",
               element: (
                 <ManagerRoute>
-                  <HotelExpenses/>
+                  <HotelExpenses />
                 </ManagerRoute>
               ),
             },
@@ -373,7 +371,7 @@ const App = () => {
               path: "hotel-expense/:id",
               element: (
                 <ManagerRoute>
-                 <HotelExpenseDetails/>
+                  <HotelExpenseDetails />
                 </ManagerRoute>
               ),
             },
@@ -381,7 +379,7 @@ const App = () => {
               path: "add-hotel-expense",
               element: (
                 <ManagerRoute>
-                  <AddHotelExpense/>
+                  <AddHotelExpense />
                 </ManagerRoute>
               ),
             },
@@ -413,7 +411,7 @@ const App = () => {
               path: "hotel-dashboard",
               element: (
                 <ManagerRoute>
-                  <HotelDashboard/>
+                  <RestaurantDashboard />
                 </ManagerRoute>
               ),
             },
@@ -649,7 +647,7 @@ const App = () => {
               path: "restaurant-expenses/:id",
               element: (
                 <OwnerRoute>
-                  <ShowAllExpenseView/>
+                  <ShowAllExpenseView />
                   {/* <RestaurantExpensesView /> */}
                 </OwnerRoute>
               ),
@@ -682,7 +680,7 @@ const App = () => {
               path: "hotel-expenses/:id",
               element: (
                 <OwnerRoute>
-                   <ShowAllExpenseView />
+                  <ShowAllExpenseView />
                   {/* <HotelExpensesView /> */}
                 </OwnerRoute>
               ),

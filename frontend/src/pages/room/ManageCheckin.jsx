@@ -165,7 +165,7 @@ const ManageCheckin = () => {
           wrapperClass="justify-center"
         />
       )}
-      <Modal id={`cci_modal`}>
+      <Modal id={`cci_modal`} classNames={`bg-white`}>
            <ManageCheckinModal/>
           </Modal>
     </div>

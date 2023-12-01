@@ -12,7 +12,11 @@ const expensesAndSalesApi = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["GetExpenses"],
     }),
+    getSubDashBoardInfo: builder.query({
+      query: (managerId) => `subdashboards/get-subdashboard-info/${managerId}`,
+    }),
   }),
 });
 
-export const { useUpdateExpensesItemMutation } = expensesAndSalesApi;
+export const { useUpdateExpensesItemMutation, useGetSubDashBoardInfoQuery } =
+  expensesAndSalesApi;
