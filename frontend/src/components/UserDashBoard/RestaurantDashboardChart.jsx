@@ -1,31 +1,28 @@
-import React from 'react';
-import ReactApexChart from 'react-apexcharts';
+import React, { useEffect, useState } from "react";
+import ReactApexChart from "react-apexcharts";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
+import { isValidUrl } from "../../utils/utils";
 
 const generateRandomData = () => {
   return Array.from({ length: 12 }, () => Math.floor(Math.random() * 100) + 1);
 };
-
-const RestaurantDashboardChart = () => {
-  const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  ];
-
-  const options = {
+console.log("generateRandomData", generateRandomData());
+const RestaurantDashboardChart = ({ monthlyData }) => {
+  const [options, setOptions] = useState({
     series: [
-      { name: 'Expense', data: generateRandomData() },
-      { name: 'sales', data: generateRandomData() },
-      { name: 'Profit', data: generateRandomData() },
+      { name: "Expense", data: [] },
+      { name: "Sales", data: [] },
+      { name: "Profit", data: [] },
     ],
     chart: {
-      type: 'bar',
+      type: "bar",
       height: 350,
     },
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '55%',
-        endingShape: 'rounded',
+        columnWidth: "55%",
+        endingShape: "rounded",
       },
     },
     dataLabels: {
@@ -34,14 +31,14 @@ const RestaurantDashboardChart = () => {
     stroke: {
       show: true,
       width: 2,
-      colors: ['transparent'],
+      colors: ["transparent"],
     },
     xaxis: {
-      categories: months,
+      categories: [],
     },
     yaxis: {
       title: {
-        text: 'Financial Overview',
+        text: "Financial Overview",
       },
     },
     fill: {
@@ -50,13 +47,62 @@ const RestaurantDashboardChart = () => {
     tooltip: {
       y: {
         formatter: function (val) {
-          return "₹" + val + ' thousands';
+          return "₹" + val + " thousands";
         },
       },
     },
-  };
+  });
+  useEffect(() => {
+    const sortedData = monthlyData.sort((a, b) => {
+      const aDate = new Date(`${a.year}-${a.month_name}`);
+      const bDate = new Date(`${b.year}-${b.month_name}`);
+      return aDate - bDate;
+    });
+    const last12Data = sortedData.slice(-12);
 
-  return <ReactApexChart options={options} series={options.series} type="bar" height={350} />;
+    const allMonth = last12Data.map((data) => data.month_name.substring(0, 3));
+    const hotelIncome = last12Data.map((data) => data.total_hotel_income);
+    const hotelExpense = last12Data.map((data) => data.total_hotel_expenses);
+    const restaurantIncome = last12Data.map(
+      (data) => data.total_restaurant_income
+    );
+    const restaurantExpense = last12Data.map(
+      (data) => data.total_restaurant_expenses
+    );
+    const restaurantProfit = last12Data.map(
+      (data) => data.total_restaurant_profit
+    );
+    const hotelProfit = last12Data.map((data) => data.total_hotel_profit);
+    // Update state
+    setOptions((prevProps) => ({
+      ...prevProps,
+      series: [
+        {
+          ...prevProps.series[0],
+          data: isValidUrl("hotel") ? hotelExpense : restaurantExpense,
+        },
+        {
+          ...prevProps.series[1],
+          data: isValidUrl("hotel") ? hotelIncome : restaurantIncome,
+        },
+        {
+          ...prevProps.series[2],
+          data: isValidUrl("hotel") ? hotelProfit : restaurantProfit,
+        },
+      ],
+      xaxis: {
+        categories: allMonth,
+      },
+    }));
+  }, [monthlyData]);
+  return (
+    <ReactApexChart
+      options={options}
+      series={options.series}
+      type="bar"
+      height={350}
+    />
+  );
 };
 
 export default RestaurantDashboardChart;

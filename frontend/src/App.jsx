@@ -721,7 +721,7 @@ const App = () => {
               path: "hotel-analytics",
               element: (
                 <OwnerRoute>
-                  <HotelAnalytics />
+                  <RestaurantsAnalytics />
                 </OwnerRoute>
               ),
             },

@@ -14,12 +14,14 @@ import RestaurantDashboardChart from "../../components/UserDashBoard/RestaurantD
 import { useGetSubDashBoardInfoQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
 import { useSelector } from "react-redux";
 import { Rings } from "react-loader-spinner";
+import { dummyData, isValidUrl } from "../../utils/utils";
 
-const RestaurantDashboard = () => {
-  const url = window.location.href;
+const RestaurantDashboard = ({ managerId }) => {
 
   const { user } = useSelector((state) => state.authSlice);
-  const { data, isLoading, isError } = useGetSubDashBoardInfoQuery(user._id);
+  const { data, isLoading, isError } = useGetSubDashBoardInfoQuery(
+    managerId ? managerId : user._id
+  );
   console.log(data);
   const [profit, setProfit] = useState(false);
   const formik = useFormik({
@@ -28,9 +30,7 @@ const RestaurantDashboard = () => {
       setKeyword(values.search);
     },
   });
-  const isValidUrl = (pageName) => {
-    return url.includes(pageName);
-  };
+
   if (isLoading || isError) {
     return (
       <div>
@@ -223,7 +223,9 @@ const RestaurantDashboard = () => {
             Financial Overview
           </h1>
 
-          <RestaurantDashboardChart />
+          <RestaurantDashboardChart
+            monthlyData={[...dummyData, ...data?.monthly_datas]}
+          />
         </section>
       </div>
     </>
