@@ -290,7 +290,7 @@ export const checkedOut = async (req, res) => {
       const newDailySubDashData = new DailySubDashData({
         user_id: userId,
         user_role: user.role,
-        today_hotel_expenses: paid_amount,
+        today_hotel_income: paid_amount,
         date,
       });
       await newDailySubDashData.save();
@@ -310,7 +310,7 @@ export const checkedOut = async (req, res) => {
       const newMonthlySubDashData = new DailySubDashData({
         user_id: userId,
         user_role: user.role,
-        total_hotel_expenses: paid_amount,
+        total_hotel_income: paid_amount,
       });
       await newMonthlySubDashData.save();
     }
