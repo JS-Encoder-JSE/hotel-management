@@ -246,7 +246,7 @@ const ManagerSbItems = ({ handleSBItems,isHbMenu,setHbMenu }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineInventory2 />
-            <span className={`-mt-0.5`}>Inventory</span>
+            <span className={`-mt-0.5`}>Inventory / Hotel Expenses</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
