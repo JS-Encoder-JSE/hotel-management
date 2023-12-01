@@ -50,6 +50,27 @@ const RestaurantBillsCard = ({ food_bills
     }
   };
 
+  // pagination setup for today's expenses
+const itemsPerPage = 6;
+const [currentPageItem, setCurrentPageItem] = useState(0);
+
+const handlePageChange = ({ selected }) => {
+  setCurrentPageItem(selected);
+};
+const totalPage =
+food_bills && Math.ceil(food_bills[0]?.items?.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems =food_bills && food_bills[0]?.items?.slice(
+indexOfFirstItem,
+indexOfLastItem
+);
+
+console.log(currentItems,"-72")
+
   return (
     <div className={`space-y-5 mt-20 `}>
       <div>
@@ -75,7 +96,7 @@ const RestaurantBillsCard = ({ food_bills
 
                 <tbody>
                   {food_bills &&
-                    food_bills[0]?.items?.map((itemBill, idx) => {
+                    currentItems.map((itemBill, idx) => {
                       return (
                         <tr
                           className={
@@ -133,21 +154,21 @@ const RestaurantBillsCard = ({ food_bills
           </div>
           <div className="flex justify-center mt-10">
             <ReactPaginate
-              containerClassName="join rounded-none"
-              pageLinkClassName="join-item btn btn-md bg-transparent"
-              activeLinkClassName="btn-active !bg-green-slimy text-white"
-              disabledLinkClassName="btn-disabled"
-              previousLinkClassName="join-item btn btn-md bg-transparent"
-              nextLinkClassName="join-item btn btn-md bg-transparent"
-              breakLinkClassName="join-item btn btn-md bg-transparent"
-              previousLabel="<"
-              nextLabel=">"
-              breakLabel="..."
-              pageCount={pageCount}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
-              renderOnZeroPageCount={null}
+            containerClassName="join rounded-none"
+            pageLinkClassName="join-item btn btn-md bg-transparent"
+            activeLinkClassName="btn-active !bg-green-slimy text-white"
+            disabledLinkClassName="btn-disabled"
+            previousLinkClassName="join-item btn btn-md bg-transparent"
+            nextLinkClassName="join-item btn btn-md bg-transparent"
+            breakLinkClassName="join-item btn btn-md bg-transparent"
+            previousLabel="<"
+            nextLabel=">"
+            breakLabel="..."
+            pageCount={totalPage}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageChange}
+            renderOnZeroPageCount={null}
             />
           </div>
         </div>

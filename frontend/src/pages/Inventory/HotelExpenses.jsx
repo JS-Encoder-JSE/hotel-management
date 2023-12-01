@@ -258,7 +258,7 @@ console.log(currentItems,"currenttem")
               </div>
 
               <div>
-                {hotelExpenses && hotelExpenses?.docs[0]?.items.length ? (
+                {currentItems && currentItems?.length ? (
                   <div className=" overflow-x-auto overflow-y-auto">
                     <table className="table">
                       <thead>
@@ -269,7 +269,7 @@ console.log(currentItems,"currenttem")
                           <th>Description</th>
                           <th>Quantity</th>
                           <th>Price</th>
-                          {hotelExpenses?.docs[0]?.items?.map(
+                          {currentItems?.map(
                             (item, idx) => item?.remark && <th>Remark</th>
                           )}
                           <th>Action</th>
@@ -296,7 +296,7 @@ console.log(currentItems,"currenttem")
                                 <FaRupeeSign className="inline" />
                                 <span>{item?.price}</span>
                               </td>
-                              {item?.remark && <td>Remark</td>}
+                               <td>{item?.remark ? item?.remark :""}</td>
                               <td>
                                 <button
                                   className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
@@ -482,7 +482,7 @@ console.log(currentItems,"currenttem")
         </div>
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
-          <div className="h-[20rem] overflow-x-auto overflow-y-auto">
+          <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>

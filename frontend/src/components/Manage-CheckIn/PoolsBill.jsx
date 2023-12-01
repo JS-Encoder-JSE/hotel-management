@@ -41,7 +41,28 @@ const PoolsBill = ({poolBills}) => {
       formik.handleSubmit();
     }
   };
-  const totalPoolBill = poolBills?.reduce((total, bill) => total + (bill.price || 0), 0);
+
+// pagination setup for today's expenses
+const itemsPerPage = 5;
+const [currentPageItem, setCurrentPageItem] = useState(0);
+
+const handlePageChange = ({ selected }) => {
+  setCurrentPageItem(selected);
+};
+const totalPage =
+poolBills && Math.ceil(poolBills?.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems = poolBills && poolBills?.slice(
+indexOfFirstItem,
+indexOfLastItem
+);
+
+
+
   return (
     <div className={`space-y-5 mt-20`}>
     <div  >
@@ -65,7 +86,7 @@ const PoolsBill = ({poolBills}) => {
                 </tr>
               </thead>
               <tbody>
-                {poolBills?.map((pool, idx) => {
+                {currentItems?.map((pool, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
@@ -79,39 +100,26 @@ const PoolsBill = ({poolBills}) => {
                   );
                 })}
               </tbody>
-              <tfoot className={`text-[1.2rem] font-bold`}>
-                <tr>
-                  <td colSpan={4} className={`text-end `}>
-                  Total :
-                  </td>
-                  <td>
-                 <div className="flex">
-                  <div><BiRupee/></div>
-                  <div>{totalPoolBill}</div>
-                 </div>
-                  </td>
-                </tr>
-              </tfoot>
             </table>
           </div>
         </div>
         <div className="flex justify-center mt-10">
             <ReactPaginate
-              containerClassName="join rounded-none"
-              pageLinkClassName="join-item btn btn-md bg-transparent"
-              activeLinkClassName="btn-active !bg-green-slimy text-white"
-              disabledLinkClassName="btn-disabled"
-              previousLinkClassName="join-item btn btn-md bg-transparent"
-              nextLinkClassName="join-item btn btn-md bg-transparent"
-              breakLinkClassName="join-item btn btn-md bg-transparent"
-              previousLabel="<"
-              nextLabel=">"
-              breakLabel="..."
-              pageCount={pageCount}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
-              renderOnZeroPageCount={null}
+               containerClassName="join rounded-none"
+               pageLinkClassName="join-item btn btn-md bg-transparent"
+               activeLinkClassName="btn-active !bg-green-slimy text-white"
+               disabledLinkClassName="btn-disabled"
+               previousLinkClassName="join-item btn btn-md bg-transparent"
+               nextLinkClassName="join-item btn btn-md bg-transparent"
+               breakLinkClassName="join-item btn btn-md bg-transparent"
+               previousLabel="<"
+               nextLabel=">"
+               breakLabel="..."
+               pageCount={totalPage}
+               pageRangeDisplayed={2}
+               marginPagesDisplayed={2}
+               onPageChange={handlePageChange}
+               renderOnZeroPageCount={null}
             />
           </div>
       </div>
