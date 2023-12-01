@@ -39,6 +39,7 @@ const EditRoom = () => {
   const [updateRoom] = useUpdateRoomMutation();
   const [uploadSingle] = useUploadSingleMutation();
 
+
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -71,13 +72,13 @@ const EditRoom = () => {
           );
         }
       }
-
       obj.images = images;
       obj.air_conditioned = obj.ac;
       delete obj.ac;
       delete obj.photos;
 
       const response = await updateRoom({ id, data: obj });
+     
 
       if (response?.error) {
         toast.error(response.error.data.message);

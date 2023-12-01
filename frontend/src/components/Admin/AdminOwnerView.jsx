@@ -18,6 +18,7 @@ const AdminOwnerView = () => {
   const user_id = store?.getState()?.authSlice?.user?._id;
   const { id } = useParams();
   const { data, isLoading, error } = useGetUserQuery(id);
+  // console.log("date............",data);
   const { user } = useSelector((store) => store.authSlice);
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -50,7 +51,8 @@ const AdminOwnerView = () => {
               <h2 className="card-title mb-3">License Information </h2>
               <h6>
                 {" "}
-                License Key : {new Date(data?.bill_to).toLocaleDateString()}
+                License Key : {data?.license_key}
+                {/* {new Date(data?.bill_to).toLocaleDateString()} */}
               </h6>
               <h6>
                 {" "}
