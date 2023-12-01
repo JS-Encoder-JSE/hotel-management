@@ -18,7 +18,8 @@ const PaymentSection = ({
   data,
   isHotelSuccess,
   hotelInfo,
-  roomData
+  roomData,
+  // isLoading
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -167,6 +168,12 @@ const PaymentSection = ({
           }`}
         >
           Checkout
+          {/* {isLoading ? (
+                  <span
+                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                    role="status"
+                  ></span>
+                ) : null} */}
         </button>
       </div>
     </section>
