@@ -3,7 +3,7 @@ import { Document, Page, View, Text, StyleSheet,Image } from "@react-pdf/rendere
 import logo from "../../assets/logo.png"
 
 const CreateReport = ({ values, header }) => {
-  console.log(values,"Values")
+
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",

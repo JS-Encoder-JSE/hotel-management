@@ -39,7 +39,7 @@ const EditSalesView = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+    
     },
   });
 

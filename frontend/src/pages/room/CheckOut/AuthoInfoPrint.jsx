@@ -4,7 +4,7 @@ const AuthoInfoPrint = ({ hotelInfo, isHotelSuccess }) => {
   // }
 
   const info = isHotelSuccess && hotelInfo[0] ? hotelInfo[0] : [];
-  console.log(info);
+ 
 
   return (
     <div className="py-2">

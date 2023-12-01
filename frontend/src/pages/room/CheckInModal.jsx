@@ -67,7 +67,6 @@ const validationSchema = yup.object({
 const CheckInModal = ({ room }) => {
 
 
-  console.log(room,"checkind")
 
 // current Date
   const [currentDate,setCurrentDate]=useState(new Date())
@@ -148,7 +147,7 @@ const CheckInModal = ({ room }) => {
       let title;
       let tempImg;
 
-      console.log(total_rent,"totalRent","||",rent_per_day, "||",obj.discount,"||", no_of_days,"||", room,"||",obj.room_arr)
+      // console.log(total_rent,"totalRent","||",rent_per_day, "||",obj.discount,"||", no_of_days,"||", room,"||",obj.room_arr)
 
       switch (obj.documentsType) {
         case "Aadhar Card":

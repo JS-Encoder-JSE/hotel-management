@@ -16,7 +16,7 @@ const ManageSingleRoom = () => {
   const navigate = useNavigate();
   const { isLoading, data: room } = useRoomQuery(id);
   
-  console.log("edit room.......", room);
+
 
   return (
     <div className={`bg-white max-w-6xl mx-auto rounded-3xl p-10 space-y-10`}>

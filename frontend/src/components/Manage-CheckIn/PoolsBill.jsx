@@ -19,7 +19,7 @@ import { BiRupee } from "react-icons/bi";
 
 const PoolsBill = ({poolBills}) => {
 
-  console.log(poolBills,"poolbils")
+ 
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);

@@ -17,7 +17,7 @@ import { BiRupee } from "react-icons/bi";
 
 const RestaurantBillsCard = ({ food_bills
 }) => {
-  console.log("foodBills..........", food_bills);
+
 
   const totalPrice = food_bills?.reduce((total, bill) => {
     // Use another reduce to calculate the total price of items in each bill
@@ -69,7 +69,7 @@ indexOfFirstItem,
 indexOfLastItem
 );
 
-console.log(currentItems,"-72")
+
 
   return (
     <div className={`space-y-5 mt-20 `}>

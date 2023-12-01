@@ -25,8 +25,7 @@ const RestaurantsAnalytics = () => {
     filter: "Active",
   });
   const [selectedHotel, setselectedHotel] = useState(null);
-  console.log("selectedHotel", selectedHotel);
-  console.log("hotels", hotels);
+
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
@@ -52,7 +51,6 @@ const RestaurantsAnalytics = () => {
     );
   }
 
-  console.log(selectedHotel?.value, "------------------");
   return (
     <>
       {/* back button */}

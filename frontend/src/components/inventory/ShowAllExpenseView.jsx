@@ -24,11 +24,11 @@ const ShowAllExpenseView = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const { id } = useParams();
-  console.log(id, "expense by id");
+
 
   const { data: itemExpense } = useGetExpenseByIdQuery(id);
 
-  console.log(itemExpense, "Nissan");
+
 
   function calculateTotalPrice(items) {
     // Ensure items is not null or undefined
@@ -56,7 +56,7 @@ const ShowAllExpenseView = () => {
   };
   const navigate = useNavigate();
   const handle = () => {
-    console.log("console");
+   
   };
 
   const [editItemData, setEditItemData] = useState(null);
@@ -140,7 +140,7 @@ const ShowAllExpenseView = () => {
                         setEditItemData(item);
                         window.eb_modal.showModal();
                         setIndex(idx);
-                        console.log(idx);
+                      
                       }}
                     >
                       <FaRegEdit />

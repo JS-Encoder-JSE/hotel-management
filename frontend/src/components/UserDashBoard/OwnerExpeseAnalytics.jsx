@@ -13,7 +13,7 @@ const OwnerExpeseAnalytics = ({
   dashboardData,
   dummyData,
 }) => {
-  console.log("dashboardData", dashboardData);
+  
   return (
     <div>
       <div className="mt-10">

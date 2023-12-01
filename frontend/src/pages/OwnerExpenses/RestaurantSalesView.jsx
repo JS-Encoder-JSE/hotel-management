@@ -20,7 +20,6 @@ const RestaurantSalesView = () => {
 
   const { user } = useSelector((store) => store.authSlice);
 
-  console.log(hotelId, dateParam, "ownerResHisView")
 
 // query by searchParams
   const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({

@@ -39,7 +39,7 @@ const EditRestaurantSales = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      
     },
   });
 

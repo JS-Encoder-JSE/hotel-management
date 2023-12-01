@@ -168,7 +168,7 @@ const CheckIn = () => {
         (result) => (tempImg = result.data.imageUrls)
       );
 
-      // console.log("check in res", {
+     
       //   hotel_id: obj.hotel_id,
       //   room_ids,
       //   guestName: obj.guestName,

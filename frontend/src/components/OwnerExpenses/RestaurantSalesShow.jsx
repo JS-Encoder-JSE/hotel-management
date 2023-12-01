@@ -67,7 +67,7 @@ const RestaurantSalesShow = ({hotelId}) => {
   order_status: 'CheckedOut',
   hotel_id:hotelId,
 });
-console.log(restaurantSalesToday,"ownerresSales")
+
 
 // History
 const { data:restaurantSalesHistory, error, isLoading } = useGetDailyDataQuery({
@@ -77,7 +77,7 @@ const { data:restaurantSalesHistory, error, isLoading } = useGetDailyDataQuery({
   hotel_id:hotelId,
   limit: formik.values.entries,
 });
-console.log(restaurantSalesHistory?.data?.docs,"dailyData")
+
 
 
 

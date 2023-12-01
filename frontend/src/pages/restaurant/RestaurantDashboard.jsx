@@ -22,7 +22,7 @@ const RestaurantDashboard = ({ managerId }) => {
   const { data, isLoading, isError } = useGetSubDashBoardInfoQuery(
     managerId ? managerId : user._id
   );
-  console.log(data);
+  
   const [profit, setProfit] = useState(false);
   const formik = useFormik({
     initialValues: {},

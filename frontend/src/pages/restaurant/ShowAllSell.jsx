@@ -38,14 +38,14 @@ const ShowAllSell = () => {
 
   const { user } = useSelector((store) => store.authSlice);
 
-  // console.log(user?.assignedHotel[0],"user")
+
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
   });
 
-  console.log(searchParams);
+
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -80,7 +80,7 @@ const ShowAllSell = () => {
     order_status: "CheckedOut",
     hotel_id: user?.assignedHotel[0],
   });
-  console.log("restaurantSalesToday", restaurantSalesToday);
+ 
 
   // filtered data
   const {
@@ -97,7 +97,11 @@ const ShowAllSell = () => {
     filter: formik.values.filter,
   });
 
+<<<<<<< Updated upstream
   console.log(restaurantSalesHistory, "dailyData ");
+=======
+
+>>>>>>> Stashed changes
 
   useEffect(() => {
     if (restaurantSalesHistory)
@@ -140,7 +144,6 @@ const ShowAllSell = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // console.log(currentItems,"currenttem")
 
   const totalPrice = currentItems?.reduce(
     (total, item) => total + item.price,
