@@ -28,7 +28,7 @@ const CheckOut = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomFromQuery = searchParams.get("room");
-  const [addCheckout] = useAddCheckoutMutation();
+  const [addCheckout,{isLoading:addCheckOutLoading}] = useAddCheckoutMutation();
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
@@ -40,6 +40,7 @@ const CheckOut = () => {
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
   const [getCheckout, { data: checkout, isSuccess, isLoading}] = useGetCheckoutMutation();
+  // console.log("Isloading",isLoading)
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
@@ -161,8 +162,8 @@ const CheckOut = () => {
           </button>
         </Link>
       </div>
-      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center">
-        <div className="flex flex-col gap-3">
+      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center flex flex-col md:flex-row">
+        <div className="">
           <Select
             placeholder="Select room"
             name={`roomNumber`}
@@ -238,6 +239,7 @@ const CheckOut = () => {
               hotelInfo={hotelInfo}
               isHotelSuccess={isHotelSuccess}
               roomData={checkout?.data?.room_bookings}
+              addCheckOutLoading={addCheckOutLoading}
             />
           </div>
         </>
