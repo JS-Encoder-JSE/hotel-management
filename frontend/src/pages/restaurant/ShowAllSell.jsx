@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaEye,
@@ -24,7 +24,7 @@ const ShowAllSell = () => {
   const navigate = useNavigate();
   const [forcePage, setForcePage] = useState(null);
   const [managersPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
   const [PDF, setPdf] = useState([]);
@@ -32,7 +32,7 @@ const ShowAllSell = () => {
   const { user } = useSelector((store) => store.authSlice);
 
 
-  console.log(user?.assignedHotel[0],"user")
+  // console.log(user?.assignedHotel[0],"user")
 
   
 
@@ -53,6 +53,7 @@ const ShowAllSell = () => {
     initialValues: {
       startDate: "",
       endDate: "",
+      filter:"",
     },
     onSubmit: (values) => {
       setSearchParams((p) => ({
@@ -72,28 +73,33 @@ const ShowAllSell = () => {
   const {  data:restaurantSalesToday, error:restaurantSaleEx, isLoading:dataLoading } = useGetOrdersByDateQuery({
     date: fromDateIsoConverterForAddExpenses(new Date()),
     order_status: 'CheckedOut',
-    hotel_id: user?.assignedHotel[0]
+    hotel_id:user?.assignedHotel[0],
   });
+// console.log(restaurantSalesToday,"todaysale")
 
 
 
-  // const { data:restaurantSalesToday, error:restaurantSaleEx, isLoading:dataLoading } = useGetDailyDataQuery({
-  //   cp: 1,
-  //   fromDate: fromDateIsoConverterForAddExpenses(new Date()),
-  //   hotel_id:user?.assignedHotel[0],
-  //   limit:10,
-  // });
 
-console.log(restaurantSalesToday,"todaysale")
 
+
+// filtered data
   const { data:restaurantSalesHistory, error, isLoading } = useGetDailyDataQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
-    toDate: (searchParams?.toDate),
-    hotel_id:user?.assignedHotel[0],
+    toDate: searchParams?.toDate,
+    managerId:user?._id,
     limit: formik.values.entries,
+    filter:formik.values.filter,
   });
-  console.log(restaurantSalesHistory?.data?.docs,"dailyData")
+
+  console.log(restaurantSalesHistory?.data,"dailyData ")
+
+  useEffect(() => {
+    if (restaurantSalesHistory) setPageCount(restaurantSalesHistory?.data?.totalPages);
+  }, [restaurantSalesHistory]);
+
+
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -101,13 +107,47 @@ console.log(restaurantSalesToday,"todaysale")
     }
   };
 
-  // const totalItemPrice =filteredExpenses && filteredExpenses?.docs[2]?.items?.reduce(
-  //   (total, item) => {
-  //     // Add the price of each item to the total
-  //     return total + (item?.price || 0);
-  //   },
-  //   0
-  // );
+
+  const [todayItem, setTodayItem] = useState([]);
+
+  useEffect(() => {
+    const todayItems = restaurantSalesToday?.data?.map((obj) => obj?.items).flat();
+    setTodayItem(todayItems);
+  }, [restaurantSalesToday]);
+  
+  
+
+
+  // pagination setup for today's expenses
+const itemsPerPage = 10;
+const [currentPageItem, setCurrentPageItem] = useState(0);
+
+
+const handlePageChange = ({ selected }) => {
+  setCurrentPageItem(selected);
+};
+
+
+const totalPage =
+todayItem && Math.ceil(todayItem?.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems = todayItem?.slice(
+indexOfFirstItem,
+indexOfLastItem
+);
+
+const handleScrollToTop = () => {
+// Scroll to the top of the page
+window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// console.log(currentItems,"currenttem")
+
+const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
 
   return (
     <div className={`space-y-5`}>
@@ -133,7 +173,7 @@ console.log(restaurantSalesToday,"todaysale")
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
             >
-              Today Sales
+              Today's Sales
             </h3>
           </div>
 
@@ -167,37 +207,35 @@ console.log(restaurantSalesToday,"todaysale")
           </div> */}
 
         <div className="overflow-x-auto">
-           {restaurantSalesToday&& restaurantSalesToday?.data?.docs ? <table className="table">
+           {currentItems && currentItems.length? <table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
-                  <th>Date</th>
-                  <th>Items Name</th>
-                  <th>Description</th>
+                  <th>Item</th>
+                  <th>Surveyor Quantity</th>
                   <th>Quantity</th>
                   <th>Price</th>
-                  <th>Remark</th>
-                  <th>Action</th>
+
                 </tr>
               </thead>
               <tbody>
-                {restaurantSalesToday&& restaurantSalesToday?.data?.docs?.map((item, idx) => {
+                {restaurantSalesToday&& currentItems?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{new Date(item?.date).toLocaleDateString()}</td>
-                      <td>Fried Rice</td>
-                      <td>Good </td>
-                      <td>10</td>  
+                      <td>{item?.item}</td>
+                      <td>{item?.serveyor_quantity}</td> 
+                      <td>{item?.quantity}</td> 
+                      <td>{item?.price}</td> 
                     </tr>
                   );
                 })}
               </tbody>
               <tfoot className={`text-[1.2rem] font-bold`}>
                 <tr>
-                  <td colSpan={5} className={`text-end text-md font-bold`}>
+                  <td colSpan={4} className={`text-end text-md font-bold`}>
                     Total :
                   </td>
                   <td>
@@ -207,7 +245,7 @@ console.log(restaurantSalesToday,"todaysale")
                       </div>
                       <div>
                         {" "}
-                        65464 fake data
+                        {totalPrice}
                         {/* {totalItemPrice} */}
                       </div>
                     </div>
@@ -219,7 +257,7 @@ console.log(restaurantSalesToday,"todaysale")
                   </p>}
           </div>
         </div>
-        <div className="flex justify-center ">
+        <div onClick={handleScrollToTop} className="flex justify-center ">
           <ReactPaginate
             containerClassName="join rounded-none"
             pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -231,10 +269,10 @@ console.log(restaurantSalesToday,"todaysale")
             previousLabel="<"
             nextLabel=">"
             breakLabel="..."
-            pageCount={pageCount}
+            pageCount={totalPage}
             pageRangeDisplayed={2}
             marginPagesDisplayed={2}
-            onPageChange={handlePageClick}
+            onPageChange={handlePageChange}
             renderOnZeroPageCount={null}
           />
         </div>
@@ -257,6 +295,23 @@ console.log(restaurantSalesToday,"todaysale")
             </button>
           </div>
         </div>
+        <div className={`flex justify-between my-5`}>
+            <div className={`space-x-1.5`}>
+              <span>Show</span>
+              <select
+                name="entries"
+                className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+                value={formik.values.entries}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+              </select>
+              <span>entries</span>
+            </div>
+          </div>
         <div className={`flex flex-col md:flex-row gap-4 `}>
           <DatePicker
             autoComplete={`off`}
@@ -361,21 +416,22 @@ console.log(restaurantSalesToday,"todaysale")
           </div>
           <div className="flex justify-center mt-10">
             <ReactPaginate
-              containerClassName="join rounded-none"
-              pageLinkClassName="join-item btn btn-md bg-transparent"
-              activeLinkClassName="btn-active !bg-green-slimy text-white"
-              disabledLinkClassName="btn-disabled"
-              previousLinkClassName="join-item btn btn-md bg-transparent"
-              nextLinkClassName="join-item btn btn-md bg-transparent"
-              breakLinkClassName="join-item btn btn-md bg-transparent"
-              previousLabel="<"
-              nextLabel=">"
-              breakLabel="..."
-              pageCount={pageCount}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
-              renderOnZeroPageCount={null}
+               containerClassName="join rounded-none"
+               pageLinkClassName="join-item btn btn-md bg-transparent"
+               activeLinkClassName="btn-active !bg-green-slimy text-white"
+               disabledLinkClassName="btn-disabled"
+               previousLinkClassName="join-item btn btn-md bg-transparent"
+               nextLinkClassName="join-item btn btn-md bg-transparent"
+               breakLinkClassName="join-item btn btn-md bg-transparent"
+               previousLabel="<"
+               nextLabel=">"
+               breakLabel="..."
+               pageCount={pageCount}
+               pageRangeDisplayed={2}
+               marginPagesDisplayed={2}
+               onPageChange={handlePageClick}
+               renderOnZeroPageCount={null}
+               forcePage={currentPage}
             />
           </div>
         </div>

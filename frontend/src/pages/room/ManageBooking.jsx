@@ -31,6 +31,7 @@ const ManageBooking = () => {
     page: currentPage,
     filter: "Active",
   });
+  console.log("booklist.....",bookingList);
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {

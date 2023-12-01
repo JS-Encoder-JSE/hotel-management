@@ -25,7 +25,7 @@ export const getISOStringDate = (date) => {
 export const fromDateIsoConverterForAddExpenses = (date) => {
   const fromDate = new Date(date);
   fromDate.setHours(18, 0, 0, 0);
-  const isoFromDate = fromDate.toISOString();
+  const isoFromDate = fromDate?.toISOString();
   return isoFromDate;
 };
 
