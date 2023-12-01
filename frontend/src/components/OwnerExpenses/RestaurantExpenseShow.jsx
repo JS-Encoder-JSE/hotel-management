@@ -100,11 +100,9 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    cp: 1,
     fromDate: fromDateIsoConverter(new Date()),
     hotel_id: hotelId,
     spendedfor: "restaurant",
-    limit: 10,
   });
 
   useEffect(() => {
@@ -154,6 +152,33 @@ const RestaurantExpenseShow = ({ hotelId }) => {
       return total + (item?.price || 0);
     }, 0);
 
+    // pagination setup for today's expenses
+const itemsPerPage = 10;
+const [currentPageItem, setCurrentPageItem] = useState(0);
+
+const handlePageChange = ({ selected }) => {
+  setCurrentPageItem(selected);
+};
+const totalPage =
+RestaurantExpenses && Math.ceil(RestaurantExpenses?.docs[0]?.items.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems = RestaurantExpenses?.docs[0]?.items.slice(
+indexOfFirstItem,
+indexOfLastItem
+);
+
+const handleScrollToTop = () => {
+  // Scroll to the top of the page
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+
+console.log(currentItems)
+
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white  p-4 rounded`}>
@@ -189,11 +214,11 @@ const RestaurantExpenseShow = ({ hotelId }) => {
               ) : null}
             </div>
 
-            <div className="h-96">
+            <div >
               {/* 3rd commit  */}
 
               {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto overflow-y-auto">
                 <table className="table">
                   <thead>
                     <tr>
@@ -210,7 +235,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {RestaurantExpenses?.docs[0]?.items?.map((item, idx) => {
+                    {currentItems?.map((item, idx) => {
                       return (
                         <tr
                           className={
@@ -281,7 +306,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
 
           {/* pagination */}
 
-          <div className="flex justify-center mt-10">
+          <div onClick={handleScrollToTop} className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -293,11 +318,12 @@ const RestaurantExpenseShow = ({ hotelId }) => {
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={RestaurantExpenses?.pagingCounter}
+              pageCount={pageCount}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
+              onPageChange={handlePageChange}
               renderOnZeroPageCount={null}
+              forcePage={currentPage}
             />
           </div>
         </div>
@@ -332,13 +358,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                 PDF
               </PDFDownloadLink>
             ) : null}
-          </div>
-          <div className={`flex justify-end mb-5`}>
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
           </div>
         </div>
         <div className={`flex justify-between my-5`}>

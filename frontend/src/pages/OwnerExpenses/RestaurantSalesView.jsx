@@ -1,24 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useFormik } from "formik";
 import ReactPaginate from "react-paginate";
 import EditRestaurantSales from "./EditRestaurantSales";
+import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
+import { useSelector } from "react-redux";
 
 const RestaurantSalesView = () => {
 
   const [pageCount, setPageCount] = useState(10);
 
+  const [searchParams] = useSearchParams();
+
+
+
+  const dateParam = searchParams.get('date');
+  const hotelId = searchParams.get("hotel")
+
+  const { user } = useSelector((store) => store.authSlice);
+
+  console.log(hotelId, dateParam, "ownerResHisView")
+
+// query by searchParams
+  const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
+    date: dateParam,
+    order_status: 'CheckedOut',
+    hotel_id:hotelId,
+  });
+
+
  const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
 
-    const formik = useFormik({
-        initialValues: {
-          startDate: "",
-          endDate: "",
-        },
-      });
+ 
   const navigate = useNavigate();
 
   return (
@@ -44,7 +60,7 @@ const RestaurantSalesView = () => {
           <h1 className={`text-2xl text-center`}>Sales Information</h1>
         </div>
         <div className="overflow-x-auto">
-            <table className="table">
+            {orderedDataByDate && orderedDataByDate?.length?<table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
@@ -58,7 +74,7 @@ const RestaurantSalesView = () => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {orderedDataByDate?.data?.map((_, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
@@ -78,29 +94,7 @@ const RestaurantSalesView = () => {
                           </div>
                         </div>
                       </td>
-                      <td>Remark</td>
-                      <td>
-                        <button
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                          onClick={() =>
-                            document.getElementById("my_modal_3").showModal()
-                          }
-                        >
-                          <FaRegEdit />
-                        </button>
-                        <dialog id="my_modal_3" className="modal">
-                          <div className="modal-box">
-                            <form method="dialog">
-                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                ✕
-                              </button>
-                            </form>
-                           
-                            <EditRestaurantSales/>
-                          </div>
-                        </dialog>
-                      </td>
-                     
+                      <td>Remark</td>    
                     </tr>
                   );
                 })}
@@ -117,14 +111,14 @@ const RestaurantSalesView = () => {
                       </div>
                       <div>
                         {" "}
-                        65464
+                        65464 fake data
                         {/* {totalItemPrice} */}
                       </div>
                     </div>
                   </td>
                 </tr>
               </tfoot>
-            </table>
+            </table> :<p className="text-center my-16">No Sales yet!</p>}
            {/* <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
             <h1>Grand Total :</h1>
            <div className="flex">
