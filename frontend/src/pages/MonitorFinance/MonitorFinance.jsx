@@ -20,8 +20,6 @@ const MonitorFinance = () => {
     filter: "Active",
   });
   const [selectedHotel, setselectedHotel] = useState(null);
-  console.log("selectedHotel", selectedHotel);
-  console.log("hotels", hotels);
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
@@ -49,7 +47,7 @@ const MonitorFinance = () => {
     );
   }
 
-  console.log(selectedHotel?.value,"------------------")
+ 
   return (
     <>
       <div className={`mb-5`}>

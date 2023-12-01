@@ -85,7 +85,7 @@ const Report = () => {
   useEffect(() => {
     if (reports) setPageCount(reports?.totalPages);
   }, [reports]);
-  // console.log(reports);
+ 
   useEffect(() => {
     if (reports) {
       const total = reports.docs.reduce(

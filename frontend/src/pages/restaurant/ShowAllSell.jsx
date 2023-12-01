@@ -91,7 +91,6 @@ const ShowAllSell = () => {
     limit: formik.values.entries,
     filter: formik.values.filter,
   });
-  console.log("restaurantSalesHistory-----------------------------", restaurantSalesHistory);
   useEffect(() => {
     if (restaurantSalesHistory)
       setPageCount(restaurantSalesHistory?.data?.totalPages);
@@ -133,7 +132,6 @@ const ShowAllSell = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // console.log(currentItems,"currenttem")
 
   const totalPrice = currentItems?.reduce(
     (total, item) => total + item.price,

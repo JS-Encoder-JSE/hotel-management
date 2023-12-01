@@ -41,7 +41,7 @@ const CheckinPersonInfo = () => {
     }
   }, [modalOpen]);
 
-// console.log(booking,"bokingdata............")
+
 
 const documentTypes = {
   driving_lic_img: booking?.data?.doc_images?.driving_lic_img,

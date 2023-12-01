@@ -43,14 +43,14 @@ const HotelExpenses = () => {
   // editItemData
   const [editItemData, setEditItemData] = useState(null);
 
-  // console.log(user._id);
+ 
 
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
-  // console.log(hotelInfo[0]?._id);
+ 
 
   const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
@@ -83,7 +83,7 @@ const HotelExpenses = () => {
 //     limit: 10,
 //   });
 
-  // console.log(RestaurantExpenses,"expnessfor resto")
+ 
   
   // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
   //   const {data:hotelExpenses, isLoading,isSuccess} = useGetExpensesQuery({
@@ -94,14 +94,13 @@ const HotelExpenses = () => {
   //     limit: 10,
   //   });
 
-  // console.log(hotelExpenses,"expnessfor resto")
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
   });
 
-  console.log(searchParams);
+ 
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -135,7 +134,7 @@ const HotelExpenses = () => {
     spendedfor: "hotel",
   });
 
-  // console.log("hotelExpenses,", hotelExpenses)
+  
 
   const {
     data: filteredExpenses,
@@ -156,13 +155,12 @@ const HotelExpenses = () => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
-  console.log(hotelExpenses, "History");
+
 
   useEffect(() => {
     setPdf(hotelExpenses?.docs[0]?.items);
   }, [hotelExpenses]);
 
-  console.log(filteredExpenses, "filtered expenses.......");
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -203,7 +201,6 @@ const handleScrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-console.log(currentItems,"currenttem")
 
 
   return (

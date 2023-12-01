@@ -36,7 +36,7 @@ const EditTodayExpenses = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      
     },
   });
 

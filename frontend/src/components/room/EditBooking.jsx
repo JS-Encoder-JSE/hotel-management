@@ -57,7 +57,7 @@ const validationSchema = yup.object({
 
 const EditBooking = ({ data, bookingId }) => {
   const { id } = useParams();
-  console.log("data", data);
+ 
   // current date for from
   const [currentDate, setCurrentDate] = useState(new Date());
   const [updateBookingInfo, { isLoading }] = useUpdateBookingInfoMutation();
@@ -89,7 +89,7 @@ const EditBooking = ({ data, bookingId }) => {
         children: Number(values.children),
         nationality: values.nationality,
       };
-      console.log({ obj });
+     
       try {
         const response = await updateBookingInfo({
           id: id,

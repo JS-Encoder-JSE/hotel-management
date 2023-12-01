@@ -19,7 +19,7 @@ import { BiRupee } from "react-icons/bi";
 
 const GymBills = ({GymBill}) => {
 
-console.log(GymBill,"gymBill")
+
 
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
@@ -62,7 +62,7 @@ console.log(GymBill,"gymBill")
   indexOfLastItem
   );
 
-  console.log(GymBill,"gym")
+
 
 
 

@@ -348,6 +348,7 @@ export const updateOrder = async (req, res) => {
       if (!existingDailySubDashData) {
         const newDailySubDashData = new DailySubDashData({
           user_id: user_id,
+          user_role: user.role,
           today_restaurant_expenses: new_paid_amount,
         });
         await newDailySubDashData.save();
@@ -365,6 +366,7 @@ export const updateOrder = async (req, res) => {
       if (!existingMonthlySubDashData) {
         const newMonthlySubDashData = new DailySubDashData({
           user_id: user_id,
+          user_role: user.role,
           total_restaurant_expenses: new_paid_amount,
         });
         await newMonthlySubDashData.save();
@@ -390,6 +392,7 @@ export const updateOrder = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
+      error: error,
     });
   }
 };

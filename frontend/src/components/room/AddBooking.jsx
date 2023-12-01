@@ -69,7 +69,7 @@ const AddBooking = () => {
     // }
   };
 
-  // console.log(user)
+  
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -101,7 +101,7 @@ const AddBooking = () => {
         to: toDateIsoConverter(values.to),
       };
 
-      console.log(obj.discount)
+      
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr?.map((elem) => elem.value);

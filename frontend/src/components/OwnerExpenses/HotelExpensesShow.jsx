@@ -36,14 +36,14 @@ const HotelExpensesShow = ({hotelId}) => {
 
 const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-// console.log(user._id);
+
 
 const {
   data: hotelInfo,
   isLoading: isHotelLoading,
   isSuccess: isHotelSuccess,
 } = useGetHotelByManagerIdQuery(user?._id);
-// console.log(hotelInfo[0]?._id);
+
 
 
 // const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
@@ -68,7 +68,7 @@ const {
 //     limit: 10,
 //   });
 
-  // console.log(hotelExpenses,"expnessfor resto")
+ 
   
 
  
@@ -77,7 +77,7 @@ const {
     toDate: "",
   });
 
-  console.log(searchParams)
+ 
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -125,14 +125,14 @@ const {
 
 
 
-  console.log(hotelExpenses,"History")
+  
 
   useEffect(()=>{
 setPdf(hotelExpenses?.docs[0]?.items)
   },[hotelExpenses])
  
 
-  console.log(filteredExpenses,"filtered expenses.......")
+  
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
       formik.handleSubmit();
@@ -170,7 +170,7 @@ const handleScrollToTop = () => {
 window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-console.log(currentItems,"currenttem")
+
 
   return (
     <div className={`space-y-5`}>

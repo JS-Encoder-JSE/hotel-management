@@ -76,7 +76,7 @@ const AddBookingSelect = ({ room }) => {
     // }
   };
 
-  // console.log(user)
+  
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -108,7 +108,7 @@ const AddBookingSelect = ({ room }) => {
         to: toDateIsoConverter(values.to),
       };
 
-      console.log(obj.discount);
+   
 
       if (!obj.discount) obj.discount = 0;
 
@@ -195,7 +195,7 @@ const AddBookingSelect = ({ room }) => {
   //   }
   // }, [room?.data]);
 
-  console.log(room.data._id, "--------Rom");
+  
 
   // Price Validation
   const handleChildren = (e) => {

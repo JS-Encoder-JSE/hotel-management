@@ -40,7 +40,7 @@ const CheckOut = () => {
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
   const [getCheckout, { data: checkout, isSuccess, isLoading}] = useGetCheckoutMutation();
-  // console.log("Isloading",isLoading)
+
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);

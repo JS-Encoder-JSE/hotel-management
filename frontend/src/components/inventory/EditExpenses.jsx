@@ -26,22 +26,14 @@ const validationSchema = yup.object({
   
 const EditExpenses = ({data,allItems,index}) => {
 
+ 
 
-  console.log(allItems,data,index)
 
-  console.log(data,"----------------")
-
-//   const [selectItem,setSelecItem]=useState({})
-
-//   console.log("selectedItem",selectItem)
-
-// // console.log("------",singleItem)
-//     // update expenses data
     const [updateExpense, { isLoading:isUpdatedDataLoad }] = useUpdateExpenseMutation();
 
     const [updatedItem,setUpdatedItem]=useState([])
 
-    console.log(updatedItem,"updated Item")
+ 
 
  
     const [showPass, setShowPass] = useState(false);
@@ -57,26 +49,26 @@ const EditExpenses = ({data,allItems,index}) => {
   
       validationSchema,
       onSubmit: async (values, formikHelpers) => {
-      //  console.log(values)
+    
 
        setUpdatedItem(values)
-        // try {
-        //   const response = useUpdateExpenseMutation({
-        //     id: values._id,
-        //     data: values,
-        //   });
+        try {
+          const response = useUpdateExpenseMutation({
+            id: values._id,
+            data: values,
+          });
   
   
-        //   if (response?.error) {
-        //     toast.error(response.error.data.message);
-        //   } else {
-        //     formikHelpers.resetForm();
-        //     closeRef.current.click();
-        //     toast.success(response.data.message);
-        //   }
-        // } catch (error) {
+          if (response?.error) {
+            toast.error(response.error.data.message);
+          } else {
+            formikHelpers.resetForm();
+            closeRef.current.click();
+            toast.success(response.data.message);
+          }
+        } catch (error) {
          
-        // }
+        }
       },
     });
 
@@ -245,7 +237,21 @@ const EditExpenses = ({data,allItems,index}) => {
                   </small>
                 ) : null}
               </div>
-    
+              <div className="col-span-full flex flex-col gap-3">
+          <textarea
+            placeholder="Remark...."
+            name="remark"
+            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
+            value={formik.values.remark}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.remark && Boolean(formik.errors.remark) ? (
+            <small className="text-red-600">
+              {formik.touched.remark && formik.errors.remark}
+            </small>
+          ) : null}
+        </div>
       
  
 

@@ -37,14 +37,14 @@ const AddHotelExpense = () => {
 
 const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  // console.log(user._id);
+ 
 
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
-  // console.log(hotelInfo[0]?._id);
+ 
 
     // add expense
     const[AddExpense]=useAddExpensesMutation()
@@ -64,7 +64,7 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
     const [selectDate,setSelectDate]=useState(null)
 
-    console.log(totalItems,"items---------")
+  
 
     let totalExpense =[...totalItems]
 
@@ -92,7 +92,7 @@ const calculateTotal = () => {
             setSelectDate(selectedDate)
 
             const obj = { ...values };
-            console.log(obj.date)
+        
           
             if (editIndex !== null) {
               // Update existing item
