@@ -97,7 +97,7 @@ const ShowAllSell = () => {
     filter: formik.values.filter,
   });
 
-  console.log(restaurantSalesHistory?.data, "dailyData ");
+  console.log(restaurantSalesHistory, "dailyData ");
 
   useEffect(() => {
     if (restaurantSalesHistory)
