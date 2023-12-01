@@ -11,6 +11,7 @@ import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpe
 import HotelExpensesShow from "../../components/OwnerExpenses/HotelExpensesShow.jsx";
 import HotelSalesShow from "../../components/OwnerExpenses/HotelSalesShow.jsx";
 import RestaurantAnalyticsShow from "../../components/OwnerExpenses/RestaurantAnalyticsShow.jsx";
+import RestaurantDashboard from "../restaurant/RestaurantDashboard.jsx";
 
 const RestaurantsAnalytics = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -109,7 +110,7 @@ const RestaurantsAnalytics = () => {
 
         <section>
           {selectedHotel ? (
-            <RestaurantAnalyticsShow managerId={selectedHotel?.value}></RestaurantAnalyticsShow>
+            <RestaurantDashboard managerId={selectedHotel?.value}></RestaurantDashboard>
           ) : (
             <p className="text-center">Please Select your Hotel Branch !!</p>
           )}
