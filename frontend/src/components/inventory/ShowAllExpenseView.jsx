@@ -62,6 +62,7 @@ const ShowAllExpenseView = () => {
 
 
   const [editItemData, setEditItemData] = useState(null);
+  const [index,setIndex]=useState()
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -117,7 +118,7 @@ const ShowAllExpenseView = () => {
             {itemExpense?.items.map((item, idx) => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                  <th>{++idx}</th>
+                  <th>{idx+1}</th>
                   <td>
                     {itemExpense?.date}
                     </td>
@@ -143,6 +144,8 @@ const ShowAllExpenseView = () => {
                       onClick={() =>{
                         setEditItemData(item);
                          window.eb_modal.showModal()
+                         setIndex(idx)
+                         console.log(idx);
                       }
                     }
                    
@@ -177,7 +180,7 @@ const ShowAllExpenseView = () => {
         </table>
       </div>
       <Modal id={`eb_modal`}>
-      <EditExpensesView data={editItemData}/>
+      <EditExpensesView index={index} allItems={itemExpense} data={editItemData}/>
       </Modal>
       {/* pagination */}
       <div className="flex justify-center mt-10">
