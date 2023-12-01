@@ -145,7 +145,6 @@ const ShowAllExpense = () => {
     spendedfor: "restaurant",
   });
 
-console.log(resExpenses,"hotelex")
 
 
   const {

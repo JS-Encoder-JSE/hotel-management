@@ -93,8 +93,8 @@ const {
      
       setSearchParams((p) => ({
         ...p,
-        toDate: fromDateIsoConverterForAddExpenses(values.endDate),
-        fromDate: fromDateIsoConverterForAddExpenses(values.startDate),
+        toDate: fromDateIsoConverter(values.endDate),
+        fromDate: fromDateIsoConverter(values.startDate),
       }));
     },
     onReset: (values) => {
@@ -103,11 +103,9 @@ const {
     },
   });
   const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
-    cp: 1,
-    fromDate:fromDateIsoConverterForAddExpenses(new Date()),
+    fromDate:fromDateIsoConverter(new Date()),
     hotel_id: hotelId,
-    spendedfor: "hotel",
-    limit: 10,
+    spendedfor: "hotel"
   });
 
 
@@ -146,6 +144,33 @@ setPdf(hotelExpenses?.docs[0]?.items)
     // Add the price of each item to the total
     return total + (item?.price || 0);
   }, 0);
+
+
+  // pagination setup for today's expenses
+const itemsPerPage = 10;
+const [currentPageItem, setCurrentPageItem] = useState(0);
+
+const handlePageChange = ({ selected }) => {
+  setCurrentPageItem(selected);
+};
+const totalPage =
+hotelExpenses && Math.ceil(hotelExpenses?.docs[0]?.items.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems = hotelExpenses?.docs[0]?.items.slice(
+indexOfFirstItem,
+indexOfLastItem
+);
+
+const handleScrollToTop = () => {
+// Scroll to the top of the page
+window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+console.log(currentItems,"currenttem")
 
   return (
     <div className={`space-y-5`}>
@@ -189,7 +214,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
               </PDFDownloadLink>
               ) : null}
           </div>
-        <div className="h-96">
+        <div>
         {hotelExpenses&& hotelExpenses?.docs[0]?.items.length ?<div className="overflow-x-auto">
             <table className="table">
               <thead>
@@ -205,7 +230,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                 </tr>
               </thead>
               <tbody>
-                {hotelExpenses?.docs[0]?.items?.map((item, idx) => {
+                {currentItems && currentItems?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
@@ -274,7 +299,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
 
         {/* pagination */}
 
-        <div className="flex justify-center mt-10">
+        <div onClick={handleScrollToTop} className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -286,10 +311,10 @@ setPdf(hotelExpenses?.docs[0]?.items)
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={hotelExpenses?.pagingCounter}
+              pageCount={totalPage}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
+              onPageChange={handlePageChange}
               renderOnZeroPageCount={null}
             />
           </div>

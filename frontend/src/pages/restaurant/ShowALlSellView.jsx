@@ -15,7 +15,7 @@ const ShowALlSellView = () => {
 
   const { user } = useSelector((store) => store.authSlice);
 
-  
+  console.log(user?.assignedHotel[0])
 
 // query by searchParams
   const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
@@ -37,6 +37,33 @@ const ShowALlSellView = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
+
+
+// pagination setup for today's expenses
+const itemsPerPage = 10;
+const [currentPageItem, setCurrentPageItem] = useState(0);
+
+const handlePageChange = ({ selected }) => {
+  setCurrentPageItem(selected);
+};
+const totalPage =
+orderedDataByDate && Math.ceil(orderedDataByDate?.data?.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems = orderedDataByDate?.data?.slice(
+indexOfFirstItem,
+indexOfLastItem
+);
+
+const handleScrollToTop = () => {
+// Scroll to the top of the page
+window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+console.log(currentItems,"cu")
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -75,7 +102,7 @@ const ShowALlSellView = () => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {currentItems?.map((item, idx) => {
                   return (
                     <tr
                     key={idx}
@@ -157,10 +184,10 @@ const ShowALlSellView = () => {
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={pageCount}
+              pageCount={totalPage}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
+              onPageChange={handlePageChange}
               renderOnZeroPageCount={null}
             />
           </div>
