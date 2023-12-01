@@ -130,7 +130,7 @@ const ManageCheckinModal = () => {
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
-      const no_of_days = Math.floor(
+      const no_of_days = Math.ceil(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
       const rent_per_day = obj.room_arr.reduce(
