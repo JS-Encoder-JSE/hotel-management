@@ -50,6 +50,21 @@ const dashboardTableSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    total_expense: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    total_income: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    total_profit: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
@@ -152,6 +167,21 @@ const dashboardSchema = new mongoose.Schema(
       default: 0,
     },
     total_canceled: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    total_expense: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    total_revenue: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    net_profit: {
       type: Number,
       required: false,
       default: 0,

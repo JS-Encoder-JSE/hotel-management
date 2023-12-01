@@ -15,32 +15,99 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import EditSales from "../../components/inventory/EditSales";
+import { useGetDailyDataQuery, useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
+import { useSelector } from "react-redux";
+import { fromDateIsoConverter, fromDateIsoConverterForAddExpenses, getISOStringDate } from "../../utils/utils";
 // import EditExpenses from "./EditExpenses";
 
 const ShowAllSell = () => {
   const navigate = useNavigate();
+  const [forcePage, setForcePage] = useState(null);
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
   const [PDF, setPdf] = useState([]);
 
+  const { user } = useSelector((store) => store.authSlice);
+
+
+  console.log(user?.assignedHotel[0],"user")
+
+  
+
+  
+
+  const [searchParams, setSearchParams] = useState({
+    fromDate: "",
+    toDate: "",
+  });
+
+  console.log(searchParams);
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
+
   const formik = useFormik({
     initialValues: {
       startDate: "",
       endDate: "",
     },
+    onSubmit: (values) => {
+      setSearchParams((p) => ({
+        ...p,
+        toDate: getISOStringDate(values.endDate),
+        fromDate: getISOStringDate(values.startDate),
+      }));
+    },
+    onReset: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
+    },
   });
 
-  const handlePageClick = ({ selected: page }) => {
-    setCurrentPage(page);
-  };
+
+  // / query by searchParams
+  const {  data:restaurantSalesToday, error:restaurantSaleEx, isLoading:dataLoading } = useGetOrdersByDateQuery({
+    date: fromDateIsoConverterForAddExpenses(new Date()),
+    order_status: 'CheckedOut',
+    hotel_id: user?.assignedHotel[0]
+  });
+
+
+
+  // const { data:restaurantSalesToday, error:restaurantSaleEx, isLoading:dataLoading } = useGetDailyDataQuery({
+  //   cp: 1,
+  //   fromDate: fromDateIsoConverterForAddExpenses(new Date()),
+  //   hotel_id:user?.assignedHotel[0],
+  //   limit:10,
+  // });
+
+console.log(restaurantSalesToday,"todaysale")
+
+  const { data:restaurantSalesHistory, error, isLoading } = useGetDailyDataQuery({
+    cp: currentPage,
+    fromDate: searchParams?.fromDate,
+    toDate: (searchParams?.toDate),
+    hotel_id:user?.assignedHotel[0],
+    limit: formik.values.entries,
+  });
+  console.log(restaurantSalesHistory?.data?.docs,"dailyData")
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
       formik.handleSubmit();
     }
   };
+
+  // const totalItemPrice =filteredExpenses && filteredExpenses?.docs[2]?.items?.reduce(
+  //   (total, item) => {
+  //     // Add the price of each item to the total
+  //     return total + (item?.price || 0);
+  //   },
+  //   0
+  // );
 
   return (
     <div className={`space-y-5`}>
@@ -49,7 +116,7 @@ const ShowAllSell = () => {
           <Link to={`/dashboard `}>
             <button
               type="button"
-              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
             >
               <dfn>
                 <abbr title="Back">
@@ -94,13 +161,13 @@ const ShowAllSell = () => {
           {/* <div className={`flex justify-end mb-5`}>
             <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
               {" "}
-              <FaRegFilePdf />
+              <FaRegFilePdf /> 
               PDF
             </button>
           </div> */}
 
-          <div className="overflow-x-auto">
-            <table className="table">
+        <div className="overflow-x-auto">
+           {restaurantSalesToday&& restaurantSalesToday?.data?.docs ? <table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
@@ -114,17 +181,17 @@ const ShowAllSell = () => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {restaurantSalesToday&& restaurantSalesToday?.data?.docs?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
+                      <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>Fried Rice</td>
                       <td>Good </td>
                       <td>10</td>
-                      <td className="flex">
+                      {/* <td className="flex">
                         <div>
                           <FaRupeeSign />
                         </div>
@@ -132,7 +199,7 @@ const ShowAllSell = () => {
                           <span>5000</span>
                         </div>
                       </td>
-                      <td>Remark</td>
+                      <td>Remark</td> */}
                       <td>
                         <button
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
@@ -177,7 +244,9 @@ const ShowAllSell = () => {
                   </td>
                 </tr>
               </tfoot>
-            </table>
+            </table>: <p className="flex justify-center items-center my-48">
+                    No Expenses Today
+                  </p>}
           </div>
         </div>
         <div className="flex justify-center ">
@@ -282,20 +351,20 @@ const ShowAllSell = () => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {restaurantSalesHistory && restaurantSalesHistory?.data?.docs?.map((item, idx) => {
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
+                      <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>
                         <div className="flex">
                           <div>
                             <FaRupeeSign />
                           </div>
                           <div>
-                            <span>5000</span>
+                            <span>{item?.today_restaurant_income}</span>
                           </div>
                         </div>
                       </td>
@@ -303,7 +372,7 @@ const ShowAllSell = () => {
                         <span
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                           onClick={() =>
-                            navigate(`/dashboard/show-all-sell/${idx}`)
+                            navigate(`/dashboard/show-all-sell-Details?date=${item?.date}`)
                           }
                         >
                           <FaEye />

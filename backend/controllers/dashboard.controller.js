@@ -3,6 +3,7 @@ import {
   Dashboard,
   DashboardTable,
 } from "../models/dashboard.model.js";
+import { StaticSubDashData } from "../models/subdashboard.model.js";
 import User from "../models/user.model.js";
 
 export const addDashboard = async (req, res) => {
@@ -172,6 +173,10 @@ export const getDashboardInfo = async (req, res) => {
     currentDate.setHours(0, 0, 0, 0);
     const date = currentDate.toISOString();
 
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
     const dashboard = await Dashboard.findOne({ user_id: userId });
 
     if (!dashboard) {
@@ -191,6 +196,19 @@ export const getDashboardInfo = async (req, res) => {
       user_id: userId,
       date,
     });
+    const overall_datas = {};
+    if (user.role === "manager") {
+      const permanent_datas = await StaticSubDashData.findOne({
+        user_id: userId,
+      });
+      overall_datas.total_restaurant_expenses = permanent_datas.total_restaurant_expenses;
+      overall_datas.total_restaurant_income = permanent_datas.total_restaurant_income;
+      overall_datas.total_restaurant_profit = permanent_datas.total_restaurant_profit;
+      overall_datas.total_hotel_expenses = permanent_datas.total_hotel_expenses;
+      overall_datas.total_hotel_income = permanent_datas.total_hotel_income;
+      overall_datas.total_hotel_profit = permanent_datas.total_hotel_profit;
+      overall_datas.total_net_profit = permanent_datas.total_hotel_profit + permanent_datas.total_restaurant_profit;
+    }
 
     res.status(200).json({
       success: true,
@@ -198,6 +216,7 @@ export const getDashboardInfo = async (req, res) => {
       daily_datas: checkInfo,
       permanent_datas: dashboard,
       monthly_datas: dashboardTable,
+      overall_datas:overall_datas,
     });
   } catch (error) {
     console.error(error);
