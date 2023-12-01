@@ -179,7 +179,9 @@ export const addExpense = async (req, res) => {
   } catch (error) {
     // console.error("Error saving to database:", saveError);
     console.error("Error adding expense:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 };
 
