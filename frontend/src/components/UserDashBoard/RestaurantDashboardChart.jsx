@@ -8,11 +8,26 @@ const generateRandomData = () => {
 };
 console.log("generateRandomData", generateRandomData());
 const RestaurantDashboardChart = ({ monthlyData }) => {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
   const [options, setOptions] = useState({
     series: [
-      { name: "Expense", data: [] },
-      { name: "Sales", data: [] },
-      { name: "Profit", data: [] },
+      { name: "Expense", data: generateRandomData() },
+      { name: "sales", data: generateRandomData() },
+      { name: "Profit", data: generateRandomData() },
     ],
     chart: {
       type: "bar",
@@ -34,7 +49,7 @@ const RestaurantDashboardChart = ({ monthlyData }) => {
       colors: ["transparent"],
     },
     xaxis: {
-      categories: [],
+      categories: months,
     },
     yaxis: {
       title: {
