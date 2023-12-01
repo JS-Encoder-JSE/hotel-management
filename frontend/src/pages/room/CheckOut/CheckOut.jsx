@@ -33,6 +33,7 @@ const CheckOut = () => {
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
+
   // const {
   //   data: checkout,
   //   isLoading: checkoutLoading,
@@ -72,12 +73,13 @@ const CheckOut = () => {
           ? Number(paymentList[0].amount)
           : pBill;
 
-      const unpaid =
+      const unpaid = Math.ceil(
         checkout?.data?.booking_info?.total_payable_amount -
-        (checkout?.data?.booking_info?.paid_amount + paidAmount);
+          (checkout?.data?.booking_info?.paid_amount + paidAmount)
+      );
       const response = await addCheckout({
         hotel_id: checkout?.data?.booking_info?.hotel_id,
-        booking_ids: checkout?.data?.booking_info?.booking_ids,
+        booking_ids: [checkout?.data?.room_bookings[0]?._id],
         guestName: checkout?.data?.booking_info?.guestName,
         room_numbers,
         payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
@@ -209,6 +211,7 @@ const CheckOut = () => {
                     roomData={roomInfo}
                     data={roomInfo}
                     key={i}
+                    bookingInfo={checkout?.data?.booking_info}
                   />
                 ))
               : null}

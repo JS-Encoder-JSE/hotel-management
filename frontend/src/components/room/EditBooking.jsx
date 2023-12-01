@@ -87,6 +87,7 @@ const EditBooking = ({ data, bookingId }) => {
         emergency_contact: values.emergency_contact,
         adult: Number(values.adult),
         children: Number(values.children),
+        nationality: values.nationality,
       };
       console.log({ obj });
       try {

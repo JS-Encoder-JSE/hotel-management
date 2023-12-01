@@ -10,13 +10,17 @@ const BookingView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   console.log(id);
-  const { data: booking, isLoading } = useGetBookingInfoByIdQuery(id);
+  const {
+    data: booking,
+    isLoading,
+    isSuccess,
+  } = useGetBookingInfoByIdQuery(id);
   console.log("booking", booking);
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (data && modalOpen) {
+    if (data && modalOpen && isSuccess) {
       window.ci_modal.showModal();
       setModalOpen(false);
     }
@@ -159,7 +163,7 @@ const BookingView = () => {
         </div>
       </div>
       <Modal id={`ci_modal`}>
-        <CheckInDyn data={data} />
+        <CheckInDyn data={booking?.data} />
       </Modal>
       <Modal id={`eb_modal`}>
         {booking?.data && <EditBooking bookingId={id} data={booking?.data} />}

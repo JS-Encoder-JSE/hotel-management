@@ -10,7 +10,6 @@ import { useFormik } from "formik";
 import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
 import { useGetExpenseByIdQuery } from "../../redux/room/roomAPI";
-import { getformatDateTime } from "../../utils/utils";
 import FoodCheckoutPrint from "../../pages/restaurant/FoodCheckoutPrint";
 import ReactToPrint from "react-to-print";
 import ShowAllExpenseViewPrint from "./ShowAllExpenseViewPrint";
@@ -56,12 +55,19 @@ const ShowAllExpenseView = () => {
     setCurrentPage(page);
   };
   const navigate = useNavigate();
-  const handle = () =>{
-    console.log("console")
-  }
-
+  const handle = () => {
+    console.log("console");
+  };
 
   const [editItemData, setEditItemData] = useState(null);
+  const [index, setIndex] = useState();
+
+  const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).replace(/\//g, '-');
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -117,40 +123,29 @@ const ShowAllExpenseView = () => {
             {itemExpense?.items.map((item, idx) => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                  <th>{++idx}</th>
-                  <td>
-                    {itemExpense?.date}
-                    </td>
-                  <td>
-                    {item?.name}
-                    </td>
-                  <td>
-                    {item?.quantity}
-                    </td>
-                  <td>
-                    {item?.description}
-                    </td>
+                  <th>{idx + 1}</th>
+                  <td>{new Date(itemExpense?.date).toLocaleDateString()}</td>
+                  <td>{item?.name}</td>
+                  <td>{item?.quantity}</td>
+                  <td>{item?.description}</td>
                   <td>
                     <FaRupeeSign className="inline" />
-                    <span>
-                      {item?.price}
-                      </span>
+                    <span>{item?.price}</span>
                   </td>
-                  <td>Remark</td>
+                  <td>{item?.remark ? item?.remark : ""}</td>
                   <td>
                     <button
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                      onClick={() =>{
+                      onClick={() => {
                         setEditItemData(item);
-                         window.eb_modal.showModal()
-                      }
-                    }
-                   
+                        window.eb_modal.showModal();
+                        setIndex(idx);
+                        console.log(idx);
+                      }}
                     >
                       <FaRegEdit />
                     </button>
                   </td>
-                
                 </tr>
               );
             })}
@@ -167,7 +162,7 @@ const ShowAllExpenseView = () => {
                   </div>
                   <div>
                     {" "}
-                   {totalItemsAmount}
+                    {totalItemsAmount}
                     {/* {totalItemPrice} */}
                   </div>
                 </div>
@@ -177,11 +172,15 @@ const ShowAllExpenseView = () => {
         </table>
       </div>
       <Modal id={`eb_modal`}>
-      <EditExpensesView data={editItemData}/>
+        <EditExpensesView
+          index={index}
+          allItems={itemExpense}
+          data={editItemData}
+        />
       </Modal>
       {/* pagination */}
       <div className="flex justify-center mt-10">
-        <ReactPaginate
+      <ReactPaginate
           containerClassName="join rounded-none"
           pageLinkClassName="join-item btn btn-md bg-transparent"
           activeLinkClassName="btn-active !bg-green-slimy text-white"
@@ -197,6 +196,7 @@ const ShowAllExpenseView = () => {
           marginPagesDisplayed={2}
           onPageChange={handlePageClick}
           renderOnZeroPageCount={null}
+          forcePage={currentPage}
         />
       </div>
     </div>

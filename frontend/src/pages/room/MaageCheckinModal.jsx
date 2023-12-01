@@ -75,8 +75,6 @@ const validationSchema = yup.object({
 const ManageCheckinModal = () => {
 
 
-
-    
   const closeRef = useRef(null);
 // current date
   const [currentDate,setCurrentDate]=useState(new Date())
@@ -130,7 +128,7 @@ const ManageCheckinModal = () => {
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
-      const no_of_days = Math.floor(
+      const no_of_days = Math.ceil(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
       const rent_per_day = obj.room_arr.reduce(
@@ -202,6 +200,7 @@ const ManageCheckinModal = () => {
         toast.error(response.error.data.message);
       } else {
         formikHelpers.resetForm();
+        closeRef.current.click();
         setSelectedImages([]);
         toast.success(response.data.message);
       }
@@ -299,7 +298,7 @@ const ManageCheckinModal = () => {
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           onClick={() => formik.handleReset()}
         >
-          ✕
+          ✕ 
         </button>
       </form>
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>

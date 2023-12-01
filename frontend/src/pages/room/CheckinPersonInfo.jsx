@@ -15,18 +15,31 @@ import GymBills from "../../components/Manage-CheckIn/GymBills.jsx";
 import PoolsBill from "../../components/Manage-CheckIn/PoolsBill.jsx";
 import { MdOutlineHail } from "react-icons/md";
 
+
 const CheckinPersonInfo = () => {
+  const [roomId, setRoomId] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   console.log(id)
   const { data: booking, isLoading } = useGetBookingInfoByIdQuery(id);
 
-  const roomId = booking?.data?.room_id?._id
+  
+  useEffect(() => {
+    const roomId = booking?.data?.room_id?._id;
+    setRoomId(roomId);
 
-  console.log(roomId)
+    if (roomId) {
+      
+      console.log("Success roomId:", roomId);
+    } else {
+      console.log("Invalid roomId");
+    }
+  }, [booking]);
+  
+  console.log("roomId...................",roomId)
+  
 
   const { data:postedBill, error, isLoadingPostedBill } = useGetRoomPostedBillsQuery(roomId);
-
 
   console.log(postedBill,"postedBill")
 
@@ -40,7 +53,7 @@ const CheckinPersonInfo = () => {
     }
   }, [modalOpen]);
 
-console.log(booking,"bokingdata")
+// console.log(booking,"bokingdata............")
 
 const documentTypes = {
   driving_lic_img: booking?.data?.doc_images?.driving_lic_img,
@@ -116,8 +129,8 @@ console.log("Valid Document Type:", validDocumentType);
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.emergency_contact}</td>
               </tr>
-              <tr>
-                <th className={`text-start `}>
+              {/* <tr> */}
+                {/* <th className={`text-start `}>
                   Document <br /> Type
                 </th>
                 <td className={`w-4 text-center`}>:</td>
@@ -129,14 +142,14 @@ console.log("Valid Document Type:", validDocumentType);
                 </th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.doc_number}</td>
-              </tr>
-              <tr>
+              </tr> */}
+              {/* <tr>
                 <th className={`text-start `}>
                   Document <br /> Download
                 </th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>{booking?.data?.emergency_contact}</td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
         </div>
@@ -217,7 +230,7 @@ console.log("Valid Document Type:", validDocumentType);
       </Modal>
     </div>
     <div className="mb-20 mt-10">
-      <CheckinCardDetails/>
+      <CheckinCardDetails data={booking?.data} />
     </div>
     {/* payment system */}
     <div >
@@ -234,13 +247,15 @@ console.log("Valid Document Type:", validDocumentType);
       className="grid md:grid-cols-3 gap-3  "
       >
 <div >
-<RestaurantBillsCard/>
+<RestaurantBillsCard food_bills={postedBill?.data?.food_bills}/>
 </div>
 <div >
-  <GymBills/>
+  <GymBills GymBill={postedBill?.data?.gym_bills
+}/>
 </div>
 <div >
-  <PoolsBill/>
+  <PoolsBill poolBills={postedBill?.data?.pool_bills
+}/>
 </div>
       </div>
       {/*  TransactionHistoryCard*/}
