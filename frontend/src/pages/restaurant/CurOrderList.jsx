@@ -103,8 +103,6 @@ const CurOrderList = () => {
     }
   };
 
-  // console.log("search",search)
-
   return (
     <div className={`px-5 space-y-5`}>
       <div className={`bg-white p-5 rounded`}>

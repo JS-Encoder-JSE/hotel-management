@@ -3,8 +3,7 @@ const AuthoInfoPrint = ({ hotelInfo, isHotelSuccess }) => {
   //   return <div>Loading...</div>; // Or handle the loading state appropriately
   // }
 
-  const info = isHotelSuccess && hotelInfo[0] ? hotelInfo[0] : [];
-  console.log(info);
+  const info = isHotelSuccess && hotelInfo[0] ? hotelInfo[0] : [];  
 
   return (
     <div className="py-2">

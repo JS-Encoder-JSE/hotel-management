@@ -152,32 +152,32 @@ const RestaurantExpenseShow = ({ hotelId }) => {
       return total + (item?.price || 0);
     }, 0);
 
-    // pagination setup for today's expenses
-const itemsPerPage = 10;
-const [currentPageItem, setCurrentPageItem] = useState(0);
+  // pagination setup for today's expenses
+  const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
 
-const handlePageChange = ({ selected }) => {
-  setCurrentPageItem(selected);
-};
-const totalPage =
-RestaurantExpenses && Math.ceil(RestaurantExpenses?.docs[0]?.items.length / itemsPerPage);
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+  const totalPage =
+    RestaurantExpenses &&
+    Math.ceil(RestaurantExpenses?.docs[0]?.items.length / itemsPerPage);
 
-const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+  const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-const currentItems = RestaurantExpenses?.docs[0]?.items.slice(
-indexOfFirstItem,
-indexOfLastItem
-);
+  const currentItems = RestaurantExpenses?.docs[0]?.items.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
-const handleScrollToTop = () => {
-  // Scroll to the top of the page
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+  const handleScrollToTop = () => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-
-console.log(currentItems)
+  console.log(currentItems);
 
   return (
     <div className={` space-y-5`}>
@@ -214,7 +214,7 @@ console.log(currentItems)
               ) : null}
             </div>
 
-            <div >
+            <div>
               {/* 3rd commit  */}
 
               {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
@@ -223,7 +223,6 @@ console.log(currentItems)
                   <thead>
                     <tr>
                       <th>SL</th>
-                      <th>Date</th>
                       <th>Items Name</th>
                       <th>Description</th>
                       <th>Quantity</th>
@@ -243,11 +242,6 @@ console.log(currentItems)
                           }
                         >
                           <th>{++idx}</th>
-                          <td>
-                            {getformatDateTime(
-                              RestaurantExpenses?.docs[0]?.date
-                            )}
-                          </td>
                           <td>{item?.name}</td>
                           <td>{item?.description}</td>
                           <td>{item?.quantity}</td>
@@ -259,13 +253,12 @@ console.log(currentItems)
                           <td>
                             <button
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                              onClick={() =>{
+                              onClick={() => {
                                 setEditItemData(item);
                                 document
                                   .getElementById("my_modal_3")
-                                  .showModal()
-                              }
-                              }
+                                  .showModal();
+                              }}
                             >
                               <FaRegEdit />
                             </button>
@@ -306,7 +299,10 @@ console.log(currentItems)
 
           {/* pagination */}
 
-          <div onClick={handleScrollToTop} className="flex justify-center mt-10">
+          <div
+            onClick={handleScrollToTop}
+            className="flex justify-center mt-10"
+          >
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -448,7 +444,7 @@ console.log(currentItems)
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{item?.date}</td>
+                      <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>
                         <FaRupeeSign className="inline" />
                         <span>{item?.total_amount}</span>

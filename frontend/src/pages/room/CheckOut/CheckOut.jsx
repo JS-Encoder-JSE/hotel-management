@@ -44,7 +44,6 @@ const CheckOut = () => {
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
-  console.log("data :", checkout);
   const handleResetCheckout = () => {
     setShowRooms(false);
   };

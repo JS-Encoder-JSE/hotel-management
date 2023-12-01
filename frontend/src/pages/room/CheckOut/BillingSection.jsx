@@ -18,7 +18,6 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   const [discountAmt, setDiscountAmt] = useState(0);
   const [breakAmt, setBreakAmt] = useState(0);
   const [billing, setBilling] = useState([{ amount: "" }, { amount: "" }]);
-  console.log({ breakAmt });
   const [poolBill, setPollBill] = useState(0);
   const [foodBill, setFoodBill] = useState(0);
   const [gymBill, setGymBill] = useState(0);

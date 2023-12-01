@@ -14,9 +14,7 @@ import CheckInModal from "./CheckInModal.jsx";
 const ManageSingleRoom = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoading, data: room } = useRoomQuery(id);
-  
-  console.log("edit room.......", room);
+  const { isLoading, data: room } = useRoomQuery(id); 
 
   return (
     <div className={`bg-white max-w-6xl mx-auto rounded-3xl p-10 space-y-10`}>

@@ -36,16 +36,12 @@ const ShowAllSell = () => {
   const [search, setSearch] = useState("");
   const [PDF, setPdf] = useState([]);
 
-  const { user } = useSelector((store) => store.authSlice);
-
-  // console.log(user?.assignedHotel[0],"user")
+  const { user } = useSelector((state) => state.authSlice);
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
   });
-
-  console.log(searchParams);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -80,7 +76,6 @@ const ShowAllSell = () => {
     order_status: "CheckedOut",
     hotel_id: user?.assignedHotel[0],
   });
-  console.log("restaurantSalesToday", restaurantSalesToday);
 
   // filtered data
   const {
@@ -96,9 +91,7 @@ const ShowAllSell = () => {
     limit: formik.values.entries,
     filter: formik.values.filter,
   });
-
-  console.log(restaurantSalesHistory, "dailyData ");
-
+  console.log("restaurantSalesHistory-----------------------------", restaurantSalesHistory);
   useEffect(() => {
     if (restaurantSalesHistory)
       setPageCount(restaurantSalesHistory?.data?.totalPages);

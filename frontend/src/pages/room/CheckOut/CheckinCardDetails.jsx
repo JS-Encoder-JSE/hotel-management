@@ -17,9 +17,6 @@ if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined)
   totalDueAmount = Math.max(data.total_payable_amount - data.paid_amount, 0);
 }
 
-console.log("Total Due Amount:", totalDueAmount);
-
-  console.log(data,"from chekincardDetails")
   return (
     <div>
       <div
