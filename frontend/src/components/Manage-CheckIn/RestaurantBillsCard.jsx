@@ -15,10 +15,11 @@ import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
 
-const RestaurantBillsCard = ({ foodBill }) => {
-  console.log("foodBills", foodBill);
+const RestaurantBillsCard = ({ food_bills
+}) => {
+  console.log("foodBills..........", food_bills);
 
-  const totalPrice = foodBill?.reduce((total, bill) => {
+  const totalPrice = food_bills?.reduce((total, bill) => {
     // Use another reduce to calculate the total price of items in each bill
     const billTotal = bill?.items?.reduce(
       (itemTotal, item) => itemTotal + item.price,
@@ -73,8 +74,8 @@ const RestaurantBillsCard = ({ foodBill }) => {
                 </thead>
 
                 <tbody>
-                  {foodBill &&
-                    foodBill[0]?.items?.map((itemBill, idx) => {
+                  {food_bills &&
+                    food_bills[0]?.items?.map((itemBill, idx) => {
                       return (
                         <tr
                           className={
@@ -83,9 +84,9 @@ const RestaurantBillsCard = ({ foodBill }) => {
                         >
                           <td>{++idx}</td>
                           <td>
-                            {foodBill &&
+                            {food_bills &&
                               new Date(
-                                foodBill[0]?.createdAt
+                                food_bills[0]?.createdAt
                               ).toLocaleDateString()}
                           </td>
                           <td className="whitespace-nowrap">
@@ -96,7 +97,7 @@ const RestaurantBillsCard = ({ foodBill }) => {
                         </tr>
                       );
                     })}
-                  {/* {foodBill?.map((itemBill, idx) => {
+                  {/* {food_bills?.map((itemBill, idx) => {
                     return (
                       <tr
                         className={
@@ -122,7 +123,7 @@ const RestaurantBillsCard = ({ foodBill }) => {
                         <div>
                           <BiRupee />
                         </div>
-                        <div>{foodBill && foodBill[0]?.total_price}</div>
+                        <div>{food_bills && food_bills[0]?.total_price}</div>
                       </div>
                     </td>
                   </tr>

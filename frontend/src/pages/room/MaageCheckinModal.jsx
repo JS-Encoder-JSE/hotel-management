@@ -75,8 +75,6 @@ const validationSchema = yup.object({
 const ManageCheckinModal = () => {
 
 
-
-    
   const closeRef = useRef(null);
 // current date
   const [currentDate,setCurrentDate]=useState(new Date())
@@ -202,6 +200,7 @@ const ManageCheckinModal = () => {
         toast.error(response.error.data.message);
       } else {
         formikHelpers.resetForm();
+        closeRef.current.click();
         setSelectedImages([]);
         toast.success(response.data.message);
       }
@@ -299,7 +298,7 @@ const ManageCheckinModal = () => {
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           onClick={() => formik.handleReset()}
         >
-          ✕
+          ✕ 
         </button>
       </form>
     <div className={`max-w-xl bg-white rounded-2xl mx-auto p-8`}>

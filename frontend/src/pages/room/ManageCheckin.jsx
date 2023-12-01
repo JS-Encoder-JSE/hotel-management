@@ -17,6 +17,16 @@ import CheckinList from "../../components/room/CheckinList.jsx";
 const ManageCheckin = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+ const handleOpenModal = () => {
+    setIsModalOpen(true);
+
+    // Automatically close the modal after 3 seconds (adjust as needed)
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 3000);
+  };
+
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -26,6 +36,7 @@ const ManageCheckin = () => {
     onSubmit: (values) => {
       setSearch(values.search);
       setCurrentPage(0);
+      
     },
   });
 
@@ -36,6 +47,7 @@ const ManageCheckin = () => {
     search: formik.values.search,
     page: currentPage,
     filter: "CheckedIn",
+    
   });
 
   // console.log(checkinList,"checkinglist")
