@@ -183,7 +183,7 @@ export const getDashboardInfo = async (req, res) => {
       return res.status(404).json({ message: "Dashboard not found" });
     }
     // Calculate the start date for fetching the last 12 months
-    const startDate = new Date(currentDate); // Create a new date object based on currentDate
+    const startDate = new Date(currentDate); 
     startDate.setMonth(currentDate.getMonth() - 11);
 
     const dashboardTable = await DashboardTable.find({
