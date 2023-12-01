@@ -143,6 +143,7 @@ export const addExpense = async (req, res) => {
         month_name,
         year,
       });
+      consol.log(existingMonthlySubDashData);
       if (existingMonthlySubDashData) {
         if (spendedfor === "hotel") {
           existingMonthlySubDashData.total_hotel_expenses += total_amount;
