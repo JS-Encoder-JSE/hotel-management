@@ -97,12 +97,6 @@ const ShowAllSell = () => {
     filter: formik.values.filter,
   });
 
-<<<<<<< Updated upstream
-  console.log(restaurantSalesHistory, "dailyData ");
-=======
-
->>>>>>> Stashed changes
-
   useEffect(() => {
     if (restaurantSalesHistory)
       setPageCount(restaurantSalesHistory?.data?.totalPages);
