@@ -29,7 +29,7 @@ const CheckOutPrint = ({
   hotelInfo,
   isHotelSuccess,
   roomData,
-}) => {
+}) => { 
   return (
     <div>
       <div>

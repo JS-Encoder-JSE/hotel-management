@@ -45,7 +45,6 @@ const CheckInDyn = ({ data }) => {
   const [updateBookingTOCheckIn, { isLoading }] =
     useUpdateBookingTOCheckInMutation();
 
-
   // handle advanceAmoun
   const handleAmount = (e) => {
     const inputValue = e.target.value;
@@ -100,7 +99,8 @@ const CheckInDyn = ({ data }) => {
       await upload(formData).then(
         (result) => (tempImg = result.data.imageUrls)
       );
-      const paidAmount = typeof obj.amount === "number" ? obj.amount : 0;
+      const paidAmount =
+        typeof obj.amount === "number" ? Math.ceil(obj.amount) : 0;
 
       const response = await updateBookingTOCheckIn({
         id: data?.booking_ids[0],
@@ -113,7 +113,9 @@ const CheckInDyn = ({ data }) => {
           status: "CheckedIn",
           paymentMethod: obj.paymentMethod,
           transection_id: obj.transection_id,
-          total_unpaid_amount: data?.total_unpaid_amount - paidAmount,
+          total_unpaid_amount: Math.ceil(
+            data?.total_unpaid_amount - paidAmount
+          ),
           // total_unpaid_amount: data.amount_after_dis - paidAmount,
           remark: "advancePaymentForCheckIn",
         },

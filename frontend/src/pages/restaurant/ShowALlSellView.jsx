@@ -24,8 +24,6 @@ const ShowALlSellView = () => {
   });
 
 
-
-
     const formik = useFormik({
         initialValues: {
           startDate: "",
@@ -67,7 +65,6 @@ const handleScrollToTop = () => {
 // Scroll to the top of the page
 window.scrollTo({ top: 0, behavior: 'smooth' });
 };
-
 const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
 
   return (

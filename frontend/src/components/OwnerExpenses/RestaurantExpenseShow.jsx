@@ -44,14 +44,11 @@ const RestaurantExpenseShow = ({ hotelId }) => {
   const [editItemData, setEditItemData] = useState(null);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
- 
-
   // const {
   //   data: hotelInfo,
   //   isLoading: isHotelLoading,
   //   isSuccess: isHotelSuccess,
   // } = useGetHotelByManagerIdQuery(user?._id);
- 
 
   // 1st commit
 
@@ -61,8 +58,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     fromDate: "",
     toDate: "",
   });
-
-  
 
   const formik = useFormik({
     initialValues: {
@@ -104,18 +99,14 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });
-
+console.log('RestaurantExpenses',RestaurantExpenses);
   useEffect(() => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
- 
-
   useEffect(() => {
     setPdf(RestaurantExpenses?.docs[0]?.items);
   }, [RestaurantExpenses]);
-
-
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -142,8 +133,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     // Check if the item's date is the same as the current date
     return itemDate === formattedCurrentDate;
   });
-
- 
 
   const totalItemPrice =
     isTodayItems &&
@@ -176,7 +165,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
 
   return (
     <div className={` space-y-5`}>
@@ -248,7 +236,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                             <FaRupeeSign className="inline" />
                             <span>{item?.price}</span>
                           </td>
-                          {item?.remark && <td>Remark</td>}
+                          <td>{item?.remark ? item?.remark : ""}</td>
                           <td>
                             <button
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
