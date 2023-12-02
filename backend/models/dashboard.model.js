@@ -201,8 +201,9 @@ dashboardTableSchema.pre("save", function (next) {
 
 checkinfoSchema.pre("save", function (next) {
   const currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
-  const date = currentDate.toISOString();
+  // currentDate.setHours(0, 0, 0, 0);
+  // const date = currentDate.toISOString();
+  const date = currentDate.toLocaleDateString();
   // const year = currentDate.getFullYear();
   // const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
   // const day = currentDate.getDate().toString().padStart(2, "0");
