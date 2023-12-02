@@ -40,9 +40,9 @@ export const addBooking = async (req, res) => {
       user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const date = currentDate.toISOString();
-
+    console.log(currentDate);
+    const date = currentDate.toLocaleDateString();
+    console.log(date);
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
@@ -404,8 +404,7 @@ export const cancelBooking = async (req, res) => {
     const bookingId = req.params.booking_id; // Assuming you pass bookingId as a route parameter
     const userId = req.user.userId;
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const date = currentDate.toISOString();
+    const date = currentDate.toLocaleDateString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
@@ -663,8 +662,7 @@ export const updateBooking = async (req, res) => {
     const updateData = req.body;
     const userId = req.user.userId;
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const date = currentDate.toISOString();
+    const date = currentDate.toLocaleDateString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
@@ -1008,8 +1006,7 @@ export const addToCheckin = async (req, res) => {
     } = req.body;
 
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const date = currentDate.toISOString();
+    const date = currentDate.toLocaleDateString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
