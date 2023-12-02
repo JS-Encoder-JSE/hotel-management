@@ -3,7 +3,10 @@ import {
   Dashboard,
   DashboardTable,
 } from "../models/dashboard.model.js";
-import { StaticSubDashData } from "../models/subdashboard.model.js";
+import {
+  StaticSubDashData,
+  StaticSubDashData,
+} from "../models/subdashboard.model.js";
 import User from "../models/user.model.js";
 
 export const addDashboard = async (req, res) => {
@@ -183,7 +186,7 @@ export const getDashboardInfo = async (req, res) => {
       return res.status(404).json({ message: "Dashboard not found" });
     }
     // Calculate the start date for fetching the last 12 months
-    const startDate = new Date(currentDate); 
+    const startDate = new Date(currentDate);
     startDate.setMonth(currentDate.getMonth() - 11);
     console.log(startDate);
     console.log(currentDate);
@@ -196,9 +199,40 @@ export const getDashboardInfo = async (req, res) => {
     }
     const checkInfo = await CheckInfo.find({
       user_id: userId,
-      date:date,
+      date: date,
     });
     console.log(checkInfo);
+
+    let total_all_restaurant_expenses = 0;
+    let total_all_restaurant_income = 0;
+    let total_all_restaurant_profit = 0;
+    let total_all_hotel_expenses = 0;
+    let total_all_hotel_income = 0;
+    let total_all_hotel_profit = 0;
+    if (user.role === "admin") {
+      const staticSubDashDataList = await StaticSubDashData.find({
+        user_id: user.manager_accounts,
+      });
+      staticSubDashDataList.map((staticSubDashData) => {
+        total_all_restaurant_expenses +=
+          staticSubDashData.array_total_restaurant_expenses;
+        total_all_restaurant_income +=
+          staticSubDashData.array_total_restaurant_income;
+        total_all_restaurant_profit +=
+          staticSubDashData.array_total_restaurant_profit;
+        total_all_hotel_expenses +=
+          staticSubDashData.array_total_hotel_expenses;
+        total_all_hotel_income += staticSubDashData.array_total_hotel_income;
+        total_all_hotel_profit += staticSubDashData.array_total_hotel_profit;
+      });
+      dashboard.total_expense =
+        total_all_restaurant_expenses + total_all_hotel_expenses;
+      dashboard.total_revenue =
+        total_all_restaurant_income + total_all_hotel_income;
+      dashboard.net_profit =
+        total_all_restaurant_profit + total_all_hotel_profit;
+      dashboard.save();
+    }
     const overall_datas = {};
     if (user.role === "manager") {
       const permanent_datas = await StaticSubDashData.findOne({

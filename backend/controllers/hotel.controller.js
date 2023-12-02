@@ -126,6 +126,9 @@ export const addHotel = async (req, res) => {
     savedHotel.manager_acc = savedNewUser._id;
     await savedHotel.save();
 
+    owner.manager_accounts.push(savedNewUser._id);
+    await owner.save();
+
     const newDashboard = new Dashboard({
       user_id: savedNewUser._id,
       user_role: "manager",

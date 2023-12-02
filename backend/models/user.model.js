@@ -128,6 +128,10 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    manager_accounts: {
+      type: Array,
+      required: false,
+    },
     assignedHotel: [
       {
         type: mongoose.Schema.Types.ObjectId,
