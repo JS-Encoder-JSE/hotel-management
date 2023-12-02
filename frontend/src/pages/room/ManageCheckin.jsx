@@ -7,6 +7,7 @@ import AddBooking from "../../components/room/AddBooking.jsx";
 import {
   useGetRoomsAndHotelsQuery,
   useGetBookingsByHotelQuery,
+  useMakePaymentMutation,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import { Link, useLocation } from "react-router-dom";
@@ -57,10 +58,6 @@ useEffect(()=>{
   refetch()
 },[path.pathname])
 
-
-  const handlePageClick = ({ selected: page }) => {
-    setCurrentPage(page);
-  };
 
 
   const pressEnter = (e) => {
@@ -158,7 +155,7 @@ useEffect(()=>{
       </div>
       {!isLoading ? (
         checkinList?.data?.docs?.length ? (
-        <CheckinList handlePageClick={handlePageClick} page={checkinList?.data?.totalPages} checkinList={checkinList?.data?.docs}/>
+        <CheckinList  page={checkinList?.data?.totalPages} checkinList={checkinList?.data?.docs}/>
         ) : (
           <h3 className={`text-center`}>No data found!</h3>
         )

@@ -12,6 +12,7 @@ const initialState = {
     grandTotal: 0,
   },
   amountAfterDiscount: 0,
+  bookingId: "",
 };
 
 const addOrderSlice = createSlice({
@@ -94,6 +95,9 @@ const addOrderSlice = createSlice({
     setAmountAfterDis: (state, action) => {
       state.amountAfterDiscount = action.payload;
     },
+    setBookingId: (state, action) => {
+      state.bookingId = action.payload;
+    },
   },
 });
 
@@ -107,5 +111,6 @@ export const {
   setRoomId,
   setTableId,
   setAmountAfterDis,
+  setBookingId
 } = addOrderSlice.actions;
 export default addOrderSlice.reducer;

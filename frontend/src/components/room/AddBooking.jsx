@@ -34,8 +34,8 @@ const validationSchema = yup.object({
   // }),
   children: yup.number(),
 
-  paymentMethod: yup.string().required("Payment method is required"), 
-   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
+  paymentMethod: yup.string().required("Payment method is required"),
+  trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
     if (paymentMethod !== "Cash")
       return schema.required("Transaction ID is required");
     else return schema;
@@ -69,7 +69,6 @@ const AddBooking = () => {
     // }
   };
 
-  
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -101,7 +100,6 @@ const AddBooking = () => {
         to: toDateIsoConverter(values.to),
       };
 
-      
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr?.map((elem) => elem.value);
@@ -133,12 +131,12 @@ const AddBooking = () => {
         no_of_days,
         // rent_per_day,
         // total_rent,
-        room_discount:discount,
+        room_discount: obj.discount,
         // amount_after_dis,
         paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         // total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
-        remark:"advancePaymentForBooking",
+        remark: "advancePaymentForBooking",
         status: "Active",
       });
 
@@ -191,7 +189,7 @@ const AddBooking = () => {
     }
   };
 
-  const handleDiscount= (e) => {
+  const handleDiscount = (e) => {
     const inputValue = e.target.value;
     const fieldName = e.target.discount;
     if (inputValue >= 0) {
@@ -264,7 +262,7 @@ const AddBooking = () => {
             {formik.touched.bookingMethod &&
             Boolean(formik.errors.bookingMethod) ? (
               <small className="text-red-600">
-                {formik.touched.method && formik.errors.bookingMethod}
+                {formik.errors.bookingMethod}
               </small>
             ) : null}
           </div>
@@ -370,7 +368,7 @@ const AddBooking = () => {
           {/* adult box */}
           <div className="flex flex-col gap-3">
             <input
-            onWheel={ event => event.currentTarget.blur() }
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Adult"
               name="adult"
@@ -389,7 +387,7 @@ const AddBooking = () => {
           {/* children box */}
           <div className="flex flex-col gap-3">
             <input
-            onWheel={ event => event.currentTarget.blur() }
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Children"
               name="children"
@@ -408,7 +406,7 @@ const AddBooking = () => {
           {/* advanced amount */}
           <div className="flex flex-col gap-3">
             <input
-            onWheel={ event => event.currentTarget.blur() }
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Advanced Amount"
               name="amount"
@@ -469,7 +467,7 @@ const AddBooking = () => {
 
           <div className="flex flex-col gap-3">
             <input
-            onWheel={ event => event.currentTarget.blur() }
+              onWheel={(event) => event.currentTarget.blur()}
               type="number"
               placeholder="Discount"
               name="discount"

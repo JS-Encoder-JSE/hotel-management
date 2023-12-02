@@ -189,11 +189,11 @@ const OwnerSBItems = ({ handleSBItems,isHbMenu,setHbMenu }) => {
           </li>
         </ul>
       </li> */}
-      <li className={`group p-2`}>
+      <li className={``}>
         <NavLink
           to={`/dashboard/finance`}
           className={({ isActive }) =>
-            "p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 flex space-x-1.5 cursor-pointer" +
+          "p-2 hover:text-green-slimy rounded-lg transition-colors duration-500 flex space-x-1.5 cursor-pointer" +
             (isActive ? " bg-gray-300" : "")
           }
         >
@@ -203,7 +203,7 @@ const OwnerSBItems = ({ handleSBItems,isHbMenu,setHbMenu }) => {
           className={`-mt-0.5`}>Monitor Finances</span>
         </NavLink>
       </li> 
-      <li className={`group p-2`}>
+      <li className={``}>
         <NavLink
             to={`/dashboard/license-history`}
             className={({ isActive }) =>

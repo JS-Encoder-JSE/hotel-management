@@ -34,6 +34,8 @@ const CheckOut = () => {
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+  const { bookingId } = useSelector((store) => store.addOrderSlice);
 
   // const {
   //   data: checkout,
@@ -81,7 +83,7 @@ const CheckOut = () => {
       );
       const response = await addCheckout({
         hotel_id: checkout?.data?.booking_info?.hotel_id,
-        booking_ids: [checkout?.data?.room_bookings[0]?._id],
+        booking_ids: [bookingId],
         guestName: checkout?.data?.booking_info?.guestName,
         room_numbers,
         payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
@@ -99,7 +101,6 @@ const CheckOut = () => {
       }
     },
   });
-  const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
   const {
     data: hotelInfo,

@@ -76,7 +76,6 @@ const AddBookingSelect = ({ room }) => {
     // }
   };
 
-  
   const [addBooking, { isLoading }] = useAddBookingMutation();
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -107,8 +106,6 @@ const AddBookingSelect = ({ room }) => {
         from: fromDateIsoConverter(values.from),
         to: toDateIsoConverter(values.to),
       };
-
-   
 
       if (!obj.discount) obj.discount = 0;
 
@@ -141,7 +138,7 @@ const AddBookingSelect = ({ room }) => {
         no_of_days,
         // rent_per_day,
         // total_rent,
-        room_discount: discount,
+        room_discount: obj.discount,
         paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         // total_unpaid_amount: amount_after_dis - obj.amount,
         nationality: obj.nationality,
@@ -194,8 +191,6 @@ const AddBookingSelect = ({ room }) => {
   //     formik.setValues("from", new Date())
   //   }
   // }, [room?.data]);
-
-  
 
   // Price Validation
   const handleChildren = (e) => {
