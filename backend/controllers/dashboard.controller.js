@@ -170,9 +170,9 @@ export const getDashboardInfo = async (req, res) => {
   try {
     const userId = req.params.user_id;
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const date = currentDate.toISOString();
-
+    const date = currentDate.toLocaleDateString();
+    console.log(date);
+    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -185,7 +185,8 @@ export const getDashboardInfo = async (req, res) => {
     // Calculate the start date for fetching the last 12 months
     const startDate = new Date(currentDate); 
     startDate.setMonth(currentDate.getMonth() - 11);
-
+    console.log(startDate);
+    console.log(currentDate);
     const dashboardTable = await DashboardTable.find({
       user_id: userId,
       createdAt: { $gte: startDate, $lte: currentDate },
@@ -195,8 +196,9 @@ export const getDashboardInfo = async (req, res) => {
     }
     const checkInfo = await CheckInfo.find({
       user_id: userId,
-      date,
+      date:date,
     });
+    console.log(checkInfo);
     const overall_datas = {};
     if (user.role === "manager") {
       const permanent_datas = await StaticSubDashData.findOne({

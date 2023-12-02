@@ -32,8 +32,7 @@ export const getSubDashboardInfo = async (req, res) => {
   try {
     const userId = req.params.user_id;
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const date = currentDate.toISOString();
+    const date = currentDate.toLocaleDateString();
 
     const permanent_datas = await StaticSubDashData.findOne({
       user_id: userId,
