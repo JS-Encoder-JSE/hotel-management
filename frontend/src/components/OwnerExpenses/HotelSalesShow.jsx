@@ -217,7 +217,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
             </div> */}
               </div>
             </div>
-            <div className="flex justify-center mt-10">
+            {/* <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -235,7 +235,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
               />
-            </div>
+            </div> */}
           </div>
         </div>
 

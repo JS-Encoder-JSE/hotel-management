@@ -96,7 +96,7 @@ indexOfLastItem
 
                 <tbody>
                   {food_bills &&
-                    currentItems.map((itemBill, idx) => {
+                    currentItems?.map((itemBill, idx) => {
                       return (
                         <tr
                           className={

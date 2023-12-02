@@ -33,7 +33,7 @@ const BillingSectionPrint = ({
         </div>
         <div className="space-y-4">
           <p>: ${subTotals}</p>
-          <p>: ${tax}</p>
+          <p>: $ +{tax}</p>
           <p>: ${additionalCharge}</p>
           <p>: ${serviceCharge}</p>
           <p>: $ -{discountOffer}</p>

@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setAmountAfterDis,
   setBookingId,
 } from "../../../redux/add-order/addOrderSlice";
 import { getDiscountAmount } from "../../../utils/utils";
 
-const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
+const RoomDetailsSection = ({ data, roomData,bookingInfo }) => {
+  // console.log(bookingInfo)
+const billingState = useSelector((state) => state.checkoutInfoCalSlice);
+
+// const {bookingInfo}= billingState
   const dispatch = useDispatch();
   const discountPerRoom = getDiscountAmount(
     roomData?.total_room_rent,

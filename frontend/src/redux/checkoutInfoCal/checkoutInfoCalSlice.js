@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  subTotals: 10,
+  subTotals: 0,
   tax: 0,
   serviceCharge: 0,
   additionalCharge: 0,
@@ -9,6 +9,7 @@ const initialState = {
   grandTotal: 0,
   roomPostedBill: 0,
   extraDiscount:0,
+  bookingInfo:"",
 };
 
 const checkoutInfoCalSlice = createSlice({
@@ -39,6 +40,9 @@ const checkoutInfoCalSlice = createSlice({
     setExtraDiscount: (state, action) => {
       state.extraDiscount = action.payload;
     },
+    setBookingInfo:(state,action)=>{
+      state.bookingInfo = action.payload
+    }
   },
 });
 
@@ -50,7 +54,8 @@ export const {
   updateDiscountOffer,
   setGrandTotal,
   setRoomPostedBill,
-  setExtraDiscount
+  setExtraDiscount,
+  setBookingInfo,
 } = checkoutInfoCalSlice.actions;
 
 export default checkoutInfoCalSlice.reducer;

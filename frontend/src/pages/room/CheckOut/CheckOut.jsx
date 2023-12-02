@@ -19,7 +19,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import CheckOutPrint from "./CheckOutPrint";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
+import { setBookingInfo, updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
 import * as yup from "yup";
 import { getISOStringDate } from "../../../utils/utils";
@@ -36,6 +36,10 @@ const CheckOut = () => {
   const [pBill, setPBill] = useState(0);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
+
+
+
+ 
 
   // const {
   //   data: checkout,
@@ -142,9 +146,12 @@ const CheckOut = () => {
   // set subtotal amount
   useEffect(() => {
     if (isSuccess) {
-      dispatch(updateSubTotal(0));
+      dispatch(updateSubTotal(totalBilling));
+      dispatch(setBookingInfo(checkout?.data?.booking_info))
     }
-  }, []);
+  }, [checkout,hotelInfo]);
+
+
 
   return (
     <div className="space-y-8">

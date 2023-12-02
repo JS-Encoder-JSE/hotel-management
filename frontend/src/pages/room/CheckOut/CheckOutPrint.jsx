@@ -150,7 +150,7 @@ const CheckOutPrint = ({
       </div> */}
       {/* payment method */}
       <div className="w-[800px] mx-auto flex justify-between items-center px-4">
-        {paymentList.map(
+        {paymentList?.map(
           (method) =>
             method.method &&
             method.amount !== "" && (

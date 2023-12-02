@@ -26,7 +26,9 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   // useDispatch(updateSubTotal(data?.booking_info?.[0]?.total_unpaid_amount.toFixed(2)))
   const dispatch = useDispatch();
   const billingState = useSelector((state) => state.checkoutInfoCalSlice);
-  const { subTotals } = billingState;
+  const { subTotals} = billingState;
+
+  
 
   const totalUnpaidAmount = amountAfterDiscount + poolBill + gymBill + foodBill;
   const handleDiscountChange = (val) => {
@@ -38,6 +40,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   };
   // discount ammount
   dispatch(updateDiscountOffer(Math.ceil(discountAmt)));
+  dispatch(updateSubTotal(totalUnpaidAmount))
 
   const handleAmountChange = (idx, val) => {
     const arr = [...billing];
