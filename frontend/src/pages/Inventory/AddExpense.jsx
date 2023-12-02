@@ -116,23 +116,16 @@ const AddExpense = () => {
 
   const handleAddExpensesResponse = async () => {
     const newDate = new Date();
-    console.log(fromDateIsoConverterForAddExpenses(selectDate));
     setLoading(true);
-    // const response = await AddExpense({
-    //   hotel_id: isHotelSuccess && hotelInfo[0]?._id,
-    //   date:
-    //     fromDateIsoConverterForAddExpenses(selectDate) ||
-    //     fromDateIsoConverterForAddExpenses(new Date().toLocaleDateString),
-    //   spendedfor: "restaurant",
-    //   items: totalExpense,
-    //   total_amount: parseInt(calculateTotal()),
-
-    //   // hotel_id:isHotelSuccess && hotelInfo[0]?._id,
-    //   // date:new Date(),
-    //   // spendedfor:"restaurant",
-    //   // items: totalExpense,
-    //   // total_amount:parseInt(calculateTotal()),
-    // });
+    const response = await AddExpense({
+      hotel_id: isHotelSuccess && hotelInfo[0]?._id,
+      date:
+        fromDateIsoConverterForAddExpenses(selectDate) ||
+        fromDateIsoConverterForAddExpenses(new Date().toLocaleDateString),
+      spendedfor: "restaurant",
+      items: totalExpense,
+      total_amount: parseInt(calculateTotal()),
+    });
     setLoading(false);
     if (response?.error) {
       toast.error(response.error.data.message);
