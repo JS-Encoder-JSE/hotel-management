@@ -179,7 +179,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
               </h3>
             </div>
 
-            <div className={`flex justify-end mb-5`}>
+            <div className={`flex justify-end  mr-5 mb-5`}>
               {PDF?.length ? (
                 <PDFDownloadLink
                   document={
@@ -205,7 +205,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
               {/* 3rd commit  */}
 
               {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
-              <div className="overflow-x-auto overflow-y-auto">
+              <div className="h-[30rem] overflow-y-scroll md:overflow-scroll">
                 <table className="table">
                   <thead>
                     <tr>
@@ -267,7 +267,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                   </tbody>
                   <tfoot className={`text-[1.2rem] font-bold`}>
                     <tr>
-                      <td colSpan={5} className={`text-end text-md font-bold`}>
+                      <td colSpan={4} className={`text-end text-md font-bold`}>
                         Total :
                       </td>
                       <td>
@@ -314,10 +314,10 @@ console.log('RestaurantExpenses',RestaurantExpenses);
 
         {/* Restaurant Expenses */}
 
-        <div className={`mb-10 mt-20`}>
+        <div className={`mb-10 mt-20 mr-5`}>
           <div>
             <h3
-              className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+           className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
             >
               Restaurant Expenses History
             </h3>

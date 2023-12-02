@@ -3,6 +3,7 @@ import { signOut } from "./auth/authSlice.js";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5001",
+  // baseUrl: "https://hotel-backend-63vk.onrender.com/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().authSlice.token;
 
@@ -39,7 +40,8 @@ const baseAPI = createApi({
     "category",
     "booking",
     "GetExpenses",
-    'expenses'
+    "expenses",
+  
     
   ],
   baseQuery: baseQueryWithReAuth,

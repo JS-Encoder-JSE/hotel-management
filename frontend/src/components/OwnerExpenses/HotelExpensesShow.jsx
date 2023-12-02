@@ -199,7 +199,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               Today Expenses
             </h3>
           </div>
-          <div className={`flex justify-end mb-5`}>
+          <div className={`flex justify-end mb-5 mr-5`}>
           {PDF?.length ? (
                 <PDFDownloadLink
                 document={<RestaurantExpenseReport date={hotelExpenses?.docs[0]?.date} values={hotelExpenses?.docs[0]?.items} header={{
@@ -328,7 +328,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               Hotel Expenses History
             </h3>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mr-5">
           {PDF?.length ? (
                 <PDFDownloadLink
                 document={<ExpensesHistoryReport date={hotelExpenses?.docs[0]?.date} values={filteredExpenses?.docs} header={{
