@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaEye,
@@ -15,35 +15,33 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import EditSales from "../../components/inventory/EditSales";
-import { useGetDailyDataQuery, useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
+import {
+  useGetDailyDataQuery,
+  useGetOrdersByDateQuery,
+} from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
-import { fromDateIsoConverter, fromDateIsoConverterForAddExpenses, getISOStringDate } from "../../utils/utils";
+import {
+  fromDateIsoConverter,
+  fromDateIsoConverterForAddExpenses,
+  getISOStringDate,
+} from "../../utils/utils";
 // import EditExpenses from "./EditExpenses";
 
 const ShowAllSell = () => {
   const navigate = useNavigate();
   const [forcePage, setForcePage] = useState(null);
   const [managersPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
   const [PDF, setPdf] = useState([]);
 
-  const { user } = useSelector((store) => store.authSlice);
-
-
-  console.log(user?.assignedHotel[0],"user")
-
-  
-
-  
+  const { user } = useSelector((state) => state.authSlice);
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
   });
-
-  console.log(searchParams);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -53,6 +51,7 @@ const ShowAllSell = () => {
     initialValues: {
       startDate: "",
       endDate: "",
+      filter: "",
     },
     onSubmit: (values) => {
       setSearchParams((p) => ({
@@ -67,33 +66,35 @@ const ShowAllSell = () => {
     },
   });
 
-
   // / query by searchParams
-  const {  data:restaurantSalesToday, error:restaurantSaleEx, isLoading:dataLoading } = useGetOrdersByDateQuery({
+  const {
+    data: restaurantSalesToday,
+    error: restaurantSaleEx,
+    isLoading: dataLoading,
+  } = useGetOrdersByDateQuery({
     date: fromDateIsoConverterForAddExpenses(new Date()),
-    order_status: 'CheckedOut',
-    hotel_id: user?.assignedHotel[0]
+    order_status: "CheckedOut",
+    hotel_id: user?.assignedHotel[0],
   });
 
-
-
-  // const { data:restaurantSalesToday, error:restaurantSaleEx, isLoading:dataLoading } = useGetDailyDataQuery({
-  //   cp: 1,
-  //   fromDate: fromDateIsoConverterForAddExpenses(new Date()),
-  //   hotel_id:user?.assignedHotel[0],
-  //   limit:10,
-  // });
-
-console.log(restaurantSalesToday,"todaysale")
-
-  const { data:restaurantSalesHistory, error, isLoading } = useGetDailyDataQuery({
+  // filtered data
+  const {
+    data: restaurantSalesHistory,
+    error,
+    isLoading,
+  } = useGetDailyDataQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
-    toDate: (searchParams?.toDate),
-    hotel_id:user?.assignedHotel[0],
+    toDate: searchParams?.toDate,
+    managerId: user?._id,
     limit: formik.values.entries,
+    filter: formik.values.filter,
   });
-  console.log(restaurantSalesHistory?.data?.docs,"dailyData")
+  useEffect(() => {
+    if (restaurantSalesHistory)
+      setPageCount(restaurantSalesHistory?.data?.totalPages);
+  }, [restaurantSalesHistory]);
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -101,13 +102,41 @@ console.log(restaurantSalesToday,"todaysale")
     }
   };
 
-  // const totalItemPrice =filteredExpenses && filteredExpenses?.docs[2]?.items?.reduce(
-  //   (total, item) => {
-  //     // Add the price of each item to the total
-  //     return total + (item?.price || 0);
-  //   },
-  //   0
-  // );
+  const [todayItem, setTodayItem] = useState([]);
+
+  useEffect(() => {
+    const todayItems = restaurantSalesToday?.data
+      ?.map((obj) => obj?.items)
+      .flat();
+    setTodayItem(todayItems);
+  }, [restaurantSalesToday]);
+
+  // pagination setup for today's expenses
+  const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+
+  const totalPage = todayItem && Math.ceil(todayItem?.length / itemsPerPage);
+
+  const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const currentItems = todayItem?.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handleScrollToTop = () => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+
+  const totalPrice = currentItems?.reduce(
+    (total, item) => total + item.price,
+    0
+  );
 
   return (
     <div className={`space-y-5`}>
@@ -133,31 +162,31 @@ console.log(restaurantSalesToday,"todaysale")
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
             >
-              Today Sales
+              Today's Sales
             </h3>
           </div>
 
           <div className="flex justify-end">
-              {PDF?.length ? (
-                <PDFDownloadLink
-                  document={
-                    <ExpensesHistoryReport
-                      date={hotelExpenses?.docs[0]?.date}
-                      values={filteredExpenses?.docs}
-                      header={{
-                        title: "DAK Hospitality LTD",
-                        name: "Restaurant Expenses History",
-                      }}
-                    />
-                  }
-                  fileName={`${new Date().toLocaleDateString()}.pdf`}
-                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded  uppercase"
-                >
-                  <BsFileEarmarkPdfFill />
-                  PDF
-                </PDFDownloadLink>
-              ) : null}
-            </div>
+            {PDF?.length ? (
+              <PDFDownloadLink
+                document={
+                  <ExpensesHistoryReport
+                    date={hotelExpenses?.docs[0]?.date}
+                    values={filteredExpenses?.docs}
+                    header={{
+                      title: "DAK Hospitality LTD",
+                      name: "Restaurant Expenses History",
+                    }}
+                  />
+                }
+                fileName={`${new Date().toLocaleDateString()}.pdf`}
+                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded  uppercase"
+              >
+                <BsFileEarmarkPdfFill />
+                PDF
+              </PDFDownloadLink>
+            ) : null}
+          </div>
           {/* <div className={`flex justify-end mb-5`}>
             <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
               {" "}
@@ -166,90 +195,64 @@ console.log(restaurantSalesToday,"todaysale")
             </button>
           </div> */}
 
-        <div className="overflow-x-auto">
-           {restaurantSalesToday&& restaurantSalesToday?.data?.docs ? <table className="table">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Date</th>
-                  <th>Items Name</th>
-                  <th>Description</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Remark</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {restaurantSalesToday&& restaurantSalesToday?.data?.docs?.map((item, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>{new Date(item?.date).toLocaleDateString()}</td>
-                      <td>Fried Rice</td>
-                      <td>Good </td>
-                      <td>10</td>
-                      {/* <td className="flex">
+          <div className="overflow-x-auto">
+            {currentItems && currentItems.length ? (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>SL</th>
+                    <th>Item</th>
+                    <th>Surveyor Quantity</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {restaurantSalesToday &&
+                    currentItems?.map((item, idx) => {
+                      return (
+                        <tr
+                          className={
+                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                          }
+                        >
+                          <th>{++idx}</th>
+                          <td>{item?.item}</td>
+                          <td>{item?.serveyor_quantity}</td>
+                          <td>{item?.quantity}</td>
+                          <td>{item?.price}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+                <tfoot className={`text-[1.2rem] font-bold`}>
+                  <tr>
+                    <td colSpan={4} className={`text-end text-md font-bold`}>
+                      Total :
+                    </td>
+                    <td>
+                      <div className="flex">
                         <div>
                           <FaRupeeSign />
                         </div>
                         <div>
-                          <span>5000</span>
+                          {" "}
+                          {totalPrice}
+                          {/* {totalItemPrice} */}
                         </div>
-                      </td>
-                      <td>Remark</td> */}
-                      <td>
-                        <button
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                          onClick={() =>
-                            document.getElementById("my_modal_3").showModal()
-                          }
-                        >
-                          <FaRegEdit />
-                        </button>
-                        <dialog id="my_modal_3" className="modal">
-                          <div className="modal-box">
-                            <form method="dialog">
-                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                ✕
-                              </button>
-                            </form>
-                            {/* Edit sales */}
-                            <EditSales />
-                          </div>
-                        </dialog>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot className={`text-[1.2rem] font-bold`}>
-                <tr>
-                  <td colSpan={5} className={`text-end text-md font-bold`}>
-                    Total :
-                  </td>
-                  <td>
-                    <div className="flex">
-                      <div>
-                        <FaRupeeSign />
                       </div>
-                      <div>
-                        {" "}
-                        65464
-                        {/* {totalItemPrice} */}
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>: <p className="flex justify-center items-center my-48">
-                    No Expenses Today
-                  </p>}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            ) : (
+              <p className="flex justify-center items-center my-48">
+                No Expenses Today
+              </p>
+            )}
           </div>
         </div>
-        <div className="flex justify-center ">
+        <div onClick={handleScrollToTop} className="flex justify-center ">
           <ReactPaginate
             containerClassName="join rounded-none"
             pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -261,10 +264,10 @@ console.log(restaurantSalesToday,"todaysale")
             previousLabel="<"
             nextLabel=">"
             breakLabel="..."
-            pageCount={pageCount}
+            pageCount={totalPage}
             pageRangeDisplayed={2}
             marginPagesDisplayed={2}
-            onPageChange={handlePageClick}
+            onPageChange={handlePageChange}
             renderOnZeroPageCount={null}
           />
         </div>
@@ -285,6 +288,23 @@ console.log(restaurantSalesToday,"todaysale")
               <FaRegFilePdf />
               PDF
             </button>
+          </div>
+        </div>
+        <div className={`flex justify-between my-5`}>
+          <div className={`space-x-1.5`}>
+            <span>Show</span>
+            <select
+              name="entries"
+              className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+              value={formik.values.entries}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+            <span>entries</span>
           </div>
         </div>
         <div className={`flex flex-col md:flex-row gap-4 `}>
@@ -351,41 +371,46 @@ console.log(restaurantSalesToday,"todaysale")
                 </tr>
               </thead>
               <tbody>
-                {restaurantSalesHistory && restaurantSalesHistory?.data?.docs?.map((item, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>{new Date(item?.date).toLocaleDateString()}</td>
-                      <td>
-                        <div className="flex">
-                          <div>
-                            <FaRupeeSign />
+                {restaurantSalesHistory &&
+                  restaurantSalesHistory?.data?.docs?.map((item, idx) => {
+                    return (
+                      <tr
+                        className={
+                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                        }
+                      >
+                        <th>{++idx}</th>
+                        <td>{new Date(item?.date).toLocaleDateString()}</td>
+                        <td>
+                          <div className="flex">
+                            <div>
+                              <FaRupeeSign />
+                            </div>
+                            <div>
+                              <span>{item?.today_restaurant_income}</span>
+                            </div>
                           </div>
-                          <div>
-                            <span>{item?.today_restaurant_income}</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className={`space-x-1.5`}>
-                        <span
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() =>
-                            navigate(`/dashboard/show-all-sell-Details?date=${item?.date}`)
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                        {/* <span
+                        </td>
+                        <td className={`space-x-1.5`}>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                            onClick={() =>
+                              navigate(
+                                `/dashboard/show-all-sell-details?date=${item?.date}`
+                              )
+                            }
+                          >
+                            <FaEye />
+                          </span>
+                          {/* <span
                           className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                         >
                           <AiTwotoneDelete />
                         </span> */}
-                      </td>
-                    </tr>
-                  );
-                })}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -406,6 +431,7 @@ console.log(restaurantSalesToday,"todaysale")
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
               renderOnZeroPageCount={null}
+              forcePage={currentPage}
             />
           </div>
         </div>

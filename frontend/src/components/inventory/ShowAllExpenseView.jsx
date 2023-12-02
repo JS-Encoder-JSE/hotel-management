@@ -24,11 +24,11 @@ const ShowAllExpenseView = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const { id } = useParams();
-  console.log(id, "expense by id");
+
 
   const { data: itemExpense } = useGetExpenseByIdQuery(id);
 
-  console.log(itemExpense, "Nissan");
+
 
   function calculateTotalPrice(items) {
     // Ensure items is not null or undefined
@@ -55,12 +55,12 @@ const ShowAllExpenseView = () => {
     setCurrentPage(page);
   };
   const navigate = useNavigate();
-  const handle = () =>{
-    console.log("console")
-  }
-
+  const handle = () => {
+   
+  };
 
   const [editItemData, setEditItemData] = useState(null);
+  const [index, setIndex] = useState();
 
   const currentDate = new Date();
     const formattedCurrentDate = currentDate.toLocaleDateString('en-GB', {
@@ -123,43 +123,29 @@ const ShowAllExpenseView = () => {
             {itemExpense?.items.map((item, idx) => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                  <th>{++idx}</th>
-                  <td>
-                    {/* {itemExpense?.date.toLocaleDateString()} */}
-                    {
-                                 new Date( itemExpense?.date).toLocaleDateString()
-                                }
-                    </td>
-                  <td>
-                    {item?.name}
-                    </td>
-                  <td>
-                    {item?.quantity}
-                    </td>
-                  <td>
-                    {item?.description}
-                    </td>
+                  <th>{idx + 1}</th>
+                  <td>{new Date(itemExpense?.date).toLocaleDateString()}</td>
+                  <td>{item?.name}</td>
+                  <td>{item?.quantity}</td>
+                  <td>{item?.description}</td>
                   <td>
                     <FaRupeeSign className="inline" />
-                    <span>
-                      {item?.price}
-                      </span>
+                    <span>{item?.price}</span>
                   </td>
-                  <td>Remark</td>
+                  <td>{item?.remark ? item?.remark : ""}</td>
                   <td>
                     <button
                       className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                      onClick={() =>{
+                      onClick={() => {
                         setEditItemData(item);
-                         window.eb_modal.showModal()
-                      }
-                    }
-                   
+                        window.eb_modal.showModal();
+                        setIndex(idx);
+                      
+                      }}
                     >
                       <FaRegEdit />
                     </button>
                   </td>
-                
                 </tr>
               );
             })}
@@ -176,7 +162,7 @@ const ShowAllExpenseView = () => {
                   </div>
                   <div>
                     {" "}
-                   {totalItemsAmount}
+                    {totalItemsAmount}
                     {/* {totalItemPrice} */}
                   </div>
                 </div>
@@ -186,11 +172,15 @@ const ShowAllExpenseView = () => {
         </table>
       </div>
       <Modal id={`eb_modal`}>
-      <EditExpensesView data={editItemData}/>
+        <EditExpensesView
+          index={index}
+          allItems={itemExpense}
+          data={editItemData}
+        />
       </Modal>
       {/* pagination */}
       <div className="flex justify-center mt-10">
-        <ReactPaginate
+      <ReactPaginate
           containerClassName="join rounded-none"
           pageLinkClassName="join-item btn btn-md bg-transparent"
           activeLinkClassName="btn-active !bg-green-slimy text-white"
@@ -206,6 +196,7 @@ const ShowAllExpenseView = () => {
           marginPagesDisplayed={2}
           onPageChange={handlePageClick}
           renderOnZeroPageCount={null}
+          forcePage={currentPage}
         />
       </div>
     </div>

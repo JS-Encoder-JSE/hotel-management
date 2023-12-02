@@ -301,12 +301,12 @@ const ManageCheckinModal = () => {
           ✕ 
         </button>
       </form>
-    <div className={`max-w-xl rounded-2xl mx-auto p-8`}>
+    <div className={`max-w-xl rounded-2xl mx-auto p-8 `}>
       <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
       <hr />
       <form
         autoComplete="off"
-        className="form-control grid grid-cols-1 gap-4 mt-5"
+        className="form-control grid grid-cols-1 gap-4 mt-5 "
         onSubmit={formik.handleSubmit}
       >
         {selectedImages?.length ? (

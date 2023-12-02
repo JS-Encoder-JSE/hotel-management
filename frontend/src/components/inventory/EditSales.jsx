@@ -38,7 +38,7 @@ const EditSales = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      
     },
   });
 

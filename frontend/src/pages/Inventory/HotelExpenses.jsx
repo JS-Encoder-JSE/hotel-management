@@ -43,14 +43,14 @@ const HotelExpenses = () => {
   // editItemData
   const [editItemData, setEditItemData] = useState(null);
 
-  // console.log(user._id);
+ 
 
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
-  // console.log(hotelInfo[0]?._id);
+ 
 
   const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
@@ -83,7 +83,7 @@ const HotelExpenses = () => {
 //     limit: 10,
 //   });
 
-  // console.log(RestaurantExpenses,"expnessfor resto")
+ 
   
   // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
   //   const {data:hotelExpenses, isLoading,isSuccess} = useGetExpensesQuery({
@@ -94,14 +94,13 @@ const HotelExpenses = () => {
   //     limit: 10,
   //   });
 
-  // console.log(hotelExpenses,"expnessfor resto")
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
   });
 
-  console.log(searchParams);
+ 
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -111,6 +110,7 @@ const HotelExpenses = () => {
     initialValues: {
       startDate: "",
       endDate: "",
+      filter:"",
     },
     onSubmit: (values) => {
       setSearchParams((p) => ({
@@ -129,37 +129,38 @@ const HotelExpenses = () => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    cp: 1,
     fromDate: fromDateIsoConverter(new Date()),
     hotel_id: hotelId,
     spendedfor: "hotel",
-    limit: 10,
   });
+
+  
 
   const {
     data: filteredExpenses,
     isLoading: isFilterDataLoading,
     isSuccess: filterExSuccess,
   } = useGetExpensesQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
     hotel_id: hotelId,
     spendedfor: "hotel",
     limit: formik.values.entries,
+    filter: formik.values.filter,
   });
 
   useEffect(() => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
-  console.log(hotelExpenses, "History");
+
 
   useEffect(() => {
     setPdf(hotelExpenses?.docs[0]?.items);
   }, [hotelExpenses]);
 
-  console.log(filteredExpenses, "filtered expenses.......");
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -175,6 +176,32 @@ const HotelExpenses = () => {
     },
     0
   );
+
+// pagination setup for today's expenses
+const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+  const totalPage =
+  hotelExpenses && Math.ceil(hotelExpenses?.docs[0]?.items.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems = hotelExpenses?.docs[0]?.items.slice(
+  indexOfFirstItem,
+  indexOfLastItem
+);
+
+const handleScrollToTop = () => {
+  // Scroll to the top of the page
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+
 
   return (
     <div className={`px-5 space-y-5`}>
@@ -227,9 +254,9 @@ const HotelExpenses = () => {
                 ) : null}
               </div>
 
-              <div className="h-96">
-                {hotelExpenses && filteredExpenses?.docs[0]?.items.length ? (
-                  <div className="h-[20rem] overflow-x-auto overflow-y-auto">
+              <div>
+                {currentItems && currentItems?.length ? (
+                  <div className=" overflow-x-auto overflow-y-auto">
                     <table className="table">
                       <thead>
                         <tr>
@@ -239,14 +266,14 @@ const HotelExpenses = () => {
                           <th>Description</th>
                           <th>Quantity</th>
                           <th>Price</th>
-                          {hotelExpenses?.docs[0]?.items?.map(
+                          {currentItems?.map(
                             (item, idx) => item?.remark && <th>Remark</th>
                           )}
                           {/* <th>Action</th> */}
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredExpenses && filteredExpenses?.docs[0]?.items?.map((item, idx) => {
+                        {hotelExpenses && currentItems.map((item, idx) => {
                           return (
                             <tr
                               className={
@@ -266,8 +293,8 @@ const HotelExpenses = () => {
                                 <FaRupeeSign className="inline" />
                                 <span>{item?.price}</span>
                               </td>
-                              {item?.remark && <td>Remark</td>}
-                              {/* <td>
+                               <td>{item?.remark ? item?.remark :""}</td>
+                              <td>
                                 <button
                                   className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                                   onClick={() =>{
@@ -291,7 +318,7 @@ const HotelExpenses = () => {
                                     <EditExpenses data={editItemData} />
                                   </div>
                                 </dialog>
-                              </td> */}
+                              </td> 
                 
                             </tr>
                           );
@@ -327,7 +354,7 @@ const HotelExpenses = () => {
 
             {/* pagination */}
 
-            <div className="flex justify-center mt-10">
+            <div onClick={handleScrollToTop} className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -339,10 +366,10 @@ const HotelExpenses = () => {
                 previousLabel="<"
                 nextLabel=">"
                 breakLabel="..."
-                pageCount={hotelExpenses?.pagingCounter}
+                pageCount={totalPage}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
+                onPageChange={handlePageChange}
                 renderOnZeroPageCount={null}
               />
             </div>
@@ -452,7 +479,7 @@ const HotelExpenses = () => {
         </div>
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
-          <div className="h-[20rem] overflow-x-auto overflow-y-auto">
+          <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -512,7 +539,7 @@ const HotelExpenses = () => {
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
-                forcePage={forcePage}
+                forcePage={currentPage}
               />
             </div>
           </div>

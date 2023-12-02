@@ -183,8 +183,9 @@ export const getDashboardInfo = async (req, res) => {
       return res.status(404).json({ message: "Dashboard not found" });
     }
     // Calculate the start date for fetching the last 12 months
-    const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 11);
+    const startDate = new Date(currentDate); 
+    startDate.setMonth(currentDate.getMonth() - 11);
+
     const dashboardTable = await DashboardTable.find({
       user_id: userId,
       createdAt: { $gte: startDate, $lte: currentDate },
@@ -201,13 +202,18 @@ export const getDashboardInfo = async (req, res) => {
       const permanent_datas = await StaticSubDashData.findOne({
         user_id: userId,
       });
-      overall_datas.total_restaurant_expenses = permanent_datas.total_restaurant_expenses;
-      overall_datas.total_restaurant_income = permanent_datas.total_restaurant_income;
-      overall_datas.total_restaurant_profit = permanent_datas.total_restaurant_profit;
+      overall_datas.total_restaurant_expenses =
+        permanent_datas.total_restaurant_expenses;
+      overall_datas.total_restaurant_income =
+        permanent_datas.total_restaurant_income;
+      overall_datas.total_restaurant_profit =
+        permanent_datas.total_restaurant_profit;
       overall_datas.total_hotel_expenses = permanent_datas.total_hotel_expenses;
       overall_datas.total_hotel_income = permanent_datas.total_hotel_income;
       overall_datas.total_hotel_profit = permanent_datas.total_hotel_profit;
-      overall_datas.total_net_profit = permanent_datas.total_hotel_profit + permanent_datas.total_restaurant_profit;
+      overall_datas.total_net_profit =
+        permanent_datas.total_hotel_profit +
+        permanent_datas.total_restaurant_profit;
     }
 
     res.status(200).json({
@@ -216,7 +222,7 @@ export const getDashboardInfo = async (req, res) => {
       daily_datas: checkInfo,
       permanent_datas: dashboard,
       monthly_datas: dashboardTable,
-      overall_datas:overall_datas,
+      overall_datas: overall_datas,
     });
   } catch (error) {
     console.error(error);

@@ -21,15 +21,16 @@ const RestaurantExpense = () => {
     filter: "Active",
   });
   const [selectedHotel1, setselectedHotel1] = useState(null);
-  console.log("selectedHotel1", selectedHotel1);
-  console.log("hotels", hotels);
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
     }
   };
 
-  console.log(hotels,"hotelll--------")
+
+  console.log('selectedHotel1',selectedHotel1);
+  console.log('hotels',hotels);
+ 
 
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?._id,
@@ -51,7 +52,7 @@ const RestaurantExpense = () => {
     );
   }
 
-  console.log(selectedHotel1?.value,"------------------")
+
   return (
     <>
     {/* back button */}

@@ -15,7 +15,6 @@ const ShowALlSellView = () => {
 
   const { user } = useSelector((store) => store.authSlice);
 
-  
 
 // query by searchParams
   const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
@@ -24,9 +23,7 @@ const ShowALlSellView = () => {
     hotel_id: user?.assignedHotel[0]
   });
 
-  console.log(orderedDataByDate,"orderedData")
 
-  const [pageCount, setPageCount] = useState(10);
     const formik = useFormik({
         initialValues: {
           startDate: "",
@@ -34,9 +31,41 @@ const ShowALlSellView = () => {
         },
       });
   const navigate = useNavigate();
-  const handlePageClick = ({ selected: page }) => {
-    setCurrentPage(page);
-  };
+
+
+
+const [todayItem, setTodayItem] = useState([]);
+useEffect(() => {
+  const todayItems = orderedDataByDate?.data?.map((obj) => obj?.items).flat();
+  setTodayItem(todayItems);
+}, [orderedDataByDate]);
+
+// pagination setup for today's expenses
+const itemsPerPage = 10;
+const [currentPageItem, setCurrentPageItem] = useState(0);
+
+const handlePageChange = ({ selected }) => {
+  setCurrentPageItem(selected);
+};
+const totalPage =
+orderedDataByDate && Math.ceil(todayItem?.length / itemsPerPage);
+
+const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+const currentItems = todayItem?.slice(
+indexOfFirstItem,
+indexOfLastItem
+);
+
+
+
+const handleScrollToTop = () => {
+// Scroll to the top of the page
+window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+const totalPrice = currentItems?.reduce((total, item) => total + item.price, 0);
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -67,35 +96,28 @@ const ShowALlSellView = () => {
                   <th>SL</th>
                   <th>Date</th>
                   <th>Items Name</th>
-                  <th>Description</th>
+                  <th>Surveyor Quantity</th>
                   <th>Quantity</th>
                   <th>Price</th>
+                  
                   {/* <th>Remark</th>
                   <th>Action</th> */}
                 </tr>
               </thead>
               <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
+                {currentItems && currentItems?.map((item, idx) => {
                   return (
                     <tr
                     key={idx}
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>23-11-2023</td>
-                      <td>Fried Rice</td>
-                      <td>Nice Product</td>
-                      <td>10</td>
-                      <td>
-                      <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
-                            <span>25000</span>
-                          </div>
-                        </div>
-                      </td>
+                      <td>{new Date(dateParam).toLocaleDateString()}</td>
+                      <td>{item?.item}</td>
+                      <td>{item?.serveyor_quantity}</td>
+                      <td>{item?.quantity}</td>
+                      <td>{item?.price}</td>
+                    
                       {/* <td>Remark</td> */}
                       {/* <td>
                         <button
@@ -135,8 +157,8 @@ const ShowALlSellView = () => {
                               <div>
                                 <FaRupeeSign />
                               </div>
-                              <div> 65464
-                                {/* {totalItemPrice} */}
+                              <div> 
+                                {totalPrice}
                                 </div>
                             </div>
                           </td>
@@ -147,21 +169,21 @@ const ShowALlSellView = () => {
           </div>
           <div className="flex justify-center mt-10">
             <ReactPaginate
-              containerClassName="join rounded-none"
-              pageLinkClassName="join-item btn btn-md bg-transparent"
-              activeLinkClassName="btn-active !bg-green-slimy text-white"
-              disabledLinkClassName="btn-disabled"
-              previousLinkClassName="join-item btn btn-md bg-transparent"
-              nextLinkClassName="join-item btn btn-md bg-transparent"
-              breakLinkClassName="join-item btn btn-md bg-transparent"
-              previousLabel="<"
-              nextLabel=">"
-              breakLabel="..."
-              pageCount={pageCount}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
-              renderOnZeroPageCount={null}
+             containerClassName="join rounded-none"
+             pageLinkClassName="join-item btn btn-md bg-transparent"
+             activeLinkClassName="btn-active !bg-green-slimy text-white"
+             disabledLinkClassName="btn-disabled"
+             previousLinkClassName="join-item btn btn-md bg-transparent"
+             nextLinkClassName="join-item btn btn-md bg-transparent"
+             breakLinkClassName="join-item btn btn-md bg-transparent"
+             previousLabel="<"
+             nextLabel=">"
+             breakLabel="..."
+             pageCount={totalPage}
+             pageRangeDisplayed={2}
+             marginPagesDisplayed={2}
+             onPageChange={handlePageChange}
+             renderOnZeroPageCount={null}
             />
           </div>
   

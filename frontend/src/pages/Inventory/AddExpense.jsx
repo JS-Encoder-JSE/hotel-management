@@ -43,14 +43,11 @@ const validationSchema = yup.object({
 const AddExpense = () => {
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  // console.log(user._id);
-
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
-  // console.log(hotelInfo[0]?._id);
 
   // add expense
   const [AddExpense] = useAddExpensesMutation();
@@ -68,8 +65,6 @@ const AddExpense = () => {
   const [isUpadet, setUpdate] = useState(false);
 
   const [selectDate, setSelectDate] = useState(null);
-
-  console.log(totalItems, "items---------");
 
   let totalExpense = [...totalItems];
 
@@ -96,9 +91,8 @@ const AddExpense = () => {
       setSelectDate(selectedDate);
 
       const obj = { ...values };
-      delete obj.date;  
+      delete obj.date;
       // const obj = { ...values };
-      console.log(obj);
 
       if (editIndex !== null) {
         // Update existing item
@@ -121,6 +115,7 @@ const AddExpense = () => {
   // handle AddExpense submit:
 
   const handleAddExpensesResponse = async () => {
+    const newDate = new Date();
     setLoading(true);
     const response = await AddExpense({
       hotel_id: isHotelSuccess && hotelInfo[0]?._id,
@@ -130,12 +125,6 @@ const AddExpense = () => {
       spendedfor: "restaurant",
       items: totalExpense,
       total_amount: parseInt(calculateTotal()),
-
-      // hotel_id:isHotelSuccess && hotelInfo[0]?._id,
-      // date:new Date(),
-      // spendedfor:"restaurant",
-      // items: totalExpense,
-      // total_amount:parseInt(calculateTotal()),
     });
     setLoading(false);
     if (response?.error) {

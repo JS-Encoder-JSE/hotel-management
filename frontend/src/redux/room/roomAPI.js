@@ -102,18 +102,19 @@ const roomAPI = baseAPI.injectEndpoints({
       invalidatesTags: ["booking"],
     }),
     getExpenses: build.query({
-      query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit }) =>
-        `expenses/get-expenses?page=${cp}${limit ? `&limit=${limit}` : ""}${
-          fromDate ? `&fromDate=${fromDate}` : ""
-        }${toDate ? `&toDate=${toDate}` : ""}${
-          hotel_id ? `&hotel_id=${hotel_id}` : ""
-        }${spendedfor ? `&spendedfor=${spendedfor}` : ""}`,
+      query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit, filter }) =>
+        `expenses/get-expenses?page=${++cp}${limit ?`&limit=${limit}`:""} ${filter ? `&filter=${filter}` : ""
+        }${fromDate ? `&fromDate=${fromDate}` : ""}${toDate ? `&toDate=${toDate}` : ""
+        }${hotel_id ?`&hotel_id=${hotel_id}`:""}${spendedfor ?`&spendedfor=${spendedfor}` : ""
+        }`,
       providesTags: ["GetExpenses"],
     }),
 
     getOrdersByDate: build.query({
       query: ({ date, order_status, hotel_id }) =>
-        `foods/get-orders-by-date?date=${date}&order_status=${order_status}&hotel_id=${hotel_id}`,
+        `foods/get-orders-by-date?${
+          date ? `date=${date}` : ""
+        }&order_status=${order_status}&hotel_id=${hotel_id}`,
     }),
     // getDailyData:build.query({
     //   query: ({ managerId, fromDate, toDate }) =>
@@ -121,9 +122,12 @@ const roomAPI = baseAPI.injectEndpoints({
     //   providesTags
     // }),
 
-    getDailyData:build.query({
-      query:({managerId,fromDate,toDate})=>`hotels/get-daily-datas?managerId=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,
-      providesTags:["getDailyData"]
+    getDailyData: build.query({
+      query: ({ cp, limit, filter, managerId, fromDate, toDate }) =>
+        `hotels/get-daily-datas?page=${++cp}${limit ? `&limit=${limit}` : ""}${
+          filter ? `&filter=${filter}` : ""
+        }&manager_id=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,
+      providesTags: ["getDailyData"],
     }),
 
     getExpenseById: build.query({

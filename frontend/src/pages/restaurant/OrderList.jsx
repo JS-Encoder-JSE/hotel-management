@@ -103,7 +103,6 @@ const OrderList = () => {
       formik.handleSubmit();
     }
   };
-  console.log("search", search);
 
   return (
     <div className={`px-5 space-y-5`}>

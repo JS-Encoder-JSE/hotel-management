@@ -44,14 +44,11 @@ const RestaurantExpenseShow = ({ hotelId }) => {
   const [editItemData, setEditItemData] = useState(null);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
-  // console.log(user._id);
-
   // const {
   //   data: hotelInfo,
   //   isLoading: isHotelLoading,
   //   isSuccess: isHotelSuccess,
   // } = useGetHotelByManagerIdQuery(user?._id);
-  // console.log(hotelInfo[0]?._id);
 
   // 1st commit
 
@@ -61,8 +58,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     fromDate: "",
     toDate: "",
   });
-
-  console.log(searchParams);
 
   const formik = useFormik({
     initialValues: {
@@ -100,24 +95,18 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    cp: 1,
     fromDate: fromDateIsoConverter(new Date()),
     hotel_id: hotelId,
     spendedfor: "restaurant",
-    limit: 10,
   });
-
+console.log('RestaurantExpenses',RestaurantExpenses);
   useEffect(() => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
-  console.log(RestaurantExpenses, "History");
-
   useEffect(() => {
     setPdf(RestaurantExpenses?.docs[0]?.items);
   }, [RestaurantExpenses]);
-
-  console.log(filteredExpenses, "filtered expenses.......");
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -145,14 +134,37 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     return itemDate === formattedCurrentDate;
   });
 
-  console.log(isTodayItems, "itemssssssssssss");
-
   const totalItemPrice =
     isTodayItems &&
     isTodayItems[0]?.items?.reduce((total, item) => {
       // Add the price of each item to the total
       return total + (item?.price || 0);
     }, 0);
+
+  // pagination setup for today's expenses
+  const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+  const totalPage =
+    RestaurantExpenses &&
+    Math.ceil(RestaurantExpenses?.docs[0]?.items.length / itemsPerPage);
+
+  const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const currentItems = RestaurantExpenses?.docs[0]?.items.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const handleScrollToTop = () => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className={` space-y-5`}>
@@ -189,16 +201,15 @@ const RestaurantExpenseShow = ({ hotelId }) => {
               ) : null}
             </div>
 
-            <div className="h-96">
+            <div>
               {/* 3rd commit  */}
 
               {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto overflow-y-auto">
                 <table className="table">
                   <thead>
                     <tr>
                       <th>SL</th>
-                      <th>Date</th>
                       <th>Items Name</th>
                       <th>Description</th>
                       <th>Quantity</th>
@@ -210,7 +221,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {RestaurantExpenses?.docs[0]?.items?.map((item, idx) => {
+                    {currentItems?.map((item, idx) => {
                       return (
                         <tr
                           className={
@@ -218,11 +229,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>
-                            {getformatDateTime(
-                              RestaurantExpenses?.docs[0]?.date
-                            )}
-                          </td>
                           <td>{item?.name}</td>
                           <td>{item?.description}</td>
                           <td>{item?.quantity}</td>
@@ -230,17 +236,16 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                             <FaRupeeSign className="inline" />
                             <span>{item?.price}</span>
                           </td>
-                          {item?.remark && <td>Remark</td>}
-                          {/* <td>
+                          <td>{item?.remark ? item?.remark : ""}</td>
+                          <td>
                             <button
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                              onClick={() =>{
+                              onClick={() => {
                                 setEditItemData(item);
                                 document
                                   .getElementById("my_modal_3")
-                                  .showModal()
-                              }
-                              }
+                                  .showModal();
+                              }}
                             >
                               <FaRegEdit />
                             </button>
@@ -254,7 +259,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                                 <EditExpenses data={editItemData} />
                               </div>
                             </dialog>
-                          </td> */}
+                          </td> 
                         </tr>
                       );
                     })}
@@ -281,7 +286,10 @@ const RestaurantExpenseShow = ({ hotelId }) => {
 
           {/* pagination */}
 
-          <div className="flex justify-center mt-10">
+          <div
+            onClick={handleScrollToTop}
+            className="flex justify-center mt-10"
+          >
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -293,11 +301,12 @@ const RestaurantExpenseShow = ({ hotelId }) => {
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={RestaurantExpenses?.pagingCounter}
+              pageCount={pageCount}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
+              onPageChange={handlePageChange}
               renderOnZeroPageCount={null}
+              forcePage={currentPage}
             />
           </div>
         </div>
@@ -332,13 +341,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                 PDF
               </PDFDownloadLink>
             ) : null}
-          </div>
-          <div className={`flex justify-end mb-5`}>
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
           </div>
         </div>
         <div className={`flex justify-between my-5`}>
@@ -429,7 +431,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{item?.date}</td>
+                      <td>{new Date(item?.date).toLocaleDateString()}</td>
                       <td>
                         <FaRupeeSign className="inline" />
                         <span>{item?.total_amount}</span>

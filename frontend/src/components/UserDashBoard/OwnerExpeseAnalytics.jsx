@@ -1,111 +1,89 @@
-import React from 'react';
-import { GiCoins } from 'react-icons/gi';
-import { MdCurrencyRupee } from 'react-icons/md';
-import ExpensesChart from './ExpesesChart';
-import OwnerExpenseAndSalesChart from './OwnerExpneseAndSalesChart';
+import React from "react";
+import { GiCoins } from "react-icons/gi";
+import { MdCurrencyRupee } from "react-icons/md";
+import ExpensesChart from "./ExpesesChart";
+import OwnerExpenseAndSalesChart from "./OwnerExpneseAndSalesChart";
 import { BiRupee } from "react-icons/bi";
-import ThreeBarChart from './ThreeBarChart';
+import ThreeBarChart from "./ThreeBarChart";
+import RestaurantDashboardChart from "./RestaurantDashboardChart";
 
-
-const OwnerExpeseAnalytics = ({monthlyData, userHotel,dashboardData,dummyData}) => {
-    return (
+const OwnerExpeseAnalytics = ({
+  monthlyData,
+  userHotel,
+  dashboardData,
+  dummyData,
+}) => {
+  
+  return (
+    <div>
+      <div className="mt-10">
         <div>
-             <div className='mt-10'>
-             <div>
-        <section
-          className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
-        >
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-            <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
-            <GiCoins className={`db-currency text-white`} />
+          <section
+            className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}
+          >
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+              <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
+                <GiCoins className={`db-currency text-white`} />
+              </div>
+              <h6 className="text-xs text-slate-400">TOTAL EXPENSES</h6>
+              <p className="text-2xl font-semibold mt-3">
+                <div className="flex justify-end">
+                  <div>
+                    <BiRupee />
+                  </div>
+                  <div>
+                    <span>{dashboardData?.total_expense}</span>
+                  </div>
+                </div>
+              </p>
             </div>
-            <h6 className='text-xs text-slate-400'>
-              TOTAL EXPENSES 
-            </h6>
-            <p className="text-2xl font-semibold mt-3">
-             <div className='flex justify-end'>
-              <div><BiRupee /></div>
-              <div><span>550</span></div>
-             </div>
-            </p>
-          </div>
             <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
-              <GiCoins className={`db-currency text-white`} />
+                <GiCoins className={`db-currency text-white`} />
               </div>
-              <h6 className='text-xs text-slate-400'>
-               TOTAL REVENUE
-              </h6>
+              <h6 className="text-xs text-slate-400">TOTAL REVENUE</h6>
               <p className="text-2xl font-semibold mt-3">
-             <div className='flex justify-end'>
-              <div><BiRupee /></div>
-              <div><span>550</span></div>
-             </div>
-            </p>
+                <div className="flex justify-end">
+                  <div>
+                    <BiRupee />
+                  </div>
+                  <div>
+                    <span>{dashboardData?.total_revenue}</span>
+                  </div>
+                </div>
+              </p>
             </div>
-          
-          {/* Total Amount */}
-          <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-            <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
-              <GiCoins className={`db-currency text-white`} />
+
+            {/* Total Amount */}
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+              <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
+                <GiCoins className={`db-currency text-white`} />
+              </div>
+              <h6 className="text-xs text-slate-400">NET PROFIT</h6>
+              <p className="text-2xl font-semibold mt-3">
+                <div className="flex justify-end">
+                  <div>
+                    <BiRupee />
+                  </div>
+                  <div>
+                    <span>{dashboardData?.net_profit}</span>
+                  </div>
+                </div>
+              </p>
             </div>
-            <h6 className='text-xs text-slate-400'>NET PROFIT</h6>
-            <p className="text-2xl font-semibold mt-3">
-             <div className='flex justify-end'>
-              <div><BiRupee /></div>
-              <div><span>550</span></div>
-             </div>
-            </p>
-          </div>
-          
-          {/* <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mt-3">
-        <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#23c4d8] to-[#03aec3] p-3 rounded-md">
-          {userHotel ? <BsFillSendCheckFill /> : <MdAutorenew />}
+          </section>
+
+          <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
+            <RestaurantDashboardChart
+              monthlyData={[...dummyData, ...dashboardData?.monthly_datas]}
+            />
+          </section>
+
+          <section className="mt-8 grid md:grid-cols-2 gap-5"></section>
         </div>
-        <h6 className="text-xs text-slate-400">
-          TOTAL {userHotel ? "CHECK Out" : "RENEW"}
-        </h6>
-        <p className="text-2xl font-semibold mb-5">750</p>
-        <hr />
-      </div> */}
-        </section>
-
-        <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
-          {/* <OwnerExpenseAndSalesChart
-            monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
-            userHotel={userHotel}
-          /> */}
-          <ThreeBarChart/>
-        </section>
-
-
-        <section className="mt-8 grid md:grid-cols-2 gap-5">
-          {/* <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-        <TotalBookingAmountAndNumber />
-      </div> */}
-
-          {/* customer list */}
-          {/* <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-        <CustomerList />
-      </div> */}
-          {/* </section> */}
-
-          {/* <section className="mt-8 grid md:grid-cols-2 gap-5"> */}
-          {/* <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-        <TodaysBooking />
-      </div> */}
-
-          {/* NextBooking box */}
-          {/* {userHotel && (
-        <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
-          <NextBooking />
-        </div>
-      )} */}
-        </section>
       </div>
-        </div>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default OwnerExpeseAnalytics;

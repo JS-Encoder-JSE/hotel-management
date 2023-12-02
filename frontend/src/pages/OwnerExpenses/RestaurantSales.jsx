@@ -8,10 +8,10 @@ import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpenseShow.jsx";
-import RestaurantSalesShow from './../../components/OwnerExpenses/RestaurantSalesShow';
+import RestaurantSalesShow from "./../../components/OwnerExpenses/RestaurantSalesShow";
 
 const RestaurantSales = () => {
-  const { user } = useSelector((store) => store.authSlice);
+  const { user } = useSelector((state) => state.authSlice);
   const {
     isLoading,
     data: hotels,
@@ -22,23 +22,22 @@ const RestaurantSales = () => {
     filter: "Active",
   });
   const [selectedHotel, setselectedHotel] = useState(null);
-  console.log("selectedHotel", selectedHotel);
-  console.log("hotels", hotels);
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
     }
   };
 
-
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?.manager_acc?._id,
+    hotelId: hotel?._id,
+    managerID: hotel?.manager_acc?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
-  const handleReset=()=>{
-    setselectedHotel("")
 
-  }
+  const handleReset = () => {
+    setselectedHotel("");
+  };
 
   if (isLoading || isError) {
     return (
@@ -51,10 +50,9 @@ const RestaurantSales = () => {
     );
   }
 
-  console.log(selectedHotel?.value,"------------------")
   return (
     <>
-    {/* back button */}
+      {/* back button */}
       <div className={`mb-5`}>
         <Link to={`/dashboard `}>
           <button
@@ -71,11 +69,11 @@ const RestaurantSales = () => {
           </button>
         </Link>
       </div>
-      
+
       <div className="space-y-20">
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex gap-5 items-center justify-center">
-          <p >Hotel Branch Name :</p>
+          <p>Hotel Branch Name :</p>
           <div className="flex flex-col md:flex-row gap-4">
             <Select
               placeholder="Search with hotel branch name"
@@ -94,15 +92,26 @@ const RestaurantSales = () => {
                 placeholder: () => "!m-0",
               }}
             />
-            <button onClick={handleReset} className={`${selectedHotel?"bg-green-slimy px-3 border text-white": "bg-gray-300 px-3 border"}`}>Reset</button>
+            <button
+              onClick={handleReset}
+              className={`${
+                selectedHotel
+                  ? "bg-green-slimy px-3 border text-white"
+                  : "bg-gray-300 px-3 border"
+              }`}
+            >
+              Reset
+            </button>
           </div>
         </section>
 
         <section>
           {selectedHotel ? (
-            <RestaurantSalesShow managerId={selectedHotel?.value}></RestaurantSalesShow>
+            <RestaurantSalesShow
+              hotelId={selectedHotel?.managerID}
+            ></RestaurantSalesShow>
           ) : (
-          <p className="text-center">Please Select your Hotel Branch !!</p>
+            <p className="text-center">Please Select your Hotel Branch !!</p>
           )}
         </section>
       </div>

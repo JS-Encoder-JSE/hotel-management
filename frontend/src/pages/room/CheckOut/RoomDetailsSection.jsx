@@ -7,7 +7,6 @@ const RoomDetailsSection = ({
   roomData,
   bookingInfo,
 }) => {
-  console.log("checkout data", data);
   const dispatch = useDispatch();
   const discountPerRoom = Math.ceil(
     bookingInfo?.room_discount / bookingInfo?.room_ids.length

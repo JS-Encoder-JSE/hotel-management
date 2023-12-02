@@ -28,7 +28,8 @@ const CheckOut = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomFromQuery = searchParams.get("room");
-  const [addCheckout,{isLoading:addCheckOutLoading}] = useAddCheckoutMutation();
+  const [addCheckout, { isLoading: addCheckOutLoading }] =
+    useAddCheckoutMutation();
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
@@ -39,12 +40,12 @@ const CheckOut = () => {
   //   isLoading: checkoutLoading,
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
-  const [getCheckout, { data: checkout, isSuccess, isLoading}] = useGetCheckoutMutation();
-  // console.log("Isloading",isLoading)
+  const [getCheckout, { data: checkout, isSuccess, isLoading }] =
+    useGetCheckoutMutation();
+  console.log("checkout :", checkout);
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
-  console.log("data :", checkout);
   const handleResetCheckout = () => {
     setShowRooms(false);
   };
@@ -190,11 +191,11 @@ const CheckOut = () => {
         >
           Go
           {isLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
+            <span
+              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+              role="status"
+            ></span>
+          ) : null}
         </button>
         <button
           onClick={handleResetCheckout}

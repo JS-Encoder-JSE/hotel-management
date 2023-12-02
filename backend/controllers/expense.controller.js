@@ -45,8 +45,6 @@ export const addExpense = async (req, res) => {
         user_id: userId,
         date,
       });
-      console.log(existingDailySubDashData);
-      console.log(formattedDate);
       const existingMonthlySubDashData = await MonthlySubDashData.findOne({
         user_id: userId,
         month_name,
@@ -68,6 +66,7 @@ export const addExpense = async (req, res) => {
         existingStaticSubDashData.total_restaurant_expenses += total_amount;
         existingStaticSubDashData.total_restaurant_profit -= total_amount;
       }
+      console.log(existingDailySubDashData);
       await existingDailySubDashData.save();
       await existingMonthlySubDashData.save();
       await existingStaticSubDashData.save();
@@ -92,8 +91,6 @@ export const addExpense = async (req, res) => {
       const existingStaticSubDashData = await StaticSubDashData.findOne({
         user_id: userId,
       });
-      console.log(userId);
-      console.log(existingStaticSubDashData);
       if (spendedfor === "hotel") {
         existingStaticSubDashData.total_hotel_expenses += total_amount;
         existingStaticSubDashData.total_hotel_profit -= total_amount;
@@ -143,6 +140,7 @@ export const addExpense = async (req, res) => {
         month_name,
         year,
       });
+      console.log(existingMonthlySubDashData);
       if (existingMonthlySubDashData) {
         if (spendedfor === "hotel") {
           existingMonthlySubDashData.total_hotel_expenses += total_amount;
@@ -181,7 +179,9 @@ export const addExpense = async (req, res) => {
   } catch (error) {
     // console.error("Error saving to database:", saveError);
     console.error("Error adding expense:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 };
 

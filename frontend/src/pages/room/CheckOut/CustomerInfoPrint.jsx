@@ -1,7 +1,6 @@
 import React from "react";
 
 const CustomerInfoPrint = ({ data }) => {
-  console.log(data)
   return (
     <div className="py-2">
       <h2 className="font-bold">Invoice To</h2>

@@ -43,8 +43,9 @@ export const getSubDashboardInfo = async (req, res) => {
       return res.status(404).json({ message: "permanent_datas not found" });
     }
     // Calculate the start date for fetching the last 12 months
-    const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 11);
+    const startDate = new Date(currentDate); // Create a new date object based on currentDate
+    startDate.setMonth(currentDate.getMonth() - 11);
+
     const monthly_datas = await MonthlySubDashData.find({
       user_id: userId,
       createdAt: { $gte: startDate, $lte: currentDate },

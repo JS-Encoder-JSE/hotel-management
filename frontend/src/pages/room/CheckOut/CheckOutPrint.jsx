@@ -29,8 +29,7 @@ const CheckOutPrint = ({
   hotelInfo,
   isHotelSuccess,
   roomData,
-}) => {
-  console.log("data ----", data);
+}) => { 
   return (
     <div>
       <div>

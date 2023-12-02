@@ -12,7 +12,10 @@ const CustomerInfoSection = ({ data }) => {
           {/*<p>Email ID</p>*/}
           <p>Mobile No</p>
           <p>Address</p>
+          <p>Total Payable Amount</p>
           <p>Total Paid Amount</p>
+          <p>Total Unpaid Amount</p>
+          <p>Total Available Ballance</p>
           {/* <p>Total Room Rent</p>
           <p>Discount For Room</p>
           <p>Unpaid Room Rent</p> */}
@@ -26,7 +29,15 @@ const CustomerInfoSection = ({ data }) => {
           {/*<p>dev.tajkir@gmail.com</p>*/}
           <p>{data?.mobileNumber}</p>
           <p>{data?.address}</p>
+
+          <p>{data?.total_payable_amount}</p>
           <p>{data?.paid_amount}</p>
+          <p>{Math.ceil(data?.total_unpaid_amount)}</p>
+          <p>
+            {data?.total_unpaid_amount < 1
+              ? Math.ceil(data?.paid_amount - data?.total_payable_amount)
+              : 0}
+          </p>
           {/* <p>{data?.total_rent}</p>
           <p>
             {data

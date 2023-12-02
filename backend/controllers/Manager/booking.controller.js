@@ -155,7 +155,9 @@ export const addBooking = async (req, res) => {
         return booking._id; // Return the booking id
       })
     );
-    const total_rent_after_dis = total_rent - room_discount;
+    const room_discount_percentage = room_discount / 100;
+    const total_rent_after_dis =
+      total_rent - total_rent * room_discount_percentage;
     const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
@@ -799,7 +801,7 @@ export const updateBooking = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
-      error: error.message,
+      error: error,
     });
   }
 };
@@ -1030,6 +1032,8 @@ export const addToCheckin = async (req, res) => {
         user_id: userId,
         user_role: user.role,
         total_checkin: 1,
+        month_name,
+        year,
       });
       // Save the new dashboard table to the database
       await newDashboardTable.save();
@@ -1049,6 +1053,8 @@ export const addToCheckin = async (req, res) => {
         user_id: user.parent_id,
         user_role: "owner",
         total_checkin: 1,
+        month_name,
+        year,
       });
       // Save the new dashboard table to the database
       await newDashboardTable.save();
@@ -1067,6 +1073,7 @@ export const addToCheckin = async (req, res) => {
         user_id: userId,
         user_role: user.role,
         today_checkin: 1,
+        date,
       });
       await newCheckInfo.save();
     }
@@ -1084,6 +1091,7 @@ export const addToCheckin = async (req, res) => {
         user_id: user.parent_id,
         user_role: "owner",
         today_checkin: 1,
+        date,
       });
       await newCheckInfo.save();
     }
@@ -1095,6 +1103,74 @@ export const addToCheckin = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error,
+    });
+  }
+};
+
+
+export const makePayment = async (req, res) => {
+  try {
+    const {
+      manager_id,
+      bookingInfoId,
+      amount,
+      paymentMethod,
+      tran_id,
+      remark,
+    } = req.body;
+
+    // Find the BookingInfo based on the provided bookingInfoId
+    const bookingInfo = await BookingInfo.findById(bookingInfoId);
+
+    if (!bookingInfo) {
+      return res.status(404).json({
+        success: false,
+        message: "BookingInfo not found",
+      });
+    }
+
+    // Calculate new paid_amount and total_unpaid_amount
+    const newPaidAmount = bookingInfo.paid_amount + amount;
+    const newUnpaidAmount = Math.max(
+      0,
+      bookingInfo.total_unpaid_amount - amount
+    );
+
+    // Update BookingInfo with the new values
+    bookingInfo.paid_amount = newPaidAmount;
+    bookingInfo.total_unpaid_amount = newUnpaidAmount;
+
+    // Save the updated BookingInfo
+    await bookingInfo.save();
+
+    // Create a new TransactionLog entry
+    const newTransactionLog = new TransactionLog({
+      manager_id,
+      booking_info_id: bookingInfoId,
+      payment_method: paymentMethod,
+      tran_id,
+      amount: amount,
+      remark: remark,
+    });
+
+    // Save the new TransactionLog entry
+    await newTransactionLog.save();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        bookingInfo: bookingInfo,
+        transactionLog: newTransactionLog,
+      },
+      message: "Payment made successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
