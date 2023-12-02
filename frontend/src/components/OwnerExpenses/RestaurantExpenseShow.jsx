@@ -214,9 +214,10 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                       <th>Description</th>
                       <th>Quantity</th>
                       <th>Price</th>
-                      {RestaurantExpenses?.docs[0]?.items?.map(
+                      <th>Remark</th>
+                      {/* {RestaurantExpenses?.docs[0]?.items?.map(
                         (item, idx) => item?.remark && <th>Remark</th>
-                      )}
+                      )} */}
                       {/* <th>Action</th> */}
                     </tr>
                   </thead>
@@ -237,7 +238,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                             <span>{item?.price}</span>
                           </td>
                           <td>{item?.remark ? item?.remark : ""}</td>
-                          <td>
+                          {/* <td>
                             <button
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                               onClick={() => {
@@ -259,7 +260,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                                 <EditExpenses data={editItemData} />
                               </div>
                             </dialog>
-                          </td> 
+                          </td>  */}
                         </tr>
                       );
                     })}
@@ -313,7 +314,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
 
         {/* Restaurant Expenses */}
 
-        <div className={`mb-10 mt-10`}>
+        <div className={`mb-10 mt-20`}>
           <div>
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}

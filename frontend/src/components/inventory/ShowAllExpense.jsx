@@ -237,8 +237,8 @@ const ShowAllExpense = () => {
 
               <div className="">
                 {resExpenses && resExpenses?.docs[0]?.items.length ? (
-                  <div className=" !h-[40em] overflow-y-scroll md:overflow-scroll">
-                    <table className="table  min-h-0 md:min-h-full">
+                  <div className="h-[30rem] overflow-y-scroll md:overflow-scroll">
+                    <table className="table ">
                       <thead>
                         <tr>
                           <th>SL</th>
@@ -248,7 +248,7 @@ const ShowAllExpense = () => {
                           <th>Quantity</th>
                           <th>Price</th>
                           <th>Remark</th>
-                          <th>Action</th>
+                          {/* <th>Action</th> */}
                         </tr>
                       </thead>
                       <tbody>
@@ -275,7 +275,7 @@ const ShowAllExpense = () => {
                                 </td>
                                 <td>{item?.remark ? item?.remark : ""}</td>
 
-                                <td>
+                                {/* <td>
                                   <button
                                     className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                                     onClick={() => {
@@ -303,7 +303,7 @@ const ShowAllExpense = () => {
                                       />
                                     </div>
                                   </dialog>
-                                </td>
+                                </td> */}
                               </tr>
                             );
                           })}
@@ -364,10 +364,10 @@ const ShowAllExpense = () => {
 
           {/* Restaurant Expenses */}
 
-          <div className={`mb-10 mt-10`}>
+          <div className={`mb-10 mt-20`}>
             <div>
               <h3
-                className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+                className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center `}
               >
                 Restaurant Expenses History
               </h3>

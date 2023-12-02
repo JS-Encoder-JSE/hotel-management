@@ -274,7 +274,7 @@ const ShowAllSell = () => {
 
         {/* Restaurant Expenses */}
 
-        <div className={`mb-10 mt-10`}>
+        <div className={`mb-10 mt-20`}>
           <div>
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
