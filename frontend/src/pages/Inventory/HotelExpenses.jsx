@@ -196,6 +196,9 @@ const currentItems = hotelExpenses?.docs[0]?.items.slice(
   indexOfLastItem
 );
 
+console.log(hotelExpenses)
+
+
 const handleScrollToTop = () => {
   // Scroll to the top of the page
   window.scrollTo({ top: 0, behavior: 'smooth' });

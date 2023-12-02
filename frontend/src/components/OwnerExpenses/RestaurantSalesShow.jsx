@@ -71,6 +71,10 @@ const RestaurantSalesShow = ({ hotelId }) => {
     hotel_id: hotelId,
   });
 
+
+
+
+
   // History
   const {
     data: restaurantSalesHistory,
@@ -83,6 +87,9 @@ const RestaurantSalesShow = ({ hotelId }) => {
     managerId: hotelId,
     limit: formik.values.entries,
   });
+
+  console.log(restaurantSalesHistory)
+
 
   return (
     <div className={`space-y-5`}>
@@ -369,7 +376,7 @@ const RestaurantSalesShow = ({ hotelId }) => {
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={pageCount}
+              pageCount={restaurantSalesHistory?.data?.totalPages}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}

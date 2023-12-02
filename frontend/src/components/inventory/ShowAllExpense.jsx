@@ -253,7 +253,7 @@ const ShowAllExpense = () => {
                       </thead>
                       <tbody>
                         {resExpenses &&
-                          dailyDatas.map((item, idx) => {
+                          dailyDatas?.map((item, idx) => {
                             return (
                               <tr
                                 className={
@@ -471,7 +471,7 @@ const ShowAllExpense = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredExpenses?.docs.map((item, idx) => {
+                  {filteredExpenses?.docs?.map((item, idx) => {
                     return (
                       <tr
                         className={

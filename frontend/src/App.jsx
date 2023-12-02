@@ -694,7 +694,7 @@ const App = () => {
               ),
             },
             {
-              path: "hotel-sales/:id",
+              path: "hotel-sales-details",
               element: (
                 <OwnerRoute>
                   <HotelSalesView />

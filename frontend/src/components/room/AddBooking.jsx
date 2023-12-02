@@ -157,10 +157,16 @@ const AddBooking = () => {
       e.preventDefault();
     }
   };
-  const { data: rooms } = useRoomsQuery({
+  const { data: rooms, refetch } = useRoomsQuery({
     id: formik.values.hotel_id,
     limit: 1000000,
   });
+
+  const handleRefetch = () => {
+    refetch();
+  };
+  
+
 
   const transformedRooms = rooms?.data?.docs
     ?.filter((i) => i.status === "Available")
@@ -199,7 +205,7 @@ const AddBooking = () => {
 
   return (
     <>
-      <form autoComplete="off" method="dialog">
+      <form onClick={handleRefetch} autoComplete="off" method="dialog">
         <button
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"

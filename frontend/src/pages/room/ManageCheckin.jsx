@@ -9,7 +9,7 @@ import {
   useGetBookingsByHotelQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CheckInModal from "./CheckInModal.jsx";
 import ManageCheckinModal from "./MaageCheckinModal.jsx";
 import CheckinList from "../../components/room/CheckinList.jsx";
@@ -42,13 +42,20 @@ const ManageCheckin = () => {
 
 
 
-  const { data: checkinList, isLoading } = useGetBookingsByHotelQuery({
+  const { data: checkinList, isLoading,refetch } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
     search: formik.values.search,
     page: currentPage,
     filter: "CheckedIn",
     
   });
+
+  // refetch()
+const path = useLocation()
+console.log(path.pathname)
+useEffect(()=>{
+  refetch()
+},[path.pathname])
 
 
   const handlePageClick = ({ selected: page }) => {

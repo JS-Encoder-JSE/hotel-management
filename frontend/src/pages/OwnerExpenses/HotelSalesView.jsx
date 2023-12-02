@@ -1,14 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useFormik } from "formik";
 // import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
 import EditHotelSales from "./EditHotelSales";
+import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
+import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
 
 const HotelSalesView = () => {
 
   const [pageCount, setPageCount] = useState(10);
+
+
+  const [searchParams] = useSearchParams();
+
+
+
+  const dateParam = searchParams.get('date');
+  const hotelId = searchParams.get("hotel")
+
+
+
+// query by searchParams
+  const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
+    date: fromDateIsoConverterForAddExpenses(dateParam),
+    order_status: 'CheckedOut',
+    hotel_id:hotelId,
+  });
+
+console.log(orderedDataByDate,"hotel")
+
+
+
 
  const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
