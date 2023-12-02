@@ -222,6 +222,8 @@ export const addBooking = async (req, res) => {
         const newDashboardTable = new DashboardTable({
           user_id: userId,
           user_role: user.role,
+          month_name,
+          year,
           total_checkin: 1,
         });
         // Save the new dashboard table to the database
@@ -240,6 +242,8 @@ export const addBooking = async (req, res) => {
         const newDashboardTable = new DashboardTable({
           user_id: user.parent_id,
           user_role: "owner",
+          month_name,
+          year,
           total_checkin: 1,
         });
         // Save the new dashboard table to the database
@@ -256,6 +260,7 @@ export const addBooking = async (req, res) => {
         const newCheckInfo = new CheckInfo({
           user_id: userId,
           user_role: user.role,
+          date,
           today_checkin: 1,
         });
         await newCheckInfo.save();
@@ -272,6 +277,7 @@ export const addBooking = async (req, res) => {
         const newCheckInfo = new CheckInfo({
           user_id: user.parent_id,
           user_role: "owner",
+          date,
           today_checkin: 1,
         });
         await newCheckInfo.save();
@@ -308,6 +314,8 @@ export const addBooking = async (req, res) => {
         const newDashboardTable = new DashboardTable({
           user_id: userId,
           user_role: user.role,
+          month_name,
+          year,
           total_booking: 1,
         });
         // Save the new dashboard table to the database
@@ -326,11 +334,14 @@ export const addBooking = async (req, res) => {
         const newDashboardTable = new DashboardTable({
           user_id: user.parent_id,
           user_role: "owner",
+          month_name,
+          year,
           total_booking: 1,
         });
         // Save the new dashboard table to the database
         await newDashboardTable.save();
       }
+      console.log(date);
       const managerCheckInfo = await CheckInfo.findOne({
         user_id: userId,
         date,
@@ -342,6 +353,7 @@ export const addBooking = async (req, res) => {
         const newCheckInfo = new CheckInfo({
           user_id: userId,
           user_role: user.role,
+          date,
           today_booking: 1,
         });
         await newCheckInfo.save();
@@ -359,6 +371,7 @@ export const addBooking = async (req, res) => {
         const newCheckInfo = new CheckInfo({
           user_id: user.parent_id,
           user_role: "owner",
+          date,
           today_booking: 1,
         });
         await newCheckInfo.save();

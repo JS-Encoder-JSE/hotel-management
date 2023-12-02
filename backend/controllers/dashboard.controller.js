@@ -171,7 +171,8 @@ export const getDashboardInfo = async (req, res) => {
     const userId = req.params.user_id;
     const currentDate = new Date();
     const date = currentDate.toLocaleDateString();
-
+    console.log(date);
+    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -195,8 +196,9 @@ export const getDashboardInfo = async (req, res) => {
     }
     const checkInfo = await CheckInfo.find({
       user_id: userId,
-      date,
+      date:date,
     });
+    console.log(checkInfo);
     const overall_datas = {};
     if (user.role === "manager") {
       const permanent_datas = await StaticSubDashData.findOne({
