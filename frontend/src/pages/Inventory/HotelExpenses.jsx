@@ -269,7 +269,7 @@ const handleScrollToTop = () => {
                           {currentItems?.map(
                             (item, idx) => item?.remark && <th>Remark</th>
                           )}
-                          <th>Action</th>
+                          {/* <th>Action</th> */}
                         </tr>
                       </thead>
                       <tbody>
@@ -318,7 +318,7 @@ const handleScrollToTop = () => {
                                     <EditExpenses data={editItemData} />
                                   </div>
                                 </dialog>
-                              </td>
+                              </td> 
                 
                             </tr>
                           );

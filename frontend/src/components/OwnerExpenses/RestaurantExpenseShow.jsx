@@ -217,7 +217,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                       {RestaurantExpenses?.docs[0]?.items?.map(
                         (item, idx) => item?.remark && <th>Remark</th>
                       )}
-                      <th>Action</th>
+                      {/* <th>Action</th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -259,7 +259,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                                 <EditExpenses data={editItemData} />
                               </div>
                             </dialog>
-                          </td>
+                          </td> 
                         </tr>
                       );
                     })}
