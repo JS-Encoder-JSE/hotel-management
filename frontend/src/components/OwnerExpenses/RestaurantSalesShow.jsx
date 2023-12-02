@@ -97,7 +97,7 @@ const RestaurantSalesShow = ({ hotelId }) => {
               </h3>
             </div>
             <div>
-              <div className={`flex justify-end mb-5`}>
+              <div className={`flex justify-end mb-5 mr-5`}>
                 <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
                   {" "}
                   <FaRegFilePdf />
@@ -242,7 +242,7 @@ const RestaurantSalesShow = ({ hotelId }) => {
               Restaurant sales
             </h3>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mr-5">
             <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
               {" "}
               <FaRegFilePdf />

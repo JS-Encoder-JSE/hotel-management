@@ -233,7 +233,7 @@ const handleScrollToTop = () => {
                   Today Expenses
                 </h3>
               </div>
-              <div className={`flex justify-end mb-5`}>
+              <div className={`flex justify-end mb-5 mr-5`}>
                 {PDF?.length ? (
                   <PDFDownloadLink
                     document={
@@ -386,7 +386,7 @@ const handleScrollToTop = () => {
                 Hotel Expenses History
               </h3>
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end mr-5">
               {PDF?.length ? (
                 <PDFDownloadLink
                   document={
