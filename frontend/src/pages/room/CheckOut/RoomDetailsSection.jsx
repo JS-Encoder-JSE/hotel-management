@@ -1,24 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setAmountAfterDis } from "../../../redux/add-order/addOrderSlice";
+import {
+  setAmountAfterDis,
+  setBookingId,
+} from "../../../redux/add-order/addOrderSlice";
+import { getDiscountAmount } from "../../../utils/utils";
 
-const RoomDetailsSection = ({
-  data,
-  roomData,
-  bookingInfo,
-}) => {
+const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
   const dispatch = useDispatch();
-  const discountPerRoom = Math.ceil(
-    bookingInfo?.room_discount / bookingInfo?.room_ids.length
+  const discountPerRoom = getDiscountAmount(
+    roomData?.total_room_rent,
+    bookingInfo?.room_discount
   );
+  const amountAfterDis = Math.ceil(roomData?.total_room_rent - discountPerRoom);
+  console.log(roomData?.total_room_rent, discountPerRoom);
   useEffect(() => {
-    const discountPerRoom = Math.ceil(
-      bookingInfo?.room_discount / bookingInfo?.room_ids.length
-    );
-    const amountAfterDis = Math.ceil(
-      roomData?.total_room_rent - discountPerRoom
-    );
     !isNaN(amountAfterDis) ? dispatch(setAmountAfterDis(amountAfterDis)) : "";
+    dispatch(setBookingId(roomData?._id));
   }, [data]);
   return (
     <section className="bg-white p-4 rounded">
@@ -106,10 +104,10 @@ const RoomDetailsSection = ({
                       {roomData?.total_room_rent}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {discountPerRoom}
+                      {bookingInfo?.room_discount}%
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {Math.ceil(roomData?.total_room_rent - discountPerRoom)}
+                      {Math.ceil(amountAfterDis)}
                     </td>
                     {/* <td className="p-2 border border-black/20 align-top text-xs">
                       {data?.[0]?.discount.toFixed(2)}
