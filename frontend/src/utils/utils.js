@@ -95,7 +95,11 @@ export function getCurrentDateWithDay() {
 
   return formattedDate;
 }
-
+export const getDiscountAmount = (originalAmount, discountPercentage) => {
+  return Math.ceil(
+    originalAmount - originalAmount * (discountPercentage / 100)
+  );
+};
 export const dummyData = [
   {
     month_name: "November",
