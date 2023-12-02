@@ -46,7 +46,7 @@ const CheckOutPrint = ({
             hotelInfo={hotelInfo}
             isHotelSuccess={isHotelSuccess}
           />
-          {/* <CustomerInfoPrint data={data} /> */}
+          <CustomerInfoPrint data={data} />
         </div>
       )}
       {roomData?.length
@@ -195,7 +195,7 @@ const CheckOutPrint = ({
       </div>
       <h1 className="text-center absolute bottom-0 pb-2 w-full">
         Powered by <span className="text-xl text-green-slimy">JS Encoder</span>.
-        Copyright © 2023. All rights reserved.
+        Copyright © 2023. All rights reserved.Version 01.0.0
       </h1>
     </div>
   );
