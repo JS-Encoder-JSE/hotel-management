@@ -201,7 +201,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                   <th>Quantity</th>
                   <th>Price</th>
                   {hotelExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
-                  <th>Action</th>
+                  {/* <th>Action</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -221,7 +221,7 @@ setPdf(hotelExpenses?.docs[0]?.items)
                           <span>{item?.price}</span>   
                       </td>
                       {item?.remark&&<td>Remark</td>}
-                      <td>
+                      {/* <td>
                         <button
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                           onClick={() =>
@@ -237,11 +237,11 @@ setPdf(hotelExpenses?.docs[0]?.items)
                                 ✕
                               </button>
                             </form>
-                            {/* edit expenses */}
+                           
                             <EditExpenses />
                           </div>
                         </dialog>
-                      </td>
+                      </td> */}
                      
                     </tr>
                   );

@@ -280,7 +280,7 @@ console.log(filteredExpenses?.docs)
                           {resExpenses?.docs[0]?.items?.map(
                             (item, idx) => item?.remark && <th>Remark</th>
                           )}
-                          <th>Action</th>
+                          {/* <th>Action</th> */}
                         </tr>
                       </thead>
                       <tbody>
@@ -305,7 +305,7 @@ console.log(filteredExpenses?.docs)
                                 <span>{item?.price}</span>
                               </td>
                               {item?.remark && <td>Remark</td>}
-                              <td>
+                              {/* <td>
                                 <button
                                   className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                                   onClick={() =>{
@@ -330,7 +330,7 @@ console.log(filteredExpenses?.docs)
                                     <EditExpenses allItems={resExpenses?.docs[0]?.items} index={itemIndex-1} data={editItemData} />
                                   </div>
                                 </dialog>
-                              </td>
+                              </td> */}
                 
                             </tr>
                           );

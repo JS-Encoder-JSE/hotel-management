@@ -206,7 +206,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                       {RestaurantExpenses?.docs[0]?.items?.map(
                         (item, idx) => item?.remark && <th>Remark</th>
                       )}
-                      <th>Action</th>
+                      {/* <th>Action</th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -231,7 +231,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                             <span>{item?.price}</span>
                           </td>
                           {item?.remark && <td>Remark</td>}
-                          <td>
+                          {/* <td>
                             <button
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                               onClick={() =>{
@@ -254,7 +254,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                                 <EditExpenses data={editItemData} />
                               </div>
                             </dialog>
-                          </td>
+                          </td> */}
                         </tr>
                       );
                     })}
