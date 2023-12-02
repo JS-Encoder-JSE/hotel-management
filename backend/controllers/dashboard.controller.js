@@ -170,8 +170,7 @@ export const getDashboardInfo = async (req, res) => {
   try {
     const userId = req.params.user_id;
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const date = currentDate.toISOString();
+    const date = currentDate.toLocaleDateString();
 
     const user = await User.findById(userId);
     if (!user) {
@@ -185,7 +184,8 @@ export const getDashboardInfo = async (req, res) => {
     // Calculate the start date for fetching the last 12 months
     const startDate = new Date(currentDate); 
     startDate.setMonth(currentDate.getMonth() - 11);
-
+    console.log(startDate);
+    console.log(currentDate);
     const dashboardTable = await DashboardTable.find({
       user_id: userId,
       createdAt: { $gte: startDate, $lte: currentDate },

@@ -121,8 +121,7 @@ export const checkedOut = async (req, res) => {
       user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const date = currentDate.toISOString();
+    const date = currentDate.toLocaleDateString();
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
