@@ -104,7 +104,7 @@ const CheckInDyn = ({ data }) => {
 
       const response = await updateBookingTOCheckIn({
         id: data?.booking_ids[0],
-        data: {
+        updatedData: {
           paid_amount: paidAmount,
           doc_number: obj.doc_number,
           doc_images: {
@@ -116,7 +116,6 @@ const CheckInDyn = ({ data }) => {
           total_unpaid_amount: Math.ceil(
             data?.total_unpaid_amount - paidAmount
           ),
-          // total_unpaid_amount: data.amount_after_dis - paidAmount,
           remark: "advancePaymentForCheckIn",
         },
       });
