@@ -5,7 +5,6 @@ import {
 } from "../models/dashboard.model.js";
 import {
   StaticSubDashData,
-  StaticSubDashData,
 } from "../models/subdashboard.model.js";
 import User from "../models/user.model.js";
 
@@ -174,8 +173,6 @@ export const getDashboardInfo = async (req, res) => {
     const userId = req.params.user_id;
     const currentDate = new Date();
     const date = currentDate.toLocaleDateString();
-    console.log(date);
-    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -188,8 +185,7 @@ export const getDashboardInfo = async (req, res) => {
     // Calculate the start date for fetching the last 12 months
     const startDate = new Date(currentDate);
     startDate.setMonth(currentDate.getMonth() - 11);
-    console.log(startDate);
-    console.log(currentDate);
+
     const dashboardTable = await DashboardTable.find({
       user_id: userId,
       createdAt: { $gte: startDate, $lte: currentDate },
@@ -201,7 +197,6 @@ export const getDashboardInfo = async (req, res) => {
       user_id: userId,
       date: date,
     });
-    console.log(checkInfo);
 
     let total_all_restaurant_expenses = 0;
     let total_all_restaurant_income = 0;
