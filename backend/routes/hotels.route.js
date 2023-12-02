@@ -12,5 +12,5 @@ router.get("/get-hotels", checkToken, getHotels);
 router.get("/get-hotel-by-id/:hotel_id", checkToken, getHotelById);
 router.get("/get-hotel-by-manager/:manager_id", checkToken, getHotelsByManagerId);
 router.patch("/update-hotel/:hotel_id", checkToken, updateHotel);
-router.get("/get-daily-datas", getDailyDatas);
+router.get("/get-daily-datas", checkToken, getDailyDatas);
 export default router;

@@ -1045,7 +1045,7 @@ export const addToCheckin = async (req, res) => {
     }
 
     const room_ids = bookings.map((booking) => booking.room_id);
-
+    console.log(room_ids);
     // Find the Booking document by ID
     await Booking.updateMany(
       { _id: { $in: booking_ids } },
