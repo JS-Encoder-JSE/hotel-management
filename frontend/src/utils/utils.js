@@ -44,7 +44,7 @@ export const fromDateIsoConverter = (date) => {
 };
 export const toDateIsoConverter = (date) => {
   const toDate = new Date(date);
-  toDate.setHours(23, 59, 59, 999);
+  toDate.setUTCHours(23, 59, 59, 999);
   const isoToDate = toDate.toISOString();
   return isoToDate;
 };

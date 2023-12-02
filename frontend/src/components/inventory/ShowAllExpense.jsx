@@ -39,28 +39,20 @@ const ShowAllExpense = () => {
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [PDF, setPdf] = useState([]);
-
-
-
+  const [dailyDatas, setDailyDatas] = useState([]);
 
   // editItemData
   const [editItemData, setEditItemData] = useState(null);
 
-
   const [itemIndex, setItemIndex] = useState(null);
 
-
-
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
-
- 
 
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
- 
 
   const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
@@ -72,29 +64,23 @@ const ShowAllExpense = () => {
   //   limit: 10,
   // });
 
+  // const { data: RestaurantExpenses, isLoading, isSuccess } = useGetExpensesQuery({
+  //   cp: 1,
+  //   fromDate: fromDateIsoConverter(new Date()),
+  //   hotel_id: hotelId,
+  //   spendedfor: "restaurant",
+  //   limit: 10,
+  // });
 
+  // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
+  //   const {data:RestaurantExpenses, isLoading,isSuccess} = useGetExpensesQuery({
+  //     cp: 1,
+  //     fromDate: fromDateIsoConverter(new Date()),
+  //     hotel_id: hotelId,
+  //     spendedfor: "restaurant",
+  //     limit: 10,
+  //   });
 
-// const { data: RestaurantExpenses, isLoading, isSuccess } = useGetExpensesQuery({
-//   cp: 1,
-//   fromDate: fromDateIsoConverter(new Date()),
-//   hotel_id: hotelId,
-//   spendedfor: "restaurant",
-//   limit: 10,
-// });
-
-
-
-// // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
-//   const {data:RestaurantExpenses, isLoading,isSuccess} = useGetExpensesQuery({
-//     cp: 1,
-//     fromDate: fromDateIsoConverter(new Date()),
-//     hotel_id: hotelId,
-//     spendedfor: "restaurant",
-//     limit: 10,
-//   });
-
- 
-  
   // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
   //   const {data:resExpenses, isLoading,isSuccess} = useGetExpensesQuery({
   //     cp: 1,
@@ -104,14 +90,10 @@ const ShowAllExpense = () => {
   //     limit: 10,
   //   });
 
- 
-
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
   });
-
-
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -119,7 +101,7 @@ const ShowAllExpense = () => {
 
   const formik = useFormik({
     initialValues: {
-      filter:"",
+      filter: "",
       startDate: "",
       endDate: "",
     },
@@ -145,8 +127,6 @@ const ShowAllExpense = () => {
     spendedfor: "restaurant",
   });
 
-
-
   const {
     data: filteredExpenses,
     isLoading: isFilterDataLoading,
@@ -159,20 +139,16 @@ const ShowAllExpense = () => {
     hotel_id: hotelId,
     spendedfor: "restaurant",
     limit: formik.values.entries,
-    filter:formik.values.filter,
+    filter: formik.values.filter,
   });
 
   useEffect(() => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);
 
- 
-
   useEffect(() => {
     setPdf(resExpenses?.docs[0]?.items);
   }, [resExpenses]);
-
- 
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
@@ -180,33 +156,34 @@ const ShowAllExpense = () => {
     }
   };
 
-
-// pagination setup for today's expenses
-const itemsPerPage = 10;
+  // pagination setup for today's expenses
+  const itemsPerPage = 10;
   const [currentPageItem, setCurrentPageItem] = useState(0);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPageItem(selected);
   };
   const totalPage =
-  resExpenses && Math.ceil(resExpenses?.docs[0]?.items.length / itemsPerPage);
+    resExpenses && Math.ceil(resExpenses?.docs[0]?.items.length / itemsPerPage);
 
-const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+  const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-const currentItems = resExpenses?.docs[0]?.items.slice(
-  indexOfFirstItem,
-  indexOfLastItem
-);
+  const currentItems = resExpenses?.docs[0]?.items.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
-const handleScrollToTop = () => {
-  // Scroll to the top of the page
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
-
-
+  useEffect(() => {
+    const data = resExpenses?.docs?.flatMap((item) => item.items);
+    setDailyDatas(data);
+  }, [resExpenses]);
+  const handleScrollToTop = () => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  console.log("resExpenses", resExpenses);
   return (
     <div className={`space-y-5`}>
       {resExpenses && filteredExpenses && (
@@ -260,8 +237,8 @@ const handleScrollToTop = () => {
 
               <div className="">
                 {resExpenses && resExpenses?.docs[0]?.items.length ? (
-                  <div className=" overflow-x-auto overflow-y-auto overflow-auto md:overflow-scroll">
-                    <table className="table h-24 min-h-0 md:min-h-full">
+                  <div className=" !h-[40em] overflow-y-scroll md:overflow-scroll">
+                    <table className="table  min-h-0 md:min-h-full">
                       <thead>
                         <tr>
                           <th>SL</th>
@@ -270,65 +247,66 @@ const handleScrollToTop = () => {
                           <th>Description</th>
                           <th>Quantity</th>
                           <th>Price</th>
-                          {resExpenses?.docs[0]?.items?.map(
-                            (item, idx) => item?.remark && <th>Remark</th>
-                          )}
+                          <th>Remark</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {resExpenses && currentItems.map((item, idx) => {
-                          return (
-                            <tr
-                              className={
-                                idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                              }
-                            >
-                              <th>{++idx}</th>
-                              <td>
-                                {
-                                 new Date( resExpenses?.docs[0]?.date).toLocaleDateString()
+                        {resExpenses &&
+                          dailyDatas.map((item, idx) => {
+                            return (
+                              <tr
+                                className={
+                                  idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
                                 }
-                              </td>
-                              <td>{item?.name}</td>
-                              <td>{item?.description}</td>
-                              <td>{item?.quantity}</td>
-                              <td>
-                                <FaRupeeSign className="inline" />
-                                <span>{item?.price}</span>
-                              </td>
-                              <td>{item?.remark ? item?.remark : ""}</td>
-                              
-                              <td>
-                                <button
-                                  className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                                  onClick={() =>{
-                                    setEditItemData(item);
-                                    setItemIndex(idx); 
-                                    document
-                                      .getElementById("my_modal_3")
-                                      .showModal()
-                                  }    
-                                  }
-                                >
-                                  <FaRegEdit />
-                                </button>
-                                <dialog id="my_modal_3" className="modal">
-                                  <div className="modal-box">
-                                    <form method="dialog">
-                                      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                        ✕
-                                      </button>
-                                    </form>
-                               
-                                    <EditExpenses allItems={resExpenses?.docs[0]?.items} index={itemIndex-1} data={editItemData} />
-                                  </div>
-                                </dialog>
-                              </td>
-                
-                            </tr>
-                          );
-                        })}
+                              >
+                                <th>{++idx}</th>
+                                <td>
+                                  {new Date(
+                                    resExpenses?.docs[0]?.date
+                                  ).toLocaleDateString()}
+                                </td>
+                                <td>{item?.name}</td>
+                                <td>{item?.description}</td>
+                                <td>{item?.quantity}</td>
+                                <td>
+                                  <FaRupeeSign className="inline" />
+                                  <span>{item?.price}</span>
+                                </td>
+                                <td>{item?.remark ? item?.remark : ""}</td>
+
+                                <td>
+                                  <button
+                                    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                                    onClick={() => {
+                                      setEditItemData(item);
+                                      setItemIndex(idx);
+                                      document
+                                        .getElementById("my_modal_3")
+                                        .showModal();
+                                    }}
+                                  >
+                                    <FaRegEdit />
+                                  </button>
+                                  <dialog id="my_modal_3" className="modal">
+                                    <div className="modal-box">
+                                      <form method="dialog">
+                                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                                          ✕
+                                        </button>
+                                      </form>
+
+                                      <EditExpenses
+                                        allItems={resExpenses?.docs[0]?.items}
+                                        index={itemIndex - 1}
+                                        data={editItemData}
+                                      />
+                                    </div>
+                                  </dialog>
+                                </td>
+                              </tr>
+                            );
+                          })}
                       </tbody>
                       <tfoot className={`text-[1.2rem] font-bold`}>
                         <tr>
@@ -343,7 +321,7 @@ const handleScrollToTop = () => {
                               <div>
                                 <FaRupeeSign />
                               </div>
-                              <div>{ resExpenses?.docs[0]?.total_amount}</div>
+                              <div>{resExpenses?.docs[0]?.total_amount}</div>
                             </div>
                           </td>
                         </tr>
@@ -360,7 +338,10 @@ const handleScrollToTop = () => {
 
             {/* pagination */}
 
-            <div onClick={handleScrollToTop} className="flex justify-center mt-10">
+            {/* <div
+              onClick={handleScrollToTop}
+              className="flex justify-center mt-10"
+            >
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -378,7 +359,7 @@ const handleScrollToTop = () => {
                 onPageChange={handlePageChange}
                 renderOnZeroPageCount={null}
               />
-            </div>
+            </div> */}
           </div>
 
           {/* Restaurant Expenses */}
@@ -412,7 +393,6 @@ const handleScrollToTop = () => {
                 </PDFDownloadLink>
               ) : null}
             </div>
-         
           </div>
           <div className={`flex justify-between my-5`}>
             <div className={`space-x-1.5`}>
@@ -431,87 +411,91 @@ const handleScrollToTop = () => {
               <span>entries</span>
             </div>
           </div>
-        <div className={`flex flex-col md:flex-row gap-4`}>
-          <DatePicker
-            autoComplete={`off`}
-            dateFormat="dd/MM/yyyy"
-            name="startDate"
-            placeholderText={`From`}
-            selected={formik.values.startDate}
-            className={`input input-sm input-bordered rounded focus:outline-none`}
-            onChange={(date) => formik.setFieldValue("startDate", date)}
-            onBlur={formik.handleBlur}
-            onKeyUp={(e) => {
-              e.target.value === "" ? formik.handleSubmit() : null;
-            }}
-            onKeyDown={(e) => pressEnter(e)}
-          />
-          <DatePicker
-            autoComplete={`off`}
-            dateFormat="dd/MM/yyyy"
-            name="endDate"
-            placeholderText={`To`}
-            selected={formik.values.endDate}
-            className={`input input-sm input-bordered rounded focus:outline-none`}
-            onChange={(date) => formik.setFieldValue("endDate", date)}
-            onBlur={formik.handleBlur}
-            onKeyUp={(e) => {
-              e.target.value === "" ? formik.handleSubmit() : null;
-            }}
-            onKeyDown={(e) => pressEnter(e)}
-          />
-          <button
-            type={"button"}
-            onClick={() => {
-              formik.resetForm();
-              formik.handleSubmit();
-            }}
-            className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-          >
-            <GrPowerReset className="text-green-slimy" />
-          </button>
-          <button
-            type={"button"}
-            onClick={formik.handleSubmit}
-            className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-          >
-            Apply Filter
-          </button>
-        </div>
-        <hr className={`my-5 mb-4`} />
-        <div className={`space-y-10`}>
-          <div className=" overflow-x-auto overflow-y-auto">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Date</th>
-                  <th>Total Amount</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredExpenses?.docs.map((item, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>{new Date(item?.date).toLocaleDateString()}</td>
-                      <td>
-                          <FaRupeeSign className="inline"/>                       
+          <div className={`flex flex-col md:flex-row gap-4`}>
+            <DatePicker
+              autoComplete={`off`}
+              dateFormat="dd/MM/yyyy"
+              name="startDate"
+              placeholderText={`From`}
+              selected={formik.values.startDate}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              onChange={(date) => formik.setFieldValue("startDate", date)}
+              onBlur={formik.handleBlur}
+              onKeyUp={(e) => {
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
+              onKeyDown={(e) => pressEnter(e)}
+            />
+            <DatePicker
+              autoComplete={`off`}
+              dateFormat="dd/MM/yyyy"
+              name="endDate"
+              placeholderText={`To`}
+              selected={formik.values.endDate}
+              className={`input input-sm input-bordered rounded focus:outline-none`}
+              onChange={(date) => formik.setFieldValue("endDate", date)}
+              onBlur={formik.handleBlur}
+              onKeyUp={(e) => {
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
+              onKeyDown={(e) => pressEnter(e)}
+            />
+            <button
+              type={"button"}
+              onClick={() => {
+                formik.resetForm();
+                formik.handleSubmit();
+              }}
+              className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+            >
+              <GrPowerReset className="text-green-slimy" />
+            </button>
+            <button
+              type={"button"}
+              onClick={formik.handleSubmit}
+              className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+            >
+              Apply Filter
+            </button>
+          </div>
+          <hr className={`my-5 mb-4`} />
+          <div className={`space-y-10`}>
+            <div className=" overflow-x-auto overflow-y-auto">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>SL</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredExpenses?.docs.map((item, idx) => {
+                    return (
+                      <tr
+                        className={
+                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                        }
+                      >
+                        <th>{++idx}</th>
+                        <td>{new Date(item?.date).toLocaleDateString()}</td>
+                        <td>
+                          <FaRupeeSign className="inline" />
                           <span>{item?.total_amount}</span>
-                      </td>
-                      <td className={`space-x-1.5`}>
-                        <span
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() =>
-                            navigate(`/dashboard/show-all-expense/${item?._id}`)
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                        {/* <span
+                        </td>
+                        <td className={`space-x-1.5`}>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                            onClick={() =>
+                              navigate(
+                                `/dashboard/show-all-expense/${item?._id}`
+                              )
+                            }
+                          >
+                            <FaEye />
+                          </span>
+                          {/* <span
                           className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                         >
                           <AiTwotoneDelete />
