@@ -417,6 +417,7 @@ export const cancelBooking = async (req, res) => {
   try {
     const bookingId = req.params.booking_id; // Assuming you pass bookingId as a route parameter
     const userId = req.user.userId;
+    const { tran_id, payment_method } = req.body;
     const currentDate = new Date();
     const date = currentDate.toLocaleDateString();
 
@@ -437,6 +438,21 @@ export const cancelBooking = async (req, res) => {
 
     // Remove the canceled room_id from bookingInfo.room_ids
     bookingInfo.room_ids.pull(booking.room_id);
+    if (bookingInfo.room_ids.length <= 0) {
+      const newTransactionLog = new TransactionLog({
+        manager_id: userId,
+        booking_info_id: bookingInfo._id,
+        dedicated_to: "hotel",
+        tran_id,
+        from: userId.username,
+        to: bookingInfo.guestName,
+        payment_method,
+        amount: bookingInfo.paid_amount,
+        remark: "Full booking canceled",
+      });
+      newTransactionLog.save();
+      bookingInfo.paid_amount = 0;
+    }
 
     const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
     const room_discount_percentage = bookingInfo.room_discount / 100;
@@ -446,7 +462,6 @@ export const cancelBooking = async (req, res) => {
 
     bookingInfo.total_rent = new_total_rent;
     bookingInfo.total_rent_after_dis = new_total_rent_after_dis;
-    console.log(new_total_rent_after_dis);
     bookingInfo.total_unpaid_amount =
       new_total_rent_after_dis - bookingInfo.paid_amount;
 
