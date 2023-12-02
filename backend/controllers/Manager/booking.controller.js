@@ -155,7 +155,9 @@ export const addBooking = async (req, res) => {
         return booking._id; // Return the booking id
       })
     );
-    const total_rent_after_dis = total_rent - room_discount;
+    const room_discount_percentage = room_discount / 100;
+    const total_rent_after_dis =
+      total_rent - total_rent * room_discount_percentage;
     const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
