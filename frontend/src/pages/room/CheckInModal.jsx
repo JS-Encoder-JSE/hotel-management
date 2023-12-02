@@ -65,11 +65,8 @@ const validationSchema = yup.object({
 });
 
 const CheckInModal = ({ room }) => {
-
-
-
-// current Date
-  const [currentDate,setCurrentDate]=useState(new Date())
+  // current Date
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const closeRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
@@ -90,7 +87,6 @@ const CheckInModal = ({ room }) => {
       formik.handleChange(e);
     }
   };
-
 
   const formik = useFormik({
     initialValues: {
@@ -124,10 +120,9 @@ const CheckInModal = ({ room }) => {
 
       if (!obj.discount) obj.discount = 0;
 
-
-      let room_ids =[];
-      if(room){
-        room_ids.push(room?.data?._id)
+      let room_ids = [];
+      if (room) {
+        room_ids.push(room?.data?._id);
       }
 
       // const room_ids = obj.room_arr.map((elem) => elem.value);
@@ -139,8 +134,6 @@ const CheckInModal = ({ room }) => {
         0
       );
       const total_rent = no_of_days * rent_per_day;
-
-
 
       const discount = (total_rent * obj.discount) / 100;
       const amount_after_dis = total_rent - discount;
@@ -189,7 +182,7 @@ const CheckInModal = ({ room }) => {
         no_of_days,
         // rent_per_day,
         total_rent,
-       room_discount:discount,
+        room_discount: obj.discount,
         // amount_after_dis,
         paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
         // total_unpaid_amount: amount_after_dis - obj.amount,
@@ -198,7 +191,7 @@ const CheckInModal = ({ room }) => {
         doc_images: {
           [title]: tempImg,
         },
-        remark:"advancePaymentForCheckIn",
+        remark: "advancePaymentForCheckIn",
         status: "CheckedIn",
       });
 

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaEyeSlash } from "react-icons/fa";
+import { useMakePaymentMutation } from "../../redux/room/roomAPI";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
@@ -13,17 +16,21 @@ const validationSchema = yup.object({
     else return schema;
   }),
 
-  amount: yup
-      .number(),
+  amount: yup.number(),
   description: yup
-  .string()
-  .required("Description is required")
-  .min(10, "Description at least 10 characters length"),
+    .string()
+    .required("Description is required")
+    .min(10, "Description at least 10 characters length"),
 });
 
-const PaymentMethodCard = () => {
+const PaymentMethodCard = (booking) => {
   const [hotelLimit, setHotelLimit] = useState(0);
-
+  const { user } = useSelector((state) => state.authSlice);
+  console.log(booking);
+  const [makePayment] = useMakePaymentMutation();
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
   const formik = useFormik({
     initialValues: {
       amount: "",
@@ -32,22 +39,35 @@ const PaymentMethodCard = () => {
       trxID: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-     
+    onSubmit: (values, formikHelpers) => {
+      const response = makePayment({
+        manager_id: user._id,
+        bookingInfoId: booking._id,
+        amount: values.amount,
+        paymentMethod: values.paymentMethod,
+        tran_id: values.trxID,
+        remark: "Advance payment",
+      });
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        formikHelpers.resetForm();
+        toast.success(response.data.message);
+      }
     },
   });
-    // Price Validation
-    const handleAmount = (e) => {
-      const inputValue = e.target.value;
-      const fieldName = e.target.amount;
-      if (inputValue >= 0) {
-        // Update the Formik state
-        formik.handleChange(e);
-      } else if (inputValue === "") {
-        e.target.value = 0;
-        formik.handleChange(e);
-      }
-    };
+  // Price Validation
+  const handleAmount = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.amount;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
 
   return (
     <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">

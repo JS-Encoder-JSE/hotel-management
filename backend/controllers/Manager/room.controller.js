@@ -279,7 +279,6 @@ export const getRoomPostedBills = async (req, res) => {
       message: "Room posted bills retrieved successfully",
     });
   } catch {
-    console.error(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
