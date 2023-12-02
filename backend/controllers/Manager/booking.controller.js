@@ -156,8 +156,9 @@ export const addBooking = async (req, res) => {
       })
     );
     const room_discount_percentage = room_discount / 100;
-    const total_rent_after_dis =
-      total_rent - total_rent * room_discount_percentage;
+    const total_rent_after_dis = Math.ceil(
+      total_rent - total_rent * room_discount_percentage
+    );
     const newBookingInfo = new BookingInfo({
       room_ids,
       hotel_id,
@@ -426,11 +427,13 @@ export const cancelBooking = async (req, res) => {
 
     const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
     const room_discount_percentage = bookingInfo.room_discount / 100;
-    const new_total_rent_after_dis =
-      new_total_rent - new_total_rent * room_discount_percentage;
+    const new_total_rent_after_dis = Math.ceil(
+      new_total_rent - new_total_rent * room_discount_percentage
+    );
 
     bookingInfo.total_rent = new_total_rent;
     bookingInfo.total_rent_after_dis = new_total_rent_after_dis;
+    console.log(new_total_rent_after_dis);
     bookingInfo.total_unpaid_amount =
       new_total_rent_after_dis - bookingInfo.paid_amount;
 
@@ -1056,7 +1059,7 @@ export const addToCheckin = async (req, res) => {
 
     const roomStatus = "CheckedIn";
     await Room.updateMany(
-      { _id: {$in:room_ids} },
+      { _id: { $in: room_ids } },
       { $set: { status: roomStatus } }
     );
     // Perform additional actions on BookingInfo if needed
