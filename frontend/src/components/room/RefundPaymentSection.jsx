@@ -17,7 +17,7 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentSection = ({bookingId}) => {
+const RefundPaymentSection = ({bookingId,closeRef}) => {
 
     const [cancelBooking] = useCancelBookingMutation();
 
@@ -31,7 +31,7 @@ const RefundPaymentSection = ({bookingId}) => {
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       console.log(values)
-      cancelBooking({
+     const response = await cancelBooking({
         id :bookingId,
         data: {
                 amount:formik.values.amount,
@@ -39,7 +39,13 @@ const RefundPaymentSection = ({bookingId}) => {
                 payment_method:formik.values.paymentMethod,
              },
       });
-      formikHelpers.resetForm()
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        formikHelpers.resetForm();
+        closeRef.current.click();
+        toast.success(response.data.message);
+      }
     },
   });
   // Price Validation

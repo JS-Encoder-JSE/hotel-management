@@ -29,7 +29,7 @@ const RefundBookingModal = ({bookingId}) => {
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Refund Payment</h3>
         <hr />
-       <RefundPaymentSection bookingId={bookingId}/>
+       <RefundPaymentSection closeRef={closeRef} bookingId={bookingId}/>
       </div>
     </>
   );
