@@ -16,6 +16,7 @@ import {
   MonthlySubDashData,
   StaticSubDashData,
 } from "../../models/subdashboard.model.js";
+import TransactionLog from "../../models/transactionlog.model.js";
 import User from "../../models/user.model.js";
 
 export const getCheckoutInfoByRoom = async (req, res) => {
@@ -105,15 +106,20 @@ export const checkedOut = async (req, res) => {
     // Extract data from the request body
     const {
       booking_ids,
+      new_total_payable_amount,
+      new_total_paid_amount,
+      new_total_unpaid_amount,
+      new_total_tax,
+      new_total_additional_charges,
+      new_total_service_charges,
       guestName,
       room_numbers,
       payment_method,
       tran_id,
       checked_in,
       checked_out,
-      payable_amount,
       paid_amount,
-      unpaid_amount,
+      total_checkout_bills,
     } = req.body;
 
     const userId = req.user.userId;
@@ -126,34 +132,36 @@ export const checkedOut = async (req, res) => {
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
-    const Year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const day = currentDate.getDate().toString().padStart(2, "0");
-
-    const formattedDate = `${day}-${month}-${Year}`;
-
-    const reports = await Promise.all(
-      booking_ids.map(async (booking_id) => {
-        // Create a new Report instance
-        const newReport = new ManagerReport({
-          hotel_id,
-          booking_id,
-          guestName,
-          room_numbers,
-          payment_method,
-          checked_in,
-          checked_out,
-          payable_amount,
-          paid_amount,
-          unpaid_amount,
-        });
-        await newReport.save(); // Save the booking document
-        return newReport._id; // Return the booking id
-      })
-    );
-
+    const newReport = new ManagerReport({
+      hotel_id,
+      booking_ids,
+      guestName,
+      room_numbers,
+      payment_method,
+      checked_in,
+      checked_out,
+      payable_amount,
+      paid_amount,
+      unpaid_amount:total_checkout_bills,
+    });
+    await newReport.save();
+    if (paid_amount > 0) {
+      const newTransactionLog = new TransactionLog({
+        manager_id: userId,
+        booking_info_id: bookingInfo._id,
+        dedicated_to: "hotel",
+        tran_id,
+        payment_method,
+        from: bookingInfo.guestName,
+        to: user.username,
+        amount: paid_amount,
+        remark: "checkout",
+      });
+      // Save the transaction log entry to the database
+      await newTransactionLog.save();
+    }
     // Update the booking status to "CheckedOut"
-    const updatedBooking = await Booking.updateMany(
+    await Booking.updateMany(
       { _id: { $in: booking_ids } },
       { $set: { status: "CheckedOut" } }, // Wrap the update in $set
       { new: true }
@@ -168,11 +176,15 @@ export const checkedOut = async (req, res) => {
     const bookingInfo = await BookingInfo.findOne({
       booking_ids: { $in: booking_ids },
     });
-    // Remove the canceled room_id from bookingInfo.room_ids
+
     bookingInfo.room_ids.pull(...roomIds);
-    bookingInfo.paid_amount += paid_amount;
-    bookingInfo.total_unpaid_amount -= paid_amount;
-    // Save the updated BookingInfo
+    bookingInfo.paid_amount = new_total_paid_amount;
+    bookingInfo.total_payable_amount = new_total_payable_amount;
+    bookingInfo.total_unpaid_amount = new_total_unpaid_amount;
+    bookingInfo.total_tax = new_total_tax;
+    bookingInfo.total_additional_charges = new_total_additional_charges;
+    bookingInfo.total_service_charges = new_total_service_charges;
+
     await bookingInfo.save();
 
     // Define roomStatus (replace 'YOUR_ROOM_STATUS' with the actual status)
@@ -184,6 +196,8 @@ export const checkedOut = async (req, res) => {
       { $set: { status: roomStatus } }
     );
     await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
+    await GymBills.deleteMany({ room_id: { $in: roomIds } });
+    await PoolBills.deleteMany({ room_id: { $in: roomIds } });
 
     const ownerDashboard = await Dashboard.findOne({
       user_id: user.parent_id,
@@ -216,6 +230,8 @@ export const checkedOut = async (req, res) => {
       const newDashboardTable = new DashboardTable({
         user_id: userId,
         user_role: user.role,
+        month_name,
+        year,
         total_checkout: 1,
       });
       // Save the new dashboard table to the database
@@ -234,6 +250,8 @@ export const checkedOut = async (req, res) => {
       const newDashboardTable = new DashboardTable({
         user_id: user.parent_id,
         user_role: "owner",
+        month_name,
+        year,
         total_checkout: 1,
       });
       // Save the new dashboard table to the database
@@ -251,6 +269,7 @@ export const checkedOut = async (req, res) => {
       const newCheckInfo = new CheckInfo({
         user_id: userId,
         user_role: user.role,
+        date,
         today_checkout: 1,
       });
       await newCheckInfo.save();
@@ -267,6 +286,7 @@ export const checkedOut = async (req, res) => {
       const newCheckInfo = new CheckInfo({
         user_id: userId,
         user_role: user.role,
+        date,
         today_checkout: 1,
       });
       await newCheckInfo.save();
@@ -290,8 +310,9 @@ export const checkedOut = async (req, res) => {
       const newDailySubDashData = new DailySubDashData({
         user_id: userId,
         user_role: user.role,
-        today_hotel_income: paid_amount,
         date,
+        today_hotel_income: paid_amount,
+        today_hotel_profit: paid_amount,
       });
       await newDailySubDashData.save();
     }
@@ -307,10 +328,13 @@ export const checkedOut = async (req, res) => {
       await existingMonthlySubDashData.save();
     }
     if (!existingMonthlySubDashData) {
-      const newMonthlySubDashData = new DailySubDashData({
+      const newMonthlySubDashData = new MonthlySubDashData({
         user_id: userId,
         user_role: user.role,
+        month_name,
+        year,
         total_hotel_income: paid_amount,
+        total_hotel_profit: paid_amount,
       });
       await newMonthlySubDashData.save();
     }
