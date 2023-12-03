@@ -205,7 +205,7 @@ const roomAPI = baseAPI.injectEndpoints({
     makePayment: build.mutation({
       query: (data) => {
         return {
-          url: `bookings/make-payment`,
+          url: `balances/make-payment`,
           method: "POST",
           body: data,
         };
