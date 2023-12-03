@@ -56,13 +56,14 @@ const ShowAllSell = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: getISOStringDate(values.endDate),
-        fromDate: getISOStringDate(values.startDate),
+        toDate: p? new Date(values.endDate).toLocaleDateString() :"",
+        fromDate:p? new Date(values.startDate).toLocaleDateString():"",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
+      setSearchParams("")
     },
   });
 
@@ -72,10 +73,13 @@ const ShowAllSell = () => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: fromDateIsoConverterForAddExpenses(new Date()),
+    date: new Date().toLocaleDateString(),
     order_status: "CheckedOut",
     hotel_id: user?.assignedHotel[0],
   });
+
+
+console.log(restaurantSalesToday,"to")
 
   // filtered data
   const {
@@ -91,6 +95,11 @@ const ShowAllSell = () => {
     limit: formik.values.entries,
     filter: formik.values.filter,
   });
+
+console.log(restaurantSalesHistory,"History")
+
+
+
   useEffect(() => {
     if (restaurantSalesHistory)
       setPageCount(restaurantSalesHistory?.data?.totalPages);
@@ -375,6 +384,7 @@ const ShowAllSell = () => {
                   restaurantSalesHistory?.data?.docs?.map((item, idx) => {
                     return (
                       <tr
+                      key={idx}
                         className={
                           idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
                         }

@@ -10,7 +10,7 @@ export const addExpense = async (req, res) => {
   try {
     const userId = req.user.userId;
     const { hotel_id, date, spendedfor, items, total_amount } = req.body;
-    console.log("Request Body:", req.body);
+    const profit_after_expense = 0 - total_amount;
     const user = await User.findById(userId);
 
     if (!user) {
@@ -23,7 +23,7 @@ export const addExpense = async (req, res) => {
     const year = newDate.getFullYear().toString();
 
     const existingExpense = await Expense.findOne({
-      date:localDate,
+      date: localDate,
       hotel_id,
       spendedfor,
     });
@@ -71,7 +71,7 @@ export const addExpense = async (req, res) => {
       // Create a new expense instance
       const newExpense = new Expense({
         hotel_id,
-        date:localDate,
+        date: localDate,
         spendedfor,
         items,
         total_amount,
@@ -117,6 +117,7 @@ export const addExpense = async (req, res) => {
             user_role: user.role,
             date: localDate,
             today_hotel_expenses: total_amount,
+            today_hotel_profit: profit_after_expense,
           });
           await newDailySubDashData.save();
         }
@@ -126,6 +127,7 @@ export const addExpense = async (req, res) => {
             user_role: user.role,
             date: localDate,
             today_restaurant_expenses: total_amount,
+            today_restaurant_profit: profit_after_expense,
           });
           await newDailySubDashData.save();
         }
@@ -154,6 +156,7 @@ export const addExpense = async (req, res) => {
             month_name,
             year,
             total_hotel_expenses: total_amount,
+            total_hotel_profit: profit_after_expense,
           });
           await newMonthlySubDashData.save();
         }
@@ -164,6 +167,7 @@ export const addExpense = async (req, res) => {
             month_name,
             year,
             total_restaurant_expenses: total_amount,
+            total_restaurant_profit: profit_after_expense,
           });
           await newMonthlySubDashData.save();
         }

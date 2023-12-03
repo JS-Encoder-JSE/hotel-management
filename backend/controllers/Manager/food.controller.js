@@ -303,14 +303,15 @@ export const updateOrder = async (req, res) => {
       });
     }
     if ((updateData.order_status = "CheckedOut")) {
-      const newDate = new Date();
-      newDate.setHours(0, 0, 0, 0);
-      const date = newDate.toISOString();
-      const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
-      const year = newDate.getFullYear().toString();
+      const currentDate = new Date();
+      const date = currentDate.toLocaleDateString();
+      const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
+      const year = currentDate.getFullYear().toString();
 
       const new_paid_amount =
         updateData.paid_amount - existingOrder.paid_amount;
+
+      console.log(new_paid_amount);
 
       const user = await User.findById(user_id);
 
@@ -349,7 +350,9 @@ export const updateOrder = async (req, res) => {
         const newDailySubDashData = new DailySubDashData({
           user_id: user_id,
           user_role: user.role,
-          today_restaurant_expenses: new_paid_amount,
+          date,
+          today_restaurant_income: new_paid_amount,
+          today_restaurant_profit: new_paid_amount,
         });
         await newDailySubDashData.save();
       }
@@ -359,8 +362,8 @@ export const updateOrder = async (req, res) => {
         year,
       });
       if (existingMonthlySubDashData) {
-        existingDailySubDashData.total_restaurant_income += new_paid_amount;
-        existingDailySubDashData.total_restaurant_profit += new_paid_amount;
+        existingMonthlySubDashData.total_restaurant_income += new_paid_amount;
+        existingMonthlySubDashData.total_restaurant_profit += new_paid_amount;
         await existingMonthlySubDashData.save();
       }
       if (!existingMonthlySubDashData) {
@@ -369,7 +372,8 @@ export const updateOrder = async (req, res) => {
           user_role: user.role,
           month_name,
           year,
-          total_restaurant_expenses: new_paid_amount,
+          total_restaurant_income: new_paid_amount,
+          total_restaurant_profit: new_paid_amount,
         });
         await newMonthlySubDashData.save();
       }

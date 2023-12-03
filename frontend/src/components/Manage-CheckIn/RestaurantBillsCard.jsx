@@ -19,14 +19,16 @@ const RestaurantBillsCard = ({ food_bills
 }) => {
 
 
-  const totalPrice = food_bills?.reduce((total, bill) => {
-    // Use another reduce to calculate the total price of items in each bill
-    const billTotal = bill?.items?.reduce(
-      (itemTotal, item) => itemTotal + item.price,
-      0
-    );
-    return total + billTotal;
-  }, 0);
+  
+  const allItems = food_bills?.reduce((accumulator, bill) => {
+    // Concatenate the items array of each bill to the accumulator array
+    return accumulator.concat(bill.items);
+  }, []);
+  console.log(allItems)
+  const totalPrice = allItems?.reduce((total, item) => {
+    // Add the price of each item to the total
+    return total + item.price;
+  }, 0); 
 
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
@@ -58,13 +60,13 @@ const handlePageChange = ({ selected }) => {
   setCurrentPageItem(selected);
 };
 const totalPage =
-food_bills && Math.ceil(food_bills[0]?.items?.length / itemsPerPage);
+food_bills && Math.ceil(allItems.length / itemsPerPage);
 
 const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
 const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-const currentItems =food_bills && food_bills[0]?.items?.slice(
+const currentItems =food_bills && allItems?.slice(
 indexOfFirstItem,
 indexOfLastItem
 );
@@ -144,7 +146,7 @@ indexOfLastItem
                         <div>
                           <BiRupee />
                         </div>
-                        <div>{food_bills && food_bills[0]?.total_price}</div>
+                        <div>{totalPrice}</div>
                       </div>
                     </td>
                   </tr>

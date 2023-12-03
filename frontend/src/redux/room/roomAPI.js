@@ -125,7 +125,7 @@ const roomAPI = baseAPI.injectEndpoints({
 
     getDailyData: build.query({
       query: ({ cp, limit, filter, managerId, fromDate, toDate }) =>
-        `hotels/get-daily-datas?page=${++cp}${limit ? `&limit=${limit}` : ""}${
+        `hotels/get-daily-datas?${cp?`page=${++cp}`:""}${limit ? `&limit=${limit}` : ""}${
           filter ? `&filter=${filter}` : ""
         }&manager_id=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,
       providesTags: ["getDailyData"],
@@ -159,7 +159,11 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       providesTags: ["booking"],
     }),
-
+    getLastActiveBooking:build.query({
+      query: (bookingId)=>{
+        return `bookings/last-active-booking-validator/${bookingId}`
+      }
+    }),
     getBookingInfoById: build.query({
       query: (id) => {
         return `bookings/get-booking-details/${id}`;
@@ -266,6 +270,7 @@ export const {
   useUpdateRoomMutation,
   useAddBookingMutation,
   useGetBookingByIdQuery,
+  useGetLastActiveBookingQuery,
   useGetOrdersByDateQuery,
   useGetBookingInfoByIdQuery,
   useGetRoomPostedBillsQuery,

@@ -19,7 +19,7 @@ const OwnerSBItems = ({ handleSBItems,isHbMenu,setHbMenu }) => {
         >
           <div className={`flex space-x-1.5`}>
             <MdOutlineMeetingRoom />
-            <span className={`-mt-0.5`}>Add Hotels</span>
+            <span className={`-mt-0.5`}>Hotels</span>
           </div>
           <span className={`group-[.active]:hidden`}>
             <MdKeyboardArrowDown />
