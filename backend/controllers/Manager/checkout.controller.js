@@ -108,6 +108,7 @@ export const checkedOut = async (req, res) => {
       guestName,
       room_numbers,
       payment_method,
+      tran_id,
       checked_in,
       checked_out,
       payable_amount,
