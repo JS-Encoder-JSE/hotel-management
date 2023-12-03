@@ -438,7 +438,7 @@ export const cancelBooking = async (req, res) => {
 
     // Remove the canceled room_id from bookingInfo.room_ids
     bookingInfo.room_ids.pull(booking.room_id);
-    if (bookingInfo.room_ids.length <= 0) {
+    if (bookingInfo.room_ids.length === 1 && bookingInfo.paid_amount > 0) {
       const newTransactionLog = new TransactionLog({
         manager_id: userId,
         booking_info_id: bookingInfo._id,
