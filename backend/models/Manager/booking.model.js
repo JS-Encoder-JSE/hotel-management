@@ -77,6 +77,21 @@ const bookingInfoSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    total_tax: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    total_additional_charges: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    total_service_charges: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
     total_payable_amount: {
       type: Number,
       required: false,

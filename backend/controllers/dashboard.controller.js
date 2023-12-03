@@ -3,9 +3,7 @@ import {
   Dashboard,
   DashboardTable,
 } from "../models/dashboard.model.js";
-import {
-  StaticSubDashData,
-} from "../models/subdashboard.model.js";
+import { StaticSubDashData } from "../models/subdashboard.model.js";
 import User from "../models/user.model.js";
 
 export const addDashboard = async (req, res) => {
@@ -204,7 +202,7 @@ export const getDashboardInfo = async (req, res) => {
     let total_all_hotel_expenses = 0;
     let total_all_hotel_income = 0;
     let total_all_hotel_profit = 0;
-    if (user.role === "admin") {
+    if (user.role === "owner") {
       const staticSubDashDataList = await StaticSubDashData.find({
         user_id: user.manager_accounts,
       });
