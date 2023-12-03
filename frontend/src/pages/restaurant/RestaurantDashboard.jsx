@@ -85,7 +85,7 @@ const RestaurantDashboard = ({ managerId }) => {
           </div>
           <div>
             <h6 className="text-xs text-slate-400">
-              TODAY'S {isValidUrl("restaurant","currentPathname") ? "SALES" : "CHECKOUT REVENUE"}
+              TODAY'S {isValidUrl("restaurant",pathname) ? "SALES" : "CHECKOUT REVENUE"}
             </h6>
             <p className="text-2xl font-semibold mt-4">
               <div className="flex justify-end">
@@ -174,7 +174,7 @@ const RestaurantDashboard = ({ managerId }) => {
             <LiaSellsy />
           </div>
           <h6 className="text-xs text-slate-400 ">
-            LAST WEEK {isValidUrl("restaurant","currentPathname") ? "SALES" : "CHECKOUT REVENUE"}
+            LAST WEEK {isValidUrl("restaurant",pathname) ? "SALES" : "CHECKOUT REVENUE"}
           </h6>
           <p className="text-2xl font-semibold mt-4">
             <div className="flex justify-end">
