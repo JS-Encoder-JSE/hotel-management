@@ -140,9 +140,9 @@ export const checkedOut = async (req, res) => {
       payment_method,
       checked_in,
       checked_out,
-      payable_amount,
+      payable_amount: total_checkout_bills,
       paid_amount,
-      unpaid_amount:total_checkout_bills,
+      unpaid_amount: total_checkout_bills - paid_amount,
     });
     await newReport.save();
     if (paid_amount > 0) {
