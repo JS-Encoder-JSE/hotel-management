@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const CustomerInfoSection = ({ data }) => {
+  const { refundAmount, additionalCharge, serviceCharge } = useSelector(
+    (state) => state.checkoutInfoCalSlice
+  );
+  const totalRefund = refundAmount - (additionalCharge + serviceCharge);
   return (
     <section className="bg-white rounded">
       <h3 className="p-5 text-xl">Customer Details</h3>
@@ -15,13 +20,7 @@ const CustomerInfoSection = ({ data }) => {
           <p>Total Payable Amount</p>
           <p>Total Paid Amount</p>
           <p>Total Unpaid Amount</p>
-          <p>Total Available Ballance</p>
-          {/* <p>Total Room Rent</p>
-          <p>Discount For Room</p>
-          <p>Unpaid Room Rent</p> */}
-          {/* <p>Time Format</p> */}
-          {/*<p>Booking Time</p>*/}
-          {/* <p>Booking Source</p> */}
+          <p>Refund Amount</p>
         </div>
         <div className="col-span-3 space-y-3">
           <p>{data?.guestName}</p>
@@ -33,31 +32,8 @@ const CustomerInfoSection = ({ data }) => {
           <p>{data?.total_payable_amount}</p>
           <p>{data?.paid_amount}</p>
           <p>{Math.ceil(data?.total_unpaid_amount)}</p>
-          <p>
-            {data?.total_unpaid_amount < 1
-              ? Math.ceil(data?.paid_amount - data?.total_payable_amount)
-              : 0}
-          </p>
-          {/* <p>{data?.total_rent}</p>
-          <p>
-            {data
-              ? Math.ceil(data?.total_rent - data?.total_rent_after_dis)
-              : 0}
-          </p>
-          <p>{Math.ceil(data?.total_rent_after_dis)}</p> */}
-          {/* <p>24 hrs</p> */}
-          {/*<input*/}
-          {/*  type="text"*/}
-          {/*  disabled*/}
-          {/*  placeholder="Instant"*/}
-          {/*  className="pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block"*/}
-          {/*/>*/}
-          {/* <input
-            type="text"
-            disabled
-            placeholder="JS Encoder"
-            className="pl-5 bg-transparent border-b focus:border-green-slimy cursor-not-allowed block"
-          /> */}
+          <p>{totalRefund < 0 ? 0 : totalRefund}</p>
+          
         </div>
       </div>
     </section>

@@ -19,7 +19,11 @@ import toast from "react-hot-toast";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import CheckOutPrint from "./CheckOutPrint";
 import { useDispatch, useSelector } from "react-redux";
-import { setBookingInfo, updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
+import {
+  setBookingInfo,
+  setRefundAmount,
+  updateSubTotal,
+} from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
 import * as yup from "yup";
 import { getISOStringDate } from "../../../utils/utils";
@@ -36,10 +40,6 @@ const CheckOut = () => {
   const [pBill, setPBill] = useState(0);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
-
-
-
- 
 
   // const {
   //   data: checkout,
@@ -72,15 +72,6 @@ const CheckOut = () => {
         (i) => i?.room_id?.roomNumber
       );
 
-      const paidAmount =
-        checkout?.data?.booking_info?.paid_amount <= pBill
-          ? Number(paymentList[0].amount)
-          : pBill;
-      const payableAmount =
-        checkout?.data?.booking_info?.paid_amount <= pBill
-          ? Number(paymentList[0].amount)
-          : pBill;
-
       const unpaid = Math.ceil(
         checkout?.data?.booking_info?.total_payable_amount -
           (checkout?.data?.booking_info?.paid_amount + paidAmount)
@@ -94,7 +85,7 @@ const CheckOut = () => {
         checked_in: checkout?.data?.room_bookings[0]?.from,
         checked_out: checkout?.data?.room_bookings[0]?.to,
         payable_amount: payableAmount,
-        paid_amount: paidAmount,
+        paid_amount: Number(paymentList[0].amount),
         unpaid_amount: unpaid < 0 ? 0 : unpaid,
       });
       if (response?.error) {
@@ -147,11 +138,19 @@ const CheckOut = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(updateSubTotal(totalBilling));
-      dispatch(setBookingInfo(checkout?.data?.booking_info))
+      dispatch(setBookingInfo(checkout?.data?.booking_info));
+      dispatch(
+        setRefundAmount(
+          checkout?.data?.booking_info?.total_unpaid_amount < 1
+            ? Math.ceil(
+                checkout?.data?.booking_info?.paid_amount -
+                  checkout?.data?.booking_info?.total_payable_amount
+              )
+            : 0
+        )
+      );
     }
-  }, [checkout,hotelInfo]);
-
-
+  }, [checkout, hotelInfo]);
 
   return (
     <div className="space-y-8">
@@ -171,7 +170,7 @@ const CheckOut = () => {
           </button>
         </Link>
       </div>
-      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center flex flex-col md:flex-row">
+      <div className="max-w-3xl mx-auto gap-5 items-center justify-center flex flex-col md:flex-row">
         <div className="">
           <Select
             placeholder="Select room"

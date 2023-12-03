@@ -9,7 +9,7 @@ import InvoicePDF from "./InvoicePDF.jsx";
 import { jsPDF } from "jspdf";
 import ReactToPrint from "react-to-print";
 import CheckOutPrint from "./CheckOutPrint.jsx";
-
+import { useDispatch, useSelector } from "react-redux";
 
 const PaymentSection = ({
   pBill,
@@ -20,7 +20,7 @@ const PaymentSection = ({
   isHotelSuccess,
   hotelInfo,
   roomData,
-  addCheckOutLoading
+  addCheckOutLoading,
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -28,11 +28,8 @@ const PaymentSection = ({
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
-  
-
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-
     const list = [...paymentList];
     list[index][name] = value;
     setPaymentList(list);
@@ -89,15 +86,11 @@ const PaymentSection = ({
             </div>
             <div className="col-span-2 space-y-3">
               <p>
-                {pBill > colAmount && pBill > data?.paid_amount
-                  ? Math.abs(Math.ceil(pBill - colAmount))
-                  : 0}
+                {pBill > colAmount ? Math.abs(Math.ceil(pBill - colAmount)) : 0}
               </p>
               <p>{Math.ceil(colAmount)}</p>
               <p>
-                {pBill > data?.paid_amount && pBill < colAmount
-                  ? Math.abs(Math.ceil(pBill - colAmount))
-                  : 0}
+                {pBill < colAmount ? Math.abs(Math.ceil(pBill - colAmount)) : 0}
               </p>
             </div>
           </div>
@@ -129,53 +122,28 @@ const PaymentSection = ({
             />
           </div>
         </div>
-        {/* <PDFDownloadLink
-          document={
-            <InvoicePDF
-              data={data}
-              header={{ title: "DAK Hospitality LTD", address: "Dhaka" }}
-            />
-          }
-          fileName={`${new Date().toLocaleDateString()}.pdf`}
-          className="btn btn-md hover:bg-transparent bg-green-slimy hover:text-green-slimy text-white !border-green-slimy rounded normal-case"
-        >
-          Print
-        </PDFDownloadLink> */}
-        {/*{PDF.length ? (*/}
-        {/*  <PDFDownloadLink*/}
-        {/*    document={*/}
-        {/*      <CreateReport*/}
-        {/*        values={PDF}*/}
-        {/*        header={{*/}
-        {/*          title: "DAK Hospitality LTD",*/}
-        {/*          name: "Invoice",*/}
-        {/*        }}*/}
-        {/*      />*/}
-        {/*    }*/}
-        {/*    fileName={`${new Date().toLocaleDateString()}.pdf`}*/}
-        {/*    className="btn btn-md hover:bg-transparent bg-green-slimy hover:text-green-slimy text-white !border-green-slimy rounded normal-case"*/}
-        {/*  >*/}
-        {/*    Print*/}
-        {/*  </PDFDownloadLink>*/}
-        {/*) : null}*/}
+
         <button
           type={`button`}
           onClick={() => formik.handleSubmit()}
-          className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
-            data?.paid_amount >= pBill
-              ? ""
-              : pBill > colAmount
-              ? "btn-disabled"
-              : ""
-          }`}
+          className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case 
+          ${
+            // data?.paid_amount >= pBill
+            //   ? ""
+            //   : pBill > colAmount
+            //   ? "btn-disabled"
+            //   : ""
+            ""
+          }
+          `}
         >
           Checkout
           {addCheckOutLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
+            <span
+              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+              role="status"
+            ></span>
+          ) : null}
         </button>
       </div>
     </section>
