@@ -125,7 +125,7 @@ const roomAPI = baseAPI.injectEndpoints({
 
     getDailyData: build.query({
       query: ({ cp, limit, filter, managerId, fromDate, toDate }) =>
-        `hotels/get-daily-datas?page=${++cp}${limit ? `&limit=${limit}` : ""}${
+        `hotels/get-daily-datas?${cp?`page=${++cp}`:""}${limit ? `&limit=${limit}` : ""}${
           filter ? `&filter=${filter}` : ""
         }&manager_id=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,
       providesTags: ["getDailyData"],
