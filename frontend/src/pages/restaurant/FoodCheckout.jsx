@@ -12,15 +12,13 @@ import toast from "react-hot-toast";
 import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx"
 import ReactToPrint from "react-to-print";
 import { current } from "@reduxjs/toolkit";
-import CheckOut from './../room/CheckOut/CheckOut';
 const FoodCheckout = () => {
   const { id } = useParams();
-  const [checkoutLoading,setCheckoutLoading] = useState(false);
-  const { data,isLoading } = useGetOrderByIdQuery(id);
+  const { data, isLoading } = useGetOrderByIdQuery(id);
   const [orderData, setOrderData] = useState({});
   const [input, setInput] = useState(1);
   const navigate = useNavigate();
-  const [updateOrder,isCheckLoader] = useUpdateOrderMutation();
+  const [updateOrder] = useUpdateOrderMutation();
   const location = useLocation();
   const path = location.pathname;
 
@@ -46,7 +44,6 @@ const FoodCheckout = () => {
 
 
   const handleCheckout = async () => {
-    setCheckoutLoading(true);
     const checkoutForTable = {
       paid_amount: grandTotal,
       items: orderData.data.items,
@@ -62,7 +59,6 @@ const FoodCheckout = () => {
       items: orderData.data.items,
       current_order: false,
     };
-    setCheckoutLoading(true)
     const response = await updateOrder({
       data: orderData?.data?.room_id
         ? updateForRoom
@@ -71,13 +67,10 @@ const FoodCheckout = () => {
         : null,
       id,
     });
-    setCheckoutLoading(true)
     if (response?.error) {
       toast.error(response.error.data.message);
-      setCheckoutLoading(false)
     } else {
       toast.success("Checkout successful");
-      setCheckoutLoading(false);
     }
   };
   useEffect(() => {
@@ -87,8 +80,7 @@ const FoodCheckout = () => {
 // for printing
   const componentRef = useRef();
 
-  
-  
+  // const Id = orderData.data.room
 
   return (
     <div className={`flex flex-col gap-5 bg-white rounded-lg p-10`}>
@@ -121,9 +113,7 @@ const FoodCheckout = () => {
       </div>
       {!isLoading ? (
         <>
-          {
-       
-          orderData?.data?.items?.length ? (
+          {orderData?.data?.items?.length ? (
             <div className="overflow-x-auto border mt-3">
               <table className="table">
                 <thead>
@@ -139,7 +129,7 @@ const FoodCheckout = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {  orderData?.data?.items.map((item, i) => (
+                  {orderData?.data?.items.map((item, i) => (
                     <SingleCheckoutItem
                       index={i}
                       handleDeleteItems={handleDeleteItems}
@@ -212,41 +202,12 @@ const FoodCheckout = () => {
           )}
           content={() => componentRef.current}
         />
-         
-        {/* <button
+        <button
           onClick={handleCheckout}
           className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
         >
-     
-  <>
-    {path.includes("orderDetails") ? "Update Order" : "Checkout"}
-  </>
-  {isLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
-         
-        </button> */}
-     
-     <button
-      onClick={handleCheckout}
-      className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
-    >
-      <>
-        {path.includes("orderDetails") ? "Update Order" : "Checkout"}
-      </>
-      {checkoutLoading ? (
-        <span
-          className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-          role="status"
-        ></span>
-      ) : null}
-    </button>
-
-
-
+          {path.includes("orderDetails") ? "Update Order" : "Checkout"}
+        </button>
       </div>
     </div>
   );

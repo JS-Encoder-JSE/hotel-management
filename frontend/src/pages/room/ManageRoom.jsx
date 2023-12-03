@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const ManageRoom = () => {
- 
   const { user } = useSelector((store) => store.authSlice);
   const [keyword, setKeyword] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);

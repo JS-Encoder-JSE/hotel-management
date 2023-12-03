@@ -23,7 +23,6 @@ import { Rings } from "react-loader-spinner";
 import AllExpeseAnalytics from "./AllExpeseAnalytics";
 import OwnerExpeseAnalytics from "./OwnerExpeseAnalytics";
 import { dummyData } from "../../utils/utils";
-// import { useLocation } from 'react-router-dom';
 
 const UserDashBoard = ({ managerId }) => {
   const { user } = useSelector((store) => store.authSlice);
@@ -47,9 +46,6 @@ const UserDashBoard = ({ managerId }) => {
       />
     );
   }
-
-  // const location = useLocation();
-  // const {  pathname  } = location;
   return (
     <>
       <div>
@@ -187,15 +183,11 @@ const UserDashBoard = ({ managerId }) => {
         </section>
 
         <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
-       <CustomerReservation
+          <CustomerReservation
             monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
             userHotel={userHotel}
-            managerId={managerId}
-            userId={user?._id}
           />
         </section>
-        
-
 
         <section className="mt-8 grid md:grid-cols-2 gap-5">
           <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
@@ -203,16 +195,12 @@ const UserDashBoard = ({ managerId }) => {
               daily_datas={dashboardData?.daily_datas}
               permanent_datas={dashboardData?.permanent_datas}
               userManager={userHotel}
-              managerId={managerId}
-              userId={user?._id}
             />
           </div>
           <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
             <ReservationChart
               userManager={userHotel}
               monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
-              managerId={managerId}
-              userId={user?._id}
             />
           </div>
         </section>
@@ -258,7 +246,6 @@ const UserDashBoard = ({ managerId }) => {
               userHotel={userHotel}
               dashboardData={dashboardData}
               dummyData={dummyData}
-             
             />
           </section>
         )}
