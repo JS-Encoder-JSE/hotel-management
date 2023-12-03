@@ -121,8 +121,9 @@ const ShowAllExpense = () => {
     data: resExpenses,
     isLoading,
     isSuccess,
+    refetch,
   } = useGetExpensesQuery({
-    fromDate: fromDateIsoConverter(new Date()),
+    fromDate:new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });
@@ -230,6 +231,7 @@ const ShowAllExpense = () => {
                     fileName={`${new Date().toLocaleDateString()}.pdf`}
                     className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                   >
+                    <BsFileEarmarkPdfFill />
                     PDF
                   </PDFDownloadLink>
                 ) : null}
@@ -237,7 +239,7 @@ const ShowAllExpense = () => {
 
               <div className="">
                 {resExpenses && resExpenses?.docs[0]?.items.length ? (
-                  <div className="h-[30rem] overflow-y-scroll md:overflow-scroll">
+                  <div className="overflow-x-auto">
                     <table className="table ">
                       <thead>
                         <tr>
@@ -253,7 +255,7 @@ const ShowAllExpense = () => {
                       </thead>
                       <tbody>
                         {resExpenses &&
-                          dailyDatas?.map((item, idx) => {
+                          currentItems?.map((item, idx) => {
                             return (
                               <tr
                                 className={
@@ -338,7 +340,7 @@ const ShowAllExpense = () => {
 
             {/* pagination */}
 
-            {/* <div
+            <div
               onClick={handleScrollToTop}
               className="flex justify-center mt-10"
             >
@@ -359,7 +361,7 @@ const ShowAllExpense = () => {
                 onPageChange={handlePageChange}
                 renderOnZeroPageCount={null}
               />
-            </div> */}
+            </div>
           </div>
 
           {/* Restaurant Expenses */}

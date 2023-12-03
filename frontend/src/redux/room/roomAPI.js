@@ -79,7 +79,7 @@ const roomAPI = baseAPI.injectEndpoints({
           invalidatesTags: ["GetExpenses"],
         };
       },
-      invalidatesTags: ["addRestaurantExpenses"],
+      invalidatesTags: ["addRestaurantExpenses","GetExpenses"],
     }),
     getCheckout: build.mutation({
       query: (ids) => {
@@ -104,12 +104,9 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     getExpenses: build.query({
       query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit, filter }) =>
-        `expenses/get-expenses?page=${++cp}${limit ? `&limit=${limit}` : ""} ${
-          filter ? `&filter=${filter}` : ""
-        }${fromDate ? `&fromDate=${fromDate}` : ""}${
-          toDate ? `&toDate=${toDate}` : ""
-        }${hotel_id ? `&hotel_id=${hotel_id}` : ""}${
-          spendedfor ? `&spendedfor=${spendedfor}` : ""
+        `expenses/get-expenses?${cp?`page=${++cp }`:""}${limit ?`&limit=${limit}`:""} ${filter ? `&filter=${filter}` : ""
+        }${fromDate ? `&fromDate=${fromDate}` : ""}${toDate ? `&toDate=${toDate}` : ""
+        }${hotel_id ?`&hotel_id=${hotel_id}`:""}${spendedfor ?`&spendedfor=${spendedfor}` : ""
         }`,
       providesTags: ["GetExpenses"],
     }),

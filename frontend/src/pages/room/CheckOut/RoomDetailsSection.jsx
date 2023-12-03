@@ -12,16 +12,23 @@ const billingState = useSelector((state) => state.checkoutInfoCalSlice);
 
 // const {bookingInfo}= billingState
   const dispatch = useDispatch();
-  const discountPerRoom = getDiscountAmount(
-    roomData?.total_room_rent,
-    bookingInfo?.room_discount
-  );
+
+  const discountPerRoom = (roomData?.total_room_rent * bookingInfo?.room_discount)/100;
+  // const discountPerRoom = getDiscountAmount(
+  //   roomData?.total_room_rent,
+  //   bookingInfo?.room_discount
+  // );
   const amountAfterDis = Math.ceil(roomData?.total_room_rent - discountPerRoom);
   console.log(roomData?.total_room_rent, discountPerRoom);
   useEffect(() => {
     !isNaN(amountAfterDis) ? dispatch(setAmountAfterDis(amountAfterDis)) : "";
     dispatch(setBookingId(roomData?._id));
   }, [data]);
+
+ 
+  // const afterDiscountAm = roomData?.total_room_rent - discountAmount
+  // console.log(discountAmount,"disco",afterDiscountAm)
+
   return (
     <section className="bg-white p-4 rounded">
       <table className="w-full border border-black/20 text-sm">
