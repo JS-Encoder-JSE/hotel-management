@@ -207,7 +207,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
               {/* 3rd commit  */}
 
               {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
-              <div className=" overflow-x-auto">
+             {currentItems?.length? <div className=" overflow-x-auto">
                 <table className="table">
                   <thead>
                     <tr>
@@ -284,7 +284,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                     </tr>
                   </tfoot>
                 </table>
-              </div>
+              </div>:<p className="text-center mt-16">No expense</p>}
             </div>
           </div>
 
@@ -294,7 +294,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
             onClick={handleScrollToTop}
             className="flex justify-center mt-10"
           >
-            <ReactPaginate
+           {currentItems?.length && <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
               activeLinkClassName="btn-active !bg-green-slimy text-white"
@@ -311,7 +311,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
               onPageChange={handlePageChange}
               renderOnZeroPageCount={null}
               forcePage={currentPage}
-            />
+            />}
           </div>
         </div>
 
