@@ -73,9 +73,12 @@ export const getNumberOfDays = (fromDate, toDate) => {
 
   return Math.ceil(calculateDays);
 };
-const url = window.location.href;
-export const isValidUrl = (pageName) => {
-  return url.includes(pageName);
+// const url = window.location.href;
+export const isValidUrl = (pageName,pageUrl) => {
+  if(pageUrl){
+    return pageUrl.includes(pageName);
+
+  }
 };
 export function getCurrentDateWithDay() {
   const daysOfWeek = [
