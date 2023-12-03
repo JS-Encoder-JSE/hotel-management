@@ -159,7 +159,11 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       providesTags: ["booking"],
     }),
-
+    getLastActiveBooking:build.query({
+      query: (bookingId)=>{
+        return `bookings/last-active-booking-validator/${bookingId}`
+      }
+    }),
     getBookingInfoById: build.query({
       query: (id) => {
         return `bookings/get-booking-details/${id}`;
@@ -266,6 +270,7 @@ export const {
   useUpdateRoomMutation,
   useAddBookingMutation,
   useGetBookingByIdQuery,
+  useGetLastActiveBookingQuery,
   useGetOrdersByDateQuery,
   useGetBookingInfoByIdQuery,
   useGetRoomPostedBillsQuery,

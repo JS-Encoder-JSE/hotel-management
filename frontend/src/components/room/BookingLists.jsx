@@ -7,12 +7,15 @@ import Modal from "../Modal.jsx";
 import EditBooking from "./EditBooking.jsx";
 import {
   useCancelBookingMutation,
+  useGetLastActiveBookingQuery,
   useUpdateBookingMutation,
 } from "../../redux/room/roomAPI.js";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import CheckInModal from "../../pages/room/CheckInModal.jsx";
 import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
+import AddBooking from "./AddBooking.jsx";
+import RefundBookingModal from "./RefundBookingModal.jsx";
 
 const BookingLists = ({ bookingList, setCurrentPage }) => {
   const navigate = useNavigate();
@@ -27,34 +30,43 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
     setCurrentPage(page);
   };
 
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Booking will be Cancel.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#35bef0",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Canceled!",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          cancelBooking({
-            id,
-            data: {
-              tran_id: "sdf3rj4r43rewj",
-              payment_method: "Card",
-            },
-          });
-        });
-      }
-    });
+
+  const [bookingId,setBookingId]=useState("")
+
+  
+  const {data:isLastBooking} = useGetLastActiveBookingQuery(bookingId)
+  console.log(bookingId)
+  console.log(isLastBooking)
+
+   const handleDelete = (id) => {
+    setBookingId(id)
+    // Swal.fire({
+    //   title: "Are you sure?",
+    //   text: "Booking will be Cancel.",
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "#35bef0",
+    //   cancelButtonColor: "#d33",
+    //   confirmButtonText: "Yes, Cancel it!",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     Swal.fire({
+    //       position: "center",
+    //       icon: "success",
+    //       title: "Canceled!",
+    //       showConfirmButton: false,
+    //       timer: 1500,
+    //     }).then(() => {
+    //       cancelBooking({
+    //         id,
+    //         data: {
+    //           tran_id: "sdf3rj4r43rewj",
+    //           payment_method: "Card",
+    //         },
+    //       });
+    //     });
+    //   }
+    // });
   };
 
   const [editBookedData, setEditBookedData] = useState(null);
@@ -93,6 +105,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
           </thead>
           <tbody>
             {bookingList?.data.docs.map((item, idx) => {
+              console.log(item)
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <td>
@@ -116,39 +129,11 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                       onClick={() => navigate(`${item._id}`)}
                     >
                       <FaEye />
-                    </span>
-                    {/* <span
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                      title={`chekin`}
-                    
-                    >
-                      <FaDoorOpen />
-                    </span> */}
-                    {/* <span>
-                      <button
-                        title={`Check In`}
-                        className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-                        onClick={() => {
-                          setData(item);
-                          setModalOpen(true);
-                        }}
-                      >
-                        <FaDoorOpen />
-                      </button>
-                    </span> */}
-                    {/* <span
-                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                      title={`Edit`}
-                      onClick={() => {
-                        setEditBookedData(item);
-                        window.eb_modal.showModal();
-                      }}
-                    >
-                      <FaEdit />
-                    </span> */}
+                    </span> 
                     <button
                       onClick={() => {
                         handleDelete(item?._id);
+                       window.refundPay.showModal() 
                       }}
                       className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                       title={`Cancel`}
@@ -181,12 +166,9 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
           renderOnZeroPageCount={null}
         />
       </div>
-      {/* <Modal id={`eb_modal`}>
-        {editBookedData && <EditBooking data={editBookedData} />}
-      </Modal> */}
-      {/* <Modal id={`ci_modal`}>
-        <CheckInDyn data={data} />
-      </Modal> */}
+      <Modal id={`refundPay`}>
+        <RefundBookingModal bookingId={bookingId}/>
+      </Modal>
     </div>
   );
 };
