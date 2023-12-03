@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FaEyeSlash } from "react-icons/fa";
-import { useMakePaymentMutation } from "../../redux/room/roomAPI";
-import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { useCancelBookingMutation } from "../../redux/room/roomAPI";
 
 // form validation
 const validationSchema = yup.object({
@@ -19,13 +17,11 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentSection = () => {
-  const [hotelLimit, setHotelLimit] = useState(0);
-  const { user } = useSelector((state) => state.authSlice);
-  const [makePayment] = useMakePaymentMutation();
-  const handlePageClick = ({ selected: page }) => {
-    setCurrentPage(page);
-  };
+const RefundPaymentSection = ({bookingId,closeRef}) => {
+
+    const [cancelBooking] = useCancelBookingMutation();
+
+ 
   const formik = useFormik({
     initialValues: {
       amount: "",
@@ -35,7 +31,21 @@ const RefundPaymentSection = () => {
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       console.log(values)
-      formikHelpers.resetForm()
+     const response = await cancelBooking({
+        id :bookingId,
+        data: {
+                amount:formik.values.amount,
+                tran_id:formik.values.trxID,
+                payment_method:formik.values.paymentMethod,
+             },
+      });
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        formikHelpers.resetForm();
+        closeRef.current.click();
+        toast.success(response.data.message);
+      }
     },
   });
   // Price Validation

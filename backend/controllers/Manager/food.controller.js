@@ -367,7 +367,7 @@ export const updateOrder = async (req, res) => {
         await existingMonthlySubDashData.save();
       }
       if (!existingMonthlySubDashData) {
-        const newMonthlySubDashData = new DailySubDashData({
+        const newMonthlySubDashData = new MonthlySubDashData({
           user_id: user_id,
           user_role: user.role,
           month_name,

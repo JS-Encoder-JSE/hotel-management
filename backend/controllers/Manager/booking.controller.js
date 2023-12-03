@@ -1238,6 +1238,7 @@ export const lastActiveBookingValidator = async (req, res) => {
     }
     res.status(200).json({
       success: true,
+      paid_amount: bookingInfo.paid_amount,
     });
   } catch (error) {
     console.error(error);
