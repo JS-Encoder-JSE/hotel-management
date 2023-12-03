@@ -224,6 +224,8 @@ export const checkedOut = async (req, res) => {
 
     if (managerDashboardTable) {
       managerDashboardTable.total_checkout += 1;
+      managerDashboardTable.total_income += paid_amount;
+      managerDashboardTable.total_profit += paid_amount;
       await managerDashboardTable.save();
     } else {
       // Create a new dashboard table entry
@@ -233,6 +235,8 @@ export const checkedOut = async (req, res) => {
         month_name,
         year,
         total_checkout: 1,
+        total_income: paid_amount,
+        total_profit: paid_amount,
       });
       // Save the new dashboard table to the database
       await newDashboardTable.save();
@@ -245,6 +249,8 @@ export const checkedOut = async (req, res) => {
 
     if (ownerDashboardTable) {
       ownerDashboardTable.total_checkout += 1;
+      ownerDashboardTable.total_income += paid_amount;
+      ownerDashboardTable.total_profit += paid_amount;
       await ownerDashboardTable.save();
     } else {
       const newDashboardTable = new DashboardTable({
@@ -253,6 +259,8 @@ export const checkedOut = async (req, res) => {
         month_name,
         year,
         total_checkout: 1,
+        total_income: paid_amount,
+        total_profit: paid_amount,
       });
       // Save the new dashboard table to the database
       await newDashboardTable.save();

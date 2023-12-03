@@ -6,7 +6,7 @@ import {
 } from "../../models/Manager/food.model.js";
 import Room from "../../models/Manager/room.model.js";
 import Table from "../../models/Manager/table.model.js";
-import { Dashboard } from "../../models/dashboard.model.js";
+import { Dashboard, DashboardTable } from "../../models/dashboard.model.js";
 import Hotel from "../../models/hotel.model.js";
 import {
   DailySubDashData,
@@ -331,6 +331,51 @@ export const updateOrder = async (req, res) => {
 
       await ownerDashboard.save();
       await managerDashboard.save();
+      const managerDashboardTable = await DashboardTable.findOne({
+        user_id: user_id,
+        month_name: month_name,
+        year: year,
+      });
+  
+      if (managerDashboardTable) {
+        managerDashboardTable.total_income += paid_amount;
+        managerDashboardTable.total_profit += paid_amount;
+        await managerDashboardTable.save();
+      } else {
+        // Create a new dashboard table entry
+        const newDashboardTable = new DashboardTable({
+          user_id: user_id,
+          user_role: user.role,
+          month_name,
+          year,
+          total_income: paid_amount,
+          total_profit: paid_amount,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
+      const ownerDashboardTable = await DashboardTable.findOne({
+        user_id: user.parent_id,
+        month_name: month_name,
+        year: year,
+      });
+  
+      if (ownerDashboardTable) {
+        ownerDashboardTable.total_income += paid_amount;
+        ownerDashboardTable.total_profit += paid_amount;
+        await ownerDashboardTable.save();
+      } else {
+        const newDashboardTable = new DashboardTable({
+          user_id: user.parent_id,
+          user_role: "owner",
+          month_name,
+          year,
+          total_income: paid_amount,
+          total_profit: paid_amount,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
       const existingStaticSubDashData = await StaticSubDashData.findOne({
         user_id: user_id,
       });
