@@ -99,8 +99,6 @@ const ShowAllExpense = () => {
     setCurrentPage(page);
   };
 
-  console.log(searchParams)
-
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -110,14 +108,14 @@ const ShowAllExpense = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? new Date(values.endDate).toLocaleDateString() : new Date().toLocaleDateString(),
-        fromDate: p? new Date(values.startDate).toLocaleDateString() :"",
+        toDate: p?new Date(values.endDate).toLocaleDateString():"",
+        fromDate: p?new Date(values.startDate).toLocaleDateString():"",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
-      setSearchParams("")
+      setSearchParams(null)
     },
   });
   const {
@@ -138,7 +136,7 @@ const ShowAllExpense = () => {
   } = useGetExpensesQuery({
     ...searchParams,
     cp: currentPage,
-    fromDate:searchParams?.fromDate === ""? new Date().toLocaleDateString() :searchParams?.fromDate,
+    fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
     hotel_id: hotelId,
     spendedfor: "restaurant",
@@ -196,7 +194,7 @@ const ShowAllExpense = () => {
             <Link to={`/dashboard `}>
               <button
                 type="button"
-                className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
               >
                 <dfn>
                   <abbr title="Back">
