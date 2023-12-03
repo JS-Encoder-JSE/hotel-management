@@ -54,11 +54,15 @@ export const getSubDashboardInfo = async (req, res) => {
       date,
     });
     // Fetch daily datas for the last 7 days
-    const lastWeekStartDate = new Date(currentDate);
-    lastWeekStartDate.setDate(lastWeekStartDate.getDate() - 6);
+    const lastWeekStartDateIso = new Date(currentDate);
+    lastWeekStartDateIso.setDate(currentDate.getDate() - 6);
+    
+    console.log(lastWeekStartDateIso);
+    const lastWeekStartDate = lastWeekStartDateIso.toLocaleDateString();
+    console.log(lastWeekStartDate)
     const one_day_datas = await DailySubDashData.find({
       user_id: userId,
-      date: { $gte: lastWeekStartDate.toISOString(), $lte: date },
+      date: { $gte: lastWeekStartDate, $lte: date },
     });
 
     // Calculate last_week_expenses as the sum of today_expenses for the last 7 days
@@ -87,7 +91,6 @@ export const getSubDashboardInfo = async (req, res) => {
       0
     );
 
-    console.log(last_week_hotel_expenses);
     res.status(200).json({
       success: true,
       message: "Succesfully fetched subdashboard informations",

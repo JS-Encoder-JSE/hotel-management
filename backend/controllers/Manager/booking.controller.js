@@ -438,7 +438,7 @@ export const cancelBooking = async (req, res) => {
 
     // Remove the canceled room_id from bookingInfo.room_ids
     bookingInfo.room_ids.pull(booking.room_id);
-    if (bookingInfo.room_ids.length <= 0) {
+    if (bookingInfo.room_ids.length === 1 && bookingInfo.paid_amount > 0) {
       const newTransactionLog = new TransactionLog({
         manager_id: userId,
         booking_info_id: bookingInfo._id,
@@ -1222,9 +1222,9 @@ export const addToCheckin = async (req, res) => {
 
 export const lastActiveBookingValidator = async (req, res) => {
   try {
-    const bookingInfoId = req.params.bookingInfoId;
+    const booking_id = req.params.booking_id;
 
-    const bookingInfo = await BookingInfo.findById(bookingInfoId);
+    const bookingInfo = await BookingInfo.findOne({ booking_ids: booking_id });
 
     if (!bookingInfo) {
       return res.status(404).json({

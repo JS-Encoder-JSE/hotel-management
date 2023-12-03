@@ -349,7 +349,8 @@ export const updateOrder = async (req, res) => {
           user_id: user_id,
           user_role: user.role,
           date,
-          today_restaurant_expenses: new_paid_amount,
+          today_restaurant_income: new_paid_amount,
+          today_restaurant_profit: new_paid_amount,
         });
         await newDailySubDashData.save();
       }
@@ -359,8 +360,8 @@ export const updateOrder = async (req, res) => {
         year,
       });
       if (existingMonthlySubDashData) {
-        existingDailySubDashData.total_restaurant_income += new_paid_amount;
-        existingDailySubDashData.total_restaurant_profit += new_paid_amount;
+        existingMonthlySubDashData.total_restaurant_income += new_paid_amount;
+        existingMonthlySubDashData.total_restaurant_profit += new_paid_amount;
         await existingMonthlySubDashData.save();
       }
       if (!existingMonthlySubDashData) {
@@ -369,7 +370,8 @@ export const updateOrder = async (req, res) => {
           user_role: user.role,
           month_name,
           year,
-          total_restaurant_expenses: new_paid_amount,
+          total_restaurant_income: new_paid_amount,
+          total_restaurant_profit: new_paid_amount,
         });
         await newMonthlySubDashData.save();
       }

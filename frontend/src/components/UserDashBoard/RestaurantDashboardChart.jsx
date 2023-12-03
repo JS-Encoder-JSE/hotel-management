@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
 import { isValidUrl } from "../../utils/utils";
+import { useLocation } from 'react-router-dom';
 
 const generateRandomData = () => {
   return Array.from({ length: 12 }, () => Math.floor(Math.random() * 100) + 1);
 };
 const RestaurantDashboardChart = ({ monthlyData }) => {
+  const location = useLocation();
+  const {  pathname  } = location;
+
   const months = [
     "Jan",
     "Feb",
@@ -93,15 +97,15 @@ const RestaurantDashboardChart = ({ monthlyData }) => {
       series: [
         {
           ...prevProps.series[0],
-          data: isValidUrl("hotel") ? hotelExpense : restaurantExpense,
+          data: isValidUrl("hotel",pathname) ? hotelExpense : restaurantExpense,
         },
         {
           ...prevProps.series[1],
-          data: isValidUrl("hotel") ? hotelIncome : restaurantIncome,
+          data: isValidUrl("hotel",pathname) ? hotelIncome : restaurantIncome,
         },
         {
           ...prevProps.series[2],
-          data: isValidUrl("hotel") ? hotelProfit : restaurantProfit,
+          data: isValidUrl("hotel",pathname) ? hotelProfit : restaurantProfit,
         },
       ],
       xaxis: {
