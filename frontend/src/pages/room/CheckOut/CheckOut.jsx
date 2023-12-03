@@ -29,6 +29,8 @@ import * as yup from "yup";
 import { getISOStringDate } from "../../../utils/utils";
 
 const CheckOut = () => {
+  const [getCheckout, { data: checkout, isSuccess, isLoading }] =
+    useGetCheckoutMutation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomFromQuery = searchParams.get("room");
@@ -44,13 +46,17 @@ const CheckOut = () => {
     useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
     refundAmount - (additionalCharge + serviceCharge + texAmount);
+  const totalPayableAmount =
+    checkout?.data?.booking_info?.total_payable_amount +
+    additionalCharge +
+    serviceCharge +
+    texAmount;
   // const {
   //   data: checkout,
   //   isLoading: checkoutLoading,
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
-  const [getCheckout, { data: checkout, isSuccess, isLoading }] =
-    useGetCheckoutMutation();
+
   console.log("checkout :", checkout);
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
@@ -74,7 +80,10 @@ const CheckOut = () => {
       const room_numbers = checkout?.data?.room_bookings?.map(
         (i) => i?.room_id?.roomNumber
       );
-
+      const initialPaidAmount =
+        checkout?.data?.booking_info?.paid_amount +
+        Number(paymentList[0].amount);
+      const initialUnpaidAmount = totalPayableAmount - initialPaidAmount;
       const paidAmount =
         checkout?.data?.booking_info?.paid_amount <= pBill
           ? Number(paymentList[0].amount)
@@ -96,14 +105,18 @@ const CheckOut = () => {
       } else {
       }
 
-      console.log({
+      // console.log();
+      const response = await addCheckout({
         hotel_id: checkout?.data?.booking_info?.hotel_id,
-        new_total_paid_amount: 0,
-        new_total_payable_amount: 0,
-        new_total_unpaid_amount: 0,
-        new_total_tax: 0,
-        new_total_additional_charges: 0,
-        new_total_service_charges: 0,
+        new_total_payable_amount: totalPayableAmount,
+        new_total_unpaid_amount: initialUnpaidAmount,
+        new_total_paid_amount: initialPaidAmount,
+        new_total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
+        new_total_additional_charges:
+          checkout?.data?.booking_info?.total_additional_charges +
+          additionalCharge,
+        new_total_service_charges:
+          checkout?.data?.booking_info?.total_service_charges + serviceCharge,
         guestName: checkout?.data?.booking_info?.guestName,
         room_numbers,
         payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
@@ -112,27 +125,15 @@ const CheckOut = () => {
         checked_in: checkout?.data?.room_bookings[0]?.from,
         checked_out: checkout?.data?.room_bookings[0]?.to,
         payable_amount: payableAmount,
-        paid_amount: paymentList[0]?.amount,
-        total_checkout_bills: 0,
+        paid_amount: Number(paymentList[0].amount),
+        total_checkout_bills: pBill,
       });
-      // const response = await addCheckout({
-      //   hotel_id: checkout?.data?.booking_info?.hotel_id,
-      //   booking_ids: [bookingId],
-      //   guestName: checkout?.data?.booking_info?.guestName,
-      //   room_numbers,
-      //   payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
-      //   checked_in: checkout?.data?.room_bookings[0]?.from,
-      //   checked_out: checkout?.data?.room_bookings[0]?.to,
-      //   payable_amount: payableAmount,
-      //   paid_amount: paymentList[0]?.amount,
-      //   unpaid_amount: unpaid < 0 ? 0 : unpaid,
-      // });
-      // if (response?.error) {
-      //   toast.error(response.error.data.message);
-      // } else {
-      //   toast.success("Checkout Successful");
-      //   // navigate("/dashboard/checkout");
-      // }
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success("Checkout Successful");
+        // navigate("/dashboard/checkout");
+      }
     },
   });
 
@@ -287,6 +288,8 @@ const CheckOut = () => {
               isHotelSuccess={isHotelSuccess}
               roomData={checkout?.data?.room_bookings}
               addCheckOutLoading={addCheckOutLoading}
+              totalPayableAmount={totalPayableAmount}
+              totalRefund={totalRefund}
             />
           </div>
         </>

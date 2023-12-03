@@ -150,7 +150,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
         <table className="text-sm font-semibold m-5">
           <tbody>
             <tr>
-              <td>Unpaid Amount</td>
+              <td>Overall Room Bills</td>
               <td className="align-top pl-2 pb-2">
                 {Math.ceil(totalUnpaidAmount)}
               </td>
@@ -184,12 +184,12 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
                 </div>
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>Payable Amount</td>
               <td className="align-top pl-2 pb-2">
                 {Math.ceil(totalUnpaidAmount + totalBilling + additionalCharge)}
               </td>
-            </tr>
+            </tr> */}
           </tbody>
         </table>
       </div>
@@ -227,13 +227,12 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
         <table className="text-sm font-semibold m-5">
           <tbody className="flex flex-col gap-3">
             <tr>
-              <td>Total Payable Amount</td>
+              <td>Total Payable Room Bills</td>
               <td>
                 {Math.ceil(
                   totalUnpaidAmount +
                     totalBilling +
-                    breakAmt -
-                    (discount ? discountAmt : 0)
+                    breakAmt
                 )}
               </td>
             </tr>

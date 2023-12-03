@@ -21,6 +21,7 @@ const PaymentSection = ({
   hotelInfo,
   roomData,
   addCheckOutLoading,
+  totalPayableAmount,
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -86,17 +87,17 @@ const PaymentSection = ({
           <div className="p-5 grid grid-cols-3 items-center text-sm font-semibold">
             <div className="space-y-3">
               <p>Remain Amount</p>
+              <p>Refund Amount</p>
               <p>Collected Amount</p>
-              <p>Change Amount</p>
             </div>
             <div className="col-span-2 space-y-3">
               <p>
-                {pBill > colAmount ? Math.abs(Math.ceil(pBill - colAmount)) : 0}
+                {data?.total_unpaid_amount < 0
+                  ? 0
+                  : totalPayableAmount - data?.paid_amount-colAmount}
               </p>
+              <p>{totalRefund < 0 ? 0 : totalRefund}</p>
               <p>{Math.ceil(colAmount)}</p>
-              <p>
-                {pBill < colAmount ? Math.abs(Math.ceil(pBill - colAmount)) : 0}
-              </p>
             </div>
           </div>
         </div>
