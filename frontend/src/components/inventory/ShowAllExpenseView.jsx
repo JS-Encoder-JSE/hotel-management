@@ -69,6 +69,34 @@ const ShowAllExpenseView = () => {
       year: 'numeric',
     }).replace(/\//g, '-');
 
+
+ // pagination setup for today's expenses
+ const itemsPerPage = 10;
+ const [currentPageItem, setCurrentPageItem] = useState(0);
+
+ const handlePageChange = ({ selected }) => {
+   setCurrentPageItem(selected);
+ };
+ const totalPage =
+   itemExpense &&
+   Math.ceil(itemExpense?.items.length / itemsPerPage);
+
+ const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+ const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+ const currentItems = itemExpense?.items.slice(
+   indexOfFirstItem,
+   indexOfLastItem
+ );
+
+ const handleScrollToTop = () => {
+   // Scroll to the top of the page
+   window.scrollTo({ top: 0, behavior: "smooth" });
+ };
+
+ console.log("itemExpense", itemExpense);
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between `}>
@@ -120,7 +148,8 @@ const ShowAllExpenseView = () => {
             </tr>
           </thead>
           <tbody>
-            {itemExpense?.items.map((item, idx) => {
+            {itemExpense?.items &&
+            currentItems.map((item, idx) => {
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <th>{idx + 1}</th>
@@ -163,7 +192,7 @@ const ShowAllExpenseView = () => {
                   <div>
                     {" "}
                     {totalItemsAmount}
-                    {/* {totalItemPrice} */}
+                   
                   </div>
                 </div>
               </td>
@@ -179,7 +208,9 @@ const ShowAllExpenseView = () => {
         />
       </Modal>
       {/* pagination */}
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-10"
+        onClick={handleScrollToTop}
+      >
       <ReactPaginate
           containerClassName="join rounded-none"
           pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -191,12 +222,13 @@ const ShowAllExpenseView = () => {
           previousLabel="<"
           nextLabel=">"
           breakLabel="..."
-          pageCount={pageCount}
+          pageCount={totalPage}
           pageRangeDisplayed={2}
           marginPagesDisplayed={2}
-          onPageChange={handlePageClick}
+          onPageChange={handlePageChange}
           renderOnZeroPageCount={null}
           forcePage={currentPage}
+          
         />
       </div>
     </div>
