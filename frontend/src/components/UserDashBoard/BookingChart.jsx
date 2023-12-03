@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
+const BookingChart = ({ userManager, permanent_datas,managerId,userId,daily_datas }) => {
  
   const [chartProps, setChartProps] = useState({
     series: [
@@ -66,7 +66,7 @@ const BookingChart = ({ userManager, permanent_datas, daily_datas }) => {
         },
       }));
     }
-  }, [userManager]);
+  }, [userManager,managerId,userId]);
   return (
     <ReactApexChart
       options={chartProps.options}
