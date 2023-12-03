@@ -417,6 +417,7 @@ export const cancelBooking = async (req, res) => {
   try {
     const bookingId = req.params.booking_id; // Assuming you pass bookingId as a route parameter
     const userId = req.user.userId;
+    const { tran_id, payment_method } = req.body;
     const currentDate = new Date();
     const date = currentDate.toLocaleDateString();
 
@@ -437,6 +438,21 @@ export const cancelBooking = async (req, res) => {
 
     // Remove the canceled room_id from bookingInfo.room_ids
     bookingInfo.room_ids.pull(booking.room_id);
+    if (bookingInfo.room_ids.length <= 0) {
+      const newTransactionLog = new TransactionLog({
+        manager_id: userId,
+        booking_info_id: bookingInfo._id,
+        dedicated_to: "hotel",
+        tran_id,
+        from: userId.username,
+        to: bookingInfo.guestName,
+        payment_method,
+        amount: bookingInfo.paid_amount,
+        remark: "Full booking canceled",
+      });
+      newTransactionLog.save();
+      bookingInfo.paid_amount = 0;
+    }
 
     const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
     const room_discount_percentage = bookingInfo.room_discount / 100;
@@ -446,7 +462,6 @@ export const cancelBooking = async (req, res) => {
 
     bookingInfo.total_rent = new_total_rent;
     bookingInfo.total_rent_after_dis = new_total_rent_after_dis;
-    console.log(new_total_rent_after_dis);
     bookingInfo.total_unpaid_amount =
       new_total_rent_after_dis - bookingInfo.paid_amount;
 
@@ -1045,7 +1060,7 @@ export const addToCheckin = async (req, res) => {
     }
 
     const room_ids = bookings.map((booking) => booking.room_id);
-
+    console.log(room_ids);
     // Find the Booking document by ID
     await Booking.updateMany(
       { _id: { $in: booking_ids } },
@@ -1205,69 +1220,3 @@ export const addToCheckin = async (req, res) => {
   }
 };
 
-export const makePayment = async (req, res) => {
-  try {
-    const {
-      manager_id,
-      bookingInfoId,
-      amount,
-      paymentMethod,
-      tran_id,
-      remark,
-    } = req.body;
-
-    // Find the BookingInfo based on the provided bookingInfoId
-    const bookingInfo = await BookingInfo.findById(bookingInfoId);
-
-    if (!bookingInfo) {
-      return res.status(404).json({
-        success: false,
-        message: "BookingInfo not found",
-      });
-    }
-
-    // Calculate new paid_amount and total_unpaid_amount
-    const newPaidAmount = bookingInfo.paid_amount + amount;
-    const newUnpaidAmount = Math.max(
-      0,
-      bookingInfo.total_unpaid_amount - amount
-    );
-
-    // Update BookingInfo with the new values
-    bookingInfo.paid_amount = newPaidAmount;
-    bookingInfo.total_unpaid_amount = newUnpaidAmount;
-
-    // Save the updated BookingInfo
-    await bookingInfo.save();
-
-    // Create a new TransactionLog entry
-    const newTransactionLog = new TransactionLog({
-      manager_id,
-      booking_info_id: bookingInfoId,
-      payment_method: paymentMethod,
-      tran_id,
-      amount: amount,
-      remark: remark,
-    });
-
-    // Save the new TransactionLog entry
-    await newTransactionLog.save();
-
-    res.status(200).json({
-      success: true,
-      data: {
-        bookingInfo: bookingInfo,
-        transactionLog: newTransactionLog,
-      },
-      message: "Payment made successfully",
-    });
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
-    });
-  }
-};

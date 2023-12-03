@@ -17,11 +17,13 @@ import { Rings } from "react-loader-spinner";
 import { dummyData, isValidUrl } from "../../utils/utils";
 
 const RestaurantDashboard = ({ managerId }) => {
+  // console.log("managerId",managerId)
 
   const { user } = useSelector((state) => state.authSlice);
   const { data, isLoading, isError } = useGetSubDashBoardInfoQuery(
     managerId ? managerId : user._id
   );
+  console.log("data",data)
   const [profit, setProfit] = useState(false);
   const formik = useFormik({
     initialValues: {},

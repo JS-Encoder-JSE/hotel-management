@@ -10,7 +10,6 @@ import {
   getBookingDetailsById,
   updateBookingInfo,
   addToCheckin,
-  makePayment,
 } from "../../controllers/Manager/booking.controller.js";
 import { checkToken } from "../../middlewares/checkToken.js";
 import {
@@ -24,7 +23,7 @@ const router = Router();
 router.post("/add-booking", checkToken, addBooking);
 router.get("/get-bookings-by-hotel", checkToken, getBookingsByHotel);
 router.get("/get-booking-by-id/:booking_id", checkToken, getBookingById);
-router.get("/get-active-booking-by-room/:room_id", getActiveBookingByRoomId);
+router.get("/get-active-booking-by-room/:room_id", checkToken, getActiveBookingByRoomId);
 router.get(
   "/get-booking-details/:booking_id",
   checkToken,
@@ -34,9 +33,9 @@ router.patch("/update-booking/:booking_id", checkToken, updateBooking);
 router.patch("/update-booking-info/:booking_id", checkToken, updateBookingInfo);
 router.post("/get-checkoutinfo-by-rooms", checkToken, getCheckoutInfoByRoom);
 router.post("/checkout", checkToken, checkedOut);
-router.post("/add-to-checkin/:booking_id", checkToken, addToCheckin);
-router.post("/make-payment", checkToken, makePayment);
-router.delete("/cancel-booking/:booking_id", checkToken, cancelBooking);
+router.post("/add-to-checkin", checkToken, addToCheckin);
+
+router.post("/cancel-booking/:booking_id", checkToken, cancelBooking);
 // router.delete('/delete-booking/:booking_id', checkToken, deleteBooking);
 
 export default router;

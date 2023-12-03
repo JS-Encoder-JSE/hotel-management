@@ -17,6 +17,7 @@ import gymRoute from "./routes/Manager/gym.route.js";
 import poolRoute from "./routes/Manager/pool.route.js";
 import dashboardRoute from "./routes/dashboard.route.js";
 import subdashboardRoute from "./routes/subdashboard.route.js";
+import hotelBalanceRoute from "./routes/hotel.balance.route.js";
 import expenseRoute from "./routes/expense.route.js";
 // import employeeRoute from "./routes/Manager/employee.route.js";
 import { fileURLToPath } from "url";
@@ -58,6 +59,7 @@ app.use("/gym", gymRoute);
 app.use("/pool", poolRoute);
 app.use("/dashboards", dashboardRoute);
 app.use("/subdashboards", subdashboardRoute);
+app.use("/balances", hotelBalanceRoute);
 app.use("/expenses", expenseRoute);
 // app.use("/employee", employeeRoute);
 

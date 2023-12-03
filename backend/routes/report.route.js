@@ -12,6 +12,6 @@ router.get(
   checkToken,
   getReportsByHotelId
 );
-router.get("/get-reports-by-date", getReportsByDate);
+router.get("/get-reports-by-date", checkToken, getReportsByDate);
 
 export default router;

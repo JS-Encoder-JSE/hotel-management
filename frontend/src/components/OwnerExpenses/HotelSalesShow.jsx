@@ -249,7 +249,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
               Hotel Sales
             </h3>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mr-5">
             <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
               {" "}
               <FaRegFilePdf />

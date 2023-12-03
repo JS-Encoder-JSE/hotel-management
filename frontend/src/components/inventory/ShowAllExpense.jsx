@@ -214,7 +214,7 @@ const ShowAllExpense = () => {
                   Today Expenses
                 </h3>
               </div>
-              <div className={`flex justify-end mb-5`}>
+              <div className={`flex justify-end mb-5 mr-5`}>
                 {PDF?.length ? (
                   <PDFDownloadLink
                     document={
@@ -372,7 +372,7 @@ const ShowAllExpense = () => {
                 Restaurant Expenses History
               </h3>
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end mr-5">
               {PDF?.length ? (
                 <PDFDownloadLink
                   document={

@@ -314,7 +314,7 @@ export const checkedOut = async (req, res) => {
       await newMonthlySubDashData.save();
     }
     // Respond with the saved report
-    res.status(201).json({ message: "Successfully Checked-In" });
+    res.status(201).json({ message: "Successfully Checked-Out" });
   } catch (error) {
     // Handle errors
     console.error(error);
