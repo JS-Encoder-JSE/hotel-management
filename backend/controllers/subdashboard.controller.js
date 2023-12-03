@@ -75,7 +75,7 @@ export const getSubDashboardInfo = async (req, res) => {
       0
     );
     const last_week_hotel_profit = one_day_datas.reduce(
-      (sum, dailyData) => sum + dailyData.today_hotel_income,
+      (sum, dailyData) => sum + dailyData.today_hotel_profit,
       0
     );
     const last_week_restaurant_expenses = one_day_datas.reduce(
@@ -87,7 +87,7 @@ export const getSubDashboardInfo = async (req, res) => {
       0
     );
     const last_week_restaurant_profit = one_day_datas.reduce(
-      (sum, dailyData) => sum + dailyData.today_restaurant_income,
+      (sum, dailyData) => sum + dailyData.today_restaurant_profit,
       0
     );
 
