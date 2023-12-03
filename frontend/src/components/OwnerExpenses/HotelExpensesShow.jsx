@@ -93,23 +93,25 @@ const {
      
       setSearchParams((p) => ({
         ...p,
-        toDate: fromDateIsoConverter(values.endDate),
-        fromDate: fromDateIsoConverter(values.startDate),
+        toDate: p? new Date(values.endDate).toLocaleDateString() :"",
+        fromDate: p? new Date(values.startDate).toLocaleDateString() : "",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
+      setSearchParams("")
     },
   });
   const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
-    fromDate:fromDateIsoConverter(new Date()),
+    fromDate:new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "hotel"
   });
 
 
   const { data: filteredExpenses, isLoading: isFilterDataLoading, isSuccess: filterExSuccess } = useGetExpensesQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
@@ -225,7 +227,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
                   <th>Description</th>
                   <th>Quantity</th>
                   <th>Price</th>
-                  {hotelExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
+                  <th>Remark</th>
                   {/* <th>Action</th> */}
                 </tr>
               </thead>
@@ -245,7 +247,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
                         <FaRupeeSign className="inline" />
                           <span>{item?.price}</span>   
                       </td>
-                      {item?.remark&&<td>Remark</td>}
+                   <td>{item?.remark}</td>
                       {/* <td>
                         <button
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
@@ -293,13 +295,13 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               </tfoot>
             </table>
       
-          </div> : <p className="flex justify-center items-center mt-96">No Expenses Today</p>}
+          </div> : <p className="flex justify-center items-center mt-16">No Expenses Today</p>}
         </div>
         </div>
 
         {/* pagination */}
 
-        <div onClick={handleScrollToTop} className="flex justify-center mt-10">
+        {currentItems?.length &&<div onClick={handleScrollToTop} className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -317,7 +319,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               onPageChange={handlePageChange}
               renderOnZeroPageCount={null}
             />
-          </div>
+          </div>}
      </div>
 
         {/* Restaurant Expenses */}
@@ -415,7 +417,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
           </button>
         </div>
         <hr className={`my-5 mb-4`} />
-        <div className={`space-y-10`}>
+       {filteredExpenses?.docs.length ? <div className={`space-y-10`}>
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
@@ -479,7 +481,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               forcePage={forcePage}
             />
           </div>
-        </div>
+        </div> : <p className="text-center mt-16 py-16">No Expenses yet!</p>}
       </div>}
     </div>
   );

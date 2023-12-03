@@ -3,9 +3,7 @@ import {
   Dashboard,
   DashboardTable,
 } from "../models/dashboard.model.js";
-import {
-  StaticSubDashData,
-} from "../models/subdashboard.model.js";
+import { StaticSubDashData } from "../models/subdashboard.model.js";
 import User from "../models/user.model.js";
 
 export const addDashboard = async (req, res) => {
@@ -204,21 +202,18 @@ export const getDashboardInfo = async (req, res) => {
     let total_all_hotel_expenses = 0;
     let total_all_hotel_income = 0;
     let total_all_hotel_profit = 0;
-    if (user.role === "admin") {
+    if (user.role === "owner") {
       const staticSubDashDataList = await StaticSubDashData.find({
-        user_id: user.manager_accounts,
+        user_id: {$in: user.manager_accounts},
       });
-      staticSubDashDataList.map((staticSubDashData) => {
-        total_all_restaurant_expenses +=
-          staticSubDashData.array_total_restaurant_expenses;
-        total_all_restaurant_income +=
-          staticSubDashData.array_total_restaurant_income;
-        total_all_restaurant_profit +=
-          staticSubDashData.array_total_restaurant_profit;
-        total_all_hotel_expenses +=
-          staticSubDashData.array_total_hotel_expenses;
-        total_all_hotel_income += staticSubDashData.array_total_hotel_income;
-        total_all_hotel_profit += staticSubDashData.array_total_hotel_profit;
+
+      staticSubDashDataList.forEach((staticSubDashData) => {
+        total_all_restaurant_expenses += staticSubDashData.total_restaurant_expenses || 0;
+        total_all_restaurant_income += staticSubDashData.total_restaurant_income || 0;
+        total_all_restaurant_profit += staticSubDashData.total_restaurant_profit || 0;
+        total_all_hotel_expenses += staticSubDashData.total_hotel_expenses || 0;
+        total_all_hotel_income += staticSubDashData.total_hotel_income || 0;
+        total_all_hotel_profit += staticSubDashData.total_hotel_profit || 0;
       });
       dashboard.total_expense =
         total_all_restaurant_expenses + total_all_hotel_expenses;

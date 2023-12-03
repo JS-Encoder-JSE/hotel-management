@@ -100,7 +100,7 @@ const RestaurantExpense = () => {
 
         <section>
           {selectedHotel1 ? (
-            <RestaurantExpenseShow hotelId={selectedHotel1?.value}></RestaurantExpenseShow>
+            <RestaurantExpenseShow  hotelId={selectedHotel1?.value}></RestaurantExpenseShow>
           ) : (
           <p className="text-center">Please Select your Hotel Branch !!</p>
           )}

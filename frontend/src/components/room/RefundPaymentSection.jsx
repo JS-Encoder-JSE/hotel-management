@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import toast from "react-hot-toast";
@@ -17,14 +17,14 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentSection = ({bookingId,closeRef}) => {
+const RefundPaymentSection = ({bookingId,closeRef,paidAmt}) => {
 
     const [cancelBooking] = useCancelBookingMutation();
-
+console.log(paidAmt,"pp")
  
   const formik = useFormik({
     initialValues: {
-      amount: "",
+      amount: paidAmt?.paid_amount,
       paymentMethod: "",
       trxID: "",
     },
@@ -60,6 +60,10 @@ const RefundPaymentSection = ({bookingId,closeRef}) => {
       formik.handleChange(e);
     }
   };
+  useEffect(() => {
+    // Set the amount field value when paidAmt changes
+    formik.setFieldValue("amount", paidAmt?.paid_amount);
+  }, [paidAmt]);
 
   return (
     <div className="relative p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">

@@ -140,26 +140,11 @@ export const checkedOut = async (req, res) => {
       payment_method,
       checked_in,
       checked_out,
-      payable_amount,
+      payable_amount: total_checkout_bills,
       paid_amount,
-      unpaid_amount:total_checkout_bills,
+      unpaid_amount: total_checkout_bills - paid_amount,
     });
     await newReport.save();
-    if (paid_amount > 0) {
-      const newTransactionLog = new TransactionLog({
-        manager_id: userId,
-        booking_info_id: bookingInfo._id,
-        dedicated_to: "hotel",
-        tran_id,
-        payment_method,
-        from: bookingInfo.guestName,
-        to: user.username,
-        amount: paid_amount,
-        remark: "checkout",
-      });
-      // Save the transaction log entry to the database
-      await newTransactionLog.save();
-    }
     // Update the booking status to "CheckedOut"
     await Booking.updateMany(
       { _id: { $in: booking_ids } },
@@ -187,6 +172,21 @@ export const checkedOut = async (req, res) => {
 
     await bookingInfo.save();
 
+    if (paid_amount > 0) {
+      const newTransactionLog = new TransactionLog({
+        manager_id: userId,
+        booking_info_id: bookingInfo._id,
+        dedicated_to: "hotel",
+        tran_id,
+        payment_method,
+        from: bookingInfo.guestName,
+        to: user.username,
+        amount: paid_amount,
+        remark: "checkout",
+      });
+      // Save the transaction log entry to the database
+      await newTransactionLog.save();
+    }
     // Define roomStatus (replace 'YOUR_ROOM_STATUS' with the actual status)
     const roomStatus = "Available";
 

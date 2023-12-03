@@ -67,13 +67,14 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: getISOStringDate(values.endDate),
-        fromDate: getISOStringDate(values.startDate),
+        toDate: p? new Date(values.endDate).toLocaleDateString():"",
+        fromDate:p? new Date(values.startDate).toLocaleDateString():"",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
+      setSearchParams("")
     },
   });
 
@@ -82,6 +83,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     isLoading: isFilterDataLoading,
     isSuccess: filterExSuccess,
   } = useGetExpensesQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
@@ -95,7 +97,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: fromDateIsoConverter(new Date()),
+    fromDate: new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });
@@ -134,12 +136,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
     return itemDate === formattedCurrentDate;
   });
 
-  const totalItemPrice =
-    isTodayItems &&
-    isTodayItems[0]?.items?.reduce((total, item) => {
-      // Add the price of each item to the total
-      return total + (item?.price || 0);
-    }, 0);
+  
 
   // pagination setup for today's expenses
   const itemsPerPage = 10;
@@ -160,7 +157,12 @@ console.log('RestaurantExpenses',RestaurantExpenses);
     indexOfFirstItem,
     indexOfLastItem
   );
-
+  const totalItemPrice =
+  isTodayItems &&
+  currentItems?.reduce((total, item) => {
+    // Add the price of each item to the total
+    return total + (item?.price || 0);
+  }, 0);
   const handleScrollToTop = () => {
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -205,7 +207,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
               {/* 3rd commit  */}
 
               {/* {RestaurantExpenses&& RestaurantExpenses?.docs[0]?.items.length ? */}
-              <div className="h-[30rem] overflow-y-scroll md:overflow-scroll">
+             {currentItems?.length? <div className=" overflow-x-auto">
                 <table className="table">
                   <thead>
                     <tr>
@@ -282,7 +284,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                     </tr>
                   </tfoot>
                 </table>
-              </div>
+              </div>:<p className="text-center mt-16">No expense</p>}
             </div>
           </div>
 
@@ -292,7 +294,7 @@ console.log('RestaurantExpenses',RestaurantExpenses);
             onClick={handleScrollToTop}
             className="flex justify-center mt-10"
           >
-            <ReactPaginate
+           {currentItems?.length && <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
               activeLinkClassName="btn-active !bg-green-slimy text-white"
@@ -303,13 +305,13 @@ console.log('RestaurantExpenses',RestaurantExpenses);
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={pageCount}
+              pageCount={totalPage}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageChange}
               renderOnZeroPageCount={null}
               forcePage={currentPage}
-            />
+            />}
           </div>
         </div>
 

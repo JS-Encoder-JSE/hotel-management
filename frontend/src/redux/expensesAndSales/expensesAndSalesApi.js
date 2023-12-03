@@ -15,8 +15,12 @@ const expensesAndSalesApi = baseAPI.injectEndpoints({
     getSubDashBoardInfo: builder.query({
       query: (managerId) => `subdashboards/get-subdashboard-info/${managerId}`,
     }),
+    getReportsByDate: builder.query({
+      query: ({ date, hotelId }) =>
+        `reports/get-reports-by-date?date=${date}&hotel_id=${hotelId}`,
+    }),
   }),
 });
 
-export const { useUpdateExpensesItemMutation, useGetSubDashBoardInfoQuery } =
+export const { useUpdateExpensesItemMutation, useGetSubDashBoardInfoQuery,useGetReportsByDateQuery } =
   expensesAndSalesApi;
