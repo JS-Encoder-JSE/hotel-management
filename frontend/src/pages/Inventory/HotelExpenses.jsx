@@ -115,13 +115,14 @@ const HotelExpenses = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: getISOStringDate(values.endDate),
-        fromDate: getISOStringDate(values.startDate),
+        toDate: p? new Date(values.endDate).toLocaleDateString():"",
+        fromDate: p? new Date(values.startDate).toLocaleDateString():"",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
+      setSearchParams(null)
     },
   });
   const {
