@@ -5,7 +5,10 @@ import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Modal.jsx";
 import EditBooking from "./EditBooking.jsx";
-import { useCancelBookingMutation, useUpdateBookingMutation } from "../../redux/room/roomAPI.js";
+import {
+  useCancelBookingMutation,
+  useUpdateBookingMutation,
+} from "../../redux/room/roomAPI.js";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import CheckInModal from "../../pages/room/CheckInModal.jsx";
@@ -17,7 +20,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [updateBooking, { isLoading: isCancelledLoading, error }] =
     useUpdateBookingMutation();
-    const [cancelBooking]=useCancelBookingMutation()
+  const [cancelBooking] = useCancelBookingMutation();
   // const [bookingPerPage] = useState(10);
   // const [pageCount, setPageCount] = useState(0);
   const handlePageClick = ({ selected: page }) => {
@@ -42,7 +45,13 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          updateBooking({ id, data: { status: "Canceled" } });
+          cancelBooking({
+            id,
+            data: {
+              tran_id: "sdf3rj4r43rewj",
+              payment_method: "Card",
+            },
+          });
         });
       }
     });
@@ -70,7 +79,10 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
               <th>
                 Room <br /> Number
               </th>
-              <th>Phone <br />Number</th>
+              <th>
+                Phone <br />
+                Number
+              </th>
               <th>
                 Booking <br /> Date
               </th>
@@ -87,7 +99,6 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                     <div className="flex items-center space-x-3">
                       <div>
                         <div className="font-bold">{item.guestName}</div>
-                        
                       </div>
                     </div>
                   </td>

@@ -60,10 +60,11 @@ const roomAPI = baseAPI.injectEndpoints({
       invalidatesTags: ["room", "booking"],
     }),
     cancelBooking: build.mutation({
-      query: (id) => {
+      query: ({ id, data }) => {
         return {
           url: `bookings/cancel-booking/${id}`,
-          method: "DELETE",
+          method: "POST",
+          body: data,
         };
       },
       invalidatesTags: ["booking"],
@@ -103,9 +104,12 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     getExpenses: build.query({
       query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit, filter }) =>
-        `expenses/get-expenses?page=${++cp}${limit ?`&limit=${limit}`:""} ${filter ? `&filter=${filter}` : ""
-        }${fromDate ? `&fromDate=${fromDate}` : ""}${toDate ? `&toDate=${toDate}` : ""
-        }${hotel_id ?`&hotel_id=${hotel_id}`:""}${spendedfor ?`&spendedfor=${spendedfor}` : ""
+        `expenses/get-expenses?page=${++cp}${limit ? `&limit=${limit}` : ""} ${
+          filter ? `&filter=${filter}` : ""
+        }${fromDate ? `&fromDate=${fromDate}` : ""}${
+          toDate ? `&toDate=${toDate}` : ""
+        }${hotel_id ? `&hotel_id=${hotel_id}` : ""}${
+          spendedfor ? `&spendedfor=${spendedfor}` : ""
         }`,
       providesTags: ["GetExpenses"],
     }),
@@ -281,5 +285,5 @@ export const {
   useGetCheckoutMutation,
   useUpdateBookingInfoMutation,
   useUpdateBookingTOCheckInMutation,
-  useMakePaymentMutation
+  useMakePaymentMutation,
 } = roomAPI;
