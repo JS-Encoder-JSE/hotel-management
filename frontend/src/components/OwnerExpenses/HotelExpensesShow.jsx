@@ -93,23 +93,25 @@ const {
      
       setSearchParams((p) => ({
         ...p,
-        toDate: fromDateIsoConverter(values.endDate),
-        fromDate: fromDateIsoConverter(values.startDate),
+        toDate: p? new Date(values.endDate).toLocaleDateString() :"",
+        fromDate: p? new Date(values.startDate).toLocaleDateString() : "",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
+      setSearchParams("")
     },
   });
   const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
-    fromDate:fromDateIsoConverter(new Date()),
+    fromDate:new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "hotel"
   });
 
 
   const { data: filteredExpenses, isLoading: isFilterDataLoading, isSuccess: filterExSuccess } = useGetExpensesQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
@@ -225,7 +227,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
                   <th>Description</th>
                   <th>Quantity</th>
                   <th>Price</th>
-                  {hotelExpenses?.docs[0]?.items?.map((item, idx)=> item?.remark &&<th>Remark</th>)}
+                  <th>Remark</th>
                   {/* <th>Action</th> */}
                 </tr>
               </thead>
@@ -245,7 +247,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
                         <FaRupeeSign className="inline" />
                           <span>{item?.price}</span>   
                       </td>
-                      {item?.remark&&<td>Remark</td>}
+                   <td>{item?.remark}</td>
                       {/* <td>
                         <button
                           className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}

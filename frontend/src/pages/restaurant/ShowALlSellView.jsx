@@ -12,6 +12,8 @@ const ShowALlSellView = () => {
   const [searchParams] = useSearchParams();
 
   const dateParam = searchParams.get('date');
+  const hotelId = searchParams.get("hotelId")
+  console.log(hotelId)
 
   const { user } = useSelector((store) => store.authSlice);
 
@@ -20,7 +22,7 @@ const ShowALlSellView = () => {
   const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
     date: new Date(dateParam).toLocaleDateString(),
     order_status: 'CheckedOut',
-    hotel_id: user?.assignedHotel[0]
+    hotel_id: hotelId? hotelId : user?.assignedHotel[0]
   });
 
 

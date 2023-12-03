@@ -13,7 +13,8 @@ import toast from "react-hot-toast";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
 import RefundPaymentSection from "./RefundPaymentSection.jsx";
 
-const RefundBookingModal = ({bookingId}) => {
+const RefundBookingModal = ({bookingId,paidAmt}) => {
+  console.log(paidAmt)
   const closeRef= useRef()
   return (
     <>
@@ -29,7 +30,7 @@ const RefundBookingModal = ({bookingId}) => {
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Refund Payment</h3>
         <hr />
-       <RefundPaymentSection closeRef={closeRef} bookingId={bookingId}/>
+       <RefundPaymentSection paidAmt={paidAmt} closeRef={closeRef} bookingId={bookingId}/>
       </div>
     </>
   );

@@ -33,31 +33,46 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 
   const [bookingId,setBookingId]=useState("")
 
-  
-  const {data:isLastBooking} = useGetLastActiveBookingQuery(bookingId)
+  const {data:isLastBooking,isSuccess ,isLoading} = useGetLastActiveBookingQuery(bookingId)
   console.log(bookingId)
   console.log(isLastBooking)
 
-   const handleDelete = (id) => {
-    setBookingId(id)
-    isLastBooking?  window.refundPay.showModal() :
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Booking will be Cancel.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#35bef0",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Canceled!",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
+  const handleDelete = async (id) => {
+    
+    try {
+      setBookingId(id);
+
+      
+      if (isLoading || !isLastBooking) {
+        // If data is loading or isLastBooking is undefined, do nothing or show a loading indicator
+        return;
+      }
+  
+      if (isSuccess && isLastBooking.success) {
+        // If the condition is true, show the modal
+        window.refundPay.showModal();
+      } else {
+        // If the condition is false, show the confirmation dialog
+        const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "Booking will be Cancel.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#35bef0",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Cancel it!",
+        });
+  
+        if (result.isConfirmed) {
+          await Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Canceled!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+  
+          // Perform the cancellation
           cancelBooking({
             id,
             data: {
@@ -65,10 +80,43 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
               payment_method: "",
             },
           });
-        });
+        }
       }
-    });
+    } catch (error) {
+      console.error("Error handling delete:", error);
+    }
   };
+
+  //  const handleDelete = (id) => {
+  //   !isLoading && isSuccess &&  isLastBooking?.success ?  window.refundPay.showModal() :
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "Booking will be Cancel.",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#35bef0",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, Cancel it!",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Swal.fire({
+  //         position: "center",
+  //         icon: "success",
+  //         title: "Canceled!",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       }).then(() => {
+  //         cancelBooking({
+  //           id,
+  //           data: {
+  //             tran_id: "",
+  //             payment_method: "",
+  //           },
+  //         });
+  //       });
+  //     }
+  //   });
+  // };
 
   const [editBookedData, setEditBookedData] = useState(null);
 
@@ -106,7 +154,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
           </thead>
           <tbody>
             {bookingList?.data.docs.map((item, idx) => {
-              console.log(item)
+              // setBookingId(item?._id)
               return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <td>
@@ -167,7 +215,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
         />
       </div>
       <Modal id={`refundPay`}>
-        <RefundBookingModal bookingId={bookingId}/>
+        <RefundBookingModal paidAmt={isLastBooking} bookingId={bookingId}/>
       </Modal>
     </div>
   );

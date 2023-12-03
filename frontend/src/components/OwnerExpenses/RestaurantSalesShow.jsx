@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaEye,
@@ -18,15 +18,16 @@ import {
   useGetDailyDataQuery,
   useGetOrdersByDateQuery,
 } from "../../redux/room/roomAPI";
-import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
+import { fromDateIsoConverterForAddExpenses, getISOStringDate } from "../../utils/utils";
 
-const RestaurantSalesShow = ({ hotelId }) => {
+const RestaurantSalesShow = ({ hotelId,managerID }) => {
   console.log('------hotelId',hotelId);
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+  const [forcePage, setForcePage] = useState(null);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -40,13 +41,14 @@ const RestaurantSalesShow = ({ hotelId }) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: getISOStringDate(values.endDate),
-        fromDate: getISOStringDate(values.startDate),
+        toDate: p? new Date(values.endDate).toLocaleDateString():"",
+        fromDate: p? new Date(values.startDate).toLocaleDateString():"",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
+      setSearchParams("")
     },
   });
 
@@ -66,7 +68,7 @@ const RestaurantSalesShow = ({ hotelId }) => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: fromDateIsoConverterForAddExpenses(new Date()),
+    date: new Date().toLocaleDateString(),
     order_status: "CheckedOut",
     hotel_id: hotelId,
   });
@@ -81,14 +83,61 @@ const RestaurantSalesShow = ({ hotelId }) => {
     error,
     isLoading,
   } = useGetDailyDataQuery({
+    ...searchParams,
     cp: currentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
-    managerId: hotelId,
+    managerId: managerID,
     limit: formik.values.entries,
   });
 
   console.log(restaurantSalesHistory)
+
+
+
+  useEffect(() => {
+    if (restaurantSalesHistory)
+      setPageCount(restaurantSalesHistory?.data?.totalPages);
+  }, [restaurantSalesHistory]);
+
+
+  const arrayOfObjects = restaurantSalesToday?.data || [];
+
+// Use flatMap to extract the items arrays into one array
+const allItemsArray = arrayOfObjects.flatMap((obj) => obj.items || []);
+
+console.log(allItemsArray);
+
+
+
+  // pagination setup for today's expenses
+  const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+
+  const totalPage = restaurantSalesToday?.data && Math.ceil(allItemsArray.length / itemsPerPage);
+
+  const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const currentItems = allItemsArray?.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handleScrollToTop = () => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const totalPrice = currentItems?.reduce(
+    (total, item) => total + item.price,
+    0
+  );
+
+
+console.log(currentItems)
 
 
   return (
@@ -100,7 +149,7 @@ const RestaurantSalesShow = ({ hotelId }) => {
               <h3
                 className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
               >
-                Today Sales
+                Today Saless
               </h3>
             </div>
             <div>
@@ -115,92 +164,53 @@ const RestaurantSalesShow = ({ hotelId }) => {
               <div className=" h-64 overflow-x-auto overflow-y-auto">
                 {restaurantSalesToday && restaurantSalesToday?.data.length ? (
                   <table className="table">
-                    <thead>
-                      <tr>
-                        <th>SL</th>
-                        <th>Date</th>
-                        <th>Items Name</th>
-                        <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Remark</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {restaurantSalesToday &&
-                        restaurantSalesToday?.data?.map((item, idx) => {
-                          return (
-                            <tr
-                              className={
-                                idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                              }
-                            >
-                              <th>{++idx}</th>
-                              <td>23-11-2023</td>
-                              <td>Fried Rice</td>
-                              <td>Good </td>
-                              <td>10</td>
-                              <td className="flex">
-                                <div>
-                                  <FaRupeeSign />
-                                </div>
-                                <div>
-                                  <span>5000</span>
-                                </div>
-                              </td>
-                              <td>Remark</td>
-                              <td>
-                                <button
-                                  className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                                  onClick={() =>
-                                    document
-                                      .getElementById("my_modal_3")
-                                      .showModal()
-                                  }
-                                >
-                                  <FaRegEdit />
-                                </button>
-                                <dialog id="my_modal_3" className="modal">
-                                  <div className="modal-box">
-                                    <form method="dialog">
-                                      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                        ✕
-                                      </button>
-                                    </form>
-                                    {/*  */}
-                                    {/* <EditSales/> */}
-                                    <EditTodaysales />
-                                  </div>
-                                </dialog>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                    <tfoot className={`text-[1.2rem] font-bold`}>
-                      <tr>
-                        <td
-                          colSpan={5}
-                          className={`text-end text-md font-bold`}
-                        >
-                          Total :
-                        </td>
-                        <td>
-                          <div className="flex">
-                            <div>
-                              <FaRupeeSign />
-                            </div>
-                            <div>
-                              {" "}
-                              25000
-                              {/* {totalItemPrice} */}
-                            </div>
+                  <thead>
+                    <tr>
+                      <th>SL</th>
+                      <th>Item</th>
+                      <th>Surveyor Quantity</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {restaurantSalesToday &&
+                      currentItems?.map((item, idx) => {
+                        return (
+                          <tr
+                            className={
+                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                            }
+                          >
+                            <th>{++idx}</th>
+                            <td>{item?.item}</td>
+                            <td>{item?.serveyor_quantity}</td>
+                            <td>{item?.quantity}</td>
+                            <td>{item?.price}</td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                  <tfoot className={`text-[1.2rem] font-bold`}>
+                    <tr>
+                      <td colSpan={4} className={`text-end text-md font-bold`}>
+                        Total :
+                      </td>
+                      <td>
+                        <div className="flex">
+                          <div>
+                            <FaRupeeSign />
                           </div>
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
+                          <div>
+                            {" "}
+                            {totalPrice}
+                            {/* {totalItemPrice} */}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
                 ) : (
                   <p className="text-center py-14"> No Sales Today</p>
                 )}
@@ -229,10 +239,10 @@ const RestaurantSalesShow = ({ hotelId }) => {
                 previousLabel="<"
                 nextLabel=">"
                 breakLabel="..."
-                pageCount={pageCount}
+                pageCount={totalPage}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
+                onPageChange={handlePageChange}
                 renderOnZeroPageCount={null}
               />
             </div>
@@ -241,7 +251,7 @@ const RestaurantSalesShow = ({ hotelId }) => {
 
         {/* Restaurant Expenses */}
 
-        <div className={`mb-10 mt-10`}>
+        <div className={`mb-10 mt-20`}>
           <div>
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
@@ -257,7 +267,24 @@ const RestaurantSalesShow = ({ hotelId }) => {
             </button>
           </div>
         </div>
-        <div className={`flex flex-col md:flex-row gap-3`}>
+        <div className={`flex justify-between my-5`}>
+          <div className={`space-x-1.5`}>
+            <span>Show</span>
+            <select
+              name="entries"
+              className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
+              value={formik.values.entries}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+            <span>entries</span>
+          </div>
+        </div>
+        <div className={`flex flex-col md:flex-row gap-4 `}>
           <DatePicker
             autoComplete={`off`}
             dateFormat="dd/MM/yyyy"
@@ -325,6 +352,7 @@ const RestaurantSalesShow = ({ hotelId }) => {
                   restaurantSalesHistory?.data?.docs?.map((item, idx) => {
                     return (
                       <tr
+                      key={idx}
                         className={
                           idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
                         }
@@ -346,7 +374,7 @@ const RestaurantSalesShow = ({ hotelId }) => {
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                             onClick={() =>
                               navigate(
-                                `/dashboard/restaurant-sales-details?date=${item?.date}&&hotel=${hotelId}`
+                                `/dashboard/restaurant-sales-details?date=${item?.date}&hotelId=${hotelId}`
                               )
                             }
                           >
@@ -376,11 +404,12 @@ const RestaurantSalesShow = ({ hotelId }) => {
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={restaurantSalesHistory?.data?.totalPages}
+              pageCount={pageCount}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
               renderOnZeroPageCount={null}
+              forcePage={currentPage}
             />
           </div>
         </div>

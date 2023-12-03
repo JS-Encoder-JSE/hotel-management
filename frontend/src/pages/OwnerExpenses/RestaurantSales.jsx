@@ -108,7 +108,8 @@ const RestaurantSales = () => {
         <section>
           {selectedHotel ? (
             <RestaurantSalesShow
-              hotelId={selectedHotel?.managerID}
+            managerID={selectedHotel?.managerID}
+            hotelId={selectedHotel?.hotelId}
             ></RestaurantSalesShow>
           ) : (
             <p className="text-center">Please Select your Hotel Branch !!</p>

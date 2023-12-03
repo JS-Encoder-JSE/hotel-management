@@ -664,7 +664,7 @@ const App = () => {
               path: "restaurant-sales-details",
               element: (
                 <OwnerRoute>
-                  <RestaurantSalesView />
+                  <ShowALlSellView/>
                 </OwnerRoute>
               ),
             },
