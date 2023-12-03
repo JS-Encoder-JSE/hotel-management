@@ -32,6 +32,7 @@ const ShowAllExpenseViewPrint = ({itemExpense,totalItemsAmount}) => {
                   <th>Quantity</th>
                   <th>Description</th>
                   <th>Price</th>
+                  <th>Remark</th>
                 </tr>
               </thead>
               <tbody>
@@ -50,6 +51,7 @@ const ShowAllExpenseViewPrint = ({itemExpense,totalItemsAmount}) => {
                           <FaRupeeSign className="inline" />
                             <span>{item?.price}</span>
                       </td>
+                      <td>{item?.remark}</td>
                       <td>
                        
                         <dialog id="my_modal_3" className="modal">

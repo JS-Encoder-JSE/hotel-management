@@ -222,7 +222,8 @@ console.log('RestaurantExpenses',RestaurantExpenses);
                     </tr>
                   </thead>
                   <tbody>
-                    {currentItems?.map((item, idx) => {
+                    {RestaurantExpenses &&
+                    currentItems?.map((item, idx) => {
                       return (
                         <tr
                           className={

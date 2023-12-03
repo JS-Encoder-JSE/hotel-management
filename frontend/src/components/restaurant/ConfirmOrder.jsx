@@ -34,7 +34,7 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
   const [success, setSuccess] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const dispatch = useDispatch();
-  const [addOrder] = useAddOrderMutation();
+  const [addOrder,{ isLoading }] = useAddOrderMutation();
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
     initialValues: {
@@ -84,7 +84,7 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
       setSuccess(response?.data?.data);
     }
   };
-  const { isLoading, data: rooms } = useRoomsQuery({
+  const { data: rooms } = useRoomsQuery({
     id: formik.values.chooseHotel,
     cp: "0",
     filter: "",
@@ -241,6 +241,12 @@ const formattedDate = `${year}-${month}-${day}`;
                             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                           >
                             Place Order
+                            {isLoading ? (
+                  <span
+                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                    role="status"
+                  ></span>
+                ) : null}
                           </button>
                         </div>
                       </div>
