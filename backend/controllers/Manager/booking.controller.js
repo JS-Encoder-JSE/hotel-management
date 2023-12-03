@@ -1220,3 +1220,32 @@ export const addToCheckin = async (req, res) => {
   }
 };
 
+export const lastActiveBookingValidator = async (req, res) => {
+  try {
+    const bookingInfoId = req.params.bookingInfoId;
+
+    const bookingInfo = await BookingInfo.findById(bookingInfoId);
+
+    if (!bookingInfo) {
+      return res.status(404).json({
+        message: "BookingInfo not found",
+      });
+    }
+    console.log(bookingInfo.room_ids.length);
+    if (bookingInfo.room_ids.length !== 1) {
+      return res.status(403).json({
+        success: false,
+      });
+    }
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error,
+    });
+  }
+};
