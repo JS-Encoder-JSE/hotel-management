@@ -28,6 +28,10 @@ const PaymentSection = ({
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
+  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
+    useSelector((state) => state.checkoutInfoCalSlice);
+  const totalRefund =
+    refundAmount - (additionalCharge + serviceCharge + texAmount);
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...paymentList];
@@ -71,6 +75,7 @@ const PaymentSection = ({
             handleAdd={handleAdd}
             handleRemove={handleRemove}
             handleChange={handleChange}
+            totalRefund={totalRefund}
           />
         </div>
         {/* Right Side */}
@@ -137,7 +142,7 @@ const PaymentSection = ({
           }
           `}
         >
-          Checkout
+          {totalRefund < 1 ? "Checkout" : "Checkout & Refund"}
           {addCheckOutLoading ? (
             <span
               className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"

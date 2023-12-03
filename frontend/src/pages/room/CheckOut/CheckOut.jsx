@@ -40,7 +40,10 @@ const CheckOut = () => {
   const [pBill, setPBill] = useState(0);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
-
+  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
+    useSelector((state) => state.checkoutInfoCalSlice);
+  const totalRefund =
+    refundAmount - (additionalCharge + serviceCharge + texAmount);
   // const {
   //   data: checkout,
   //   isLoading: checkoutLoading,
@@ -61,7 +64,7 @@ const CheckOut = () => {
 
   // dispatch
   const dispatch = useDispatch();
-  console.log({ pBill });
+  // console.log({ pBill });
   const formik = useFormik({
     initialValues: {
       hotel_id: "",
@@ -85,24 +88,51 @@ const CheckOut = () => {
         checkout?.data?.booking_info?.total_payable_amount -
           (checkout?.data?.booking_info?.paid_amount + paidAmount)
       );
-      const response = await addCheckout({
+
+      if (
+        checkout?.data?.booking_info?.room_ids?.length === 1 &&
+        totalRefund > 0
+      ) {
+      } else {
+      }
+
+      console.log({
         hotel_id: checkout?.data?.booking_info?.hotel_id,
-        booking_ids: [bookingId],
+        new_total_paid_amount: 0,
+        new_total_payable_amount: 0,
+        new_total_unpaid_amount: 0,
+        new_total_tax: 0,
+        new_total_additional_charges: 0,
+        new_total_service_charges: 0,
         guestName: checkout?.data?.booking_info?.guestName,
         room_numbers,
         payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
+        booking_ids: [bookingId],
+        tran_id: paymentList[0].trx ? paymentList[0].trx : "",
         checked_in: checkout?.data?.room_bookings[0]?.from,
         checked_out: checkout?.data?.room_bookings[0]?.to,
         payable_amount: payableAmount,
         paid_amount: paymentList[0]?.amount,
-        unpaid_amount: unpaid < 0 ? 0 : unpaid,
+        total_checkout_bills: 0,
       });
-      if (response?.error) {
-        toast.error(response.error.data.message);
-      } else {
-        toast.success("Checkout Successful");
-        // navigate("/dashboard/checkout");
-      }
+      // const response = await addCheckout({
+      //   hotel_id: checkout?.data?.booking_info?.hotel_id,
+      //   booking_ids: [bookingId],
+      //   guestName: checkout?.data?.booking_info?.guestName,
+      //   room_numbers,
+      //   payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
+      //   checked_in: checkout?.data?.room_bookings[0]?.from,
+      //   checked_out: checkout?.data?.room_bookings[0]?.to,
+      //   payable_amount: payableAmount,
+      //   paid_amount: paymentList[0]?.amount,
+      //   unpaid_amount: unpaid < 0 ? 0 : unpaid,
+      // });
+      // if (response?.error) {
+      //   toast.error(response.error.data.message);
+      // } else {
+      //   toast.success("Checkout Successful");
+      //   // navigate("/dashboard/checkout");
+      // }
     },
   });
 
