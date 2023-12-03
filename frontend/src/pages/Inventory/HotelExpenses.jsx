@@ -129,7 +129,7 @@ const HotelExpenses = () => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: fromDateIsoConverter(new Date()),
+    fromDate:new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "hotel",
   });
@@ -252,6 +252,7 @@ const handleScrollToTop = () => {
                     fileName={`${new Date().toLocaleDateString()}.pdf`}
                     className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                   >
+                    <BsFileEarmarkPdfFill />
                     PDF
                   </PDFDownloadLink>
                 ) : null}

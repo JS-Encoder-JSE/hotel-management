@@ -6,11 +6,11 @@ import {
 } from "../../../redux/add-order/addOrderSlice";
 import { getDiscountAmount } from "../../../utils/utils";
 
-const RoomDetailsSection = ({ data, roomData }) => {
+const RoomDetailsSection = ({ data, roomData,bookingInfo }) => {
   // console.log(bookingInfo)
 const billingState = useSelector((state) => state.checkoutInfoCalSlice);
 
-const {bookingInfo}= billingState
+// const {bookingInfo}= billingState
   const dispatch = useDispatch();
 
   const discountPerRoom = (roomData?.total_room_rent * bookingInfo?.room_discount)/100;
