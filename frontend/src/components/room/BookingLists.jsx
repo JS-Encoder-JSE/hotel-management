@@ -38,35 +38,39 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
   console.log(bookingId)
   console.log(isLastBooking)
 
+
+  const lastBooking = true
+
    const handleDelete = (id) => {
     setBookingId(id)
-    // Swal.fire({
-    //   title: "Are you sure?",
-    //   text: "Booking will be Cancel.",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#35bef0",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Yes, Cancel it!",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     Swal.fire({
-    //       position: "center",
-    //       icon: "success",
-    //       title: "Canceled!",
-    //       showConfirmButton: false,
-    //       timer: 1500,
-    //     }).then(() => {
-    //       cancelBooking({
-    //         id,
-    //         data: {
-    //           tran_id: "sdf3rj4r43rewj",
-    //           payment_method: "Card",
-    //         },
-    //       });
-    //     });
-    //   }
-    // });
+     lastBooking?  window.refundPay.showModal() :
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Booking will be Cancel.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#35bef0",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Canceled!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          cancelBooking({
+            id,
+            data: {
+              tran_id: "",
+              payment_method: "",
+            },
+          });
+        });
+      }
+    });
   };
 
   const [editBookedData, setEditBookedData] = useState(null);
@@ -133,7 +137,6 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                     <button
                       onClick={() => {
                         handleDelete(item?._id);
-                       window.refundPay.showModal() 
                       }}
                       className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                       title={`Cancel`}
