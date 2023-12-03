@@ -12,6 +12,7 @@ const initialState = {
   refundAmount: 0,
   bookingInfo: "",
   collectedAmount: 0,
+  texAmount: 0,
 };
 
 const checkoutInfoCalSlice = createSlice({
@@ -51,6 +52,9 @@ const checkoutInfoCalSlice = createSlice({
     setCollectedAmount: (state, action) => {
       state.collectedAmount = action.payload;
     },
+    setTexAmount: (state, action) => {
+      state.texAmount = action.payload;
+    },
   },
 });
 
@@ -65,6 +69,7 @@ export const {
   setExtraDiscount,
   setBookingInfo,
   setRefundAmount,
+  setTexAmount,
 } = checkoutInfoCalSlice.actions;
 
 export default checkoutInfoCalSlice.reducer;

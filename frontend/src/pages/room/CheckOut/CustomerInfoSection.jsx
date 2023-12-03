@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 const CustomerInfoSection = ({ data }) => {
-  const { refundAmount, additionalCharge, serviceCharge } = useSelector(
-    (state) => state.checkoutInfoCalSlice
-  );
-  const totalRefund = refundAmount - (additionalCharge + serviceCharge);
+  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
+    useSelector((state) => state.checkoutInfoCalSlice);
+  const totalRefund =
+    refundAmount - (additionalCharge + serviceCharge + texAmount);
+  const totalPayableAmount =
+    data?.total_payable_amount + additionalCharge + serviceCharge + texAmount;
   return (
     <section className="bg-white rounded">
       <h3 className="p-5 text-xl">Customer Details</h3>
@@ -29,11 +31,10 @@ const CustomerInfoSection = ({ data }) => {
           <p>{data?.mobileNumber}</p>
           <p>{data?.address}</p>
 
-          <p>{data?.total_payable_amount}</p>
+          <p>{totalPayableAmount}</p>
           <p>{data?.paid_amount}</p>
-          <p>{Math.ceil(data?.total_unpaid_amount)}</p>
+          <p>{data?.total_unpaid_amount < 0 ? 0 : data?.total_unpaid_amount}</p>
           <p>{totalRefund < 0 ? 0 : totalRefund}</p>
-          
         </div>
       </div>
     </section>

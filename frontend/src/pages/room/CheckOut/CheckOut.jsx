@@ -61,7 +61,7 @@ const CheckOut = () => {
 
   // dispatch
   const dispatch = useDispatch();
-
+  console.log({ pBill });
   const formik = useFormik({
     initialValues: {
       hotel_id: "",
@@ -71,6 +71,15 @@ const CheckOut = () => {
       const room_numbers = checkout?.data?.room_bookings?.map(
         (i) => i?.room_id?.roomNumber
       );
+
+      const paidAmount =
+        checkout?.data?.booking_info?.paid_amount <= pBill
+          ? Number(paymentList[0].amount)
+          : 0;
+      const payableAmount =
+        checkout?.data?.booking_info?.paid_amount <= pBill
+          ? Number(paymentList[0].amount)
+          : pBill;
 
       const unpaid = Math.ceil(
         checkout?.data?.booking_info?.total_payable_amount -
@@ -85,7 +94,7 @@ const CheckOut = () => {
         checked_in: checkout?.data?.room_bookings[0]?.from,
         checked_out: checkout?.data?.room_bookings[0]?.to,
         payable_amount: payableAmount,
-        paid_amount: Number(paymentList[0].amount),
+        paid_amount: paymentList[0]?.amount,
         unpaid_amount: unpaid < 0 ? 0 : unpaid,
       });
       if (response?.error) {

@@ -9,6 +9,7 @@ import {
   setGrandTotal,
   setRoomPostedBill,
   setExtraDiscount,
+  setTexAmount,
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -51,7 +52,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   const handleTaxChange = (idx, val) => {
     const arr = [...billing];
     const amount = (totalUnpaidAmount * val) / 100;
-
+    dispatch(setTexAmount(Math.ceil(amount)));
     arr.splice(idx, 1, { amount });
     setBilling(arr);
 
@@ -96,11 +97,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     const totalRoomPostedBill = poolBill + foodBill + gymBill;
     dispatch(setRoomPostedBill(totalRoomPostedBill));
     if (data) {
-      const total = Math.ceil(
-        totalUnpaidAmount +
-          totalBilling +
-          breakAmt
-      );
+      const total = Math.ceil(totalUnpaidAmount + totalBilling + breakAmt);
       setPBill(Math.ceil(total));
     }
   }, [
