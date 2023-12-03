@@ -1222,9 +1222,9 @@ export const addToCheckin = async (req, res) => {
 
 export const lastActiveBookingValidator = async (req, res) => {
   try {
-    const bookingInfoId = req.params.bookingInfoId;
+    const booking_id = req.params.booking_id;
 
-    const bookingInfo = await BookingInfo.findById(bookingInfoId);
+    const bookingInfo = await BookingInfo.findOne({ booking_ids: booking_id });
 
     if (!bookingInfo) {
       return res.status(404).json({
