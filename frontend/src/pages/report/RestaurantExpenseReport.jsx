@@ -5,7 +5,7 @@ import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils";
 
 const RestaurantExpenseReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
-    const desiredHeaders = ["Serial No", "date", "name", "description", "quantity", "price"];
+    const desiredHeaders = ["Serial No", "date", "name", "description", "quantity", "price","remark"];
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
