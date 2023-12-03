@@ -295,13 +295,13 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               </tfoot>
             </table>
       
-          </div> : <p className="flex justify-center items-center mt-96">No Expenses Today</p>}
+          </div> : <p className="flex justify-center items-center mt-16">No Expenses Today</p>}
         </div>
         </div>
 
         {/* pagination */}
 
-        <div onClick={handleScrollToTop} className="flex justify-center mt-10">
+        {currentItems?.length &&<div onClick={handleScrollToTop} className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -319,7 +319,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               onPageChange={handlePageChange}
               renderOnZeroPageCount={null}
             />
-          </div>
+          </div>}
      </div>
 
         {/* Restaurant Expenses */}
@@ -417,7 +417,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
           </button>
         </div>
         <hr className={`my-5 mb-4`} />
-        <div className={`space-y-10`}>
+       {filteredExpenses?.docs.length ? <div className={`space-y-10`}>
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
@@ -481,7 +481,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               forcePage={forcePage}
             />
           </div>
-        </div>
+        </div> : <p className="text-center mt-16 py-16">No Expenses yet!</p>}
       </div>}
     </div>
   );
