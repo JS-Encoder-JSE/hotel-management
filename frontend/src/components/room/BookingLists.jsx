@@ -38,12 +38,9 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
   console.log(bookingId)
   console.log(isLastBooking)
 
-
-  const lastBooking = true
-
    const handleDelete = (id) => {
     setBookingId(id)
-     lastBooking?  window.refundPay.showModal() :
+    isLastBooking?  window.refundPay.showModal() :
     Swal.fire({
       title: "Are you sure?",
       text: "Booking will be Cancel.",
