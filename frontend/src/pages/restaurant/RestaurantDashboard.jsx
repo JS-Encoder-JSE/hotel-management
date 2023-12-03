@@ -49,7 +49,7 @@ const RestaurantDashboard = ({ managerId }) => {
 
   const location = useLocation();
   const {  pathname  } = location;
-  console
+ 
 
 
   return (
