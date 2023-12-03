@@ -1231,7 +1231,6 @@ export const lastActiveBookingValidator = async (req, res) => {
         message: "BookingInfo not found",
       });
     }
-    console.log(bookingInfo.room_ids.length);
     if (bookingInfo.room_ids.length !== 1) {
       return res.status(403).json({
         success: false,
