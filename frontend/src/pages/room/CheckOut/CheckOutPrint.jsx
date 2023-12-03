@@ -51,7 +51,7 @@ const CheckOutPrint = ({
       )}
       {roomData?.length
         ? roomData?.map((roomInfo, i) => (
-            <RoomDetailsSection roomData={roomInfo} />
+            <RoomDetailsSection bookingInfo={data} roomData={roomInfo} />
           ))
         : null}
         

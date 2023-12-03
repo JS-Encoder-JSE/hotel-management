@@ -72,10 +72,13 @@ const ShowAllSell = () => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: fromDateIsoConverterForAddExpenses(new Date()),
+    date: new Date().toLocaleDateString(),
     order_status: "CheckedOut",
     hotel_id: user?.assignedHotel[0],
   });
+
+
+console.log(restaurantSalesToday,"to")
 
   // filtered data
   const {
@@ -375,6 +378,7 @@ const ShowAllSell = () => {
                   restaurantSalesHistory?.data?.docs?.map((item, idx) => {
                     return (
                       <tr
+                      key={idx}
                         className={
                           idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
                         }
