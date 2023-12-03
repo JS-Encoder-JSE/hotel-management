@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const CustomerReservation = ({ userHotel, monthlyData }) => {
+const CustomerReservation = ({ userHotel, monthlyData,managerId,userId }) => {
   const [chartProps, setChartProps] = useState({
     series: [
       {
@@ -118,7 +118,7 @@ const CustomerReservation = ({ userHotel, monthlyData }) => {
         labels: convertedDate,
       },
     }));
-  }, [monthlyData]);
+  }, [monthlyData,managerId,userId]);
 
   return (
     <ReactApexChart
