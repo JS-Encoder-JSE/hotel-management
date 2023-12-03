@@ -1,3 +1,4 @@
+import { DashboardTable } from "../models/dashboard.model.js";
 import Expense from "../models/expense.model.js"; // Adjust the path based on your project structure
 import {
   DailySubDashData,
@@ -45,6 +46,17 @@ export const addExpense = async (req, res) => {
         month_name,
         year,
       });
+
+      const managerDashboardTable = await DashboardTable.findOne({
+        user_id: userId,
+        month_name: month_name,
+        year: year,
+      });
+      const ownerDashboardTable = await DashboardTable.findOne({
+        user_id: user.parent_id,
+        month_name: month_name,
+        year: year,
+      });
       if (spendedfor === "hotel") {
         existingDailySubDashData.today_hotel_expenses += total_amount;
         existingDailySubDashData.today_hotel_profit -= total_amount;
@@ -61,10 +73,16 @@ export const addExpense = async (req, res) => {
         existingStaticSubDashData.total_restaurant_expenses += total_amount;
         existingStaticSubDashData.total_restaurant_profit -= total_amount;
       }
-      console.log(existingDailySubDashData);
+      managerDashboardTable.total_expense += total_amount;
+      managerDashboardTable.total_profit -= total_amount;
+      ownerDashboardTable.total_expense += total_amount;
+      ownerDashboardTable.total_profit -= total_amount;
+
       await existingDailySubDashData.save();
       await existingMonthlySubDashData.save();
       await existingStaticSubDashData.save();
+      await managerDashboardTable.save();
+      await ownerDashboardTable.save();
     }
     if (!existingExpense) {
       console.log("aise2");
@@ -82,6 +100,51 @@ export const addExpense = async (req, res) => {
       } catch (saveError) {
         console.error("Error saving to database:", saveError);
         return res.status(500).json({ message: "Error saving to database" });
+      }
+      const managerDashboardTable = await DashboardTable.findOne({
+        user_id: userId,
+        month_name: month_name,
+        year: year,
+      });
+
+      if (managerDashboardTable) {
+        managerDashboardTable.total_expense += total_amount;
+        managerDashboardTable.total_profit -= total_amount;
+        await managerDashboardTable.save();
+      } else {
+        // Create a new dashboard table entry
+        const newDashboardTable = new DashboardTable({
+          user_id: userId,
+          user_role: user.role,
+          month_name,
+          year,
+          total_expense: total_amount,
+          total_profit: 0 - total_amount,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
+      const ownerDashboardTable = await DashboardTable.findOne({
+        user_id: user.parent_id,
+        month_name: month_name,
+        year: year,
+      });
+
+      if (ownerDashboardTable) {
+        ownerDashboardTable.total_expense += total_amount;
+        ownerDashboardTable.total_profit -= total_amount;
+        await ownerDashboardTable.save();
+      } else {
+        const newDashboardTable = new DashboardTable({
+          user_id: user.parent_id,
+          user_role: "owner",
+          month_name,
+          year,
+          total_expense: total_amount,
+          total_profit: 0 - total_amount,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
       }
       const existingStaticSubDashData = await StaticSubDashData.findOne({
         user_id: userId,
