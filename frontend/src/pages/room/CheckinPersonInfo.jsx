@@ -22,7 +22,7 @@ const CheckinPersonInfo = () => {
   const { id } = useParams();
   const { data: booking, isLoading } = useGetBookingInfoByIdQuery(id);
 
-  
+  console.log('booking',booking);
   useEffect(() => {
     const roomId = booking?.data?.room_id?._id;
     setRoomId(roomId);

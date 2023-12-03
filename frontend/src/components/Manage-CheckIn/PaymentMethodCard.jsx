@@ -39,8 +39,8 @@ const PaymentMethodCard = (booking) => {
       trxID: "",
     },
     validationSchema,
-    onSubmit: (values, formikHelpers) => {
-      const response = makePayment({
+    onSubmit: async (values, formikHelpers) => {
+      const response = await makePayment({
         manager_id: user._id,
         bookingInfoId: booking._id,
         amount: values.amount,
@@ -48,10 +48,11 @@ const PaymentMethodCard = (booking) => {
         tran_id: values.trxID,
         remark: "Advance payment",
       });
+      console.log("res", response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
-        formikHelpers.resetForm();
+        // formikHelpers.resetForm();
         toast.success(response.data.message);
       }
     },

@@ -60,10 +60,11 @@ const roomAPI = baseAPI.injectEndpoints({
       invalidatesTags: ["room", "booking"],
     }),
     cancelBooking: build.mutation({
-      query: (id) => {
+      query: ({ id, data }) => {
         return {
           url: `bookings/cancel-booking/${id}`,
-          method: "DELETE",
+          method: "POST",
+          body: data,
         };
       },
       invalidatesTags: ["booking"],
@@ -204,7 +205,7 @@ const roomAPI = baseAPI.injectEndpoints({
     makePayment: build.mutation({
       query: (data) => {
         return {
-          url: `bookings/make-payment`,
+          url: `balances/make-payment`,
           method: "POST",
           body: data,
         };
@@ -281,5 +282,5 @@ export const {
   useGetCheckoutMutation,
   useUpdateBookingInfoMutation,
   useUpdateBookingTOCheckInMutation,
-  useMakePaymentMutation
+  useMakePaymentMutation,
 } = roomAPI;
