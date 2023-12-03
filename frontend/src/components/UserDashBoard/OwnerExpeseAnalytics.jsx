@@ -12,6 +12,7 @@ const OwnerExpeseAnalytics = ({
   userHotel,
   dashboardData,
   dummyData,
+ 
 }) => {
   
   return (
@@ -76,6 +77,8 @@ const OwnerExpeseAnalytics = ({
           <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
             <RestaurantDashboardChart
               monthlyData={[...dummyData, ...dashboardData?.monthly_datas]}
+               
+              
             />
           </section>
 
