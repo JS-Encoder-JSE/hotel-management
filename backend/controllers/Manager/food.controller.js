@@ -311,6 +311,8 @@ export const updateOrder = async (req, res) => {
       const new_paid_amount =
         updateData.paid_amount - existingOrder.paid_amount;
 
+      console.log(new_paid_amount);
+
       const user = await User.findById(user_id);
 
       if (!user) {
