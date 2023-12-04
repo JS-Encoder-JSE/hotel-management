@@ -113,38 +113,38 @@ export const cashBack = async (req, res) => {
     bookingInfo.paid_amount -= amount;
     bookingInfo.save();
 
-    const managerDashboardTable = await DashboardTable.findOne({
-      user_id: manager_id,
-      month_name,
-      year,
-    });
-    managerDashboardTable.total_expense += amount;
-    managerDashboardTable.total_profit -= amount;
-    managerDashboardTable.save();
+    // const managerDashboardTable = await DashboardTable.findOne({
+    //   user_id: manager_id,
+    //   month_name,
+    //   year,
+    // });
+    // managerDashboardTable.total_expense += amount;
+    // managerDashboardTable.total_profit -= amount;
+    // managerDashboardTable.save();
 
-    const managerStaticSubDashData = await StaticSubDashData.findOne({
-      user_id: manager_id,
-    });
-    managerStaticSubDashData.total_hotel_expenses += amount;
-    managerStaticSubDashData.total_hotel_profit -= amount;
-    managerStaticSubDashData.save();
+    // const managerStaticSubDashData = await StaticSubDashData.findOne({
+    //   user_id: manager_id,
+    // });
+    // managerStaticSubDashData.total_hotel_expenses += amount;
+    // managerStaticSubDashData.total_hotel_profit -= amount;
+    // managerStaticSubDashData.save();
 
-    const managerMonthlySubDashData = await MonthlySubDashData.findOne({
-      user_id: manager_id,
-      month_name,
-      year,
-    });
-    managerMonthlySubDashData.total_hotel_expenses += amount;
-    managerMonthlySubDashData.total_hotel_profit -= amount;
-    managerMonthlySubDashData.save();
+    // const managerMonthlySubDashData = await MonthlySubDashData.findOne({
+    //   user_id: manager_id,
+    //   month_name,
+    //   year,
+    // });
+    // managerMonthlySubDashData.total_hotel_expenses += amount;
+    // managerMonthlySubDashData.total_hotel_profit -= amount;
+    // managerMonthlySubDashData.save();
 
-    const managerDailySubDashData = await DailySubDashData.findOne({
-      user_id: manager_id,
-      date,
-    });
-    managerDailySubDashData.today_hotel_expenses += amount;
-    managerDailySubDashData.today_hotel_profit -= amount;
-    managerDailySubDashData.save();
+    // const managerDailySubDashData = await DailySubDashData.findOne({
+    //   user_id: manager_id,
+    //   date,
+    // });
+    // managerDailySubDashData.today_hotel_expenses += amount;
+    // managerDailySubDashData.today_hotel_profit -= amount;
+    // managerDailySubDashData.save();
 
     // Create a new TransactionLog entry
     const newTransactionLog = new TransactionLog({
