@@ -37,13 +37,14 @@ const ManageCheckin = () => {
     onSubmit: (values) => {
       setSearch(values.search);
       setCurrentPage(0);
+
       
     },
   });
 
 
 
-  const { data: checkinList, isLoading,refetch } = useGetBookingsByHotelQuery({
+  const { data: checkinList, isLoading,refetch } =  ({
     hotel_id: formik.values.hotel_id,
     search: formik.values.search,
     page: currentPage,

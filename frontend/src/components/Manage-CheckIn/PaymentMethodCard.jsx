@@ -54,7 +54,7 @@ const PaymentMethodCard = (booking) => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
-        // formikHelpers.resetForm();
+        formikHelpers.resetForm();
         toast.success(response.data.message);
       }
     },

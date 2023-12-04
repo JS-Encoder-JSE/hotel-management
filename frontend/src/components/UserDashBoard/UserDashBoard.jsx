@@ -22,11 +22,13 @@ import { useGetDashboardInfoQuery } from "../../redux/dashboard/dashboardApi";
 import { Rings } from "react-loader-spinner";
 import AllExpeseAnalytics from "./AllExpeseAnalytics";
 import OwnerExpeseAnalytics from "./OwnerExpeseAnalytics";
-import { dummyData } from "../../utils/utils";
+import { dummyData, isValidUrl } from "../../utils/utils";
+import { useLocation } from "react-router-dom";
 // import { useLocation } from 'react-router-dom';
 
 const UserDashBoard = ({ managerId }) => {
   const { user } = useSelector((store) => store.authSlice);
+  const { pathname } = useLocation();
   const {
     data: dashboardData,
     isSuccess,
@@ -36,7 +38,7 @@ const UserDashBoard = ({ managerId }) => {
   const [userHotel, setUserHotel] = useState(
     user?.role === "manager" || user?.role === "owner"
   );
-console.log(dashboardData);
+  console.log(dashboardData);
   if (isLoading || isError) {
     return (
       <Rings
@@ -238,18 +240,19 @@ console.log(dashboardData);
         </div>
       )} */}
         </section>
-        {user?.role === "manager" && (
-          <section>
-            <AllExpeseAnalytics
-              user={user}
-              userHotel={userHotel}
-              dashboardData={dashboardData}
-              dummyData={dummyData}
-            />
-          </section>
-        )}
+        {user?.role === "manager" ||
+          (isValidUrl("dashboard/finance", pathname) && (
+            <section>
+              <AllExpeseAnalytics
+                user={user}
+                userHotel={userHotel}
+                dashboardData={dashboardData}
+                dummyData={dummyData}
+              />
+            </section>
+          ))}
 
-        {user?.role === "owner" && (
+        {!isValidUrl("dashboard/finance", pathname) && user?.role === "owner" && (
           <section>
             <OwnerExpeseAnalytics
               user={user}
