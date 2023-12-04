@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import EditHotelSales from "./EditHotelSales";
 import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
 import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
+import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
 
 const HotelSalesView = () => {
 
@@ -23,15 +24,16 @@ const HotelSalesView = () => {
 
 
 // query by searchParams
-  const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
-    date: fromDateIsoConverterForAddExpenses(dateParam),
-    order_status: 'CheckedOut',
+  const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetReportsByDateQuery({
+    date: new Date(dateParam).toLocaleDateString(),
     hotel_id:hotelId,
   });
 
 console.log(orderedDataByDate,"hotel")
 
 
+const allItems = orderedDataByDate?.data?.flatMap(item => item.items || []);
+console.log(allItems)
 
 
  const handlePageClick = ({ selected: page }) => {

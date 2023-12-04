@@ -24,101 +24,54 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
   const [updateBooking, { isLoading: isCancelledLoading, error }] =
     useUpdateBookingMutation();
   const [cancelBooking] = useCancelBookingMutation();
-  // const [bookingPerPage] = useState(10);
-  // const [pageCount, setPageCount] = useState(0);
+  const [bookingId, setBookingId] = useState("");
+  const { data: isLastBooking } = useGetLastActiveBookingQuery(bookingId);
+
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
 
+console.log(isLastBooking)
 
-  const [bookingId,setBookingId]=useState("")
 
-  const {data:isLastBooking,isSuccess ,isLoading} = useGetLastActiveBookingQuery(bookingId)
-  console.log(bookingId)
-  console.log(isLastBooking)
+  const handleDelete = (id) => {
+    setBookingId(id);
 
-  const handleDelete = async (id) => {
-    
-    try {
-      setBookingId(id);
-
-      
-      if (isLoading || !isLastBooking) {
-        // If data is loading or isLastBooking is undefined, do nothing or show a loading indicator
-        return;
-      }
-  
-      if (isSuccess && isLastBooking.success) {
-        // If the condition is true, show the modal
-        window.refundPay.showModal();
-      } else {
-        // If the condition is false, show the confirmation dialog
-        const result = await Swal.fire({
-          title: "Are you sure?",
-          text: "Booking will be Cancel.",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#35bef0",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Cancel it!",
-        });
-  
+    if (isLastBooking?.success) {
+      // If the condition is true, show the modal
+      window.refundPay.showModal();
+    } else {
+      // If the condition is false, show the confirmation dialog
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Booking will be Cancel.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#35bef0",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Cancel it!",
+      }).then((result) => {
         if (result.isConfirmed) {
-          await Swal.fire({
+          Swal.fire({
             position: "center",
             icon: "success",
             title: "Canceled!",
             showConfirmButton: false,
             timer: 1500,
-          });
-  
-          // Perform the cancellation
-          cancelBooking({
-            id,
-            data: {
-              tran_id: "",
-              payment_method: "",
-            },
+          }).then(() => {
+            // Perform the cancellation
+            cancelBooking({
+              id: id,
+              data: {
+                tran_id: "",
+                payment_method: "",
+              },
+            });
           });
         }
-      }
-    } catch (error) {
-      console.error("Error handling delete:", error);
+      });
     }
   };
-
-  //  const handleDelete = (id) => {
-  //   !isLoading && isSuccess &&  isLastBooking?.success ?  window.refundPay.showModal() :
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     text: "Booking will be Cancel.",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#35bef0",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, Cancel it!",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Swal.fire({
-  //         position: "center",
-  //         icon: "success",
-  //         title: "Canceled!",
-  //         showConfirmButton: false,
-  //         timer: 1500,
-  //       }).then(() => {
-  //         cancelBooking({
-  //           id,
-  //           data: {
-  //             tran_id: "",
-  //             payment_method: "",
-  //           },
-  //         });
-  //       });
-  //     }
-  //   });
-  // };
-
-  const [editBookedData, setEditBookedData] = useState(null);
 
   useEffect(() => {
     if (data && modalOpen) {
@@ -154,9 +107,12 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
           </thead>
           <tbody>
             {bookingList?.data.docs.map((item, idx) => {
-              // setBookingId(item?._id)
+              console.log(item);
               return (
-                <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                <tr
+                  className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                  key={item?._id}
+                >
                   <td>
                     <div className="flex items-center space-x-3">
                       <div>
@@ -166,7 +122,6 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                   </td>
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
-                  {/* <td>{item?.paid_amount}</td> */}
                   <td>{new Date(item?.createdAt).toLocaleString()}</td>
                   <td>{new Date(item?.from).toLocaleString()}</td>
                   <td>{new Date(item?.to).toLocaleString()}</td>
@@ -178,7 +133,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                       onClick={() => navigate(`${item._id}`)}
                     >
                       <FaEye />
-                    </span> 
+                    </span>
                     <button
                       onClick={() => {
                         handleDelete(item?._id);
@@ -215,7 +170,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
         />
       </div>
       <Modal id={`refundPay`}>
-        <RefundBookingModal paidAmt={isLastBooking} bookingId={bookingId}/>
+        <RefundBookingModal paidAmt={isLastBooking} bookingId={bookingId} />
       </Modal>
     </div>
   );
