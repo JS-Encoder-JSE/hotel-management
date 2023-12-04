@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { Rings } from "react-loader-spinner";
 import { dummyData, isValidUrl } from "../../utils/utils";
 import {useLocation, useNavigate } from 'react-router-dom';
+import { TbSquareRoundedLetterC } from "react-icons/tb";
 
 
 const RestaurantDashboard = ({ managerId }) => {
@@ -59,7 +60,7 @@ const RestaurantDashboard = ({ managerId }) => {
         className="grid md:grid-cols-3 gap-4 mb-20"
       >
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
-          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-3 rounded-md text-white">
+          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#cedc4e] to-[#a0c528] p-3 rounded-md text-white">
             <GiExpense />
           </div>
           <h6 className="text-xs text-slate-400 ">TODAY'S EXPENSES</h6>
@@ -80,8 +81,8 @@ const RestaurantDashboard = ({ managerId }) => {
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
-          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
-            <SiSellfy />
+          <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#26d360] to-[#44c60c8a] p-3 rounded-md">
+          <TbSquareRoundedLetterC />
           </div>
           <div>
             <h6 className="text-xs text-slate-400">
@@ -105,7 +106,7 @@ const RestaurantDashboard = ({ managerId }) => {
           </div>
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
-          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#309873] p-3 rounded-md text-white">
+          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#1ca167] to-[#11ad77] p-3 rounded-md text-white">
             <HiOutlineCurrencyRupee />
           </div>
           <h6 className="text-xs text-slate-400 ">TODAY'S PROFIT</h6>
@@ -149,7 +150,7 @@ const RestaurantDashboard = ({ managerId }) => {
         className="grid md:grid-cols-3 gap-4 mt-4"
       >
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
-          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#e5e50b] p-3 rounded-md text-white">
+          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#16b36f] to-[#0be554] p-3 rounded-md text-white">
             <GiExpense />
           </div>
           <h6 className="text-xs text-slate-400 ">LAST WEEK EXPENSES</h6>
@@ -193,7 +194,7 @@ const RestaurantDashboard = ({ managerId }) => {
           <hr />
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
-          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md text-white">
+          <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#e00d54] to-[#f70d57] p-3 rounded-md text-white">
             <HiOutlineCurrencyRupee />
           </div>
 
