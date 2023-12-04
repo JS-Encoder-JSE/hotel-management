@@ -181,18 +181,9 @@ const PaymentSection = ({
             ></span>
           ) : null}
         </button>
-        <button
-          onClick={() => {
-            window.refundPayment.showModal();
-          }}
-          className="bg-green-slimy text-white px-2"
-        >
-          Payment
-        </button>
+       
       </div>
-      <Modal id={`refundPayment`}>
-        <RefundPaymentModal />
-      </Modal>
+      
     </section>
   );
 };

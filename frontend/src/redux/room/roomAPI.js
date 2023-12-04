@@ -248,6 +248,16 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["room"],
     }),
+    cashback: build.mutation({
+      query: (data) => {
+        return {
+          url: "balances/cashback",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["room"],
+    }),
     getTables: build.query({
       query: () => `tables/get-tables-by-hotel`,
       providesTags: ["room"],
@@ -293,4 +303,5 @@ export const {
   useUpdateBookingInfoMutation,
   useUpdateBookingTOCheckInMutation,
   useMakePaymentMutation,
+  useCashbackMutation
 } = roomAPI;

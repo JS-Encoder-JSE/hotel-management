@@ -29,6 +29,8 @@ import { FaArrowLeft } from "react-icons/fa";
 import * as yup from "yup";
 import { getISOStringDate } from "../../../utils/utils";
 import { clearAddOrderSlice } from "../../../redux/add-order/addOrderSlice";
+import Modal from "../../../components/Modal";
+import RefundPaymentModal from "./RefundPaymentModal";
 
 const CheckOut = () => {
   const [getCheckout, { data: checkout, isSuccess, isLoading }] =
@@ -86,28 +88,8 @@ const CheckOut = () => {
         checkout?.data?.booking_info?.paid_amount +
         Number(paymentList[0].amount);
       const initialUnpaidAmount = totalPayableAmount - initialPaidAmount;
-      // const paidAmount =
-      //   checkout?.data?.booking_info?.paid_amount <= pBill
-      //     ? Number(paymentList[0].amount)
-      //     : 0;
-      // const payableAmount =
-      //   checkout?.data?.booking_info?.paid_amount <= pBill
-      //     ? Number(paymentList[0].amount)
-      //     : pBill;
 
-      // const unpaid = Math.ceil(
-      //   checkout?.data?.booking_info?.total_payable_amount -
-      //     (checkout?.data?.booking_info?.paid_amount + paidAmount)
-      // );
-
-      if (
-        checkout?.data?.booking_info?.room_ids?.length === 1 &&
-        totalRefund > 0
-      ) {
-      } else {
-      }
-
-      // console.log();
+      console.log();
       const response = await addCheckout({
         hotel_id: checkout?.data?.booking_info?.hotel_id,
         new_total_payable_amount: totalPayableAmount,
@@ -138,6 +120,9 @@ const CheckOut = () => {
       } else {
         toast.success("Checkout Successful");
         // navigate("/dashboard/checkout");
+        if (totalRefund > 0) {
+          window.refundPayment.showModal();
+        }
       }
     },
   });
@@ -299,6 +284,9 @@ const CheckOut = () => {
               totalPayableAmount={totalPayableAmount}
               totalRefund={totalRefund}
             />
+            <Modal id={`refundPayment`}>
+              <RefundPaymentModal data={checkout?.data?.booking_info} />
+            </Modal>
           </div>
         </>
       ) : (
