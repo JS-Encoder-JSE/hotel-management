@@ -24,7 +24,7 @@ const BillingSectionPrint = ({
       <div className=" grid grid-cols-2 gap-6">
         <div className="space-y-4">
           <p>SubTotal</p>
-          <p>Tax</p>
+          {/* <p>Tax</p> */}
           <p>Additional Changes</p>
           <p>Service Charge</p>
           <p>Extra Discount</p>
@@ -33,7 +33,7 @@ const BillingSectionPrint = ({
         </div>
         <div className="space-y-4">
           <p>: ${subTotals}</p>
-          <p>: ${tax}</p>
+          {/* <p>: ${tax}</p> */}
           <p>: ${additionalCharge}</p>
           <p>: ${serviceCharge}</p>
           <p>: $ -{discountOffer}</p>
