@@ -25,6 +25,9 @@ import {
   fromDateIsoConverterForAddExpenses,
   getISOStringDate,
 } from "../../utils/utils";
+import RestaurantSalesHistory from "../report/RestaurantSalesHistory";
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
+import RestaurantSalesReport from "../report/RestaurantSalesReport";
 // import EditExpenses from "./EditExpenses";
 
 const ShowAllSell = () => {
@@ -147,6 +150,11 @@ console.log(restaurantSalesHistory,"History")
     0
   );
 
+  useEffect(() => {
+    setPdf(currentItems);
+  }, [currentItems]);
+
+
   return (
     <div className={`space-y-5`}>
       <div className={`bg-white p-4 rounded`}>
@@ -175,34 +183,28 @@ console.log(restaurantSalesHistory,"History")
             </h3>
           </div>
 
-          <div className="flex justify-end mr-5">
-            {PDF?.length ? (
-              <PDFDownloadLink
-                document={
-                  <ExpensesHistoryReport
-                    date={hotelExpenses?.docs[0]?.date}
-                    values={filteredExpenses?.docs}
-                    header={{
-                      title: "DAK Hospitality LTD",
-                      name: "Restaurant Expenses History",
-                    }}
-                  />
-                }
-                fileName={`${new Date().toLocaleDateString()}.pdf`}
-                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded  uppercase"
-              >
-                <BsFileEarmarkPdfFill />
-                PDF
-              </PDFDownloadLink>
-            ) : null}
-          </div>
-          {/* <div className={`flex justify-end mb-5`}>
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf /> 
+          <div className={`flex justify-end mb-5 mr-5`}>
+          {PDF?.length ? (
+            <PDFDownloadLink
+              document={
+                <RestaurantSalesHistory
+                  date={currentItems}
+                  values={currentItems}
+                  header={{
+                    title: "DAK Hospitality LTD",
+                    name: "Today's Sales ",
+                  }}
+                />
+              }
+              fileName={`${new Date().toLocaleDateString()}.pdf`}
+              className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              onError={(error) => console.error("PDF Error", error)}
+            >
+              <BsFileEarmarkPdfFill />
               PDF
-            </button>
-          </div> */}
+            </PDFDownloadLink>
+          ) : null}
+        </div>
 
           <div className="overflow-x-auto">
             {currentItems && currentItems.length ? (
@@ -291,12 +293,26 @@ console.log(restaurantSalesHistory,"History")
               Restaurant sales
             </h3>
           </div>
-          <div className="flex justify-end mr-5">
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
+          <div className="flex justify-end">
+            {PDF?.length ? (
+              <PDFDownloadLink
+                document={
+                  <RestaurantSalesReport
+                  date={restaurantSalesToday?.data?.docs?.date}
+                  values={restaurantSalesHistory?.data?.docs}
+                    header={{
+                      title: "DAK Hospitality LTD",
+                      name: "Restaurant sales",
+                    }}
+                  />
+                }
+                fileName={`${new Date().toLocaleDateString()}.pdf`}
+                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              >
+                <BsFileEarmarkPdfFill />
+                PDF
+              </PDFDownloadLink>
+            ) : null}
           </div>
         </div>
         <div className={`flex justify-between my-5`}>
