@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FoodLists from "../../components/restaurant/FoodLists.jsx";
 import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/restaurant/ConfirmOrder.jsx";
@@ -20,15 +20,10 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
-
-
-
 const AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
   const [error, setError] = useState("");
-  
-  
 
   const dispatch = useDispatch();
 
@@ -46,7 +41,7 @@ const AddOrder = () => {
     },
   });
   const { order } = useSelector((store) => store.addOrderSlice);
- 
+
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
 
   const pressEnter = (e) => {
@@ -72,27 +67,28 @@ const AddOrder = () => {
     label: table.table_number,
   }));
 
-
+  useEffect(() => {
+    formik.values.type.length && setError("");
+  }, [formik.values.type]);
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-5`}>
-   
-      <div
-        className={`flex flex-col md:flex-row justify-between`}
-      >
-           <div>
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
+      <div className={`flex flex-col md:flex-row justify-between`}>
+        <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
         {/*<div className="flex flex-col gap-3">*/}
         {/*  <select*/}
         {/*    name="chooseHotel"*/}
@@ -111,9 +107,9 @@ const AddOrder = () => {
         {/*    ))}*/}
         {/*  </select>*/}
         {/*</div>*/}
-      
+
         <div className={`flex flex-col md:flex-row gap-4 mb-4`}>
-          <div className="">
+          <div className=" flex flex-col">
             <select
               name="type"
               className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy !h-[2.35rem]"
@@ -126,10 +122,13 @@ const AddOrder = () => {
               <option value="Room">Room</option>
               <option value="Table">Table</option>
             </select>
-           { error && <span className="text-red-600 ms-2"><small>{error}</small></span>}
-        
+            {error && (
+              <span className="text-red-600 ms-2">
+                <small>{error}</small>
+              </span>
+            )}
           </div>
-          
+
           {formik.values.type && formik.values.type === "Room" ? (
             <div className="flex flex-col gap-3">
               <Select
@@ -175,7 +174,7 @@ const AddOrder = () => {
             </div>
           ) : null}
         </div>
-       
+
         <div className={`flex flex-col md:flex-row gap-6`}>
           <button
             onClick={() => {
@@ -192,20 +191,18 @@ const AddOrder = () => {
           </button>
           <button
             onClick={() => {
-              if(formik.values.type && formik.values.type === "Table"){
-                dispatch(setTableId(formik.values.tableId))
+              if (formik.values.type && formik.values.type === "Table") {
+                dispatch(setTableId(formik.values.tableId));
                 window.fp_modal.showModal();
-              
-                setError("")
-              }else if(formik.values.type && formik.values.type === "Room"){
-                dispatch(setRoomId(formik.values.roomId))
+
+                setError("");
+              } else if (formik.values.type && formik.values.type === "Room") {
+                dispatch(setRoomId(formik.values.roomId));
                 window.fp_modal.showModal();
-               
-                setError("")
-              } 
-              else{
-             
-                setError(" please Choose the type")
+
+                setError("");
+              } else {
+                setError(" please Choose the type");
               }
               // formik.values.type && formik.values.type === "Table"
               //   ? dispatch(setTableId(formik.values.tableId))
@@ -251,8 +248,8 @@ const AddOrder = () => {
         keyword={keyword}
         chooseHotel={formik.values.chooseHotel}
       />
-     <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
-     {<ConfirmOrder  />}
+      <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
+        {<ConfirmOrder />}
       </Modal>
     </div>
   );
