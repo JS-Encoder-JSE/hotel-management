@@ -443,7 +443,7 @@ export const cancelBooking = async (req, res) => {
           booking_info_id: bookingInfo._id,
           dedicated_to: "hotel",
           tran_id,
-          from: userId.username,
+          from: user.username,
           to: bookingInfo.guestName,
           payment_method,
           amount: bookingInfo.paid_amount,
