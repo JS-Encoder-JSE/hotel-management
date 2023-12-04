@@ -338,8 +338,8 @@ export const updateOrder = async (req, res) => {
       });
   
       if (managerDashboardTable) {
-        managerDashboardTable.total_income += paid_amount;
-        managerDashboardTable.total_profit += paid_amount;
+        managerDashboardTable.total_income += new_paid_amount;
+        managerDashboardTable.total_profit += new_paid_amount;
         await managerDashboardTable.save();
       } else {
         // Create a new dashboard table entry
@@ -348,8 +348,8 @@ export const updateOrder = async (req, res) => {
           user_role: user.role,
           month_name,
           year,
-          total_income: paid_amount,
-          total_profit: paid_amount,
+          total_income: new_paid_amount,
+          total_profit: new_paid_amount,
         });
         // Save the new dashboard table to the database
         await newDashboardTable.save();
@@ -361,8 +361,8 @@ export const updateOrder = async (req, res) => {
       });
   
       if (ownerDashboardTable) {
-        ownerDashboardTable.total_income += paid_amount;
-        ownerDashboardTable.total_profit += paid_amount;
+        ownerDashboardTable.total_income += new_paid_amount;
+        ownerDashboardTable.total_profit += new_paid_amount;
         await ownerDashboardTable.save();
       } else {
         const newDashboardTable = new DashboardTable({
@@ -370,8 +370,8 @@ export const updateOrder = async (req, res) => {
           user_role: "owner",
           month_name,
           year,
-          total_income: paid_amount,
-          total_profit: paid_amount,
+          total_income: new_paid_amount,
+          total_profit: new_paid_amount,
         });
         // Save the new dashboard table to the database
         await newDashboardTable.save();
