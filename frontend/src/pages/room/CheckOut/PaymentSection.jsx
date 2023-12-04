@@ -10,6 +10,8 @@ import { jsPDF } from "jspdf";
 import ReactToPrint from "react-to-print";
 import CheckOutPrint from "./CheckOutPrint.jsx";
 import { useDispatch, useSelector } from "react-redux";
+import Modal from "../../../components/Modal.jsx";
+import RefundPaymentModal from "./RefundPaymentModal.jsx";
 
 const PaymentSection = ({
   pBill,
@@ -179,7 +181,18 @@ const PaymentSection = ({
             ></span>
           ) : null}
         </button>
+        <button
+          onClick={() => {
+            window.refundPayment.showModal();
+          }}
+          className="bg-green-slimy text-white px-2"
+        >
+          Payment
+        </button>
       </div>
+      <Modal id={`refundPayment`}>
+        <RefundPaymentModal />
+      </Modal>
     </section>
   );
 };

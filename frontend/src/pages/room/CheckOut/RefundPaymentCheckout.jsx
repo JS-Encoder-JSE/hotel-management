@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import toast from "react-hot-toast";
-import { useCancelBookingMutation } from "../../redux/room/roomAPI";
+
 
 // form validation
 const validationSchema = yup.object({
@@ -17,34 +17,19 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentSection = ({bookingId,closeRef,paidAmt}) => {
+const RefundPaymentCheckout = () => {
 
-    const [cancelBooking] = useCancelBookingMutation();
-console.log(paidAmt,"pp")
- 
+   
   const formik = useFormik({
     initialValues: {
-      amount: paidAmt?.paid_amount,
+      amount:"",
       paymentMethod: "",
       trxID: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
       console.log(values)
-     const response = await cancelBooking({
-        id :bookingId,
-        data: {
-                tran_id:formik.values.trxID,
-                payment_method:formik.values.paymentMethod,
-             },
-      });
-      if (response?.error) {
-        toast.error(response.error.data.message);
-      } else {
-        formikHelpers.resetForm();
-        closeRef.current.click();
-        toast.success(response.data.message);
-      }
+     
     },
   });
   // Price Validation
@@ -61,8 +46,8 @@ console.log(paidAmt,"pp")
   };
   useEffect(() => {
     // Set the amount field value when paidAmt changes
-    formik.setFieldValue("amount", paidAmt?.paid_amount);
-  }, [paidAmt]);
+    formik.setFieldValue("amount");
+  }, []);
 
   return (
     <div className="relative p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
@@ -147,4 +132,4 @@ console.log(paidAmt,"pp")
   );
 };
 
-export default RefundPaymentSection;
+export default RefundPaymentCheckout;

@@ -67,7 +67,7 @@ const handleScrollToTop = () => {
 // Scroll to the top of the page
 window.scrollTo({ top: 0, behavior: 'smooth' });
 };
-const totalPrice = currentItems?.reduce((total, item) => total + item.price *item?.quantity, 0);
+const totalPrice = currentItems?.reduce((total, item) => total + item.price * item?.quantity, 0);
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -118,7 +118,7 @@ const totalPrice = currentItems?.reduce((total, item) => total + item.price *ite
                       <td>{item?.item}</td>
                       <td>{item?.serveyor_quantity}</td>
                       <td>{item?.quantity}</td>
-                      <td>{item?.price}</td>
+                      <td>{item?.price * item?.quantity}</td>
                     
                       {/* <td>Remark</td> */}
                       {/* <td>
