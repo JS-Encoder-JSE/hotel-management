@@ -240,28 +240,7 @@ const UserDashBoard = ({ managerId }) => {
         </div>
       )} */}
         </section>
-        {user?.role === "manager" ||
-          (isValidUrl("dashboard/finance", pathname) && (
-            <section>
-              <AllExpeseAnalytics
-                user={user}
-                userHotel={userHotel}
-                dashboardData={dashboardData}
-                dummyData={dummyData}
-              />
-            </section>
-          ))}
-
-        {!isValidUrl("dashboard/finance", pathname) && user?.role === "owner" && (
-          <section>
-            <OwnerExpeseAnalytics
-              user={user}
-              userHotel={userHotel}
-              dashboardData={dashboardData}
-              dummyData={dummyData}
-            />
-          </section>
-        )}
+   
 
       {user?.role === "manager" ||
         isValidUrl("dashboard/finance", pathname) ? (
