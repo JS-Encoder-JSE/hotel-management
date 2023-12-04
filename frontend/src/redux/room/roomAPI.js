@@ -79,7 +79,7 @@ const roomAPI = baseAPI.injectEndpoints({
           invalidatesTags: ["GetExpenses"],
         };
       },
-      invalidatesTags: ["addRestaurantExpenses","GetExpenses"],
+      invalidatesTags: ["addRestaurantExpenses", "GetExpenses"],
     }),
     getCheckout: build.mutation({
       query: (ids) => {
@@ -104,10 +104,13 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     getExpenses: build.query({
       query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit, filter }) =>
-        `expenses/get-expenses?${cp?`page=${++cp }`:""}${limit ?`&limit=${limit}`:""} ${filter ? `&filter=${filter}` : ""
-        }${fromDate ? `&fromDate=${fromDate}` : ""}${toDate ? `&toDate=${toDate}` : ""
-        }${hotel_id ?`&hotel_id=${hotel_id}`:""}${spendedfor ?`&spendedfor=${spendedfor}` : ""
-        }`,
+        `expenses/get-expenses?${cp ? `page=${++cp}` : ""}${
+          limit ? `&limit=${limit}` : ""
+        } ${filter ? `&filter=${filter}` : ""}${
+          fromDate ? `&fromDate=${fromDate}` : ""
+        }${toDate ? `&toDate=${toDate}` : ""}${
+          hotel_id ? `&hotel_id=${hotel_id}` : ""
+        }${spendedfor ? `&spendedfor=${spendedfor}` : ""}`,
       providesTags: ["GetExpenses"],
     }),
 
@@ -125,7 +128,9 @@ const roomAPI = baseAPI.injectEndpoints({
 
     getDailyData: build.query({
       query: ({ cp, limit, filter, managerId, fromDate, toDate }) =>
-        `hotels/get-daily-datas?${cp?`page=${++cp}`:""}${limit ? `&limit=${limit}` : ""}${
+        `hotels/get-daily-datas?${cp ? `page=${++cp}` : ""}${
+          limit ? `&limit=${limit}` : ""
+        }${
           filter ? `&filter=${filter}` : ""
         }&manager_id=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,
       providesTags: ["getDailyData"],
@@ -159,10 +164,10 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       providesTags: ["booking"],
     }),
-    getLastActiveBooking:build.query({
-      query: (bookingId)=>{
-        return `bookings/last-active-booking-validator/${bookingId}`
-      }
+    getLastActiveBooking: build.query({
+      query: (bookingId) => {
+        return `bookings/last-active-booking-validator/${bookingId}`;
+      },
     }),
     getBookingInfoById: build.query({
       query: (id) => {
@@ -197,9 +202,9 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
 
     updateBookingTOCheckIn: build.mutation({
-      query: ({ id, updatedData }) => {
+      query: (updatedData) => {
         return {
-          url: `bookings/add-to-checkin/${id}`,
+          url: `bookings/add-to-checkin`,
           method: "POST",
           body: updatedData,
         };
