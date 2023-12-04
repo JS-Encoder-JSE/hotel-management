@@ -12,7 +12,6 @@ export const makePayment = async (req, res) => {
   try {
     const { manager_id, booking_id, amount, paymentMethod, tran_id, remark } =
       req.body;
-    console.log(req.body);
     const manager = await User.findById(manager_id);
     if (!manager) {
       return res.status(404).json({

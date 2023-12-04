@@ -109,6 +109,7 @@ export const checkedOut = async (req, res) => {
       new_total_payable_amount,
       new_total_paid_amount,
       new_total_unpaid_amount,
+      new_total_balance,
       new_total_tax,
       new_total_additional_charges,
       new_total_service_charges,
@@ -166,6 +167,7 @@ export const checkedOut = async (req, res) => {
     bookingInfo.paid_amount = new_total_paid_amount;
     bookingInfo.total_payable_amount = new_total_payable_amount;
     bookingInfo.total_unpaid_amount = new_total_unpaid_amount;
+    bookingInfo.total_balance = new_total_balance;
     bookingInfo.total_tax = new_total_tax;
     bookingInfo.total_additional_charges = new_total_additional_charges;
     bookingInfo.total_service_charges = new_total_service_charges;
