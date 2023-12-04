@@ -12,7 +12,7 @@ export const makePayment = async (req, res) => {
   try {
     const { manager_id, booking_id, amount, paymentMethod, tran_id, remark } =
       req.body;
-
+    console.log(req.body);
     const manager = await User.findById(manager_id);
     if (!manager) {
       return res.status(404).json({
@@ -46,8 +46,9 @@ export const makePayment = async (req, res) => {
     // Create a new TransactionLog entry
     const newTransactionLog = new TransactionLog({
       manager_id,
-      booking_info_id: bookingInfoId,
+      booking_info_id: bookingInfo._id,
       payment_method: paymentMethod,
+      dedicated_to: "hotel",
       tran_id,
       from: bookingInfo.guestName,
       to: manager.username,

@@ -8,8 +8,11 @@ const initialState = {
   discountOffer: 0,
   grandTotal: 0,
   roomPostedBill: 0,
-  extraDiscount:0,
-  bookingInfo:"",
+  extraDiscount: 0,
+  refundAmount: 0,
+  bookingInfo: "",
+  collectedAmount: 0,
+  texAmount: 0,
 };
 
 const checkoutInfoCalSlice = createSlice({
@@ -40,9 +43,21 @@ const checkoutInfoCalSlice = createSlice({
     setExtraDiscount: (state, action) => {
       state.extraDiscount = action.payload;
     },
-    setBookingInfo:(state,action)=>{
-      state.bookingInfo = action.payload
-    }
+    setBookingInfo: (state, action) => {
+      state.bookingInfo = action.payload;
+    },
+    setRefundAmount: (state, action) => {
+      state.refundAmount = action.payload;
+    },
+    setCollectedAmount: (state, action) => {
+      state.collectedAmount = action.payload;
+    },
+    setTexAmount: (state, action) => {
+      state.texAmount = action.payload;
+    },
+    clearCheckoutCalSlice: (state) => {
+      state = initialState;
+    },
   },
 });
 
@@ -56,6 +71,9 @@ export const {
   setRoomPostedBill,
   setExtraDiscount,
   setBookingInfo,
+  setRefundAmount,
+  setTexAmount,
+  clearCheckoutCalSlice,
 } = checkoutInfoCalSlice.actions;
 
 export default checkoutInfoCalSlice.reducer;

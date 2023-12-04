@@ -5,6 +5,7 @@ import { FaEyeSlash } from "react-icons/fa";
 import { useMakePaymentMutation } from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -24,6 +25,7 @@ const validationSchema = yup.object({
 });
 
 const PaymentMethodCard = (booking) => {
+  const { id } = useParams();
   const [hotelLimit, setHotelLimit] = useState(0);
   const { user } = useSelector((state) => state.authSlice);
   console.log(booking);
@@ -42,8 +44,8 @@ const PaymentMethodCard = (booking) => {
     onSubmit: async (values, formikHelpers) => {
       const response = await makePayment({
         manager_id: user._id,
-        bookingInfoId: booking._id,
-        amount: values.amount,
+        booking_id: id,
+        amount: Number(values.amount),
         paymentMethod: values.paymentMethod,
         tran_id: values.trxID,
         remark: "Advance payment",

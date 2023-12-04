@@ -9,9 +9,9 @@ import InvoicePDF from "./InvoicePDF.jsx";
 import { jsPDF } from "jspdf";
 import ReactToPrint from "react-to-print";
 import CheckOutPrint from "./CheckOutPrint.jsx";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal.jsx";
 import RefundPaymentModal from "./RefundPaymentModal.jsx";
-
 
 const PaymentSection = ({
   pBill,
@@ -22,7 +22,8 @@ const PaymentSection = ({
   isHotelSuccess,
   hotelInfo,
   roomData,
-  addCheckOutLoading
+  addCheckOutLoading,
+  totalPayableAmount,
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -30,14 +31,30 @@ const PaymentSection = ({
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
-  
-
+  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
+    useSelector((state) => state.checkoutInfoCalSlice);
+  const totalRefund =
+    refundAmount - (additionalCharge + serviceCharge + texAmount);
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-
-    const list = [...paymentList];
-    list[index][name] = value;
-    setPaymentList(list);
+    const calculatedLimit = Math.ceil(totalPayableAmount - data?.paid_amount);
+    if (data?.room_ids?.length === 1) {
+      if (name === "amount") {
+        if (Number(value) <= calculatedLimit) {
+          const list = [...paymentList];
+          list[index][name] = value;
+          setPaymentList(list);
+        }
+      } else {
+        const list = [...paymentList];
+        list[index][name] = value;
+        setPaymentList(list);
+      }
+    } else {
+      const list = [...paymentList];
+      list[index][name] = value;
+      setPaymentList(list);
+    }
   };
 
   const handleRemove = (index) => {
@@ -76,6 +93,9 @@ const PaymentSection = ({
             handleAdd={handleAdd}
             handleRemove={handleRemove}
             handleChange={handleChange}
+            totalRefund={totalRefund}
+            pBill={pBill}
+            roomData={roomData}
           />
         </div>
         {/* Right Side */}
@@ -86,27 +106,23 @@ const PaymentSection = ({
           <div className="p-5 grid grid-cols-3 items-center text-sm font-semibold">
             <div className="space-y-3">
               <p>Remain Amount</p>
+              <p>Refund Amount</p>
               <p>Collected Amount</p>
-              <p>Change Amount</p>
             </div>
             <div className="col-span-2 space-y-3">
               <p>
-                {pBill > colAmount && pBill > data?.paid_amount
-                  ? Math.abs(Math.ceil(pBill - colAmount))
-                  : 0}
+                {totalPayableAmount - data?.paid_amount < 0 ||
+                totalPayableAmount - data?.paid_amount - colAmount < 0
+                  ? 0
+                  : totalPayableAmount - data?.paid_amount - colAmount}
               </p>
+              <p>{totalRefund < 0 ? 0 : totalRefund}</p>
+
               <p>{Math.ceil(colAmount)}</p>
-              <p>
-                {pBill > data?.paid_amount && pBill < colAmount
-                  ? Math.abs(Math.ceil(pBill - colAmount))
-                  : 0}
-              </p>
             </div>
           </div>
         </div>
       </div>
-
-      
 
       <div className="flex justify-end gap-2 mt-5">
         <ReactToPrint
@@ -133,68 +149,41 @@ const PaymentSection = ({
             />
           </div>
         </div>
-        {/* <PDFDownloadLink
-          document={
-            <InvoicePDF
-              data={data}
-              header={{ title: "DAK Hospitality LTD", address: "Dhaka" }}
-            />
-          }
-          fileName={`${new Date().toLocaleDateString()}.pdf`}
-          className="btn btn-md hover:bg-transparent bg-green-slimy hover:text-green-slimy text-white !border-green-slimy rounded normal-case"
-        >
-          Print
-        </PDFDownloadLink> */}
-        {/*{PDF.length ? (*/}
-        {/*  <PDFDownloadLink*/}
-        {/*    document={*/}
-        {/*      <CreateReport*/}
-        {/*        values={PDF}*/}
-        {/*        header={{*/}
-        {/*          title: "DAK Hospitality LTD",*/}
-        {/*          name: "Invoice",*/}
-        {/*        }}*/}
-        {/*      />*/}
-        {/*    }*/}
-        {/*    fileName={`${new Date().toLocaleDateString()}.pdf`}*/}
-        {/*    className="btn btn-md hover:bg-transparent bg-green-slimy hover:text-green-slimy text-white !border-green-slimy rounded normal-case"*/}
-        {/*  >*/}
-        {/*    Print*/}
-        {/*  </PDFDownloadLink>*/}
-        {/*) : null}*/}
+
         <button
           type={`button`}
           onClick={() => formik.handleSubmit()}
-          className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
-            data?.paid_amount >= pBill
-              ? ""
-              : pBill > colAmount
+          className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case 
+          ${
+            addCheckOutLoading
               ? "btn-disabled"
-              : ""
-          }`}
+              : data?.room_ids?.length === 1
+              ? totalRefund > 0
+                ? ""
+                : colAmount === totalPayableAmount - data?.paid_amount
+                ? ""
+                : "btn-disabled"
+              : colAmount > 0 || totalRefund > 0
+              ? ""
+              : "btn-disabled"
+          }
+          `}
         >
-          Checkout
+          {totalRefund < 1
+            ? "Checkout"
+            : data?.room_ids?.length == 1
+            ? "Checkout & Refund"
+            : "Checkout"}
           {addCheckOutLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
+            <span
+              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+              role="status"
+            ></span>
+          ) : null}
         </button>
-        <button 
-        onClick={()=>{
-          window.refundPayment.showModal();
-        }}
-        className="bg-green-slimy text-white px-2"  
-        >
-          Payment
-          
-        </button>
-        
+       
       </div>
-      <Modal id={`refundPayment`}>
-        <RefundPaymentModal/>
-      </Modal>
+      
     </section>
   );
 };
