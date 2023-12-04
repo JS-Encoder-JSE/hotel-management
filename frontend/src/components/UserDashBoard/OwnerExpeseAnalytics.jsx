@@ -36,7 +36,8 @@ const OwnerExpeseAnalytics = ({
                   </div>
                   <div>
                     <span>
-                      {isValidUrl("dashboard/finance", pathname)
+                      {isValidUrl("dashboard/finance", pathname) ||
+                      isValidUrl("dashboard", pathname)
                         ? dashboardData?.permanent_datas?.total_expense
                         : dashboardData?.total_expense}
                     </span>
@@ -56,7 +57,8 @@ const OwnerExpeseAnalytics = ({
                   </div>
                   <div>
                     <span>
-                      {isValidUrl("dashboard/finance", pathname)
+                      {isValidUrl("dashboard/finance", pathname) ||
+                      isValidUrl("dashboard", pathname)
                         ? dashboardData?.permanent_datas?.total_revenue
                         : dashboardData?.total_revenue}
                     </span>
@@ -78,7 +80,8 @@ const OwnerExpeseAnalytics = ({
                   </div>
                   <div>
                     <span>
-                      {isValidUrl("dashboard/finance", pathname)
+                      {isValidUrl("dashboard/finance", pathname) ||
+                      isValidUrl("dashboard", pathname)
                         ? dashboardData?.permanent_datas?.net_profit
                         : dashboardData?.net_profit}
                     </span>
