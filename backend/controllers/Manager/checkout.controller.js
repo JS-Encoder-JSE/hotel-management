@@ -195,9 +195,9 @@ export const checkedOut = async (req, res) => {
       { _id: { $in: roomIds } },
       { $set: { status: roomStatus } }
     );
-    await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
-    await GymBills.deleteMany({ room_id: { $in: roomIds } });
-    await PoolBills.deleteMany({ room_id: { $in: roomIds } });
+    // await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
+    // await GymBills.deleteMany({ room_id: { $in: roomIds } });
+    // await PoolBills.deleteMany({ room_id: { $in: roomIds } });
 
     const ownerDashboard = await Dashboard.findOne({
       user_id: user.parent_id,
