@@ -6,7 +6,9 @@ import {
   FaRegFilePdf,
   FaRupeeSign,
 } from "react-icons/fa";
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import { GrPowerReset } from "react-icons/gr";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,15 +21,20 @@ import {
   useGetOrdersByDateQuery,
 } from "../../redux/room/roomAPI";
 import { fromDateIsoConverterForAddExpenses, getISOStringDate } from "../../utils/utils";
+import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
+import RestaurantSales from "../../pages/OwnerExpenses/RestaurantSales";
+import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
+import RestaurantSalesReport from "../../pages/report/RestaurantSalesReport";
 
 const RestaurantSalesShow = ({ hotelId,managerID }) => {
-  console.log('------hotelId',hotelId);
+  // console.log('------hotelId',hotelId);
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
   const [forcePage, setForcePage] = useState(null);
+  const [PDF, setPdf] = useState([]);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -91,7 +98,7 @@ const RestaurantSalesShow = ({ hotelId,managerID }) => {
     limit: formik.values.entries,
   });
 
-  console.log(restaurantSalesHistory)
+  console.log("restaurantSalesHistory",restaurantSalesHistory)
 
 
 
@@ -139,6 +146,12 @@ console.log(allItemsArray);
 
 console.log(currentItems)
 
+useEffect(() => {
+  console.log("PDF Data:", restaurantSalesToday?.data);
+  setPdf(restaurantSalesToday?.data[0]?.items);
+}, [restaurantSalesToday]);
+
+
 
   return (
     <div className={`space-y-5`}>
@@ -149,16 +162,31 @@ console.log(currentItems)
               <h3
                 className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
               >
-                Today Saless
+                Today Sales
               </h3>
             </div>
             <div>
-              <div className={`flex justify-end mb-5 mr-5`}>
-                <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-                  {" "}
-                  <FaRegFilePdf />
-                  PDF
-                </button>
+            <div className={`flex justify-end mb-5 mr-5`}>
+                {PDF?.length ? (
+                  <PDFDownloadLink
+                    document={
+                      <RestaurantSalesHistory
+                        date={restaurantSalesToday?.data?.date}
+                        values={restaurantSalesToday?.data[0]?.items}
+                        header={{
+                          title: "DAK Hospitality LTD",
+                          name: "Today's Sales ",
+                        }}
+                      />
+                    }
+                    fileName={`${new Date().toLocaleDateString()}.pdf`}
+                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                    onError={(error) => console.error("PDF Error", error)}
+                  >
+                    <BsFileEarmarkPdfFill />
+                    PDF
+                  </PDFDownloadLink>
+                ) : null}
               </div>
 
               <div className=" h-64 overflow-x-auto overflow-y-auto">
@@ -259,12 +287,26 @@ console.log(currentItems)
               Restaurant sales
             </h3>
           </div>
-          <div className="flex justify-end mr-5">
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
+          <div className="flex justify-end">
+            {PDF?.length ? (
+              <PDFDownloadLink
+                document={
+                  <RestaurantSalesReport
+                  date={restaurantSalesToday?.data?.docs}
+                  values={restaurantSalesHistory?.data?.docs}
+                    header={{
+                      title: "DAK Hospitality LTD",
+                      name: "Restaurant sales",
+                    }}
+                  />
+                }
+                fileName={`${new Date().toLocaleDateString()}.pdf`}
+                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+              >
+                <BsFileEarmarkPdfFill />
+                PDF
+              </PDFDownloadLink>
+            ) : null}
           </div>
         </div>
         <div className={`flex justify-between my-5`}>

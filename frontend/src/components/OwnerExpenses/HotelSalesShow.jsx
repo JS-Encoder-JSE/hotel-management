@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   FaArrowLeft,
   FaEye,
@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { GrPowerReset } from "react-icons/gr";
 import { AiTwotoneDelete } from "react-icons/ai";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
@@ -20,9 +21,12 @@ import {
 } from "../../redux/room/roomAPI";
 import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
+import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
+import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
 
 const HotelSalesShow = ({managerId,hotelId}) => {
-  console.log('------hotelId',managerId);
+  // console.log('------hotelId',managerId);
+  const [PDF, setPdf] = useState([]);
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
@@ -96,7 +100,12 @@ console.log(hotelTodaySales)
     limit: formik.values.entries,
   });
 
-  console.log(hotelSalesHistory?.data?.totalPages)
+  // console.log(hotelSalesHistory?.data?.totalPages)
+
+  useEffect(() => {
+    console.log("PDF Data:", hotelTodaySales?.data[0]?.docs);
+    setPdf(hotelTodaySales?.data?.docs.items);
+  }, [hotelTodaySales]);
 
 
   return (
@@ -112,12 +121,27 @@ console.log(hotelTodaySales)
               </h3>
             </div>
             <div>
-              <div className={`flex justify-end mb-5`}>
-                <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-                  {" "}
-                  <FaRegFilePdf />
-                  PDF
-                </button>
+            <div className={`flex justify-end mb-5 mr-5`}>
+                {PDF?.length ? (
+                  <PDFDownloadLink
+                    document={
+                      <HotelSalesTodayReport
+                        date={hotelTodaySales?.data[0]?.docs}
+                        values={hotelTodaySales?.data?.docs[0]?.items}
+                        header={{
+                          title: "DAK Hospitality LTD",
+                          name: "Today's Sales ",
+                        }}
+                      />
+                    }
+                    fileName={`${new Date().toLocaleDateString()}.pdf`}
+                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                    onError={(error) => console.error("PDF Error", error)}
+                  >
+                    <BsFileEarmarkPdfFill />
+                    PDF
+                  </PDFDownloadLink>
+                ) : null}
               </div>
 
               <div className=" h-64 overflow-x-auto overflow-y-auto">
@@ -196,13 +220,28 @@ console.log(hotelTodaySales)
               Hotel Sales
             </h3>
           </div>
-          <div className="flex justify-end mr-5">
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
-          </div>
+          <div className={`flex justify-end mb-5 mr-5`}>
+                {PDF?.length ? (
+                  <PDFDownloadLink
+                    document={
+                      <HotelSalesTodayReport
+                        date={hotelSalesHistory?.data}
+                        values={hotelSalesHistory?.data[0]?.items}
+                        header={{
+                          title: "DAK Hospitality LTD",
+                          name: "Hotel Sales ",
+                        }}
+                      />
+                    }
+                    fileName={`${new Date().toLocaleDateString()}.pdf`}
+                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                    onError={(error) => console.error("PDF Error", error)}
+                  >
+                    <BsFileEarmarkPdfFill />
+                    PDF
+                  </PDFDownloadLink>
+                ) : null}
+              </div>
         </div>
         <div className={`flex flex-col md:flex-row gap-3`}>
           <DatePicker
