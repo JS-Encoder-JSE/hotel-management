@@ -122,6 +122,7 @@ useEffect(() => {
     console.log("PDF Data:", hotelTodaySales?.data);
     setPdf(hotelTodaySales?.data.docs);
   }, [hotelTodaySales]);
+  
   useEffect(() => {
     if (hotelSalesHistory) setPageCount(hotelSalesHistory?.data?.docs?.totalPages);
   }, [hotelSalesHistory]);
