@@ -143,7 +143,7 @@ console.log(restaurantSalesHistory,"History")
 
 
   const totalPrice = currentItems?.reduce(
-    (total, item) => total + item.price,
+    (total, item) => total + item?.price * item?.quantity,
     0
   );
 
@@ -229,7 +229,7 @@ console.log(restaurantSalesHistory,"History")
                           <td>{item?.item}</td>
                           <td>{item?.serveyor_quantity}</td>
                           <td>{item?.quantity}</td>
-                          <td>{item?.price}</td>
+                          <td>{item?.price * item?.quantity}</td>
                         </tr>
                       );
                     })}
