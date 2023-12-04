@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaEye,
@@ -26,7 +26,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
@@ -62,11 +62,18 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   };
 
 const {data:hotelTodaySales}=useGetReportsByDateQuery({
+  cp:currentPage,
   date:new Date().toLocaleDateString(),
   hotelId: hotelId
 })
 
 console.log(hotelTodaySales)
+
+
+useEffect(() => {
+  if (hotelTodaySales) setPageCount(hotelTodaySales?.data?.docs?.totalPages);
+}, [hotelTodaySales]);
+
 
 //   // / query by searchParams
 //   const {
@@ -176,7 +183,7 @@ console.log(hotelTodaySales)
                 previousLabel="<"
                 nextLabel=">"
                 breakLabel="..."
-                pageCount={pageCount}
+                pageCount={hotelTodaySales?.data?.docs?.totalPages}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}

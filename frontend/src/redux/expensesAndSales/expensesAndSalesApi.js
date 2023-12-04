@@ -16,8 +16,8 @@ const expensesAndSalesApi = baseAPI.injectEndpoints({
       query: (managerId) => `subdashboards/get-subdashboard-info/${managerId}`,
     }),
     getReportsByDate: builder.query({
-      query: ({ date, hotelId }) =>
-        `reports/get-reports-by-date?date=${date}&hotel_id=${hotelId}`,
+      query: ({ date, hotelId, cp}) =>
+        `reports/get-reports-by-date?date=${date}&hotel_id=${hotelId}&page=${cp? ++cp :""}`,
     }),
   }),
 });
