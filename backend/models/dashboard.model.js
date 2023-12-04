@@ -191,25 +191,46 @@ const dashboardSchema = new mongoose.Schema(
 );
 
 // Pre-save middleware to set current date and year before saving
+// dashboardTableSchema.pre("save", function (next) {
+//   const currentDate = new Date();
+//   this.month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
+//   this.year = currentDate.getFullYear().toString();
+
+//   next();
+// });
+
+// checkinfoSchema.pre("save", function (next) {
+//   const currentDate = new Date();
+//   // currentDate.setHours(0, 0, 0, 0);
+//   // const date = currentDate.toISOString();
+//   const date = currentDate.toLocaleDateString();
+//   // const year = currentDate.getFullYear();
+//   // const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+//   // const day = currentDate.getDate().toString().padStart(2, "0");
+
+//   // const formattedDate = `${day}-${month}-${year}`;
+//   this.date = date;
+//   next();
+// });
 dashboardTableSchema.pre("save", function (next) {
-  const currentDate = new Date();
-  this.month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
-  this.year = currentDate.getFullYear().toString();
+  // Check if month_name and year are not provided
+  if (!this.month_name || !this.year) {
+    const currentDate = new Date();
+    this.month_name =
+      this.month_name || currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
+    this.year = this.year || currentDate.getFullYear().toString();
+  }
 
   next();
 });
-
 checkinfoSchema.pre("save", function (next) {
-  const currentDate = new Date();
-  // currentDate.setHours(0, 0, 0, 0);
-  // const date = currentDate.toISOString();
-  const date = currentDate.toLocaleDateString();
-  // const year = currentDate.getFullYear();
-  // const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-  // const day = currentDate.getDate().toString().padStart(2, "0");
+  // Check if date is not provided
+  if (!this.date) {
+    const currentDate = new Date();
+    // You can modify this part based on your specific requirements for formatting the date
+    this.date = this.date || currentDate.toLocaleDateString();
+  }
 
-  // const formattedDate = `${day}-${month}-${year}`;
-  this.date = date;
   next();
 });
 
