@@ -19,12 +19,13 @@ import {
   useGetOrdersByDateQuery,
 } from "../../redux/room/roomAPI";
 import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
+import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
 
 const HotelSalesShow = ({managerId,hotelId}) => {
   console.log('------hotelId',managerId);
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
@@ -40,8 +41,8 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: getISOStringDate(values.endDate),
-        fromDate: getISOStringDate(values.startDate),
+        toDate: new Date(values.endDate).toLocaleDateString(),
+        fromDate: new Date(values.startDate).toLocaleDateString(),
       }));
     },
     onReset: (values) => {
@@ -60,18 +61,25 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     }
   };
 
-  // / query by searchParams
-  const {
-    data: hotelSalesToday,
-    error: restaurantSaleEx,
-    isLoading: dataLoading,
-  } = useGetOrdersByDateQuery({
-    date: fromDateIsoConverterForAddExpenses(new Date()),
-    order_status: "CheckedOut",
-    hotel_id: managerId,
-  });
+const {data:hotelTodaySales}=useGetReportsByDateQuery({
+  date:new Date().toLocaleDateString(),
+  hotelId: hotelId
+})
 
+console.log(hotelTodaySales)
 
+//   // / query by searchParams
+//   const {
+//     data: hotelSalesToday,
+//     error: restaurantSaleEx,
+//     isLoading: dataLoading,
+//   } = useGetOrdersByDateQuery({
+//     date: new Date(new Date()).toLocaleDateString(),
+//     order_status: "CheckedOut",
+//     hotel_id: managerId,
+//   });
+
+// cons
 
 
 
@@ -113,23 +121,24 @@ const HotelSalesShow = ({managerId,hotelId}) => {
               </div>
 
               <div className=" h-64 overflow-x-auto overflow-y-auto">
-                {hotelSalesToday && hotelSalesToday?.data.length ? (
+                {hotelTodaySales && hotelTodaySales?.data?.docs?.length ? (
                   <table className="table">
                     <thead>
                       <tr>
                         <th>SL</th>
-                        <th>Date</th>
-                        <th>Items Name</th>
-                        <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Remark</th>
-                        <th>Action</th>
+                        <th>Guest Name</th>
+                        <th>CheckIn Date</th>
+                        <th>Checkout Date</th>
+                        <th>Paid Amount</th>
+                        <th>Payable Amount</th>
+                        <th>Payment Method</th>
+                        <th>Room Numbers</th>
+                        <th>Unpaid Amount</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {hotelSalesToday &&
-                        hotelSalesToday?.data?.map((item, idx) => {
+                      {hotelTodaySales &&
+                        hotelTodaySales?.data?.docs?.map((item, idx) => {
                           return (
                             <tr
                               className={
@@ -137,87 +146,25 @@ const HotelSalesShow = ({managerId,hotelId}) => {
                               }
                             >
                               <th>{++idx}</th>
-                              <td>23-11-2023</td>
-                              <td>Fried Rice</td>
-                              <td>Good </td>
-                              <td>10</td>
-                              <td className="flex">
-                                <div>
-                                  <FaRupeeSign />
-                                </div>
-                                <div>
-                                  <span>5000</span>
-                                </div>
-                              </td>
-                              <td>Remark</td>
-                              <td>
-                                <button
-                                  className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                                  onClick={() =>
-                                    document
-                                      .getElementById("my_modal_3")
-                                      .showModal()
-                                  }
-                                >
-                                  <FaRegEdit />
-                                </button>
-                                <dialog id="my_modal_3" className="modal">
-                                  <div className="modal-box">
-                                    <form method="dialog">
-                                      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                        ✕
-                                      </button>
-                                    </form>
-                                    {/*  */}
-                                    {/* <EditSales/> */}
-                                    <EditTodaysales />
-                                  </div>
-                                </dialog>
-                              </td>
+                              <td>{item?.guestName}</td>
+                              <td>{new Date(item?.checked_in).toLocaleDateString()}</td>
+                              <td>{new Date(item?.checked_out).toLocaleDateString()} </td>
+                              <td>{item?.paid_amount}</td>
+                              <td>{item?.payable_amount}</td>
+                              <td>{item?.payment_method}</td>
+                              <td>{item?.room_numbers?.map((roomNum)=> roomNum)}</td>
+                              <td>{item?.unpaid_amount}</td>           
                             </tr>
                           );
                         })}
                     </tbody>
-                    <tfoot className={`text-[1.2rem] font-bold`}>
-                      <tr>
-                        <td
-                          colSpan={5}
-                          className={`text-end text-md font-bold`}
-                        >
-                          Total :
-                        </td>
-                        <td>
-                          <div className="flex">
-                            <div>
-                              <FaRupeeSign />
-                            </div>
-                            <div>
-                              {" "}
-                              25000
-                              {/* {totalItemPrice} */}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tfoot>
                   </table>
                 ) : (
                   <p className="text-center py-14"> No Sales Today</p>
                 )}
-                {/* <div className={`flex justify-center md:ms-[20rem] mt-4`}>
-              <h1>Grand Total :</h1>
-              <div className="flex ">
-              <div>
-              <FaRupeeSign />
-              </div>
-              <div>
-                <span>25000</span>
-              </div>
-              </div>
-            </div> */}
               </div>
             </div>
-            {/* <div className="flex justify-center mt-10">
+            <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -235,7 +182,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
               />
-            </div> */}
+            </div>
           </div>
         </div>
 
