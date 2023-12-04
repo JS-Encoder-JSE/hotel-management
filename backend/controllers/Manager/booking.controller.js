@@ -436,8 +436,6 @@ export const cancelBooking = async (req, res) => {
 
     const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
 
-    // Remove the canceled room_id from bookingInfo.room_ids
-    bookingInfo.room_ids.pull(booking.room_id);
     if (bookingInfo.paid_amount > 0) {
       if (bookingInfo.room_ids.length === 1) {
         const newTransactionLog = new TransactionLog({
@@ -455,6 +453,8 @@ export const cancelBooking = async (req, res) => {
         bookingInfo.paid_amount = 0;
       }
     }
+    // Remove the canceled room_id from bookingInfo.room_ids
+    bookingInfo.room_ids.pull(booking.room_id);
 
     const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
     const room_discount_percentage = bookingInfo.room_discount / 100;
