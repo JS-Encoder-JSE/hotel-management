@@ -23,7 +23,7 @@ const RefundPaymentCheckout = ({ totalRefund, data }) => {
   const { user } = useSelector((state) => state.authSlice);
   const formik = useFormik({
     initialValues: {
-      amount: "",
+      amount: totalRefund,
       paymentMethod: "",
       trxID: "",
     },
@@ -41,7 +41,8 @@ const RefundPaymentCheckout = ({ totalRefund, data }) => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
-        toast.success("Checkout Successful");
+        toast.success("Refund Successful");
+        
         // navigate("/dashboard/checkout");
       }
     },
@@ -123,6 +124,7 @@ const RefundPaymentCheckout = ({ totalRefund, data }) => {
               value={formik.values.amount}
               onChange={handleAmount}
               onBlur={formik.handleBlur}
+              disabled
             />
             {formik.touched.amount && Boolean(formik.errors.amount) ? (
               <small className="text-red-600">

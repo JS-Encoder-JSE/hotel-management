@@ -120,7 +120,10 @@ const CheckOut = () => {
       } else {
         toast.success("Checkout Successful");
         // navigate("/dashboard/checkout");
-        if (totalRefund > 0) {
+        if (
+          totalRefund > 0 &&
+          checkout?.data?.booking_info?.room_ids?.length === 1
+        ) {
           window.refundPayment.showModal();
         }
       }

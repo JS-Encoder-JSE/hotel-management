@@ -45,7 +45,7 @@ const PaymentMethodCard = (booking) => {
       const response = await makePayment({
         manager_id: user._id,
         booking_id: id,
-        amount: values.amount,
+        amount: Number(values.amount),
         paymentMethod: values.paymentMethod,
         tran_id: values.trxID,
         remark: "Advance payment",
