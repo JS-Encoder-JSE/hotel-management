@@ -70,7 +70,7 @@ console.log(orderedDataByDate,"hotel")
       <div>
           <h1 className={`text-2xl text-center`}> Hotel Sales Information</h1>
         </div>
-        <div className=" h-64 overflow-x-auto overflow-y-auto">
+        <div className="  overflow-x-auto overflow-y-auto">
                 {orderedDataByDate && orderedDataByDate?.data?.docs?.length ? (
                   <table className="table">
                     <thead>
@@ -126,7 +126,7 @@ console.log(orderedDataByDate,"hotel")
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={pageCount}
+              pageCount={orderedDataByDate?.data?.totalPages}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}

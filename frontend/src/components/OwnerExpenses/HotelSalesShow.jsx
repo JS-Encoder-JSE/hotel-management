@@ -33,9 +33,15 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   const [PDF, setPdf] = useState([]);
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(1);
+  // for todayda
+  const [pageCount, setPageCount] = useState(0);
+
+  // /today data
   const [currentPage, setCurrentPage] = useState(0);
-  const [HistoryCurrentPage, setHistoryCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(0);
+  
+  const [HistoryCurrentPage, setHistoryCurrentPage] = useState(0);
+
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
@@ -50,22 +56,24 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p? new Date(values.endDate).toISOString():"",
-        fromDate: p? new Date(values.startDate).toISOString():"",
+        toDate: p? new Date(values.endDate).toLocaleDateString():"",
+        fromDate: p? new Date(values.startDate).toLocaleDateString():"",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
+      setHistoryCurrentPage(0)
     },
   });
 
+  // for filter 
   const handlePageClick = ({ selected: page }) => {
-    setCurrentPage(page);
+    setHistoryCurrentPage(page);
   };
-
+// for today data
   const handlePageTrigger =({selected:page})=>{
-    setCurrentPage(page)
+  setCurrentPage(page)
   }
 
   const pressEnter = (e) => {
@@ -75,6 +83,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   };
 
 const {data:hotelTodaySales}=useGetReportsByDateQuery({
+  cp:currentPage,
   date:new Date().toLocaleDateString(),
   hotelId: hotelId
 })
@@ -83,7 +92,7 @@ console.log(hotelTodaySales)
 
 
 useEffect(() => {
-  if (hotelTodaySales) setPageCount(hotelTodaySales?.data?.docs?.totalPages);
+  if (hotelTodaySales) setPageCount(hotelTodaySales?.data?.totalPages);
 }, [hotelTodaySales]);
 
 
@@ -109,7 +118,7 @@ useEffect(() => {
     error,
     isLoading,
   } = useGetDailyDataQuery({
-    cp: currentPage,
+    cp: HistoryCurrentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
     managerId: managerId,
@@ -122,11 +131,14 @@ useEffect(() => {
     console.log("PDF Data:", hotelTodaySales?.data);
     setPdf(hotelTodaySales?.data.docs);
   }, [hotelTodaySales]);
-  useEffect(() => {
-    if (hotelSalesHistory) setPageCount(hotelSalesHistory?.data?.docs?.totalPages);
-  }, [hotelSalesHistory]);
+
+// history
+  // useEffect(() => {
+  //   if (hotelSalesHistory) setCurrentPage(hotelSalesHistory?.data?.totalPages);
+  // }, [hotelSalesHistory]);
   
   console.log(hotelSalesHistory?.data?.totalPages)
+  console.log(hotelTodaySales)
 
 
   return (
@@ -224,7 +236,7 @@ useEffect(() => {
                 pageCount={hotelTodaySales?.data?.totalPages}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
+                onPageChange={handlePageTrigger}
                 renderOnZeroPageCount={null}
               />
             </div>
@@ -386,7 +398,7 @@ useEffect(() => {
               pageCount={hotelSalesHistory?.data?.totalPages}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
-              onPageChange={handlePageTrigger}
+              onPageChange={handlePageClick}
               renderOnZeroPageCount={null}
             />
           </div>
