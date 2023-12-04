@@ -154,19 +154,7 @@ const PaymentSection = ({
           type={`button`}
           onClick={() => formik.handleSubmit()}
           className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case 
-          ${
-            addCheckOutLoading
-              ? "btn-disabled"
-              : data?.room_ids?.length === 1
-              ? totalRefund > 0
-                ? ""
-                : colAmount === totalPayableAmount - data?.paid_amount
-                ? ""
-                : "btn-disabled"
-              : colAmount > 0 || totalRefund > 0
-              ? ""
-              : "btn-disabled"
-          }
+          ${addCheckOutLoading ? "btn-disabled" : ""}
           `}
         >
           {totalRefund < 1
@@ -181,9 +169,7 @@ const PaymentSection = ({
             ></span>
           ) : null}
         </button>
-       
       </div>
-      
     </section>
   );
 };
