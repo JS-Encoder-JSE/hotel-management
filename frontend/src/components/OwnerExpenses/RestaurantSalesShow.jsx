@@ -292,7 +292,7 @@ useEffect(() => {
               <PDFDownloadLink
                 document={
                   <RestaurantSalesReport
-                  date={restaurantSalesToday?.data?.docs}
+                  date={restaurantSalesToday?.data?.docs?.date}
                   values={restaurantSalesHistory?.data?.docs}
                     header={{
                       title: "DAK Hospitality LTD",

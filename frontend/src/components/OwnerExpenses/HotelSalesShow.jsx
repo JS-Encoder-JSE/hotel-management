@@ -15,6 +15,7 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import EditTodaysales from "./EditTodaysales";
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import {
   useGetDailyDataQuery,
   useGetOrdersByDateQuery,
@@ -23,6 +24,7 @@ import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
 import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
+import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 
 const HotelSalesShow = ({managerId,hotelId}) => {
   // console.log('------hotelId',managerId);
@@ -100,11 +102,11 @@ console.log(hotelTodaySales)
     limit: formik.values.entries,
   });
 
-  // console.log(hotelSalesHistory?.data?.totalPages)
+  console.log("hotelSalesHistory",hotelSalesHistory)
 
   useEffect(() => {
-    console.log("PDF Data:", hotelTodaySales?.data[0]?.docs);
-    setPdf(hotelTodaySales?.data?.docs.items);
+    console.log("PDF Data:", hotelTodaySales?.data);
+    setPdf(hotelTodaySales?.data.docs);
   }, [hotelTodaySales]);
 
 
@@ -126,8 +128,8 @@ console.log(hotelTodaySales)
                   <PDFDownloadLink
                     document={
                       <HotelSalesTodayReport
-                        date={hotelTodaySales?.data[0]?.docs}
-                        values={hotelTodaySales?.data?.docs[0]?.items}
+                      date={hotelTodaySales?.data?.docs}
+                      values={hotelTodaySales?.data?.docs}
                         header={{
                           title: "DAK Hospitality LTD",
                           name: "Today's Sales ",
@@ -224,12 +226,12 @@ console.log(hotelTodaySales)
                 {PDF?.length ? (
                   <PDFDownloadLink
                     document={
-                      <HotelSalesTodayReport
-                        date={hotelSalesHistory?.data}
-                        values={hotelSalesHistory?.data[0]?.items}
+                      <HotelSalesHistoryReport
+                      date={hotelTodaySales?.data?.docs?.date}
+                      values={hotelSalesHistory?.data?.docs}
                         header={{
                           title: "DAK Hospitality LTD",
-                          name: "Hotel Sales ",
+                          name: " Hotel Sales ",
                         }}
                       />
                     }

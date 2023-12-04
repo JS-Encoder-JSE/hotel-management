@@ -1,14 +1,11 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
-import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils";
+import { getFormateDateAndTime } from "../../utils/utils";
 
-const HotelSalesTodayReport = ({ values, header,date }) => {
+const HotelSalesHistoryReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
-    console.log("values",values)
-    const desiredHeaders = ["Serial No", "guestName","checked_in","checked_out","paid_amount","payable_amount","room_numbers","unpaid_amount"
-    
-   ];
+    const desiredHeaders = ["Serial No", "date","today_restaurant_income"];
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -83,42 +80,23 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
               </Text>
             ))}
           </View>
-          { values && values.map((item, rowIndex) => (
+          {values?.map((item, rowIndex) => (
             <View key={rowIndex} style={styles.tableRow}>
               {desiredHeaders.map((key, cellIndex) => (
                 <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ?getformatDateTime(date) // Use the date prop here
+                    ? getFormateDateAndTime(item[key]) // Use the date prop here
                     : item[key]}
                 </Text>
               ))}
             </View>
           ))}
         </View>
-
-        {/* <View style={styles.table}>
-          <View style={[styles.tableRow, styles.tableHeader]}>
-            {Object?.keys(values[0]).map((header, index) => (
-              <Text key={index} style={[styles.tableCell, styles.text]}>
-                {header}
-              </Text>
-            ))}
-          </View>
-          {values?.map((item, rowIndex) => (
-            <View key={rowIndex} style={styles.tableRow}>
-              {Object.values(item).map((cell, cellIndex) => (
-                <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
-                  {cell}
-                </Text>
-              ))}
-            </View>
-          ))}
-        </View> */}
       </Page>
     </Document>
   );
 };
 
-export default HotelSalesTodayReport;
+export default HotelSalesHistoryReport;
