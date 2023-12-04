@@ -34,7 +34,6 @@ console.log(paidAmt,"pp")
      const response = await cancelBooking({
         id :bookingId,
         data: {
-                amount:formik.values.amount,
                 tran_id:formik.values.trxID,
                 payment_method:formik.values.paymentMethod,
              },
