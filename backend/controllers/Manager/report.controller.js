@@ -86,11 +86,14 @@ export const getReportsByDate = async (req, res) => {
 
       // Convert date to a Date object and set time range for the entire day
       const startDate = new Date(date);
-      startDate.setHours(0, 0, 0, 0);
+      startDate.setHours(12, 0, 0, 0);
       startDate.toISOString(); // Set the time to the beginning of the day
-      const endDate = new Date(startDate);
+      console.log(startDate);
+      const endDate = new Date(date);
       endDate.setDate(endDate.getDate() + 1);
+      endDate.setHours(11, 59, 59, 59);
       endDate.toISOString(); // Set the end date to the next day
+      console.log(endDate);
 
       // Add a createdAt filter to match orders created between start and end dates
       query.createdAt = { $gte: startDate, $lt: endDate };

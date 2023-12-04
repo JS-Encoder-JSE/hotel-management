@@ -1,4 +1,6 @@
+
 import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaEye,
@@ -32,7 +34,8 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [HistoryCurrentPage, setHistoryCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
@@ -61,6 +64,10 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     setCurrentPage(page);
   };
 
+  const handlePageTrigger =({selected:page})=>{
+    setCurrentPage(page)
+  }
+
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
       formik.handleSubmit();
@@ -68,11 +75,19 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   };
 
 const {data:hotelTodaySales}=useGetReportsByDateQuery({
+  cp:currentPage,
   date:new Date().toLocaleDateString(),
   hotelId: hotelId
 })
 
 console.log(hotelTodaySales)
+
+
+useEffect(() => {
+  if (hotelTodaySales) setPageCount(hotelTodaySales?.data?.docs?.totalPages);
+}, [hotelTodaySales]);
+
+
 
 //   // / query by searchParams
 //   const {
@@ -108,6 +123,11 @@ console.log(hotelTodaySales)
     console.log("PDF Data:", hotelTodaySales?.data);
     setPdf(hotelTodaySales?.data.docs);
   }, [hotelTodaySales]);
+  useEffect(() => {
+    if (hotelSalesHistory) setPageCount(hotelSalesHistory?.data?.docs?.totalPages);
+  }, [hotelSalesHistory]);
+  
+  console.log(hotelSalesHistory?.data?.totalPages)
 
 
   return (
@@ -146,7 +166,7 @@ console.log(hotelTodaySales)
                 ) : null}
               </div>
 
-              <div className=" h-64 overflow-x-auto overflow-y-auto">
+              <div className=" overflow-x-auto overflow-y-auto">
                 {hotelTodaySales && hotelTodaySales?.data?.docs?.length ? (
                   <table className="table">
                     <thead>
@@ -202,7 +222,7 @@ console.log(hotelTodaySales)
                 previousLabel="<"
                 nextLabel=">"
                 breakLabel="..."
-                pageCount={pageCount}
+                pageCount={hotelTodaySales?.data?.totalPages}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
@@ -367,7 +387,7 @@ console.log(hotelTodaySales)
               pageCount={hotelSalesHistory?.data?.totalPages}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
+              onPageChange={handlePageTrigger}
               renderOnZeroPageCount={null}
             />
           </div>

@@ -6,7 +6,7 @@ import authSlice from "./auth/authSlice.js";
 import addOrderSlice from "./add-order/addOrderSlice.js";
 import baseAPI from "./baseAPI.js";
 import inventorySlice from "./inventory/inventorySlice.js";
-import checkoutInfoCalSlice from "./checkoutInfoCal/checkoutInfoCalSlice.js"
+import checkoutInfoCalSlice from "./checkoutInfoCal/checkoutInfoCalSlice.js";
 
 const authSliceTransform = createTransform(
   (inboundState, key) => {
@@ -25,7 +25,7 @@ const authSliceTransform = createTransform(
         isUserLoading: true,
       };
     else return outboundState;
-  },
+  }
 );
 
 const authPersistConfig = {
@@ -33,6 +33,12 @@ const authPersistConfig = {
   storage,
   transforms: [authSliceTransform],
   whitelist: ["authSlice"],
+  blacklist: [
+    "checkoutInfoCalSlice",
+    "addOrderSlice",
+    "inventorySlice",
+    "checkoutInfoCalSlice",
+  ],
 };
 
 const rootReducer = combineReducers({

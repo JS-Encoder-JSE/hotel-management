@@ -8,11 +8,12 @@ import EditHotelSales from "./EditHotelSales";
 import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
 import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
+import { current } from "@reduxjs/toolkit";
 
 const HotelSalesView = () => {
 
-  const [pageCount, setPageCount] = useState(10);
-
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage,setCurrentPage]=useState(1)
 
   const [searchParams] = useSearchParams();
 
@@ -20,20 +21,19 @@ const HotelSalesView = () => {
 
   const dateParam = searchParams.get('date');
   const hotelId = searchParams.get("hotel")
+console.log(hotelId,dateParam)
 
 
 
 // query by searchParams
   const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetReportsByDateQuery({
+    cp:currentPage,
     date: new Date(dateParam).toLocaleDateString(),
-    hotel_id:hotelId,
+    hotelId:hotelId,
   });
 
 console.log(orderedDataByDate,"hotel")
 
-
-const allItems = orderedDataByDate?.data?.flatMap(item => item.items || []);
-console.log(allItems)
 
 
  const handlePageClick = ({ selected: page }) => {
@@ -70,82 +70,49 @@ console.log(allItems)
       <div>
           <h1 className={`text-2xl text-center`}> Hotel Sales Information</h1>
         </div>
-        <div className="overflow-x-auto">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Date</th>
-                  <th>Items Name</th>
-                  <th>Description</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Remark</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...Array(+formik.values.entries || 5)].map((_, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>23-11-2023</td>
-                      <td>Rice</td>
-                      <td>25 Kg</td>
-                      <td>Nice Product</td>
-                      <td>
-                        <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
-                            <span>5000</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>Remark</td>
-                      <td>
-                        <button
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                          onClick={() =>
-                            document.getElementById("my_modal_3").showModal()
-                          }
-                        >
-                          <FaRegEdit />
-                        </button>
-                        <dialog id="my_modal_3" className="modal">
-                          <div className="modal-box">
-                            <form method="dialog">
-                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                ✕
-                              </button>
-                            </form>
-                            {/* <EditExpensesView /> */}
-                            <EditHotelSales/>
-                          </div>
-                        </dialog>
-                      </td>
-                     
-                    </tr>
-                  );
-                })}
-              </tbody>
-              
-            </table>
-           <div className={`flex justify-center md:ms-[20rem] mt-4 gap-2`}>
-            <h1>Grand Total :</h1>
-           <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
-                            <span>25000</span>
-                          </div>
-                        </div>
-           </div>
-          </div>
+        <div className=" h-64 overflow-x-auto overflow-y-auto">
+                {orderedDataByDate && orderedDataByDate?.data?.docs?.length ? (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>SL</th>
+                        <th>Guest Name</th>
+                        <th>CheckIn Date</th>
+                        <th>Checkout Date</th>
+                        <th>Paid Amount</th>
+                        <th>Payable Amount</th>
+                        <th>Payment Method</th>
+                        <th>Room Numbers</th>
+                        <th>Unpaid Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orderedDataByDate &&
+                        orderedDataByDate?.data?.docs?.map((item, idx) => {
+                          return (
+                            <tr
+                              className={
+                                idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                              }
+                            >
+                              <th>{++idx}</th>
+                              <td>{item?.guestName}</td>
+                              <td>{new Date(item?.checked_in).toLocaleDateString()}</td>
+                              <td>{new Date(item?.checked_out).toLocaleDateString()} </td>
+                              <td>{item?.paid_amount}</td>
+                              <td>{item?.payable_amount}</td>
+                              <td>{item?.payment_method}</td>
+                              <td>{item?.room_numbers?.map((roomNum)=> roomNum)}</td>
+                              <td>{item?.unpaid_amount}</td>           
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="text-center py-14"> No Sales Today</p>
+                )}
+              </div>
           {/* pagination */}
           <div className="flex justify-center mt-10">
             <ReactPaginate

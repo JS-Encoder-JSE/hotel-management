@@ -19,12 +19,22 @@ import toast from "react-hot-toast";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import CheckOutPrint from "./CheckOutPrint";
 import { useDispatch, useSelector } from "react-redux";
-import { setBookingInfo, updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
+import {
+  clearCheckoutCalSlice,
+  setBookingInfo,
+  setRefundAmount,
+  updateSubTotal,
+} from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
 import * as yup from "yup";
 import { getISOStringDate } from "../../../utils/utils";
+import { clearAddOrderSlice } from "../../../redux/add-order/addOrderSlice";
+import Modal from "../../../components/Modal";
+import RefundPaymentModal from "./RefundPaymentModal";
 
 const CheckOut = () => {
+  const [getCheckout, { data: checkout, isSuccess, isLoading }] =
+    useGetCheckoutMutation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomFromQuery = searchParams.get("room");
@@ -36,18 +46,21 @@ const CheckOut = () => {
   const [pBill, setPBill] = useState(0);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
-
-
-
- 
-
+  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
+    useSelector((state) => state.checkoutInfoCalSlice);
+  const totalRefund =
+    refundAmount - (additionalCharge + serviceCharge + texAmount);
+  const totalPayableAmount =
+    checkout?.data?.booking_info?.total_payable_amount +
+    additionalCharge +
+    serviceCharge +
+    texAmount;
   // const {
   //   data: checkout,
   //   isLoading: checkoutLoading,
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
-  const [getCheckout, { data: checkout, isSuccess, isLoading }] =
-    useGetCheckoutMutation();
+
   console.log("checkout :", checkout);
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
@@ -58,10 +71,10 @@ const CheckOut = () => {
 
   // this is use for Print
   const componentRef = useRef();
-
+  console.log({ pBill });
   // dispatch
   const dispatch = useDispatch();
-
+  // console.log({ pBill });
   const formik = useFormik({
     initialValues: {
       hotel_id: "",
@@ -71,37 +84,48 @@ const CheckOut = () => {
       const room_numbers = checkout?.data?.room_bookings?.map(
         (i) => i?.room_id?.roomNumber
       );
+      const initialPaidAmount =
+        checkout?.data?.booking_info?.paid_amount +
+        Number(paymentList[0].amount);
+      const initialUnpaidAmount = totalPayableAmount - initialPaidAmount;
 
-      const paidAmount =
-        checkout?.data?.booking_info?.paid_amount <= pBill
-          ? Number(paymentList[0].amount)
-          : pBill;
-      const payableAmount =
-        checkout?.data?.booking_info?.paid_amount <= pBill
-          ? Number(paymentList[0].amount)
-          : pBill;
-
-      const unpaid = Math.ceil(
-        checkout?.data?.booking_info?.total_payable_amount -
-          (checkout?.data?.booking_info?.paid_amount + paidAmount)
-      );
+      console.log();
       const response = await addCheckout({
         hotel_id: checkout?.data?.booking_info?.hotel_id,
-        booking_ids: [bookingId],
+        new_total_payable_amount: totalPayableAmount,
+        new_total_paid_amount:
+          totalRefund > pBill
+            ? checkout?.data?.booking_info?.paid_amount
+            : initialPaidAmount,
+        new_total_unpaid_amount:
+          totalRefund > 0 ? totalRefund * -1 : initialUnpaidAmount,
+        new_total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
+        new_total_additional_charges:
+          checkout?.data?.booking_info?.total_additional_charges +
+          additionalCharge,
+        new_total_service_charges:
+          checkout?.data?.booking_info?.total_service_charges + serviceCharge,
         guestName: checkout?.data?.booking_info?.guestName,
         room_numbers,
         payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
+        booking_ids: [bookingId],
+        tran_id: paymentList[0].trx ? paymentList[0].trx : "",
         checked_in: checkout?.data?.room_bookings[0]?.from,
         checked_out: checkout?.data?.room_bookings[0]?.to,
-        payable_amount: payableAmount,
-        paid_amount: paidAmount,
-        unpaid_amount: unpaid < 0 ? 0 : unpaid,
+        paid_amount: totalRefund > pBill ? 0 : Number(paymentList[0].amount),
+        total_checkout_bills: pBill,
       });
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
         toast.success("Checkout Successful");
         // navigate("/dashboard/checkout");
+        if (
+          totalRefund > 0 &&
+          checkout?.data?.booking_info?.room_ids?.length === 1
+        ) {
+          window.refundPayment.showModal();
+        }
       }
     },
   });
@@ -142,16 +166,27 @@ const CheckOut = () => {
       setShowRooms(true);
     }
   }, [roomFromQuery]);
-
+  useEffect(() => {
+    dispatch(clearAddOrderSlice());
+    dispatch(clearCheckoutCalSlice());
+  }, [fetch]);
   // set subtotal amount
   useEffect(() => {
     if (isSuccess) {
       dispatch(updateSubTotal(totalBilling));
-      dispatch(setBookingInfo(checkout?.data?.booking_info))
+      dispatch(setBookingInfo(checkout?.data?.booking_info));
+      dispatch(
+        setRefundAmount(
+          checkout?.data?.booking_info?.total_unpaid_amount < 1
+            ? Math.ceil(
+                checkout?.data?.booking_info?.paid_amount -
+                  checkout?.data?.booking_info?.total_payable_amount
+              )
+            : 0
+        )
+      );
     }
-  }, [checkout,hotelInfo]);
-
-
+  }, [checkout, hotelInfo]);
 
   return (
     <div className="space-y-8">
@@ -171,7 +206,7 @@ const CheckOut = () => {
           </button>
         </Link>
       </div>
-      <div className="max-w-3xl mx-auto flex gap-5 items-center justify-center flex flex-col md:flex-row">
+      <div className="max-w-3xl mx-auto gap-5 items-center justify-center flex flex-col md:flex-row">
         <div className="">
           <Select
             placeholder="Select room"
@@ -249,7 +284,12 @@ const CheckOut = () => {
               isHotelSuccess={isHotelSuccess}
               roomData={checkout?.data?.room_bookings}
               addCheckOutLoading={addCheckOutLoading}
+              totalPayableAmount={totalPayableAmount}
+              totalRefund={totalRefund}
             />
+            <Modal id={`refundPayment`}>
+              <RefundPaymentModal data={checkout?.data?.booking_info} />
+            </Modal>
           </div>
         </>
       ) : (

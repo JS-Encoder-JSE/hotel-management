@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
 import { isValidUrl } from "../../utils/utils";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 const generateRandomData = () => {
   return Array.from({ length: 12 }, () => Math.floor(Math.random() * 100) + 1);
 };
 const RestaurantDashboardChart = ({ monthlyData }) => {
   const location = useLocation();
-  const {  pathname  } = location;
+  const { pathname } = location;
 
   const months = [
     "Jan",
@@ -70,6 +70,7 @@ const RestaurantDashboardChart = ({ monthlyData }) => {
       },
     },
   });
+
   useEffect(() => {
     const sortedData = monthlyData.sort((a, b) => {
       const aDate = new Date(`${a.year}-${a.month_name}`);
@@ -91,28 +92,53 @@ const RestaurantDashboardChart = ({ monthlyData }) => {
       (data) => data.total_restaurant_profit
     );
     const hotelProfit = last12Data.map((data) => data.total_hotel_profit);
+    const total_income = last12Data.map((data) => data.total_income);
+    const total_expense = last12Data.map((data) => data.total_expense);
+    const total_profit = last12Data.map((data) => data.total_profit);
+
     // Update state
     setOptions((prevProps) => ({
       ...prevProps,
       series: [
         {
           ...prevProps.series[0],
-          data: isValidUrl("hotel",pathname) ? hotelExpense : restaurantExpense,
+          data:
+            !isValidUrl("dashboard/hotel", pathname) &&
+            !isValidUrl("dashboard/restaurant", pathname) &&
+            isValidUrl("dashboard", pathname)
+              ? total_expense
+              : isValidUrl("dashboard/hotel", pathname)
+              ? hotelExpense
+              : restaurantExpense,
         },
         {
           ...prevProps.series[1],
-          data: isValidUrl("hotel",pathname) ? hotelIncome : restaurantIncome,
+          data:
+            !isValidUrl("dashboard/hotel", pathname) &&
+            !isValidUrl("dashboard/restaurant", pathname) &&
+            isValidUrl("dashboard", pathname)
+              ? total_income
+              : isValidUrl("dashboard/hotel", pathname)
+              ? hotelIncome
+              : restaurantIncome,
         },
         {
           ...prevProps.series[2],
-          data: isValidUrl("hotel",pathname) ? hotelProfit : restaurantProfit,
+          data:
+            !isValidUrl("dashboard/hotel", pathname) &&
+            !isValidUrl("dashboard/restaurant", pathname) &&
+            isValidUrl("dashboard", pathname)
+              ? total_profit
+              : isValidUrl("dashboard/hotel", pathname)
+              ? hotelProfit
+              : restaurantProfit,
         },
       ],
       xaxis: {
         categories: allMonth,
       },
     }));
-  }, [monthlyData]);
+  }, [monthlyData, pathname]);
   return (
     <ReactApexChart
       options={options}

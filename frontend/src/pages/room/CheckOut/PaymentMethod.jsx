@@ -4,6 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useSelector } from "react-redux";
 // const [discount, setDiscount] = useState(false);
 
 const PaymentMethod = ({
@@ -11,8 +12,10 @@ const PaymentMethod = ({
   handleAdd,
   handleRemove,
   handleChange,
+  totalRefund,
+  pBill,
+  roomData,
 }) => {
-
   // const paymentSchema = yup.object({
   //   method: yup.string().required("Payment method is required"),
   //   amount: yup.number().required("Amount is required"),
@@ -21,7 +24,7 @@ const PaymentMethod = ({
   //       return schema.required("Transaction ID is required");
   //     else return schema;
   //   }),
-  
+
   //   date: yup.date().required("Date is required"),
   // });
 
@@ -29,7 +32,6 @@ const PaymentMethod = ({
   //   initialValues: paymentList,
   //   validationSchema: yup.array().of(paymentSchema),
   // });
-  
 
   return (
     <div className={`mt-5 space-y-3`}>
@@ -56,8 +58,10 @@ const PaymentMethod = ({
                 <input
                   type="number"
                   value={elem.amount}
-                  onWheel={ event => event.currentTarget.blur() }
-                  disabled={!elem?.method}
+                  onWheel={(event) => event.currentTarget.blur()}
+                  disabled={
+                    !elem?.method
+                  }
                   placeholder="Amount"
                   name="amount"
                   className={`input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 

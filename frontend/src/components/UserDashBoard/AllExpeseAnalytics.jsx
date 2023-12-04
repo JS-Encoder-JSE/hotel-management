@@ -17,6 +17,7 @@ import ThreeBarChart from "./ThreeBarChart";
 import RestaurantDashboardChart from "./RestaurantDashboardChart";
 
 const AllExpeseAnalytics = ({ dashboardData, dummyData, userHotel, user }) => {
+  console.log({ dashboardData });
   return (
     <div className="mt-10">
       <div>

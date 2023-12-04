@@ -49,14 +49,20 @@ export const addExpense = async (req, res) => {
 
       const managerDashboardTable = await DashboardTable.findOne({
         user_id: userId,
-        month_name: month_name,
-        year: year,
+        month_name,
+        year,
       });
+      managerDashboardTable.total_expense += total_amount;
+      managerDashboardTable.total_profit -= total_amount;
+      await managerDashboardTable.save();
       const ownerDashboardTable = await DashboardTable.findOne({
         user_id: user.parent_id,
-        month_name: month_name,
-        year: year,
+        month_name,
+        year,
       });
+      ownerDashboardTable.total_expense += total_amount;
+      ownerDashboardTable.total_profit -= total_amount;
+      await ownerDashboardTable.save();
       if (spendedfor === "hotel") {
         existingDailySubDashData.today_hotel_expenses += total_amount;
         existingDailySubDashData.today_hotel_profit -= total_amount;
@@ -73,16 +79,10 @@ export const addExpense = async (req, res) => {
         existingStaticSubDashData.total_restaurant_expenses += total_amount;
         existingStaticSubDashData.total_restaurant_profit -= total_amount;
       }
-      managerDashboardTable.total_expense += total_amount;
-      managerDashboardTable.total_profit -= total_amount;
-      ownerDashboardTable.total_expense += total_amount;
-      ownerDashboardTable.total_profit -= total_amount;
 
       await existingDailySubDashData.save();
       await existingMonthlySubDashData.save();
       await existingStaticSubDashData.save();
-      await managerDashboardTable.save();
-      await ownerDashboardTable.save();
     }
     if (!existingExpense) {
       console.log("aise2");
@@ -103,8 +103,8 @@ export const addExpense = async (req, res) => {
       }
       const managerDashboardTable = await DashboardTable.findOne({
         user_id: userId,
-        month_name: month_name,
-        year: year,
+        month_name,
+        year,
       });
 
       if (managerDashboardTable) {
@@ -119,7 +119,7 @@ export const addExpense = async (req, res) => {
           month_name,
           year,
           total_expense: total_amount,
-          total_profit: 0 - total_amount,
+          total_profit: profit_after_expense,
         });
         // Save the new dashboard table to the database
         await newDashboardTable.save();
@@ -141,7 +141,7 @@ export const addExpense = async (req, res) => {
           month_name,
           year,
           total_expense: total_amount,
-          total_profit: 0 - total_amount,
+          total_profit: profit_after_expense,
         });
         // Save the new dashboard table to the database
         await newDashboardTable.save();

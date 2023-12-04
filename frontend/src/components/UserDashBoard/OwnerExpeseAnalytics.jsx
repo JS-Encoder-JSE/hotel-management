@@ -6,15 +6,17 @@ import OwnerExpenseAndSalesChart from "./OwnerExpneseAndSalesChart";
 import { BiRupee } from "react-icons/bi";
 import ThreeBarChart from "./ThreeBarChart";
 import RestaurantDashboardChart from "./RestaurantDashboardChart";
+import { isValidUrl } from "../../utils/utils";
+import { useLocation } from "react-router-dom";
 
 const OwnerExpeseAnalytics = ({
   monthlyData,
   userHotel,
   dashboardData,
   dummyData,
- 
 }) => {
-  
+  console.log(dashboardData);
+  const { pathname } = useLocation();
   return (
     <div>
       <div className="mt-10">
@@ -33,7 +35,12 @@ const OwnerExpeseAnalytics = ({
                     <BiRupee />
                   </div>
                   <div>
-                    <span>{dashboardData?.total_expense}</span>
+                    <span>
+                      {isValidUrl("dashboard/finance", pathname) ||
+                      isValidUrl("dashboard", pathname)
+                        ? dashboardData?.permanent_datas?.total_expense
+                        : dashboardData?.total_expense}
+                    </span>
                   </div>
                 </div>
               </p>
@@ -49,7 +56,12 @@ const OwnerExpeseAnalytics = ({
                     <BiRupee />
                   </div>
                   <div>
-                    <span>{dashboardData?.total_revenue}</span>
+                    <span>
+                      {isValidUrl("dashboard/finance", pathname) ||
+                      isValidUrl("dashboard", pathname)
+                        ? dashboardData?.permanent_datas?.total_revenue
+                        : dashboardData?.total_revenue}
+                    </span>
                   </div>
                 </div>
               </p>
@@ -67,7 +79,12 @@ const OwnerExpeseAnalytics = ({
                     <BiRupee />
                   </div>
                   <div>
-                    <span>{dashboardData?.net_profit}</span>
+                    <span>
+                      {isValidUrl("dashboard/finance", pathname) ||
+                      isValidUrl("dashboard", pathname)
+                        ? dashboardData?.permanent_datas?.net_profit
+                        : dashboardData?.net_profit}
+                    </span>
                   </div>
                 </div>
               </p>
@@ -77,8 +94,6 @@ const OwnerExpeseAnalytics = ({
           <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
             <RestaurantDashboardChart
               monthlyData={[...dummyData, ...dashboardData?.monthly_datas]}
-               
-              
             />
           </section>
 

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import toast from "react-hot-toast";
-
+import { useCashbackMutation } from "../../../redux/room/roomAPI";
+import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
@@ -17,19 +18,33 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentCheckout = () => {
-
-   
+const RefundPaymentCheckout = ({ totalRefund, data }) => {
+  const [cashback] = useCashbackMutation();
+  const { user } = useSelector((state) => state.authSlice);
   const formik = useFormik({
     initialValues: {
-      amount:"",
+      amount: totalRefund,
       paymentMethod: "",
       trxID: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      console.log(values)
-     
+      console.log(values);
+      const response = cashback({
+        manager_id: user?._id,
+        bookingInfoId: data?._id,
+        amount: totalRefund, // Specify the amount you want to pay
+        paymentMethod: values?.paymentMethod, // Specify the payment method
+        tran_id: values?.trxID,
+        remark: "Payment for cashback",
+      });
+      if (response?.error) {
+        toast.error(response.error.data.message);
+      } else {
+        toast.success("Refund Successful");
+        
+        // navigate("/dashboard/checkout");
+      }
     },
   });
   // Price Validation
@@ -109,6 +124,7 @@ const RefundPaymentCheckout = () => {
               value={formik.values.amount}
               onChange={handleAmount}
               onBlur={formik.handleBlur}
+              disabled
             />
             {formik.touched.amount && Boolean(formik.errors.amount) ? (
               <small className="text-red-600">

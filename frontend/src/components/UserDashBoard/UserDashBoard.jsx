@@ -22,11 +22,13 @@ import { useGetDashboardInfoQuery } from "../../redux/dashboard/dashboardApi";
 import { Rings } from "react-loader-spinner";
 import AllExpeseAnalytics from "./AllExpeseAnalytics";
 import OwnerExpeseAnalytics from "./OwnerExpeseAnalytics";
-import { dummyData } from "../../utils/utils";
+import { dummyData, isValidUrl } from "../../utils/utils";
+import { useLocation } from "react-router-dom";
 // import { useLocation } from 'react-router-dom';
 
 const UserDashBoard = ({ managerId }) => {
   const { user } = useSelector((store) => store.authSlice);
+  const { pathname } = useLocation();
   const {
     data: dashboardData,
     isSuccess,
@@ -36,7 +38,7 @@ const UserDashBoard = ({ managerId }) => {
   const [userHotel, setUserHotel] = useState(
     user?.role === "manager" || user?.role === "owner"
   );
-  
+  console.log(dashboardData);
   if (isLoading || isError) {
     return (
       <Rings
@@ -187,15 +189,13 @@ const UserDashBoard = ({ managerId }) => {
         </section>
 
         <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
-       <CustomerReservation
+          <CustomerReservation
             monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
             userHotel={userHotel}
             managerId={managerId}
             userId={user?._id}
           />
         </section>
-        
-
 
         <section className="mt-8 grid md:grid-cols-2 gap-5">
           <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
@@ -240,25 +240,25 @@ const UserDashBoard = ({ managerId }) => {
         </div>
       )} */}
         </section>
-        {user?.role === "manager" && (
-          <section>
-            <AllExpeseAnalytics
-              user={user}
-              userHotel={userHotel}
-              dashboardData={dashboardData}
-              dummyData={dummyData}
-            />
-          </section>
-        )}
+        {user?.role === "manager" ||
+          (isValidUrl("dashboard/finance", pathname) && (
+            <section>
+              <AllExpeseAnalytics
+                user={user}
+                userHotel={userHotel}
+                dashboardData={dashboardData}
+                dummyData={dummyData}
+              />
+            </section>
+          ))}
 
-        {user?.role === "owner" && (
+        {!isValidUrl("dashboard/finance", pathname) && user?.role === "owner" && (
           <section>
             <OwnerExpeseAnalytics
               user={user}
               userHotel={userHotel}
               dashboardData={dashboardData}
               dummyData={dummyData}
-             
             />
           </section>
         )}
