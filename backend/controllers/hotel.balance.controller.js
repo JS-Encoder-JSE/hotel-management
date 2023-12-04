@@ -151,6 +151,7 @@ export const cashBack = async (req, res) => {
       manager_id,
       booking_info_id: bookingInfoId,
       payment_method: paymentMethod,
+      dedicated_to: "hotel",
       tran_id,
       from: bookingInfo.guestName,
       to: manager.username,
