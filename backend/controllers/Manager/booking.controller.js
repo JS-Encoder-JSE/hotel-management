@@ -425,6 +425,12 @@ export const cancelBooking = async (req, res) => {
     const year = currentDate.getFullYear().toString();
 
     const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
     // Fetch the booking to be canceled
     const booking = await Booking.findById(bookingId);
     if (!booking) {
