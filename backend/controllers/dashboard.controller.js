@@ -80,7 +80,7 @@ export const addDashboardTable = async (req, res) => {
     }
 
     // Set the user_role based on the user data
-    const user_role = user.role || "defaultUserRole";
+    const user_role = user.role;
 
     // Create a new dashboard table entry
     const newDashboardTable = new DashboardTable({

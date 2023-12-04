@@ -294,7 +294,7 @@ const ManageCheckinModal = () => {
     <>
     <form autoComplete="off" method="dialog">
         <button
-          // ref={closeRef}
+          ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           onClick={() => formik.handleReset()}
         >
