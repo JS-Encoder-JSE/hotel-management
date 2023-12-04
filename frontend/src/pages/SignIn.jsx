@@ -10,6 +10,7 @@ import { useSignInMutation } from "../redux/auth/authAPI.js";
 import { setToken } from "../redux/auth/authSlice.js";
 import loginPageLogo from "../assets/LoginLogo.png"
 import Footer from "../components/Footer.jsx";
+import { versionControl } from "../utils/utils.js";
 
 // sign in form validation
 const validationSchema = yup.object({
@@ -173,7 +174,7 @@ const SignIn = () => {
             <Link className={`text-green-slimy text-xl font-semibold`} to={`https://jsencoder.com/`} target="_blank">
               JS Encoder
             </Link>
-            . Copyright &copy; {new Date().getFullYear()}. All rights reserved. Version 01.0.0 </h3>
+            . Copyright &copy; {new Date().getFullYear()}. All rights reserved. Version {versionControl} </h3>
         </div>
     
 </>
