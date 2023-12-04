@@ -26,7 +26,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [HistoryCurrentPage, setHistoryCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
@@ -42,8 +42,8 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: new Date(values.endDate).toLocaleDateString(),
-        fromDate: new Date(values.startDate).toLocaleDateString(),
+        toDate: p? new Date(values.endDate).toISOString():"",
+        fromDate: p? new Date(values.startDate).toISOString():"",
       }));
     },
     onReset: (values) => {
@@ -67,7 +67,6 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   };
 
 const {data:hotelTodaySales}=useGetReportsByDateQuery({
-  cp:currentPage,
   date:new Date().toLocaleDateString(),
   hotelId: hotelId
 })

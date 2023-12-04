@@ -12,8 +12,8 @@ import { current } from "@reduxjs/toolkit";
 
 const HotelSalesView = () => {
 
-  const [pageCount, setPageCount] = useState(1);
-  const [currentPage,setCurrentPage]=useState(1)
+  const [pageCount, setPageCount] = useState(0);
+  const [currentPage,setCurrentPage]=useState(0)
 
   const [searchParams] = useSearchParams();
 
