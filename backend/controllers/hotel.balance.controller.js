@@ -1,5 +1,5 @@
 import { BookingInfo } from "../models/Manager/booking.model.js";
-import { DashboardTable } from "../models/dashboard.model.js";
+import { Dashboard, DashboardTable } from "../models/dashboard.model.js";
 import {
   DailySubDashData,
   MonthlySubDashData,
@@ -29,19 +29,30 @@ export const makePayment = async (req, res) => {
         message: "BookingInfo not found",
       });
     }
-    // Calculate new paid_amount and total_unpaid_amount
-    const newPaidAmount = bookingInfo.paid_amount + amount;
-    const newUnpaidAmount = Math.max(
-      0,
-      bookingInfo.total_unpaid_amount - amount
-    );
+    // // Calculate new paid_amount and total_unpaid_amount
+    // const newPaidAmount = bookingInfo.paid_amount + amount;
+    // const newUnpaidAmount = Math.max(
+    //   0,
+    //   bookingInfo.total_unpaid_amount - amount
+    // );
 
     // Update BookingInfo with the new values
-    bookingInfo.paid_amount = newPaidAmount;
-    bookingInfo.total_unpaid_amount = newUnpaidAmount;
-
-    // Save the updated BookingInfo
+    bookingInfo.paid_amount += amount;
+    bookingInfo.total_unpaid_amount -= amount;
+    bookingInfo.total_balance += amount
     await bookingInfo.save();
+
+    const ownerDashboard = await Dashboard.findOne({
+      user_id: manager.parent_id,
+    });
+    ownerDashboard.total_amount += amount;
+    await ownerDashboard.save();
+
+    const managerDashboard = await Dashboard.findOne({
+      user_id: manager_id,
+    });
+    managerDashboard.total_amount += amount;
+    await managerDashboard.save();
 
     // Create a new TransactionLog entry
     const newTransactionLog = new TransactionLog({
@@ -90,9 +101,6 @@ export const cashBack = async (req, res) => {
     } = req.body;
 
     const currentDate = new Date();
-    const date = currentDate.toLocaleDateString();
-    const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
-    const year = currentDate.getFullYear().toString();
 
     const manager = await User.findById(manager_id);
     if (!manager) {
@@ -111,42 +119,21 @@ export const cashBack = async (req, res) => {
       });
     }
     bookingInfo.paid_amount -= amount;
+    bookingInfo.total_balance -= amount;
     bookingInfo.save();
 
-    // const managerDashboardTable = await DashboardTable.findOne({
-    //   user_id: manager_id,
-    //   month_name,
-    //   year,
-    // });
-    // managerDashboardTable.total_expense += amount;
-    // managerDashboardTable.total_profit -= amount;
-    // managerDashboardTable.save();
+    const ownerDashboard = await Dashboard.findOne({
+      user_id: manager.parent_id,
+    });
+    ownerDashboard.total_amount -= amount;
+    await ownerDashboard.save();
 
-    // const managerStaticSubDashData = await StaticSubDashData.findOne({
-    //   user_id: manager_id,
-    // });
-    // managerStaticSubDashData.total_hotel_expenses += amount;
-    // managerStaticSubDashData.total_hotel_profit -= amount;
-    // managerStaticSubDashData.save();
+    const managerDashboard = await Dashboard.findOne({
+      user_id: manager_id,
+    });
+    managerDashboard.total_amount -= amount;
+    await managerDashboard.save();
 
-    // const managerMonthlySubDashData = await MonthlySubDashData.findOne({
-    //   user_id: manager_id,
-    //   month_name,
-    //   year,
-    // });
-    // managerMonthlySubDashData.total_hotel_expenses += amount;
-    // managerMonthlySubDashData.total_hotel_profit -= amount;
-    // managerMonthlySubDashData.save();
-
-    // const managerDailySubDashData = await DailySubDashData.findOne({
-    //   user_id: manager_id,
-    //   date,
-    // });
-    // managerDailySubDashData.today_hotel_expenses += amount;
-    // managerDailySubDashData.today_hotel_profit -= amount;
-    // managerDailySubDashData.save();
-
-    // Create a new TransactionLog entry
     const newTransactionLog = new TransactionLog({
       manager_id,
       booking_info_id: bookingInfoId,
