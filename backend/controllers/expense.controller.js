@@ -103,8 +103,8 @@ export const addExpense = async (req, res) => {
       }
       const managerDashboardTable = await DashboardTable.findOne({
         user_id: userId,
-        month_name: month_name,
-        year: year,
+        month_name,
+        year,
       });
 
       if (managerDashboardTable) {
@@ -119,7 +119,7 @@ export const addExpense = async (req, res) => {
           month_name,
           year,
           total_expense: total_amount,
-          total_profit: 0 - total_amount,
+          total_profit: profit_after_expense,
         });
         // Save the new dashboard table to the database
         await newDashboardTable.save();
@@ -141,7 +141,7 @@ export const addExpense = async (req, res) => {
           month_name,
           year,
           total_expense: total_amount,
-          total_profit: 0 - total_amount,
+          total_profit: profit_after_expense,
         });
         // Save the new dashboard table to the database
         await newDashboardTable.save();
