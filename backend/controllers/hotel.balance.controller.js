@@ -10,14 +10,8 @@ import User from "../models/user.model.js";
 
 export const makePayment = async (req, res) => {
   try {
-    const {
-      manager_id,
-      bookingInfoId,
-      amount,
-      paymentMethod,
-      tran_id,
-      remark,
-    } = req.body;
+    const { manager_id, booking_id, amount, paymentMethod, tran_id, remark } =
+      req.body;
 
     const manager = await User.findById(manager_id);
     if (!manager) {
@@ -27,7 +21,7 @@ export const makePayment = async (req, res) => {
       });
     }
     // Find the BookingInfo based on the provided bookingInfoId
-    const bookingInfo = await BookingInfo.findById(bookingInfoId);
+    const bookingInfo = await BookingInfo.findOne({ booking_ids: booking_id });
 
     if (!bookingInfo) {
       return res.status(404).json({
