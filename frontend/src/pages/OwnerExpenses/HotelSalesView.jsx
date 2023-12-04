@@ -8,11 +8,12 @@ import EditHotelSales from "./EditHotelSales";
 import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
 import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
+import { current } from "@reduxjs/toolkit";
 
 const HotelSalesView = () => {
 
-  const [pageCount, setPageCount] = useState(10);
-
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage,setCurrentPage]=useState(1)
 
   const [searchParams] = useSearchParams();
 
@@ -26,6 +27,7 @@ console.log(hotelId,dateParam)
 
 // query by searchParams
   const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetReportsByDateQuery({
+    cp:currentPage,
     date: new Date(dateParam).toLocaleDateString(),
     hotelId:hotelId,
   });

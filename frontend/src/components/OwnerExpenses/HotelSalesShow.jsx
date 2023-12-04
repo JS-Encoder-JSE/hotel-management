@@ -27,6 +27,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [HistoryCurrentPage, setHistoryCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
@@ -55,6 +56,10 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     setCurrentPage(page);
   };
 
+  const handlePageTrigger =({selected:page})=>{
+    setCurrentPage(page)
+  }
+
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.search === 13) {
       formik.handleSubmit();
@@ -73,6 +78,7 @@ console.log(hotelTodaySales)
 useEffect(() => {
   if (hotelTodaySales) setPageCount(hotelTodaySales?.data?.docs?.totalPages);
 }, [hotelTodaySales]);
+
 
 
 //   // / query by searchParams
@@ -102,7 +108,10 @@ useEffect(() => {
     managerId: managerId,
     limit: formik.values.entries,
   });
-
+  useEffect(() => {
+    if (hotelSalesHistory) setPageCount(hotelSalesHistory?.data?.docs?.totalPages);
+  }, [hotelSalesHistory]);
+  
   console.log(hotelSalesHistory?.data?.totalPages)
 
 
@@ -127,7 +136,7 @@ useEffect(() => {
                 </button>
               </div>
 
-              <div className=" h-64 overflow-x-auto overflow-y-auto">
+              <div className=" overflow-x-auto overflow-y-auto">
                 {hotelTodaySales && hotelTodaySales?.data?.docs?.length ? (
                   <table className="table">
                     <thead>
@@ -183,7 +192,7 @@ useEffect(() => {
                 previousLabel="<"
                 nextLabel=">"
                 breakLabel="..."
-                pageCount={hotelTodaySales?.data?.docs?.totalPages}
+                pageCount={hotelTodaySales?.data?.totalPages}
                 pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
@@ -333,7 +342,7 @@ useEffect(() => {
               pageCount={hotelSalesHistory?.data?.totalPages}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
+              onPageChange={handlePageTrigger}
               renderOnZeroPageCount={null}
             />
           </div>
