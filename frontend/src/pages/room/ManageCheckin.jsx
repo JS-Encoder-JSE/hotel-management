@@ -19,7 +19,7 @@ const ManageCheckin = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
- const handleOpenModal = () => {
+  const handleOpenModal = () => {
     setIsModalOpen(true);
 
     // Automatically close the modal after 3 seconds (adjust as needed)
@@ -37,29 +37,26 @@ const ManageCheckin = () => {
     onSubmit: (values) => {
       setSearch(values.search);
       setCurrentPage(0);
-
-      
     },
   });
 
-
-
-  const { data: checkinList, isLoading,refetch } =  ({
+  const {
+    data: checkinList,
+    isLoading,
+    refetch,
+  } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
     search: formik.values.search,
     page: currentPage,
     filter: "CheckedIn",
-    
   });
 
   // refetch()
-const path = useLocation()
-console.log(path.pathname)
-useEffect(()=>{
-  refetch()
-},[path.pathname])
-
-
+  const path = useLocation();
+  console.log(path.pathname);
+  useEffect(() => {
+    refetch();
+  }, [path.pathname]);
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
@@ -69,22 +66,23 @@ useEffect(()=>{
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
-        <div>
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
-      <div className="flex justify-end" >
-    
+      <div>
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
+      <div className="flex justify-end">
         {/* filter by hotels  */}
         {/*<div className="flex items-center gap-2">*/}
         {/*  /!* <p>Please choose a hotel : </p> *!/*/}
@@ -156,7 +154,10 @@ useEffect(()=>{
       </div>
       {!isLoading ? (
         checkinList?.data?.docs?.length ? (
-        <CheckinList  page={checkinList?.data?.totalPages} checkinList={checkinList?.data?.docs}/>
+          <CheckinList
+            page={checkinList?.data?.totalPages}
+            checkinList={checkinList?.data?.docs}
+          />
         ) : (
           <h3 className={`text-center`}>No data found!</h3>
         )
@@ -169,8 +170,8 @@ useEffect(()=>{
         />
       )}
       <Modal id={`cci_modal`} classNames={`bg-white`}>
-           <ManageCheckinModal/>
-          </Modal>
+        <ManageCheckinModal />
+      </Modal>
     </div>
   );
 };

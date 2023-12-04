@@ -25,53 +25,78 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
     useUpdateBookingMutation();
   const [cancelBooking] = useCancelBookingMutation();
   const [bookingId, setBookingId] = useState("");
-  const { data: isLastBooking } = useGetLastActiveBookingQuery(bookingId);
+  // const { data: isLastBooking } = useGetLastActiveBookingQuery(bookingId);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
 
-console.log(isLastBooking)
+  // console.log(isLastBooking)
 
-
+  const { data: isLastBooking, refetch } =
+    useGetLastActiveBookingQuery(bookingId);
   const handleDelete = (id) => {
     setBookingId(id);
-
-    if (isLastBooking?.success) {
-      // If the condition is true, show the modal
-      window.refundPay.showModal();
-    } else {
-      // If the condition is false, show the confirmation dialog
-      Swal.fire({
-        title: "Are you sure?",
-        text: "Booking will be Cancel.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#35bef0",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Cancel it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Canceled!",
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            // Perform the cancellation
-            cancelBooking({
-              id: id,
-              data: {
-                tran_id: "",
-                payment_method: "",
-              },
-            });
-          });
-        }
-      });
-    }
+    refetch();
+    // if (isLastBooking?.success) {
+    //   // If the condition is true, show the modal
+    //   window.refundPay.showModal();
+    // } else {
+    //   // If the condition is false, show the confirmation dialog
+    // }
   };
+
+  useEffect(() => {
+    if (isLastBooking) {
+      if (isLastBooking?.success) {
+        window.refundPay.showModal();
+      } else {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Booking will be Cancel.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#35bef0",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Cancel it!",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await cancelBooking({
+                id: id,
+                data: {
+                  tran_id: "",
+                  payment_method: "",
+                },
+              });
+              if (response) {
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Canceled!",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
+              }
+            } catch (error) {
+              console.error("Error:", error);
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+              });
+            }
+          }
+        });
+      }
+    }
+  }, [isLastBooking]);
 
   useEffect(() => {
     if (data && modalOpen) {

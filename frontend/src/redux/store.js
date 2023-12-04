@@ -33,7 +33,12 @@ const authPersistConfig = {
   storage,
   transforms: [authSliceTransform],
   whitelist: ["authSlice"],
-  blacklist: ["checkoutInfoCalSlice", "addOrderSlice"],
+  blacklist: [
+    "checkoutInfoCalSlice",
+    "addOrderSlice",
+    "inventorySlice",
+    "checkoutInfoCalSlice",
+  ],
 };
 
 const rootReducer = combineReducers({
