@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useState,useEffect } from "react";
+
 import {
   FaArrowLeft,
   FaEye,
@@ -8,25 +10,31 @@ import {
 } from "react-icons/fa";
 import { GrPowerReset } from "react-icons/gr";
 import { AiTwotoneDelete } from "react-icons/ai";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import EditTodaysales from "./EditTodaysales";
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import {
   useGetDailyDataQuery,
   useGetOrdersByDateQuery,
 } from "../../redux/room/roomAPI";
 import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
+import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
+import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
+import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 
 const HotelSalesShow = ({managerId,hotelId}) => {
-  console.log('------hotelId',managerId);
+  // console.log('------hotelId',managerId);
+  const [PDF, setPdf] = useState([]);
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [HistoryCurrentPage, setHistoryCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
@@ -42,8 +50,8 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: new Date(values.endDate).toLocaleDateString(),
-        fromDate: new Date(values.startDate).toLocaleDateString(),
+        toDate: p? new Date(values.endDate).toISOString():"",
+        fromDate: p? new Date(values.startDate).toISOString():"",
       }));
     },
     onReset: (values) => {
@@ -67,7 +75,6 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   };
 
 const {data:hotelTodaySales}=useGetReportsByDateQuery({
-  cp:currentPage,
   date:new Date().toLocaleDateString(),
   hotelId: hotelId
 })
@@ -108,6 +115,13 @@ useEffect(() => {
     managerId: managerId,
     limit: formik.values.entries,
   });
+
+  console.log("hotelSalesHistory",hotelSalesHistory)
+
+  useEffect(() => {
+    console.log("PDF Data:", hotelTodaySales?.data);
+    setPdf(hotelTodaySales?.data.docs);
+  }, [hotelTodaySales]);
   useEffect(() => {
     if (hotelSalesHistory) setPageCount(hotelSalesHistory?.data?.docs?.totalPages);
   }, [hotelSalesHistory]);
@@ -128,12 +142,27 @@ useEffect(() => {
               </h3>
             </div>
             <div>
-              <div className={`flex justify-end mb-5`}>
-                <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-                  {" "}
-                  <FaRegFilePdf />
-                  PDF
-                </button>
+            <div className={`flex justify-end mb-5 mr-5`}>
+                {PDF?.length ? (
+                  <PDFDownloadLink
+                    document={
+                      <HotelSalesTodayReport
+                      date={hotelTodaySales?.data?.docs}
+                      values={hotelTodaySales?.data?.docs}
+                        header={{
+                          title: "DAK Hospitality LTD",
+                          name: "Today's Sales ",
+                        }}
+                      />
+                    }
+                    fileName={`${new Date().toLocaleDateString()}.pdf`}
+                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                    onError={(error) => console.error("PDF Error", error)}
+                  >
+                    <BsFileEarmarkPdfFill />
+                    PDF
+                  </PDFDownloadLink>
+                ) : null}
               </div>
 
               <div className=" overflow-x-auto overflow-y-auto">
@@ -212,13 +241,28 @@ useEffect(() => {
               Hotel Sales
             </h3>
           </div>
-          <div className="flex justify-end mr-5">
-            <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-              {" "}
-              <FaRegFilePdf />
-              PDF
-            </button>
-          </div>
+          <div className={`flex justify-end mb-5 mr-5`}>
+                {PDF?.length ? (
+                  <PDFDownloadLink
+                    document={
+                      <HotelSalesHistoryReport
+                      date={hotelTodaySales?.data?.docs?.date}
+                      values={hotelSalesHistory?.data?.docs}
+                        header={{
+                          title: "DAK Hospitality LTD",
+                          name: " Hotel Sales ",
+                        }}
+                      />
+                    }
+                    fileName={`${new Date().toLocaleDateString()}.pdf`}
+                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                    onError={(error) => console.error("PDF Error", error)}
+                  >
+                    <BsFileEarmarkPdfFill />
+                    PDF
+                  </PDFDownloadLink>
+                ) : null}
+              </div>
         </div>
         <div className={`flex flex-col md:flex-row gap-3`}>
           <DatePicker

@@ -17,11 +17,10 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentSection = ({bookingId,closeRef,paidAmt}) => {
+const RefundPaymentSection = ({ bookingId, closeRef, paidAmt }) => {
+  const [cancelBooking] = useCancelBookingMutation();
+  console.log(paidAmt, "pp");
 
-    const [cancelBooking] = useCancelBookingMutation();
-console.log(paidAmt,"pp")
- 
   const formik = useFormik({
     initialValues: {
       amount: paidAmt?.paid_amount,
@@ -30,13 +29,13 @@ console.log(paidAmt,"pp")
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      console.log(values)
-     const response = await cancelBooking({
-        id :bookingId,
+      console.log(values);
+      const response = await cancelBooking({
+        id: bookingId,
         data: {
-                tran_id:formik.values.trxID,
-                payment_method:formik.values.paymentMethod,
-             },
+          tran_id: formik.values.trxID,
+          payment_method: formik.values.paymentMethod,
+        },
       });
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -117,6 +116,7 @@ console.log(paidAmt,"pp")
 
           <div className="col-span-full flex flex-col gap-3">
             <input
+              disabled
               type="number"
               placeholder="Amount"
               name="amount"

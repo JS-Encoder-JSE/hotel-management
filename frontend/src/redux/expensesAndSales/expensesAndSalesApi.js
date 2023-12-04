@@ -17,7 +17,7 @@ const expensesAndSalesApi = baseAPI.injectEndpoints({
     }),
     getReportsByDate: builder.query({
       query: ({ date, hotelId, cp}) =>
-        `reports/get-reports-by-date?date=${date}&hotel_id=${hotelId}&page=${cp? ++cp :""}`,
+        `reports/get-reports-by-date?date=${date}&hotel_id=${hotelId}${cp?`&page=${++cp}` :""}`,
     }),
   }),
 });
