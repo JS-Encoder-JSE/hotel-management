@@ -45,7 +45,6 @@ const PaymentMethod = ({
                   className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                   onChange={(e) => handleChange(e, idx)}
                   value={elem.method}
-                  disabled={totalRefund < 0 && totalRefund < pBill}
                 >
                   <option value="" selected disabled>
                     Payment Method
@@ -61,7 +60,7 @@ const PaymentMethod = ({
                   value={elem.amount}
                   onWheel={(event) => event.currentTarget.blur()}
                   disabled={
-                    !elem?.method || (totalRefund > 0 && totalRefund > pBill)
+                    !elem?.method
                   }
                   placeholder="Amount"
                   name="amount"
@@ -85,7 +84,6 @@ const PaymentMethod = ({
               ) : null}
               <div className="flex flex-col gap-3">
                 <DatePicker
-                  disabled={totalRefund > 0 && totalRefund > pBill}
                   dateFormat="dd/MM/yyyy"
                   name="date"
                   placeholderText={`Date`}
