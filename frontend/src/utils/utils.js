@@ -74,10 +74,9 @@ export const getNumberOfDays = (fromDate, toDate) => {
   return Math.ceil(calculateDays);
 };
 // const url = window.location.href;
-export const isValidUrl = (pageName,pageUrl) => {
-  if(pageUrl){
+export const isValidUrl = (pageName, pageUrl) => {
+  if (pageUrl) {
     return pageUrl.includes(pageName);
-
   }
 };
 export function getCurrentDateWithDay() {
@@ -118,6 +117,9 @@ export const dummyData = [
     total_restaurant_expenses: 0,
     total_restaurant_income: 0,
     total_restaurant_profit: 0,
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
     updatedAt: "2023-11-18T15:46:21.952Z",
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
@@ -141,6 +143,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2022",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "January",
@@ -160,6 +165,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "February",
@@ -179,6 +187,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "March",
@@ -198,6 +209,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "April",
@@ -217,6 +231,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "May",
@@ -236,6 +253,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "June",
@@ -255,6 +275,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "July",
@@ -274,6 +297,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "August",
@@ -293,6 +319,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "September",
@@ -312,6 +341,9 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
   {
     month_name: "October",
@@ -331,5 +363,8 @@ export const dummyData = [
     user_id: "65586d2f9250d89c1bac2d5b",
     user_role: "manager",
     year: "2023",
+    total_income: 0,
+    total_profit: 0,
+    total_expense: 0,
   },
 ];

@@ -49,14 +49,20 @@ export const addExpense = async (req, res) => {
 
       const managerDashboardTable = await DashboardTable.findOne({
         user_id: userId,
-        month_name: month_name,
-        year: year,
+        month_name,
+        year,
       });
+      managerDashboardTable.total_expense += total_amount;
+      managerDashboardTable.total_profit -= total_amount;
+      await managerDashboardTable.save();
       const ownerDashboardTable = await DashboardTable.findOne({
         user_id: user.parent_id,
-        month_name: month_name,
-        year: year,
+        month_name,
+        year,
       });
+      ownerDashboardTable.total_expense += total_amount;
+      ownerDashboardTable.total_profit -= total_amount;
+      await ownerDashboardTable.save();
       if (spendedfor === "hotel") {
         existingDailySubDashData.today_hotel_expenses += total_amount;
         existingDailySubDashData.today_hotel_profit -= total_amount;
@@ -73,16 +79,10 @@ export const addExpense = async (req, res) => {
         existingStaticSubDashData.total_restaurant_expenses += total_amount;
         existingStaticSubDashData.total_restaurant_profit -= total_amount;
       }
-      managerDashboardTable.total_expense += total_amount;
-      managerDashboardTable.total_profit -= total_amount;
-      ownerDashboardTable.total_expense += total_amount;
-      ownerDashboardTable.total_profit -= total_amount;
 
       await existingDailySubDashData.save();
       await existingMonthlySubDashData.save();
       await existingStaticSubDashData.save();
-      await managerDashboardTable.save();
-      await ownerDashboardTable.save();
     }
     if (!existingExpense) {
       console.log("aise2");
@@ -251,12 +251,32 @@ export const updateExpense = async (req, res) => {
   try {
     const expenseId = req.params.expense_id; // Assuming you pass the item ID in the URL
     const updateFields = req.body; // Fields to be updated
-
+    const password = req.body.password;
+    const userId = req.user.userId;
     // Ensure at least one field is being updated
     if (Object.keys(updateFields).length === 0) {
       return res.status(400).json({ message: "No fields to update provided" });
     }
-
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (user.role === "manager") {
+      const parent = await User.findById(user.parent_id);
+      if (!parent) {
+        return res.status(404).json({ message: "Parent not found" });
+      }
+      const isPasswordValid = await parent.comparePassword(password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
+    }
+    if (user.role === "owner") {
+      const isPasswordValid = await user.comparePassword(password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
+    }
     const updatedExpense = await Expense.findByIdAndUpdate(
       expenseId,
       { $set: updateFields }, // Use $set to update only the provided fields

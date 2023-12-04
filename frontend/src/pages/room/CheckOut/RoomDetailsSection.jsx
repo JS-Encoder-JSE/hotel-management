@@ -19,7 +19,7 @@ const billingState = useSelector((state) => state.checkoutInfoCalSlice);
   //   bookingInfo?.room_discount
   // );
   const amountAfterDis = Math.ceil(roomData?.total_room_rent - discountPerRoom);
-  console.log(roomData?.total_room_rent, discountPerRoom);
+  // console.log(roomData?.total_room_rent, discountPerRoom);
   useEffect(() => {
     !isNaN(amountAfterDis) ? dispatch(setAmountAfterDis(amountAfterDis)) : "";
     dispatch(setBookingId(roomData?._id));

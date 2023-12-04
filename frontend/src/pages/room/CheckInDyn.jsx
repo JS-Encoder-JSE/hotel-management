@@ -23,6 +23,7 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import SuspendAndLockList from "./../Admin/SuspendAndLockList";
+import { useParams } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -39,6 +40,8 @@ const validationSchema = yup.object({
 });
 
 const CheckInDyn = ({ data }) => {
+  const { id } = useParams();
+  console.log({ id });
   const closeRef = useRef(null);
   const [upload] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
@@ -103,21 +106,17 @@ const CheckInDyn = ({ data }) => {
         typeof obj.amount === "number" ? Math.ceil(obj.amount) : 0;
 
       const response = await updateBookingTOCheckIn({
-        id: data?.booking_ids[0],
-        updatedData: {
-          paid_amount: paidAmount,
-          doc_number: obj.doc_number,
-          doc_images: {
-            [title]: tempImg,
-          },
-          status: "CheckedIn",
-          paymentMethod: obj.paymentMethod,
-          transection_id: obj.transection_id,
-          total_unpaid_amount: Math.ceil(
-            data?.total_unpaid_amount - paidAmount
-          ),
-          remark: "advancePaymentForCheckIn",
+        paid_amount: paidAmount,
+        doc_number: obj.doc_number,
+        doc_images: {
+          [title]: tempImg,
         },
+        status: "CheckedIn",
+        paymentMethod: obj.paymentMethod,
+        transection_id: obj.transection_id,
+        total_unpaid_amount: Math.ceil(data?.total_unpaid_amount - paidAmount),
+        remark: "advancePaymentForCheckIn",
+        booking_ids: [id],
       });
 
       if (response?.error) {

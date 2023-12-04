@@ -14,7 +14,7 @@ const OwnerExpeseAnalytics = ({
   dummyData,
  
 }) => {
-  
+  console.log(dummyData);
   return (
     <div>
       <div className="mt-10">

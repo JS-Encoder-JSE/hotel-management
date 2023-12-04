@@ -36,7 +36,7 @@ const UserDashBoard = ({ managerId }) => {
   const [userHotel, setUserHotel] = useState(
     user?.role === "manager" || user?.role === "owner"
   );
-  
+
   if (isLoading || isError) {
     return (
       <Rings
@@ -187,15 +187,13 @@ const UserDashBoard = ({ managerId }) => {
         </section>
 
         <section className="bg-white p-3 mt-8 rounded shadow hover:shadow-md duration-200">
-       <CustomerReservation
+          <CustomerReservation
             monthlyData={[...dashboardData?.monthly_datas, ...dummyData]}
             userHotel={userHotel}
             managerId={managerId}
             userId={user?._id}
           />
         </section>
-        
-
 
         <section className="mt-8 grid md:grid-cols-2 gap-5">
           <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
@@ -258,7 +256,6 @@ const UserDashBoard = ({ managerId }) => {
               userHotel={userHotel}
               dashboardData={dashboardData}
               dummyData={dummyData}
-             
             />
           </section>
         )}
