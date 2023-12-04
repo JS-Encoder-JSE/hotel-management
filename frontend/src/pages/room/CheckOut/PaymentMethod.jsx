@@ -12,9 +12,10 @@ const PaymentMethod = ({
   handleAdd,
   handleRemove,
   handleChange,
-  totalRefund
+  totalRefund,
+  pBill,
+  roomData,
 }) => {
-  
   // const paymentSchema = yup.object({
   //   method: yup.string().required("Payment method is required"),
   //   amount: yup.number().required("Amount is required"),
@@ -44,7 +45,7 @@ const PaymentMethod = ({
                   className="select select-sm bg-transparent select-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
                   onChange={(e) => handleChange(e, idx)}
                   value={elem.method}
-                  disabled={totalRefund < 1 ? false : true}
+                  disabled={totalRefund < 0 && totalRefund < pBill}
                 >
                   <option value="" selected disabled>
                     Payment Method
@@ -59,7 +60,9 @@ const PaymentMethod = ({
                   type="number"
                   value={elem.amount}
                   onWheel={(event) => event.currentTarget.blur()}
-                  disabled={!elem?.method}
+                  disabled={
+                    !elem?.method || (totalRefund > 0 && totalRefund > pBill)
+                  }
                   placeholder="Amount"
                   name="amount"
                   className={`input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2 
@@ -82,7 +85,7 @@ const PaymentMethod = ({
               ) : null}
               <div className="flex flex-col gap-3">
                 <DatePicker
-                  disabled={totalRefund < 1 ? false : true}
+                  disabled={totalRefund > 0 && totalRefund > pBill}
                   dateFormat="dd/MM/yyyy"
                   name="date"
                   placeholderText={`Date`}

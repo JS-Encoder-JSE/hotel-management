@@ -227,7 +227,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
         <table className="text-sm font-semibold m-5">
           <tbody className="flex flex-col gap-3">
             <tr>
-              <td>Total Payable Room Bills</td>
+              <td>Total Room Bills</td>
               <td>
                 {Math.ceil(
                   totalUnpaidAmount +

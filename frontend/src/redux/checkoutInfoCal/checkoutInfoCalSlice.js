@@ -55,6 +55,9 @@ const checkoutInfoCalSlice = createSlice({
     setTexAmount: (state, action) => {
       state.texAmount = action.payload;
     },
+    clearCheckoutCalSlice: (state) => {
+      state = initialState;
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   setBookingInfo,
   setRefundAmount,
   setTexAmount,
+  clearCheckoutCalSlice,
 } = checkoutInfoCalSlice.actions;
 
 export default checkoutInfoCalSlice.reducer;

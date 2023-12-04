@@ -35,9 +35,24 @@ const PaymentSection = ({
     refundAmount - (additionalCharge + serviceCharge + texAmount);
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    const list = [...paymentList];
-    list[index][name] = value;
-    setPaymentList(list);
+    const calculatedLimit = Math.ceil(totalPayableAmount - data?.paid_amount);
+    if (data?.room_ids?.length === 1) {
+      if (name === "amount") {
+        if (Number(value) <= calculatedLimit) {
+          const list = [...paymentList];
+          list[index][name] = value;
+          setPaymentList(list);
+        }
+      } else {
+        const list = [...paymentList];
+        list[index][name] = value;
+        setPaymentList(list);
+      }
+    } else {
+      const list = [...paymentList];
+      list[index][name] = value;
+      setPaymentList(list);
+    }
   };
 
   const handleRemove = (index) => {
@@ -77,6 +92,8 @@ const PaymentSection = ({
             handleRemove={handleRemove}
             handleChange={handleChange}
             totalRefund={totalRefund}
+            pBill={pBill}
+            roomData={roomData}
           />
         </div>
         {/* Right Side */}
@@ -92,11 +109,13 @@ const PaymentSection = ({
             </div>
             <div className="col-span-2 space-y-3">
               <p>
-                {data?.total_unpaid_amount < 0
+                {totalPayableAmount - data?.paid_amount < 0 ||
+                totalPayableAmount - data?.paid_amount - colAmount < 0
                   ? 0
-                  : totalPayableAmount - data?.paid_amount-colAmount}
+                  : totalPayableAmount - data?.paid_amount - colAmount}
               </p>
               <p>{totalRefund < 0 ? 0 : totalRefund}</p>
+
               <p>{Math.ceil(colAmount)}</p>
             </div>
           </div>
@@ -134,16 +153,25 @@ const PaymentSection = ({
           onClick={() => formik.handleSubmit()}
           className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case 
           ${
-            // data?.paid_amount >= pBill
-            //   ? ""
-            //   : pBill > colAmount
-            //   ? "btn-disabled"
-            //   : ""
-            ""
+            addCheckOutLoading
+              ? "btn-disabled"
+              : data?.room_ids?.length === 1
+              ? totalRefund > 0
+                ? ""
+                : colAmount === totalPayableAmount - data?.paid_amount
+                ? ""
+                : "btn-disabled"
+              : colAmount > 0 || totalRefund > 0
+              ? ""
+              : "btn-disabled"
           }
           `}
         >
-          {totalRefund < 1 ? "Checkout" : "Checkout & Refund"}
+          {totalRefund < 1
+            ? "Checkout"
+            : data?.room_ids?.length == 1
+            ? "Checkout & Refund"
+            : "Checkout"}
           {addCheckOutLoading ? (
             <span
               className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"

@@ -34,7 +34,7 @@ const CustomerInfoSection = ({ data }) => {
           <p>{totalPayableAmount}</p>
           <p>{data?.paid_amount}</p>
           <p>
-            {data?.total_unpaid_amount < 0
+            {totalPayableAmount - data?.paid_amount < 0
               ? 0
               : totalPayableAmount - data?.paid_amount}
           </p>
