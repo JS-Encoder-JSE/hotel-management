@@ -115,7 +115,7 @@ const AdminOwnerList = ({ title }) => {
               <Link to={`/dashboard `}>
                 <button
                   type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
                 >
                     <dfn>
                       <abbr title="Back"><FaArrowLeft /></abbr>
