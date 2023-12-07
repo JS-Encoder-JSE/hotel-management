@@ -270,7 +270,7 @@ const Report = () => {
           <div className={`relative max-w-xs`}>
             <input
               type="text"
-              placeholder="Search by name..."
+              placeholder="Search by User Name..."
               name="search"
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
@@ -298,7 +298,7 @@ const Report = () => {
                     <thead>
                       <tr>
                         <th>SL</th>
-                        <th>Username</th>
+                        <th>User Name</th>
                         <th>Phone Number</th>
                         <th>Purchase Date</th>
                         <th>Expired Date</th>
