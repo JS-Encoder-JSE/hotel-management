@@ -230,9 +230,9 @@ const formattedDate = `${year}-${month}-${day}`;
                           {/* <p className="flex justify-between">
                             Tax : <span>{orderCalc.tax}</span>
                           </p> */}
-                          <p className="flex justify-between">
+                          {/* <p className="flex justify-between">
                             Grand Total: <span>{orderCalc.grandTotal}</span>
-                          </p>
+                          </p> */}
                         </div>
                         <div className="flex">
                           <button
@@ -303,12 +303,12 @@ const formattedDate = `${year}-${month}-${day}`;
                           <p className="flex justify-between">
                             Total Price : <span>{orderCalc.total}</span>
                           </p>
-                          <p className="flex justify-between">
+                          {/* <p className="flex justify-between">
                             Tax : <span>{orderCalc.tax}</span>
                           </p>
                           <p className="flex justify-between font-bold">
                             Grand Total: <span>{orderCalc.grandTotal}</span>
-                          </p>
+                          </p> */}
                         </div>
                       
                       </div>

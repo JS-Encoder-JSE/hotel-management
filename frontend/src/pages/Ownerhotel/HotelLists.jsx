@@ -176,7 +176,7 @@ const HotelLists = () => {
                         {/* <td>Manager 1</td> */}
                         <td className={`space-x-1.5`}>
                           <span
-                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ml-1.5 mb-2`}
                             onClick={() =>
                               navigate(
                                 `/dashboard/hotelList-view/${hotel?._id}`
@@ -186,7 +186,7 @@ const HotelLists = () => {
                             <FaEye />
                           </span>
                           <span
-                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case `}
                             onClick={() =>
                               navigate(`/dashboard/hotel-edit/${hotel?._id}`)
                             }

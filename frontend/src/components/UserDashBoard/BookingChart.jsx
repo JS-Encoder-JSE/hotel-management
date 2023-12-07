@@ -68,7 +68,7 @@ const BookingChart = ({ userManager, permanent_datas,managerId,userId,daily_data
     }
   }, [userManager,managerId,userId]);
   return (
-    <div>
+    <div className="ml-20 md:ml-0">
       <ReactApexChart
       options={chartProps.options}
       series={chartProps.series}

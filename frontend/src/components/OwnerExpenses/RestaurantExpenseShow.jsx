@@ -92,6 +92,8 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     limit: formik.values.entries,
   });
 
+  console.log(filteredExpenses)
+
   const {
     data: RestaurantExpenses,
     isLoading,

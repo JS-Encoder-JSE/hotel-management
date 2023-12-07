@@ -74,7 +74,7 @@ const RestaurantExpense = () => {
       </div>
       <div className="space-y-20">
         {/* Select Room Section */}
-        <section className="max-w-full mx-auto flex gap-5 items-center justify-center">
+        <section className="max-w-full mx-auto flex flex-col md:flex-row gap-5 items-center justify-center">
           <p >Hotel Branch Name :</p>
           <div className="flex flex-col md:flex-row gap-3">
             <Select

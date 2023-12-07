@@ -20,7 +20,7 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
-const AddOrder = () => {
+const   AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
   const [error, setError] = useState("");
@@ -61,10 +61,12 @@ const AddOrder = () => {
 console.log(rooms)
 
   const { data: tables } = useGetTablesQuery();
-  const transformedRooms = rooms?.data?.docs?.map((room) => ({
+  const transformedRooms = rooms?.data?.docs
+  ?.filter((room) => room.status === 'CheckedIn')
+  .map((room) => ({
     value: room._id,
     label: room.roomNumber,
-  }));
+  })) || [];
   const transformedTables = tables?.data?.map((table) => ({
     value: table._id,
     label: table.table_number,
@@ -73,6 +75,7 @@ console.log(rooms)
   useEffect(() => {
     formik.values.type.length && setError("");
   }, [formik.values.type]);
+
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-5`}>
       <div className={`flex flex-col md:flex-row justify-between`}>
@@ -253,7 +256,7 @@ console.log(rooms)
         chooseHotel={formik.values.chooseHotel}
       />
       <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
-        {<ConfirmOrder />}
+        <ConfirmOrder />
       </Modal>
     </div>
   );
