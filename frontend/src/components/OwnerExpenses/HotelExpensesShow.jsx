@@ -105,6 +105,7 @@ const {
   });
   const { data: hotelExpenses, isLoading, isSuccess } = useGetExpensesQuery({
     fromDate:new Date().toLocaleDateString(),
+    toDate:new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "hotel"
   });
@@ -295,7 +296,7 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
               </tfoot>
             </table>
       
-          </div> : <p className="flex justify-center items-center mt-16">No Expenses Today</p>}
+          </div> : <p className="flex justify-center items-center my-48">No Expenses Today</p>}
         </div>
         </div>
 

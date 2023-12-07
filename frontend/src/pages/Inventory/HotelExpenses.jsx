@@ -131,6 +131,7 @@ const HotelExpenses = () => {
     isSuccess,
   } = useGetExpensesQuery({
     fromDate:new Date().toLocaleDateString(),
+    toDate: new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "hotel",
   });
@@ -351,7 +352,7 @@ const handleScrollToTop = () => {
                     </table>
                   </div>
                 ) : (
-                  <p className="flex justify-center items-center mt-96">
+                  <p className="flex justify-center items-center my-48">
                     No Expenses Today
                   </p>
                 )}
@@ -360,7 +361,7 @@ const handleScrollToTop = () => {
 
             {/* pagination */}
 
-            <div onClick={handleScrollToTop} className="flex justify-center mt-10">
+            {currentItems?.length &&<div onClick={handleScrollToTop} className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -378,7 +379,7 @@ const handleScrollToTop = () => {
                 onPageChange={handlePageChange}
                 renderOnZeroPageCount={null}
               />
-            </div>
+            </div>}
           </div>
 
           {/* Restaurant Expenses */}
@@ -486,7 +487,7 @@ const handleScrollToTop = () => {
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
           <div className="overflow-x-auto">
-            <table className="table">
+            {filteredExpenses?.docs?.length ?<table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
@@ -526,9 +527,9 @@ const handleScrollToTop = () => {
                     );
                   })}
                 </tbody>
-              </table>
+              </table> :<p className="text-center my-48">No expenses yet!</p>}
             </div>
-            <div className="flex justify-center mt-10">
+            {filteredExpenses?.docs?.length && <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -547,7 +548,7 @@ const handleScrollToTop = () => {
                 renderOnZeroPageCount={null}
                 forcePage={currentPage}
               />
-            </div>
+            </div>}
           </div>
         </div>
       )}

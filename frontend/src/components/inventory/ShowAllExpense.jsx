@@ -125,6 +125,7 @@ const ShowAllExpense = () => {
     refetch,
   } = useGetExpensesQuery({
     fromDate:new Date().toLocaleDateString(),
+    toDate: new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });

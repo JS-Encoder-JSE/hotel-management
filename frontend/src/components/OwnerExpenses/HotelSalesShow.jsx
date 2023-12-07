@@ -221,11 +221,11 @@ useEffect(() => {
                     </tbody>
                   </table>
                 ) : (
-                  <p className="text-center py-14"> No Sales Today</p>
+                  <p className="text-center my-48"> No Sales Today</p>
                 )}
               </div>
             </div>
-            <div className="flex justify-center mt-10">
+           {hotelTodaySales?.data?.docs?.length && <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -243,7 +243,7 @@ useEffect(() => {
                 onPageChange={handlePageTrigger}
                 renderOnZeroPageCount={null}
               />
-            </div>
+            </div>}
           </div>
         </div>
 
