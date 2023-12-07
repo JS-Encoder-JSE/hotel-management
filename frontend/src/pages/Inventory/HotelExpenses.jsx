@@ -234,7 +234,7 @@ const handleScrollToTop = () => {
                 <h3
                   className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
                 >
-                  Today Expenses
+                  Today's Expenses
                 </h3>
               </div>
               <div className={`flex justify-end mb-5 mr-5`}>

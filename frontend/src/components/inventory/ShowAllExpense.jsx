@@ -213,7 +213,7 @@ const ShowAllExpense = () => {
                 <h3
                   className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
                 >
-                  Today Expenses
+                  Today's Expenses
                 </h3>
               </div>
               <div className={`flex justify-end mb-5 mr-5`}>
@@ -332,7 +332,7 @@ const ShowAllExpense = () => {
                     </table>
                   </div>
                 ) : (
-                  <p className="flex justify-center items-center mt-96">
+                  <p className="flex justify-center items-center mt-24">
                     No Expenses Today
                   </p>
                 )}
