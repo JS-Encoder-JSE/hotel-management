@@ -12,33 +12,48 @@ const CustomerInfoSection = ({ data }) => {
     <section className="bg-white rounded">
       <h3 className="p-5 text-xl">Customer Details</h3>
       <hr />
-      <div className="p-5 grid grid-cols-4 items-center text-sm font-semibold">
+      <div className="p-5 grid md:grid-cols-2 grid-cols-1 items-center text-sm font-semibold ">
         <div className="space-y-3">
-          <p>Name</p>
-          <p>Room No</p>
-          {/*<p>Email ID</p>*/}
-          <p>Mobile No</p>
-          <p>Address</p>
-          <p>Total Payable Amount</p>
-          <p>Total Paid Amount</p>
-          <p>Total Unpaid Amount</p>
-          <p>Refund Amount</p>
-        </div>
-        <div className="col-span-3 space-y-3">
-          <p>{data?.guestName}</p>
-          <p>{data?.room_ids?.map((i) => i?.roomNumber).join(", ")}</p>
-          {/*<p>dev.tajkir@gmail.com</p>*/}
-          <p>{data?.mobileNumber}</p>
-          <p>{data?.address}</p>
-
-          <p>{totalPayableAmount}</p>
-          <p>{data?.paid_amount}</p>
-          <p>
-            {totalPayableAmount - data?.paid_amount < 0
-              ? 0
-              : totalPayableAmount - data?.paid_amount}
-          </p>
-          <p>{totalRefund < 0 ? 0 : totalRefund}</p>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Name :</p>
+            <p className="whitespace-nowrap">{data?.guestName}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Room No :</p>
+            <p className="whitespace-nowrap">
+              {data?.room_ids?.map((i) => i?.roomNumber).join(", ")}
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Mobile No :</p>
+            <p className="whitespace-nowrap">{data?.mobileNumber}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Address :</p>
+            <p className="whitespace-nowrap">{data?.address}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Total Payable Amount :</p>
+            <p className="whitespace-nowrap">{totalPayableAmount}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Total Paid Amount :</p>
+            <p className="whitespace-nowrap">{data?.paid_amount}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Total Unpaid Amount :</p>
+            <p className="whitespace-nowrap">
+              {totalPayableAmount - data?.paid_amount < 0
+                ? 0
+                : totalPayableAmount - data?.paid_amount}
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Refund Amount :</p>
+            <p className="whitespace-nowrap">
+              {totalRefund < 0 ? 0 : totalRefund}
+            </p>
+          </div>
         </div>
       </div>
     </section>
