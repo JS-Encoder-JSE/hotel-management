@@ -198,7 +198,7 @@ const UserDashBoard = ({ managerId }) => {
         </section>
 
         <section className="mt-8 grid md:grid-cols-2 gap-5">
-          <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
+          <div className="bg-white max-w-[100%] p-3 rounded shadow hover:shadow-md duration-200">
             <BookingChart
               daily_datas={dashboardData?.daily_datas}
               permanent_datas={dashboardData?.permanent_datas}

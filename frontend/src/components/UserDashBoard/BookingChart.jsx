@@ -68,11 +68,13 @@ const BookingChart = ({ userManager, permanent_datas,managerId,userId,daily_data
     }
   }, [userManager,managerId,userId]);
   return (
-    <ReactApexChart
+    <div>
+      <ReactApexChart
       options={chartProps.options}
       series={chartProps.series}
       type="donut"
-    />
+      />
+  </div>
   );
 };
 
