@@ -298,8 +298,8 @@ const ReportManager = () => {
                       <th>{++idx}</th>
                       <td>{report.guestName}</td>
                       <td>{report?.room_numbers.join(",")}</td>
-                      <td>{getFormateDateAndTime(report?.checked_in)}</td>
-                      <td>{getFormateDateAndTime(report?.checked_out)}</td>
+                      <td>{new Date(report?.checked_in).toLocaleDateString()}</td>
+                      <td>{new Date(report?.checked_out).toLocaleDateString()}</td>
                       <td>{report?.paid_amount}</td>
                       <td className={`space-x-1.5`}></td>
                     </tr>
