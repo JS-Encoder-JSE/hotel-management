@@ -103,6 +103,15 @@ const AddBooking = () => {
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr?.map((elem) => elem.value);
+
+
+      // const fromDate = new Date(obj.from);
+      // const toDate = new Date(obj.to);
+
+      // const formatedFromDate = fromDate.setHours()
+      // const formatedToDate =
+
+
       const no_of_days = Math.floor(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );

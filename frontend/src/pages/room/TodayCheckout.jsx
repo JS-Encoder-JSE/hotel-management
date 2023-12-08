@@ -16,7 +16,7 @@ import { MdOutlineHail } from "react-icons/md";
 import ReactPaginate from "react-paginate";
 import { checkinListFromDate, checkinListoDate } from "../../utils/utils.js";
 
-const TodaysCheckinList = () => {
+const TodayCheckout = () => {
   const [search, setSearch] = useState("");
   const [pageCount,setPageCount]=useState(1)
   const [currentPage, setCurrentPage] = useState(0);
@@ -44,7 +44,7 @@ const TodaysCheckinList = () => {
   } = useGetBookingsByHotelQuery({
     search: formik.values.search,
     page: currentPage,
-    filter: "CheckedIn",
+    filter: "CheckedOut",
     fromDate: checkinListFromDate(new Date()),
     toDate: checkinListoDate(new Date())
   });
@@ -75,7 +75,7 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
-         <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Today's Check In </h1>
+         <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Today's Checkout </h1>
       <div>
         <Link to={`/dashboard `}>
           <button
@@ -230,4 +230,4 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
   );
 };
 
-export default TodaysCheckinList;
+export default TodayCheckout;

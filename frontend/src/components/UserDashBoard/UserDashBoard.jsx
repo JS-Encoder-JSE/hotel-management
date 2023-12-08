@@ -85,7 +85,7 @@ const UserDashBoard = ({ managerId }) => {
           </div>
             <hr />
             {userHotel ? (
-              <div>
+              <div onClick={()=>navigate("/dashboard/today-checkouts")} className="cursor-pointer">
                 <h6 className="text-xs text-slate-400 mt-4">
                   TODAY'S CHECK OUT
                 </h6>
@@ -104,12 +104,14 @@ const UserDashBoard = ({ managerId }) => {
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
                 <BsClipboard2DataFill />
               </div>
-              <h6 className="text-xs text-slate-400 uppercase">
+            <div className="cursor-pointer" onClick={()=> navigate(userHotel && '/dashboard/today-bookings')}>
+            <h6 className="text-xs text-slate-400 uppercase">
                 TODAY'S Booking
               </h6>
               <p className="text-2xl font-semibold mt-3">
                 {Math.floor(dashboardData?.daily_datas[0]?.today_booking || 0)}
               </p>
+            </div>
               <hr />
               <h6 className="text-xs text-slate-400 mt-4">
                 TODAY'S CANCELED BOOKING

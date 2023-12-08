@@ -151,10 +151,10 @@ const roomAPI = baseAPI.injectEndpoints({
       providesTags: ["room"],
     }),
     getBookingsByHotel: build.query({
-      query: ({ hotel_id, page, limit, filter, search }) => {
+      query: ({ hotel_id, page, limit, filter, search,fromDate,toDate }) => {
         return `bookings/get-bookings-by-hotel?search=${search || ""}&page=${
           page + 1
-        }${filter ? `&filter=${filter}` : ""}`;
+        }${filter ? `&filter=${filter}` : ""} ${fromDate? `&fromDate=${fromDate}`:""}${toDate? `&toDate=${toDate}`:""}`;
       },
       providesTags: ["booking", "room"],
     }),
