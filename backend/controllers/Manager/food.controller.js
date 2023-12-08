@@ -201,14 +201,7 @@ export const updateFood = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const {
-      room_id,
-      table_id,
-      items,
-      dedicated_to,
-      current_order,
-      paid_amount,
-    } = req.body;
+    const { room_id, table_id, items, current_order, paid_amount } = req.body;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
@@ -238,7 +231,6 @@ export const addOrder = async (req, res) => {
       unique_id,
       current_order,
       items,
-      dedicated_to,
       total_price,
       paid_amount,
       unpaid_amount,

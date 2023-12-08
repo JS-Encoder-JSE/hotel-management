@@ -107,11 +107,6 @@ const bookingInfoSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
-    total_balance: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
     deleted: {
       type: Boolean,
       required: false,

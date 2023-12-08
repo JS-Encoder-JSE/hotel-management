@@ -49,7 +49,7 @@ const Dashboard = () => {
               {user?.data?.role}
             </h3>
             <div
-              className={`h-[calc(100vh_-_17rem)] overflow-y-auto scrollbar-none`}
+              className={`h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar-none`}
             >
               <div
                 className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`}
@@ -64,7 +64,7 @@ const Dashboard = () => {
                </div>
               </div>
               </div>
-              <ul className={`space-y-1.5`}>
+              <ul className={`space-y-1.5 pb-10`}>
                 <li>
                   <NavLink
                     to={`/dashboard`}
