@@ -91,11 +91,13 @@ const SubAdminList = () => {
     <div className={` space-y-5`}>
        
       <div className={`bg-white p-4 rounded`}>
+
+      <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Sub Admin List</h1>
       <div>
             <Link to={`/dashboard `}>
               <button
                 type="button"
-                className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-3 "
               >
                 <dfn>
                   <abbr title="Back">
@@ -108,9 +110,6 @@ const SubAdminList = () => {
             </Link>
           </div>
       <div>
-        <h3 className={`text-xl font-semibold text-center mb-5`}>
-            Sub Admin List
-          </h3>
         </div>
         <div
           className={`flex flex-col sm:flex-row justify-between items-center gap-5`}

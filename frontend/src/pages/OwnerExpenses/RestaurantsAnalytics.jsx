@@ -5,7 +5,7 @@ import UserDashBoard from "../../components/UserDashBoard/UserDashBoard";
 import { useSelector } from "react-redux";
 import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpenseShow.jsx";
 import HotelExpensesShow from "../../components/OwnerExpenses/HotelExpensesShow.jsx";
@@ -51,10 +51,25 @@ const RestaurantsAnalytics = () => {
     );
   }
 
+const location = useLocation()
+
+console.log(location.pathname)
+
+let pageTitle;
+
+if (location.pathname === "/dashboard/hotel-analytics"){
+  pageTitle = "Hotel Analytics"
+}
+else{
+  pageTitle = "Restaurant Analytics"
+}
+
+
   return (
     <>
       {/* back button */}
       <div className={`mb-5`}>
+      <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">{pageTitle}</h1>
         <Link to={`/dashboard `}>
           <button
             type="button"
@@ -72,6 +87,7 @@ const RestaurantsAnalytics = () => {
       </div>
 
       <div className="space-y-20">
+     
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex flex-col md:flex-row  gap-5 items-center justify-center">
           <p className=" ">Hotel Branch Name :</p>

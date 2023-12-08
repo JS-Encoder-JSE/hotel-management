@@ -54,6 +54,7 @@ const RestaurantSales = () => {
     <>
       {/* back button */}
       <div className={`mb-5`}>
+      <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Restaurant Sales </h1>
         <Link to={`/dashboard `}>
           <button
             type="button"

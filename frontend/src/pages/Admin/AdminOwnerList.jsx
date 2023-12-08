@@ -111,6 +111,7 @@ const AdminOwnerList = ({ title }) => {
   return (
     <div>
       <div className={`space-y-8 bg-white p-4 rounded-2xl`}>
+      <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Owner List</h1>
       <div>
               <Link to={`/dashboard `}>
                 <button
