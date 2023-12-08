@@ -1,6 +1,7 @@
 import React from "react";
 import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem";
 import logo from "../../assets/logo.png"
+import { versionControl } from "../../utils/utils";
 
 
 const FoodCheckoutPrint =({orderData})=>{
@@ -107,7 +108,7 @@ const formattedDate = `${year}-${month}-${day}`;
       </div>
       <h1 className="text-center absolute bottom-0 pb-2 w-full">
         Powered by <span className="text-xl text-green-slimy">JS Encoder</span>.
-        Copyright © 2023. All rights reserved.
+        Copyright © 2023. All rights reserved.Version {versionControl}
       </h1>
    </>
 }

@@ -18,7 +18,7 @@ const validationSchema = yup.object({
 });
 
 const RefundPaymentSection = ({ bookingId, closeRef, paidAmt }) => {
-  const [cancelBooking] = useCancelBookingMutation();
+  const [cancelBooking, { isLoading }] = useCancelBookingMutation();
   console.log(paidAmt, "pp");
 
   const formik = useFormik({
@@ -138,7 +138,13 @@ const RefundPaymentSection = ({ bookingId, closeRef, paidAmt }) => {
               type="submit"
               className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs px-9 h-auto md:me-0"
             >
-              Pay
+              Cancel & Refund
+              {isLoading ? (
+                <span
+                  className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                  role="status"
+                ></span>
+              ) : null}
             </button>
           </div>
         </form>

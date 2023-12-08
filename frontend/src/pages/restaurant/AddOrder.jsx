@@ -57,6 +57,9 @@ const AddOrder = () => {
     search: "",
     limit: 1000000,
   });
+
+console.log(rooms)
+
   const { data: tables } = useGetTablesQuery();
   const transformedRooms = rooms?.data?.docs?.map((room) => ({
     value: room._id,
@@ -198,6 +201,7 @@ const AddOrder = () => {
                 setError("");
               } else if (formik.values.type && formik.values.type === "Room") {
                 dispatch(setRoomId(formik.values.roomId));
+                console.log(formik.values)
                 window.fp_modal.showModal();
 
                 setError("");

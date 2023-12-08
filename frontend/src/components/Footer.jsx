@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { versionControl } from "../utils/utils";
 
 const Footer = () => {
   return (
@@ -11,7 +12,7 @@ const Footer = () => {
             <Link className={`text-green-slimy text-lg font-semibold`} to={`https://jsencoder.com/`} target="_blank">
               JS Encoder
             </Link>
-            . Copyright &copy; {new Date().getFullYear()}. All rights reserved. Version 01.0.0 </h3>
+            . Copyright &copy; {new Date().getFullYear()}. All rights reserved. Version {versionControl} </h3>
         </div>
       </div>
     </footer>

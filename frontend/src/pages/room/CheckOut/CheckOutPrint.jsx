@@ -12,6 +12,7 @@ import logo from "../../../assets/logo.png";
 import BillingSection from "./BillingSection";
 import BillingSectionPrint from "./BillingSectionPrint";
 import { useGetHotelByManagerIdQuery } from "../../../redux/room/roomAPI";
+import { versionControl } from "../../../utils/utils";
 
 // current date
 const currentDate = new Date();
@@ -102,7 +103,7 @@ const CheckOutPrint = ({
       </div>
       <h1 className="text-center absolute bottom-0 pb-2 w-full">
         Powered by <span className="text-xl text-green-slimy">JS Encoder</span>.
-        Copyright © 2023. All rights reserved.Version 01.0.0
+        Copyright © 2023. All rights reserved.Version {versionControl}
       </h1>
     </div>
   );

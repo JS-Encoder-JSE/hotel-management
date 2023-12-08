@@ -147,9 +147,9 @@ console.log(allItemsArray);
 console.log(currentItems)
 
 useEffect(() => {
-  console.log("PDF Data:", restaurantSalesToday?.data);
-  setPdf(restaurantSalesToday?.data[0]?.items);
-}, [restaurantSalesToday]);
+  console.log("PDF Data:", currentItems);
+  setPdf(currentItems);
+}, [currentItems]);
 
 
 
@@ -171,8 +171,8 @@ useEffect(() => {
                   <PDFDownloadLink
                     document={
                       <RestaurantSalesHistory
-                        date={restaurantSalesToday?.data?.date}
-                        values={restaurantSalesToday?.data[0]?.items}
+                        date={currentItems}
+                        values={currentItems}
                         header={{
                           title: "DAK Hospitality LTD",
                           name: "Today's Sales ",

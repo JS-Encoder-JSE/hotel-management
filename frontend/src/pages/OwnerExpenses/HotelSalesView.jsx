@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegEdit, FaRegFilePdf, FaRupeeSign } from "react-icons/fa";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useFormik } from "formik";
 // import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
@@ -9,6 +9,9 @@ import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
 import { fromDateIsoConverterForAddExpenses } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
 import { current } from "@reduxjs/toolkit";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
+import HotelSalesTodayReport from "../report/HotelSalesTodayReport";
 
 const HotelSalesView = () => {
 
@@ -16,7 +19,7 @@ const HotelSalesView = () => {
   const [currentPage,setCurrentPage]=useState(0)
 
   const [searchParams] = useSearchParams();
-
+  const [PDF, setPdf] = useState([]);
 
 
   const dateParam = searchParams.get('date');
@@ -48,29 +51,53 @@ console.log(orderedDataByDate,"hotel")
       });
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log("PDF Data:", orderedDataByDate?.data);
+    setPdf(orderedDataByDate?.data.docs);
+  }, [orderedDataByDate]);
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between `}>
-        <div
-          className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+
+      <div
+          className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
           onClick={() => navigate(-1)}
         >
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <div className={`flex`}>
-        <button className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case">
-          {" "}
-          <FaRegFilePdf />
-          PDF
-        </button>
-      </div>
+      
        
       </div>
       <div>
           <h1 className={`text-2xl text-center`}> Hotel Sales Information</h1>
         </div>
-        <div className=" h-64 overflow-x-auto overflow-y-auto">
+        <div>
+        <div className={`flex justify-end mb-5 mr-5`}>
+                {PDF?.length ? (
+                  <PDFDownloadLink
+                    document={
+                      <HotelSalesTodayReport
+                      date={orderedDataByDate?.data?.docs}
+                      values={orderedDataByDate?.data?.docs}
+                        header={{
+                          title: "DAK Hospitality LTD",
+                          name: "Today's Sales ",
+                        }}
+                      />
+                    }
+                    fileName={`${new Date().toLocaleDateString()}.pdf`}
+                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                    onError={(error) => console.error("PDF Error", error)}
+                  >
+                    <BsFileEarmarkPdfFill />
+                    PDF
+                  </PDFDownloadLink>
+                ) : null}
+              </div>
+        </div>
+        <div className=" overflow-x-auto ">
                 {orderedDataByDate && orderedDataByDate?.data?.docs?.length ? (
                   <table className="table">
                     <thead>
@@ -126,7 +153,7 @@ console.log(orderedDataByDate,"hotel")
               previousLabel="<"
               nextLabel=">"
               breakLabel="..."
-              pageCount={pageCount}
+              pageCount={orderedDataByDate?.data?.totalPages}
               pageRangeDisplayed={2}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}

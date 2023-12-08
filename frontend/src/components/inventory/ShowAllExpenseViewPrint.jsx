@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaRegEdit, FaRupeeSign } from 'react-icons/fa';
-import { getCurrentDateWithDay, getformatDateTime } from '../../utils/utils';
+import { getCurrentDateWithDay, getformatDateTime, versionControl } from '../../utils/utils';
 import EditExpensesView from './EditExpensesView';
 import logo from "../../assets/logo.png"
 import Footer from '../Footer';
@@ -48,8 +48,8 @@ const ShowAllExpenseViewPrint = ({itemExpense,totalItemsAmount}) => {
                       <td>{item?.quantity}</td>
                       <td>{item?.description}</td>
                       <td>
-                          <FaRupeeSign className="inline" />
-                            <span>{item?.price}</span>
+                          
+                            <span><FaRupeeSign className="inline" />{item?.price}</span>
                       </td>
                       <td>{item?.remark}</td>
                       <td>
@@ -72,15 +72,14 @@ const ShowAllExpenseViewPrint = ({itemExpense,totalItemsAmount}) => {
               </tbody>
               
             </table>
-           <div className={`flex justify-end mr-14  md:mr-[22rem] md:ms-[20rem] mt-4 gap-2`}>
+           <div className={`flex justify-end mr-14   md:ms-[20rem] mt-4 gap-2`}>
             <h1>Grand Total :</h1>
-           <div className="flex">
-                          <div>
-                          <FaRupeeSign />
-                          </div>
-                          <div>
+           <div>
+
+                          <FaRupeeSign className='inline' />
+
                             <span>{totalItemsAmount}</span>
-                          </div>
+
                         </div>
            </div>
           </div> 
@@ -91,7 +90,7 @@ const ShowAllExpenseViewPrint = ({itemExpense,totalItemsAmount}) => {
             <Link className={`text-green-slimy text-lg font-semibold`} to={`https://jsencoder.com/`} target="_blank">
               JS Encoder
             </Link>
-            . Copyright &copy; {new Date().getFullYear()}. All rights reserved. Version 01.0.0 </h3>
+            . Copyright &copy; {new Date().getFullYear()}. All rights reserved. Version {versionControl} </h3>
         </div>
        </div>
     );

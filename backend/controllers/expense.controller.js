@@ -52,17 +52,46 @@ export const addExpense = async (req, res) => {
         month_name,
         year,
       });
-      managerDashboardTable.total_expense += total_amount;
-      managerDashboardTable.total_profit -= total_amount;
-      await managerDashboardTable.save();
+      if (managerDashboardTable) {
+        managerDashboardTable.total_expense += total_amount;
+        managerDashboardTable.total_profit -= total_amount;
+        await managerDashboardTable.save();
+      }
+      if (!managerDashboardTable) {
+        // Create a new dashboard table entry
+        const newDashboardTable = new DashboardTable({
+          user_id: userId,
+          user_role: user.role,
+          month_name,
+          year,
+          total_expense: total_amount,
+          total_profit: profit_after_expense,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
       const ownerDashboardTable = await DashboardTable.findOne({
         user_id: user.parent_id,
         month_name,
         year,
       });
-      ownerDashboardTable.total_expense += total_amount;
-      ownerDashboardTable.total_profit -= total_amount;
-      await ownerDashboardTable.save();
+      if (ownerDashboardTable) {
+        ownerDashboardTable.total_expense += total_amount;
+        ownerDashboardTable.total_profit -= total_amount;
+        await ownerDashboardTable.save();
+      }
+      if (!ownerDashboardTable) {
+        const newDashboardTable = new DashboardTable({
+          user_id: user.parent_id,
+          user_role: "owner",
+          month_name,
+          year,
+          total_expense: total_amount,
+          total_profit: profit_after_expense,
+        });
+        // Save the new dashboard table to the database
+        await newDashboardTable.save();
+      }
       if (spendedfor === "hotel") {
         existingDailySubDashData.today_hotel_expenses += total_amount;
         existingDailySubDashData.today_hotel_profit -= total_amount;

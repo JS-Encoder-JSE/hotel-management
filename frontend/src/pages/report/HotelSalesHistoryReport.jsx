@@ -5,7 +5,7 @@ import { getFormateDateAndTime } from "../../utils/utils";
 
 const HotelSalesHistoryReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
-    const desiredHeaders = ["Serial No", "date","today_restaurant_income"];
+    const desiredHeaders = ["Serial No", "date","today_hotel_income"];
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
