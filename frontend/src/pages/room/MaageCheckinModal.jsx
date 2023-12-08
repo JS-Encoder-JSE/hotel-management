@@ -202,7 +202,7 @@ const ManageCheckinModal = () => {
         formikHelpers.resetForm();
         closeRef.current.click();
         setSelectedImages([]);
-        toast.success(response.data.message);
+        toast.success('Successfully check in');
       }
 
       setLoading(false);
