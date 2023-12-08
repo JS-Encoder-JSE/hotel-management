@@ -218,7 +218,7 @@ const AddBooking = () => {
         <hr />
         <form
           autoComplete="off"
-          className="form-control grid grid-cols-1 gap-4 mt-5"
+          className="form-control grid sm:grid-cols-2 grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
           {/*<div className="flex flex-col gap-3">*/}
@@ -539,7 +539,7 @@ const AddBooking = () => {
           </div>
 
           {/* button */}
-          <div className={`flex justify-between`}>
+          <div className={`flex justify-between sm:col-span-2`}>
             <button
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"

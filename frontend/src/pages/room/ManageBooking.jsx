@@ -141,7 +141,7 @@ const ManageBooking = () => {
           wrapperClass="justify-center"
         />
       )}
-      <Modal id={`ab_modal`}>
+      <Modal id={`ab_modal`} classNames={`bg-white  sm:max-w-[60%]`}>
         <AddBooking />
       </Modal>
     </div>
