@@ -9,7 +9,7 @@ import {
   useGetBookingsByHotelQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import TodayBookingList from "../../components/room/TodayBookingList.jsx";
 import { checkinListFromDate, checkinListoDate } from "../../utils/utils.js";
 
@@ -27,7 +27,7 @@ const TodayBookings = () => {
     },
   });
 
-  const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({
+  const { data: bookingList, isLoading ,refetch } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
     search: search,
     page: currentPage,
@@ -44,6 +44,11 @@ const TodayBookings = () => {
       formik.handleSubmit();
     }
   };
+
+  const location=useLocation()
+  useEffect(()=>{
+    refetch()
+  },[location.pathname])
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
