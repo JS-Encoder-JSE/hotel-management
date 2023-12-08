@@ -23,10 +23,12 @@ import { Rings } from "react-loader-spinner";
 import AllExpeseAnalytics from "./AllExpeseAnalytics";
 import OwnerExpeseAnalytics from "./OwnerExpeseAnalytics";
 import { dummyData, isValidUrl } from "../../utils/utils";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // import { useLocation } from 'react-router-dom';
 
 const UserDashBoard = ({ managerId }) => {
+  const navigate = useNavigate()
+
   const { user } = useSelector((store) => store.authSlice);
   const { pathname } = useLocation();
   const {
@@ -52,6 +54,7 @@ const UserDashBoard = ({ managerId }) => {
 
   // const location = useLocation();
   // const {  pathname  } = location;
+  
   return (
     <>
       <div>
@@ -63,7 +66,8 @@ const UserDashBoard = ({ managerId }) => {
             <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
               {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
             </div>
-            <h6 className="text-xs text-slate-400 ">
+          <div onClick={()=> navigate(userHotel && "todays-checkin-list")} className="cursor-pointer" >
+          <h6 className="text-xs text-slate-400 ">
               {userHotel ? "TODAY'S CHECK IN" : "TOTAL SELL"}
             </h6>
             <p className="text-2xl font-semibold mt-3">
@@ -78,6 +82,7 @@ const UserDashBoard = ({ managerId }) => {
               )}
               {}
             </p>
+          </div>
             <hr />
             {userHotel ? (
               <div>

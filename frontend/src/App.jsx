@@ -109,6 +109,7 @@ import HotelSalesView from "./pages/OwnerExpenses/HotelSalesView.jsx";
 import ManageCheckin from "./pages/room/ManageCheckin.jsx";
 import CheckinPersonInfo from "./pages/room/CheckinPersonInfo.jsx";
 import EditSalesHotel from "./components/OwnerExpenses/EditSalesHotel.jsx";
+import TodaysCheckinList from "./pages/room/TodaysCheckinList.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -196,6 +197,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <ManageCheckin />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "todays-checkin-list",
+              element: (
+                <ManagerRoute>
+                  <TodaysCheckinList/>
                 </ManagerRoute>
               ),
             },
