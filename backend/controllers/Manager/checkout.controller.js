@@ -105,7 +105,13 @@ export const checkedOut = async (req, res) => {
   try {
     // Extract data from the request body
     const {
-      booking_ids,
+      booking_id,
+      new_total_room_rent,
+      new_no_of_days,
+      to,
+      new_total_rent,
+      new_total_rent_after_dis,
+      new_total_posted_bills,
       new_total_payable_amount,
       new_total_paid_amount,
       new_total_unpaid_amount,
@@ -138,7 +144,7 @@ export const checkedOut = async (req, res) => {
 
     const newReport = new ManagerReport({
       hotel_id,
-      booking_ids,
+      booking_ids: booking_id,
       guestName,
       room_numbers,
       payment_method,
@@ -150,23 +156,26 @@ export const checkedOut = async (req, res) => {
     });
     await newReport.save();
     // Update the booking status to "CheckedOut"
-    await Booking.updateMany(
-      { _id: { $in: booking_ids } },
+    await Booking.updateOne(
+      { _id: { $in: booking_id } },
       { $set: { status: "CheckedOut" } }, // Wrap the update in $set
       { new: true }
     );
 
     // Retrieve the updated documents
-    const updatedDocuments = await Booking.find({ _id: { $in: booking_ids } });
+    const updatedDocuments = await Booking.findOne({ _id: booking_id });
 
     // Extract room_ids from the updated documents
-    const roomIds = updatedDocuments.map((doc) => doc.room_id);
+    // const roomIds = updatedDocuments.map((doc) => doc.room_id);
 
     const bookingInfo = await BookingInfo.findOne({
-      booking_ids: { $in: booking_ids },
+      booking_ids: booking_id,
     });
 
     bookingInfo.room_ids.pull(...roomIds);
+    bookingInfo.total_rent = new_total_rent;
+    bookingInfo.total_rent_after_dis = new_total_rent_after_dis;
+    bookingInfo.total_posted_bills = new_total_posted_bills;
     bookingInfo.paid_amount = new_total_paid_amount;
     bookingInfo.total_payable_amount = new_total_payable_amount;
     bookingInfo.total_unpaid_amount = new_total_unpaid_amount;
@@ -176,6 +185,14 @@ export const checkedOut = async (req, res) => {
     bookingInfo.total_service_charges = new_total_service_charges;
 
     await bookingInfo.save();
+
+    const booking = await booking.findById(booking_id);
+
+    booking.to = to;
+    booking.total_room_rent = new_total_room_rent;
+    booking.no_of_days = new_no_of_days;
+
+    await booking.save();
 
     if (paid_amount > 0) {
       const newTransactionLog = new TransactionLog({
