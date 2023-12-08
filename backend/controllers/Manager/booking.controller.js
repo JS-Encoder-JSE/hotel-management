@@ -64,75 +64,6 @@ export const addBooking = async (req, res) => {
       });
     }
 
-    // // Check room availability for the requested dates, excluding deleted bookings or check-ins
-    // const overlappingBookings = await Booking.find({
-    //   room_ids: { $in: room_ids },
-    //   deleted: false,
-    //   status: { $ne: "Canceled" },
-    //   $or: [
-    //     {
-    //       from: { $lte: new Date(to) },
-    //       to: { $gte: new Date(from) },
-    //     },
-    //     {
-    //       from: { $gte: new Date(from) },
-    //       to: { $lte: new Date(to) },
-    //     },
-    //   ],
-    // });
-
-    // if (overlappingBookings.length > 0) {
-    //   const unavailableRooms = overlappingBookings.map(
-    //     (booking) => booking.room_ids
-    //   );
-
-    //   // Find the next available dates for each room, excluding deleted bookings or check-ins
-    //   const nextAvailableDates = await Promise.all(
-    //     unavailableRooms.map(async (roomId) => {
-    //       const bookingsForRoom = await Booking.find({
-    //         room_ids: roomId,
-    //         to: { $lte: new Date(from) },
-    //         status: { $ne: "Canceled" },
-    //         deleted: false,
-    //       })
-    //         .sort({ to: -1 })
-    //         .limit(1);
-
-    //       if (bookingsForRoom.length > 0) {
-    //         return bookingsForRoom[0].to;
-    //       } else {
-    //         // If no previous bookings, room is available from today
-    //         return new Date();
-    //       }
-    //     })
-    //   );
-
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "One or more rooms are not available for the requested dates",
-    //     unavailableRooms,
-    //     nextAvailableDates,
-    //   });
-    // }
-    // const bookings = await Promise.all(
-    //   room_ids.map(async (room_id) => {
-    //     const room = await Room.findById(room_id);
-    //     const rent_per_day = room.price;
-    //     const total_room_rent = rent_per_day * no_of_days;
-    //     total_rent += total_room_rent;
-    //     return new Booking({
-    //       room_id,
-    //       hotel_id,
-    //       from,
-    //       to,
-    //       no_of_days,
-    //       rent_per_day: rent_per_day,
-    //       total_room_rent: total_room_rent,
-    //       status,
-    //     });
-    //   })
-    // );
-    // await Booking.create(bookings);
     const bookings = await Promise.all(
       room_ids.map(async (room_id) => {
         const room = await Room.findById(room_id);
@@ -175,6 +106,7 @@ export const addBooking = async (req, res) => {
       total_rent_after_dis: total_rent_after_dis,
       total_payable_amount: total_rent_after_dis,
       paid_amount,
+      total_balance: paid_amount,
       total_unpaid_amount: total_rent_after_dis - paid_amount,
       nationality,
       doc_number,
@@ -182,16 +114,6 @@ export const addBooking = async (req, res) => {
     });
 
     const savedNewBookingInfo = await newBookingInfo.save();
-    // const newBooking = new Booking({
-    //   room_id,
-    //   hotel_id,
-    //   from,
-    //   to,
-    //   no_of_days,
-    //   rent_per_day,
-    //   total_rent,
-    //   status,
-    // });
 
     if (status === "CheckedIn") {
       const ownerDashboard = await Dashboard.findOne({
@@ -442,56 +364,6 @@ export const cancelBooking = async (req, res) => {
 
     const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
 
-    if (bookingInfo.paid_amount > 0) {
-      if (bookingInfo.room_ids.length === 1) {
-        const newTransactionLog = new TransactionLog({
-          manager_id: userId,
-          booking_info_id: bookingInfo._id,
-          dedicated_to: "hotel",
-          tran_id,
-          from: user.username,
-          to: bookingInfo.guestName,
-          payment_method,
-          amount: bookingInfo.paid_amount,
-          remark: "Full booking canceled",
-        });
-        newTransactionLog.save();
-        bookingInfo.paid_amount = 0;
-      }
-    }
-    // Remove the canceled room_id from bookingInfo.room_ids
-    bookingInfo.room_ids.pull(booking.room_id);
-
-    const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
-    const room_discount_percentage = bookingInfo.room_discount / 100;
-    const new_total_rent_after_dis = Math.ceil(
-      new_total_rent - new_total_rent * room_discount_percentage
-    );
-
-    bookingInfo.total_rent = new_total_rent;
-    bookingInfo.total_rent_after_dis = new_total_rent_after_dis;
-    bookingInfo.total_unpaid_amount =
-      new_total_rent_after_dis - bookingInfo.paid_amount;
-
-    await bookingInfo.save();
-
-    // Check if the booking is already canceled
-    if (booking.status === "Canceled") {
-      return res.status(400).json({
-        success: false,
-        message: "Booking is already canceled",
-      });
-    }
-
-    // Update the booking status to Canceled
-    booking.status = "Canceled";
-    await booking.save();
-
-    // Update the status of booked rooms
-    await Room.updateOne(
-      { _id: { $in: booking.room_id } },
-      { $set: { status: "Available" } }
-    );
     const ownerDashboard = await Dashboard.findOne({
       user_id: user.parent_id,
     });
@@ -501,12 +373,15 @@ export const cancelBooking = async (req, res) => {
 
     // ownerDashboard.total_booking -= 1;
     ownerDashboard.total_canceled += 1;
-
-    await ownerDashboard.save();
-
     // managerDashboard.total_booking -= 1;
     managerDashboard.total_canceled += 1;
 
+    if (bookingInfo.room_ids.length === 1) {
+      ownerDashboard.total_amount -= bookingInfo.paid_amount;
+      managerDashboard.total_amount -= bookingInfo.paid_amount;
+    }
+
+    await ownerDashboard.save();
     await managerDashboard.save();
 
     const managerDashboardTable = await DashboardTable.findOne({
@@ -563,6 +438,57 @@ export const cancelBooking = async (req, res) => {
       });
       await newCheckInfo.save();
     }
+    if (bookingInfo.paid_amount > 0) {
+      if (bookingInfo.room_ids.length === 1) {
+        const newTransactionLog = new TransactionLog({
+          manager_id: userId,
+          booking_info_id: bookingInfo._id,
+          dedicated_to: "hotel",
+          tran_id,
+          from: user.username,
+          to: bookingInfo.guestName,
+          payment_method,
+          amount: bookingInfo.paid_amount,
+          remark: "Full booking canceled",
+        });
+        newTransactionLog.save();
+        bookingInfo.paid_amount = 0;
+        bookingInfo.total_balance = 0;
+      }
+    }
+    // Remove the canceled room_id from bookingInfo.room_ids
+    bookingInfo.room_ids.pull(booking.room_id);
+
+    const new_total_rent = bookingInfo.total_rent - booking.total_room_rent;
+    const room_discount_percentage = bookingInfo.room_discount / 100;
+    const new_total_rent_after_dis = Math.ceil(
+      new_total_rent - new_total_rent * room_discount_percentage
+    );
+
+    bookingInfo.total_rent = new_total_rent;
+    bookingInfo.total_rent_after_dis = new_total_rent_after_dis;
+    bookingInfo.total_unpaid_amount =
+      new_total_rent_after_dis - bookingInfo.paid_amount;
+
+    await bookingInfo.save();
+
+    // Check if the booking is already canceled
+    if (booking.status === "Canceled") {
+      return res.status(400).json({
+        success: false,
+        message: "Booking is already canceled",
+      });
+    }
+
+    // Update the booking status to Canceled
+    booking.status = "Canceled";
+    await booking.save();
+
+    // Update the status of booked rooms
+    await Room.updateOne(
+      { _id: { $in: booking.room_id } },
+      { $set: { status: "Available" } }
+    );
     // Update dashboard and checkInfo accordingly based on the cancellation
     // ... (implement your logic here)
 
@@ -582,7 +508,14 @@ export const cancelBooking = async (req, res) => {
 
 export const getBookingsByHotel = async (req, res) => {
   try {
-    const { limit = 10, page = 1, search, filter } = req.query;
+    const {
+      limit = 10,
+      page = 1,
+      fromDate,
+      toDate,
+      search,
+      filter,
+    } = req.query;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
@@ -595,6 +528,11 @@ export const getBookingsByHotel = async (req, res) => {
 
     if (["Active", "CheckedIn", "CheckedOut", "Canceled"].includes(filter)) {
       query.status = filter;
+    }
+
+    if (fromDate && toDate) {
+      // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
+      query.updatedAt = { $gte: fromDate, $lte: toDate };
     }
 
     if (search) {
@@ -700,11 +638,6 @@ export const updateBooking = async (req, res) => {
     const bookingId = req.params.booking_id;
     const updateData = req.body;
     const userId = req.user.userId;
-    const currentDate = new Date();
-    const date = currentDate.toLocaleDateString();
-
-    const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
-    const year = currentDate.getFullYear().toString();
 
     const user = await User.findById(userId);
     if (!user) {
@@ -719,194 +652,6 @@ export const updateBooking = async (req, res) => {
       updateData,
       { new: true }
     );
-
-    // Check if the update includes changing the status to "CheckedIn" or "CheckedOut" or "Canceled"
-    if (
-      updateData.status === "CheckedIn" ||
-      updateData.status === "CheckedOut" ||
-      updateData.status === "Canceled"
-    ) {
-      const roomId = updatedBooking.room_id;
-
-      // Update room status based on the updated status
-      if (updateData.status === "CheckedIn") {
-        const roomStatus = "CheckedIn";
-        await Room.updateOne({ _id: roomId }, { $set: { status: roomStatus } });
-        const newPaidAmount =
-          updateData.paid_amount - existingBooking.paid_amount;
-        const ownerDashboard = await Dashboard.findOne({
-          user_id: user.parent_id,
-        });
-        const managerDashboard = await Dashboard.findOne({
-          user_id: userId,
-        });
-
-        // ownerDashboard.total_booking -= 1;
-        ownerDashboard.total_checkin += 1;
-        ownerDashboard.total_amount += newPaidAmount;
-
-        await ownerDashboard.save();
-
-        // managerDashboard.total_booking -= 1;
-        managerDashboard.total_checkin += 1;
-        managerDashboard.total_amount += newPaidAmount;
-
-        await managerDashboard.save();
-
-        const managerDashboardTable = await DashboardTable.findOne({
-          user_id: userId,
-          month_name: month_name,
-          year: year,
-        });
-
-        if (managerDashboardTable) {
-          // managerDashboardTable.total_booking -= 1;
-          managerDashboardTable.total_checkin += 1;
-          await managerDashboardTable.save();
-        } else {
-          // Create a new dashboard table entry
-          const newDashboardTable = new DashboardTable({
-            user_id: userId,
-            user_role: user.role,
-            total_checkin: 1,
-          });
-          // Save the new dashboard table to the database
-          await newDashboardTable.save();
-        }
-        const ownerDashboardTable = await DashboardTable.findOne({
-          user_id: user.parent_id,
-          month_name: month_name,
-          year: year,
-        });
-
-        if (ownerDashboardTable) {
-          // ownerDashboardTable.total_booking -= 1;
-          ownerDashboardTable.total_checkin += 1;
-          await ownerDashboardTable.save();
-        } else {
-          const newDashboardTable = new DashboardTable({
-            user_id: user.parent_id,
-            user_role: "owner",
-            total_checkin: 1,
-          });
-          // Save the new dashboard table to the database
-          await newDashboardTable.save();
-        }
-        const managerCheckInfo = await CheckInfo.findOne({
-          user_id: userId,
-          date,
-        });
-
-        if (managerCheckInfo) {
-          managerCheckInfo.today_booking -= 1;
-          managerCheckInfo.today_checkin += 1;
-          await managerCheckInfo.save();
-        } else {
-          const newCheckInfo = new CheckInfo({
-            user_id: userId,
-            user_role: user.role,
-            today_checkin: 1,
-          });
-          await newCheckInfo.save();
-        }
-        const ownerCheckInfo = await CheckInfo.findOne({
-          user_id: user.parent_id,
-          date,
-        });
-
-        if (ownerCheckInfo) {
-          ownerCheckInfo.today_booking -= 1;
-          ownerCheckInfo.today_checkin += 1;
-          await ownerCheckInfo.save();
-        } else {
-          const newCheckInfo = new CheckInfo({
-            user_id: user.parent_id,
-            user_role: "owner",
-            today_checkin: 1,
-          });
-          await newCheckInfo.save();
-        }
-      }
-      if (updateData.status === "Canceled") {
-        await Room.updateOne(
-          { _id: roomId },
-          { $set: { status: "Available" } }
-        );
-        const ownerDashboard = await Dashboard.findOne({
-          user_id: user.parent_id,
-        });
-        const managerDashboard = await Dashboard.findOne({
-          user_id: userId,
-        });
-
-        // ownerDashboard.total_booking -= 1;
-        ownerDashboard.total_canceled += 1;
-        ownerDashboard.total_amount -= updatedBooking.paid_amount;
-
-        await ownerDashboard.save();
-
-        // managerDashboard.total_booking -= 1;
-        managerDashboard.total_canceled += 1;
-        managerDashboard.total_amount -= updatedBooking.paid_amount;
-
-        await managerDashboard.save();
-
-        const managerDashboardTable = await DashboardTable.findOne({
-          user_id: userId,
-          month_name: month_name,
-          year: year,
-        });
-
-        if (managerDashboardTable) {
-          managerDashboardTable.total_booking -= 1;
-          await managerDashboardTable.save();
-        }
-        const ownerDashboardTable = await DashboardTable.findOne({
-          user_id: user.parent_id,
-          month_name: month_name,
-          year: year,
-        });
-
-        if (ownerDashboardTable) {
-          ownerDashboardTable.total_booking -= 1;
-          await ownerDashboardTable.save();
-        }
-        const managerCheckInfo = await CheckInfo.findOne({
-          user_id: userId,
-          date,
-        });
-
-        if (managerCheckInfo) {
-          managerCheckInfo.today_booking -= 1;
-          managerCheckInfo.today_canceled_bookings += 1;
-          await managerCheckInfo.save();
-        } else {
-          const newCheckInfo = new CheckInfo({
-            user_id: userId,
-            user_role: user.role,
-            today_canceled_bookings: 1,
-          });
-          await newCheckInfo.save();
-        }
-        const ownerCheckInfo = await CheckInfo.findOne({
-          user_id: user.parent_id,
-          date,
-        });
-
-        if (ownerCheckInfo) {
-          ownerCheckInfo.today_booking -= 1;
-          ownerCheckInfo.today_canceled_bookings += 1;
-          await ownerCheckInfo.save();
-        } else {
-          const newCheckInfo = new CheckInfo({
-            user_id: user.parent_id,
-            user_role: "owner",
-            today_canceled_bookings: 1,
-          });
-          await newCheckInfo.save();
-        }
-      }
-    }
 
     res.status(200).json({
       success: true,
@@ -1091,6 +836,7 @@ export const addToCheckin = async (req, res) => {
     bookingInfo.doc_number = doc_number;
     bookingInfo.paid_amount += paid_amount;
     bookingInfo.total_unpaid_amount -= paid_amount;
+    bookingInfo.total_balance += paid_amount;
     await bookingInfo.save();
 
     const roomStatus = "CheckedIn";

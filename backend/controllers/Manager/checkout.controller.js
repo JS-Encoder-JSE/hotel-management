@@ -105,10 +105,17 @@ export const checkedOut = async (req, res) => {
   try {
     // Extract data from the request body
     const {
-      booking_ids,
+      booking_id,
+      new_total_room_rent,
+      new_no_of_days,
+      to,
+      new_total_rent,
+      new_total_rent_after_dis,
+      new_total_posted_bills,
       new_total_payable_amount,
       new_total_paid_amount,
       new_total_unpaid_amount,
+      new_total_balance,
       new_total_tax,
       new_total_additional_charges,
       new_total_service_charges,
@@ -120,6 +127,7 @@ export const checkedOut = async (req, res) => {
       checked_out,
       paid_amount,
       total_checkout_bills,
+      restaurant_income,
     } = req.body;
 
     const userId = req.user.userId;
@@ -132,9 +140,11 @@ export const checkedOut = async (req, res) => {
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
+    const hotel_income = paid_amount - restaurant_income;
+
     const newReport = new ManagerReport({
       hotel_id,
-      booking_ids,
+      booking_ids: booking_id,
       guestName,
       room_numbers,
       payment_method,
@@ -146,31 +156,43 @@ export const checkedOut = async (req, res) => {
     });
     await newReport.save();
     // Update the booking status to "CheckedOut"
-    await Booking.updateMany(
-      { _id: { $in: booking_ids } },
+    await Booking.updateOne(
+      { _id: { $in: booking_id } },
       { $set: { status: "CheckedOut" } }, // Wrap the update in $set
       { new: true }
     );
 
     // Retrieve the updated documents
-    const updatedDocuments = await Booking.find({ _id: { $in: booking_ids } });
+    const updatedDocuments = await Booking.findOne({ _id: booking_id });
 
     // Extract room_ids from the updated documents
-    const roomIds = updatedDocuments.map((doc) => doc.room_id);
+    // const roomIds = updatedDocuments.map((doc) => doc.room_id);
 
     const bookingInfo = await BookingInfo.findOne({
-      booking_ids: { $in: booking_ids },
+      booking_ids: booking_id,
     });
 
     bookingInfo.room_ids.pull(...roomIds);
+    bookingInfo.total_rent = new_total_rent;
+    bookingInfo.total_rent_after_dis = new_total_rent_after_dis;
+    bookingInfo.total_posted_bills = new_total_posted_bills;
     bookingInfo.paid_amount = new_total_paid_amount;
     bookingInfo.total_payable_amount = new_total_payable_amount;
     bookingInfo.total_unpaid_amount = new_total_unpaid_amount;
+    bookingInfo.total_balance = new_total_balance;
     bookingInfo.total_tax = new_total_tax;
     bookingInfo.total_additional_charges = new_total_additional_charges;
     bookingInfo.total_service_charges = new_total_service_charges;
 
     await bookingInfo.save();
+
+    const booking = await booking.findById(booking_id);
+
+    booking.to = to;
+    booking.total_room_rent = new_total_room_rent;
+    booking.no_of_days = new_no_of_days;
+
+    await booking.save();
 
     if (paid_amount > 0) {
       const newTransactionLog = new TransactionLog({
@@ -194,6 +216,18 @@ export const checkedOut = async (req, res) => {
     await Room.updateMany(
       { _id: { $in: roomIds } },
       { $set: { status: roomStatus } }
+    );
+    await FoodOrder.updateMany(
+      { _id: { $in: roomIds } },
+      { $set: { status: "CheckedOut", payment_status: "Paid" } }
+    );
+    await GymBills.updateMany(
+      { _id: { $in: roomIds } },
+      { $set: { status: "Paid" } }
+    );
+    await PoolBills.updateMany(
+      { _id: { $in: roomIds } },
+      { $set: { status: "Paid" } }
     );
     // await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
     // await GymBills.deleteMany({ room_id: { $in: roomIds } });
@@ -302,16 +336,20 @@ export const checkedOut = async (req, res) => {
     const existingStaticSubDashData = await StaticSubDashData.findOne({
       user_id: userId,
     });
-    existingStaticSubDashData.total_hotel_income += paid_amount;
-    existingStaticSubDashData.total_hotel_profit += paid_amount;
+    existingStaticSubDashData.total_hotel_income += hotel_income;
+    existingStaticSubDashData.total_hotel_profit += hotel_income;
+    existingStaticSubDashData.total_restaurant_income += restaurant_income;
+    existingStaticSubDashData.total_restaurant_profit += restaurant_income;
     await existingStaticSubDashData.save();
     const existingDailySubDashData = await DailySubDashData.findOne({
       user_id: userId,
       date,
     });
     if (existingDailySubDashData) {
-      existingDailySubDashData.today_hotel_income += paid_amount;
-      existingDailySubDashData.today_hotel_profit += paid_amount;
+      existingDailySubDashData.today_hotel_income += hotel_income;
+      existingDailySubDashData.today_hotel_profit += hotel_income;
+      existingDailySubDashData.today_restaurant_income += restaurant_income;
+      existingDailySubDashData.today_restaurant_profit += restaurant_income;
       await existingDailySubDashData.save();
     }
     if (!existingDailySubDashData) {
@@ -319,8 +357,10 @@ export const checkedOut = async (req, res) => {
         user_id: userId,
         user_role: user.role,
         date,
-        today_hotel_income: paid_amount,
-        today_hotel_profit: paid_amount,
+        today_hotel_income: hotel_income,
+        today_hotel_profit: hotel_income,
+        today_restaurant_income: restaurant_income,
+        today_restaurant_profit: restaurant_income,
       });
       await newDailySubDashData.save();
     }
@@ -331,8 +371,10 @@ export const checkedOut = async (req, res) => {
     });
     console.log(existingMonthlySubDashData);
     if (existingMonthlySubDashData) {
-      existingMonthlySubDashData.total_hotel_income += paid_amount;
-      existingMonthlySubDashData.total_hotel_profit += paid_amount;
+      existingMonthlySubDashData.total_hotel_income += hotel_income;
+      existingMonthlySubDashData.total_hotel_profit += hotel_income;
+      existingMonthlySubDashData.total_restaurant_income += restaurant_income;
+      existingMonthlySubDashData.total_restaurant_profit += restaurant_income;
       await existingMonthlySubDashData.save();
     }
     if (!existingMonthlySubDashData) {
@@ -341,8 +383,10 @@ export const checkedOut = async (req, res) => {
         user_role: user.role,
         month_name,
         year,
-        total_hotel_income: paid_amount,
-        total_hotel_profit: paid_amount,
+        total_hotel_income: hotel_income,
+        total_hotel_profit: hotel_income,
+        total_restaurant_income: restaurant_income,
+        total_restaurant_profit: restaurant_income,
       });
       await newMonthlySubDashData.save();
     }

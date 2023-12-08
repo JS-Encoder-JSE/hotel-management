@@ -95,6 +95,11 @@ const foodOrderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    dedicated_to: {
+      type: String,
+      required: true,
+      enum: ["room", "table"],
+    },
     unique_id: {
       type: String,
       required: false,
@@ -106,7 +111,7 @@ const foodOrderSchema = new mongoose.Schema(
     order_status: {
       type: String,
       required: false,
-      enum: ["Current", "CheckedOut", "AssignedToRoom"],
+      enum: ["Current", "CheckedOut"],
     },
     items: [itemsSchema],
     total_price: {

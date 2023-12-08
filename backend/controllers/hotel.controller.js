@@ -347,7 +347,14 @@ export const getAllHotels = async (req, res) => {
 
 export const getDailyDatas = async (req, res) => {
   try {
-    const { page = 1, limit = 10, fromDate, toDate, manager_id } = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      filter,
+      fromDate,
+      toDate,
+      manager_id,
+    } = req.query;
 
     // Construct the filters
     const query = {};
@@ -373,6 +380,15 @@ export const getDailyDatas = async (req, res) => {
     };
     // Use the paginate method with the constructed filters
     const result = await DailySubDashData.paginate(query, options);
+
+    // If filter is "hotel," remove objects where "today_hotel_income" is 0
+    if (filter === "hotel") {
+      result.docs = result.docs.filter((item) => item.today_hotel_income !== 0);
+    }
+    // If filter is "restaurant," remove objects where "today_restaurant_income" is 0
+    if (filter === "restaurant") {
+      result.docs = result.docs.filter((item) => item.today_restaurant_income !== 0);
+    }
 
     res.status(200).json({
       success: true,
