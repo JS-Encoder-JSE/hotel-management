@@ -508,7 +508,14 @@ export const cancelBooking = async (req, res) => {
 
 export const getBookingsByHotel = async (req, res) => {
   try {
-    const { limit = 10, page = 1, search, filter } = req.query;
+    const {
+      limit = 10,
+      page = 1,
+      fromDate,
+      toDate,
+      search,
+      filter,
+    } = req.query;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
@@ -521,6 +528,11 @@ export const getBookingsByHotel = async (req, res) => {
 
     if (["Active", "CheckedIn", "CheckedOut", "Canceled"].includes(filter)) {
       query.status = filter;
+    }
+
+    if (fromDate && toDate) {
+      // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
+      query.updatedAt = { $gte: fromDate, $lte: toDate };
     }
 
     if (search) {

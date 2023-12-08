@@ -33,7 +33,7 @@ const Dashboard = () => {
           <div
             className={`md:self-start fixed md:sticky top-0 ${
               isHbMenu ? "-left-96" : "left-0"
-            } bg-gray-200 text-lg w-[17rem] md:w-auto h-full md:h-auto md:-my-10 z-30 px-10 py-5 transition-[left] duration-500`}
+            } bg-gray-200 text-lg w-[17rem] md:w-auto h-screen md:-my-10 z-30 px-10 py-5 transition-[left] duration-500`}
           >
             <figure
               className={` max-w-[10rem] mx-auto flex items-center justify-center `}
@@ -49,7 +49,7 @@ const Dashboard = () => {
               {user?.data?.role}
             </h3>
             <div
-              className={`h-full md:h-[calc(100vh_-_14rem)] overflow-y-auto scrollbar-none`}
+              className={`h-[calc(100vh_-_17rem)] overflow-y-auto scrollbar-none`}
             >
               <div
                 className={`md:hidden w-fit mb-5 text-3xl cursor-pointer`}
