@@ -98,6 +98,9 @@ const ManageEmployee = () => {
                 </button>
               </Link>
             </div>
+            <div  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+        <h1>Manage Employee</h1>
+      </div>
       <div className={`flex justify-end gap-4`}>
       
         <div className={`relative sm:min-w-[20rem]`}>

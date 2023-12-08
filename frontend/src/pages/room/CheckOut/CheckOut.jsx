@@ -206,6 +206,9 @@ const CheckOut = () => {
           </button>
         </Link>
       </div>
+      <div  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+        <h1>Check-Out</h1>
+      </div>
       <div className="max-w-3xl mx-auto gap-5 items-center justify-center flex flex-col md:flex-row">
         <div className="">
           <Select
