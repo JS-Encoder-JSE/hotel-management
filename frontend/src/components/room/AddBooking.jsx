@@ -11,6 +11,8 @@ import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
 import toast from "react-hot-toast";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
+import { parseISO } from "date-fns";
 
 // form validation
 const validationSchema = yup.object({
@@ -96,8 +98,8 @@ const AddBooking = () => {
     onSubmit: async (values, formikHelpers) => {
       const obj = {
         ...values,
-        from: fromDateIsoConverter(values.from),
-        to: toDateIsoConverter(values.to),
+        from: convertedFromDate(values.from),
+        to: convertedToDate(values.to),
       };
 
       if (!obj.discount) obj.discount = 0;
@@ -163,8 +165,6 @@ const AddBooking = () => {
   const handleRefetch = () => {
     refetch();
   };
-  
-
 
   const transformedRooms = rooms?.data?.docs
     ?.filter((i) => i.status === "Available")
@@ -491,7 +491,9 @@ const AddBooking = () => {
               placeholderText={`From`}
               selected={formik.values.from}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("from", date)}
+              onChange={(date) => {
+                formik.setFieldValue("from", date);
+              }}
               onBlur={formik.handleBlur}
             />
             {formik.touched.from && Boolean(formik.errors.from) ? (
@@ -509,7 +511,9 @@ const AddBooking = () => {
               placeholderText={`To`}
               selected={formik.values.to}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("to", date)}
+              onChange={(date) => {
+                formik.setFieldValue("to", date);
+              }}
               onBlur={formik.handleBlur}
             />
             {formik.touched.to && Boolean(formik.errors.to) ? (
