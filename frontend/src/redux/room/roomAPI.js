@@ -198,7 +198,7 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["booking"],
+      invalidatesTags: ["booking","room"],
     }),
 
     updateBookingTOCheckIn: build.mutation({

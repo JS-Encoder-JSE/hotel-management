@@ -113,7 +113,8 @@ const UserDashBoard = ({ managerId }) => {
               </p>
             </div>
               <hr />
-              <h6 className="text-xs text-slate-400 mt-4">
+            <div className="cursor-pointer" onClick={()=>navigate("/dashboard/today-cancel-bookings")}>
+            <h6 className="text-xs text-slate-400 mt-4">
                 TODAY'S CANCELED BOOKING
               </h6>
               <p className="text-2xl font-semibold mt-4">
@@ -121,6 +122,7 @@ const UserDashBoard = ({ managerId }) => {
                   dashboardData?.daily_datas[0]?.today_canceled_bookings || 0
                 )}
               </p>
+            </div>
             </div>
           ) : (
             ""

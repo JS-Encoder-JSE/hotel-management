@@ -112,6 +112,7 @@ import EditSalesHotel from "./components/OwnerExpenses/EditSalesHotel.jsx";
 import TodaysCheckinList from "./pages/room/TodaysCheckinList.jsx";
 import TodayBookings from "./pages/room/TodaysBookings.jsx";
 import TodayCheckout from "./pages/room/TodayCheckout.jsx";
+import TodayCancelBookings from "./pages/room/TodayCancelBookings.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -199,6 +200,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <TodayBookings/>
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "today-cancel-bookings",
+              element: (
+                <ManagerRoute>
+                  <TodayCancelBookings/>
                 </ManagerRoute>
               ),
             },
