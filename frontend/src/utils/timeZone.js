@@ -57,7 +57,7 @@ export const convertedFromDate = (date) => {
   if (
     isBefore(
       date,
-      set(date, { hours: 6, minutes: 0, seconds: 0, milliseconds: 0 })
+      set(date, { hours: 10, minutes: 0, seconds: 0, milliseconds: 0 })
     )
   ) {
     // If before 6 am, set check-in date to the previous day at 12:00 pm
