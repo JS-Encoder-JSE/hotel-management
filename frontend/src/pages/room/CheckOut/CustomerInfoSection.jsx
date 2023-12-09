@@ -1,13 +1,66 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import ReactDatePicker from "react-datepicker";
+import { useDispatch, useSelector } from "react-redux";
+import { convertedToDate } from "../../../utils/timeZone";
+import {
+  setCalculateNOD,
+  setCalculatePayableAmount,
+  setCalculateUnpaidAmount,
+  setToDate,
+} from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
+import { parseISO } from "date-fns/esm";
+import { getDiscountAmount } from "../../../utils/utils";
 
 const CustomerInfoSection = ({ data }) => {
-  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
-    useSelector((state) => state.checkoutInfoCalSlice);
+  const {
+    refundAmount,
+    additionalCharge,
+    serviceCharge,
+    texAmount,
+    toDate,
+    fromDate,
+    roomInfo,
+    bookingInfo,
+    calculatePayableAmount,
+    calculateAmountAfterDis,
+  } = useSelector((state) => state.checkoutInfoCalSlice);
+
   const totalRefund =
     refundAmount - (additionalCharge + serviceCharge + texAmount);
+
   const totalPayableAmount =
-    data?.total_payable_amount + additionalCharge + serviceCharge + texAmount;
+    calculatePayableAmount + additionalCharge + serviceCharge + texAmount;
+
+  const dispatch = useDispatch();
+
+  const updatePayableAmount = (no_of_days) => {
+    const afterDisPrice = getDiscountAmount(
+      roomInfo?.total_room_rent,
+      bookingInfo?.room_discount
+    );
+    const updatedDiscount = getDiscountAmount(
+      Math.ceil(no_of_days * roomInfo?.rent_per_day),
+      bookingInfo?.room_discount
+    );
+    const oldPayableAmount = data?.total_payable_amount - afterDisPrice;
+
+    const updatedPayableAmount = oldPayableAmount + updatedDiscount;
+    dispatch(setCalculatePayableAmount(updatedPayableAmount));
+    dispatch(
+      setCalculateUnpaidAmount(updatedPayableAmount - data?.paid_amount)
+    );
+  };
+
+  const handleToDateChange = (date) => {
+    const no_of_days = Math.ceil(
+      Math.abs(new Date(fromDate) - new Date(date)) / (24 * 60 * 60 * 1000)
+    );
+    const toDate = convertedToDate(date);
+    dispatch(setToDate(toDate));
+    dispatch(setCalculateNOD(no_of_days));
+    updatePayableAmount(no_of_days);
+  };
+
   return (
     <section className="bg-white rounded">
       <h3 className="p-5 text-xl">Customer Details</h3>
@@ -49,10 +102,21 @@ const CustomerInfoSection = ({ data }) => {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-20">
-            <p className="whitespace-nowrap">Refund Amount :</p>
-            <p className="whitespace-nowrap">
-              {totalRefund < 0 ? 0 : totalRefund}
-            </p>
+            <p className="whitespace-nowrap">Total Balance:</p>
+            <p className="whitespace-nowrap">{data?.total_balance}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Select Checkout Date</p>
+            <div>
+              <ReactDatePicker
+                dateFormat="dd/MM/yyyy"
+                name="from"
+                placeholderText={`From`}
+                selected={toDate ? parseISO(toDate) : ""}
+                className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+                onChange={handleToDateChange}
+              />
+            </div>
           </div>
         </div>
       </div>

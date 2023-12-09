@@ -31,8 +31,14 @@ const PaymentSection = ({
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [changeAmount, setChangeAmount] = useState(collectedAmount);
-  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
-    useSelector((state) => state.checkoutInfoCalSlice);
+  const {
+    refundAmount,
+    additionalCharge,
+    serviceCharge,
+    texAmount,
+    bookingInfo,
+    calculateUnpaidAmount,
+  } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
     refundAmount - (additionalCharge + serviceCharge + texAmount);
   const handleChange = (e, index) => {
@@ -110,12 +116,7 @@ const PaymentSection = ({
               <p>Collected Amount</p>
             </div>
             <div className="col-span-2 space-y-3">
-              <p>
-                {totalPayableAmount - data?.paid_amount < 0 ||
-                totalPayableAmount - data?.paid_amount - colAmount < 0
-                  ? 0
-                  : totalPayableAmount - data?.paid_amount - colAmount}
-              </p>
+              <p>{pBill - bookingInfo?.total_balance - colAmount}</p>
               <p>{totalRefund < 0 ? 0 : totalRefund}</p>
 
               <p>{Math.ceil(colAmount)}</p>
@@ -169,7 +170,7 @@ const PaymentSection = ({
           }
           `}
         >
-          {totalRefund < 1
+          {bookingInfo?.total_balance < 1
             ? "Checkout"
             : data?.room_ids?.length == 1
             ? "Checkout & Refund"
@@ -181,9 +182,7 @@ const PaymentSection = ({
             ></span>
           ) : null}
         </button>
-       
       </div>
-      
     </section>
   );
 };

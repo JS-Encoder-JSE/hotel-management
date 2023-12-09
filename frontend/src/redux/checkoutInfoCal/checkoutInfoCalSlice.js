@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  calculatePayableAmount: 0,
+  calculateUnpaidAmount: 0,
   subTotals: 0,
   tax: 0,
   serviceCharge: 0,
@@ -13,12 +15,26 @@ const initialState = {
   bookingInfo: "",
   collectedAmount: 0,
   texAmount: 0,
+  toDate: "",
+  fromDate: "",
+  calculateNOD: 0,
+  calculateAmountAfterDis: 0,
+  roomInfo: {},
 };
 
 const checkoutInfoCalSlice = createSlice({
   name: "billing",
   initialState,
   reducers: {
+    setRoomInfo: (state, action) => {
+      state.roomInfo = action.payload;
+    },
+    setCalculatePayableAmount: (state, action) => {
+      state.calculatePayableAmount = action.payload;
+    },
+    setCalculateUnpaidAmount: (state, action) => {
+      state.calculateUnpaidAmount = action.payload;
+    },
     updateSubTotal: (state, action) => {
       state.subTotals = action.payload;
     },
@@ -55,6 +71,21 @@ const checkoutInfoCalSlice = createSlice({
     setTexAmount: (state, action) => {
       state.texAmount = action.payload;
     },
+    setToDate: (state, action) => {
+      state.toDate = action.payload;
+    },
+    setFromDate: (state, action) => {
+      state.fromDate = action.payload;
+    },
+    setCalculateNOD: (state, action) => {
+      state.calculateNOD = action.payload;
+    },
+    setCalculateNOD: (state, action) => {
+      state.calculateNOD = action.payload;
+    },
+    setCalculateAmountAfterDis: (state, action) => {
+      state.calculateNOD = action.payload;
+    },
     clearCheckoutCalSlice: (state) => {
       state = initialState;
     },
@@ -62,6 +93,9 @@ const checkoutInfoCalSlice = createSlice({
 });
 
 export const {
+  setRoomInfo,
+  setCalculatePayableAmount,
+  setCalculateUnpaidAmount,
   updateSubTotal,
   updateTax,
   updateServiceCharge,
@@ -73,7 +107,11 @@ export const {
   setBookingInfo,
   setRefundAmount,
   setTexAmount,
+  setToDate,
+  setFromDate,
+  setCalculateNOD,
   clearCheckoutCalSlice,
+  setCalculateAmountAfterDis,
 } = checkoutInfoCalSlice.actions;
 
 export default checkoutInfoCalSlice.reducer;

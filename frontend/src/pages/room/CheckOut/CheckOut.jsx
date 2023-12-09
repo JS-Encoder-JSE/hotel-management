@@ -22,7 +22,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   clearCheckoutCalSlice,
   setBookingInfo,
+  setCalculateAmountAfterDis,
+  setCalculateNOD,
+  setCalculatePayableAmount,
+  setCalculateUnpaidAmount,
+  setFromDate,
   setRefundAmount,
+  setRoomInfo,
+  setToDate,
   updateSubTotal,
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
@@ -46,15 +53,17 @@ const CheckOut = () => {
   const [pBill, setPBill] = useState(0);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
-  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
-    useSelector((state) => state.checkoutInfoCalSlice);
+  const {
+    refundAmount,
+    additionalCharge,
+    serviceCharge,
+    texAmount,
+    calculatePayableAmount,
+  } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
     refundAmount - (additionalCharge + serviceCharge + texAmount);
   const totalPayableAmount =
-    checkout?.data?.booking_info?.total_payable_amount +
-    additionalCharge +
-    serviceCharge +
-    texAmount;
+    calculatePayableAmount + additionalCharge + serviceCharge + texAmount;
   // const {
   //   data: checkout,
   //   isLoading: checkoutLoading,
@@ -174,7 +183,21 @@ const CheckOut = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(updateSubTotal(totalBilling));
+      dispatch(setToDate(checkout?.data?.room_bookings[0]?.to));
+      dispatch(setFromDate(checkout?.data?.room_bookings[0]?.from));
       dispatch(setBookingInfo(checkout?.data?.booking_info));
+      dispatch(setCalculateNOD(checkout?.data?.room_bookings[0]?.no_of_days));
+      dispatch(
+        setCalculatePayableAmount(
+          checkout?.data?.booking_info?.total_payable_amount
+        )
+      );
+      dispatch(
+        setCalculateUnpaidAmount(
+          checkout?.data?.booking_info?.total_unpaid_amount
+        )
+      );
+      dispatch(setRoomInfo(checkout?.data?.room_bookings[0]));
       dispatch(
         setRefundAmount(
           checkout?.data?.booking_info?.total_unpaid_amount < 1
