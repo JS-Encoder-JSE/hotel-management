@@ -109,7 +109,7 @@ const CheckOut = () => {
       const new_total_room_rent =
         calculateNOD * checkout?.data?.room_bookings[0]?.rent_per_day;
       const selectedRoomFoodBill = checkout?.data?.food_bills?.reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
+        (accumulator, currentValue) => accumulator + currentValue.total_price,
         0
       );
       const new_total_posted_bills = Math.ceil(

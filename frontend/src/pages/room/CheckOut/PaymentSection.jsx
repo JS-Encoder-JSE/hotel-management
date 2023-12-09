@@ -29,8 +29,6 @@ const PaymentSection = ({
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
-  const [collectedAmount, setCollectedAmount] = useState(0);
-  const [changeAmount, setChangeAmount] = useState(collectedAmount);
   const {
     refundAmount,
     additionalCharge,
@@ -40,12 +38,12 @@ const PaymentSection = ({
     calculateUnpaidAmount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
-    data?.room_ids?.length === 1 ? data?.total_balance - pBill : 0;
+    data?.room_ids?.length === 1 ? data?.total_balance + colAmount - pBill : 0;
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-      const list = [...paymentList];
-      list[index][name] = value;
-      setPaymentList(list);
+    const list = [...paymentList];
+    list[index][name] = value;
+    setPaymentList(list);
 
     // const calculatedLimit = Math.ceil(totalPayableAmount - data?.paid_amount);
     // if (data?.room_ids?.length === 1) {
