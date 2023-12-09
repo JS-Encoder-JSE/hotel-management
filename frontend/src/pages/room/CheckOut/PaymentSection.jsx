@@ -170,7 +170,7 @@ const PaymentSection = ({
           }
           `}
         >
-          {bookingInfo?.total_balance < 1
+          {totalRefund < 1
             ? "Checkout"
             : data?.room_ids?.length == 1
             ? "Checkout & Refund"

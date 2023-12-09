@@ -23,8 +23,10 @@ import {
   clearCheckoutCalSlice,
   setBookingInfo,
   setCalculateAmountAfterDis,
+  setCalculateBalance,
   setCalculateNOD,
   setCalculatePayableAmount,
+  setCalculateTotalRent,
   setCalculateUnpaidAmount,
   setFromDate,
   setRefundAmount,
@@ -59,6 +61,10 @@ const CheckOut = () => {
     serviceCharge,
     texAmount,
     calculatePayableAmount,
+    calculateNOD,
+    toDate,
+    calculateTotalRent,
+    calculateAmountAfterDis,
   } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
     refundAmount - (additionalCharge + serviceCharge + texAmount);
@@ -98,16 +104,36 @@ const CheckOut = () => {
         Number(paymentList[0].amount);
       const initialUnpaidAmount = totalPayableAmount - initialPaidAmount;
 
-      console.log();
-      const response = await addCheckout({
-        hotel_id: checkout?.data?.booking_info?.hotel_id,
+      const new_total_room_rent =
+        calculateNOD * checkout?.data?.room_bookings[0]?.rent_per_day;
+      const selectedRoomFoodBill = checkout?.data?.food_bills?.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      );
+      const new_total_posted_bills = Math.ceil(
+        checkout?.data?.booking_info?.total_posted_bills - selectedRoomFoodBill
+      );
+      const new_total_paid_amount =
+        totalRefund > pBill
+          ? checkout?.data?.booking_info?.paid_amount
+          : initialPaidAmount;
+
+      console.log({
+        booking_id: bookingId,
+        new_total_room_rent,
+        new_no_of_days: calculateNOD,
+        to: toDate,
+        new_total_rent: calculateTotalRent,
+        new_total_rent_after_dis: calculateAmountAfterDis,
+        new_total_posted_bills,
         new_total_payable_amount: totalPayableAmount,
-        new_total_paid_amount:
-          totalRefund > pBill
-            ? checkout?.data?.booking_info?.paid_amount
-            : initialPaidAmount,
+        new_total_paid_amount,
         new_total_unpaid_amount:
           totalRefund > 0 ? totalRefund * -1 : initialUnpaidAmount,
+        new_total_balance:
+          pBill > checkout?.data?.booking_info?.total_balance
+            ? 0
+            : checkout?.data?.booking_info?.total_balance - pBill,
         new_total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
         new_total_additional_charges:
           checkout?.data?.booking_info?.total_additional_charges +
@@ -117,12 +143,46 @@ const CheckOut = () => {
         guestName: checkout?.data?.booking_info?.guestName,
         room_numbers,
         payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
-        booking_ids: [bookingId],
+
         tran_id: paymentList[0].trx ? paymentList[0].trx : "",
         checked_in: checkout?.data?.room_bookings[0]?.from,
         checked_out: checkout?.data?.room_bookings[0]?.to,
         paid_amount: totalRefund > pBill ? 0 : Number(paymentList[0].amount),
         total_checkout_bills: pBill,
+        restaurant_income: selectedRoomFoodBill,
+      });
+      const response = await addCheckout({
+        booking_id: bookingId,
+        new_total_room_rent,
+        new_no_of_days: calculateNOD,
+        to: toDate,
+        new_total_rent: calculateTotalRent,
+        new_total_rent_after_dis: calculateAmountAfterDis,
+        new_total_posted_bills,
+        new_total_payable_amount: totalPayableAmount,
+        new_total_paid_amount,
+        new_total_unpaid_amount:
+          totalRefund > 0 ? totalRefund * -1 : initialUnpaidAmount,
+        new_total_balance:
+          pBill > checkout?.data?.booking_info?.total_balance
+            ? 0
+            : checkout?.data?.booking_info?.total_balance - pBill,
+        new_total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
+        new_total_additional_charges:
+          checkout?.data?.booking_info?.total_additional_charges +
+          additionalCharge,
+        new_total_service_charges:
+          checkout?.data?.booking_info?.total_service_charges + serviceCharge,
+        guestName: checkout?.data?.booking_info?.guestName,
+        room_numbers,
+        payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
+
+        tran_id: paymentList[0].trx ? paymentList[0].trx : "",
+        checked_in: checkout?.data?.room_bookings[0]?.from,
+        checked_out: checkout?.data?.room_bookings[0]?.to,
+        paid_amount: totalRefund > pBill ? 0 : Number(paymentList[0].amount),
+        total_checkout_bills: pBill,
+        restaurant_income: selectedRoomFoodBill,
       });
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -187,6 +247,16 @@ const CheckOut = () => {
       dispatch(setFromDate(checkout?.data?.room_bookings[0]?.from));
       dispatch(setBookingInfo(checkout?.data?.booking_info));
       dispatch(setCalculateNOD(checkout?.data?.room_bookings[0]?.no_of_days));
+      dispatch(setCalculateTotalRent(checkout?.data?.booking_info?.total_rent));
+      dispatch(
+        setCalculateBalance(checkout?.data?.booking_info?.total_balance)
+      );
+      dispatch(
+        setCalculateAmountAfterDis(
+          checkout?.data?.booking_info?.total_rent_after_dis
+        )
+      );
+
       dispatch(
         setCalculatePayableAmount(
           checkout?.data?.booking_info?.total_payable_amount

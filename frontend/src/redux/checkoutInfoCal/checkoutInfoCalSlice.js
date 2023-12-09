@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   calculatePayableAmount: 0,
   calculateUnpaidAmount: 0,
+  calculateTotalRent: 0,
+  calculateBalance: 0,
   subTotals: 0,
   tax: 0,
   serviceCharge: 0,
@@ -80,11 +82,14 @@ const checkoutInfoCalSlice = createSlice({
     setCalculateNOD: (state, action) => {
       state.calculateNOD = action.payload;
     },
-    setCalculateNOD: (state, action) => {
-      state.calculateNOD = action.payload;
-    },
     setCalculateAmountAfterDis: (state, action) => {
-      state.calculateNOD = action.payload;
+      state.calculateAmountAfterDis = action.payload;
+    },
+    setCalculateTotalRent: (state, action) => {
+      state.calculateTotalRent = action.payload;
+    },
+    setCalculateBalance: (state, action) => {
+      state.calculateBalance = action.payload;
     },
     clearCheckoutCalSlice: (state) => {
       state = initialState;
@@ -112,6 +117,8 @@ export const {
   setCalculateNOD,
   clearCheckoutCalSlice,
   setCalculateAmountAfterDis,
+  setCalculateTotalRent,
+  setCalculateBalance,
 } = checkoutInfoCalSlice.actions;
 
 export default checkoutInfoCalSlice.reducer;
