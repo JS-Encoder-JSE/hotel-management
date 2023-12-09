@@ -167,6 +167,14 @@ export const checkedOut = async (req, res) => {
 
     // Extract room_ids from the updated documents
     // const roomIds = updatedDocuments.map((doc) => doc.room_id);
+    const booking = await booking.findById(booking_id);
+
+    booking.to = to;
+    booking.total_room_rent = new_total_room_rent;
+    booking.no_of_days = new_no_of_days;
+
+    await booking.save();
+    const room_id = booking.room_id;
 
     const bookingInfo = await BookingInfo.findOne({
       booking_ids: booking_id,
@@ -186,14 +194,6 @@ export const checkedOut = async (req, res) => {
 
     await bookingInfo.save();
 
-    const booking = await booking.findById(booking_id);
-
-    booking.to = to;
-    booking.total_room_rent = new_total_room_rent;
-    booking.no_of_days = new_no_of_days;
-
-    await booking.save();
-    const room_id = booking.room_id;
 
     if (paid_amount > 0) {
       const newTransactionLog = new TransactionLog({
