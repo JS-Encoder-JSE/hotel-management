@@ -43,11 +43,9 @@ const PaymentSection = ({
     data?.room_ids?.length === 1 ? data?.total_balance - pBill : 0;
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    if (totalRefund < 0) {
       const list = [...paymentList];
       list[index][name] = value;
       setPaymentList(list);
-    }
 
     // const calculatedLimit = Math.ceil(totalPayableAmount - data?.paid_amount);
     // if (data?.room_ids?.length === 1) {
