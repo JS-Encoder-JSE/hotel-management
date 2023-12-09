@@ -143,60 +143,6 @@ const formattedDate = `${year}-${month}-${day}`;
         <div>
           <h3 className={`text-2xl font-semibold mb-3`}>Confirm Order</h3>
           <hr />
-          {/*<div className={`flex justify-between mt-5`}>*/}
-          {/*  <div className="flex flex-col gap-3">*/}
-          {/*    <select*/}
-          {/*      name="chooseHotel"*/}
-          {/*      className="input input-md h-10 bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"*/}
-          {/*      value={formik.values.chooseHotel}*/}
-          {/*      onChange={formik.handleChange}*/}
-          {/*      onBlur={formik.handleBlur}*/}
-          {/*    >*/}
-          {/*      <option value="" selected disabled>*/}
-          {/*        Choose Hotel*/}
-          {/*      </option>*/}
-
-          {/*      {hotelList?.map((i) => (*/}
-          {/*        <option key={i._id} value={i._id}>*/}
-          {/*          {i.name}*/}
-          {/*        </option>*/}
-          {/*      ))}*/}
-          {/*    </select>*/}
-          {/*    {formik.touched.chooseHotel &&*/}
-          {/*    Boolean(formik.errors.chooseHotel) ? (*/}
-          {/*      <small className="text-red-600">*/}
-          {/*        {formik.touched.chooseHotel && formik.errors.chooseHotel}*/}
-          {/*      </small>*/}
-          {/*    ) : null}*/}
-          {/*  </div>*/}
-          {/*  {formik.values.chooseHotel ? (*/}
-          {/*    <div className="flex flex-col gap-3">*/}
-          {/*      <Select*/}
-          {/*        placeholder="Select room"*/}
-          {/*        name={`roomNumber`}*/}
-          {/*        defaultValue={formik.values.roomNumber}*/}
-          {/*        options={transformedRooms}*/}
-          {/*        isSearchable*/}
-          {/*        onChange={(e) => formik.setFieldValue("roomNumber", e.value)}*/}
-          {/*        noOptionsMessage={() => "No room available"}*/}
-          {/*        classNames={{*/}
-          {/*          control: (state) =>*/}
-          {/*            `!input !input-md !h-4 !input-bordered min-w-[10rem] !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${*/}
-          {/*              state.isFocused ? "!shadow-none" : ""*/}
-          {/*            }`,*/}
-          {/*          valueContainer: () => "!p-0",*/}
-          {/*          placeholder: () => "!m-0",*/}
-          {/*        }}*/}
-          {/*      />*/}
-          {/*      {formik.touched.roomNumber &&*/}
-          {/*      Boolean(formik.errors.roomNumber) ? (*/}
-          {/*        <small className="text-red-600">*/}
-          {/*          {formik.touched.roomNumber && formik.errors.roomNumber}*/}
-          {/*        </small>*/}
-          {/*      ) : null}*/}
-          {/*    </div>*/}
-          {/*  ) : null}*/}
-          {/*</div>*/}
           {order.foods.length ? (
             <div className="overflow-x-auto w-full mt-5">
               <table className="table">
@@ -330,7 +276,7 @@ const formattedDate = `${year}-${month}-${day}`;
               <div className="text-center">Customer Signature</div>
               </div>
             </div>}
-            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 mt-5   md:left-36">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved.</p>}
+            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[23%]">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved.</p>}
           </div>
           <div className={`mt-5 text-end`}>
             <button
