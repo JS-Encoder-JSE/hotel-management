@@ -167,7 +167,7 @@ export const checkedOut = async (req, res) => {
 
     // Extract room_ids from the updated documents
     // const roomIds = updatedDocuments.map((doc) => doc.room_id);
-    const booking = await booking.findById(booking_id);
+    const booking = await Booking.findById(booking_id);
 
     booking.to = to;
     booking.total_room_rent = new_total_room_rent;
