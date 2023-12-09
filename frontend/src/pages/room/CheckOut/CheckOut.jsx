@@ -41,6 +41,7 @@ import { getISOStringDate } from "../../../utils/utils";
 import { clearAddOrderSlice } from "../../../redux/add-order/addOrderSlice";
 import Modal from "../../../components/Modal";
 import RefundPaymentModal from "./RefundPaymentModal";
+import { useReactToPrint } from "react-to-print";
 
 const CheckOut = () => {
   const [getCheckout, { data: checkout, isSuccess, isLoading }] =
@@ -56,6 +57,7 @@ const CheckOut = () => {
   const [pBill, setPBill] = useState(0);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
+  const componentRef = useRef();
   const {
     refundAmount,
     additionalCharge,
@@ -88,9 +90,11 @@ const CheckOut = () => {
   const handleResetCheckout = () => {
     setShowRooms(false);
   };
-
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   // this is use for Print
-  const componentRef = useRef();
+  // const componentRef = useRef();
   console.log({ pBill });
   // dispatch
   const dispatch = useDispatch();
@@ -213,6 +217,8 @@ const CheckOut = () => {
           checkout?.data?.booking_info?.room_ids?.length === 1
         ) {
           window.refundPayment.showModal();
+        } else {
+          handlePrint();
         }
       }
     },
@@ -267,9 +273,9 @@ const CheckOut = () => {
       dispatch(setBookingInfo(checkout?.data?.booking_info));
       dispatch(setCalculateNOD(checkout?.data?.room_bookings[0]?.no_of_days));
       dispatch(setCalculateTotalRent(checkout?.data?.booking_info?.total_rent));
-      dispatch(
-        setCalculateBalance(checkout?.data?.booking_info?.total_balance)
-      );
+      // dispatch(
+      //   setCalculateBalance(checkout?.data?.booking_info?.total_balance)
+      // );
       dispatch(
         setCalculateAmountAfterDis(
           checkout?.data?.booking_info?.total_rent_after_dis
@@ -406,11 +412,13 @@ const CheckOut = () => {
               addCheckOutLoading={addCheckOutLoading}
               totalPayableAmount={totalPayableAmount}
               totalRefund={totalRefund}
+              componentRef={componentRef}
             />
             <Modal id={`refundPayment`}>
               <RefundPaymentModal
                 totalRefund={totalRefund}
                 data={checkout?.data?.booking_info}
+                handlePrintOpen={handlePrint}
               />
             </Modal>
           </div>

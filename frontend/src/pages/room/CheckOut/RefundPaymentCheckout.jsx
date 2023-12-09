@@ -18,7 +18,7 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentCheckout = ({ totalRefund, data }) => {
+const RefundPaymentCheckout = ({ totalRefund, data, handlePrintOpen,closeRef }) => {
   // console.log({ totalRefundFromRefund: totalRefund });
   const [cashback] = useCashbackMutation();
   const { user } = useSelector((state) => state.authSlice);
@@ -43,7 +43,8 @@ const RefundPaymentCheckout = ({ totalRefund, data }) => {
         toast.error(response.error.data.message);
       } else {
         toast.success("Refund Successful");
-
+        closeRef.current.click();
+        handlePrintOpen();
         // navigate("/dashboard/checkout");
       }
     },

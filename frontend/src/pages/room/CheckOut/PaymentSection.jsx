@@ -25,6 +25,7 @@ const PaymentSection = ({
   roomData,
   addCheckOutLoading,
   totalPayableAmount,
+  componentRef
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -102,7 +103,7 @@ const PaymentSection = ({
   }, [paymentList]);
 
   // for printing
-  const componentRef = useRef();
+  
   return (
     <section>
       <div className="grid lg:grid-cols-2 gap-5">

@@ -27,7 +27,6 @@ const BillingSectionPrint = ({
           {/* <p>Tax</p> */}
           <p>Additional Changes</p>
           <p>Service Charge</p>
-          <p>Extra Discount</p>
           <p>Room Posted Bill</p>
           <p className="text-lg font-bold">GrandTotal</p>
         </div>
@@ -36,9 +35,10 @@ const BillingSectionPrint = ({
           {/* <p>: ${tax}</p> */}
           <p>: ${additionalCharge}</p>
           <p>: ${serviceCharge}</p>
-          <p>: $ -{discountOffer}</p>
-          <p>: ${roomPostedBill}</p> 
-          <p>: ${grandTotal}</p>
+          <p>: ${roomPostedBill}</p>
+          <p>
+            : ${subTotals + additionalCharge + serviceCharge + roomPostedBill}
+          </p>
         </div>
       </div>
     </section>
