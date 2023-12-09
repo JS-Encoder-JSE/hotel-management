@@ -12,6 +12,7 @@ import CheckOutPrint from "./CheckOutPrint.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal.jsx";
 import RefundPaymentModal from "./RefundPaymentModal.jsx";
+import { setCalculateCollectedAmount } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice.js";
 
 const PaymentSection = ({
   pBill,
@@ -29,6 +30,7 @@ const PaymentSection = ({
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
+  const dispatch = useDispatch();
   const {
     refundAmount,
     additionalCharge,
@@ -36,14 +38,27 @@ const PaymentSection = ({
     texAmount,
     bookingInfo,
     calculateUnpaidAmount,
+    calculateBalance,
   } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
     data?.room_ids?.length === 1 ? data?.total_balance + colAmount - pBill : 0;
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    const list = [...paymentList];
-    list[index][name] = value;
-    setPaymentList(list);
+    if (name === "amount") {
+      if (
+        calculateBalance < 0 &&
+        Number(value) <= Math.ceil(pBill - bookingInfo?.total_balance)
+      ) {
+        const list = [...paymentList];
+        list[index][name] = value;
+        setPaymentList(list);
+        dispatch(setCalculateCollectedAmount(value));
+      }
+    } else {
+      const list = [...paymentList];
+      list[index][name] = value;
+      setPaymentList(list);
+    }
 
     // const calculatedLimit = Math.ceil(totalPayableAmount - data?.paid_amount);
     // if (data?.room_ids?.length === 1) {
@@ -118,10 +133,15 @@ const PaymentSection = ({
               <p>Collected Amount</p>
             </div>
             <div className="col-span-2 space-y-3">
-              <p>
-                {pBill - bookingInfo?.total_balance < 0
+              {/* <p>
+                {pBill - bookingInfo?.total_balance - colAmount < 0
                   ? 0
                   : pBill - bookingInfo?.total_balance - colAmount}
+              </p> */}
+              <p>
+                {calculateBalance > 0
+                  ? 0
+                  : Math.ceil(pBill - bookingInfo?.total_balance)}
               </p>
               <p>{totalRefund < 0 ? 0 : totalRefund}</p>
 
@@ -161,7 +181,14 @@ const PaymentSection = ({
           type={`button`}
           onClick={() => formik.handleSubmit()}
           className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case 
-          ${addCheckOutLoading ? "btn-disabled" : ""}
+          ${
+            addCheckOutLoading
+              ? "btn-disabled"
+              : calculateBalance < 0 &&
+                colAmount !== Math.ceil(pBill - bookingInfo?.total_balance)
+              ? "btn-disabled"
+              : ""
+          }
           `}
         >
           {totalRefund < 1

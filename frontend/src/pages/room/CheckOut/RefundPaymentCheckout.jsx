@@ -19,7 +19,7 @@ const validationSchema = yup.object({
 });
 
 const RefundPaymentCheckout = ({ totalRefund, data }) => {
-  console.log({ totalRefundFromRefund: totalRefund });
+  // console.log({ totalRefundFromRefund: totalRefund });
   const [cashback] = useCashbackMutation();
   const { user } = useSelector((state) => state.authSlice);
   const formik = useFormik({
@@ -30,7 +30,7 @@ const RefundPaymentCheckout = ({ totalRefund, data }) => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      console.log(values);
+      // console.log(values);
       const response = cashback({
         manager_id: user?._id,
         bookingInfoId: data?._id,

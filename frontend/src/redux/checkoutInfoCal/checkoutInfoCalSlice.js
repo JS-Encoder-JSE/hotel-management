@@ -22,6 +22,7 @@ const initialState = {
   calculateNOD: 0,
   calculateAmountAfterDis: 0,
   roomInfo: {},
+  calculateCollectedAmount: 0,
 };
 
 const checkoutInfoCalSlice = createSlice({
@@ -91,6 +92,9 @@ const checkoutInfoCalSlice = createSlice({
     setCalculateBalance: (state, action) => {
       state.calculateBalance = action.payload;
     },
+    setCalculateCollectedAmount: (state, action) => {
+      state.calculateCollectedAmount = action.payload;
+    },
     clearCheckoutCalSlice: (state) => {
       state = initialState;
     },
@@ -119,6 +123,7 @@ export const {
   setCalculateAmountAfterDis,
   setCalculateTotalRent,
   setCalculateBalance,
+  setCalculateCollectedAmount,
 } = checkoutInfoCalSlice.actions;
 
 export default checkoutInfoCalSlice.reducer;

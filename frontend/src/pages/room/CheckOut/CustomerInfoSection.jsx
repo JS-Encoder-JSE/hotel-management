@@ -25,6 +25,8 @@ const CustomerInfoSection = ({ data }) => {
     bookingInfo,
     calculatePayableAmount,
     calculateAmountAfterDis,
+    calculateBalance,
+    calculateCollectedAmount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
 
   const totalRefund =
@@ -120,6 +122,12 @@ const CustomerInfoSection = ({ data }) => {
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Total Balance:</p>
             <p className="whitespace-nowrap">{data?.total_balance}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-20">
+            <p className="whitespace-nowrap">Current Balance:</p>
+            <p className="whitespace-nowrap">
+              {calculateBalance + +calculateCollectedAmount}
+            </p>
           </div>
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Select Checkout Date</p>
