@@ -258,7 +258,7 @@ console.log(restaurantSalesHistory,"History")
               </table>
             ) : (
               <p className="flex justify-center items-center my-48">
-                No Expenses Today
+                No Sales Today
               </p>
             )}
           </div>

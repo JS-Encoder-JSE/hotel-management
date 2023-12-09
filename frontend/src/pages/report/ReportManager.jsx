@@ -91,12 +91,11 @@ const ReportManager = () => {
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-5 py-5 rounded `}>
-        <div className={`flex flex-wrap gap-1.5 justify-between flex-col md:flex-row `}>
-        <div className="mb-7">
+      <div className="mb-7">
               <Link to={`/dashboard `}>
                 <button
                   type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
                 >
                     <dfn>
                       <abbr title="Back"><FaArrowLeft /></abbr>
@@ -106,7 +105,11 @@ const ReportManager = () => {
                 </button>
               </Link>
             </div>
-          <h3 className={`text-xl font-semibold`}>All Report</h3>
+         <div>
+         <h3 className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>All Report</h3>
+         </div>
+        <div className={`flex flex-wrap gap-1.5 justify-end flex-col md:flex-row `}>
+     
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>
               <button
@@ -201,7 +204,7 @@ const ReportManager = () => {
           <div className={`relative max-w-xs`}>
             <input
               type="text"
-              placeholder="Search by name..."
+              placeholder="Search by Guest Name..."
               name="search"
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
@@ -298,8 +301,8 @@ const ReportManager = () => {
                       <th>{++idx}</th>
                       <td>{report.guestName}</td>
                       <td>{report?.room_numbers.join(",")}</td>
-                      <td>{getFormateDateAndTime(report?.checked_in)}</td>
-                      <td>{getFormateDateAndTime(report?.checked_out)}</td>
+                      <td>{new Date(report?.checked_in).toLocaleDateString()}</td>
+                      <td>{new Date(report?.checked_out).toLocaleDateString()}</td>
                       <td>{report?.paid_amount}</td>
                       <td className={`space-x-1.5`}></td>
                     </tr>

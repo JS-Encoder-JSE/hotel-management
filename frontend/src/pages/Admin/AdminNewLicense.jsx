@@ -216,7 +216,7 @@ const AdminNewLicense = () => {
         <Link to={`/dashboard `}>
           <button
             type="button"
-            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
           >
             <dfn>
               <abbr title="Back">
@@ -277,6 +277,7 @@ const AdminNewLicense = () => {
                               />
                             </label>
                             <button
+                            type="button"
                               className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                               onClick={() => handleDelete(idx)}
                             >

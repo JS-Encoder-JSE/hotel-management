@@ -20,7 +20,7 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
-const AddOrder = () => {
+const   AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
   const [error, setError] = useState("");
@@ -61,10 +61,12 @@ const AddOrder = () => {
 console.log(rooms)
 
   const { data: tables } = useGetTablesQuery();
-  const transformedRooms = rooms?.data?.docs?.map((room) => ({
+  const transformedRooms = rooms?.data?.docs
+  ?.filter((room) => room.status === 'CheckedIn')
+  .map((room) => ({
     value: room._id,
     label: room.roomNumber,
-  }));
+  })) || [];
   const transformedTables = tables?.data?.map((table) => ({
     value: table._id,
     label: table.table_number,
@@ -73,14 +75,14 @@ console.log(rooms)
   useEffect(() => {
     formik.values.type.length && setError("");
   }, [formik.values.type]);
+
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-5`}>
-      <div className={`flex flex-col md:flex-row justify-between`}>
-        <div>
+       <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
-              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
             >
               <dfn>
                 <abbr title="Back">
@@ -92,6 +94,11 @@ console.log(rooms)
             </button>
           </Link>
         </div>
+           <div  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+        <h1>Add-Order</h1>
+      </div>
+      <div className={`flex flex-col md:flex-row justify-between`}>
+       
         {/*<div className="flex flex-col gap-3">*/}
         {/*  <select*/}
         {/*    name="chooseHotel"*/}
@@ -253,7 +260,7 @@ console.log(rooms)
         chooseHotel={formik.values.chooseHotel}
       />
       <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
-        {<ConfirmOrder />}
+        <ConfirmOrder />
       </Modal>
     </div>
   );

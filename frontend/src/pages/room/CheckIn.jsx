@@ -322,7 +322,7 @@ const CheckIn = () => {
 
   return (
     <div className={` bg-white rounded-2xl mx-auto p-8 sm:max-w-[90%]`}>
-      <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
+      <h3  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>Check In</h3>
       <hr />
       <form
         autoComplete="off"

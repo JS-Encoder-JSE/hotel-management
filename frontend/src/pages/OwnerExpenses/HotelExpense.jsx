@@ -29,15 +29,13 @@ const HotelExpense = () => {
     }
   };
 
-
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
-  const handleReset=()=>{
-    setselectedHotel("")
-
-  }
+  const handleReset = () => {
+    setselectedHotel("");
+  };
 
   if (isLoading || isError) {
     return (
@@ -50,31 +48,37 @@ const HotelExpense = () => {
     );
   }
 
- 
   return (
     <>
-    {/* back button */}
+      {/* back button */}
       <div className={`mb-5`}>
-        <Link to={`/dashboard `}>
-          <button
-            type="button"
-            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-          >
-            <dfn>
-              <abbr title="Back">
-                <FaArrowLeft />
-              </abbr>
-            </dfn>
+        <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
 
-            <span className="tracking-wider font-semibold text-[1rem]"></span>
-          </button>
-        </Link>
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+        <div className="mt-7">
+          <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+            Hotel Expenses{" "}
+          </h1>
+        </div>
       </div>
-      
+
       <div className="space-y-20">
         {/* Select Room Section */}
-        <section className="max-w-full mx-auto flex gap-5 items-center justify-center">
-          <p >Hotel Branch Name :</p>
+        <section className="max-w-full mx-auto flex flex-col md:flex-row gap-5 items-center justify-center">
+          <p>Hotel Branch Name :</p>
           <div className="flex flex-col md:flex-row gap-4">
             <Select
               placeholder="Search with hotel branch name"
@@ -93,15 +97,26 @@ const HotelExpense = () => {
                 placeholder: () => "!m-0",
               }}
             />
-            <button onClick={handleReset} className={`${selectedHotel?"bg-green-slimy px-3 border text-white": "bg-gray-300 px-3 border"}`}>Reset</button>
+            <button
+              onClick={handleReset}
+              className={`${
+                selectedHotel
+                  ? "bg-green-slimy px-3 border text-white"
+                  : "bg-gray-300 px-3 border"
+              }`}
+            >
+              Reset
+            </button>
           </div>
         </section>
 
         <section>
           {selectedHotel ? (
-            <HotelExpensesShow hotelId={selectedHotel?.value}></HotelExpensesShow>
+            <HotelExpensesShow
+              hotelId={selectedHotel?.value}
+            ></HotelExpensesShow>
           ) : (
-          <p className="text-center">Please Select your Hotel Branch !!</p>
+            <p className="text-center">Please Select your Hotel Branch !!</p>
           )}
         </section>
       </div>

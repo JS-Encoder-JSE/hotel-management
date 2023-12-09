@@ -54,7 +54,7 @@ const ManageRoom = () => {
         <Link to={`/dashboard `}>
           <button
             type="button"
-            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
           >
             <dfn>
               <abbr title="Back">
@@ -65,6 +65,9 @@ const ManageRoom = () => {
             <span className="tracking-wider font-semibold text-[1rem]"></span>
           </button>
         </Link>
+      </div>
+      <div  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+        <h1>Manage Room</h1>
       </div>
       <div className="flex justify-end">
         {/* filter by hotels  */}

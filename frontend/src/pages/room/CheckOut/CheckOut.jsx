@@ -287,7 +287,7 @@ const CheckOut = () => {
         <Link to={`/dashboard `}>
           <button
             type="button"
-            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
           >
             <dfn>
               <abbr title="Back">
@@ -298,6 +298,9 @@ const CheckOut = () => {
             <span className="tracking-wider font-semibold text-[1rem]"></span>
           </button>
         </Link>
+      </div>
+      <div  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+        <h1>Check-Out</h1>
       </div>
       <div className="max-w-3xl mx-auto gap-5 items-center justify-center flex flex-col md:flex-row">
         <div className="">
