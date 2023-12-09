@@ -293,7 +293,7 @@ console.log(restaurantSalesHistory,"History")
               Restaurant sales
             </h3>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mr-5">
             {PDF?.length ? (
               <PDFDownloadLink
                 document={

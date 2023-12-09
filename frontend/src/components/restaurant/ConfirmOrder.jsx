@@ -61,12 +61,14 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
       items: arr,
       paid_amount: 0,
       current_order: false,
+      dedicated_to:"room"
     };
     const orderForTable = {
       table_id: obj.tableId,
       items: arr,
       paid_amount: 0,
       current_order: true,
+      dedicated_to:"table"
     };
     const response = await addOrder(
       obj.tableId.length
