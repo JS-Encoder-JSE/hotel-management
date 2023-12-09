@@ -40,7 +40,7 @@ const PaymentSection = ({
     calculateUnpaidAmount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
-    refundAmount - (additionalCharge + serviceCharge + texAmount);
+    data?.room_ids?.length === 1 ? data?.total_balance - pBill : 0;
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     if (totalRefund < 0) {
@@ -115,7 +115,7 @@ const PaymentSection = ({
           <h3 className="p-5 text-xl mt-5">Balance Details</h3>
           <hr />
 
-          <div className="p-4 grid grid-cols-3 items-center text-sm font-semibold">
+          <div className="p-5 grid grid-cols-3 items-center text-sm font-semibold">
             <div className="space-y-3">
               <p>Remain Amount</p>
               <p>Refund Amount</p>
