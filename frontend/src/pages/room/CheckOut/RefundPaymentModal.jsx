@@ -4,11 +4,11 @@ import RefundPaymentSection from "../../../components/room/RefundPaymentSection.
 import RefundPaymentCheckout from "./RefundPaymentCheckout.jsx";
 import { useSelector } from "react-redux";
 
-const RefundPaymentModal = ({data}) => {
+const RefundPaymentModal = ({ data, totalRefund }) => {
   const { refundAmount, additionalCharge, serviceCharge, texAmount } =
     useSelector((state) => state.checkoutInfoCalSlice);
-  const totalRefund =
-    refundAmount - (additionalCharge + serviceCharge + texAmount);
+  // const totalRefund =
+  //   refundAmount - (additionalCharge + serviceCharge + texAmount);
   const closeRef = useRef();
   return (
     <>

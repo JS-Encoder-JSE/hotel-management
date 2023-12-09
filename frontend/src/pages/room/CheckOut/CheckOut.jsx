@@ -381,7 +381,10 @@ const CheckOut = () => {
               totalRefund={totalRefund}
             />
             <Modal id={`refundPayment`}>
-              <RefundPaymentModal data={checkout?.data?.booking_info} />
+              <RefundPaymentModal
+                totalRefund={totalRefund}
+                data={checkout?.data?.booking_info}
+              />
             </Modal>
           </div>
         </>
