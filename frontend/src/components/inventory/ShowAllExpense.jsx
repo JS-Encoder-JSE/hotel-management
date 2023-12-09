@@ -125,6 +125,7 @@ const ShowAllExpense = () => {
     refetch,
   } = useGetExpensesQuery({
     fromDate:new Date().toLocaleDateString(),
+    toDate: new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });
@@ -194,7 +195,7 @@ const ShowAllExpense = () => {
             <Link to={`/dashboard `}>
               <button
                 type="button"
-                class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
               >
                 <dfn>
                   <abbr title="Back">
@@ -213,7 +214,7 @@ const ShowAllExpense = () => {
                 <h3
                   className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
                 >
-                  Today Expenses
+                  Today's Expenses
                 </h3>
               </div>
               <div className={`flex justify-end mb-5 mr-5`}>
@@ -332,7 +333,7 @@ const ShowAllExpense = () => {
                     </table>
                   </div>
                 ) : (
-                  <p className="flex justify-center items-center mt-96">
+                  <p className="flex justify-center items-center mt-24">
                     No Expenses Today
                   </p>
                 )}

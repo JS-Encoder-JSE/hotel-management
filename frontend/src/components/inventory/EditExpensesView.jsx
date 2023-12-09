@@ -13,8 +13,8 @@ import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
-  name: yup.string().required("Name is required"),
-  quantity: yup.string().required("Quantity is required"),
+  name: yup.string(),
+  quantity: yup.string(),
   price: yup.number(),
 
   // password: yup

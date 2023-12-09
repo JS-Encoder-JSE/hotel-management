@@ -92,12 +92,15 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     limit: formik.values.entries,
   });
 
+  console.log(filteredExpenses)
+
   const {
     data: RestaurantExpenses,
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
     fromDate: new Date().toLocaleDateString(),
+    toDate: new Date().toLocaleDateString(),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });

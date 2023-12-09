@@ -230,9 +230,9 @@ const formattedDate = `${year}-${month}-${day}`;
                           {/* <p className="flex justify-between">
                             Tax : <span>{orderCalc.tax}</span>
                           </p> */}
-                          <p className="flex justify-between">
+                          {/* <p className="flex justify-between">
                             Grand Total: <span>{orderCalc.grandTotal}</span>
-                          </p>
+                          </p> */}
                         </div>
                         <div className="flex">
                           <button
@@ -303,12 +303,12 @@ const formattedDate = `${year}-${month}-${day}`;
                           <p className="flex justify-between">
                             Total Price : <span>{orderCalc.total}</span>
                           </p>
-                          <p className="flex justify-between">
+                          {/* <p className="flex justify-between">
                             Tax : <span>{orderCalc.tax}</span>
                           </p>
                           <p className="flex justify-between font-bold">
                             Grand Total: <span>{orderCalc.grandTotal}</span>
-                          </p>
+                          </p> */}
                         </div>
                       
                       </div>
@@ -327,10 +327,10 @@ const formattedDate = `${year}-${month}-${day}`;
              {/* customer signature  */}
               <div>
               <div className="h-[2px] w-48 divider"></div>
-              <div className="text-center">Custoner Signature</div>
+              <div className="text-center">Customer Signature</div>
               </div>
             </div>}
-            <p className="text-center absolute bottom-0 left-36">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved.</p>
+            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 mt-5   md:left-36">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved.</p>}
           </div>
           <div className={`mt-5 text-end`}>
             <button

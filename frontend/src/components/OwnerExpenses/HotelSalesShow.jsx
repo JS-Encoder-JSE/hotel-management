@@ -35,6 +35,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
   const [managersPerPage] = useState(10);
   // for todayda
   const [pageCount, setPageCount] = useState(0);
+  const [forcePage,setForcePage]=useState(null)
 
   // /today data
   const [currentPage, setCurrentPage] = useState(0);
@@ -47,6 +48,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     fromDate: "",
     toDate: "",
   });
+console.log(searchParams)
 
   const formik = useFormik({
     initialValues: {
@@ -64,6 +66,7 @@ const HotelSalesShow = ({managerId,hotelId}) => {
       setCurrentPage(0);
       setForcePage(0);
       setHistoryCurrentPage(0)
+      setSearchParams("")
     },
   });
 
@@ -118,6 +121,7 @@ useEffect(() => {
     error,
     isLoading,
   } = useGetDailyDataQuery({
+    ...searchParams,
     cp: HistoryCurrentPage,
     fromDate: searchParams?.fromDate,
     toDate: searchParams?.toDate,
@@ -150,7 +154,7 @@ useEffect(() => {
               <h3
                 className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
               >
-                Today Sales
+                Today's Sales
               </h3>
             </div>
             <div>
@@ -217,11 +221,11 @@ useEffect(() => {
                     </tbody>
                   </table>
                 ) : (
-                  <p className="text-center py-14"> No Sales Today</p>
+                  <p className="text-center my-48"> No Sales Today</p>
                 )}
               </div>
             </div>
-            <div className="flex justify-center mt-10">
+           {hotelTodaySales?.data?.docs?.length && <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -239,7 +243,7 @@ useEffect(() => {
                 onPageChange={handlePageTrigger}
                 renderOnZeroPageCount={null}
               />
-            </div>
+            </div>}
           </div>
         </div>
 
@@ -330,7 +334,8 @@ useEffect(() => {
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
           <div className="overflow-x-auto">
-            <table className="table">
+           { hotelSalesHistory &&
+                  hotelSalesHistory?.data?.docs?.length ?<table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
@@ -381,9 +386,9 @@ useEffect(() => {
                     );
                   })}
               </tbody>
-            </table>
+            </table>: <p className="text-center my-16">No sales yet!</p>}
           </div>
-          <div className="flex justify-center mt-10">
+          {hotelSalesHistory?.data?.docs?.length && <div className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -401,7 +406,7 @@ useEffect(() => {
               onPageChange={handlePageClick}
               renderOnZeroPageCount={null}
             />
-          </div>
+          </div>}
         </div>
       </div>
     </div>

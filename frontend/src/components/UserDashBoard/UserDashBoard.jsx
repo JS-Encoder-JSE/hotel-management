@@ -23,10 +23,12 @@ import { Rings } from "react-loader-spinner";
 import AllExpeseAnalytics from "./AllExpeseAnalytics";
 import OwnerExpeseAnalytics from "./OwnerExpeseAnalytics";
 import { dummyData, isValidUrl } from "../../utils/utils";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // import { useLocation } from 'react-router-dom';
 
 const UserDashBoard = ({ managerId }) => {
+  const navigate = useNavigate()
+
   const { user } = useSelector((store) => store.authSlice);
   const { pathname } = useLocation();
   const {
@@ -52,6 +54,7 @@ const UserDashBoard = ({ managerId }) => {
 
   // const location = useLocation();
   // const {  pathname  } = location;
+  
   return (
     <>
       <div>
@@ -63,7 +66,8 @@ const UserDashBoard = ({ managerId }) => {
             <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
               {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
             </div>
-            <h6 className="text-xs text-slate-400 ">
+          <div onClick={()=> navigate(userHotel && "todays-checkin-list")} className="cursor-pointer" >
+          <h6 className="text-xs text-slate-400 ">
               {userHotel ? "TODAY'S CHECK IN" : "TOTAL SELL"}
             </h6>
             <p className="text-2xl font-semibold mt-3">
@@ -78,9 +82,10 @@ const UserDashBoard = ({ managerId }) => {
               )}
               {}
             </p>
+          </div>
             <hr />
             {userHotel ? (
-              <div>
+              <div onClick={()=>navigate("/dashboard/today-checkouts")} className="cursor-pointer">
                 <h6 className="text-xs text-slate-400 mt-4">
                   TODAY'S CHECK OUT
                 </h6>
@@ -99,14 +104,17 @@ const UserDashBoard = ({ managerId }) => {
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
                 <BsClipboard2DataFill />
               </div>
-              <h6 className="text-xs text-slate-400 uppercase">
+            <div className="cursor-pointer" onClick={()=> navigate(userHotel && '/dashboard/today-bookings')}>
+            <h6 className="text-xs text-slate-400 uppercase">
                 TODAY'S Booking
               </h6>
               <p className="text-2xl font-semibold mt-3">
                 {Math.floor(dashboardData?.daily_datas[0]?.today_booking || 0)}
               </p>
+            </div>
               <hr />
-              <h6 className="text-xs text-slate-400 mt-4">
+            <div className="cursor-pointer" onClick={()=>navigate("/dashboard/today-cancel-bookings")}>
+            <h6 className="text-xs text-slate-400 mt-4">
                 TODAY'S CANCELED BOOKING
               </h6>
               <p className="text-2xl font-semibold mt-4">
@@ -114,6 +122,7 @@ const UserDashBoard = ({ managerId }) => {
                   dashboardData?.daily_datas[0]?.today_canceled_bookings || 0
                 )}
               </p>
+            </div>
             </div>
           ) : (
             ""
@@ -198,7 +207,7 @@ const UserDashBoard = ({ managerId }) => {
         </section>
 
         <section className="mt-8 grid md:grid-cols-2 gap-5">
-          <div className="bg-white p-3 rounded shadow hover:shadow-md duration-200">
+          <div className="bg-white max-w-[100%] p-3 rounded shadow hover:shadow-md duration-200">
             <BookingChart
               daily_datas={dashboardData?.daily_datas}
               permanent_datas={dashboardData?.permanent_datas}

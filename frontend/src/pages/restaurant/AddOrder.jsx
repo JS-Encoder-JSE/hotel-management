@@ -20,7 +20,7 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
-const AddOrder = () => {
+const   AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
   const [error, setError] = useState("");
@@ -61,10 +61,12 @@ const AddOrder = () => {
 console.log(rooms)
 
   const { data: tables } = useGetTablesQuery();
-  const transformedRooms = rooms?.data?.docs?.map((room) => ({
+  const transformedRooms = rooms?.data?.docs
+  ?.filter((room) => room.status === 'CheckedIn')
+  .map((room) => ({
     value: room._id,
     label: room.roomNumber,
-  }));
+  })) || [];
   const transformedTables = tables?.data?.map((table) => ({
     value: table._id,
     label: table.table_number,
@@ -73,13 +75,14 @@ console.log(rooms)
   useEffect(() => {
     formik.values.type.length && setError("");
   }, [formik.values.type]);
+
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-5`}>
        <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
-              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
             >
               <dfn>
                 <abbr title="Back">
@@ -257,7 +260,7 @@ console.log(rooms)
         chooseHotel={formik.values.chooseHotel}
       />
       <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
-        {<ConfirmOrder />}
+        <ConfirmOrder />
       </Modal>
     </div>
   );

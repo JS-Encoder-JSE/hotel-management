@@ -57,10 +57,11 @@ const HotelSales = () => {
     <>
     {/* back button */}
       <div className={`mb-5`}>
+      <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Hotel Sales </h1>
         <Link to={`/dashboard `}>
           <button
             type="button"
-            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
           >
             <dfn>
               <abbr title="Back">
@@ -75,7 +76,7 @@ const HotelSales = () => {
       
       <div className="space-y-20">
         {/* Select Room Section */}
-        <section className="max-w-full mx-auto flex gap-5 items-center justify-center">
+        <section className="max-w-full mx-auto flex flex-col md:flex-row gap-5 items-center justify-center">
           <p >Hotel Branch Name :</p>
           <div className="flex flex-col md:flex-row gap-3">
             <Select

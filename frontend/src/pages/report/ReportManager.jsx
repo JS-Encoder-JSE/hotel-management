@@ -95,7 +95,7 @@ const ReportManager = () => {
               <Link to={`/dashboard `}>
                 <button
                   type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
                 >
                     <dfn>
                       <abbr title="Back"><FaArrowLeft /></abbr>
@@ -204,7 +204,7 @@ const ReportManager = () => {
           <div className={`relative max-w-xs`}>
             <input
               type="text"
-              placeholder="Search by name..."
+              placeholder="Search by Guest Name..."
               name="search"
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
@@ -301,8 +301,8 @@ const ReportManager = () => {
                       <th>{++idx}</th>
                       <td>{report.guestName}</td>
                       <td>{report?.room_numbers.join(",")}</td>
-                      <td>{getFormateDateAndTime(report?.checked_in)}</td>
-                      <td>{getFormateDateAndTime(report?.checked_out)}</td>
+                      <td>{new Date(report?.checked_in).toLocaleDateString()}</td>
+                      <td>{new Date(report?.checked_out).toLocaleDateString()}</td>
                       <td>{report?.paid_amount}</td>
                       <td className={`space-x-1.5`}></td>
                     </tr>
