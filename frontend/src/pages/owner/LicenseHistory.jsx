@@ -80,7 +80,7 @@ const LicenseHistory = () => {
           </Link>
         </div>
         <h1 className="text-2xl text-center ">License History</h1>
-        <div className="flex justify-between">
+        <div className={`flex justify-between flex-wrap gap-1.5 flex-col md:flex-row `}>
           <div className={`flex flex-col md:flex-row gap-4`}>
             <DatePicker
               dateFormat="dd/MM/yyyy"

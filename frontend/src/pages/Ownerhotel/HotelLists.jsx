@@ -72,8 +72,7 @@ const HotelLists = () => {
 
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-4`}>
-       <h1 className="text-center text-2xl bg-green-slimy w-48 mx-auto text-white p-1 rounded-md">Hotel List </h1>
-       <div>
+        <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -89,6 +88,10 @@ const HotelLists = () => {
             </button>
           </Link>
         </div>
+     <div>
+     <h1 className="text-center text-2xl bg-green-slimy w-48 mx-auto text-white p-1 rounded-md">Hotel List </h1>
+     </div>
+
       <div className={`flex justify-end gap-4`}>
        
         {/* <div>

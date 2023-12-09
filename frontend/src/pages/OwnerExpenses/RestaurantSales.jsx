@@ -54,21 +54,27 @@ const RestaurantSales = () => {
     <>
       {/* back button */}
       <div className={`mb-5`}>
-      <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Restaurant Sales </h1>
-        <Link to={`/dashboard `}>
-          <button
-            type="button"
-            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-          >
-            <dfn>
-              <abbr title="Back">
-                <FaArrowLeft />
-              </abbr>
-            </dfn>
+        <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
 
-            <span className="tracking-wider font-semibold text-[1rem]"></span>
-          </button>
-        </Link>
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+        <div className="mt-7">
+          <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+            Restaurant Sales{" "}
+          </h1>
+        </div>
       </div>
 
       <div className="space-y-20">
@@ -109,8 +115,8 @@ const RestaurantSales = () => {
         <section>
           {selectedHotel ? (
             <RestaurantSalesShow
-            managerID={selectedHotel?.managerID}
-            hotelId={selectedHotel?.hotelId}
+              managerID={selectedHotel?.managerID}
+              hotelId={selectedHotel?.hotelId}
             ></RestaurantSalesShow>
           ) : (
             <p className="text-center">Please Select your Hotel Branch !!</p>
