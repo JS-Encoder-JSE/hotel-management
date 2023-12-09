@@ -47,7 +47,7 @@ const TodayCancelBookings = () => {
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
-        <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Today's Cancel Booking </h1>
+        <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Today's Canceled Booking </h1>
       <div>
         <Link to={`/dashboard `}>
           <button

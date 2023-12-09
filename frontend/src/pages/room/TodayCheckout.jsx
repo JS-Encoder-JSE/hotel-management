@@ -8,6 +8,7 @@ import {
   useGetRoomsAndHotelsQuery,
   useGetBookingsByHotelQuery,
   useMakePaymentMutation,
+  useGetTodayCheckoutQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -37,6 +38,14 @@ const TodayCheckout = () => {
     },
   });
 
+
+  const currentDate = new Date()
+  const nextDay = new Date(currentDate);
+  nextDay.setDate(currentDate.getDate() + 1);
+
+  // Format the result as a local date string
+  const formattedDate = nextDay.toLocaleDateString();
+
   const {
     data: checkinList,
     isLoading,
@@ -45,9 +54,13 @@ const TodayCheckout = () => {
     search: formik.values.search,
     page: currentPage,
     filter: "CheckedOut",
-    fromDate: checkinListFromDate(new Date()),
-    toDate: checkinListoDate(new Date())
+    fromDate: new Date().toLocaleDateString(),
+    toDate:formattedDate,
+    // fromDate: checkinListFromDate(new Date()),
+    // toDate: checkinListoDate(new Date())
   });
+
+//  const {data:checkinList,isLoading,refetch}= useGetTodayCheckoutQuery();
 
   
   useEffect(()=>{
