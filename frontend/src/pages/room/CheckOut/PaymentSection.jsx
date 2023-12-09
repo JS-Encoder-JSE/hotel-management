@@ -43,9 +43,12 @@ const PaymentSection = ({
     refundAmount - (additionalCharge + serviceCharge + texAmount);
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    const list = [...paymentList];
-    list[index][name] = value;
-    setPaymentList(list);
+    if (totalRefund < 0) {
+      const list = [...paymentList];
+      list[index][name] = value;
+      setPaymentList(list);
+    }
+
     // const calculatedLimit = Math.ceil(totalPayableAmount - data?.paid_amount);
     // if (data?.room_ids?.length === 1) {
     //   if (name === "amount") {
