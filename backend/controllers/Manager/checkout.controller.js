@@ -157,13 +157,13 @@ export const checkedOut = async (req, res) => {
     await newReport.save();
     // Update the booking status to "CheckedOut"
     await Booking.updateOne(
-      { _id: { $in: booking_id } },
+      { _id: booking_id },
       { $set: { status: "CheckedOut" } }, // Wrap the update in $set
       { new: true }
     );
 
     // Retrieve the updated documents
-    const updatedDocuments = await Booking.findOne({ _id: booking_id });
+    // const updatedDocuments = await Booking.findOne({ _id: booking_id });
 
     // Extract room_ids from the updated documents
     // const roomIds = updatedDocuments.map((doc) => doc.room_id);
@@ -172,7 +172,7 @@ export const checkedOut = async (req, res) => {
       booking_ids: booking_id,
     });
 
-    bookingInfo.room_ids.pull(...roomIds);
+    bookingInfo.room_ids.pull(room_id);
     bookingInfo.total_rent = new_total_rent;
     bookingInfo.total_rent_after_dis = new_total_rent_after_dis;
     bookingInfo.total_posted_bills = new_total_posted_bills;
@@ -193,6 +193,7 @@ export const checkedOut = async (req, res) => {
     booking.no_of_days = new_no_of_days;
 
     await booking.save();
+    const room_id = booking.room_id;
 
     if (paid_amount > 0) {
       const newTransactionLog = new TransactionLog({
@@ -213,20 +214,17 @@ export const checkedOut = async (req, res) => {
     const roomStatus = "Available";
 
     // Update room statuses
-    await Room.updateMany(
-      { _id: { $in: roomIds } },
-      { $set: { status: roomStatus } }
-    );
-    await FoodOrder.updateMany(
-      { _id: { $in: roomIds } },
+    await Room.updateOne({ _id: room_id }, { $set: { status: roomStatus } });
+    await FoodOrder.updateOne(
+      { room_id: room_id },
       { $set: { status: "CheckedOut", payment_status: "Paid" } }
     );
-    await GymBills.updateMany(
-      { _id: { $in: roomIds } },
+    await GymBills.updateOne(
+      { room_id: room_id },
       { $set: { status: "Paid" } }
     );
-    await PoolBills.updateMany(
-      { _id: { $in: roomIds } },
+    await PoolBills.updateOne(
+      { room_id: room_id },
       { $set: { status: "Paid" } }
     );
     // await FoodOrder.deleteMany({ room_id: { $in: roomIds } });
