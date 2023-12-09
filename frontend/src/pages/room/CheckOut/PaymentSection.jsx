@@ -119,7 +119,11 @@ const PaymentSection = ({
               <p>Collected Amount</p>
             </div>
             <div className="col-span-2 space-y-3">
-              <p>{pBill - bookingInfo?.total_balance - colAmount}</p>
+              <p>
+                {pBill - bookingInfo?.total_balance < 0
+                  ? 0
+                  : pBill - bookingInfo?.total_balance - colAmount}
+              </p>
               <p>{totalRefund < 0 ? 0 : totalRefund}</p>
 
               <p>{Math.ceil(colAmount)}</p>
