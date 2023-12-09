@@ -152,11 +152,15 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     getBookingsByHotel: build.query({
       query: ({ hotel_id, page, limit, filter, search,fromDate,toDate }) => {
-        return `bookings/get-bookings-by-hotel?search=${search || ""}&page=${
-          page + 1
-        }${filter ? `&filter=${filter}` : ""} ${fromDate? `&fromDate=${fromDate}`:""}${toDate? `&toDate=${toDate}`:""}`;
+        return `bookings/get-bookings-by-hotel?search=${search || ""}&page=${page + 1}${filter ? `&filter=${filter}` : ""}${fromDate? `&fromDate=${fromDate}`:""}${toDate? `&toDate=${toDate}`:""}`;
       },
       providesTags: ["booking", "room"],
+    }),
+    getTodayCheckout:build.query({
+      query:()=>{
+        return `bookings/get-bookings-by-hotel?&page=1&filter=CheckedOut&fromDate=2023-12-08T05:30:00.000Z&toDate=2023-12-09T05:29:59.999Z`
+      },
+      providesTags:["CheckedOut"]
     }),
     getBookingById: build.query({
       query: (id) => {
@@ -303,5 +307,6 @@ export const {
   useUpdateBookingInfoMutation,
   useUpdateBookingTOCheckInMutation,
   useMakePaymentMutation,
-  useCashbackMutation
+  useCashbackMutation,
+  useGetTodayCheckoutQuery,
 } = roomAPI;
