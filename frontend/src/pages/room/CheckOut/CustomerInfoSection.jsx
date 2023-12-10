@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +31,7 @@ const CustomerInfoSection = ({ data }) => {
     calculateCollectedAmount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
   const [time, setTime] = useState("11:49");
-  const [updatedDate, setUpdatedDate] = useState(toDate);
+  const [updatedDate, setUpdatedDate] = useState(null);
   const totalRefund =
     refundAmount - (additionalCharge + serviceCharge + texAmount);
 
@@ -87,7 +87,6 @@ const CustomerInfoSection = ({ data }) => {
   };
 
   const handleTime = (value) => {
-    console.log({ time, updatedDate, toDate });
     if (value) {
       const selectedDate = new Date(updatedDate);
 
@@ -123,7 +122,9 @@ const CustomerInfoSection = ({ data }) => {
     }
     setTime(value);
   };
-  
+  useEffect(() => {
+    setUpdatedDate(toDate);
+  }, [toDate]);
   return (
     <section className="bg-white rounded">
       <h3 className="p-5 text-xl">Customer Details</h3>
