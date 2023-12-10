@@ -63,7 +63,8 @@ const { isUserLoading, user } = useSelector((store) => store.authSlice);
     const [isUpadet, setUpdate] = useState(false);
 
     const [selectDate,setSelectDate]=useState(null)
-
+   
+    const [isSameDate,setSameDate]=useState(false)
   
 
     let totalExpense =[...totalItems]
@@ -118,6 +119,22 @@ const calculateTotal = () => {
 
       const handleAddExpensesResponse = async()=>{
         setLoading(true)
+        
+        const areAllDatesSame =
+        totalItems.length > 0 &&
+        totalItems.every(
+          (item) =>
+            new Date(item.date).toLocaleDateString() ===
+            new Date(totalItems[0].date).toLocaleDateString()
+        );
+    
+      if (!areAllDatesSame) {
+        // Show an error message or handle the case where dates are not the same
+        toast.error("All items must have the same date.");
+        setLoading(false);
+        return;
+      }
+    
         const response= await AddExpense({
           hotel_id: isHotelSuccess && hotelInfo[0]?._id,
           date: new Date(selectDate).toISOString() || new Date().toISOString(),
@@ -130,7 +147,7 @@ const calculateTotal = () => {
           toast.error(response.error.data.message);
         } else {
           toast.success(response.data.message);
-          setTotalItems("")
+          setTotalItems([])
         }  
       }
 
@@ -200,6 +217,7 @@ const calculateTotal = () => {
 
       
 
+      
 
 
     return (
@@ -433,7 +451,7 @@ const calculateTotal = () => {
             <div className=" mx-auto">
                 <button
                   onClick={handleAddExpensesResponse}
-                  disabled={totalItems.length? false : true}
+                  disabled={totalItems.length ? false : true}
                   className=" btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
                 >
                   <span>Submit</span>

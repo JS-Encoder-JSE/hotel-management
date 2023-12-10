@@ -86,7 +86,7 @@ const InventoryList = ({ idx, list, handleOrder }) => {
           </span>
         )}
       </td>
-      <th className={`flex gap-1.5 mt-3.5`}>
+      <th className={`flex gap-1.5`}>
         <span
           className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
           onClick={() => navigate(`/dashboard/edit-inventory/${list._id}`)}
