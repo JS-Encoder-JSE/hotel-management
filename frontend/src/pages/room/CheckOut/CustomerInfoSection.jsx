@@ -30,16 +30,19 @@ const CustomerInfoSection = ({ data }) => {
     calculateBalance,
     calculateCollectedAmount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
+
+  const dispatch = useDispatch();
+
+  //select check out time
   const [time, setTime] = useState("11:49");
+
+  // set new updated checkout date.
   const [updatedDate, setUpdatedDate] = useState(null);
-  const totalRefund =
-    refundAmount - (additionalCharge + serviceCharge + texAmount);
 
   const totalPayableAmount =
     calculatePayableAmount + additionalCharge + serviceCharge + texAmount;
 
-  const dispatch = useDispatch();
-
+  // after change the checkout date we need to update the payable amount. this func will do this.
   const updatePayableAmount = (no_of_days) => {
     const afterDisPrice = getDiscountAmount(
       roomInfo?.total_room_rent,
@@ -57,6 +60,8 @@ const CustomerInfoSection = ({ data }) => {
       setCalculateUnpaidAmount(updatedPayableAmount - data?.paid_amount)
     );
   };
+
+  // after change the checkout date we need to update the total room rent. this func will do this.
   const updatedTotalRent = (NOD) => {
     const totalRentWithOutSelectedRoom =
       data?.total_rent - roomInfo?.total_room_rent;
@@ -71,57 +76,60 @@ const CustomerInfoSection = ({ data }) => {
     dispatch(setCalculateAmountAfterDis(updatedTotalRentAfterDis));
   };
 
-  //
-  const handleToDateChange = (date) => {
-    setUpdatedDate(parseISO(date));
-
-    const no_of_days = Math.ceil(
-      Math.abs(new Date(fromDate) - new Date(date)) / (24 * 60 * 60 * 1000)
+  // when we are update the check out date we have to call this with new date
+  const updateCheckoutDate = (newDate, hours) => {
+    const checkInDate = new Date(fromDate);
+    const checkOutDate = new Date(newDate);
+    const new_no_of_days = Math.ceil(
+      Math.abs(checkInDate - checkOutDate) / (24 * 60 * 60 * 1000)
     );
 
-    const toDate = convertedToDate(date);
-    dispatch(setToDate(toDate));
-    dispatch(setCalculateNOD(no_of_days));
-    updatePayableAmount(no_of_days);
-    updatedTotalRent(no_of_days);
+    const newToDate = checkOutDate.toISOString();
+    dispatch(setToDate(newToDate));
+    dispatch(
+      setCalculateNOD(
+        hours >= 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
+      )
+    );
+    updatePayableAmount(
+      hours >= 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
+    );
+    updatedTotalRent(
+      hours >= 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
+    );
   };
 
+  // initially check out time is 11.49 am if manager change the time then this func will call and update the new time and this function will check if the time is more then 3 pm then it will add one day more.
+  const updateCheckoutTime = (newTime, newDate) => {
+    const selectedDate = new Date(newDate);
+
+    const [hours, minutes] = newTime.split(":");
+
+    selectedDate.setHours(hours, minutes, 0, 0);
+
+    const hoursNumeric = parseInt(hours, 10);
+    updateCheckoutDate(selectedDate, hoursNumeric);
+  };
+
+  // when we are change the checkout date then this func will call
+  const handleToDateChange = (newDate) => {
+    setUpdatedDate(parseISO(newDate));
+    if (time) {
+      updateCheckoutTime(time, newDate);
+    } else {
+      updateCheckoutDate(newDate, 11.49);
+    }
+  };
+
+  // this func will call when update the time.
   const handleTime = (value) => {
     if (value) {
-      const selectedDate = new Date(updatedDate);
-
-      const [hours, minutes] = value.split(":");
-
-      selectedDate.setHours(hours, minutes, 0, 0);
-
-      const hoursNumeric = parseInt(hours, 10);
-
-      if (hoursNumeric >= 15) {
-        const no_of_days = Math.ceil(
-          Math.abs(new Date(fromDate) - new Date(updatedDate)) /
-            (24 * 60 * 60 * 1000)
-        );
-
-        const toDate = convertedToDate(updatedDate);
-        dispatch(setToDate(toDate));
-        dispatch(setCalculateNOD(no_of_days + 1));
-        updatePayableAmount(no_of_days + 1);
-        updatedTotalRent(no_of_days + 1);
-      } else {
-        const no_of_days = Math.ceil(
-          Math.abs(new Date(fromDate) - new Date(updatedDate)) /
-            (24 * 60 * 60 * 1000)
-        );
-
-        const toDate = convertedToDate(updatedDate);
-        dispatch(setToDate(toDate));
-        dispatch(setCalculateNOD(no_of_days));
-        updatePayableAmount(no_of_days);
-        updatedTotalRent(no_of_days);
-      }
+      updateCheckoutTime(value, updatedDate);
     }
     setTime(value);
   };
+
+  // set the initial checkout date to the state
   useEffect(() => {
     setUpdatedDate(toDate);
   }, [toDate]);

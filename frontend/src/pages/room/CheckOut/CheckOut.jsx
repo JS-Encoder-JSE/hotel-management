@@ -83,7 +83,6 @@ const CheckOut = () => {
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
 
-  console.log("checkout :", checkout);
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
@@ -92,10 +91,12 @@ const CheckOut = () => {
   };
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
+    onAfterPrint: () => {
+      navigate('/dashboard/report')
+    },
   });
   // this is use for Print
   // const componentRef = useRef();
-  console.log({ pBill });
   // dispatch
   const dispatch = useDispatch();
   // console.log({ pBill });
