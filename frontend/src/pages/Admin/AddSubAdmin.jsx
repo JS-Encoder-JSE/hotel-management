@@ -2,7 +2,13 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
-import { FaArrowLeft, FaEye, FaEyeSlash, FaTrash, FaUpload } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaEyeSlash,
+  FaTrash,
+  FaUpload,
+} from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -52,7 +58,7 @@ const validationSchema = yup.object({
 
 const AddSubAdmin = () => {
   const [isLoading, setLoading] = useState(false);
-  const [upload] = useUploadMutation();
+  const [upload, { isError }] = useUploadMutation();
   const [addSubAdmin] = useAddSubAdminMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [showPass, setShowPass] = useState(false);
@@ -118,26 +124,30 @@ const AddSubAdmin = () => {
         };
       });
 
-      const response = await addSubAdmin({
-        name,
-        username,
-        role: "subadmin",
-        phone_no,
-        emergency_contact,
-        email,
-        password,
-        address,
-        salary,
-        joining_date,
-        images: obj.images,
-      });
+      if (!isError) {
+        const response = await addSubAdmin({
+          name,
+          username,
+          role: "subadmin",
+          phone_no,
+          emergency_contact,
+          email,
+          password,
+          address,
+          salary,
+          joining_date,
+          images: obj.images,
+        });
 
-      if (response?.error) {
-        toast.error(response.error.data.message);
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          toast.success(response.data.message);
+          formikHelpers.resetForm();
+          setSelectedImages([]);
+        }
       } else {
-        toast.success(response.data.message);
-        formikHelpers.resetForm();
-        setSelectedImages([]);
+        toast.error("Image is not uploaded");
       }
 
       setLoading(false);
@@ -416,7 +426,7 @@ const AddSubAdmin = () => {
             {/*Sub Admin salary  box */}
             <div className="flex flex-col gap-3">
               <input
-              onWheel={ event => event.currentTarget.blur() }
+                onWheel={(event) => event.currentTarget.blur()}
                 type="number"
                 placeholder="Salary"
                 name="salary"

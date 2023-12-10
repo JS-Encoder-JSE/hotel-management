@@ -46,8 +46,8 @@ const validationSchema = yup.object({
 
 const AddManager = () => {
   const [isLoading, setLoading] = useState(false);
-  const [upload] = useUploadMutation();
-  const [uploadSingle] = useUploadSingleMutation();
+  const [upload,{isError}] = useUploadMutation();
+  const [uploadSingle,{isError:singleError}] = useUploadSingleMutation();
   const [addSubAdmin] = useAddSubAdminMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [showPass, setShowPass] = useState(false);

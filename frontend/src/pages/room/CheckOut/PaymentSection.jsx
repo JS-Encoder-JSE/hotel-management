@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal.jsx";
 import RefundPaymentModal from "./RefundPaymentModal.jsx";
 import { setCalculateCollectedAmount } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice.js";
+import { useNavigate } from "react-router-dom";
 
 const PaymentSection = ({
   pBill,
@@ -25,13 +26,14 @@ const PaymentSection = ({
   roomData,
   addCheckOutLoading,
   totalPayableAmount,
-  componentRef
+  componentRef,
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     refundAmount,
     additionalCharge,
@@ -103,7 +105,7 @@ const PaymentSection = ({
   }, [paymentList]);
 
   // for printing
-  
+
   return (
     <section>
       <div className="grid lg:grid-cols-2 gap-5">
@@ -154,6 +156,9 @@ const PaymentSection = ({
 
       <div className="flex justify-end gap-2 mt-5">
         <ReactToPrint
+          onAfterPrint={() => {
+            navigate("/dashboard/report");
+          }}
           trigger={() => (
             <button
               title="please select payment method"

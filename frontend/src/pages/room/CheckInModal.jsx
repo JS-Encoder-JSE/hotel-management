@@ -71,7 +71,7 @@ const CheckInModal = ({ room }) => {
 
   const closeRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
-  const [upload] = useUploadMutation();
+  const [upload, { isError }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [addBooking] = useAddBookingMutation();
 
@@ -166,43 +166,46 @@ const CheckInModal = ({ room }) => {
       await upload(formData).then(
         (result) => (tempImg = result.data?.imageUrls)
       );
+      if (!isError) {
+        const response = await addBooking({
+          hotel_id: obj.hotel_id,
+          room_ids,
+          guestName: obj.guestName,
+          address: obj.address,
+          mobileNumber: obj.mobileNumber,
+          emergency_contact: obj.emergency_contact,
+          adult: obj.adult,
+          children: obj.children,
+          paymentMethod: obj.paymentMethod,
+          transection_id: obj.trxID,
+          from: obj.from,
+          to: obj.to,
+          no_of_days,
+          // rent_per_day,
+          total_rent,
+          room_discount: obj.discount,
+          // amount_after_dis,
+          paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
+          // total_unpaid_amount: amount_after_dis - obj.amount,
+          nationality: obj.nationality,
+          doc_number: obj.doc_number,
+          doc_images: {
+            [title]: tempImg,
+          },
+          remark: "advancePaymentForCheckIn",
+          status: "CheckedIn",
+        });
 
-      const response = await addBooking({
-        hotel_id: obj.hotel_id,
-        room_ids,
-        guestName: obj.guestName,
-        address: obj.address,
-        mobileNumber: obj.mobileNumber,
-        emergency_contact: obj.emergency_contact,
-        adult: obj.adult,
-        children: obj.children,
-        paymentMethod: obj.paymentMethod,
-        transection_id: obj.trxID,
-        from: obj.from,
-        to: obj.to,
-        no_of_days,
-        // rent_per_day,
-        total_rent,
-        room_discount: obj.discount,
-        // amount_after_dis,
-        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
-        // total_unpaid_amount: amount_after_dis - obj.amount,
-        nationality: obj.nationality,
-        doc_number: obj.doc_number,
-        doc_images: {
-          [title]: tempImg,
-        },
-        remark: "advancePaymentForCheckIn",
-        status: "CheckedIn",
-      });
-
-      if (response?.error) {
-        toast.error(response.error.data.message);
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          formikHelpers.resetForm();
+          closeRef?.current?.click();
+          setSelectedImages([]);
+          toast.success(response.data.message);
+        }
       } else {
-        formikHelpers.resetForm();
-        closeRef?.current?.click();
-        setSelectedImages([]);
-        toast.success(response.data.message);
+        toast.error("Image is not uploaded");
       }
 
       setLoading(false);
