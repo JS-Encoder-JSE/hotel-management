@@ -118,6 +118,21 @@ const calculateTotal = () => {
 
       const handleAddExpensesResponse = async()=>{
         setLoading(true)
+
+        const areAllDatesSame =
+        totalItems.length > 0 &&
+        totalItems.every(
+          (item) =>
+            new Date(item.date).toLocaleDateString() ===
+            new Date(totalItems[0].date).toLocaleDateString()
+        );
+    
+      if (!areAllDatesSame) {
+        // Show an error message or handle the case where dates are not the same
+        toast.error("All items must have the same date.");
+        setLoading(false);
+        return;
+      }
         const response= await AddExpense({
           hotel_id: isHotelSuccess && hotelInfo[0]?._id,
           date: fromDateIsoConverterForAddExpenses(selectDate) || fromDateIsoConverterForAddExpenses(new Date()),
