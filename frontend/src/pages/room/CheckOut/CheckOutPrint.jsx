@@ -30,7 +30,7 @@ const CheckOutPrint = ({
   hotelInfo,
   isHotelSuccess,
   roomData,
-}) => { 
+}) => {
   return (
     <div>
       <div>
@@ -47,7 +47,23 @@ const CheckOutPrint = ({
             hotelInfo={hotelInfo}
             isHotelSuccess={isHotelSuccess}
           />
+
           <CustomerInfoPrint data={data} />
+          <div>
+            <div className="grid grid-cols-2 ">
+              <p>Total Payable Amount</p>
+              <p>10</p>
+            </div>
+            <div>
+              <p>Total Unpaid Amount</p>
+            </div>
+            <div>
+              <p>Total Balance</p>
+            </div>
+            <div>
+              <p>Current Balance</p>
+            </div>
+          </div>
         </div>
       )}
       {roomData?.length
@@ -55,7 +71,7 @@ const CheckOutPrint = ({
             <RoomDetailsSection bookingInfo={data} roomData={roomInfo} />
           ))
         : null}
-        
+
       {/* payment method */}
       <div className="w-[800px] mx-auto flex justify-between items-center px-4">
         {paymentList?.map(

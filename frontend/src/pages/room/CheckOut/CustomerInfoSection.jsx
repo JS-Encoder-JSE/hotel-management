@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactDatePicker from "react-datepicker";
+import TimePicker from "react-time-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { convertedToDate } from "../../../utils/timeZone";
 import {
@@ -10,6 +11,7 @@ import {
   setCalculateUnpaidAmount,
   setToDate,
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
+import DateTimePicker from "react-datetime-picker";
 import { parseISO } from "date-fns/esm";
 import { getDiscountAmount } from "../../../utils/utils";
 
@@ -28,7 +30,8 @@ const CustomerInfoSection = ({ data }) => {
     calculateBalance,
     calculateCollectedAmount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
-
+  const [time, setTime] = useState("11:49");
+  const [updatedDate, setUpdatedDate] = useState(toDate);
   const totalRefund =
     refundAmount - (additionalCharge + serviceCharge + texAmount);
 
@@ -67,7 +70,11 @@ const CustomerInfoSection = ({ data }) => {
     );
     dispatch(setCalculateAmountAfterDis(updatedTotalRentAfterDis));
   };
+
+  //
   const handleToDateChange = (date) => {
+    setUpdatedDate(parseISO(date));
+
     const no_of_days = Math.ceil(
       Math.abs(new Date(fromDate) - new Date(date)) / (24 * 60 * 60 * 1000)
     );
@@ -79,6 +86,44 @@ const CustomerInfoSection = ({ data }) => {
     updatedTotalRent(no_of_days);
   };
 
+  const handleTime = (value) => {
+    console.log({ time, updatedDate, toDate });
+    if (value) {
+      const selectedDate = new Date(updatedDate);
+
+      const [hours, minutes] = value.split(":");
+
+      selectedDate.setHours(hours, minutes, 0, 0);
+
+      const hoursNumeric = parseInt(hours, 10);
+
+      if (hoursNumeric >= 15) {
+        const no_of_days = Math.ceil(
+          Math.abs(new Date(fromDate) - new Date(updatedDate)) /
+            (24 * 60 * 60 * 1000)
+        );
+
+        const toDate = convertedToDate(updatedDate);
+        dispatch(setToDate(toDate));
+        dispatch(setCalculateNOD(no_of_days + 1));
+        updatePayableAmount(no_of_days + 1);
+        updatedTotalRent(no_of_days + 1);
+      } else {
+        const no_of_days = Math.ceil(
+          Math.abs(new Date(fromDate) - new Date(updatedDate)) /
+            (24 * 60 * 60 * 1000)
+        );
+
+        const toDate = convertedToDate(updatedDate);
+        dispatch(setToDate(toDate));
+        dispatch(setCalculateNOD(no_of_days));
+        updatePayableAmount(no_of_days);
+        updatedTotalRent(no_of_days);
+      }
+    }
+    setTime(value);
+  };
+  
   return (
     <section className="bg-white rounded">
       <h3 className="p-5 text-xl">Customer Details</h3>
@@ -129,9 +174,9 @@ const CustomerInfoSection = ({ data }) => {
               {calculateBalance + +calculateCollectedAmount}
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-20">
+          <div className="grid grid-cols-2">
             <p className="whitespace-nowrap">Select Checkout Date</p>
-            <div>
+            <div className="w-fll flex flex-col">
               <ReactDatePicker
                 dateFormat="dd/MM/yyyy"
                 name="from"
@@ -139,6 +184,16 @@ const CustomerInfoSection = ({ data }) => {
                 selected={toDate ? parseISO(toDate) : ""}
                 className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
                 onChange={handleToDateChange}
+              />
+
+              <TimePicker
+                amPmAriaLabel="Select AM/PM"
+                format="h:m:s a"
+                value={time}
+                clockIcon={false}
+                className={`input input-md bg-transparent rounded !focus:outline-none focus:border-green-slimy w-full mt-3 !px-0  focus-within:outline-none`}
+                onChange={handleTime}
+                clearIcon={false}
               />
             </div>
           </div>

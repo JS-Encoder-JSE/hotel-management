@@ -31,13 +31,15 @@ const BillingSectionPrint = ({
           <p className="text-lg font-bold">GrandTotal</p>
         </div>
         <div className="space-y-4">
-          <p>: ${subTotals}</p>
-          {/* <p>: ${tax}</p> */}
-          <p>: ${additionalCharge}</p>
-          <p>: ${serviceCharge}</p>
-          <p>: ${roomPostedBill}</p>
+          <p>: Rs.{" " + subTotals}</p>
+          {/* <p>: (Rs.){tax}</p> */}
+          <p>: Rs.{" " + additionalCharge}</p>
+          <p>: Rs.{" " + serviceCharge}</p>
+          <p>: Rs.{" " + roomPostedBill}</p>
           <p>
-            : ${subTotals + additionalCharge + serviceCharge + roomPostedBill}
+            : Rs.
+            {" " +
+              (subTotals + additionalCharge + serviceCharge + roomPostedBill)}
           </p>
         </div>
       </div>

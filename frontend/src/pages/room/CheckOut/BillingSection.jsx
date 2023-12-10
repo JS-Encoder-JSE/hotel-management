@@ -248,7 +248,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
         <div className="text-sm font-semibold p-5">
           <div className="grid grid-cols-4 gap-2 border-y border-black/20 p-2">
             <p className="col-span-2">Bill Type</p>
-            <p>($) Total</p>
+            <p>(Rs.) Total</p>
           </div>
           <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight border-b border-black/20 pb-2 px-2">
             <p className="capitalize whitespace-nowrap col-span-2">Pool</p>
