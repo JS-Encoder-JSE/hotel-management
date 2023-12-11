@@ -140,7 +140,7 @@ export const checkedOut = async (req, res) => {
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
-    const hotel_income = paid_amount - restaurant_income;
+    const hotel_income = total_checkout_bills - restaurant_income;
 
     const newReport = new ManagerReport({
       hotel_id,
