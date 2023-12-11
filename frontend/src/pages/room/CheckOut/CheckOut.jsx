@@ -207,8 +207,11 @@ const CheckOut = () => {
     limit: 1000000,
   });
 
+const roomIds =[]
+roomIds.push(formik.values.roomNumber)
+
   const handleGetRooms = () => {
-    getCheckout({ room_ids: formik.values.roomNumber });
+    getCheckout({ room_ids:roomIds});
     setFetch(formik.values.roomNumber);
     setShowRooms(true);
   };

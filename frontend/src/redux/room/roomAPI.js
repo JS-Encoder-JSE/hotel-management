@@ -58,6 +58,7 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
+      providesTags:["addBooking"],
       invalidatesTags: ["room", "booking"],
     }),
     cancelBooking: build.mutation({
@@ -68,7 +69,8 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["booking"],
+      providesTags:["cancelBooking"],
+      invalidatesTags: ["booking","addBooking"],
     }),
 
     addExpenses: build.mutation({
@@ -152,8 +154,8 @@ const roomAPI = baseAPI.injectEndpoints({
       providesTags: ["room"],
     }),
     getBookingsByHotel: build.query({
-      query: ({ hotel_id, page, limit, filter, search,fromDate,toDate }) => {
-        return `bookings/get-bookings-by-hotel?search=${search || ""}&page=${page + 1}${filter ? `&filter=${filter}` : ""}${fromDate? `&fromDate=${fromDate}`:""}${toDate? `&toDate=${toDate}`:""}`;
+      query: ({ hotel_id, page, limit, filter, search,fromDate,toDate,arrayFilter }) => {
+        return `bookings/get-bookings-by-hotel?search=${search || ""}&page=${page + 1}${filter ? `&filter=${filter}` : ""}${fromDate? `&fromDate=${fromDate}`:""}${toDate? `&toDate=${toDate}`:""}${arrayFilter? `&arrayFilter=${arrayFilter}`:""}`;
       },
       providesTags: ["booking", "room"],
     }),

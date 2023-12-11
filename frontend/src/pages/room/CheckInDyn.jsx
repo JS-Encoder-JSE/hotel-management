@@ -23,7 +23,7 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import SuspendAndLockList from "./../Admin/SuspendAndLockList";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -61,6 +61,10 @@ const CheckInDyn = ({ data }) => {
       formik.handleChange(e);
     }
   };
+
+// navigate to manage checkIn page
+  const navigate =useNavigate()
+
 
   const formik = useFormik({
     initialValues: {
@@ -127,6 +131,7 @@ const CheckInDyn = ({ data }) => {
         } else {
           closeRef.current.click();
           toast.success(response.data.message);
+          navigate("/dashboard/manage-checkin")
         }
       } else {
         toast.error("Image is not uploaded");
@@ -171,6 +176,8 @@ const CheckInDyn = ({ data }) => {
     }
   }, [formik.values.documents]);
 
+
+ 
   return (
     <>
       <form autoComplete="off" method="dialog">

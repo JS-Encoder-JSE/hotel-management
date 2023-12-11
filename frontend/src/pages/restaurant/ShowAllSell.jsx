@@ -96,7 +96,7 @@ console.log(restaurantSalesToday,"to")
     toDate: searchParams?.toDate,
     managerId: user?._id,
     limit: formik.values.entries,
-    filter: formik.values.filter,
+    filter: "restaurant",
   });
 
 console.log(restaurantSalesHistory,"History")

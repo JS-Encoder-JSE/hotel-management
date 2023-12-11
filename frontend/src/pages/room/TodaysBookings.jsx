@@ -33,7 +33,7 @@ const TodayBookings = () => {
     page: currentPage,
     filter: "Active",
     fromDate: checkinListFromDate(new Date()),
-    toDate: checkinListoDate(new Date())
+    toDate: checkinListoDate(new Date()),
   });
 
   const pressEnter = (e) => {

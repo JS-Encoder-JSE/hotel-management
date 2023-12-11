@@ -96,6 +96,7 @@ const RestaurantSalesShow = ({ hotelId,managerID }) => {
     toDate: searchParams?.toDate,
     managerId: managerID,
     limit: formik.values.entries,
+    filter:"restaurant"
   });
 
   console.log("restaurantSalesHistory",restaurantSalesHistory)

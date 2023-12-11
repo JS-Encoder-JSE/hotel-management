@@ -53,9 +53,9 @@ const TodayCheckout = () => {
   } = useGetBookingsByHotelQuery({
     search: formik.values.search,
     page: currentPage,
-    filter: "CheckedOut",
     fromDate: new Date().toLocaleDateString(),
     toDate:formattedDate,
+    arrayFilter:["CheckedIn","CheckedOut"]
     // fromDate: checkinListFromDate(new Date()),
     // toDate: checkinListoDate(new Date())
   });

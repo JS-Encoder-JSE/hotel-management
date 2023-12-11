@@ -127,6 +127,7 @@ useEffect(() => {
     toDate: searchParams?.toDate,
     managerId: managerId,
     limit: formik.values.entries,
+    filter:"hotel"
   });
 
   console.log("hotelSalesHistory",hotelSalesHistory)
