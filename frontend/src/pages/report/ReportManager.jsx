@@ -85,16 +85,6 @@ const ReportManager = () => {
     }
   }, [reports]);
 
-  const options = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    timeZone: "Asia/Dhaka",
-  };
-
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-5 py-5 rounded `}>
