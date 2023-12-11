@@ -83,7 +83,6 @@ const CheckOut = () => {
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
 
-  console.log("checkout :", checkout);
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
@@ -92,10 +91,12 @@ const CheckOut = () => {
   };
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
+    onAfterPrint: () => {
+      navigate("/dashboard/report");
+    },
   });
   // this is use for Print
   // const componentRef = useRef();
-  console.log({ pBill });
   // dispatch
   const dispatch = useDispatch();
   // console.log({ pBill });
@@ -145,12 +146,8 @@ const CheckOut = () => {
             pBill;
 
       const paid_amount =
-        calculateBalance < 0
-          ? checkout?.data?.booking_info?.paid_amount +
-            Number(paymentList[0]?.amount)
-          : checkout?.data?.booking_info?.paid_amount;
+        calculateBalance < 0 ? Number(paymentList[0]?.amount) : 0;
 
-          
       const response = await addCheckout({
         booking_id: bookingId,
         new_total_room_rent,

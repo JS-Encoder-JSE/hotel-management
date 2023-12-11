@@ -155,9 +155,6 @@ const PaymentSection = ({
 
       <div className="flex justify-end gap-2 mt-5">
         <ReactToPrint
-          onAfterPrint={() => {
-            navigate("/dashboard/report");
-          }}
           trigger={() => (
             <button
               title="please select payment method"
