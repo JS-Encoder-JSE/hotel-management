@@ -92,7 +92,7 @@ const CheckOut = () => {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     onAfterPrint: () => {
-      navigate('/dashboard/report')
+      navigate("/dashboard/report");
     },
   });
   // this is use for Print
@@ -146,12 +146,8 @@ const CheckOut = () => {
             pBill;
 
       const paid_amount =
-        calculateBalance < 0
-          ? checkout?.data?.booking_info?.paid_amount +
-            Number(paymentList[0]?.amount)
-          : checkout?.data?.booking_info?.paid_amount;
+        calculateBalance < 0 ? Number(paymentList[0]?.amount) : 0;
 
-          
       const response = await addCheckout({
         booking_id: bookingId,
         new_total_room_rent,
