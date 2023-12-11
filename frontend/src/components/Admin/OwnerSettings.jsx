@@ -13,7 +13,7 @@ const validationSchema = yup.object({
       return schema
         .matches(
           /^[a-zA-Z][a-zA-Z0-9\s]*$/,
-          "Remarks must start with a character and can include characters and numbers",
+          "Remarks must start with a character and can include characters and numbers"
         )
         .when([], {
           is: (remarks) => remarks && remarks.length > 0,
@@ -144,6 +144,7 @@ const OwnerSettings = ({ owner }) => {
                 ) : null}
               </div>
               <button
+                disabled={isLoading}
                 type={"submit"}
                 className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >
@@ -209,6 +210,7 @@ const OwnerSettings = ({ owner }) => {
                 ) : null}
               </div>
               <button
+                disabled={isLoading}
                 type={"submit"}
                 className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >

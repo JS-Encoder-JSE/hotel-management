@@ -24,7 +24,8 @@ const ConfirmOrder = () => {
   const dispatch = useDispatch();
   const { order, orderCalc } = useSelector((store) => store.inventorySlice);
   const closeRef = useRef();
-  const [orderInventory] = useOrderInventoryMutation();
+  const [orderInventory, { isLoading: inventoryLoading }] =
+    useOrderInventoryMutation();
   const [selectedOption, setSelectedOption] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -62,11 +63,11 @@ const ConfirmOrder = () => {
   });
 
   const transformedRooms = rooms?.data?.docs
-  ?.filter((room) => room.status === "CheckedIn") 
-  .map((room) => ({
-    value: room._id,
-    label: room.roomNumber,
-  }));
+    ?.filter((room) => room.status === "CheckedIn")
+    .map((room) => ({
+      value: room._id,
+      label: room.roomNumber,
+    }));
 
   useEffect(() => {
     if (formik.values.roomNumber)
@@ -134,7 +135,8 @@ const ConfirmOrder = () => {
                     <div className="mt-3">
                       <div className="flex">
                         <button
-                        type="submit"
+                          disabled={inventoryLoading}
+                          type="submit"
                           onClick={() => formik.handleSubmit()}
                           className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                         >

@@ -624,6 +624,7 @@ const AddEmployee = () => {
             {/* submit button */}
             <div className=" col-span-full text-end mb-5 ">
               <button
+                disabled={isLoading}
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
               >

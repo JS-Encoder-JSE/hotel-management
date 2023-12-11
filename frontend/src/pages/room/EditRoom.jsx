@@ -21,9 +21,7 @@ import {
 
 // form validation
 const validationSchema = yup.object({
-  price: yup
-    .number()
-  ,
+  price: yup.number(),
   description: yup
     .string()
     .required("Description is required")
@@ -38,7 +36,6 @@ const EditRoom = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [updateRoom] = useUpdateRoomMutation();
   const [uploadSingle] = useUploadSingleMutation();
-
 
   const formik = useFormik({
     initialValues: {
@@ -63,12 +60,12 @@ const EditRoom = () => {
           const formData = new FormData();
           const photoName = images[i].name.substring(
             0,
-            images[i].name.lastIndexOf("."),
+            images[i].name.lastIndexOf(".")
           );
 
           formData.append(photoName, images[i]);
           await uploadSingle(formData).then((result) =>
-            images.splice(i, 1, result.data.imageUrl),
+            images.splice(i, 1, result.data.imageUrl)
           );
         }
       }
@@ -78,7 +75,6 @@ const EditRoom = () => {
       delete obj.photos;
 
       const response = await updateRoom({ id, data: obj });
-     
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -421,6 +417,7 @@ const EditRoom = () => {
           {/* submit button */}
           <div className=" col-span-full text-end mt-5">
             <button
+              disabled={loading}
               type="submit"
               className=" btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
             >

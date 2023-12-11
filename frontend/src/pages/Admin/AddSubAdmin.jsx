@@ -520,6 +520,7 @@ const AddSubAdmin = () => {
             {/* submit button */}
             <div className="col-span-full text-end">
               <button
+              disabled={isLoading}
                 type="submit"
                 className="btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
               >

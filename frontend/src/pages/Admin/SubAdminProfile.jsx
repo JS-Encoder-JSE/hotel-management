@@ -76,14 +76,14 @@ const SubAdminProfile = () => {
         const formData = new FormData();
         const photoName = userImg.name.substring(
           0,
-          userImg.name.lastIndexOf("."),
+          userImg.name.lastIndexOf(".")
         );
 
         formData.append(photoName, userImg);
 
         delete obj.userImg;
         await uploadSingle(formData).then(
-          (result) => (obj.profile_img = result.data.imageUrl),
+          (result) => (obj.profile_img = result.data.imageUrl)
         );
       }
 
@@ -368,6 +368,7 @@ const SubAdminProfile = () => {
           {/* submit button */}
           <div className="flex justify-end">
             <button
+              disabled={isFetching}
               type="submit"
               className="btn w-fit bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs h-auto"
             >
