@@ -52,34 +52,41 @@ const CheckOutPrint = ({
         </div>
       </div>
       {isHotelSuccess && (
-        <div className="px-4 mt-10 flex gap-5 mx-10 w-full">
-          <AuthoInfoPrint
-            hotelInfo={hotelInfo}
-            isHotelSuccess={isHotelSuccess}
-          />
+        <div>
+          <div className="px-4 mt-5 flex gap-10 ">
+            <AuthoInfoPrint
+              hotelInfo={hotelInfo}
+              isHotelSuccess={isHotelSuccess}
+            />
 
-          <CustomerInfoPrint data={data} />
-          <div className="w-[50%]">
+            <CustomerInfoPrint data={data} />
+          </div>
+          <div className=" px-4 py-2">
             <h2 className="font-bold">Balance Summary</h2>
-            <div className="grid grid-cols-2 ">
-              <p>Total Payable Amount:</p>
-              <p>{totalPayableAmount}</p>
-            </div>
-            <div className="grid grid-cols-2 ">
-              <p>Total Unpaid Amount:</p>
-              <p>
-                {totalPayableAmount - data?.paid_amount < 0
-                  ? 0
-                  : totalPayableAmount - data?.paid_amount}
-              </p>
-            </div>
-            <div className="grid grid-cols-2 ">
-              <p>Total Balance:</p>
-              <p>{data?.total_balance}</p>
-            </div>
-            <div className="grid grid-cols-2 ">
-              <p>Current Balance:</p>
-              <p>{calculateBalance + +calculateCollectedAmount}</p>
+            <div className="flex gap-4 items-center">
+              <div>
+                <div className="grid grid-cols-2 ">
+                  <p>Total Payable Amount</p>
+                  <p>: {totalPayableAmount}</p>
+                </div>
+                <div className="grid grid-cols-2  ">
+                  <p>Total Unpaid Amount</p>
+                  <p>
+                    :
+                    {totalPayableAmount - data?.paid_amount < 0
+                      ? 0
+                      : totalPayableAmount - data?.paid_amount}
+                  </p>
+                </div>
+                <div className="grid grid-cols-2  ">
+                  <p>Total Balance</p>
+                  <p>: {data?.total_balance}</p>
+                </div>
+                <div className="grid grid-cols-2 ">
+                  <p>Current Balance</p>
+                  <p >: {calculateBalance + +calculateCollectedAmount}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -102,7 +109,7 @@ const CheckOutPrint = ({
         <BillingSectionPrint />
         {/* <BalanceDetailsPrint colAmount={colAmount} pBill={pBill} /> */}
       </div>
-      <div className="text-xs px-4 mt-10">
+      <div className="text-xs px-4 mt-4">
         <h1 className="font-semibold">TERMS & CONDITIONS</h1>
         <ol className="list-decimal p-4 text-gray-500">
           <li>
