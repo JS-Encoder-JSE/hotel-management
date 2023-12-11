@@ -51,43 +51,46 @@ const RestaurantsAnalytics = () => {
     );
   }
 
-const location = useLocation()
+  const location = useLocation();
 
-console.log(location.pathname)
+  // console.log(location.pathname)
 
-let pageTitle;
+  let pageTitle;
 
-if (location.pathname === "/dashboard/hotel-analytics"){
-  pageTitle = "Hotel Analytics"
-}
-else{
-  pageTitle = "Restaurant Analytics"
-}
-
+  if (location.pathname === "/dashboard/hotel-analytics") {
+    pageTitle = "Hotel Analytics";
+  } else {
+    pageTitle = "Restaurant Analytics";
+  }
 
   return (
     <>
       {/* back button */}
-      <div className={`mb-5`}>
-      <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">{pageTitle}</h1>
-        <Link to={`/dashboard `}>
-          <button
-            type="button"
-            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-          >
-            <dfn>
-              <abbr title="Back">
-                <FaArrowLeft />
-              </abbr>
-            </dfn>
+      <div className={`mb-5 mt-10`}>
+        <div>
+          <Link to={`/dashboard  `}>
+            <button
+              type="button"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
 
-            <span className="tracking-wider font-semibold text-[1rem]"></span>
-          </button>
-        </Link>
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+        <div className={`mt-7`}>
+          <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+            {pageTitle}
+          </h1>
+        </div>
       </div>
 
       <div className="space-y-20">
-     
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex flex-col md:flex-row  gap-5 items-center justify-center">
           <p className=" ">Hotel Branch Name :</p>
@@ -124,7 +127,9 @@ else{
 
         <section>
           {selectedHotel ? (
-            <RestaurantDashboard managerId={selectedHotel?.value}></RestaurantDashboard>
+            <RestaurantDashboard
+              managerId={selectedHotel?.value}
+            ></RestaurantDashboard>
           ) : (
             <p className="text-center">Please Select your Hotel Branch !!</p>
           )}

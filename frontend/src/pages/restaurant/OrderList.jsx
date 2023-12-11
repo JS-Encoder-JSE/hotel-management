@@ -123,7 +123,8 @@ const OrderList = () => {
             </button>
           </Link>
         </div>
-        <h3 className={`text-2xl font-semibold text-center mb-4`}>Order List</h3>
+        <h3 className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+        >Order List</h3>
         <div className={``}>
           <div className={`flex flex-col md:flex-row gap-3`}>
             <DatePicker

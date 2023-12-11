@@ -33,6 +33,13 @@ const slsAPI = baseAPI.injectEndpoints({
         }${role ? `&role=${role}` : ""}&user_id=${parentId}`,
       providesTags: ["owner", "employee"],
     }),
+    getUsersByAdmin: build.query({
+      query: ({ cp, filter, search, role, parentId }) =>
+        `users/get-users-by-admin?page=${++cp}${filter ? `&filter=${filter}` : ""}${
+          search ? `&search=${search}` : ""
+        }${role ? `&role=${role}` : ""}&user_id=${parentId}`,
+      providesTags: ["owner", "employee"],
+    }),
     getOwnByAdmin: build.query({
       query: ({ cp, filter, search }) =>
         `users/get-owners-by-admin?page=${++cp}${
@@ -49,4 +56,5 @@ export const {
   useGetUsersQuery,
   useGetOwnByAdminQuery,
   useUpdateUserMutation,
+  useGetUsersByAdminQuery
 } = slsAPI;

@@ -91,8 +91,7 @@ const ReportManager = () => {
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-5 py-5 rounded `}>
-        <div className={`flex flex-wrap gap-1.5 justify-between flex-col md:flex-row `}>
-        <div className="mb-7">
+      <div className="mb-7">
               <Link to={`/dashboard `}>
                 <button
                   type="button"
@@ -106,7 +105,11 @@ const ReportManager = () => {
                 </button>
               </Link>
             </div>
-          <h3 className={`text-xl font-semibold`}>All Report</h3>
+         <div>
+         <h3 className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>All Report</h3>
+         </div>
+        <div className={`flex flex-wrap gap-1.5 justify-end flex-col md:flex-row `}>
+     
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>
               <button

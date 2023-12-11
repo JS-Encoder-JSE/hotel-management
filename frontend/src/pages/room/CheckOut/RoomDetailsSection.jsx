@@ -6,26 +6,29 @@ import {
 } from "../../../redux/add-order/addOrderSlice";
 import { getDiscountAmount } from "../../../utils/utils";
 
-const RoomDetailsSection = ({ data, roomData,bookingInfo }) => {
+const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
   // console.log(bookingInfo)
-const billingState = useSelector((state) => state.checkoutInfoCalSlice);
+  const billingState = useSelector((state) => state.checkoutInfoCalSlice);
 
-// const {bookingInfo}= billingState
+  // const {bookingInfo}= billingState
   const dispatch = useDispatch();
-
-  const discountPerRoom = (roomData?.total_room_rent * bookingInfo?.room_discount)/100;
+  const totalRoomRent = billingState?.calculateNOD * roomData?.rent_per_day;
+  const discountPerRoom = (totalRoomRent * bookingInfo?.room_discount) / 100;
   // const discountPerRoom = getDiscountAmount(
   //   roomData?.total_room_rent,
   //   bookingInfo?.room_discount
   // );
-  const amountAfterDis = Math.ceil(roomData?.total_room_rent - discountPerRoom);
+  const amountAfterDis = Math.ceil(totalRoomRent - discountPerRoom);
   // console.log(roomData?.total_room_rent, discountPerRoom);
   useEffect(() => {
     !isNaN(amountAfterDis) ? dispatch(setAmountAfterDis(amountAfterDis)) : "";
     dispatch(setBookingId(roomData?._id));
   }, [data]);
 
- 
+  useEffect(() => {
+    dispatch(setAmountAfterDis(amountAfterDis));
+  }, [amountAfterDis]);
+
   // const afterDiscountAm = roomData?.total_room_rent - discountAmount
   // console.log(discountAmount,"disco",afterDiscountAm)
 
@@ -72,28 +75,28 @@ const billingState = useSelector((state) => state.checkoutInfoCalSlice);
                       NoD
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Rent/Day
+                      (Rs.) Rent/Day
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Total Rent
+                      (Rs.) Total Rent
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Discount/Room
+                      (Rs.) Discount/Room
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Amount After Discount
+                      (Rs.) Amount After Discount
                     </td>
                     {/* <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Discount
+                      (Rs.) Discount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Amount After Discount
+                      (Rs.) Amount After Discount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Paid Amount
+                      (Rs.) Paid Amount
                     </td>
                     <td className="p-2 border border-black/20 align-bottom font-medium">
-                      ($) Unpaid Amount
+                      (Rs.) Unpaid Amount
                     </td> */}
                   </tr>
                 </tbody>
@@ -103,16 +106,16 @@ const billingState = useSelector((state) => state.checkoutInfoCalSlice);
                       {new Date(roomData?.from).toLocaleDateString()}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {new Date(roomData?.to).toLocaleDateString()}
+                      {new Date(billingState?.toDate).toLocaleDateString()}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {roomData?.no_of_days}
+                      {billingState?.calculateNOD}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
                       {roomData?.rent_per_day}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {roomData?.total_room_rent}
+                      {totalRoomRent}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
                       {bookingInfo?.room_discount}%

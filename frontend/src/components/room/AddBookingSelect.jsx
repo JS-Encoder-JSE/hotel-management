@@ -15,6 +15,7 @@ import {
   getNumberOfDays,
   toDateIsoConverter,
 } from "../../utils/utils.js";
+import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -103,8 +104,8 @@ const AddBookingSelect = ({ room }) => {
     onSubmit: async (values, formikHelpers) => {
       const obj = {
         ...values,
-        from: fromDateIsoConverter(values.from),
-        to: toDateIsoConverter(values.to),
+        from: convertedFromDate(values.from),
+        to: convertedToDate(values.to),
       };
 
       if (!obj.discount) obj.discount = 0;

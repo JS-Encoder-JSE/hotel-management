@@ -39,11 +39,7 @@ const ManageInventory = () => {
 
   return (
     <div className={`space-y-10 bg-white p-5  rounded-2xl `}>
-      <div
-        className={`flex flex-col md:flex-row sm:justify-between`}
-      >
-        <div className={`flex space-x-1.5 gap-2  `}>
-        <div className="mb-7">
+            <div className="mb-7">
               <Link to={`/dashboard `}>
                 <button
                   type="button"
@@ -57,7 +53,14 @@ const ManageInventory = () => {
                 </button>
               </Link>
             </div>
-          
+            <div  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+        <h1>Manage Items</h1>
+      </div>
+
+      <div
+        className={`flex flex-col md:flex-row sm:justify-between gap-3`}
+      >
+        <div className={`flex space-x-1.5 gap-2  `}>
           <div className="flex flex-col gap-2">
             <select
               name="filter"

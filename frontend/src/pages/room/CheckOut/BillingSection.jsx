@@ -10,6 +10,7 @@ import {
   setRoomPostedBill,
   setExtraDiscount,
   setTexAmount,
+  setCalculateBalance,
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -141,7 +142,14 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     gymBill,
     foodBill,
   ]);
-
+  useEffect(() => {
+    const totalBill = Math.ceil(totalUnpaidAmount + totalBilling + breakAmt);
+    dispatch(
+      setCalculateBalance(
+        Math.ceil(data?.booking_info?.total_balance - totalBill)
+      )
+    );
+  }, [totalUnpaidAmount, totalBilling, breakAmt, data]);
   return (
     <section className="grid lg:grid-cols-3 gap-5">
       <div className="bg-white rounded">
@@ -228,13 +236,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
           <tbody className="flex flex-col gap-3">
             <tr>
               <td>Total Room Bills</td>
-              <td>
-                {Math.ceil(
-                  totalUnpaidAmount +
-                    totalBilling +
-                    breakAmt
-                )}
-              </td>
+              <td>{Math.ceil(totalUnpaidAmount + totalBilling + breakAmt)}</td>
             </tr>
           </tbody>
         </table>
@@ -246,7 +248,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
         <div className="text-sm font-semibold p-5">
           <div className="grid grid-cols-4 gap-2 border-y border-black/20 p-2">
             <p className="col-span-2">Bill Type</p>
-            <p>($) Total</p>
+            <p>(Rs.) Total</p>
           </div>
           <div className="grid grid-cols-4 gap-2 mt-4 opacity-80 font-extralight border-b border-black/20 pb-2 px-2">
             <p className="capitalize whitespace-nowrap col-span-2">Pool</p>

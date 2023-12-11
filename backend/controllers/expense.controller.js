@@ -345,12 +345,6 @@ export const getExpenses = async (req, res) => {
     if (fromDate && toDate) {
       // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
       query.date = { $gte: fromDate, $lte: toDate };
-    } else if (fromDate) {
-      // If only fromDate is provided, use $gte for the minimum date filter
-      query.date = { $gte: fromDate };
-    } else if (toDate) {
-      // If only toDate is provided, use $lte for the maximum date filter
-      query.date = { $lte: toDate };
     }
     // Use the paginate function to get paginated results
     const options = {

@@ -3,6 +3,7 @@ import { signOut } from "./auth/authSlice.js";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5001",
+  // baseUrl: "https://v1.dakhotel.com",
   // baseUrl: "https://hotel-backend-63vk.onrender.com/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().authSlice.token;
@@ -41,8 +42,6 @@ const baseAPI = createApi({
     "booking",
     "GetExpenses",
     "expenses",
-  
-    
   ],
   baseQuery: baseQueryWithReAuth,
   endpoints: (build) => ({

@@ -2,7 +2,13 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
-import { FaArrowLeft, FaEye, FaEyeSlash, FaPlusCircle, FaUpload } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaEyeSlash,
+  FaPlusCircle,
+  FaUpload,
+} from "react-icons/fa";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -17,7 +23,7 @@ import {
 } from "../../redux/baseAPI.js";
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 import { Link } from "react-router-dom";
-import EmployeeView from './EmployeeView';
+import EmployeeView from "./EmployeeView";
 
 // form validation
 const validationSchema = yup.object({
@@ -38,8 +44,7 @@ const validationSchema = yup.object({
   emergency_contact: yup.string().required("Emergency contact is required"),
   shift: yup.string().required("Shift is required"),
   designation: yup.string().required("Designation is required"),
-  salary: yup
-    .number(),
+  salary: yup.number(),
   joiningDate: yup.string().required("Joining Date is required"),
   documentsType: yup.string().required("Documents type is required"),
   documents: yup.string().when(["documentsType"], ([documentsType], schema) => {
@@ -51,8 +56,9 @@ const validationSchema = yup.object({
 const AddEmployee = () => {
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   const [isLoading, setLoading] = useState(false);
-  const [upload] = useUploadMutation();
-  const [uploadSingle] = useUploadSingleMutation();
+  const [upload, { isError }] = useUploadMutation();
+  const [uploadSingle, { isError: singleError }] = useUploadSingleMutation();
+  console.log({ singleError, isError });
   const [addSubAdmin] = useAddSubAdminMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [showPass, setShowPass] = useState(false);
@@ -123,36 +129,41 @@ const AddEmployee = () => {
         };
       });
 
-      formData2.append(
-        userImg.name.substring(0, userImg.name.lastIndexOf(".")),
-        userImg
-      );
+      if (userImg) {
+        formData2.append(
+          userImg.name.substring(0, userImg.name.lastIndexOf(".")),
+          userImg
+        );
 
-      await uploadSingle(formData2).then(
-        (result) => (obj.images.profile_img = result.data.imageUrl)
-      );
-
-      const response = await addSubAdmin({
-        role: "employee",
-        password: "12345678",
-        name,
-        username,
-        phone_no,
-        email,
-        emergency_contact,
-        shift,
-        designation,
-        address,
-        salary,
-        joining_date,
-        images: obj.images,
-      });
-      if (response?.error) {
-        toast.error(response.error.data.message);
+        await uploadSingle(formData2).then(
+          (result) => (obj.images.profile_img = result.data.imageUrl)
+        );
+      }
+      if (!isError && !singleError) {
+        const response = await addSubAdmin({
+          role: "employee",
+          password: "12345678",
+          name,
+          username,
+          phone_no,
+          email,
+          emergency_contact,
+          shift,
+          designation,
+          address,
+          salary,
+          joining_date,
+          images: obj.images,
+        });
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          toast.success(response.data.message);
+          formikHelpers.resetForm();
+          setSelectedImages([]);
+        }
       } else {
-        toast.success(response.data.message);
-        formikHelpers.resetForm();
-        setSelectedImages([]);
+        toast.error("Image is not upload");
       }
 
       setLoading(false);
@@ -202,7 +213,6 @@ const AddEmployee = () => {
     }
   }, [formik.values.documents, formik.values.userImg]);
 
-
   // Price Validation
   const handleSalary = (e) => {
     const inputValue = e.target.value;
@@ -220,29 +230,30 @@ const AddEmployee = () => {
     <div className={`space-y-10 md:p-6`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
-        <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
-      <div className="w-full">
-              <h3
-                className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
+          <div className="mb-7">
+            <Link to={`/dashboard `}>
+              <button
+                type="button"
+                className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
               >
-                <FaPlusCircle />
-                <span>Add Employee</span>
-              </h3>
-    
-            </div>
+                <dfn>
+                  <abbr title="Back">
+                    <FaArrowLeft />
+                  </abbr>
+                </dfn>
+
+                <span className="tracking-wider font-semibold text-[1rem]"></span>
+              </button>
+            </Link>
+          </div>
+          <div className="w-full">
+            <h3
+              className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
+            >
+              <FaPlusCircle />
+              <span>Add Employee</span>
+            </h3>
+          </div>
           <hr className={`my-5`} />
         </div>
 
