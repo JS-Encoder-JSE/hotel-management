@@ -57,8 +57,10 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     // Find food orders for the given room_id
     const foodOrders = await FoodOrder.find({
       room_id: { $in: room_ids },
+      order_status: { $ne: "CheckedOut" },
       // You may add other conditions if needed
-    });
+    });    
+    console.log("foodOrders:", foodOrders);
     // Find gym bills for the given room_id
     const gymBills = await GymBills.find({
       room_id: { $in: room_ids },
@@ -140,7 +142,7 @@ export const checkedOut = async (req, res) => {
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
-    const hotel_income = paid_amount - restaurant_income;
+    const hotel_income = total_checkout_bills - restaurant_income;
 
     const newReport = new ManagerReport({
       hotel_id,
@@ -194,7 +196,6 @@ export const checkedOut = async (req, res) => {
 
     await bookingInfo.save();
 
-
     if (paid_amount > 0) {
       const newTransactionLog = new TransactionLog({
         manager_id: userId,
@@ -215,15 +216,15 @@ export const checkedOut = async (req, res) => {
 
     // Update room statuses
     await Room.updateOne({ _id: room_id }, { $set: { status: roomStatus } });
-    await FoodOrder.updateOne(
+    await FoodOrder.updateMany(
       { room_id: room_id },
-      { $set: { status: "CheckedOut", payment_status: "Paid" } }
+      { $set: { order_status: "CheckedOut", payment_status: "Paid" } }
     );
-    await GymBills.updateOne(
+    await GymBills.updateMany(
       { room_id: room_id },
       { $set: { status: "Paid" } }
     );
-    await PoolBills.updateOne(
+    await PoolBills.updateMany(
       { room_id: room_id },
       { $set: { status: "Paid" } }
     );
