@@ -269,7 +269,7 @@ export const addOrder = async (req, res) => {
         unpaid_amount,
       });
       const savedFoodOrder = await newFoodOrder.save();
-      const booking = await Booking.findOne({ room_id, status: "Active" });
+      const booking = await Booking.findOne({ room_id, status: "CheckedIn" });
       booking.food_order_ids.push(savedFoodOrder._id);
       res.status(201).json({
         success: true,
