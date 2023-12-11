@@ -64,7 +64,7 @@ const Profile = () => {
 
   return (
     <div
-      className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
+      className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20 min-h-screen md:min-h-0`}
     >
       <div>
         <div className="relative -top-16 inset-x-1/2 -translate-x-1/2 border-4 border-green-slimy rounded-full h-32 w-32">
@@ -111,28 +111,28 @@ const Profile = () => {
       </div>
       <div className="grid grid-cols-1 gap-4 mt-14">
         {/* name box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+        <div className="flex sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
           <label className={`min-w-[5.5rem]`}>Name</label>
           <span>:</span>
-          <p className="text-slate-600">{user?.name}</p>
+          <p className="text-slate-600 ml-2">{user?.name}</p>
         </div>
         {/* Email box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+        <div className="flex sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
           <label className={`min-w-[5.5rem]`}>Email</label>
           <span>:</span>
-          <p className="text-slate-600">{user?.email}</p>
+          <p className="text-slate-600 ml-2">{user?.email}</p>
         </div>
         {/* Phone box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+        <div className="flex sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
           <label className={`min-w-[5.5rem]`}>Phone</label>
           <span>:</span>
-          <p className="text-slate-600">{user?.phone_no}</p>
+          <p className="text-slate-600 ml-2">{user?.phone_no}</p>
         </div>
         {/* Address box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+        <div className="flex sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
           <label className={`min-w-[5.5rem]`}>Address</label>
           <span>:</span>
-          <p className="text-slate-600">{user?.address}</p>
+          <p className="text-slate-600 ml-2">{user?.address}</p>
         </div>
         {user?.role === "owner" ? (
           <>

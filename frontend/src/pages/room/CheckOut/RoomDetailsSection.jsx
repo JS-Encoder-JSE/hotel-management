@@ -5,6 +5,7 @@ import {
   setBookingId,
 } from "../../../redux/add-order/addOrderSlice";
 import { getDiscountAmount } from "../../../utils/utils";
+import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 
 const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
   // console.log(bookingInfo)
@@ -14,11 +15,19 @@ const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
   const dispatch = useDispatch();
   const totalRoomRent = billingState?.calculateNOD * roomData?.rent_per_day;
   const discountPerRoom = (totalRoomRent * bookingInfo?.room_discount) / 100;
+
+  const { subTotals } = billingState;
+
+
   // const discountPerRoom = getDiscountAmount(
   //   roomData?.total_room_rent,
   //   bookingInfo?.room_discount
   // );
   const amountAfterDis = Math.ceil(totalRoomRent - discountPerRoom);
+
+  useEffect(()=>{
+    dispatch(updateSubTotal(amountAfterDis))
+  },[amountAfterDis])
   // console.log(roomData?.total_room_rent, discountPerRoom);
   useEffect(() => {
     !isNaN(amountAfterDis) ? dispatch(setAmountAfterDis(amountAfterDis)) : "";

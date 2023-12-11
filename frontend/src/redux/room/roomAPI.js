@@ -15,6 +15,7 @@ const roomAPI = baseAPI.injectEndpoints({
           search ? `&search=${search}` : ""
         }`,
       providesTags: ["room"],
+      invalidatesTags:["bookingToCheckIn"]
     }),
     room: build.query({
       query: (id) => `rooms/get-room-by-id/${id}`,
@@ -212,7 +213,9 @@ const roomAPI = baseAPI.injectEndpoints({
           method: "POST",
           body: updatedData,
         };
+        
       },
+      providesTags:["bookingToCheckIn"],
       invalidatesTags: ["booking"],
     }),
     makePayment: build.mutation({
@@ -250,7 +253,7 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["room"],
+      invalidatesTags: ["room","bookingToCheckIn"],
     }),
     cashback: build.mutation({
       query: (data) => {

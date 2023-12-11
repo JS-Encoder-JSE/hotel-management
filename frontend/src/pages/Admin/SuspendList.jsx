@@ -60,7 +60,7 @@ const SuspendList = () => {
   }, [owners]);
 
   return (
-    <div className={`space-y-8 bg-white p-4 rounded-2xl`}>
+    <div className={`space-y-8 bg-white p-4 rounded-2xl min-h-screen md:min-h-auto`}>
               <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Suspend List</h1>
        <div>
           <Link to={`/dashboard `}>
@@ -78,7 +78,6 @@ const SuspendList = () => {
             </button>
           </Link>
         </div>
-        <div className={`text-2xl text-center`}>Suspend List</div>
       <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
 
         <div className={`relative sm:min-w-[20rem]`}>

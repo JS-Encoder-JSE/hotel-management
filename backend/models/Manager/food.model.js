@@ -112,6 +112,7 @@ const foodOrderSchema = new mongoose.Schema(
       type: String,
       required: false,
       enum: ["Current", "CheckedOut"],
+      default: "Current",
     },
     items: [itemsSchema],
     total_price: {

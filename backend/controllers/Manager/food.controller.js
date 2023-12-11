@@ -207,7 +207,7 @@ export const addOrder = async (req, res) => {
       items,
       dedicated_to,
       current_order,
-      paid_amount,
+      paid_amount = 0,
     } = req.body;
     const userId = req.user.userId;
     const user = await User.findById(userId);
@@ -224,33 +224,98 @@ export const addOrder = async (req, res) => {
 
     // Format the number to have exactly 8 digits as a string
     const unique_id = randomNumber.toString().slice(0, 8);
-    if (room_id) {
+    if (dedicated_to === "room") {
       const bookingInfo = await BookingInfo.findOne({ room_ids: room_id });
+      if (!bookingInfo) {
+        res.status(404).json({
+          success: false,
+          message: "Booking Info not for provided room",
+        });
+      }
       bookingInfo.total_posted_bills += unpaid_amount;
       bookingInfo.total_payable_amount += unpaid_amount;
       bookingInfo.total_unpaid_amount += unpaid_amount;
       await bookingInfo.save();
+      const existingFoodOrder = await FoodOrder.findOne({
+        hotel_id,
+        room_id,
+        dedicated_to,
+        current_order,
+        order_status: "Current",
+      });
+      if (existingFoodOrder) {
+        existingFoodOrder.items.push(...items);
+        existingFoodOrder.total_price += total_price;
+        existingFoodOrder.paid_amount += paid_amount;
+        existingFoodOrder.unpaid_amount += unpaid_amount;
+
+        existingFoodOrder.save();
+        return res.status(201).json({
+          success: true,
+          data: existingFoodOrder,
+          message: "Food order added successfully",
+        });
+      }
+      const newFoodOrder = new FoodOrder({
+        room_id,
+        table_id,
+        hotel_id,
+        unique_id,
+        current_order,
+        items,
+        dedicated_to,
+        total_price,
+        paid_amount,
+        unpaid_amount,
+      });
+      const savedFoodOrder = await newFoodOrder.save();
+      res.status(201).json({
+        success: true,
+        data: savedFoodOrder,
+        message: "Food order added successfully",
+      });
     }
-    const newFoodOrder = new FoodOrder({
-      room_id,
-      table_id,
-      hotel_id,
-      unique_id,
-      current_order,
-      items,
-      dedicated_to,
-      total_price,
-      paid_amount,
-      unpaid_amount,
-    });
+    if (dedicated_to === "table") {
+      const existingFoodOrder = await FoodOrder.findOne({
+        hotel_id,
+        table_id,
+        dedicated_to,
+        current_order,
+        order_status: "Current",
+      });
+      if (existingFoodOrder) {
+        existingFoodOrder.items.push(...items);
+        existingFoodOrder.total_price += total_price;
+        existingFoodOrder.paid_amount += paid_amount;
+        existingFoodOrder.unpaid_amount += unpaid_amount;
 
-    const savedFoodOrder = await newFoodOrder.save();
+        existingFoodOrder.save();
+        return res.status(201).json({
+          success: true,
+          data: existingFoodOrder,
+          message: "Food order added successfully",
+        });
+      }
+      const newFoodOrder = new FoodOrder({
+        room_id,
+        table_id,
+        hotel_id,
+        unique_id,
+        current_order,
+        items,
+        dedicated_to,
+        total_price,
+        paid_amount,
+        unpaid_amount,
+      });
 
-    res.status(201).json({
-      success: true,
-      data: savedFoodOrder,
-      message: "Food order added successfully",
-    });
+      const savedFoodOrder = await newFoodOrder.save();
+      res.status(201).json({
+        success: true,
+        data: savedFoodOrder,
+        message: "Food order added successfully",
+      });
+    }
   } catch (error) {
     console.error(error); // Log the error for debugging
     res.status(500).json({
