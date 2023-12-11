@@ -74,7 +74,7 @@ const ExpiredList = () => {
   }, [modalOpen]);
 
   return (
-    <div className={`space-y-8 bg-white p-4 rounded-2xl`}>
+    <div className={`space-y-8 bg-white p-4 rounded-2xl min-h-screen`}>
               <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Expired List </h1>
        <div>
           <Link to={`/dashboard `}>
@@ -92,7 +92,6 @@ const ExpiredList = () => {
             </button>
           </Link>
         </div>
-        <div className={`text-2xl text-center`}>Expired List</div>
       <div className={`flex justify-end flex-col sm:flex-row gap-5`}>
        
       
@@ -119,7 +118,7 @@ const ExpiredList = () => {
         </div>
       </div>
       {!isLoading ? (
-        owners.docs.length ? (
+        owners?.docs?.length ? (
           <>
             <div className="overflow-x-auto">
               <table className="table border">

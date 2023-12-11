@@ -114,7 +114,7 @@ const AddBooking = () => {
       // const formatedToDate =
 
 
-      const no_of_days = Math.floor(
+      const no_of_days = Math.ceil(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
       );
       const rent_per_day = obj.room_arr.reduce(

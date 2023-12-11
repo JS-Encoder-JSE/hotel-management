@@ -183,6 +183,7 @@ const CustomerInfoSection = ({ data }) => {
               {calculateBalance + +calculateCollectedAmount}
             </p>
           </div>
+          <hr />
           <div className="grid grid-cols-2">
             <p className="whitespace-nowrap">Select Checkout Date</p>
             <div className="w-fll flex flex-col">
@@ -191,19 +192,23 @@ const CustomerInfoSection = ({ data }) => {
                 name="from"
                 placeholderText={`From`}
                 selected={toDate ? parseISO(toDate) : ""}
-                className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+                className={`ml-8 input input-md bg-transparent input-bordered border-gray-500 rounded focus:outline-none focus:border-green-slimy w-[80%] p-1`}
                 onChange={handleToDateChange}
               />
 
-              <TimePicker
-                amPmAriaLabel="Select AM/PM"
-                format="h:m:s a"
-                value={time}
-                clockIcon={false}
-                className={`input input-md bg-transparent rounded !focus:outline-none focus:border-green-slimy w-full mt-3 !px-0  focus-within:outline-none`}
-                onChange={handleTime}
-                clearIcon={false}
-              />
+          <div className="timePicker">
+            <TimePicker
+              amPmAriaLabel="Select AM/PM"
+              format="h:m:s a"
+              value={time}
+              clockIcon={false}
+              onChange={handleTime}
+              clearIcon={false}
+              disableClock={true}
+              className={`timePickers  ml-8 input border--500/50 input-md bg-transparent rounded  focus:border-green-slimy w-[80%] mt-3 p-0  focus-within:outline-none`}
+             
+            />
+        </div>
             </div>
           </div>
         </div>

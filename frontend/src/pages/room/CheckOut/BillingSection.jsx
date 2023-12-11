@@ -28,8 +28,8 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
     (state) => state.checkoutInfoCalSlice
   );
   const dispatch = useDispatch();
-  const billingState = useSelector((state) => state.checkoutInfoCalSlice);
-  const { subTotals } = billingState;
+  // const billingState = useSelector((state) => state.checkoutInfoCalSlice);
+  // const { subTotals } = billingState;
 
   const totalUnpaidAmount = amountAfterDiscount + poolBill + gymBill + foodBill;
   const handleDiscountChange = (val) => {
@@ -41,7 +41,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
   };
   // discount ammount
   dispatch(updateDiscountOffer(Math.ceil(discountAmt)));
-  dispatch(updateSubTotal(totalUnpaidAmount));
+  // dispatch(updateSubTotal(totalUnpaidAmount));
 
   const handleAmountChange = (idx, val) => {
     const arr = [...billing];

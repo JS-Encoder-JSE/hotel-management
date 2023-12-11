@@ -8,7 +8,7 @@ const AuthoInfoPrint = ({ hotelInfo, isHotelSuccess }) => {
   return (
     <div className="py-2">
       <h2 className="font-bold">Invoice From</h2>
-      <div className="flex gap-4 items-center">
+      <div className="flex items-center">
         <div>
           <div className="grid grid-cols-2">
             <p>Name</p>
@@ -17,7 +17,7 @@ const AuthoInfoPrint = ({ hotelInfo, isHotelSuccess }) => {
 
           <div className="grid grid-cols-2">
             <p>Email</p>
-            <p>: {info?.email}</p>
+            <p className="">: {info?.email}</p>
           </div>
 
           <div className="grid grid-cols-2">

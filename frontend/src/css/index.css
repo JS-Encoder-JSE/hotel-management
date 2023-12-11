@@ -45,3 +45,8 @@
 .db-currency path {
   stroke: white;
 }
+
+.timePicker input {
+  border: none !important;
+  font:"220px"
+}
