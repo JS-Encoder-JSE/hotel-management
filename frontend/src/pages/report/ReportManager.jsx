@@ -62,8 +62,6 @@ const ReportManager = () => {
     limit: formik.values.entries,
   });
 
-
-
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
@@ -83,33 +81,49 @@ const ReportManager = () => {
         0
       );
       setTotalAmount(total);
-      setPDF(reports?.data?.docs)
+      setPDF(reports?.data?.docs);
     }
   }, [reports]);
 
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZone: "Asia/Dhaka",
+  };
 
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-5 py-5 rounded `}>
-      <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
-         <div>
-         <h3 className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>All Report</h3>
-         </div>
-        <div className={`flex flex-wrap gap-1.5 justify-end flex-col md:flex-row `}>
-     
+        <div className="mb-7">
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+        <div>
+          <h3
+            className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+          >
+            All Report
+          </h3>
+        </div>
+        <div
+          className={`flex flex-wrap gap-1.5 justify-end flex-col md:flex-row `}
+        >
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>
               <button
@@ -120,18 +134,22 @@ const ReportManager = () => {
                 CSV
               </button>
               {PDF.length ? (
-                  <PDFDownloadLink
-                    document={<ManagerReport values={PDF} header={{
-                      title: "DAK Hospitality LTD",
-                      name: "All Report",
-                    }} />}
-                    fileName={`${new Date().toLocaleDateString()}.pdf`}
-                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                  >
-                    PDF
-                  </PDFDownloadLink>
+                <PDFDownloadLink
+                  document={
+                    <ManagerReport
+                      values={PDF}
+                      header={{
+                        title: "DAK Hospitality LTD",
+                        name: "All Report",
+                      }}
+                    />
+                  }
+                  fileName={`${new Date().toLocaleDateString()}.pdf`}
+                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                >
+                  PDF
+                </PDFDownloadLink>
               ) : null}
-              
             </div>
           </div>
         </div>
@@ -301,8 +319,9 @@ const ReportManager = () => {
                       <th>{++idx}</th>
                       <td>{report.guestName}</td>
                       <td>{report?.room_numbers.join(",")}</td>
-                      <td>{new Date(report?.checked_in).toLocaleDateString()}</td>
-                      <td>{new Date(report?.checked_out).toLocaleDateString()}</td>
+                      <td>{new Date(report?.checked_in).toLocaleString()}</td>
+
+                      <td>{new Date(report?.checked_out).toLocaleString()}</td>
                       <td>{report?.paid_amount}</td>
                       <td className={`space-x-1.5`}></td>
                     </tr>
