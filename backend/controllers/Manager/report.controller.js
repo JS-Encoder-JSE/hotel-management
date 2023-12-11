@@ -42,6 +42,16 @@ export const getReportsByHotelId = async (req, res) => {
 
     // Use Mongoose pagination to retrieve reports
     const reports = await ManagerReport.paginate(query, options);
+    const totalPaidAmount = await ManagerReport.aggregate([
+      { $match: query },
+      { $group: { _id: null, total: { $sum: "$paid_amount" } } },
+    ]);
+
+    // Extract the total value from the array
+    const totalPaidAmountValue = totalPaidAmount.length > 0 ? totalPaidAmount[0].total : 0;
+
+    // Assign the total value directly
+    reports.total_paid_amount = totalPaidAmountValue;
 
     res.status(200).json({
       success: true,
@@ -65,6 +75,7 @@ export const getReportsByHotelId = async (req, res) => {
     });
   }
 };
+
 
 export const getReportsByDate = async (req, res) => {
   try {
