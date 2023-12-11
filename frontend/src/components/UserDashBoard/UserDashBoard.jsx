@@ -28,7 +28,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const UserDashBoard = ({ managerId }) => {
   const navigate = useNavigate()
-
+  const location = useLocation();
   const { user } = useSelector((store) => store.authSlice);
   const { pathname } = useLocation();
   const {
@@ -36,11 +36,16 @@ const UserDashBoard = ({ managerId }) => {
     isSuccess,
     isLoading,
     isError,
+    refetch
   } = useGetDashboardInfoQuery(managerId ? managerId : user?._id);
   const [userHotel, setUserHotel] = useState(
     user?.role === "manager" || user?.role === "owner"
   );
   console.log(dashboardData);
+  useEffect(()=>{
+    refetch()
+    },[location.pathname])
+
   if (isLoading || isError) {
     return (
       <Rings
@@ -52,9 +57,9 @@ const UserDashBoard = ({ managerId }) => {
     );
   }
 
-  // const location = useLocation();
-  // const {  pathname  } = location;
-  
+   
+
+
   return (
     <>
       <div>

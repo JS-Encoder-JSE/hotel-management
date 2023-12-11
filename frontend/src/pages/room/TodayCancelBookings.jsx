@@ -33,7 +33,7 @@ const TodayCancelBookings = () => {
     page: currentPage,
     filter: "Canceled",
     fromDate: checkinListFromDate(new Date()),
-    toDate: checkinListoDate(new Date())
+    toDate: checkinListoDate(new Date()),
   });
 
   const pressEnter = (e) => {

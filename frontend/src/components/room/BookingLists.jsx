@@ -38,6 +38,9 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
   const handleDelete = (id) => {
     setBookingId(id);
     refetch();
+    if(isLastBooking?.success){
+      window.refundPay.showModal()
+    }
     // if (isLastBooking?.success) {
     //   // If the condition is true, show the modal
     //   window.refundPay.showModal();
