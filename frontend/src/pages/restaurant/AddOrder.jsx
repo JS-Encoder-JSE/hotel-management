@@ -20,7 +20,7 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
-const   AddOrder = () => {
+const AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
   const [error, setError] = useState("");
@@ -58,66 +58,63 @@ const   AddOrder = () => {
     limit: 1000000,
   });
 
-console.log(rooms)
+  console.log(rooms);
 
   const { data: tables } = useGetTablesQuery();
-  const transformedRooms = rooms?.data?.docs
-  ?.filter((room) => room.status === 'CheckedIn')
-  .map((room) => ({
-    value: room._id,
-    label: room.roomNumber,
-  })) || [];
+  const transformedRooms =
+    rooms?.data?.docs
+      ?.filter((room) => room.status === "CheckedIn")
+      .map((room) => ({
+        value: room._id,
+        label: room.roomNumber,
+      })) || [];
   const transformedTables = tables?.data?.map((table) => ({
     value: table._id,
     label: table.table_number,
   }));
+  const handleConfirmOrder = () => {
+    if (formik.values.type && formik.values.type === "Table") {
+      dispatch(setTableId(formik.values.tableId));
+      window.fp_modal.showModal();
 
+      setError("");
+    } else if (formik.values.type && formik.values.type === "Room") {
+      dispatch(setRoomId(formik.values.roomId));
+      window.fp_modal.showModal();
+
+      setError("");
+    } else {
+      setError(" please Choose the type");
+    }
+  };
   useEffect(() => {
     formik.values.type.length && setError("");
   }, [formik.values.type]);
 
   return (
     <div className={`space-y-10 bg-white rounded-2xl p-5`}>
-       <div>
-          <Link to={`/dashboard `}>
-            <button
-              type="button"
-              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
-            >
-              <dfn>
-                <abbr title="Back">
-                  <FaArrowLeft />
-                </abbr>
-              </dfn>
+      <div>
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-6"
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
 
-              <span className="tracking-wider font-semibold text-[1rem]"></span>
-            </button>
-          </Link>
-        </div>
-           <div  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
+      <div
+        className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+      >
         <h1>Add-Order</h1>
       </div>
       <div className={`flex flex-col md:flex-row justify-between`}>
-       
-        {/*<div className="flex flex-col gap-3">*/}
-        {/*  <select*/}
-        {/*    name="chooseHotel"*/}
-        {/*    className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"*/}
-        {/*    value={formik.values.chooseHotel}*/}
-        {/*    onChange={formik.handleChange}*/}
-        {/*    onBlur={formik.handleBlur}*/}
-        {/*  >*/}
-        {/*    <option value="" selected disabled>*/}
-        {/*      Choose Hotel*/}
-        {/*    </option>*/}
-        {/*    {hotelList?.map((i) => (*/}
-        {/*      <option key={i._id} value={i._id}>*/}
-        {/*        {i.name}*/}
-        {/*      </option>*/}
-        {/*    ))}*/}
-        {/*  </select>*/}
-        {/*</div>*/}
-
         <div className={`flex flex-col md:flex-row gap-4 mb-4`}>
           <div className=" flex flex-col">
             <select
@@ -200,28 +197,7 @@ console.log(rooms)
             </span>
           </button>
           <button
-            onClick={() => {
-              if (formik.values.type && formik.values.type === "Table") {
-                dispatch(setTableId(formik.values.tableId));
-                window.fp_modal.showModal();
-
-                setError("");
-              } else if (formik.values.type && formik.values.type === "Room") {
-                dispatch(setRoomId(formik.values.roomId));
-                console.log(formik.values)
-                window.fp_modal.showModal();
-
-                setError("");
-              } else {
-                setError(" please Choose the type");
-              }
-              // formik.values.type && formik.values.type === "Table"
-              //   ? dispatch(setTableId(formik.values.tableId))
-              //   : formik.values.type && formik.values.type === "Room"
-              //     ? dispatch(setRoomId(formik.values.roomId))
-              //     : null;
-              // window.fp_modal.showModal();
-            }}
+            onClick={handleConfirmOrder}
             type={`button`}
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case ${
               !order.foods.length ? "opacity-50 pointer-events-none" : ""
@@ -237,18 +213,7 @@ console.log(rooms)
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
-              // onKeyUp={(e) => {
-              //   e.target.value === "" ? formik.handleSubmit() : null;
-              // }}
-              // onKeyDown={(e) => pressEnter(e)}
             />
-            {/*<button*/}
-            {/*  type="button"*/}
-            {/*  onClick={() => formik.handleSubmit()}*/}
-            {/*  className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"*/}
-            {/*>*/}
-            {/*  <FaSearch />*/}
-            {/*</button>*/}
           </div>
         </div>
       </div>
