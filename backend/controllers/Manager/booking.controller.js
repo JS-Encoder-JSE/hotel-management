@@ -522,7 +522,6 @@ export const getBookingsByHotel = async (req, res) => {
     const hotel_id =
       user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
-    const converted_array = arrayFilter.split(",");
     // Construct the filter object based on the query parameters
     const query = {
       hotel_id: hotel_id,
@@ -534,6 +533,7 @@ export const getBookingsByHotel = async (req, res) => {
     console.log(status);
 
     if (arrayFilter) {
+      const converted_array = arrayFilter.split(",");
       query.status = { $in: converted_array };
     }
     console.log(query);
