@@ -178,7 +178,7 @@ const FoodCheckout = () => {
                     </td>
                     <td> <span >
                       <input 
-                      className=" border p-2 -ml-20 text-center" 
+                      className=" border border-gray-500/80 p-2 -ml-20 text-center" 
                       placeholder="Service Charge"
                         type="number"
                         name="addSrvCrg" 
@@ -198,7 +198,7 @@ const FoodCheckout = () => {
                     </td>
                     <td> <span >
                       <input 
-                      className=" border p-2 -ml-20 text-center" 
+                      className="border border-gray-500/80 p-2 -ml-20 text-center" 
                       placeholder=" GST/Tax"
                         type="number"
                         name="addTax" 
@@ -234,7 +234,7 @@ const FoodCheckout = () => {
       <div className={`flex gap-4 justify-end mt-4`}>
         <div style={{display:"none"}} >
           <div className="p-4" ref={componentRef}>
-           <FoodCheckoutPrint orderData={orderData} />
+           <FoodCheckoutPrint orderData={orderData} finalTotal={finalTotal}/>
           </div>   
         </div>
       <ReactToPrint

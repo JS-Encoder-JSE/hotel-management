@@ -4,8 +4,9 @@ import logo from "../../assets/logo.png"
 import { versionControl } from "../../utils/utils";
 
 
-const FoodCheckoutPrint =({orderData})=>{
+const FoodCheckoutPrint =({orderData,finalTotal})=>{
 
+  console.log(finalTotal)
 
     const grandTotal = orderData?.data?.items?.reduce(
         (accumulator, item) => accumulator + item.total,
@@ -87,7 +88,7 @@ const formattedDate = `${year}-${month}-${day}`;
                     <td></td>
                     <td></td>
                     <td>Grand Total</td>
-                    <td>{grandTotal}</td>
+                    <td>{finalTotal}</td>
                     <td></td>
                   </tr>
                 </tbody>
