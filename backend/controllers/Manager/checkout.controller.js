@@ -57,7 +57,7 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     // Find food orders for the given room_id
     const foodOrders = await FoodOrder.find({
       room_id: { $in: room_ids },
-      status: { $ne: "CheckedOut" },
+      order_status: { $ne: "CheckedOut" },
       // You may add other conditions if needed
     });
     // Find gym bills for the given room_id
