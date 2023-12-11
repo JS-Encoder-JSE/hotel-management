@@ -7,10 +7,11 @@ import "swiper/css/free-mode";
 import "swiper/css/thumbs";
 import "react-datepicker/dist/react-datepicker.css";
 import "./css/index.css";
-
+import "react-time-picker/dist/TimePicker.css";
+import "react-clock/dist/Clock.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-  <App />,
+  <App />
   // </React.StrictMode>,
 );

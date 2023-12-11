@@ -12,6 +12,8 @@ import CheckOutPrint from "./CheckOutPrint.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal.jsx";
 import RefundPaymentModal from "./RefundPaymentModal.jsx";
+import { setCalculateCollectedAmount } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice.js";
+import { useNavigate } from "react-router-dom";
 
 const PaymentSection = ({
   pBill,
@@ -24,37 +26,61 @@ const PaymentSection = ({
   roomData,
   addCheckOutLoading,
   totalPayableAmount,
+  componentRef,
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
   const [checkoutBtn, setCheckoutBtn] = useState(true);
   const [remainAmount, setRemainAmount] = useState(5493.0);
-  const [collectedAmount, setCollectedAmount] = useState(0);
-  const [changeAmount, setChangeAmount] = useState(collectedAmount);
-  const { refundAmount, additionalCharge, serviceCharge, texAmount } =
-    useSelector((state) => state.checkoutInfoCalSlice);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {
+    refundAmount,
+    additionalCharge,
+    serviceCharge,
+    texAmount,
+    bookingInfo,
+    calculateUnpaidAmount,
+    calculateBalance,
+  } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
-    refundAmount - (additionalCharge + serviceCharge + texAmount);
+    data?.room_ids?.length === 1 ? data?.total_balance + colAmount - pBill : 0;
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    const calculatedLimit = Math.ceil(totalPayableAmount - data?.paid_amount);
-    if (data?.room_ids?.length === 1) {
-      if (name === "amount") {
-        if (Number(value) <= calculatedLimit) {
-          const list = [...paymentList];
-          list[index][name] = value;
-          setPaymentList(list);
-        }
-      } else {
+    if (name === "amount") {
+      if (
+        calculateBalance < 0 &&
+        Number(value) <= Math.ceil(pBill - bookingInfo?.total_balance)
+      ) {
         const list = [...paymentList];
         list[index][name] = value;
         setPaymentList(list);
+        dispatch(setCalculateCollectedAmount(value));
       }
     } else {
       const list = [...paymentList];
       list[index][name] = value;
       setPaymentList(list);
     }
+
+    // const calculatedLimit = Math.ceil(totalPayableAmount - data?.paid_amount);
+    // if (data?.room_ids?.length === 1) {
+    //   if (name === "amount") {
+    //     if (Number(value) <= calculatedLimit) {
+    //       const list = [...paymentList];
+    //       list[index][name] = value;
+    //       setPaymentList(list);
+    //     }
+    //   } else {
+    //     const list = [...paymentList];
+    //     list[index][name] = value;
+    //     setPaymentList(list);
+    //   }
+    // } else {
+    //   const list = [...paymentList];
+    //   list[index][name] = value;
+    //   setPaymentList(list);
+    // }
   };
 
   const handleRemove = (index) => {
@@ -79,7 +105,7 @@ const PaymentSection = ({
   }, [paymentList]);
 
   // for printing
-  const componentRef = useRef();
+
   return (
     <section>
       <div className="grid lg:grid-cols-2 gap-5">
@@ -103,22 +129,25 @@ const PaymentSection = ({
           <h3 className="p-5 text-xl mt-5">Balance Details</h3>
           <hr />
 
-          <div className="p-5 grid grid-cols-3 items-center text-sm font-semibold">
+          <div className="p-5 grid sm:grid-cols-2 grid-cols-1 items-center text-sm font-semibold">
             <div className="space-y-3">
-              <p>Remain Amount</p>
-              <p>Refund Amount</p>
-              <p>Collected Amount</p>
-            </div>
-            <div className="col-span-2 space-y-3">
-              <p>
-                {totalPayableAmount - data?.paid_amount < 0 ||
-                totalPayableAmount - data?.paid_amount - colAmount < 0
-                  ? 0
-                  : totalPayableAmount - data?.paid_amount - colAmount}
-              </p>
-              <p>{totalRefund < 0 ? 0 : totalRefund}</p>
+              <div className="grid grid-cols-2 gap-10">
+                <p>Remain Amount</p>
+                <p>
+                  {calculateBalance > 0
+                    ? 0
+                    : Math.ceil(pBill - bookingInfo?.total_balance)}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-10">
+                <p>Refund Amount</p>
+                <p>{totalRefund < 0 ? 0 : totalRefund}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-10">
+                <p>Collected Amount</p>
 
-              <p>{Math.ceil(colAmount)}</p>
+                <p>{Math.ceil(colAmount)}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -126,6 +155,9 @@ const PaymentSection = ({
 
       <div className="flex justify-end gap-2 mt-5">
         <ReactToPrint
+          onAfterPrint={() => {
+            navigate("/dashboard/report");
+          }}
           trigger={() => (
             <button
               title="please select payment method"
@@ -157,15 +189,10 @@ const PaymentSection = ({
           ${
             addCheckOutLoading
               ? "btn-disabled"
-              : data?.room_ids?.length === 1
-              ? totalRefund > 0
-                ? ""
-                : colAmount === totalPayableAmount - data?.paid_amount
-                ? ""
-                : "btn-disabled"
-              : colAmount > 0 || totalRefund > 0
-              ? ""
-              : "btn-disabled"
+              : calculateBalance < 0 &&
+                colAmount !== Math.ceil(pBill - bookingInfo?.total_balance)
+              ? "btn-disabled"
+              : ""
           }
           `}
         >
@@ -181,9 +208,7 @@ const PaymentSection = ({
             ></span>
           ) : null}
         </button>
-       
       </div>
-      
     </section>
   );
 };

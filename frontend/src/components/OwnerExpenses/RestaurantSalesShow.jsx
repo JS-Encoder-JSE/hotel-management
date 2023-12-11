@@ -380,7 +380,8 @@ useEffect(() => {
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
           <div className="overflow-x-auto">
-            <table className="table">
+           {restaurantSalesHistory &&
+                  restaurantSalesHistory?.data?.docs?.length ? <table className="table">
               <thead>
                 <tr>
                   <th>SL</th>
@@ -432,9 +433,9 @@ useEffect(() => {
                     );
                   })}
               </tbody>
-            </table>
+            </table> : <p className="text-center my-16">No sales yet!</p>}
           </div>
-          <div className="flex justify-center mt-10">
+          {restaurantSalesHistory?.data?.docs?.length && <div className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"
               pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -453,7 +454,7 @@ useEffect(() => {
               renderOnZeroPageCount={null}
               forcePage={currentPage}
             />
-          </div>
+          </div>}
         </div>
       </div>
     </div>

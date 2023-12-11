@@ -67,7 +67,7 @@ const GymBills = ({GymBill}) => {
 
 
   return (
-    <div className={`pr-2 space-y-5 mt-20`}>
+    <div className={`space-y-5 mt-20`}>
     <div  >
     <div className={`bg-white md:h-full py-2 rounded`}>     
         <div>

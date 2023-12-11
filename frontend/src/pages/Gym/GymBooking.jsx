@@ -109,9 +109,11 @@ const GymBooking = () => {
     search: "",
     limit: 1000000,
   });
-  const transformedRooms = rooms?.data?.docs?.map((room) => ({
+  const transformedRooms = rooms?.data?.docs
+  ?.filter((room) => room.status === "CheckedIn") 
+  .map((room) => ({
     value: room._id,
-    label: `${room.roomNumber} - ${room.category}`,
+    label: room.roomNumber,
   }));
 
   // Price Validation
@@ -145,7 +147,7 @@ const GymBooking = () => {
               <Link to={`/dashboard `}>
                 <button
                   type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
                 >
                     <dfn>
                       <abbr title="Back"><FaArrowLeft /></abbr>

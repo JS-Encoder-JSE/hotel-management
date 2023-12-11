@@ -24,6 +24,7 @@ import {
   getNumberOfDays,
   toDateIsoConverter,
 } from "../../utils/utils.js";
+import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -80,7 +81,7 @@ const CheckIn = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const [isLoading, setLoading] = useState(false);
-  const [upload] = useUploadMutation();
+  const [upload, { isError }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [addBooking] = useAddBookingMutation();
 
@@ -124,8 +125,8 @@ const CheckIn = () => {
       setLoading(true);
       const obj = {
         ...values,
-        from: fromDateIsoConverter(values.from),
-        to: toDateIsoConverter(values.to),
+        from: convertedFromDate(values.from),
+        to: convertedToDate(values.to),
       };
 
       if (!obj.discount) obj.discount = 0;
@@ -167,69 +168,41 @@ const CheckIn = () => {
       await upload(formData).then(
         (result) => (tempImg = result.data.imageUrls)
       );
+      if (!isError) {
+        const response = await addBooking({
+          hotel_id: obj.hotel_id,
+          room_ids,
+          guestName: obj.guestName,
+          address: obj.address,
+          mobileNumber: obj.mobileNumber,
+          emergency_contact: obj.emergency_contact,
+          adult: obj.adult,
+          children: obj.children,
+          paymentMethod: obj.paymentMethod,
+          transection_id: obj.trxID,
+          from: obj.from,
+          to: obj.to,
+          no_of_days,
+          room_discount: obj.discount,
+          paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
+          nationality: obj.nationality,
+          doc_number: obj.doc_number,
+          doc_images: {
+            [title]: tempImg,
+          },
+          remark: "advancePaymentForCheckIn",
+          status: "CheckedIn",
+        });
 
-      //   hotel_id: obj.hotel_id,
-      //   room_ids,
-      //   guestName: obj.guestName,
-      //   address: obj.address,
-      //   mobileNumber: obj.mobileNumber,
-      //   emergency_contact: obj.emergency_contact,
-      //   adult: obj.adult,
-      //   children: obj.children,
-      //   paymentMethod: obj.paymentMethod,
-      //   transection_id: obj.trxID,
-      //   from: obj.from,
-      //   to: obj.to,
-      //   no_of_days,
-      //   // rent_per_day,
-      //   // total_rent,
-      //   discount,
-      //   // amount_after_dis,
-      //   paid_amount: typeof(obj.amount)==='number' ? obj.amount : 0,
-      //   // total_unpaid_amount: amount_after_dis - obj.amount,
-      //   nationality: obj.nationality,
-      //   doc_number: obj.doc_number,
-      //   doc_images: {
-      //     [title]: tempImg,
-      //   },
-      //   remark:"advancePaymentForCheckIn",
-      //   status: "CheckedIn",
-      // });
-      const response = await addBooking({
-        hotel_id: obj.hotel_id,
-        room_ids,
-        guestName: obj.guestName,
-        address: obj.address,
-        mobileNumber: obj.mobileNumber,
-        emergency_contact: obj.emergency_contact,
-        adult: obj.adult,
-        children: obj.children,
-        paymentMethod: obj.paymentMethod,
-        transection_id: obj.trxID,
-        from: obj.from,
-        to: obj.to,
-        no_of_days,
-        // rent_per_day,
-        // total_rent,
-        room_discount: obj.discount,
-        // amount_after_dis,
-        paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
-        // total_unpaid_amount: amount_after_dis - obj.amount,
-        nationality: obj.nationality,
-        doc_number: obj.doc_number,
-        doc_images: {
-          [title]: tempImg,
-        },
-        remark: "advancePaymentForCheckIn",
-        status: "CheckedIn",
-      });
-
-      if (response?.error) {
-        toast.error(response.error.data.message);
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          formikHelpers.resetForm();
+          setSelectedImages([]);
+          toast.success(response.data.message);
+        }
       } else {
-        formikHelpers.resetForm();
-        setSelectedImages([]);
-        toast.success(response.data.message);
+        toast.error("Image is not uploaded");
       }
 
       setLoading(false);
@@ -321,7 +294,11 @@ const CheckIn = () => {
 
   return (
     <div className={` bg-white rounded-2xl mx-auto p-8 sm:max-w-[90%]`}>
-      <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
+      <h3
+        className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+      >
+        Check In
+      </h3>
       <hr />
       <form
         autoComplete="off"

@@ -110,7 +110,7 @@ const CurOrderList = () => {
           <Link to={`/dashboard `}>
             <button
               type="button"
-              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
             >
               <dfn>
                 <abbr title="Back">
@@ -123,7 +123,7 @@ const CurOrderList = () => {
           </Link>
         </div>
 
-        <h3 className={`text-2xl font-semibold text-center`}>
+        <h3 className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
           Current Order List
         </h3>
         <div className={`flex justify-end mt-5 gap-3`}>

@@ -61,7 +61,9 @@ const ConfirmOrder = () => {
     limit: 1000000,
   });
 
-  const transformedRooms = rooms?.data?.docs?.map((room) => ({
+  const transformedRooms = rooms?.data?.docs
+  ?.filter((room) => room.status === "CheckedIn") 
+  .map((room) => ({
     value: room._id,
     label: room.roomNumber,
   }));

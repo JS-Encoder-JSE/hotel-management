@@ -128,19 +128,19 @@ const EditSalesHotel = () => {
                           NoD
                         </td>
                         <td className="p-2 border border-black/20 align-bottom font-medium">
-                          ($) Rent/Day
+                          (Rs.) Rent/Day
                         </td>
                         <td className="p-2 border border-black/20 align-bottom font-medium">
-                          ($) Total Rent
+                          (Rs.) Total Rent
                         </td>
                         <td className="p-2 border border-black/20 align-bottom font-medium">
-                          ($) Discount
+                          (Rs.) Discount
                         </td>
                         <td className="p-2 border border-black/20 align-bottom font-medium">
-                          ($) Paid Amount
+                          (Rs.) Paid Amount
                         </td>
                         <td className="p-2 border border-black/20 align-bottom font-medium">
-                          ($) Unpaid Amount
+                          (Rs.) Unpaid Amount
                         </td>
                       </tr>
                     </tbody>

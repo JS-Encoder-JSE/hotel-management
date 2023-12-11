@@ -30,7 +30,17 @@ const CheckOutPrint = ({
   hotelInfo,
   isHotelSuccess,
   roomData,
-}) => { 
+}) => {
+  const {
+    calculateBalance,
+    calculateCollectedAmount,
+    calculatePayableAmount,
+    additionalCharge,
+    serviceCharge,
+    texAmount,
+  } = useSelector((state) => state.checkoutInfoCalSlice);
+  const totalPayableAmount =
+    calculatePayableAmount + additionalCharge + serviceCharge + texAmount;
   return (
     <div>
       <div>
@@ -42,12 +52,36 @@ const CheckOutPrint = ({
         </div>
       </div>
       {isHotelSuccess && (
-        <div className="px-4 mt-10 flex justify-between mx-10">
+        <div className="px-4 mt-10 flex gap-5 mx-10 w-full">
           <AuthoInfoPrint
             hotelInfo={hotelInfo}
             isHotelSuccess={isHotelSuccess}
           />
+
           <CustomerInfoPrint data={data} />
+          <div className="w-[50%]">
+            <h2 className="font-bold">Balance Summary</h2>
+            <div className="grid grid-cols-2 ">
+              <p>Total Payable Amount:</p>
+              <p>{totalPayableAmount}</p>
+            </div>
+            <div className="grid grid-cols-2 ">
+              <p>Total Unpaid Amount:</p>
+              <p>
+                {totalPayableAmount - data?.paid_amount < 0
+                  ? 0
+                  : totalPayableAmount - data?.paid_amount}
+              </p>
+            </div>
+            <div className="grid grid-cols-2 ">
+              <p>Total Balance:</p>
+              <p>{data?.total_balance}</p>
+            </div>
+            <div className="grid grid-cols-2 ">
+              <p>Current Balance:</p>
+              <p>{calculateBalance + +calculateCollectedAmount}</p>
+            </div>
+          </div>
         </div>
       )}
       {roomData?.length
@@ -55,7 +89,7 @@ const CheckOutPrint = ({
             <RoomDetailsSection bookingInfo={data} roomData={roomInfo} />
           ))
         : null}
-        
+
       {/* payment method */}
       <div className="w-[800px] mx-auto flex justify-between items-center px-4">
         {paymentList?.map(

@@ -258,7 +258,7 @@ console.log(restaurantSalesHistory,"History")
               </table>
             ) : (
               <p className="flex justify-center items-center my-48">
-                No Expenses Today
+                No Sales Today
               </p>
             )}
           </div>
@@ -293,7 +293,7 @@ console.log(restaurantSalesHistory,"History")
               Restaurant sales
             </h3>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mr-5">
             {PDF?.length ? (
               <PDFDownloadLink
                 document={

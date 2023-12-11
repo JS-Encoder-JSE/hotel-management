@@ -28,7 +28,7 @@ const AdminNewLicense = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [images, setImages] = useState({});
   const [addLicense] = useAddLicenseMutation();
-  const [upload] = useUploadMutation();
+  const [upload, { isError }] = useUploadMutation();
   const { user } = useSelector((store) => store.authSlice);
   const [showPass, setShowPass] = useState(false);
   const [docTypeCount, setDocTypeCount] = useState(1);
@@ -126,31 +126,35 @@ const AdminNewLicense = () => {
         (result) => (tempImages.pancard = result.data.imageUrls)
       );
 
-      const response = await addLicense({
-        name,
-        username,
-        password,
-        address,
-        email,
-        phone_no,
-        emergency_contact,
-        bill_info,
-        bill_from,
-        bill_to,
-        maxHotels,
-        payment_method,
-        tran_id,
-        amount,
-        remark,
-        images: tempImages,
-      });
+      if (!isError) {
+        const response = await addLicense({
+          name,
+          username,
+          password,
+          address,
+          email,
+          phone_no,
+          emergency_contact,
+          bill_info,
+          bill_from,
+          bill_to,
+          maxHotels,
+          payment_method,
+          tran_id,
+          amount,
+          remark,
+          images: tempImages,
+        });
 
-      if (response?.error) {
-        toast.error(response.error.data.message);
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          toast.success(response.data.message);
+          formikHelpers.resetForm();
+          setSelectedImages([]);
+        }
       } else {
-        toast.success(response.data.message);
-        formikHelpers.resetForm();
-        setSelectedImages([]);
+        toast.error("Image is not uploaded");
       }
 
       setLoading(false);
@@ -216,7 +220,7 @@ const AdminNewLicense = () => {
         <Link to={`/dashboard `}>
           <button
             type="button"
-            class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
           >
             <dfn>
               <abbr title="Back">
@@ -277,6 +281,7 @@ const AdminNewLicense = () => {
                               />
                             </label>
                             <button
+                              type="button"
                               className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
                               onClick={() => handleDelete(idx)}
                             >
@@ -481,7 +486,7 @@ const AdminNewLicense = () => {
         {/*Number Of Hotels box */}
         <div className="flex flex-col gap-3">
           <input
-          onWheel={ event => event.currentTarget.blur() }
+            onWheel={(event) => event.currentTarget.blur()}
             type="number"
             placeholder="Hotel Limit"
             name="numberOfHotel"
@@ -544,7 +549,7 @@ const AdminNewLicense = () => {
         {/* Amount box */}
         <div className="flex flex-col gap-3">
           <input
-          onWheel={ event => event.currentTarget.blur() }
+            onWheel={(event) => event.currentTarget.blur()}
             type="number"
             placeholder="Amount"
             name="amount"

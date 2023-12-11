@@ -21,7 +21,7 @@ if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined)
     <div>
       <div
         // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-20`}
-        className="grid md:grid-cols-4 gap-4 mt-4"
+        className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"
       >
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-2 rounded-md text-white">

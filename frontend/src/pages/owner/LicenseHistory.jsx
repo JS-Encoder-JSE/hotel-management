@@ -67,7 +67,7 @@ const LicenseHistory = () => {
           <Link to={`/dashboard `}>
             <button
               type="button"
-              class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
             >
               <dfn>
                 <abbr title="Back">
@@ -80,7 +80,7 @@ const LicenseHistory = () => {
           </Link>
         </div>
         <h1 className="text-2xl text-center ">License History</h1>
-        <div className="flex justify-between">
+        <div className={`flex justify-between flex-wrap gap-1.5 flex-col md:flex-row `}>
           <div className={`flex flex-col md:flex-row gap-4`}>
             <DatePicker
               dateFormat="dd/MM/yyyy"

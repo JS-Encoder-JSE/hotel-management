@@ -104,13 +104,13 @@ const roomAPI = baseAPI.injectEndpoints({
     }),
     getExpenses: build.query({
       query: ({ cp, fromDate, toDate, hotel_id, spendedfor, limit, filter }) =>
-        `expenses/get-expenses?${cp ? `page=${++cp}` : ""}${
-          limit ? `&limit=${limit}` : ""
-        } ${filter ? `&filter=${filter}` : ""}${
-          fromDate ? `&fromDate=${fromDate}` : ""
-        }${toDate ? `&toDate=${toDate}` : ""}${
-          hotel_id ? `&hotel_id=${hotel_id}` : ""
-        }${spendedfor ? `&spendedfor=${spendedfor}` : ""}`,
+    `expenses/get-expenses?${cp !== undefined ? `page=${cp + 1}` : ""}${
+      limit ? `&limit=${limit}` : ""
+    }${filter ? `&filter=${filter}` : ""}${
+      fromDate ? `&fromDate=${fromDate}` : ""
+    }${toDate ? `&toDate=${toDate}` : ""}${
+      hotel_id ? `&hotel_id=${hotel_id}` : ""
+    }${spendedfor ? `&spendedfor=${spendedfor}` : ""}`,
       providesTags: ["GetExpenses"],
     }),
 
@@ -151,12 +151,16 @@ const roomAPI = baseAPI.injectEndpoints({
       providesTags: ["room"],
     }),
     getBookingsByHotel: build.query({
-      query: ({ hotel_id, page, limit, filter, search }) => {
-        return `bookings/get-bookings-by-hotel?search=${search || ""}&page=${
-          page + 1
-        }${filter ? `&filter=${filter}` : ""}`;
+      query: ({ hotel_id, page, limit, filter, search,fromDate,toDate }) => {
+        return `bookings/get-bookings-by-hotel?search=${search || ""}&page=${page + 1}${filter ? `&filter=${filter}` : ""}${fromDate? `&fromDate=${fromDate}`:""}${toDate? `&toDate=${toDate}`:""}`;
       },
       providesTags: ["booking", "room"],
+    }),
+    getTodayCheckout:build.query({
+      query:()=>{
+        return `bookings/get-bookings-by-hotel?&page=1&filter=CheckedOut&fromDate=2023-12-08T05:30:00.000Z&toDate=2023-12-09T05:29:59.999Z`
+      },
+      providesTags:["CheckedOut"]
     }),
     getBookingById: build.query({
       query: (id) => {
@@ -198,7 +202,7 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["booking"],
+      invalidatesTags: ["booking","room"],
     }),
 
     updateBookingTOCheckIn: build.mutation({
@@ -303,5 +307,6 @@ export const {
   useUpdateBookingInfoMutation,
   useUpdateBookingTOCheckInMutation,
   useMakePaymentMutation,
-  useCashbackMutation
+  useCashbackMutation,
+  useGetTodayCheckoutQuery,
 } = roomAPI;

@@ -153,7 +153,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span
-                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
+                      className={`btn btn-sm bg-green-slimy text-[1.1rem] hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                       title={`View`}
                       onClick={() => navigate(`${item._id}`)}
                     >

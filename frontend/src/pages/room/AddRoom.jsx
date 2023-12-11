@@ -58,7 +58,7 @@ const AddRoom = () => {
   const { data: hotelsList, isLoading: loading } = useGetRoomsAndHotelsQuery();
 
   const [addRoom] = useAddRoomMutation();
-  const [upload] = useUploadMutation();
+  const [upload, { isError, error }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
 
   const formik = useFormik({
@@ -98,18 +98,21 @@ const AddRoom = () => {
       await upload(formData).then(
         (result) => (obj.images = result.data.imageUrls)
       );
+      if (!isError) {
+        const response = await addRoom(obj);
 
-      const response = await addRoom(obj);
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          toast.success(response.data.message);
+          formikHelpers.resetForm();
+          setSelectedImages([]);
+        }
 
-      if (response?.error) {
-        toast.error(response.error.data.message);
+        setLoading(false);
       } else {
-        toast.success(response.data.message);
-        formikHelpers.resetForm();
-        setSelectedImages([]);
+        toast.error("Image is not uploaded");
       }
-
-      setLoading(false);
     },
   });
 
@@ -161,12 +164,14 @@ const AddRoom = () => {
               <Link to={`/dashboard `}>
                 <button
                   type="button"
-                  class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
                 >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
+                  <dfn>
+                    <abbr title="Back">
+                      <FaArrowLeft />
+                    </abbr>
+                  </dfn>
+
                   <span className="tracking-wider font-semibold text-[1rem]"></span>
                 </button>
               </Link>

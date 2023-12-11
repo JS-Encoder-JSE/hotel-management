@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowLeft, FaEye, FaRegEdit, FaSearch, FaTrash } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaRegEdit,
+  FaSearch,
+  FaTrash,
+} from "react-icons/fa";
 import { AiFillSetting, AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
 import { useOwnerListQuery } from "../../redux/admin/ownerlist/ownerListAPI.js";
-import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
+import {
+  useGetUsersByAdminQuery,
+  useGetUsersQuery,
+} from "../../redux/admin/subadmin/subadminAPI.js";
 import store from "../../redux/store.js";
 import { Rings } from "react-loader-spinner";
 import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
@@ -34,14 +43,13 @@ const SubAdminList = () => {
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const parentId = store.getState().authSlice.user._id;
-  const { isLoading, data: subadmins } = useGetUsersQuery({
+  const { isLoading, data: subadmins } = useGetUsersByAdminQuery({
     cp: currentPage,
     filter: formik.values.filter,
     search: keyword,
     role: "subadmin",
     parentId,
   });
-
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
@@ -89,33 +97,30 @@ const SubAdminList = () => {
   }, [modalOpen]);
   return (
     <div className={` space-y-5`}>
-       
       <div className={`bg-white p-4 rounded`}>
-      <div>
-            <Link to={`/dashboard `}>
-              <button
-                type="button"
-                class="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-              >
-                <dfn>
-                  <abbr title="Back">
-                    <FaArrowLeft />
-                  </abbr>
-                </dfn>
+        <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+          Sub Admin List
+        </h1>
+        <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 mb-3 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
 
-                <span className="tracking-wider font-semibold text-[1rem]"></span>
-              </button>
-            </Link>
-          </div>
-      <div>
-        <h3 className={`text-xl font-semibold text-center mb-5`}>
-            Sub Admin List
-          </h3>
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
         </div>
+        <div></div>
         <div
           className={`flex flex-col sm:flex-row justify-between items-center gap-5`}
         >
-      
           <div className={`flex felx-wrap gap-3`}>
             <div>
               <select

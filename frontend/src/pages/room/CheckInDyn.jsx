@@ -43,7 +43,7 @@ const CheckInDyn = ({ data }) => {
   const { id } = useParams();
   console.log({ id });
   const closeRef = useRef(null);
-  const [upload] = useUploadMutation();
+  const [upload, { isError }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [updateBookingTOCheckIn, { isLoading }] =
     useUpdateBookingTOCheckInMutation();
@@ -102,28 +102,34 @@ const CheckInDyn = ({ data }) => {
       await upload(formData).then(
         (result) => (tempImg = result.data.imageUrls)
       );
-      const paidAmount =
-        typeof obj.amount === "number" ? Math.ceil(obj.amount) : 0;
+      if (!isError) {
+        const paidAmount =
+          typeof obj.amount === "number" ? Math.ceil(obj.amount) : 0;
 
-      const response = await updateBookingTOCheckIn({
-        paid_amount: paidAmount,
-        doc_number: obj.doc_number,
-        doc_images: {
-          [title]: tempImg,
-        },
-        status: "CheckedIn",
-        paymentMethod: obj.paymentMethod,
-        transection_id: obj.transection_id,
-        total_unpaid_amount: Math.ceil(data?.total_unpaid_amount - paidAmount),
-        remark: "advancePaymentForCheckIn",
-        booking_ids: [id],
-      });
+        const response = await updateBookingTOCheckIn({
+          paid_amount: paidAmount,
+          doc_number: obj.doc_number,
+          doc_images: {
+            [title]: tempImg,
+          },
+          status: "CheckedIn",
+          paymentMethod: obj.paymentMethod,
+          transection_id: obj.transection_id,
+          total_unpaid_amount: Math.ceil(
+            data?.total_unpaid_amount - paidAmount
+          ),
+          remark: "advancePaymentForCheckIn",
+          booking_ids: [id],
+        });
 
-      if (response?.error) {
-        toast.error(response.error.data.message);
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          closeRef.current.click();
+          toast.success(response.data.message);
+        }
       } else {
-        closeRef.current.click();
-        toast.success(response.data.message);
+        toast.error("Image is not uploaded");
       }
     },
   });

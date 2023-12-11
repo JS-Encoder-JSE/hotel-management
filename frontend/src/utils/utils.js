@@ -42,6 +42,25 @@ export const fromDateIsoConverter = (date) => {
   const isoFromDate = fromDate.toISOString();
   return isoFromDate;
 };
+
+export const checkinListFromDate = (date)=>{
+  const fromDate = new Date(date)
+  fromDate.setHours(11,30,0,0)
+  const isoFromDate =fromDate.toISOString();
+  return isoFromDate
+}
+
+
+export const checkinListoDate = (date) => {
+  const toDate = new Date(date);
+  toDate.setDate(new Date(date).getDate() + 1);
+  toDate.setHours(11, 29, 59, 59);
+
+  const isoToDate = toDate.toISOString();
+  return isoToDate;
+};
+
+
 export const toDateIsoConverter = (date) => {
   const toDate = new Date(date);
   toDate.setUTCHours(23, 59, 59, 999);

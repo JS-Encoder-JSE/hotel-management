@@ -18,7 +18,8 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentCheckout = ({ totalRefund, data }) => {
+const RefundPaymentCheckout = ({ totalRefund, data, handlePrintOpen,closeRef }) => {
+  // console.log({ totalRefundFromRefund: totalRefund });
   const [cashback] = useCashbackMutation();
   const { user } = useSelector((state) => state.authSlice);
   const formik = useFormik({
@@ -29,7 +30,7 @@ const RefundPaymentCheckout = ({ totalRefund, data }) => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      console.log(values);
+      // console.log(values);
       const response = cashback({
         manager_id: user?._id,
         bookingInfoId: data?._id,
@@ -42,7 +43,8 @@ const RefundPaymentCheckout = ({ totalRefund, data }) => {
         toast.error(response.error.data.message);
       } else {
         toast.success("Refund Successful");
-        
+        closeRef.current.click();
+        handlePrintOpen();
         // navigate("/dashboard/checkout");
       }
     },
@@ -121,7 +123,7 @@ const RefundPaymentCheckout = ({ totalRefund, data }) => {
               placeholder="Amount"
               name="amount"
               className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-              value={formik.values.amount}
+              value={totalRefund}
               onChange={handleAmount}
               onBlur={formik.handleBlur}
               disabled
