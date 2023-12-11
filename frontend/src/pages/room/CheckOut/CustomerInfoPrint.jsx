@@ -2,7 +2,7 @@ import React from "react";
 
 const CustomerInfoPrint = ({ data }) => {
   return (
-    <div className="py-2">
+    <div className="py-2 ">
       <h2 className="font-bold">Invoice To</h2>
       <div className="flex gap-4 items-center">
         <div className="grid grid-cols-2">
