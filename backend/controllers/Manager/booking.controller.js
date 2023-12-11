@@ -516,6 +516,84 @@ export const getBookingsByHotel = async (req, res) => {
       search,
       filter,
     } = req.query;
+    const { status } = req.body;
+    const userId = req.user.userId;
+    const user = await User.findById(userId);
+    const hotel_id =
+      user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
+
+    // Construct the filter object based on the query parameters
+    const query = {
+      hotel_id: hotel_id,
+    };
+
+    if (["Active", "CheckedIn", "CheckedOut", "Canceled"].includes(filter)) {
+      query.status = filter;
+    }
+    console.log(status);
+
+    if (status) {
+      query.status = { $in: status };
+    }
+    console.log(query);
+    if (fromDate && toDate) {
+      // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
+      query.updatedAt = { $gte: fromDate, $lte: toDate };
+    }
+
+    if (search) {
+      query.$or = [
+        { guestName: { $regex: search, $options: "i" } },
+        { mobileNumber: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    // Execute the query without paginate and then use populate
+    const result = await Booking.find(query)
+      .limit(options.limit)
+      .skip((options.page - 1) * options.limit)
+      .populate("room_id", "roomNumber floorNumber");
+
+    const totalDocuments = await Booking.countDocuments(query);
+
+    const bookings = {
+      docs: result,
+      totalDocs: totalDocuments,
+      page: options.page,
+      limit: options.limit,
+      totalPages: Math.ceil(totalDocuments / options.limit),
+    };
+
+    res.status(200).json({
+      success: true,
+      data: bookings,
+      message: "Bookings retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const getTodayTotalBookingDatas = async (req, res) => {
+  try {
+    const {
+      limit = 10,
+      page = 1,
+      fromDate,
+      toDate,
+      search,
+      filter = ["CheckedIn", "CheckedOut"],
+    } = req.query;
     const userId = req.user.userId;
     const user = await User.findById(userId);
     const hotel_id =
