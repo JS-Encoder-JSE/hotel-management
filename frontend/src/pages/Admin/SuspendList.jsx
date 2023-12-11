@@ -78,7 +78,7 @@ const SuspendList = () => {
             </button>
           </Link>
         </div>
-      <div className={`flex justify-between flex-col sm:flex-row gap-5`}>
+      <div className={`flex justify-end flex-col sm:flex-row gap-5`}>
 
         <div className={`relative sm:min-w-[20rem]`}>
           <input

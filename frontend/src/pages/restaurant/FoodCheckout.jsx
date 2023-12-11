@@ -10,7 +10,7 @@ import { Rings } from "react-loader-spinner";
 import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem.jsx";
 import toast from "react-hot-toast";
 import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx"
-import ReactToPrint from "react-to-print";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { current } from "@reduxjs/toolkit";
 import CheckOut from './../room/CheckOut/CheckOut';
 const FoodCheckout = () => {
@@ -21,6 +21,11 @@ const FoodCheckout = () => {
   const [input, setInput] = useState(1);
   const navigate = useNavigate();
   const [updateOrder,isCheckLoader] = useUpdateOrderMutation();
+
+  const [taxPercentage, setTaxPercentage] = useState(0);
+  const [serviceTax,setServiceCharge]=useState(0);
+
+
   const location = useLocation();
   const path = location.pathname;
 
@@ -28,6 +33,21 @@ const FoodCheckout = () => {
     (accumulator, item) => accumulator + item.total,
     0
   );
+
+  const taxAmount = (grandTotal * taxPercentage) / 100;
+  const serviceChargeTax =(grandTotal*serviceTax)/100
+
+  const finalTotal = grandTotal + taxAmount + serviceChargeTax;
+
+
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onAfterPrint: () => {
+      navigate("/dashboard/add-order");
+    },
+  });
+
   const handleDeleteItems = (index) => {
     setOrderData((prev) => {
       const updatedItems = [...prev?.data?.items];
@@ -42,25 +62,24 @@ const FoodCheckout = () => {
     });
   };
 
-
-
-
   const handleCheckout = async () => {
     setCheckoutLoading(true);
     const checkoutForTable = {
-      paid_amount: grandTotal,
+      paid_amount: finalTotal,
       items: orderData.data.items,
       order_status: "CheckedOut",
       current_order: false,
-      total_price: grandTotal,
+      total_price: finalTotal,
       unpaid_amount:0,
+      payment_status:"Paid"
     };
     const updateForRoom = {
       paid_amount: 0,
-      unpaid_amount: grandTotal,
-      total_price: grandTotal,
+      unpaid_amount: finalTotal,
+      total_price: finalTotal,
       items: orderData.data.items,
       current_order: false,
+      payment_status:"Paid"
     };
     setCheckoutLoading(true)
     const response = await updateOrder({
@@ -78,6 +97,7 @@ const FoodCheckout = () => {
     } else {
       toast.success("Checkout successful");
       setCheckoutLoading(false);
+      handlePrint()
     }
   };
   useEffect(() => {
@@ -147,15 +167,55 @@ const FoodCheckout = () => {
                       key={i}
                     />
                   ))}
+                </tbody>
+                <tfoot>
+                <tr>
+                  <td></td>
+                    <td></td>
+                    <td></td>   
+                    <td>
+                      Service Charge 
+                    </td>
+                    <td> <span >
+                      <input 
+                      className=" border p-2 -ml-20 text-center" 
+                      placeholder="Service Charge"
+                        type="number"
+                        name="addSrvCrg" 
+                        id=""
+                        onChange={(e) => setServiceCharge(Number(e.target.value))}
 
+                    /></span></td>
+                    <td></td>
+                  </tr>
+                  
                   <tr>
                     <td></td>
                     <td></td>
-                    <td>Grand Total</td>
-                    <td>{grandTotal}</td>
+                    <td></td>   
+                    <td>
+                      GST/Tax
+                    </td>
+                    <td> <span >
+                      <input 
+                      className=" border p-2 -ml-20 text-center" 
+                      placeholder=" GST/Tax"
+                        type="number"
+                        name="addTax" 
+                        id=""
+                        onChange={(e) => setTaxPercentage(Number(e.target.value))}
+                    /></span></td>
                     <td></td>
                   </tr>
-                </tbody>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>   
+                    <td>Grand Total</td>
+                    <td>{finalTotal}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           ) : (
@@ -171,30 +231,6 @@ const FoodCheckout = () => {
         />
       )}
 
-      {/* <tfoot className={`text-sm `}>
-                  <tr>
-                    <td colSpan={5}>
-                      <div className="mt-3 ">
-                        <div className="">
-                          <p className="flex justify-between text-1xl">
-                            Total Price :
-                             <span>{orderCalc.total}
-                            </span>
-                          </p>
-                          <p className="flex justify-between text-1xl">
-                            Tax : 
-                            <span>{orderCalc.tax}</span>
-                          </p>
-                          <p className="flex justify-between text-1xl">
-                            Grand Total: 
-                            <span>{orderCalc.grandTotal}</span>
-                          </p>
-                        </div>
-                       
-                      </div>
-                    </td>
-                  </tr>
-                </tfoot> */}
       <div className={`flex gap-4 justify-end mt-4`}>
         <div style={{display:"none"}} >
           <div className="p-4" ref={componentRef}>
