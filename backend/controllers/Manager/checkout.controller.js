@@ -59,7 +59,7 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       room_id: { $in: room_ids },
       order_status: { $ne: "CheckedOut" },
       // You may add other conditions if needed
-    });    
+    });
     console.log("foodOrders:", foodOrders);
     // Find gym bills for the given room_id
     const gymBills = await GymBills.find({
@@ -211,13 +211,15 @@ export const checkedOut = async (req, res) => {
       // Save the transaction log entry to the database
       await newTransactionLog.save();
     }
-    // Define roomStatus (replace 'YOUR_ROOM_STATUS' with the actual status)
-    const roomStatus = "Available";
 
     // Update room statuses
-    await Room.updateOne({ _id: room_id }, { $set: { status: roomStatus } });
+    await Room.updateOne({ _id: room_id }, { $set: { status: "Available" } });
     await FoodOrder.updateMany(
-      { room_id: room_id },
+      {
+        _id: { $in: booking.food_order_ids },
+        room_id: room_id,
+        order_status: "Current",
+      },
       { $set: { order_status: "CheckedOut", payment_status: "Paid" } }
     );
     await GymBills.updateMany(

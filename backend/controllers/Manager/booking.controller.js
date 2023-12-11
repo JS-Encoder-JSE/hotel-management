@@ -531,7 +531,6 @@ export const getBookingsByHotel = async (req, res) => {
     if (["Active", "CheckedIn", "CheckedOut", "Canceled"].includes(filter)) {
       query.status = filter;
     }
-    console.log(status);
 
     if (arrayFilter) {
       query.status = { $in: converted_array };

@@ -1,6 +1,7 @@
 ﻿import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import Room from "./room.model.js";
+import { FoodOrder } from "./food.model.js";
 const ImageSchema = new mongoose.Schema({
   driving_lic_img: { type: Array, required: false, default: "" },
   passport: { type: Array, required: false, default: "" },
@@ -147,6 +148,13 @@ const bookingSchema = new mongoose.Schema(
       required: false,
       ref: "BookingInfo",
     },
+    food_order_ids: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: "FoodOrder",
+      },
+    ],
     guestName: {
       type: String,
       required: true,
