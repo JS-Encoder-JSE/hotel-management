@@ -196,7 +196,7 @@ const ManageCheckinModal = () => {
           remark: "advancePaymentForCheckIn",
           status: "CheckedIn",
         });
-  
+
         if (response?.error) {
           toast.error(response.error.data.message);
         } else {
@@ -205,11 +205,10 @@ const ManageCheckinModal = () => {
           setSelectedImages([]);
           toast.success("Successfully check in");
         }
-  
-      }else{
-        toast.error('Image is not uploaded')
+      } else {
+        toast.error("Image is not uploaded");
       }
-      
+
       setLoading(false);
       formReset();
     },
@@ -738,6 +737,7 @@ const ManageCheckinModal = () => {
           {/* button */}
           <div className={`flex justify-between sm:col-span-2`}>
             <button
+              disabled={isLoading}
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >

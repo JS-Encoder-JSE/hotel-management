@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.png";
 import COItem from "./COItem.jsx";
 import {
   resetFoodOrder,
@@ -28,13 +28,13 @@ const validationSchema = yup.object({
   chooseHotel: yup.string().required("Hotel is required"),
 });
 
-const ConfirmOrder = ({selectRoomId,selectTableId}) => {
+const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
   const componentRef = useRef();
   const closeRef = useRef();
   const [success, setSuccess] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const dispatch = useDispatch();
-  const [addOrder,{ isLoading }] = useAddOrderMutation();
+  const [addOrder, { isLoading }] = useAddOrderMutation();
   const { order, orderCalc } = useSelector((store) => store.addOrderSlice);
   const formik = useFormik({
     initialValues: {
@@ -42,8 +42,7 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
       chooseHotel: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
-    },
+    onSubmit: async (values) => {},
   });
   const handlePlaceOrder = async () => {
     const obj = { ...order };
@@ -61,14 +60,14 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
       items: arr,
       paid_amount: 0,
       current_order: false,
-      dedicated_to:"room"
+      dedicated_to: "room",
     };
     const orderForTable = {
       table_id: obj.tableId,
       items: arr,
       paid_amount: 0,
       current_order: true,
-      dedicated_to:"table"
+      dedicated_to: "table",
     };
     const response = await addOrder(
       obj.tableId.length
@@ -83,7 +82,7 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
       dispatch(resetFoodOrder());
       // closeRef.current.click();
       // toast.success(response.data.message);
-      setSuccess(response?.data?.data);
+      setSuccess(arr);
     }
   };
   const { data: rooms } = useRoomsQuery({
@@ -103,33 +102,30 @@ const ConfirmOrder = ({selectRoomId,selectTableId}) => {
   //   value: room._id,
   //   label: room.roomNumber,
   // }));
- const [isheaderHide,setHeaderHide]=useState(false)
+  const [isheaderHide, setHeaderHide] = useState(false);
   const handlePrint = useReactToPrint({
-    content: () =>componentRef.current
-  })
+    content: () => componentRef.current,
+  });
 
-
-
- // Call multiple functions here
- const handleButtonClick = () => {
   // Call multiple functions here
-  setHeaderHide(true);
+  const handleButtonClick = () => {
+    // Call multiple functions here
+    setHeaderHide(true);
 
-  // Introduce a delay before calling handlePrint
-  setTimeout(() => {
+    // Introduce a delay before calling handlePrint
+    setTimeout(() => {
       handlePrint();
-  }, 1000); // Replace 1000 with the desired delay in milliseconds
-};
+    }, 1000); // Replace 1000 with the desired delay in milliseconds
+  };
 
   // current date
   const currentDate = new Date();
 
-const year = currentDate.getFullYear();
-const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-const day = String(currentDate.getDate()).padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(currentDate.getDate()).padStart(2, "0");
 
-const formattedDate = `${year}-${month}-${day}`;
-
+  const formattedDate = `${year}-${month}-${day}`;
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -175,26 +171,20 @@ const formattedDate = `${year}-${month}-${day}`;
                           <p className="flex justify-between">
                             Total Price : <span>{orderCalc.total}</span>
                           </p>
-                          {/* <p className="flex justify-between">
-                            Tax : <span>{orderCalc.tax}</span>
-                          </p> */}
-                          {/* <p className="flex justify-between">
-                            Grand Total: <span>{orderCalc.grandTotal}</span>
-                          </p> */}
                         </div>
                         <div className="flex">
                           <button
-
+                            disabled={isLoading}
                             onClick={handlePlaceOrder}
                             className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                           >
                             Place Order
                             {isLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
+                              <span
+                                className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                                role="status"
+                              ></span>
+                            ) : null}
                           </button>
                         </div>
                       </div>
@@ -208,42 +198,51 @@ const formattedDate = `${year}-${month}-${day}`;
           )}
         </div>
       ) : (
-        <div >
+        <div>
           <h3 className={`mb-5 font-bold text-2xl `}>
             Order placed successfully.
           </h3>
-          <div ref={componentRef} className={`overflow-x-auto border ${isheaderHide?"p-5":""}`}>
-            <div >
+          <div
+            ref={componentRef}
+            className={`overflow-x-auto border ${isheaderHide ? "p-5" : ""}`}
+          >
+            <div>
               {/* header rendering by condition */}
-              {isheaderHide&&<div className={`text-center mb-6`}>
-                <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
-                <h1 className="font-bold text-2xl" >DAK Hospital LTD</h1>
-                <span>Customer Receipt</span> <br />
-                <span>Issue Date: {formattedDate} </span>
-              </div>}
+              {isheaderHide && (
+                <div className={`text-center mb-6`}>
+                  <img
+                    className="w-24 h-24 mx-auto p-2"
+                    src={logo}
+                    alt="logo"
+                  />
+                  <h1 className="font-bold text-2xl">DAK Hospital LTD</h1>
+                  <span>Customer Receipt</span> <br />
+                  <span>Issue Date: {formattedDate} </span>
+                </div>
+              )}
 
-            <table className="table" >
-              <thead>
-                <tr className={`text-lg`}>
-                  <th>Name</th>
-                  <th>
-                    Surveyor <br /> Quantity
-                  </th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {success?.items?.map((food, idx) => (
-                  <tr>
-                    <td>{food?.item}</td>
-                    <td>{food?.serveyor_quantity}</td>
-                    <td>{food?.price}</td>
-                    <td>{food?.quantity}</td>
+              <table className="table">
+                <thead>
+                  <tr className={`text-lg`}>
+                    <th>Name</th>
+                    <th>
+                      Surveyor <br /> Quantity
+                    </th>
+                    <th>Price</th>
+                    <th>Quantity</th>
                   </tr>
-                ))}
-              </tbody>
-              <tfoot className={`text-sm`}>
+                </thead>
+                <tbody>
+                  {success?.map((food, idx) => (
+                    <tr>
+                      <td>{food?.item}</td>
+                      <td>{food?.serveyor_quantity}</td>
+                      <td>{food?.price}</td>
+                      <td>{food?.quantity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot className={`text-sm`}>
                   <tr>
                     <td colSpan={5}>
                       <div className="mt-3">
@@ -258,27 +257,36 @@ const formattedDate = `${year}-${month}-${day}`;
                             Grand Total: <span>{orderCalc.grandTotal}</span>
                           </p> */}
                         </div>
-                      
                       </div>
                     </td>
                   </tr>
                 </tfoot>
-            </table>
+              </table>
             </div>
             {/* singature */}
-            {isheaderHide&&<div className="flex justify-between mt-24">
-             <div>
-              {/* office signature */}
-                <div className="h-[2px] w-48 divider"></div>
-                <div className="text-center">Office Signature</div>
-             </div>
-             {/* customer signature  */}
-              <div>
-              <div className="h-[2px] w-48 divider"></div>
-              <div className="text-center">Customer Signature</div>
+            {isheaderHide && (
+              <div className="flex justify-between mt-24">
+                <div>
+                  {/* office signature */}
+                  <div className="h-[2px] w-48 divider"></div>
+                  <div className="text-center">Office Signature</div>
+                </div>
+                {/* customer signature  */}
+                <div>
+                  <div className="h-[2px] w-48 divider"></div>
+                  <div className="text-center">Customer Signature</div>
+                </div>
               </div>
-            </div>}
-            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[23%]">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved.</p>}
+            )}
+            {isheaderHide && (
+              <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[23%]">
+                Powered by{" "}
+                <span className="text-green-slimy text-lg font-semibold">
+                  JS Encoder
+                </span>
+                . Copyright © {currentYear}. All rights reserved.
+              </p>
+            )}
           </div>
           <div className={`mt-5 text-end`}>
             <button

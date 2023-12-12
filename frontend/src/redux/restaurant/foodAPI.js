@@ -91,7 +91,7 @@ const foodAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["food"],
+      invalidatesTags: ["food", "room"],
     }),
     getOrderById: build.query({
       query: (id) => `foods/get-order-by-id/${id}`,

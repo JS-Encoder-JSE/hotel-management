@@ -44,7 +44,7 @@ const validationSchema = yup.object({
 const AddHotel = () => {
   const [isLoading, setLoading] = useState(false);
   const { user } = useSelector((store) => store.authSlice);
-  const [addHotel] = useAddHotelMutation();
+  const [addHotel, { isLoading: addHotelLoading }] = useAddHotelMutation();
   const [managerList, setManagerList] = useState([{ manager: "", shift: "" }]);
   const [showManagers, setShowManagers] = useState([]);
   const [showPass, setShowPass] = useState(false);
@@ -162,32 +162,34 @@ const AddHotel = () => {
     <div className={`space-y-10 min-h-screen`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
-        <div>
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
-            <div>
+          <div>
+            <Link to={`/dashboard `}>
+              <button
+                type="button"
+                className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              >
+                <dfn>
+                  <abbr title="Back">
+                    <FaArrowLeft />
+                  </abbr>
+                </dfn>
+
+                <span className="tracking-wider font-semibold text-[1rem]"></span>
+              </button>
+            </Link>
+          </div>
+          <div>
             <h2 className="text-2xl text-center md:mt-4">Add Hotel</h2>
-            </div>
+          </div>
           <div className="text-2xl md:flex justify-end items-center ">
             <h2 className="shadow-lg bg-slate-100 px-4 py-2 rounded-md text-green-slimy inline-block space-x-1.5 text-base">
               {user?.maxHotels - hotels?.docs?.length >= 1 ? (
                 <>
-                  <span className="text-base " >You can add</span>
+                  <span className="text-base ">You can add</span>
                   <span className="text-green-slimy font-bold">
                     {` ${user?.maxHotels - hotels?.docs?.length}`}
                   </span>
-                  <span className="text-base" >hotels.</span>
+                  <span className="text-base">hotels.</span>
                 </>
               ) : (
                 <span className="text-sm font-semibold uppercase text-red-600">
@@ -367,7 +369,11 @@ const AddHotel = () => {
               <button
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                disabled={user?.maxHotels - hotels?.docs?.length === 0}
+                disabled={
+                  addHotelLoading
+                    ? true
+                    : user?.maxHotels - hotels?.docs?.length === 0
+                }
               >
                 <span>Create Hotel</span>
                 {isLoading ? (
