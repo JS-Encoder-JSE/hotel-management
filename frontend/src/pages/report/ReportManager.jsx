@@ -27,6 +27,7 @@ const ReportManager = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [PDF, setPDF] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [keyword, setKeyword] = useState(null);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -85,6 +86,13 @@ const ReportManager = () => {
       setPDF(reports?.data?.docs);
     }
   }, [reports]);
+
+  // press enter button
+  const pressEnter = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      formik.handleSubmit();
+    }
+  };
 
   return (
     <div className={` space-y-5`}>
