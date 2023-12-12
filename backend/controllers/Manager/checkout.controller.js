@@ -58,7 +58,7 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     const foodOrders = await FoodOrder.find({
       _id: { $in: activeBookings.food_order_ids },
       room_id: { $in: room_ids },
-      order_status: { $ne: "CheckedOut" },
+      order_status: "Current",
       // You may add other conditions if needed
     });
     console.log("foodOrders:", foodOrders);
