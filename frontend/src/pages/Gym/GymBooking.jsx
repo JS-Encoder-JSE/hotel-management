@@ -15,7 +15,7 @@ import {
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
 import toast from "react-hot-toast";
-import {useAddGymMutation} from "../../redux/gym/gymAPI.js";
+import { useAddGymMutation } from "../../redux/gym/gymAPI.js";
 import { Link } from "react-router-dom";
 
 // form validation
@@ -31,8 +31,7 @@ const validationSchema = yup.object({
   // itemName: yup.string().required("item Name  is required"),
   members: yup.string().required("Members  is required"),
   // paid_amount: yup.string().required("Paid amount  is required"),
-  paid_amount: yup
-  .number(),
+  paid_amount: yup.number(),
   // .integer(" Paid Amount must be an integer"),
   //   .string()
   //   .when(["documentsType"], ([membershipSubscription], schema) => {
@@ -40,14 +39,12 @@ const validationSchema = yup.object({
   //       return schema.required("Package Price is required");
   //     else return schema;
   //   }),
-  price: yup
-    .number()
-   ,
+  price: yup.number(),
 });
 
 const GymBooking = () => {
   const [selectedOption, setSelectedOption] = useState(null);
-  const [addGym,{ isLoading }] = useAddGymMutation()
+  const [addGym, { isLoading }] = useAddGymMutation();
 
   // useEffect(() => {
   //   if (formik.values.roomNumber)
@@ -61,28 +58,20 @@ const GymBooking = () => {
 
   const formik = useFormik({
     initialValues: {
-     
       roomNumber: "",
       name: "",
       price: "",
       members: "",
-      paid_amount: ""
+      paid_amount: "",
       // itemName: "",
 
       // packagePrice: "",
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      const obj = {...values};
+      const obj = { ...values };
 
-      const {
-      
-        roomNumber: room_id,
-        name,
-        price,
-        paid_amount,
-          members
-      } = obj;
+      const { roomNumber: room_id, name, price, paid_amount, members } = obj;
 
       const response = await addGym({
         room_id,
@@ -103,18 +92,17 @@ const GymBooking = () => {
 
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const { data: rooms } = useRoomsQuery({
-    
     cp: "0",
     filter: "",
     search: "",
     limit: 1000000,
   });
   const transformedRooms = rooms?.data?.docs
-  ?.filter((room) => room.status === "CheckedIn") 
-  .map((room) => ({
-    value: room._id,
-    label: room.roomNumber,
-  }));
+    ?.filter((room) => room.status === "CheckedIn")
+    .map((room) => ({
+      value: room._id,
+      label: room.roomNumber,
+    }));
 
   // Price Validation
   const handlePrice = (e) => {
@@ -144,19 +132,21 @@ const GymBooking = () => {
   return (
     <>
       <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
       <div
         className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
       >
@@ -216,7 +206,6 @@ const GymBooking = () => {
             className=" form-control grid grid-cols-1 gap-4 mt-5 "
             onSubmit={formik.handleSubmit}
           >
-         
             {/* Room Number box */}
 
             <div className="flex flex-col gap-3">
@@ -370,8 +359,7 @@ const GymBooking = () => {
                 onChange={handlePrice}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.price &&
-              Boolean(formik.errors.price) ? (
+              {formik.touched.price && Boolean(formik.errors.price) ? (
                 <small className="text-red-600">
                   {formik.touched.price && formik.errors.price}
                 </small>
@@ -379,25 +367,26 @@ const GymBooking = () => {
             </div>
             <div className="flex flex-col gap-3">
               <input
-              onWheel={ event => event.currentTarget.blur() }
-                  type="number"
-                  placeholder="Paid Amount"
-                  name="paid_amount"
-                  className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-                  value={formik.values.paid_amount}
-                  onChange={handleAmount}
-                  onBlur={formik.handleBlur}
+                onWheel={(event) => event.currentTarget.blur()}
+                type="number"
+                placeholder="Paid Amount"
+                name="paid_amount"
+                className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+                value={formik.values.paid_amount}
+                onChange={handleAmount}
+                onBlur={formik.handleBlur}
               />
               {formik.touched.paid_amount &&
               Boolean(formik.errors.paid_amount) ? (
-                  <small className="text-red-600">
-                    {formik.touched.paid_amount && formik.errors.paid_amount}
-                  </small>
+                <small className="text-red-600">
+                  {formik.touched.paid_amount && formik.errors.paid_amount}
+                </small>
               ) : null}
             </div>
             {/* button */}
             <div className={`flex justify-between`}>
               <button
+                disabled={isLoading}
                 type={"submit"}
                 className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >

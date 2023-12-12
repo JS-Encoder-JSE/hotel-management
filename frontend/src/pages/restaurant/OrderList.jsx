@@ -198,32 +198,6 @@ const OrderList = () => {
             </button>
           </div>
         </div>
-        {/*<div className={`flex `}>*/}
-        {/*  <div className="flex flex-col gap-3">*/}
-        {/*    <select*/}
-        {/*      name="chooseHotel"*/}
-        {/*      className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"*/}
-        {/*      value={formik.values.chooseHotel}*/}
-        {/*      onChange={formik.handleChange}*/}
-        {/*      onBlur={formik.handleBlur}*/}
-        {/*    >*/}
-        {/*      <option value="" selected disabled>*/}
-        {/*        Choose Hotel*/}
-        {/*      </option>*/}
-        {/*      {hotelList?.map((i) => (*/}
-        {/*        <option key={i._id} value={i._id}>*/}
-        {/*          {i.name}*/}
-        {/*        </option>*/}
-        {/*      ))}*/}
-        {/*    </select>*/}
-        {/*    {formik.touched.chooseHotel &&*/}
-        {/*    Boolean(formik.errors.chooseHotel) ? (*/}
-        {/*      <small className="text-red-600">*/}
-        {/*        {formik.touched.chooseHotel && formik.errors.chooseHotel}*/}
-        {/*      </small>*/}
-        {/*    ) : null}*/}
-        {/*  </div>*/}
-        {/*</div>*/}
         <hr className={`my-5`} />
         <div className={`space-y-10`}>
           {!isLoading ? (
@@ -275,18 +249,6 @@ const OrderList = () => {
                                 title={`View`}
                               >
                                 <FaEye />
-                              </span>
-
-                              <span
-                                title={`Print`}
-                                onClick={() =>
-                                  navigate(
-                                    `/dashboard/orderDetails/${order?._id}`
-                                  )
-                                }
-                                className={`btn btn-md hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case`}
-                              >
-                                <FaPrint />
                               </span>
                               <span
                                 onClick={() => handleDelete(order?._id)}

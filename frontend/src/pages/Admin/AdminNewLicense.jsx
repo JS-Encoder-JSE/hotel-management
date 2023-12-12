@@ -700,6 +700,7 @@ const AdminNewLicense = () => {
         </div>
         {/* submit button */}
         <button
+          disabled={isLoading}
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >

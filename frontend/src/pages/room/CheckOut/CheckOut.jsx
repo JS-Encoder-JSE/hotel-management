@@ -172,7 +172,7 @@ const CheckOut = () => {
 
         tran_id: paymentList[0].trx ? paymentList[0].trx : "",
         checked_in: checkout?.data?.room_bookings[0]?.from,
-        checked_out: checkout?.data?.room_bookings[0]?.to,
+        checked_out: toDate,
         paid_amount,
         total_checkout_bills: pBill,
         restaurant_income: selectedRoomFoodBill,
@@ -207,11 +207,11 @@ const CheckOut = () => {
     limit: 1000000,
   });
 
-const roomIds =[]
-roomIds.push(formik.values.roomNumber)
+  const roomIds = [];
+  roomIds.push(formik.values.roomNumber);
 
   const handleGetRooms = () => {
-    getCheckout({ room_ids:roomIds});
+    getCheckout({ room_ids: roomIds });
     setFetch(formik.values.roomNumber);
     setShowRooms(true);
   };

@@ -288,6 +288,7 @@ const HotelEdit = () => {
                 {/* submit button */}
                 <div className="flex flex-col gap-3 col-span-full text-end">
                   <button
+                    disabled={isLoading}
                     type="submit"
                     className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                   >

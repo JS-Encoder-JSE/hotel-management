@@ -88,6 +88,7 @@ const HotelLimitEdit = ({ data, hotels }) => {
           </div>
           <div>
             <button
+              disabled={isLoading}
               onClick={handleHotelNumChange}
               className="btn btn-sm bg-white input-bordered border-gray-500 rounded normal-case"
             >
