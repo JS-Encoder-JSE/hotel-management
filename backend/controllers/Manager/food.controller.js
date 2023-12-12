@@ -267,6 +267,7 @@ export const addOrder = async (req, res) => {
         total_price,
         paid_amount,
         unpaid_amount,
+        order_status: "Current",
       });
       const savedFoodOrder = await newFoodOrder.save();
       const booking = await Booking.findOne({ room_id, status: "CheckedIn" });

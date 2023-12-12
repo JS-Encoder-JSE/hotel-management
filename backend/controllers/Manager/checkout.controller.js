@@ -46,8 +46,12 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       });
     }
     const activeBookingIds = activeBookings.map((booking) => booking._id);
-    const food_order_ids = activeBookings.map((booking) => booking.food_order_ids);
-
+    const food_order_ids = activeBookings
+    .map((booking) => booking.food_order_ids)
+    .flat();
+    console.log(activeBookingIds);
+    console.log(food_order_ids);
+    
     const bookingInfo = await BookingInfo.findOne({
       booking_ids: { $in: activeBookingIds },
     }).populate({
@@ -55,9 +59,6 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       model: "Room",
       select: "roomNumber category",
     });
-    console.log(activeBookings)
-    console.log(food_order_ids);
-    console.log(room_ids);
 
     // Find food orders for the given room_id
     const foodOrders = await FoodOrder.find({
@@ -66,7 +67,6 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       order_status: "Current",
       // You may add other conditions if needed
     });
-    console.log("foodOrders:", foodOrders);
     // Find gym bills for the given room_id
     const gymBills = await GymBills.find({
       room_id: { $in: room_ids },
