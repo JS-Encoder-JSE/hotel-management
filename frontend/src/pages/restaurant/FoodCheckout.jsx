@@ -75,6 +75,7 @@ const FoodCheckout = () => {
       unpaid_amount: finalTotal,
       total_price: finalTotal,
       items: orderData.data.items,
+      order_status: "Current",
       current_order: false,
       payment_status: "Paid",
     };
@@ -251,23 +252,6 @@ const FoodCheckout = () => {
           )}
           content={() => componentRef.current}
         />
-
-        {/* <button
-          onClick={handleCheckout}
-          className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
-        >
-     
-  <>
-    {path.includes("orderDetails") ? "Update Order" : "Checkout"}
-  </>
-  {isLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
-         
-        </button> */}
 
         <button
           disabled={checkoutLoading}
