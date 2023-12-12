@@ -159,7 +159,7 @@ const AddHotel = () => {
     );
   }
   return (
-    <div className={`space-y-10`}>
+    <div className={`space-y-10 min-h-screen`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
         <div>

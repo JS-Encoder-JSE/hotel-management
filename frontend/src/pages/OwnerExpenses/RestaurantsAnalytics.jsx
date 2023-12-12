@@ -66,7 +66,7 @@ const RestaurantsAnalytics = () => {
   return (
     <>
       {/* back button */}
-      <div className={`mb-5 mt-10`}>
+      <div className={`mb-5 mt-10 `}>
         <div>
           <Link to={`/dashboard  `}>
             <button
@@ -90,7 +90,7 @@ const RestaurantsAnalytics = () => {
         </div>
       </div>
 
-      <div className="space-y-20">
+      <div className="space-y-20 min-h-screen">
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex flex-col md:flex-row  gap-5 items-center justify-center">
           <p className=" ">Hotel Branch Name :</p>
