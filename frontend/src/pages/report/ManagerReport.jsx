@@ -1,9 +1,17 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
+import { versionControl } from "../../utils/utils";
 
 const ManagerReport = ({ values, header }) => {
     const desiredHeaders = ["Serial No", "guestName", "room_numbers", "checked_in", "checked_out", "paid_amount"];
+     
+  const jsEncoderTextStyle = {
+    color: "green",
+    fontWeight: "bold",
+  };
+
+const currentYear = new Date().getFullYear();
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -31,6 +39,15 @@ const ManagerReport = ({ values, header }) => {
     },
     text: {
       fontSize: 10,
+    },
+    footer: {
+      position: "absolute",
+      bottom: 20,
+      left: 0,
+      right: 0,
+      textAlign: "center",
+      fontSize: 10,
+      color: "grey",
     },
   });
 
@@ -80,15 +97,27 @@ const ManagerReport = ({ values, header }) => {
   </View>
   {values.map((item, rowIndex) => (
     <View key={rowIndex} style={styles.tableRow}>
-      {desiredHeaders.map((key, cellIndex) => (
-        <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
-          {key === "Serial No" ? rowIndex + 1 : item[key]}
-        </Text>
-      ))}
+     {desiredHeaders.map((key, cellIndex) => {
+                let cellValue = item[key];
+
+                // Format "checked_in" and "checked_out" to toLocaleDateString
+                if (key === "checked_in" || key === "checked_out") {
+                  cellValue = new Date(cellValue).toLocaleDateString();
+                }
+
+                return (
+                  <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
+                    {key === "Serial No" ? rowIndex + 1 : cellValue}
+                  </Text>
+                );
+              })}
     </View>
   ))}
 </View>
-
+        <View style={styles.footer}>
+          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
+        </View>
+        
         {/* <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
             {Object?.keys(values[0]).map((header, index) => (

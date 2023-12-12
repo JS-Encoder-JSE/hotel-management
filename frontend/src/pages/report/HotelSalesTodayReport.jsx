@@ -1,7 +1,7 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
-import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils";
+import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../utils/utils";
 
 const HotelSalesTodayReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
@@ -9,6 +9,13 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
     const desiredHeaders = ["Serial No", "guestName","checked_in","checked_out","paid_amount","payable_amount","room_numbers","unpaid_amount"
     
    ];
+   const jsEncoderTextStyle = {
+    color: "green",
+    fontWeight: "bold",
+  };
+
+  const currentYear = new Date().getFullYear();
+
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -28,14 +35,41 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
       borderBottomColor: "#e8e8e8",
     },
     tableCell: {
-      flex: 1,
       padding: 8,
+      wordWrap: "break-word", 
     },
     tableHeader: {
       backgroundColor: "#f2f2f2",
     },
     text: {
       fontSize: 10,
+    },
+
+    tableCell: {
+      flex: 1,
+      padding: 8,
+      width: "auto", 
+      wordWrap: "break-word",
+    },
+     payableAmountCell: {
+      flex: 1.5, // Adjust the width as needed
+      padding: 8,
+      wordWrap: "break-word",
+    },
+    roomNumbersCell: {
+      flex: 1.5, // Adjust the width as needed
+      padding: 8,
+      wordWrap: "break-word",
+    },
+
+    footer: {
+      position: "absolute",
+      bottom: 20,
+      left: 0,
+      right: 0,
+      textAlign: "center",
+      fontSize: 10,
+      color: "grey",
     },
   });
 
@@ -77,25 +111,52 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-            {desiredHeaders.map((header, index) => (
-              <Text key={index} style={[styles.tableCell, styles.text]}>
-                {header}
-              </Text>
-            ))}
+          {desiredHeaders.map((header, index) => {
+              let cellStyle = styles.tableCell;
+
+              // Apply specific styles for "payable_amount" and "room_numbers" columns
+              if (header === "payable_amount") {
+                cellStyle = styles.payableAmountCell;
+              } else if (header === "room_numbers") {
+                cellStyle = styles.roomNumbersCell;
+              }
+
+              return (
+                <Text key={index} style={[cellStyle, styles.text]}>
+                  {header}
+                </Text>
+              );
+            })}
           </View>
           { values && values.map((item, rowIndex) => (
             <View key={rowIndex} style={styles.tableRow}>
-              {desiredHeaders.map((key, cellIndex) => (
-                <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
-                  {key === "Serial No"
-                    ? rowIndex + 1
-                    : key === "date"
-                    ?getformatDateTime(date) // Use the date prop here
-                    : item[key]}
-                </Text>
-              ))}
+               {desiredHeaders.map((key, cellIndex) => {
+                  let cellStyle = styles.tableCell;
+
+                  // Apply specific styles for "payable_amount" and "room_numbers" columns
+                  if (key === "payable_amount") {
+                    cellStyle = styles.payableAmountCell;
+                  } else if (key === "room_numbers") {
+                    cellStyle = styles.roomNumbersCell;
+                  }
+
+                  return (
+                    <Text key={cellIndex} style={[cellStyle, styles.text]}>
+                      {key === "Serial No"
+                        ? rowIndex + 1
+                        : key === "checked_in"
+                        ? new Date(item[key]).toLocaleDateString()
+                        :key === "checked_out"
+                        ?new Date(item[key]).toLocaleDateString()
+                        : item[key]}
+                    </Text>
+                  );
+                })}
             </View>
           ))}
+        </View>
+        <View style={styles.footer}>
+          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
         </View>
 
         {/* <View style={styles.table}>

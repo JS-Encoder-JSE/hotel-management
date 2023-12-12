@@ -95,7 +95,7 @@ const formattedDate = `${year}-${month}-${day}`;
               </table>
             </div> 
      </section>
-      <div className="absolute bottom-0 w-full my-10">
+      <div className=" w-full mt-24 mb-10">
         <div className="mx-8 flex justify-between">
           <div>
             <p>__________________</p>
@@ -107,7 +107,7 @@ const formattedDate = `${year}-${month}-${day}`;
           </div>
         </div>
       </div>
-      <h1 className="text-center absolute bottom-0 pb-2 w-full">
+      <h1 className="text-center pb-2 w-full">
         Powered by <span className="text-xl text-green-slimy">JS Encoder</span>.
         Copyright © 2023. All rights reserved.Version {versionControl}
       </h1>

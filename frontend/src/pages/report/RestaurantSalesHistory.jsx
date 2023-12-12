@@ -1,12 +1,19 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
-import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils";
+import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../utils/utils";
 
 const RestaurantSalesHistory = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
     console.log("values",values)
     const desiredHeaders = ["Serial No", "item", "serveyor_quantity", "quantity", "price"];
+    const jsEncoderTextStyle = {
+      color: "green",
+      fontWeight: "bold",
+    };
+  
+  const currentYear = new Date().getFullYear();
+
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -34,6 +41,15 @@ const RestaurantSalesHistory = ({ values, header,date }) => {
     },
     text: {
       fontSize: 10,
+    },
+    footer: {
+      position: "absolute",
+      bottom: 20,
+      left: 0,
+      right: 0,
+      textAlign: "center",
+      fontSize: 10,
+      color: "grey",
     },
   });
 
@@ -95,25 +111,9 @@ const RestaurantSalesHistory = ({ values, header,date }) => {
             </View>
           ))}
         </View>
-
-        {/* <View style={styles.table}>
-          <View style={[styles.tableRow, styles.tableHeader]}>
-            {Object?.keys(values[0]).map((header, index) => (
-              <Text key={index} style={[styles.tableCell, styles.text]}>
-                {header}
-              </Text>
-            ))}
-          </View>
-          {values?.map((item, rowIndex) => (
-            <View key={rowIndex} style={styles.tableRow}>
-              {Object.values(item).map((cell, cellIndex) => (
-                <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
-                  {cell}
-                </Text>
-              ))}
-            </View>
-          ))}
-        </View> */}
+        <View style={styles.footer}>
+          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
+        </View>
       </Page>
     </Document>
   );

@@ -119,9 +119,9 @@ const SubAdminList = () => {
         </div>
         <div></div>
         <div
-          className={`flex flex-col sm:flex-row justify-between items-center gap-5`}
+          className={`flex flex-col sm:flex-row justify-end items-center gap-5`}
         >
-          <div className={`flex felx-wrap gap-3`}>
+          <div className={`flex flex-wrap gap-3`}>
             <div>
               <select
                 name="filter"

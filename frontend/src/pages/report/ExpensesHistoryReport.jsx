@@ -1,11 +1,19 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
-import { getFormateDateAndTime } from "../../utils/utils";
+import { getFormateDateAndTime, versionControl } from "../../utils/utils";
 
 const ExpensesHistoryReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
     const desiredHeaders = ["Serial No", "date", "spendedfor","total_amount"];
+
+    const jsEncoderTextStyle = {
+      color: "green",
+      fontWeight: "bold",
+    };
+  
+  const currentYear = new Date().getFullYear();
+
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -33,6 +41,15 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
     },
     text: {
       fontSize: 10,
+    },
+    footer: {
+      position: "absolute",
+      bottom: 20,
+      left: 0,
+      right: 0,
+      textAlign: "center",
+      fontSize: 10,
+      color: "grey",
     },
   });
 
@@ -87,12 +104,15 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ? getFormateDateAndTime(item[key]) // Use the date prop here
+                    ? new Date(item[key]).toLocaleDateString() // Use the date prop here
                     : item[key]}
                 </Text>
               ))}
             </View>
           ))}
+        </View>
+        <View style={styles.footer}>
+          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
         </View>
       </Page>
     </Document>

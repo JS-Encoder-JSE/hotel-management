@@ -529,7 +529,7 @@ const handleScrollToTop = () => {
                 </tbody>
               </table> :<p className="text-center my-48">No expenses yet!</p>}
             </div>
-            {filteredExpenses?.docs?.length && <div className="flex justify-center mt-10">
+            {filteredExpenses?.docs?.length ? <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -548,7 +548,7 @@ const handleScrollToTop = () => {
                 renderOnZeroPageCount={null}
                 forcePage={currentPage}
               />
-            </div>}
+            </div>  : ""}
           </div>
         </div>
       )}

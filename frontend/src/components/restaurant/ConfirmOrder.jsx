@@ -19,6 +19,7 @@ import Select from "react-select";
 import FoodList from "./FoodList.jsx";
 import { useReactToPrint } from "react-to-print";
 import RestaurantPDF from "../../pages/restaurant/RestaurantPDF.jsx";
+import { versionControl } from "../../utils/utils.js";
 
 // current year
 const currentYear = new Date().getFullYear();
@@ -278,7 +279,7 @@ const formattedDate = `${year}-${month}-${day}`;
               <div className="text-center">Customer Signature</div>
               </div>
             </div>}
-            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[23%]">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved.</p>}
+            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[16%]">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved. Version {versionControl} </p>}
           </div>
           <div className={`mt-5 text-end`}>
             <button

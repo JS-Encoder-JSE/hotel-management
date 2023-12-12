@@ -153,8 +153,8 @@ const Report = () => {
               </button>
             </Link>
           </div>
-        <div className={`flex flex-wrap gap-1.5 justify-between`}>
-          <h3 className={`text-xl font-semibold mb-3 mt-3 `}>All Report</h3>
+          <h3 className={`text-xl font-semibold mb-3 mt-3 text-center `}>All Report</h3>  
+        <div className={`flex flex-wrap gap-1.5 justify-end`}>
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>
               <button
