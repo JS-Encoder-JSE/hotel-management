@@ -248,7 +248,7 @@ export const addOrder = async (req, res) => {
         existingFoodOrder.total_price += total_price;
         existingFoodOrder.paid_amount += paid_amount;
         existingFoodOrder.unpaid_amount += unpaid_amount;
-        
+
         existingFoodOrder.save();
         return res.status(201).json({
           success: true,
@@ -271,6 +271,7 @@ export const addOrder = async (req, res) => {
       const savedFoodOrder = await newFoodOrder.save();
       const booking = await Booking.findOne({ room_id, status: "CheckedIn" });
       booking.food_order_ids.push(savedFoodOrder._id);
+      await booking.save();
       res.status(201).json({
         success: true,
         data: savedFoodOrder,
