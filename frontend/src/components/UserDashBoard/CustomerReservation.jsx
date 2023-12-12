@@ -60,12 +60,13 @@ const CustomerReservation = ({ userHotel, monthlyData,managerId,userId }) => {
         min: 0,
       },
       tooltip: {
-        shared: true,
-        intersect: false,
+        shared:true,
+        show:true,
+        intersect:false,
         y: {
           formatter: function (y) {
             if (typeof y !== "undefined") {
-              return y.toFixed(0) + (userHotel ? " bookings" : " renew");
+              return y.toFixed(0) + (userHotel ? " checked In" : " renew");
             }
             return y;
           },

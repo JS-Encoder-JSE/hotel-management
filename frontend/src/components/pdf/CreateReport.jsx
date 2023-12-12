@@ -1,8 +1,16 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet,Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
+import { versionControl } from "../../utils/utils";
 
 const CreateReport = ({ values, header }) => {
+
+  const currentYear = new Date().getFullYear();
+
+  const jsEncoderTextStyle = {
+    color: "green",
+    fontWeight: "bold",
+  };
 
   const styles = StyleSheet.create({
     page: {
@@ -31,6 +39,15 @@ const CreateReport = ({ values, header }) => {
     },
     text: {
       fontSize: 10,
+    },
+    footer: {
+      position: "absolute",
+      bottom: 20,
+      left: 0,
+      right: 0,
+      textAlign: "center",
+      fontSize: 10,
+      color: "grey",
     },
   });
 
@@ -88,6 +105,9 @@ const CreateReport = ({ values, header }) => {
               ))}
             </View>
           ))}
+        </View>
+        <View style={styles.footer}>
+          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
         </View>
       </Page>
     </Document>

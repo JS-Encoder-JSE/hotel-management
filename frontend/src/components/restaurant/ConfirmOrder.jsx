@@ -19,6 +19,7 @@ import Select from "react-select";
 import FoodList from "./FoodList.jsx";
 import { useReactToPrint } from "react-to-print";
 import RestaurantPDF from "../../pages/restaurant/RestaurantPDF.jsx";
+import { versionControl } from "../../utils/utils.js";
 
 // current year
 const currentYear = new Date().getFullYear();
@@ -163,12 +164,13 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                     <COItem key={idx} idx={idx} food={food} />
                   ))}
                 </tbody>
-                <tfoot className={`text-sm`}>
+                
+                <tfoot lassName={`text-[2rem] font-bold`}>
                   <tr>
-                    <td colSpan={5}>
+                    <td colSpan={6}>
                       <div className="mt-3">
-                        <div className="pl-2 mb-4 w-[70%] text-md font-semibold">
-                          <p className="flex justify-between">
+                        <div className="pl-2 mb-4 w-[70%] text-[1rem] font-semibold">
+                          <p className="flex gap-4">
                             Total Price : <span>{orderCalc.total}</span>
                           </p>
                         </div>
@@ -246,9 +248,9 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                   <tr>
                     <td colSpan={5}>
                       <div className="mt-3">
-                        <div className="pl-2 mb-4 w-[70%] text-md font-semibold">
-                          <p className="flex justify-between">
-                            Total Price : <span>{orderCalc.total}</span>
+                        <div className="pl-2 mb-4 w-[70%] text-[1rem] font-semibold">
+                          <p className="flex gap-3">
+                            Total Price :<span >   {orderCalc.total}</span>
                           </p>
                           {/* <p className="flex justify-between">
                             Tax : <span>{orderCalc.tax}</span>
@@ -265,6 +267,7 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
             </div>
             {/* singature */}
             {isheaderHide && (
+            <div>
               <div className="flex justify-between mt-24">
                 <div>
                   {/* office signature */}
@@ -277,16 +280,8 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                   <div className="text-center">Customer Signature</div>
                 </div>
               </div>
-            )}
-            {isheaderHide && (
-              <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[23%]">
-                Powered by{" "}
-                <span className="text-green-slimy text-lg font-semibold">
-                  JS Encoder
-                </span>
-                . Copyright © {currentYear}. All rights reserved.
-              </p>
-            )}
+            </div>)}
+            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[16%] md:left-[18%]">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved. Version {versionControl} </p>}
           </div>
           <div className={`mt-5 text-end`}>
             <button

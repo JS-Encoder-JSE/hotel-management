@@ -693,6 +693,7 @@ const App = () => {
               element: (
                 <OwnerRoute>
                   <RestaurantSales />
+                  {/* <ShowAllSell /> */}
                 </OwnerRoute>
               ),
             },

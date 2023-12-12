@@ -70,7 +70,7 @@ const MonitorFinance = () => {
           </h1>
         </div>
       </div>
-      <div className="space-y-20">
+      <div className="space-y-20 min-h-screen">
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex flex-col md:flex-row gap-5 items-center justify-center">
           <p>Hotel Name :</p>

@@ -247,7 +247,7 @@ const handleScrollToTop = () => {
                         values={hotelExpenses?.docs[0]?.items}
                         header={{
                           title: "DAK Hospitality LTD",
-                          name: "Today's Restaurant Expenses",
+                          name: "Today's Hotel Expenses",
                         }}
                       />
                     }
@@ -401,7 +401,7 @@ const handleScrollToTop = () => {
                       values={filteredExpenses?.docs}
                       header={{
                         title: "DAK Hospitality LTD",
-                        name: "Restaurant Expenses History",
+                        name: "Hotel Expenses History",
                       }}
                     />
                   }
@@ -529,7 +529,7 @@ const handleScrollToTop = () => {
                 </tbody>
               </table> :<p className="text-center my-48">No expenses yet!</p>}
             </div>
-            {filteredExpenses?.docs?.length && <div className="flex justify-center mt-10">
+            {filteredExpenses?.docs?.length ? <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -548,7 +548,7 @@ const handleScrollToTop = () => {
                 renderOnZeroPageCount={null}
                 forcePage={currentPage}
               />
-            </div>}
+            </div>  : ""}
           </div>
         </div>
       )}

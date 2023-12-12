@@ -159,16 +159,16 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
           <tbody>
             <tr>
               <td>Overall Room Bills</td>
-              <td className="align-top pl-2 pb-2">
+              <td className="pl-2">
                 {Math.ceil(totalUnpaidAmount)}
               </td>
             </tr>
             <div className={`mt-5`}></div>
             <tr>
               <td>Service Charge</td>
-              <td className="align-top pl-2 pb-2">
+              <td className="align-top pb-2">
                 <div className={`flex gap-1 items-center`}>
-                  <span>$</span>
+                  <span>Rs.</span>
                   <input
                     onWheel={(event) => event.currentTarget.blur()}
                     type="number"
@@ -224,7 +224,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
             <tr>
               <td className="align-top">Additional Charges Comments</td>
               <td className="pl-5">
-                <textarea className="border rounded-md p-2 bg-transparent outline-none resize-none"></textarea>
+                <textarea className="border rounded-md p-[6px] bg-transparent outline-none resize-none"></textarea>
               </td>
             </tr>
           </tbody>
@@ -235,8 +235,8 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
         <table className="text-sm font-semibold m-5">
           <tbody className="flex flex-col gap-3">
             <tr>
-              <td>Total Room Bills</td>
-              <td>{Math.ceil(totalUnpaidAmount + totalBilling + breakAmt)}</td>
+              <td className="pr-2">Total Room Bills</td>
+              <td> {Math.ceil(totalUnpaidAmount + totalBilling + breakAmt)}</td>
             </tr>
           </tbody>
         </table>

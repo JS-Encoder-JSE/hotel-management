@@ -15,6 +15,7 @@ import {
 } from "../../redux/admin/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
 import { GrPowerReset } from "react-icons/gr";
+import { getformatDateTime } from "../../utils/utils.js";
 
 const Report = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -153,8 +154,8 @@ const Report = () => {
               </button>
             </Link>
           </div>
-        <div className={`flex flex-wrap gap-1.5 justify-between`}>
-          <h3 className={`text-xl font-semibold mb-3 mt-3 `}>All Report</h3>
+          <h3 className={`text-xl font-semibold mb-3 mt-3 text-center `}>All Report</h3>  
+        <div className={`flex flex-wrap gap-1.5 justify-end`}>
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>
               <button
@@ -329,14 +330,16 @@ const Report = () => {
                               <td>{report?.username}</td>
                               <td>{report?.phone_no}</td>
                               <td>
-                                {extractTimeOrDate(report?.bill_from, "date")}
+                                {getformatDateTime(report?.bill_from)}
+                                {/* {extractTimeOrDate(report?.bill_from, "date")}
                                 <br />{" "}
-                                {extractTimeOrDate(report.bill_from, "time")}
+                                {extractTimeOrDate(report.bill_from, "time")} */}
                               </td>
                               <td>
-                                {extractTimeOrDate(report?.bill_to, "date")}
+                              {getformatDateTime(report?.bill_to)}
+                                {/* {extractTimeOrDate(report?.bill_to, "date")}
                                 <br />{" "}
-                                {extractTimeOrDate(report.bill_to, "time")}
+                                {extractTimeOrDate(report.bill_to, "time")} */}
                               </td>
                               <td>{report?.deposit_by}</td>
                               <td>{report?.hotel_limit}</td>

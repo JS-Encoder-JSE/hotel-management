@@ -156,10 +156,10 @@ useEffect(() => {
 
   return (
     <div className={`space-y-5`}>
-      <div className={`bg-white p-4 rounded`}>
+      <div className={`bg-white p-4 rounded-xl`}>
         <div>
           <div>
-            <div>
+            <div className="h-full">
               <h3
                 className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
               >
@@ -190,7 +190,9 @@ useEffect(() => {
                 ) : null}
               </div>
 
-              <div className=" h-64 overflow-x-auto overflow-y-auto">
+              <div 
+           className="min-h-64"
+              >
                 {restaurantSalesToday && restaurantSalesToday?.data.length ? (
                   <table className="table">
                   <thead>
@@ -233,7 +235,7 @@ useEffect(() => {
                           <div>
                             {" "}
                             {totalPrice}
-                            {/* {totalItemPrice} */}
+                            
                           </div>
                         </div>
                       </td>
@@ -241,22 +243,12 @@ useEffect(() => {
                   </tfoot>
                 </table>
                 ) : (
-                  <p className="text-center py-14"> No Sales Today</p>
+                  <p className="flex justify-center items-center my-48"> No Sales Today</p>
                 )}
-                {/* <div className={`flex justify-center md:ms-[20rem] mt-4`}>
-              <h1>Grand Total :</h1>
-              <div className="flex ">
-              <div>
-              <FaRupeeSign />
-              </div>
-              <div>
-                <span>25000</span>
-              </div>
-              </div>
-            </div> */}
+        
               </div>
             </div>
-            <div className="flex justify-center mt-10">
+            <div  onClick={handleScrollToTop} className="flex justify-center ">
               <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
@@ -280,7 +272,7 @@ useEffect(() => {
 
         {/* Restaurant Expenses */}
 
-        <div className={`mb-10 mt-20`}>
+        <div className={`mb-10 mt-28`}>
           <div>
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}

@@ -71,7 +71,7 @@ const HotelLists = () => {
   }, [hotels]);
 
   return (
-    <div className={`space-y-10 bg-white rounded-2xl p-4`}>
+    <div className={`space-y-10 bg-white rounded-2xl p-4 min-h-screen`}>
         <div>
           <Link to={`/dashboard `}>
             <button
@@ -89,7 +89,9 @@ const HotelLists = () => {
           </Link>
         </div>
      <div>
-     <h1 className="text-center text-2xl bg-green-slimy w-48 mx-auto text-white p-1 rounded-md">Hotel List </h1>
+     <h1 
+     className="text-center text-2xl bg-green-slimy w-48 mx-auto text-white p-1 rounded-md"
+     >Hotel List </h1>
      </div>
 
       <div className={`flex justify-end gap-4`}>

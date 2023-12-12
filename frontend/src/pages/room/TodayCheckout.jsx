@@ -150,7 +150,7 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
                     </th> */}
                     <th>From</th>
                     <th>To</th>
-                    <th>Action</th>
+                    {/* <th>Action</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -174,7 +174,7 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
                         <td>{new Date(item?.from).toLocaleDateString()}</td>
                         <td>{new Date(item?.to).toLocaleDateString()}</td>
       
-                        <td className={`flex flex-wrap gap-1.5`}>
+                        {/* <td className={`flex flex-wrap gap-1.5`}>
                           <span
                             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                             title={`View`}
@@ -189,12 +189,14 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
                           >
                             <MdOutlineHail />
                           </Link>
-                          {/* <span
+                       
+                        </td> */}
+
+                           {/* <span
                             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                           >
                             <FaEdit />
                           </span> */}
-                        </td>
                       </tr>
                     );
                   })}
