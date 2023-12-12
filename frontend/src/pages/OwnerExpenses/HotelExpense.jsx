@@ -52,7 +52,7 @@ const HotelExpense = () => {
     <>
       {/* back button */}
   
-      <div className="space-y-20 min-h-screen bg-white p-3">
+      <div className="space-y-20 min-h-screen bg-white p-3 rounded-xl">
       <div className={`mb-5`}>
         <div>
           <Link to={`/dashboard `}>

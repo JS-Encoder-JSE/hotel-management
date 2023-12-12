@@ -55,9 +55,9 @@ const RestaurantSales = () => {
       {/* back button */}
 
 
-      <div className="space-y-20 min-h-screen bg-white">
+      <div className="space-y-20 min-h-screen bg-white rounded-xl">
         {/* Select Room Section */}
-        <div className={`mb-5 bg-white p-3`}>
+        <div className={`mb-5 bg-white p-3 rounded-xl`}>
         <div>
           <Link to={`/dashboard `}>
             <button
