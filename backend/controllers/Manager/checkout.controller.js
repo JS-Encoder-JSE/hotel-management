@@ -46,6 +46,7 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       });
     }
     const activeBookingIds = activeBookings.map((booking) => booking._id);
+    const food_order_ids = activeBookings.map((booking) => booking.food_order_ids);
 
     const bookingInfo = await BookingInfo.findOne({
       booking_ids: { $in: activeBookingIds },
@@ -54,9 +55,13 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       model: "Room",
       select: "roomNumber category",
     });
+    console.log(activeBookings)
+    console.log(food_order_ids);
+    console.log(room_ids);
+
     // Find food orders for the given room_id
     const foodOrders = await FoodOrder.find({
-      _id: { $in: activeBookings.food_order_ids },
+      _id: { $in: food_order_ids },
       room_id: { $in: room_ids },
       order_status: "Current",
       // You may add other conditions if needed
