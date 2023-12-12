@@ -131,7 +131,7 @@ const ShowAllExpenseView = () => {
         />
       </div>
       <div>
-        <h1 className={`text-2xl text-center`}> Expenses Information</h1>
+        <h1 className="text-center text-2xl bg-green-slimy w-72 mx-auto text-white p-1 rounded-md"> Expenses Information</h1>
       </div>
       <div className="overflow-x-auto">
         <table className="table">

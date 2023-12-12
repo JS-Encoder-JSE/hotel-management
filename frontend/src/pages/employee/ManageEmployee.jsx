@@ -196,7 +196,7 @@ const ManageEmployee = () => {
                           </div>
                         )}
                       </td>
-                      <td className={`space-x-1.5`}>
+                      <td className={`flex flex-wrap gap-1.5`}>
                         <Link to={`${_id}`}>
                           <span
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}

@@ -89,7 +89,9 @@ const HotelLists = () => {
           </Link>
         </div>
      <div>
-     <h1 className="text-center text-2xl bg-green-slimy w-48 mx-auto text-white p-1 rounded-md">Hotel List </h1>
+     <h1 
+     className="text-center text-2xl bg-green-slimy w-48 mx-auto text-white p-1 rounded-md"
+     >Hotel List </h1>
      </div>
 
       <div className={`flex justify-end gap-4`}>

@@ -27,6 +27,7 @@ const ReportManager = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [PDF, setPDF] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [keyword, setKeyword] = useState(null);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -86,6 +87,13 @@ const ReportManager = () => {
     }
   }, [reports]);
 
+  // press enter button
+  const pressEnter = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      formik.handleSubmit();
+    }
+  };
+
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-5 py-5 rounded `}>
@@ -107,7 +115,7 @@ const ReportManager = () => {
         </div>
         <div>
           <h3
-            className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+            className={`bg-green-slimy text-2xl text-white max-w-[12rem]  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
           >
             All Report
           </h3>
