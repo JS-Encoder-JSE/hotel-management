@@ -275,6 +275,113 @@ export const addExpense = async (req, res) => {
   }
 };
 
+export const reduceExpense = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const expenseId = req.params.expense_id;
+    const { items, password, reduced_amount } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (user.role === "manager") {
+      const parent = await User.findById(user.parent_id);
+      if (!parent) {
+        return res.status(404).json({ message: "Parent not found" });
+      }
+      const isPasswordValid = await parent.comparePassword(password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
+    }
+    if (user.role === "owner") {
+      const isPasswordValid = await user.comparePassword(password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
+    }
+
+    const existingExpense = await Expense.findOne({
+      _id: expenseId,
+    });
+    if (!existingExpense) {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+    existingExpense.items = items;
+    existingExpense.total_amount -= reduced_amount;
+    await existingExpense.save();
+
+    const newDate = new Date(existingExpense.createdAt);
+    const localDate = newDate.toLocaleDateString();
+
+    const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
+    const year = newDate.getFullYear().toString();
+
+    const existingStaticSubDashData = await StaticSubDashData.findOne({
+      user_id: userId,
+    });
+    const existingDailySubDashData = await DailySubDashData.findOne({
+      user_id: userId,
+      date: localDate,
+    });
+    const existingMonthlySubDashData = await MonthlySubDashData.findOne({
+      user_id: userId,
+      month_name,
+      year,
+    });
+
+    const managerDashboardTable = await DashboardTable.findOne({
+      user_id: userId,
+      month_name,
+      year,
+    });
+    if (managerDashboardTable) {
+      managerDashboardTable.total_expense -= reduced_amount;
+      managerDashboardTable.total_profit += reduced_amount;
+      await managerDashboardTable.save();
+    }
+    const ownerDashboardTable = await DashboardTable.findOne({
+      user_id: user.parent_id,
+      month_name,
+      year,
+    });
+    if (ownerDashboardTable) {
+      ownerDashboardTable.total_expense -= reduced_amount;
+      ownerDashboardTable.total_profit += reduced_amount;
+      await ownerDashboardTable.save();
+    }
+    if (existingExpense.spendedfor === "hotel") {
+      existingDailySubDashData.today_hotel_expenses -= reduced_amount;
+      existingDailySubDashData.today_hotel_profit += reduced_amount;
+      existingMonthlySubDashData.total_hotel_expenses -= reduced_amount;
+      existingMonthlySubDashData.total_hotel_profit += reduced_amount;
+      existingStaticSubDashData.total_hotel_expenses -= reduced_amount;
+      existingStaticSubDashData.total_hotel_profit += reduced_amount;
+    }
+    if (existingExpense.spendedfor === "restaurant") {
+      existingDailySubDashData.today_restaurant_expenses -= reduced_amount;
+      existingDailySubDashData.today_restaurant_profit += reduced_amount;
+      existingMonthlySubDashData.total_restaurant_expenses -= reduced_amount;
+      existingMonthlySubDashData.total_restaurant_profit += reduced_amount;
+      existingStaticSubDashData.total_restaurant_expenses -= reduced_amount;
+      existingStaticSubDashData.total_restaurant_profit += reduced_amount;
+    }
+
+    await existingDailySubDashData.save();
+    await existingMonthlySubDashData.save();
+    await existingStaticSubDashData.save();
+
+    return res.status(201).json({ message: "Successfully added expenses" });
+  } catch (error) {
+    // console.error("Error saving to database:", saveError);
+    console.error("Error adding expense:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
 // Controller to partially update an existing item by its ID using PATCH
 export const updateExpense = async (req, res) => {
   try {
@@ -344,7 +451,7 @@ export const getExpenses = async (req, res) => {
     }
     if (fromDate && toDate) {
       // If both fromDate and toDate are provided, use $gte and $lte for the date range filter
-      query.date = { $gte: fromDate, $lte: toDate };
+      query.createdAt = { $gte: fromDate, $lte: toDate };
     }
     // Use the paginate function to get paginated results
     const options = {
@@ -352,7 +459,16 @@ export const getExpenses = async (req, res) => {
       limit: parseInt(limit),
     };
     const expenses = await Expense.paginate(query, options);
+    const totalAmount = await Expense.aggregate([
+      { $match: query },
+      { $group: { _id: null, total: { $sum: "$total_amount" } } },
+    ]);
 
+    // Extract the total value from the array
+    const totalAmountValue = totalAmount.length > 0 ? totalAmount[0].total : 0;
+
+    // Update the expenses object with the correct total value
+    expenses.total = totalAmountValue;
     return res.status(200).json(expenses);
   } catch (error) {
     console.error("Error fetching expenses:", error);
