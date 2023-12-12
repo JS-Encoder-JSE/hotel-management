@@ -247,7 +247,7 @@ const handleScrollToTop = () => {
                         values={hotelExpenses?.docs[0]?.items}
                         header={{
                           title: "DAK Hospitality LTD",
-                          name: "Today's Restaurant Expenses",
+                          name: "Today's Hotel Expenses",
                         }}
                       />
                     }
@@ -401,7 +401,7 @@ const handleScrollToTop = () => {
                       values={filteredExpenses?.docs}
                       header={{
                         title: "DAK Hospitality LTD",
-                        name: "Restaurant Expenses History",
+                        name: "Hotel Expenses History",
                       }}
                     />
                   }

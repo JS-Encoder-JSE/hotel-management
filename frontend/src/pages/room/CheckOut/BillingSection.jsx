@@ -166,7 +166,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
             <div className={`mt-5`}></div>
             <tr>
               <td>Service Charge</td>
-              <td className="align-top pl-2 pb-2">
+              <td className="align-top pb-2">
                 <div className={`flex gap-1 items-center`}>
                   <span>Rs.</span>
                   <input

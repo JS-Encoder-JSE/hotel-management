@@ -248,7 +248,7 @@ const AddEmployee = () => {
           </div>
           <div className="w-full">
             <h3
-              className={`flex bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
+              className={`flex bg-green-slimy text-2xl text-white max-w-[46.5rem] mx-auto py-3 px-5 rounded space-x-1.5 mb-7`}
             >
               <FaPlusCircle />
               <span>Add Employee</span>

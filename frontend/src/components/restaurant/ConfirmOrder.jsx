@@ -280,7 +280,7 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                 </div>
               </div>
             </div>)}
-            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[16%]">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved. Version {versionControl} </p>}
+            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[16%] md:left-[18%]">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved. Version {versionControl} </p>}
           </div>
           <div className={`mt-5 text-end`}>
             <button

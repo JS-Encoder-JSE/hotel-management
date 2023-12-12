@@ -32,11 +32,13 @@ const RestaurantExpenseReport = ({ values, header,date }) => {
       flexDirection: "row",
       borderBottomWidth: 1,
       borderBottomColor: "#e8e8e8",
+      textAlign:"center"
     },
     tableCell: {
-      flex: 1,
+      flex: 2,
       padding: 8,
       wordWrap: 'break-word',
+      textAlign:"center"
     },
     descriptionCell: {
       flex: 2, // Adjust the width as needed
@@ -44,10 +46,12 @@ const RestaurantExpenseReport = ({ values, header,date }) => {
       wordWrap: 'break-word',
     },
     tableHeader: {
+      textAlign:"center",
       backgroundColor: "#f2f2f2",
     },
     text: {
       fontSize: 10,
+      text:"center"
     },
     footer: {
       position: "absolute",
