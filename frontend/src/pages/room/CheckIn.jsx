@@ -25,6 +25,7 @@ import {
   toDateIsoConverter,
 } from "../../utils/utils.js";
 import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
+import { useNavigate } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -84,6 +85,9 @@ const CheckIn = () => {
   const [upload, { isError }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [addBooking] = useAddBookingMutation();
+
+
+  const navigate=useNavigate()
 
   // handleAmount
   const handleAmount = (e) => {
@@ -200,6 +204,7 @@ const CheckIn = () => {
           formikHelpers.resetForm();
           setSelectedImages([]);
           toast.success(response.data.message);
+          navigate("/dashboard/manage-checkin")
         }
       } else {
         toast.error("Image is not uploaded");

@@ -110,7 +110,7 @@ const PaymentSection = ({
     <section>
       <div className="grid lg:grid-cols-2 gap-5">
         {/* Left Side */}
-        <div className="bg-white rounded">
+        <div className="bg-white rounded pb-4">
           {/* bill statement */}
           <h3 className="p-5 text-xl mt-5">Bill Statement</h3>
           <hr />

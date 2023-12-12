@@ -15,6 +15,7 @@ import {
 } from "../../redux/admin/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
 import { GrPowerReset } from "react-icons/gr";
+import { getformatDateTime } from "../../utils/utils.js";
 
 const Report = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -329,14 +330,16 @@ const Report = () => {
                               <td>{report?.username}</td>
                               <td>{report?.phone_no}</td>
                               <td>
-                                {extractTimeOrDate(report?.bill_from, "date")}
+                                {getformatDateTime(report?.bill_from)}
+                                {/* {extractTimeOrDate(report?.bill_from, "date")}
                                 <br />{" "}
-                                {extractTimeOrDate(report.bill_from, "time")}
+                                {extractTimeOrDate(report.bill_from, "time")} */}
                               </td>
                               <td>
-                                {extractTimeOrDate(report?.bill_to, "date")}
+                              {getformatDateTime(report?.bill_to)}
+                                {/* {extractTimeOrDate(report?.bill_to, "date")}
                                 <br />{" "}
-                                {extractTimeOrDate(report.bill_to, "time")}
+                                {extractTimeOrDate(report.bill_to, "time")} */}
                               </td>
                               <td>{report?.deposit_by}</td>
                               <td>{report?.hotel_limit}</td>

@@ -6,6 +6,7 @@ import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../
 const RestaurantExpenseReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
     const desiredHeaders = ["Serial No", "date", "name", "description", "quantity", "price","remark"];
+    const tableHeaders = ["Serial No","Date","Name","Description","Quantity","Price","Remark"]
 
     const jsEncoderTextStyle = {
       color: "green",
@@ -97,7 +98,7 @@ const RestaurantExpenseReport = ({ values, header,date }) => {
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-          {desiredHeaders.map((header, index) => {
+          {tableHeaders.map((header, index) => {
               const cellStyle = header === 'description' ? styles.descriptionCell : styles.tableCell;
 
               return (

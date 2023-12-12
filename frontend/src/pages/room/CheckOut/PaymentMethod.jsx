@@ -16,22 +16,22 @@ const PaymentMethod = ({
   pBill,
   roomData,
 }) => {
-  // const paymentSchema = yup.object({
-  //   method: yup.string().required("Payment method is required"),
-  //   amount: yup.number().required("Amount is required"),
-  //   trx: yup.string().when(["method"], ([method], schema) => {
-  //     if (method !== "Cash")
-  //       return schema.required("Transaction ID is required");
-  //     else return schema;
-  //   }),
+  const paymentSchema = yup.object({
+    // method: yup.string().required("Payment method is required"),
+    // amount: yup.number().required("Amount is required"),
+    trx: yup.string().when(["method"], ([method], schema) => {
+      if (method !== "Cash")
+        return schema.required("Transaction ID is required");
+      else return schema;
+    }),
 
-  //   date: yup.date().required("Date is required"),
-  // });
+    // date: yup.date().required("Date is required"),
+  });
 
-  // const formik = useFormik({
-  //   initialValues: paymentList,
-  //   validationSchema: yup.array().of(paymentSchema),
-  // });
+  const formik = useFormik({
+    initialValues: paymentList,
+    validationSchema: yup.array().of(paymentSchema),
+  });
 
   return (
     <div className={`mt-5 space-y-3`}>
@@ -80,8 +80,14 @@ const PaymentMethod = ({
                     className="input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
                     onChange={(e) => handleChange(e, idx)}
                   />
+                  {formik.touched.trx && Boolean(formik.errors.trx) ? (
+                <small className="text-red-600">
+                  {formik.touched.trx && formik.errors.trx}
+                </small>
+              ) : null}
                 </div>
               ) : null}
+              
               <div className="flex flex-col gap-3">
                 <DatePicker
                   dateFormat="dd/MM/yyyy"

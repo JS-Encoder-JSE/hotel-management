@@ -280,9 +280,6 @@ const FoodCheckout = () => {
         ></span>
       ) : null}
     </button>
-
-
-
       </div>
     </div>
   );
