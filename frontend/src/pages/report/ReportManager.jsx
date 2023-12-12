@@ -107,7 +107,7 @@ const ReportManager = () => {
         </div>
         <div>
           <h3
-            className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+            className={`bg-green-slimy text-2xl text-white max-w-[12rem]  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
           >
             All Report
           </h3>
