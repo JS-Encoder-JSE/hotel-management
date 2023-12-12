@@ -164,12 +164,13 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                     <COItem key={idx} idx={idx} food={food} />
                   ))}
                 </tbody>
-                <tfoot className={`text-sm`}>
+                
+                <tfoot lassName={`text-[2rem] font-bold`}>
                   <tr>
-                    <td colSpan={5}>
+                    <td colSpan={6}>
                       <div className="mt-3">
-                        <div className="pl-2 mb-4 w-[70%] text-md font-semibold">
-                          <p className="flex justify-between">
+                        <div className="pl-2 mb-4 w-[70%] text-[1rem] font-semibold">
+                          <p className="flex gap-4">
                             Total Price : <span>{orderCalc.total}</span>
                           </p>
                         </div>
@@ -247,9 +248,9 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                   <tr>
                     <td colSpan={5}>
                       <div className="mt-3">
-                        <div className="pl-2 mb-4 w-[70%] text-md font-semibold">
-                          <p className="flex justify-between">
-                            Total Price : <span>{orderCalc.total}</span>
+                        <div className="pl-2 mb-4 w-[70%] text-[1rem] font-semibold">
+                          <p className="flex gap-3">
+                            Total Price :<span >   {orderCalc.total}</span>
                           </p>
                           {/* <p className="flex justify-between">
                             Tax : <span>{orderCalc.tax}</span>

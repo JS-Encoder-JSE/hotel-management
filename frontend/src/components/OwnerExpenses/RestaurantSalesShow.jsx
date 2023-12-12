@@ -156,7 +156,7 @@ useEffect(() => {
 
   return (
     <div className={`space-y-5`}>
-      <div className={`bg-white p-4 rounded`}>
+      <div className={`bg-white p-4 rounded-xl`}>
         <div>
           <div>
             <div className="h-full">

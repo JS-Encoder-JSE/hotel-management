@@ -102,7 +102,7 @@ const HotelListView = () => {
         </div>
         {!isLoading ? (
           <>
-            <h1 className="text-2xl text-center ">Hotel - information</h1>
+            <h1 className="text-center text-2xl bg-green-slimy w-72 mx-auto text-white p-1 rounded-md mt-7">Hotel - information</h1>
             <div className="card-body grid md:grid-cols-2 gap-4">
               <div className="">
                 <h2 className="card-title mb-3">Hotel Description </h2>

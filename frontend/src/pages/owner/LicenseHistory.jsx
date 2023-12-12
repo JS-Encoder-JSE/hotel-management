@@ -79,7 +79,7 @@ const LicenseHistory = () => {
           </Link>
         </div>
         <div className="card-body space-y-10 min-h-screen">
-          <h1 className="text-2xl text-center ">License History</h1>
+          <h1 className="text-center text-2xl bg-green-slimy w-52 mx-auto text-white p-1 rounded-md">License History</h1>
           <div
             className={`flex justify-between flex-wrap gap-1.5 flex-col md:flex-row `}
           >
