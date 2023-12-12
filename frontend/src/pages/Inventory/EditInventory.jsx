@@ -23,7 +23,7 @@ const EditInventory = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: userData } = useInvSingleQuery(id);
-  const [updateInventory] = useUpdateInventoryMutation();
+  const [updateInventory, { isLoading }] = useUpdateInventoryMutation();
   const formik = useFormik({
     initialValues: {
       itemName: "",
@@ -40,7 +40,6 @@ const EditInventory = () => {
           status: values.status,
         },
       });
-
 
       if (response?.error) {
         toast.error(response.error.data.message);
@@ -138,6 +137,7 @@ const EditInventory = () => {
         {/* submit button */}
         <div className=" col-span-full text-end mt-5 ">
           <button
+            disabled={isLoading}
             type="submit"
             className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
           >

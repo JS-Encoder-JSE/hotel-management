@@ -29,7 +29,7 @@ const validationSchema = yup.object({
   poolName: yup.string().required("Pool Name  is required"),
   members: yup.string().required("members  is required"),
   roomNumber: yup.string().required("Room number is required"),
- 
+
   // packagePrice: yup
   //   .string()
   //   .when(["documentsType"], ([membershipSubscription], schema) => {
@@ -37,12 +37,9 @@ const validationSchema = yup.object({
   //       return schema.required("Package Price is required");
   //     else return schema;
   //   }),
-  price: yup
-    .number(),
-    
-    paidamount: yup
-    .number()
-  ,
+  price: yup.number(),
+
+  paidamount: yup.number(),
 });
 
 const PoolReservation = () => {
@@ -52,7 +49,6 @@ const PoolReservation = () => {
   const closeRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-     
       roomNumber: "",
       name: "",
       members: "",
@@ -65,7 +61,7 @@ const PoolReservation = () => {
     onSubmit: async (values, formikHelpers) => {
       try {
         const data = { ...values };
-        const {     
+        const {
           roomNumber: room_id,
           name,
           members,
@@ -95,17 +91,17 @@ const PoolReservation = () => {
     },
   });
 
-  const { data: rooms } = useRoomsQuery({ id: formik.values.hotel_id ,
-    limit: 1000000,  
-  
+  const { data: rooms } = useRoomsQuery({
+    id: formik.values.hotel_id,
+    limit: 1000000,
   });
 
   const transformedRooms = rooms?.data?.docs
-  ?.filter((room) => room.status === "CheckedIn") 
-  .map((room) => ({
-    value: room._id,
-    label: room.roomNumber,
-  }));
+    ?.filter((room) => room.status === "CheckedIn")
+    .map((room) => ({
+      value: room._id,
+      label: room.roomNumber,
+    }));
 
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 
@@ -115,47 +111,49 @@ const PoolReservation = () => {
     }
   };
 
-// Price Validation
-const handlePrice = (e) => {
-  const inputValue = e.target.value;
-  const fieldName = e.target.price;
-  if (inputValue >= 0) {
-    // Update the Formik state
-    formik.handleChange(e);
-  } else if (inputValue === "") {
-    e.target.value = 0;
-    formik.handleChange(e);
-  }
-};
-// Price Validation
-const handlePaidAmount = (e) => {
-  const inputValue = e.target.value;
-  const fieldName = e.target.price;
-  if (inputValue >= 0) {
-    // Update the Formik state
-    formik.handleChange(e);
-  } else if (inputValue === "") {
-    e.target.value = 0;
-    formik.handleChange(e);
-  }
-};
+  // Price Validation
+  const handlePrice = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.price;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
+  // Price Validation
+  const handlePaidAmount = (e) => {
+    const inputValue = e.target.value;
+    const fieldName = e.target.price;
+    if (inputValue >= 0) {
+      // Update the Formik state
+      formik.handleChange(e);
+    } else if (inputValue === "") {
+      e.target.value = 0;
+      formik.handleChange(e);
+    }
+  };
 
   return (
     <>
-     <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
+      <div className="mb-7">
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
       <div
         className={`relative max-w-xl bg-white rounded-2xl mx-auto p-8 pt-10 mt-20`}
       >
@@ -216,7 +214,7 @@ const handlePaidAmount = (e) => {
             onSubmit={formik.handleSubmit}
           >
             {/* Selet Hotel */}
-            
+
             <div className="flex flex-col gap-3">
               <Select
                 placeholder="Select room"
@@ -342,7 +340,7 @@ const handlePaidAmount = (e) => {
             {/* Price */}
             <div className="flex flex-col gap-3">
               <input
-              onWheel={ event => event.currentTarget.blur() }
+                onWheel={(event) => event.currentTarget.blur()}
                 type="number"
                 placeholder="Price"
                 name="price"
@@ -360,7 +358,7 @@ const handlePaidAmount = (e) => {
             {/*Paid Amount  */}
             <div className="flex flex-col gap-3">
               <input
-              onWheel={ event => event.currentTarget.blur() }
+                onWheel={(event) => event.currentTarget.blur()}
                 type="number"
                 placeholder="Paid Amount"
                 name="paidamount"
@@ -379,6 +377,7 @@ const handlePaidAmount = (e) => {
             {/* button */}
             <div className={`flex justify-between`}>
               <button
+                disabled={isLoading}
                 type={"submit"}
                 className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
               >

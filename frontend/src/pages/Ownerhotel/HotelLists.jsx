@@ -71,7 +71,7 @@ const HotelLists = () => {
   }, [hotels]);
 
   return (
-    <div className={`space-y-10 bg-white rounded-2xl p-4`}>
+    <div className={`space-y-10 bg-white rounded-2xl p-4 min-h-screen`}>
         <div>
           <Link to={`/dashboard `}>
             <button

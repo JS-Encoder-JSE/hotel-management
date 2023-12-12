@@ -19,7 +19,7 @@ const validationSchema = yup.object({
     .required("Address is required")
     .matches(
       /^[a-zA-Z][a-zA-Z0-9\s]*$/,
-      "Address must start with a character and can include characters and numbers",
+      "Address must start with a character and can include characters and numbers"
     ),
   email: yup
     .string()
@@ -80,11 +80,11 @@ const EditEmployee = () => {
         const formData = new FormData();
         formData.append(
           userImg.name.substring(0, userImg.name.lastIndexOf(".")),
-          userImg,
+          userImg
         );
 
         await uploadSingle(formData).then(
-          (result) => (obj.profile_img = result.data.imageUrl),
+          (result) => (obj.profile_img = result.data.imageUrl)
         );
       }
 
@@ -336,6 +336,7 @@ const EditEmployee = () => {
             {/* submit button */}
             <div className=" col-span-full text-end mb-5 ">
               <button
+                disabled={isLoading}
                 type="submit"
                 className=" btn btn-md  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[7rem]"
               >

@@ -1,4 +1,4 @@
-﻿import { BookingInfo } from "../../models/Manager/booking.model.js";
+﻿import { Booking, BookingInfo } from "../../models/Manager/booking.model.js";
 import {
   Food,
   FoodCategory,
@@ -267,8 +267,12 @@ export const addOrder = async (req, res) => {
         total_price,
         paid_amount,
         unpaid_amount,
+        order_status: "Current",
       });
       const savedFoodOrder = await newFoodOrder.save();
+      const booking = await Booking.findOne({ room_id, status: "CheckedIn" });
+      booking.food_order_ids.push(savedFoodOrder._id);
+      await booking.save();
       res.status(201).json({
         success: true,
         data: savedFoodOrder,

@@ -46,7 +46,12 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       });
     }
     const activeBookingIds = activeBookings.map((booking) => booking._id);
-
+    const food_order_ids = activeBookings
+    .map((booking) => booking.food_order_ids)
+    .flat();
+    console.log(activeBookingIds);
+    console.log(food_order_ids);
+    
     const bookingInfo = await BookingInfo.findOne({
       booking_ids: { $in: activeBookingIds },
     }).populate({
@@ -54,13 +59,14 @@ export const getCheckoutInfoByRoom = async (req, res) => {
       model: "Room",
       select: "roomNumber category",
     });
+
     // Find food orders for the given room_id
     const foodOrders = await FoodOrder.find({
+      _id: { $in: food_order_ids },
       room_id: { $in: room_ids },
-      order_status: { $ne: "CheckedOut" },
+      order_status: "Current",
       // You may add other conditions if needed
-    });    
-    console.log("foodOrders:", foodOrders);
+    });
     // Find gym bills for the given room_id
     const gymBills = await GymBills.find({
       room_id: { $in: room_ids },
@@ -211,13 +217,15 @@ export const checkedOut = async (req, res) => {
       // Save the transaction log entry to the database
       await newTransactionLog.save();
     }
-    // Define roomStatus (replace 'YOUR_ROOM_STATUS' with the actual status)
-    const roomStatus = "Available";
 
     // Update room statuses
-    await Room.updateOne({ _id: room_id }, { $set: { status: roomStatus } });
+    await Room.updateOne({ _id: room_id }, { $set: { status: "Available" } });
     await FoodOrder.updateMany(
-      { room_id: room_id },
+      {
+        _id: { $in: booking.food_order_ids },
+        room_id: room_id,
+        order_status: "Current",
+      },
       { $set: { order_status: "CheckedOut", payment_status: "Paid" } }
     );
     await GymBills.updateMany(

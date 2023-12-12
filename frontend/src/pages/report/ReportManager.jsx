@@ -17,6 +17,7 @@ import { useGetManagerReportQuery } from "../../redux/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
 import { getFormateDateAndTime, getISOStringDate } from "../../utils/utils.js";
 import ManagerReport from "./ManagerReport.jsx";
+import { getformatDateTime } from "../../utils/timeZone.js";
 
 const ReportManager = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -62,8 +63,6 @@ const ReportManager = () => {
     limit: formik.values.entries,
   });
 
-
-
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
@@ -83,33 +82,39 @@ const ReportManager = () => {
         0
       );
       setTotalAmount(total);
-      setPDF(reports?.data?.docs)
+      setPDF(reports?.data?.docs);
     }
   }, [reports]);
-
 
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-5 py-5 rounded `}>
-      <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
-         <div>
-         <h3 className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>All Report</h3>
-         </div>
-        <div className={`flex flex-wrap gap-1.5 justify-end flex-col md:flex-row `}>
-     
+        <div className="mb-7">
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
+
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+        <div>
+          <h3
+            className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+          >
+            All Report
+          </h3>
+        </div>
+        <div
+          className={`flex flex-wrap gap-1.5 justify-end flex-col md:flex-row `}
+        >
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>
               <button
@@ -120,18 +125,22 @@ const ReportManager = () => {
                 CSV
               </button>
               {PDF.length ? (
-                  <PDFDownloadLink
-                    document={<ManagerReport values={PDF} header={{
-                      title: "DAK Hospitality LTD",
-                      name: "All Report",
-                    }} />}
-                    fileName={`${new Date().toLocaleDateString()}.pdf`}
-                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                  >
-                    PDF
-                  </PDFDownloadLink>
+                <PDFDownloadLink
+                  document={
+                    <ManagerReport
+                      values={PDF}
+                      header={{
+                        title: "DAK Hospitality LTD",
+                        name: "All Report",
+                      }}
+                    />
+                  }
+                  fileName={`${new Date().toLocaleDateString()}.pdf`}
+                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                >
+                  PDF
+                </PDFDownloadLink>
               ) : null}
-              
             </div>
           </div>
         </div>
@@ -223,60 +232,6 @@ const ReportManager = () => {
             </button>
           </div>
         </div>
-        {/* <div className={`space-x-1.5`}>
-              <span>Show</span>
-              <select
-                name="entries"
-                className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-                value={formik.values.entries}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-              </select>
-              <span>entries</span>
-            </div> */}
-        <div className={`flex gap-1.5`}>
-          {/* <button
-                type={"button"}
-                className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
-                onClick={() =>
-                  exportExcel([{ name: "test", age: 12 }], "testexcel")
-                }
-              >
-                CSV
-              </button> */}
-          {/* <button
-                type={"button"}
-                className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-              >
-              </button> */}
-          {/*<PDFDownloadLink*/}
-          {/*  document={<CreateReport />}*/}
-          {/*  fileName={`${new Date().toLocaleDateString()}.pdf`}*/}
-          {/*>*/}
-          {/*  PDF*/}
-          {/*</PDFDownloadLink>*/}
-        </div>
-        {/* <div className={`relative sm:min-w-[20rem]`}>
-              <input
-                type="text"
-                placeholder="Search by name..."
-                name="search"
-                className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-                value={formik.values.search}
-                onChange={formik.handleChange}
-              />
-              <button
-                type="button"
-                className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-              >
-                <FaSearch />
-              </button>
-            </div> */}
-
         {!isLoading ? (
           <div className="overflow-x-auto mt-10">
             <table className="table">
@@ -301,8 +256,9 @@ const ReportManager = () => {
                       <th>{++idx}</th>
                       <td>{report.guestName}</td>
                       <td>{report?.room_numbers.join(",")}</td>
-                      <td>{new Date(report?.checked_in).toLocaleDateString()}</td>
-                      <td>{new Date(report?.checked_out).toLocaleDateString()}</td>
+                      <td>{getformatDateTime(report?.checked_in)}</td>
+
+                      <td>{getformatDateTime(report?.checked_out)}</td>
                       <td>{report?.paid_amount}</td>
                       <td className={`space-x-1.5`}></td>
                     </tr>
