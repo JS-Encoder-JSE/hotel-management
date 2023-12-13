@@ -218,7 +218,7 @@ const validDocumentType = documentTypes[validDocumentTypeKey]?.filter(value => v
     </div>
     {/* payment system */}
     <div >
-            <PaymentMethodCard booking={booking?.data} />
+            <PaymentMethodCard booking={booking?.data} isLoading={isLoading} />
       </div>
       {/* Room rent */}
       {/* <div className="mt-20">
