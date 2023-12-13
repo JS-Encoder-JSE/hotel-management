@@ -183,6 +183,12 @@ const RemoveExpenses = ({ data, allItems, index }) => {
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
           Remove
+          {isLoading ? (
+            <span
+              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+              role="status"
+            ></span>
+          ) : null}
         </button>
       </form>
     </div>

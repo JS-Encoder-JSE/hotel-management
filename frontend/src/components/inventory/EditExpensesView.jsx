@@ -79,19 +79,6 @@ const EditExpensesView = ({ data, allItems, index }) => {
       }));
     }
   }, [data]);
-
-  // Price Validation
-  // const handlePrice = (e) => {
-  //   const inputValue = e.target.value;
-  //   const fieldName = e.target.price;
-  //   if (inputValue >= 0) {
-  //     // Update the Formik state
-  //     formik.handleChange(e);
-  //   } else if (inputValue === "") {
-  //     e.target.value = 0;
-  //     formik.handleChange(e);
-  //   }
-  // };
   const handleShowPass = () => {
     setShowPass(!showPass);
   };
@@ -237,6 +224,12 @@ const EditExpensesView = ({ data, allItems, index }) => {
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
           Update
+          {isLoading ? (
+            <span
+              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+              role="status"
+            ></span>
+          ) : null}
         </button>
       </form>
     </div>
