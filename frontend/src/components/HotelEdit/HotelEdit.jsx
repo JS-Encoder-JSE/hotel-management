@@ -144,7 +144,7 @@ const HotelEdit = () => {
     <div className={`space-y-10`}>
       <div className="card bg-white shadow-xl">
         <div className="card-body p-4">
-          <div className="text-2xl flex items-center gap-1.5">
+          <div className="text-2xl  items-center gap-1.5">
             <div>
               <span
                 className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
@@ -153,7 +153,7 @@ const HotelEdit = () => {
                 <FaArrowLeft />
               </span>
             </div>
-            <h2>Edit Hotel</h2>
+            <div><h2 className="text-center bg-green-slimy text-white py-1 max-w-[18rem] mx-auto mt-4 rounded-md ">Edit Hotel</h2></div>
           </div>
           <hr className={`my-5`} />
         </div>
@@ -163,7 +163,7 @@ const HotelEdit = () => {
             <div className="max-auto">
               <form
                 autoComplete="off"
-                className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10"
+                className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10 p-3"
                 onSubmit={formik.handleSubmit}
               >
                 {/* Hotel Name box */}
