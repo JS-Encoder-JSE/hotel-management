@@ -20,10 +20,16 @@ const expensesAndSalesApi = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["GetExpenses", "expenses"],
+      invalidatesTags: [
+        "GetExpenses",
+        "expenses",
+        "subDashboard",
+        "mainDashboard",
+      ],
     }),
     getSubDashBoardInfo: builder.query({
       query: (managerId) => `subdashboards/get-subdashboard-info/${managerId}`,
+      providesTags: ["subDashboard"],
     }),
     getReportsByDate: builder.query({
       query: ({ date, hotelId, cp }) =>
