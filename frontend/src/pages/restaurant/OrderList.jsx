@@ -66,7 +66,7 @@ const OrderList = () => {
     pp: ordersPerPage,
     unique_id: search,
   });
-
+  console.log({ orders });
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
@@ -123,8 +123,11 @@ const OrderList = () => {
             </button>
           </Link>
         </div>
-        <h3 className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
-        >Order List</h3>
+        <h3
+          className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+        >
+          Order List
+        </h3>
         <div className={``}>
           <div className={`flex flex-col md:flex-row gap-3`}>
             <DatePicker
@@ -250,13 +253,17 @@ const OrderList = () => {
                               >
                                 <FaEye />
                               </span>
-                              <span
-                                onClick={() => handleDelete(order?._id)}
-                                title={`Cancel`}
-                                className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}
-                              >
-                                <FaTrash />
-                              </span>
+                              {order?.order_status === "CheckedOut" ? (
+                                ""
+                              ) : (
+                                <span
+                                  onClick={() => handleDelete(order?._id)}
+                                  title={`Cancel`}
+                                  className={`btn btn-md hover:bg-red-500 bg-transparent hover:text-white text-red-500 !border-red-500 rounded normal-case`}
+                                >
+                                  <FaTrash />
+                                </span>
+                              )}
                             </td>
                           </tr>
                         );
