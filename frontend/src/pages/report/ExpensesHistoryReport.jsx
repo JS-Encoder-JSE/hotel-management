@@ -6,6 +6,7 @@ import { getFormateDateAndTime, versionControl } from "../../utils/utils";
 const ExpensesHistoryReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
     const desiredHeaders = ["Serial No", "date", "spendedfor","total_amount"];
+    const tableHeaders =["Serial No","Date","Spend For","Total Amount"]
 
     const jsEncoderTextStyle = {
       color: "green",
@@ -91,7 +92,7 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-            {desiredHeaders.map((header, index) => (
+            {tableHeaders.map((header, index) => (
               <Text key={index} style={[styles.tableCell, styles.text]}>
                 {header}
               </Text>

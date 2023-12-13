@@ -5,6 +5,7 @@ import { versionControl } from "../../utils/utils";
 
 const ManagerReport = ({ values, header }) => {
     const desiredHeaders = ["Serial No", "guestName", "room_numbers", "checked_in", "checked_out", "paid_amount"];
+    const tableHeaders =["Serial No","Guest Name","Room Numbers","Checked In","Checked Out","Paid Amount" ]
      
   const jsEncoderTextStyle = {
     color: "green",
@@ -89,7 +90,7 @@ const currentYear = new Date().getFullYear();
         </View>
         <View style={styles.table}>
   <View style={[styles.tableRow, styles.tableHeader]}>
-    {desiredHeaders.map((header, index) => (
+    {tableHeaders.map((header, index) => (
       <Text key={index} style={[styles.tableCell, styles.text]}>
         {header}
       </Text>

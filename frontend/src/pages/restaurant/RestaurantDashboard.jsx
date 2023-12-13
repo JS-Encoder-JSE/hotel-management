@@ -26,7 +26,6 @@ const RestaurantDashboard = ({ managerId }) => {
   const { data, isLoading, isError } = useGetSubDashBoardInfoQuery(
     managerId ? managerId : user._id
   );
-  console.log("data",data)
   const [profit, setProfit] = useState(false);
   const formik = useFormik({
     initialValues: {},
@@ -127,23 +126,6 @@ const RestaurantDashboard = ({ managerId }) => {
           <hr />
         </div>
       </div>
-
-      {/* <div className={`flex justify-center mb-20 mt-20`}>
-        <div>
-          <select
-            name="filter"
-            className="select select-sm select-bordered border-green-slimy rounded focus:outline-none"
-            value={formik.values.filter}
-            onChange={formik.handleChange}
-          >
-            <option value="">All</option>
-            <option value="lastWeek">Last Week</option>
-            <option value="lastMonth">Last Month</option>
-            <option value="lastMonth3">Last 3 Month</option>
-            <option value="lastYear">Last Year</option>
-          </select>
-        </div>
-      </div> */}
 
       <div
         // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5`}

@@ -33,7 +33,7 @@ const Dashboard = () => {
           <div
             className={`md:self-start fixed md:sticky top-0 ${
               isHbMenu ? "-left-96" : "left-0"
-            } bg-gray-200 text-lg w-[17rem] md:w-auto h-screen md:-my-10 z-30 px-10 py-5 transition-[left] duration-500`}
+            } bg-gray-200 text-lg w-[17rem] md:w-auto h-screen md:-my-10 z-30  py-5 transition-[left] duration-500`}
           >
             <figure
               className={` max-w-[10rem] mx-auto flex items-center justify-center `}
@@ -44,7 +44,7 @@ const Dashboard = () => {
               <h3 className="text-center text-[20px] mt-5 mb-5 font-medium text-green-slimy">DAK Hospitality LTD</h3>
             </div>
             <h3
-              className={`text-2xl mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy capitalize`}
+              className={`text-2xl ml-8 mb-5 font-semibold text-green-slimy pl-3 border-2 border-transparent border-l-green-slimy capitalize`}
             >
               {user?.data?.role}
             </h3>
@@ -64,7 +64,7 @@ const Dashboard = () => {
                </div>
               </div>
               </div>
-              <ul className={`space-y-1.5`}>
+              <ul className={`space-y-1.5 px-10`}>
                 <li>
                   <NavLink
                     to={`/dashboard`}

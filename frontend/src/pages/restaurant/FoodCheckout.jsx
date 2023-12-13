@@ -9,22 +9,22 @@ import {
 import { Rings } from "react-loader-spinner";
 import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem.jsx";
 import toast from "react-hot-toast";
-import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx"
+import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { current } from "@reduxjs/toolkit";
-import CheckOut from './../room/CheckOut/CheckOut';
+import CheckOut from "./../room/CheckOut/CheckOut";
 const FoodCheckout = () => {
   const { id } = useParams();
-  const [checkoutLoading,setCheckoutLoading] = useState(false);
-  const { data,isLoading } = useGetOrderByIdQuery(id);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const { data, isLoading } = useGetOrderByIdQuery(id);
+  console.log({ orderDetails: data });
   const [orderData, setOrderData] = useState({});
   const [input, setInput] = useState(1);
   const navigate = useNavigate();
-  const [updateOrder,isCheckLoader] = useUpdateOrderMutation();
+  const [updateOrder, isCheckLoader] = useUpdateOrderMutation();
 
   const [taxPercentage, setTaxPercentage] = useState(0);
-  const [serviceTax,setServiceCharge]=useState(0);
-
+  const [serviceTax, setServiceCharge] = useState(0);
 
   const location = useLocation();
   const path = location.pathname;
@@ -35,11 +35,9 @@ const FoodCheckout = () => {
   );
 
   const taxAmount = (grandTotal * taxPercentage) / 100;
-  const serviceChargeTax =(grandTotal*serviceTax)/100
+  const serviceChargeTax = (grandTotal * serviceTax) / 100;
 
   const finalTotal = grandTotal + taxAmount + serviceChargeTax;
-
-
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -70,8 +68,8 @@ const FoodCheckout = () => {
       order_status: "CheckedOut",
       current_order: false,
       total_price: finalTotal,
-      unpaid_amount:0,
-      payment_status:"Paid"
+      unpaid_amount: 0,
+      payment_status: "Paid",
     };
     const updateForRoom = {
       paid_amount: 0,
@@ -79,36 +77,34 @@ const FoodCheckout = () => {
       total_price: finalTotal,
       items: orderData.data.items,
       current_order: false,
-      payment_status:"Paid"
+      payment_status: "Pending",
     };
-    setCheckoutLoading(true)
+    setCheckoutLoading(true);
     const response = await updateOrder({
-      data: orderData?.data?.room_id
-        ? updateForRoom
-        : orderData?.data?.table_id
-        ? checkoutForTable
-        : null,
+      data:
+        orderData?.data?.dedicated_to === "room"
+          ? updateForRoom
+          : orderData?.data?.dedicated_to === "table"
+          ? checkoutForTable
+          : null,
       id,
     });
-    setCheckoutLoading(true)
+    setCheckoutLoading(true);
     if (response?.error) {
       toast.error(response.error.data.message);
-      setCheckoutLoading(false)
+      setCheckoutLoading(false);
     } else {
       toast.success("Checkout successful");
       setCheckoutLoading(false);
-      handlePrint()
+      handlePrint();
     }
   };
   useEffect(() => {
     setOrderData(data);
   }, [data]);
 
-// for printing
+  // for printing
   const componentRef = useRef();
-
-  
-  
 
   return (
     <div className={`flex flex-col gap-5 bg-white rounded-lg p-10`}>
@@ -126,15 +122,19 @@ const FoodCheckout = () => {
       </h3>
      </div>
       <hr />
-      <div >
+      <div>
         <div className={`flex items-center gap-3 `}>
-        <span className={`w-26`}>{orderData?.data?.table_id ? "Table" : "Room"}</span>
+          <span className={`w-26`}>
+            {orderData?.data?.table_id ? "Table" : "Room"}
+          </span>
           <span>:</span>
           <span>
-          {orderData?.data?.table_id ? orderData?.data?.table_id?.table_number: orderData?.data?.room_id?.roomNumber}
+            {orderData?.data?.table_id
+              ? orderData?.data?.table_id?.table_number
+              : orderData?.data?.room_id?.roomNumber}
           </span>
           {/* {orderData?.data?.room_id && <span>{orderData?.data?.room_id}</span>} */}
-              </div>
+        </div>
         <div className={`flex items-center gap-3`}>
           <span className={`w-24`}>Invoice No</span>
           <span className="ms-7">:</span>
@@ -143,9 +143,7 @@ const FoodCheckout = () => {
       </div>
       {!isLoading ? (
         <>
-          {
-       
-          orderData?.data?.items?.length ? (
+          {orderData?.data?.items?.length ? (
             <div className="overflow-x-auto border mt-3">
               <table className="table">
                 <thead>
@@ -157,62 +155,80 @@ const FoodCheckout = () => {
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
-                    <th>Action</th>
+                    {orderData?.data?.order_status === "CheckedOut" ? null : (
+                      <th>Action</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
-                  {  orderData?.data?.items.map((item, i) => (
+                  {orderData?.data?.items.map((item, i) => (
                     <SingleCheckoutItem
                       index={i}
                       handleDeleteItems={handleDeleteItems}
                       item={item}
                       key={i}
+                      showDelete={
+                        orderData?.data?.order_status === "CheckedOut"
+                          ? false
+                          : true
+                      }
                     />
                   ))}
                 </tbody>
                 <tfoot>
-                <tr>
-                  <td></td>
-                    <td></td>
-                    <td></td>   
-                    <td>
-                      Service Charge 
-                    </td>
-                    <td> <span >
-                      <input 
-                      className=" border border-gray-500/80 p-2 -ml-20 text-center" 
-                      placeholder="Service Charge"
-                        type="number"
-                        name="addSrvCrg" 
-                        id=""
-                        onChange={(e) => setServiceCharge(Number(e.target.value))}
+                  {orderData?.data?.order_status !== "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Service Charge</td>
+                      <td>
+                        {" "}
+                        <span>
+                          <input
+                            className=" border border-gray-500/80 p-2 -ml-20 text-center"
+                            placeholder="Service Charge"
+                            type="number"
+                            name="addSrvCrg"
+                            id=""
+                            onChange={(e) =>
+                              setServiceCharge(Number(e.target.value))
+                            }
+                          />
+                        </span>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : null}
 
-                    /></span></td>
-                    <td></td>
-                  </tr>
-                  
+                  {orderData?.data?.order_status !== "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>GST/Tax</td>
+                      <td>
+                        {" "}
+                        <span>
+                          <input
+                            className="border border-gray-500/80 p-2 -ml-20 text-center"
+                            placeholder=" GST/Tax"
+                            type="number"
+                            name="addTax"
+                            id=""
+                            onChange={(e) =>
+                              setTaxPercentage(Number(e.target.value))
+                            }
+                          />
+                        </span>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : null}
                   <tr>
                     <td></td>
                     <td></td>
-                    <td></td>   
-                    <td>
-                      GST/Tax
-                    </td>
-                    <td> <span >
-                      <input 
-                      className="border border-gray-500/80 p-2 -ml-20 text-center" 
-                      placeholder=" GST/Tax"
-                        type="number"
-                        name="addTax" 
-                        id=""
-                        onChange={(e) => setTaxPercentage(Number(e.target.value))}
-                    /></span></td>
                     <td></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>   
                     <td>Grand Total</td>
                     <td>{finalTotal}</td>
                     <td></td>
@@ -234,12 +250,12 @@ const FoodCheckout = () => {
       )}
 
       <div className={`flex gap-4 justify-end mt-4`}>
-        <div style={{display:"none"}} >
+        <div style={{ display: "none" }}>
           <div className="p-4" ref={componentRef}>
-           <FoodCheckoutPrint orderData={orderData} finalTotal={finalTotal}/>
-          </div>   
+            <FoodCheckoutPrint orderData={orderData} finalTotal={finalTotal} />
+          </div>
         </div>
-      <ReactToPrint
+        <ReactToPrint
           trigger={() => (
             <button
               title="please select payment method"
@@ -250,41 +266,27 @@ const FoodCheckout = () => {
           )}
           content={() => componentRef.current}
         />
-         
-        {/* <button
-          onClick={handleCheckout}
-          className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
-        >
-     
-  <>
-    {path.includes("orderDetails") ? "Update Order" : "Checkout"}
-  </>
-  {isLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
-         
-        </button> */}
-     
-     <button
-      onClick={handleCheckout}
-      className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
-    >
-      <>
-        {path.includes("orderDetails") ? "Update Order" : "Checkout"}
-      </>
-      {checkoutLoading ? (
-        <span
-          className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-          role="status"
-        ></span>
-      ) : null}
-    </button>
 
-
-
+        {orderData?.data?.order_status === "CheckedOut" ? (
+          ""
+        ) : (
+          <button
+            onClick={handleCheckout}
+            className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
+          >
+            <>
+              {orderData?.data?.dedicated_to === "room"
+                ? "Update Order"
+                : "Checkout"}
+            </>
+            {checkoutLoading ? (
+              <span
+                className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                role="status"
+              ></span>
+            ) : null}
+          </button>
+        )}
       </div>
     </div>
   );

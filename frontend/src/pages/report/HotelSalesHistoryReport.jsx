@@ -6,6 +6,7 @@ import { getFormateDateAndTime } from "../../utils/utils";
 const HotelSalesHistoryReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
     const desiredHeaders = ["Serial No", "date","today_hotel_income"];
+    const tableHeaders = ["Serial No","Date","Today Hotel Income"]
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -74,7 +75,7 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-            {desiredHeaders.map((header, index) => (
+            {tableHeaders.map((header, index) => (
               <Text key={index} style={[styles.tableCell, styles.text]}>
                 {header}
               </Text>

@@ -7,6 +7,7 @@ const RestaurantSalesHistory = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
     console.log("values",values)
     const desiredHeaders = ["Serial No", "item", "serveyor_quantity", "quantity", "price"];
+    const tableHeaders =["Serial No","Item","Surveyor Quantity", "Quantity", "Price"]
     const jsEncoderTextStyle = {
       color: "green",
       fontWeight: "bold",
@@ -91,7 +92,7 @@ const RestaurantSalesHistory = ({ values, header,date }) => {
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-            {desiredHeaders.map((header, index) => (
+            {tableHeaders.map((header, index) => (
               <Text key={index} style={[styles.tableCell, styles.text]}>
                 {header}
               </Text>

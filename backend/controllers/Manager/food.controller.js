@@ -216,8 +216,8 @@ export const addOrder = async (req, res) => {
 
     // Calculate total_price based on the sum of the 'total' field in each item
     const total_price = items.reduce((sum, item) => sum + item.total, 0);
-
-    const unpaid_amount = total_price - paid_amount;
+    const grand_total = total_price;
+    const unpaid_amount = grand_total - paid_amount;
 
     // Generate a random 8-digit number
     const randomNumber = Math.floor(10000000 + Math.random() * 90000000);
@@ -246,6 +246,7 @@ export const addOrder = async (req, res) => {
       if (existingFoodOrder) {
         existingFoodOrder.items.push(...items);
         existingFoodOrder.total_price += total_price;
+        existingFoodOrder.grand_total += total_price;
         existingFoodOrder.paid_amount += paid_amount;
         existingFoodOrder.unpaid_amount += unpaid_amount;
 
@@ -265,6 +266,7 @@ export const addOrder = async (req, res) => {
         items,
         dedicated_to,
         total_price,
+        grand_total,
         paid_amount,
         unpaid_amount,
         order_status: "Current",
@@ -290,6 +292,7 @@ export const addOrder = async (req, res) => {
       if (existingFoodOrder) {
         existingFoodOrder.items.push(...items);
         existingFoodOrder.total_price += total_price;
+        existingFoodOrder.grand_total += total_price;
         existingFoodOrder.paid_amount += paid_amount;
         existingFoodOrder.unpaid_amount += unpaid_amount;
 
@@ -309,6 +312,7 @@ export const addOrder = async (req, res) => {
         items,
         dedicated_to,
         total_price,
+        grand_total,
         paid_amount,
         unpaid_amount,
       });
@@ -379,7 +383,7 @@ export const updateOrder = async (req, res) => {
         message: "Order not found",
       });
     }
-    if ((updateData.order_status = "CheckedOut")) {
+    if (updateData.order_status === "CheckedOut") {
       const currentDate = new Date();
       const date = currentDate.toLocaleDateString();
       const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name

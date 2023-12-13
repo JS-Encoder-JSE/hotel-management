@@ -6,6 +6,7 @@ import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../
 const RestaurantExpenseReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
     const desiredHeaders = ["Serial No", "date", "name", "description", "quantity", "price","remark"];
+    const tableHeaders = ["Serial No","Date","Name","Description","Quantity","Price","Remark"]
 
     const jsEncoderTextStyle = {
       color: "green",
@@ -31,11 +32,13 @@ const RestaurantExpenseReport = ({ values, header,date }) => {
       flexDirection: "row",
       borderBottomWidth: 1,
       borderBottomColor: "#e8e8e8",
+      textAlign:"center"
     },
     tableCell: {
-      flex: 1,
+      flex: 2,
       padding: 8,
       wordWrap: 'break-word',
+      textAlign:"center"
     },
     descriptionCell: {
       flex: 2, // Adjust the width as needed
@@ -43,10 +46,12 @@ const RestaurantExpenseReport = ({ values, header,date }) => {
       wordWrap: 'break-word',
     },
     tableHeader: {
+      textAlign:"center",
       backgroundColor: "#f2f2f2",
     },
     text: {
       fontSize: 10,
+      text:"center"
     },
     footer: {
       position: "absolute",
@@ -97,7 +102,7 @@ const RestaurantExpenseReport = ({ values, header,date }) => {
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-          {desiredHeaders.map((header, index) => {
+          {tableHeaders.map((header, index) => {
               const cellStyle = header === 'description' ? styles.descriptionCell : styles.tableCell;
 
               return (

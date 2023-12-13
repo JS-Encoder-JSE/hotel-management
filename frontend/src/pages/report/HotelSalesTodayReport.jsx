@@ -4,11 +4,17 @@ import logo from "../../assets/logo.png"
 import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../utils/utils";
 
 const HotelSalesTodayReport = ({ values, header,date }) => {
+
+
+
+
     // SL	Date	Items Name	Description	Quantity	Price	Action
     console.log("values",values)
     const desiredHeaders = ["Serial No", "guestName","checked_in","checked_out","paid_amount","payable_amount","room_numbers","unpaid_amount"
-    
    ];
+
+   const tableHeaders =["Serial No","GuestName","Checked In", "Checked Out", "Paid Amount", "Payable Amount", "Room Numbers", "Unpaid Amount"]
+
    const jsEncoderTextStyle = {
     color: "green",
     fontWeight: "bold",
@@ -111,22 +117,22 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-          {desiredHeaders.map((header, index) => {
-              let cellStyle = styles.tableCell;
+          {tableHeaders.map((header, index) => {
+                let cellStyle = styles.tableCell;
 
-              // Apply specific styles for "payable_amount" and "room_numbers" columns
-              if (header === "payable_amount") {
-                cellStyle = styles.payableAmountCell;
-              } else if (header === "room_numbers") {
-                cellStyle = styles.roomNumbersCell;
-              }
+                // Apply specific styles for "payable_amount" and "room_numbers" columns
+                if (header === "Payable Amount") {
+                  cellStyle = styles.payableAmountCell;
+                } else if (header === "Room Numbers") {
+                  cellStyle = styles.roomNumbersCell;
+                }
 
-              return (
-                <Text key={index} style={[cellStyle, styles.text]}>
-                  {header}
-                </Text>
-              );
-            })}
+                return (
+                  <Text key={index} style={[cellStyle, styles.text]}>
+                    {header}
+                  </Text>
+                );
+              })}
           </View>
           { values && values.map((item, rowIndex) => (
             <View key={rowIndex} style={styles.tableRow}>

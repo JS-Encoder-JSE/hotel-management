@@ -390,4 +390,4 @@ export const dummyData = [
 
 
 // DHK Version controller
-export const versionControl = "01.50.01"
+export const versionControl = "01.50.04"

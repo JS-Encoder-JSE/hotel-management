@@ -1,41 +1,29 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
-  FaEye,
-  FaEyeSlash,
-  FaPlusCircle,
-  FaTrash,
-  FaUpload,
-} from "react-icons/fa";
-import { useUpdateExpensesItemMutation } from "../../redux/expensesAndSales/expensesAndSalesApi";
+  useRemoveExpensesMutation,
+  useUpdateExpensesItemMutation,
+} from "../../redux/expensesAndSales/expensesAndSalesApi";
 import toast from "react-hot-toast";
 
 // form validation
 const validationSchema = yup.object({
   name: yup.string(),
-  quantity: yup.string(),
-  // price: yup.number(),
-
-  // password: yup
-  // .string()
-  // .min(8, "Password should be of minimum 8 characters length")
-  // .required("Password is required"),
+  price: yup.number(),
   remark: yup.string().required("remark is required"),
-  description: yup.string().required("description is required"),
+  password: yup.string().required("Password is required"),
 });
 
-const EditExpensesView = ({ data, allItems, index }) => {
-  const [updateExpensesItem, { isLoading }] = useUpdateExpensesItemMutation();
+const RemoveExpenses = ({ data, allItems, index }) => {
+  const [removeExpenses, { isLoading }] = useRemoveExpensesMutation();
   const [showPass, setShowPass] = useState(false);
   const closeRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-      name: "",
-      quantity: "",
-      // price: "",
+      price: 0,
       password: "",
-      description: "",
       remark: "",
     },
 
@@ -43,20 +31,20 @@ const EditExpensesView = ({ data, allItems, index }) => {
     onSubmit: async (values, formikHelpers) => {
       const formValue = {
         _id: data?._id,
-        name: values.name,
-        description: values.description,
-        price: values.price,
-        quantity: values.quantity,
+        name: data?.name,
+        description: data?.description,
+        price: 0,
+        quantity: data?.quantity,
         remark: values.remark,
       };
       const updatedData = [...allItems.items];
       updatedData.splice(index, 1, formValue);
       const requestValue = {
-        date: allItems?.date,
         items: updatedData,
         password: values.password,
+        reduced_amount: data?.price,
       };
-      const response = await updateExpensesItem({
+      const response = await removeExpenses({
         id: allItems?._id,
         data: requestValue,
       });
@@ -74,8 +62,7 @@ const EditExpensesView = ({ data, allItems, index }) => {
     if (data) {
       formik.setValues((p) => ({
         ...p,
-        ...data,
-        remark: "",
+        price: data.price,
       }));
     }
   }, [data]);
@@ -96,48 +83,16 @@ const EditExpensesView = ({ data, allItems, index }) => {
       <h1
         className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
       >
-        Edit Expenses
+        Remove Expenses
       </h1>
 
       <form
         className="form-control md:grid-cols-2 gap-4 "
         onSubmit={formik.handleSubmit}
       >
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Item Name"
-            name="name"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.name && Boolean(formik.errors.name) ? (
-            <small className="text-red-600">
-              {formik.touched.name && formik.errors.name}
-            </small>
-          ) : null}
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Quantity"
-            name="quantity"
-            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
-            value={formik.values.quantity}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.quantity & Boolean(formik.errors.quantity) ? (
-            <small className="text-red-600">
-              {formik.touched.quantity && formik.errors.quantity}
-            </small>
-          ) : null}
-        </div>
         {/* price box */}
-        {/* <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
+          <h3 className={`font-semibold`}>Price</h3>
           <input
             onWheel={(event) => event.currentTarget.blur()}
             type="number"
@@ -145,7 +100,7 @@ const EditExpensesView = ({ data, allItems, index }) => {
             name="price"
             className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
             value={formik.values.price}
-            onChange={handlePrice}
+            disabled
             onBlur={formik.handleBlur}
           />
           {formik.touched.price && Boolean(formik.errors.price) ? (
@@ -153,7 +108,25 @@ const EditExpensesView = ({ data, allItems, index }) => {
               {formik.touched.price && formik.errors.price}
             </small>
           ) : null}
-        </div> */}
+        </div>
+        <div className="flex flex-col gap-3">
+          <h3 className={`font-semibold`}>New Price</h3>
+          <input
+            onWheel={(event) => event.currentTarget.blur()}
+            type="number"
+            placeholder="Price"
+            name="new_price"
+            className="input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy"
+            value={0}
+            disabled
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.price && Boolean(formik.errors.price) ? (
+            <small className="text-red-600">
+              {formik.touched.price && formik.errors.price}
+            </small>
+          ) : null}
+        </div>
 
         <div>
           <h3 className={`font-semibold`}>Password</h3>
@@ -186,21 +159,7 @@ const EditExpensesView = ({ data, allItems, index }) => {
             )}
           </div>
         </div>
-        <div className="col-span-full flex flex-col gap-3">
-          <textarea
-            placeholder="Description...."
-            name="description"
-            className="textarea textarea-md bg-transparent textarea-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy resize-none w-full"
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.description && Boolean(formik.errors.description) ? (
-            <small className="text-red-600">
-              {formik.touched.description && formik.errors.description}
-            </small>
-          ) : null}
-        </div>
+
         <div className="col-span-full flex flex-col gap-3">
           <textarea
             placeholder="Remark...."
@@ -223,7 +182,7 @@ const EditExpensesView = ({ data, allItems, index }) => {
           type="submit"
           className="col-span-full btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case h-auto p-2"
         >
-          Update
+          Remove
           {isLoading ? (
             <span
               className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
@@ -236,4 +195,4 @@ const EditExpensesView = ({ data, allItems, index }) => {
   );
 };
 
-export default EditExpensesView;
+export default RemoveExpenses;

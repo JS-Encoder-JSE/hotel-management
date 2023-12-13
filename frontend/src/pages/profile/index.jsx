@@ -136,24 +136,24 @@ const Profile = () => {
         </div>
         {user?.role === "owner" ? (
           <>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+            <div className="flex sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
               <label className={`min-w-[5.5rem]`}>License</label>
               <span>:</span>
-              <p className="text-slate-600">{user?.license_key}</p>
+              <p className="text-slate-600 ml-2">{user?.license_key}</p>
             </div>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+            <div className="flex sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
               <label className={`min-w-[5.5rem]`}>Expire Date</label>
-              <span>:</span>
-              <p className="text-slate-600">
+              <span> : </span>
+              <p className="text-slate-600 ml-2">
                 {new Date(user?.bill_to).toLocaleDateString()}
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
+            <div className="flex sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
               <label className={`min-w-[5.5rem]`}>
                 Last Renew <br /> Date
               </label>
               <span>:</span>
-              <p className="text-slate-600">
+              <p className="text-slate-600 ml-2">
                 {new Date(user?.bill_from).toLocaleDateString()}
               </p>
             </div>

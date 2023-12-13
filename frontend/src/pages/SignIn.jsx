@@ -152,6 +152,7 @@ const SignIn = () => {
                 {/* submit button */}
                 <button
                   type="submit"
+                  disable={isLoading? true : false}
                   className="btn btn-sm w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
                 >
                   <span>Sign In</span>

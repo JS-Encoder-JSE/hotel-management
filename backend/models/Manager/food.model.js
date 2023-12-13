@@ -119,6 +119,16 @@ const foodOrderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    tax: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    grand_total: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
     paid_amount: {
       type: Number,
       required: false,
