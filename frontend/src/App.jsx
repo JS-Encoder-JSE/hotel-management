@@ -199,7 +199,7 @@ const App = () => {
               path: "today-bookings",
               element: (
                 <ManagerRoute>
-                  <TodayBookings/>
+                  <TodayBookings />
                 </ManagerRoute>
               ),
             },
@@ -207,7 +207,7 @@ const App = () => {
               path: "today-cancel-bookings",
               element: (
                 <ManagerRoute>
-                  <TodayCancelBookings/>
+                  <TodayCancelBookings />
                 </ManagerRoute>
               ),
             },
@@ -223,7 +223,7 @@ const App = () => {
               path: "todays-checkin-list",
               element: (
                 <ManagerRoute>
-                  <TodaysCheckinList/>
+                  <TodaysCheckinList />
                 </ManagerRoute>
               ),
             },
@@ -231,7 +231,7 @@ const App = () => {
               path: "today-checkouts",
               element: (
                 <ManagerRoute>
-                 <TodayCheckout/>
+                  <TodayCheckout />
                 </ManagerRoute>
               ),
             },
@@ -637,6 +637,15 @@ const App = () => {
               ),
             },
             // Owner Hotel  Sidebar
+
+            {
+              path: "owner-todays-checkin-list",
+              element: (
+                <OwnerRoute>
+                  <TodaysCheckinList />
+                </OwnerRoute>
+              ),
+            },
             {
               path: "add-hotel",
               element: (
@@ -701,7 +710,7 @@ const App = () => {
               path: "restaurant-sales-details",
               element: (
                 <OwnerRoute>
-                  <ShowALlSellView/>
+                  <ShowALlSellView />
                 </OwnerRoute>
               ),
             },
