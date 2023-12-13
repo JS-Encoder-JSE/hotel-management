@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaMinus, FaPlus, FaTrash, FaArrowLeft } from "react-icons/fa";
-import { setQuantity } from "../../redux/add-order/addOrderSlice.js";
+import { FaArrowLeft } from "react-icons/fa";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   useGetOrderByIdQuery,
@@ -11,8 +10,6 @@ import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem.j
 import toast from "react-hot-toast";
 import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
-import { current } from "@reduxjs/toolkit";
-import CheckOut from "./../room/CheckOut/CheckOut";
 const FoodCheckout = () => {
   const { id } = useParams();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -66,9 +63,11 @@ const FoodCheckout = () => {
       items: orderData.data.items,
       order_status: "CheckedOut",
       current_order: false,
-      total_price: finalTotal,
+      total_price: grandTotal,
       unpaid_amount: 0,
       payment_status: "Paid",
+      grand_total: finalTotal,
+      tax: taxPercentage,
     };
     const updateForRoom = {
       paid_amount: 0,

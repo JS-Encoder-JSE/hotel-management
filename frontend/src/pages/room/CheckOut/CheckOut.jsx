@@ -42,6 +42,7 @@ import { clearAddOrderSlice } from "../../../redux/add-order/addOrderSlice";
 import Modal from "../../../components/Modal";
 import RefundPaymentModal from "./RefundPaymentModal";
 import { useReactToPrint } from "react-to-print";
+import { getCurrentTime } from "../../../utils/timeZone";
 
 const CheckOut = () => {
   const [getCheckout, { data: checkout, isSuccess, isLoading }] =
@@ -199,7 +200,17 @@ console.log(trxError)
         ) {
           window.refundPayment.showModal();
         } else {
-          handlePrint();
+          setTrxError(false);
+          toast.success("Checkout Successful");
+          // navigate("/dashboard/checkout");
+          if (
+            totalRefund > 0 &&
+            checkout?.data?.booking_info?.room_ids?.length === 1
+          ) {
+            window.refundPayment.showModal();
+          } else {
+            handlePrint();
+          }
         }
       }
         }
@@ -235,6 +246,15 @@ console.log(trxError)
       e.preventDefault();
     }
   };
+  const updateCheckoutTime = () => {
+    const selectedDate = new Date(checkout?.data?.room_bookings[0]?.to);
+
+    const [hours, minutes] = getCurrentTime().split(":");
+
+    selectedDate.setHours(hours, minutes, 0, 0);
+    const updatedToDate = selectedDate.toISOString();
+    dispatch(setToDate(updatedToDate));
+  };
   const transformedRooms = rooms?.data?.docs
     ?.filter((room) => room.status === "CheckedIn")
     ?.map((room) => ({
@@ -255,7 +275,7 @@ console.log(trxError)
   useEffect(() => {
     if (isSuccess) {
       dispatch(updateSubTotal(totalBilling));
-      dispatch(setToDate(checkout?.data?.room_bookings[0]?.to));
+      updateCheckoutTime();
       dispatch(setFromDate(checkout?.data?.room_bookings[0]?.from));
       dispatch(setBookingInfo(checkout?.data?.booking_info));
       dispatch(setCalculateNOD(checkout?.data?.room_bookings[0]?.no_of_days));
