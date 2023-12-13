@@ -173,51 +173,55 @@ const FoodCheckout = () => {
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Service Charge</td>
-                    <td>
-                      {" "}
-                      <span>
-                        <input
-                          className=" border border-gray-500/80 p-2 -ml-20 text-center"
-                          placeholder="Service Charge"
-                          type="number"
-                          name="addSrvCrg"
-                          id=""
-                          onChange={(e) =>
-                            setServiceCharge(Number(e.target.value))
-                          }
-                        />
-                      </span>
-                    </td>
-                    <td></td>
-                  </tr>
+                  {orderData?.data?.order_status !== "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Service Charge</td>
+                      <td>
+                        {" "}
+                        <span>
+                          <input
+                            className=" border border-gray-500/80 p-2 -ml-20 text-center"
+                            placeholder="Service Charge"
+                            type="number"
+                            name="addSrvCrg"
+                            id=""
+                            onChange={(e) =>
+                              setServiceCharge(Number(e.target.value))
+                            }
+                          />
+                        </span>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : null}
 
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>GST/Tax</td>
-                    <td>
-                      {" "}
-                      <span>
-                        <input
-                          className="border border-gray-500/80 p-2 -ml-20 text-center"
-                          placeholder=" GST/Tax"
-                          type="number"
-                          name="addTax"
-                          id=""
-                          onChange={(e) =>
-                            setTaxPercentage(Number(e.target.value))
-                          }
-                        />
-                      </span>
-                    </td>
-                    <td></td>
-                  </tr>
+                  {orderData?.data?.order_status !== "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>GST/Tax</td>
+                      <td>
+                        {" "}
+                        <span>
+                          <input
+                            className="border border-gray-500/80 p-2 -ml-20 text-center"
+                            placeholder=" GST/Tax"
+                            type="number"
+                            name="addTax"
+                            id=""
+                            onChange={(e) =>
+                              setTaxPercentage(Number(e.target.value))
+                            }
+                          />
+                        </span>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : null}
                   <tr>
                     <td></td>
                     <td></td>
@@ -268,7 +272,9 @@ const FoodCheckout = () => {
             className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
           >
             <>
-              {orderData?.dedicated_to === "room" ? "Update Order" : "Checkout"}
+              {orderData?.data?.dedicated_to === "room"
+                ? "Update Order"
+                : "Checkout"}
             </>
             {checkoutLoading ? (
               <span
