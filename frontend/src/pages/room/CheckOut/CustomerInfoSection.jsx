@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { convertedToDate } from "../../../utils/timeZone";
+import { convertedToDate, getCurrentTime } from "../../../utils/timeZone";
 import {
   setCalculateAmountAfterDis,
   setCalculateNOD,
@@ -34,7 +34,7 @@ const CustomerInfoSection = ({ data }) => {
   const dispatch = useDispatch();
 
   //select check out time
-  const [time, setTime] = useState("11:49");
+  const [time, setTime] = useState(getCurrentTime());
 
   // set new updated checkout date.
   const [updatedDate, setUpdatedDate] = useState(null);
@@ -83,7 +83,6 @@ const CustomerInfoSection = ({ data }) => {
     const new_no_of_days = Math.ceil(
       Math.abs(checkInDate - checkOutDate) / (24 * 60 * 60 * 1000)
     );
-
     const newToDate = checkOutDate.toISOString();
     dispatch(setToDate(newToDate));
     dispatch(
@@ -196,19 +195,18 @@ const CustomerInfoSection = ({ data }) => {
                 onChange={handleToDateChange}
               />
 
-          <div className="timePicker">
-            <TimePicker
-              amPmAriaLabel="Select AM/PM"
-              format="h:m:s a"
-              value={time}
-              clockIcon={false}
-              onChange={handleTime}
-              clearIcon={false}
-              disableClock={true}
-              className={`timePickers  ml-8 input border--500/50 input-md bg-transparent rounded  focus:border-green-slimy w-[80%] mt-3 p-0  focus-within:outline-none`}
-             
-            />
-        </div>
+              <div className="timePicker">
+                <TimePicker
+                  amPmAriaLabel="Select AM/PM"
+                  format="h:m:s a"
+                  value={time}
+                  clockIcon={false}
+                  onChange={handleTime}
+                  clearIcon={false}
+                  disableClock={true}
+                  className={`timePickers  ml-8 input border--500/50 input-md bg-transparent rounded  focus:border-green-slimy w-[80%] mt-3 p-0  focus-within:outline-none`}
+                />
+              </div>
             </div>
           </div>
         </div>
