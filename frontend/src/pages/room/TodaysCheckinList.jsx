@@ -56,7 +56,7 @@ const TodaysCheckinList = () => {
     fromDate: checkinListFromDate(new Date()),
     toDate: checkinListoDate(new Date()),
     arrayFilter: ["CheckedIn", "CheckedOut"],
-    manager_id: managerId,
+    manager_id: managerId === "undefined" ? "" : managerId,
   });
   // "65794401b015daaae34ae94a"
   useEffect(() => {

@@ -11,7 +11,12 @@ import {
   useGetTodayCheckoutQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import CheckinList from "../../components/room/CheckinList.jsx";
 import { MdOutlineHail } from "react-icons/md";
 import ReactPaginate from "react-paginate";
@@ -19,12 +24,13 @@ import { checkinListFromDate, checkinListoDate } from "../../utils/utils.js";
 
 const TodayCheckout = () => {
   const [search, setSearch] = useState("");
-  const [pageCount,setPageCount]=useState(1)
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const managerId = searchParams.get("manager_id");
 
   const navigate = useNavigate();
-
 
   const formik = useFormik({
     initialValues: {
@@ -38,8 +44,7 @@ const TodayCheckout = () => {
     },
   });
 
-
-  const currentDate = new Date()
+  const currentDate = new Date();
   const nextDay = new Date(currentDate);
   nextDay.setDate(currentDate.getDate() + 1);
 
@@ -54,24 +59,20 @@ const TodayCheckout = () => {
     search: formik.values.search,
     page: currentPage,
     fromDate: new Date().toLocaleDateString(),
-    toDate:formattedDate,
-    arrayFilter:["CheckedIn","CheckedOut"]
-    // fromDate: checkinListFromDate(new Date()),
-    // toDate: checkinListoDate(new Date())
+    toDate: formattedDate,
+    arrayFilter: ["CheckedIn", "CheckedOut"],
+    manager_id: managerId === "undefined" ? "" : managerId,
   });
 
-//  const {data:checkinList,isLoading,refetch}= useGetTodayCheckoutQuery();
+  //  const {data:checkinList,isLoading,refetch}= useGetTodayCheckoutQuery();
 
-  
-  useEffect(()=>{
-if(checkinList) setPageCount(checkinList?.data?.totalPages)
-  },[checkinList])
+  useEffect(() => {
+    if (checkinList) setPageCount(checkinList?.data?.totalPages);
+  }, [checkinList]);
 
-  const handlePageClick =({selected:page})=>{
-    setCurrentPage(page)
-  }
-
-
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
 
   // refetch()
   const path = useLocation();
@@ -88,7 +89,9 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
-         <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Today's Checkout </h1>
+      <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+        Today's Checkout{" "}
+      </h1>
       <div>
         <Link to={`/dashboard `}>
           <button
@@ -107,7 +110,6 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
       </div>
       <div className="flex justify-end">
         <div className={`flex flex-col md:flex-row gap-4 `}>
-        
           <div className={`relative sm:min-w-[20rem]`}>
             <input
               type="text"
@@ -130,7 +132,7 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
       </div>
       {!isLoading ? (
         checkinList?.data?.docs?.length ? (
-            <div>
+          <div>
             <div className="overflow-x-auto border">
               <table className="table">
                 <thead>
@@ -154,9 +156,13 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
                   </tr>
                 </thead>
                 <tbody>
-              {checkinList?.data?.docs?.map((item,idx)=>{
-                  return (
-                      <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                  {checkinList?.data?.docs?.map((item, idx) => {
+                    return (
+                      <tr
+                        className={
+                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                        }
+                      >
                         <td>
                           <div className="flex items-center space-x-3">
                             <div>
@@ -173,7 +179,7 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
                         {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
                         <td>{new Date(item?.from).toLocaleDateString()}</td>
                         <td>{new Date(item?.to).toLocaleDateString()}</td>
-      
+
                         {/* <td className={`flex flex-wrap gap-1.5`}>
                           <span
                             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
@@ -192,7 +198,7 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
                        
                         </td> */}
 
-                           {/* <span
+                        {/* <span
                             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                           >
                             <FaEdit />
@@ -240,7 +246,6 @@ if(checkinList) setPageCount(checkinList?.data?.totalPages)
           wrapperClass="justify-center"
         />
       )}
-     
     </div>
   );
 };

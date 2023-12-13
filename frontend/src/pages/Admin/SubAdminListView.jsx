@@ -97,7 +97,9 @@ const SubAdminListView = () => {
                 <tr>
                   <th className="text-start">Joining Date</th>
                   <td className="pl-5">:</td>
-                  <td>{new Date(userData?.joining_date).toLocaleDateString()}</td>
+                  <td>
+                    {new Date(userData?.joining_date).toLocaleDateString()}
+                  </td>
                 </tr>
                 <tr>
                   <th className="text-start">Salary</th>
@@ -105,7 +107,7 @@ const SubAdminListView = () => {
                   <td>{userData?.salary}</td>
                 </tr>
                 <tr>
-                  <th className="text-start">Salary</th>
+                  <th className="text-start">Status</th>
                   <td className="pl-5">:</td>
                   <td>{userData?.status}</td>
                 </tr>

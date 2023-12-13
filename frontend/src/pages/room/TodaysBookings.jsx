@@ -9,13 +9,15 @@ import {
   useGetBookingsByHotelQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import TodayBookingList from "../../components/room/TodayBookingList.jsx";
 import { checkinListFromDate, checkinListoDate } from "../../utils/utils.js";
 
 const TodayBookings = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchParams] = useSearchParams();
+  const managerId = searchParams.get("manager_id");
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -27,13 +29,18 @@ const TodayBookings = () => {
     },
   });
 
-  const { data: bookingList, isLoading ,refetch } = useGetBookingsByHotelQuery({
+  const {
+    data: bookingList,
+    isLoading,
+    refetch,
+  } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
     search: search,
     page: currentPage,
     filter: "Active",
     fromDate: checkinListFromDate(new Date()),
     toDate: checkinListoDate(new Date()),
+    manager_id: managerId === "undefined" ? "" : managerId,
   });
 
   const pressEnter = (e) => {
@@ -45,14 +52,16 @@ const TodayBookings = () => {
     }
   };
 
-  const location=useLocation()
-  useEffect(()=>{
-    refetch()
-  },[location.pathname])
+  const location = useLocation();
+  useEffect(() => {
+    refetch();
+  }, [location.pathname]);
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
-        <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Today's Bookings </h1>
+      <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+        Today's Bookings{" "}
+      </h1>
       <div>
         <Link to={`/dashboard `}>
           <button
@@ -71,7 +80,6 @@ const TodayBookings = () => {
       </div>
       <div className="flex justify-end">
         <div className={`flex flex-col md:flex-row gap-4`}>
-         
           <div className={`relative sm:min-w-[20rem]`}>
             <input
               type="text"
@@ -94,7 +102,7 @@ const TodayBookings = () => {
       </div>
       {!isLoading ? (
         bookingList?.data?.docs?.length ? (
-          <TodayBookingList   
+          <TodayBookingList
             bookingList={bookingList}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

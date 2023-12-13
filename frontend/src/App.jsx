@@ -647,6 +647,30 @@ const App = () => {
               ),
             },
             {
+              path: "owner-todays-checkout-list",
+              element: (
+                <OwnerRoute>
+                  <TodayCheckout />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "owner-today-bookings-list",
+              element: (
+                <OwnerRoute>
+                  <TodayBookings />
+                </OwnerRoute>
+              ),
+            },
+            {
+              path: "owner-today-bookings-cancel",
+              element: (
+                <OwnerRoute>
+                  <TodayCancelBookings />
+                </OwnerRoute>
+              ),
+            },
+            {
               path: "add-hotel",
               element: (
                 <OwnerRoute>

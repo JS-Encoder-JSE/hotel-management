@@ -99,7 +99,15 @@ const UserDashBoard = ({ managerId }) => {
             <hr />
             {userHotel ? (
               <div
-                onClick={() => navigate("/dashboard/today-checkouts")}
+                onClick={() =>
+                  navigate(
+                    user?.role === "manager"
+                      ? "/dashboard/today-checkouts"
+                      : user?.role === "owner"
+                      ? `/dashboard/owner-todays-checkout-list?manager_id=${managerId}`
+                      : ""
+                  )
+                }
                 className="cursor-pointer"
               >
                 <h6 className="text-xs text-slate-400 mt-4">
@@ -123,7 +131,13 @@ const UserDashBoard = ({ managerId }) => {
               <div
                 className="cursor-pointer"
                 onClick={() =>
-                  navigate(userHotel && "/dashboard/today-bookings")
+                  navigate(
+                    user?.role === "manager"
+                      ? "/dashboard/today-bookings"
+                      : user?.role === "owner"
+                      ? `/dashboard/owner-today-bookings-list?manager_id=${managerId}`
+                      : ""
+                  )
                 }
               >
                 <h6 className="text-xs text-slate-400 uppercase">
@@ -138,7 +152,15 @@ const UserDashBoard = ({ managerId }) => {
               <hr />
               <div
                 className="cursor-pointer"
-                onClick={() => navigate("/dashboard/today-cancel-bookings")}
+                onClick={() =>
+                  navigate(
+                    user?.role === "manager"
+                      ? "/dashboard/today-cancel-bookings"
+                      : user?.role === "owner"
+                      ? `/dashboard/owner-today-bookings-cancel?manager_id=${managerId}`
+                      : ""
+                  )
+                }
               >
                 <h6 className="text-xs text-slate-400 mt-4">
                   TODAY'S CANCELED BOOKING

@@ -182,7 +182,7 @@ const FoodCheckout = () => {
                       {" "}
                       <span>
                         <input
-                          className=" border border-gray-500/80 p-2 -ml-20 text-center"
+                          className=" border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
                           placeholder="Service Charge"
                           type="number"
                           name="addSrvCrg"
@@ -205,7 +205,7 @@ const FoodCheckout = () => {
                       {" "}
                       <span>
                         <input
-                          className="border border-gray-500/80 p-2 -ml-20 text-center"
+                          className="border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
                           placeholder=" GST/Tax"
                           type="number"
                           name="addTax"

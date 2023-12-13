@@ -9,13 +9,17 @@ import {
   useGetBookingsByHotelQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import TodayCancelBookingList from "./TodayCancelBookingList.jsx";
 import { checkinListFromDate, checkinListoDate } from "../../utils/utils.js";
 
 const TodayCancelBookings = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+
+  const [searchParams] = useSearchParams();
+  const managerId = searchParams.get("manager_id");
+
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -34,6 +38,7 @@ const TodayCancelBookings = () => {
     filter: "Canceled",
     fromDate: checkinListFromDate(new Date()),
     toDate: checkinListoDate(new Date()),
+    manager_id: managerId === "undefined" ? "" : managerId,
   });
 
   const pressEnter = (e) => {
@@ -47,7 +52,9 @@ const TodayCancelBookings = () => {
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
-        <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">Today's Canceled Booking </h1>
+      <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+        Today's Canceled Booking{" "}
+      </h1>
       <div>
         <Link to={`/dashboard `}>
           <button
@@ -66,7 +73,6 @@ const TodayCancelBookings = () => {
       </div>
       <div className="flex justify-end">
         <div className={`flex flex-col md:flex-row gap-4`}>
-         
           <div className={`relative sm:min-w-[20rem]`}>
             <input
               type="text"
@@ -89,7 +95,7 @@ const TodayCancelBookings = () => {
       </div>
       {!isLoading ? (
         bookingList?.data?.docs?.length ? (
-          <TodayCancelBookingList  
+          <TodayCancelBookingList
             bookingList={bookingList}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
