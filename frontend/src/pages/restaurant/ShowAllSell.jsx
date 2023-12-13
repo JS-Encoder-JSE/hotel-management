@@ -82,7 +82,6 @@ const ShowAllSell = () => {
   });
 
 
-console.log(restaurantSalesToday,"to")
 
   // filtered data
   const {
@@ -98,8 +97,6 @@ console.log(restaurantSalesToday,"to")
     limit: formik.values.entries,
     filter: "restaurant",
   });
-
-console.log(restaurantSalesHistory,"History")
 
 
 

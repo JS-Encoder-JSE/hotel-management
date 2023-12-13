@@ -20,7 +20,6 @@ const ShowALlSellView = () => {
   const [PDF, setPdf] = useState([]);
   const dateParam = searchParams.get("date");
   const hotelId = searchParams.get("hotelId");
-  console.log(hotelId);
 
   const { user } = useSelector((store) => store.authSlice);
 

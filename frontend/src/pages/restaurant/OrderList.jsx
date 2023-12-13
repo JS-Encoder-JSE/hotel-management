@@ -66,7 +66,6 @@ const OrderList = () => {
     pp: ordersPerPage,
     unique_id: search,
   });
-  console.log({ orders });
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };

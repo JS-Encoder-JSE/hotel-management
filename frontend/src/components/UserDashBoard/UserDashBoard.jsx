@@ -41,7 +41,6 @@ const UserDashBoard = ({ managerId }) => {
   const [userHotel, setUserHotel] = useState(
     user?.role === "manager" || user?.role === "owner"
   );
-  console.log(dashboardData);
   useEffect(() => {
     refetch();
   }, [location.pathname]);
