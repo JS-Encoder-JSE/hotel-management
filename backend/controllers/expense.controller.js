@@ -372,7 +372,7 @@ export const reduceExpense = async (req, res) => {
     await existingMonthlySubDashData.save();
     await existingStaticSubDashData.save();
 
-    return res.status(201).json({ message: "Successfully added expenses" });
+    return res.status(201).json({ message: "Successfully reduced expenses" });
   } catch (error) {
     // console.error("Error saving to database:", saveError);
     console.error("Error adding expense:", error);
