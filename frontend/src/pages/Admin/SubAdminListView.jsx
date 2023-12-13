@@ -53,21 +53,64 @@ const SubAdminListView = () => {
         <div className="card-body grid md:grid-cols-2 gap-4">
           <div className="">
             <h2 className="card-title mb-3">Sub Admin Information </h2>
-            <h6>Username : {userData?.username}</h6>
-            <h6>Name : {userData?.name}</h6>
+            <table>
+              <tbody>
+                <tr>
+                  <th className="text-start">User Name</th>
+                  <td className="pl-5">:</td>
+                  <td>{userData?.username}</td>
+                </tr>
+                <tr>
+                  <th className="text-start">Name</th>
+                  <td className="pl-5">:</td>
+                  <td>{userData?.name}</td>
+                </tr>
+                <tr>
+                  <th className="text-start">Address</th>
+                  <td className="pl-5">:</td>
+                  <td>{userData?.address}</td>
+                </tr>
+                <tr>
+                  <th>Emergency Contact</th>
+                  <td className="pl-5">:</td>
+                  <td>{userData?.emergency_contact}</td>
+                </tr>
+                <tr>
+                  <th className="text-start">Email</th>
+                  <td className="pl-5">:</td>
+                  <td>{userData?.email}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* <h6>Username : {userData?.username}</h6> */}
+            {/* <h6>Name : {userData?.name}</h6>
             <h6>Address : {userData?.address}</h6>
             <h6>Phone : {userData?.phone_no}</h6>
             <h6>Emergency Contact : {userData?.emergency_contact}</h6>
-            <h6>Email : {userData?.email}</h6>
+            <h6>Email : {userData?.email}</h6> */}
           </div>
           <div className="">
             <h2 className="card-title mb-3">Other Information </h2>
-            <h6>
-              Joining Date :{" "}
-              {new Date(userData?.joining_date).toLocaleDateString()}{" "}
-            </h6>
-            <h6>Salary : {userData?.salary} </h6>
-            <h6>Status : {userData?.status}</h6>
+            <table>
+              <tbody>
+                <tr>
+                  <th className="text-start">Joining Date</th>
+                  <td className="pl-5">:</td>
+                  <td>{new Date(userData?.joining_date).toLocaleDateString()}</td>
+                </tr>
+                <tr>
+                  <th className="text-start">Salary</th>
+                  <td className="pl-5">:</td>
+                  <td>{userData?.salary}</td>
+                </tr>
+                <tr>
+                  <th className="text-start">Salary</th>
+                  <td className="pl-5">:</td>
+                  <td>{userData?.status}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
