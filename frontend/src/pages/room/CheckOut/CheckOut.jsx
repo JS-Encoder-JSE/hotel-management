@@ -58,6 +58,12 @@ const CheckOut = () => {
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
   const componentRef = useRef();
+
+// set errormessage for trx
+const [trxError,setTrxError]=useState(false)
+
+console.log(trxError)
+
   const {
     refundAmount,
     additionalCharge,
@@ -82,7 +88,6 @@ const CheckOut = () => {
   //   isLoading: checkoutLoading,
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
-
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
@@ -104,7 +109,7 @@ const CheckOut = () => {
     initialValues: {
       hotel_id: "",
       roomNumber: "",
-    },
+    }, 
     onSubmit: async () => {
       const room_numbers = checkout?.data?.room_bookings?.map(
         (i) => i?.room_id?.roomNumber
@@ -148,7 +153,12 @@ const CheckOut = () => {
       const paid_amount =
         calculateBalance < 0 ? Number(paymentList[0]?.amount) : 0;
 
-      const response = await addCheckout({
+        if(calculateBalance < 0 && paymentList[0]?.method !=="Cash" && paymentList[0]?.trx === ""){
+          setTrxError(true)
+          return;
+        }
+        else{
+          const response = await addCheckout({
         booking_id: bookingId,
         new_total_room_rent,
         new_no_of_days: calculateNOD,
@@ -180,6 +190,7 @@ const CheckOut = () => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
+        setTrxError(false)
         toast.success("Checkout Successful");
         // navigate("/dashboard/checkout");
         if (
@@ -191,6 +202,9 @@ const CheckOut = () => {
           handlePrint();
         }
       }
+        }
+
+      
     },
   });
 
@@ -386,6 +400,7 @@ const CheckOut = () => {
               totalPayableAmount={totalPayableAmount}
               totalRefund={totalRefund}
               componentRef={componentRef}
+              trxError={trxError}
             />
             <Modal id={`refundPayment`}>
               <RefundPaymentModal

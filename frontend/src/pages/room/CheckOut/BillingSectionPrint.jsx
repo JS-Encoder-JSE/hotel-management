@@ -18,6 +18,7 @@ const BillingSectionPrint = ({
     discountOffer,
     grandTotal,
     roomPostedBill,
+    calculatePayableAmount
   } = billingState;
   return (
     <section>

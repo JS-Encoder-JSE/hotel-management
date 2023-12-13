@@ -15,9 +15,9 @@ const RefundPaymentModal = ({ data, totalRefund,handlePrintOpen }) => {
       <form className="" autoComplete="off" method="dialog">
         <button
           ref={closeRef}
-          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" 
         >
-          ✕
+          
         </button>
       </form>
 
