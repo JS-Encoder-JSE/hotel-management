@@ -81,11 +81,12 @@ const FoodCheckout = () => {
     };
     setCheckoutLoading(true);
     const response = await updateOrder({
-      data: orderData?.data?.room_id
-        ? updateForRoom
-        : orderData?.data?.table_id
-        ? checkoutForTable
-        : null,
+      data:
+        orderData?.data?.dedicated_to === "room"
+          ? updateForRoom
+          : orderData?.data?.dedicated_to === "table"
+          ? checkoutForTable
+          : null,
       id,
     });
     setCheckoutLoading(true);
