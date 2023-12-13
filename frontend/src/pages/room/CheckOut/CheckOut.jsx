@@ -205,7 +205,6 @@ const CheckOut = () => {
             window.refundPayment.showModal();
           } else {
             setTrxError(false);
-            toast.success("Checkout Successful");
             // navigate("/dashboard/checkout");
             if (
               totalRefund > 0 &&
