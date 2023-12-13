@@ -153,7 +153,7 @@ const Report = () => {
               </button>
             </Link>
           </div>
-          <h3 className={`text-xl font-semibold mb-3 mt-3 text-center `}>All Report</h3>  
+          <h3  className={`bg-green-slimy text-[20px] text-white max-w-[12rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}>All Report</h3>  
         <div className={`flex flex-wrap gap-1.5 justify-end`}>
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>

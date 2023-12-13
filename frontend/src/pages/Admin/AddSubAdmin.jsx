@@ -210,8 +210,10 @@ const AddSubAdmin = () => {
               </button>
             </Link>
           </div>
-          <h2 className={`text-3xl text-center`}>Add Sub Admin</h2>
+          <div>
+          <h2  className="bg-green-slimy text-2xl text-center text-white max-w-[47rem]  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-4">Add Sub Admin</h2>
           <hr className={`my-5`} />
+          </div>
         </div>
 
         <div className="max-auto pb-5">

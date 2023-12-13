@@ -49,7 +49,7 @@ const SubAdminListView = () => {
             <FaArrowLeft />
           </span>
         </div>
-        <h1 className="text-2xl text-center ">Sub Admin Information</h1>
+        <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5">Sub Admin Information</h1>
         <div className="card-body grid md:grid-cols-2 gap-4">
           <div className="">
             <h2 className="card-title mb-3">Sub Admin Information </h2>

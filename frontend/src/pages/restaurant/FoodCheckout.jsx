@@ -120,9 +120,11 @@ const FoodCheckout = () => {
           <FaArrowLeft />
         </span>
       </div>
-      <h3 className="text-2xl font-semibold text-center">
+     <div>
+     <h3 className="text-2xl font-semibold text-center bg-green-slimy text-white py-2 max-w-[20rem] mx-auto rounded-lg">
         {path.includes("orderDetails") ? "Order details" : "Checkout"}
       </h3>
+     </div>
       <hr />
       <div >
         <div className={`flex items-center gap-3 `}>

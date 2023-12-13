@@ -132,11 +132,17 @@ const AdminOwnerList = ({ title }) => {
                 </abbr>
               </dfn>
 
-              <span className="tracking-wider font-semibold text-[1rem]"></span>
+              <span className="tracking-wider font-semibold text-[1rem] "></span>
             </button>
           </Link>
         </div>
-        {title && <h1 className="text-center text-2xl">{title}</h1>}
+        {/* {title && (
+          <h1
+            className={`bg-green-slimy text-[20px] text-white max-w-[15rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}
+          >
+            {title}
+          </h1>
+        )} */}
 
         <div className={`flex justify-end gap-4`}>
           <div className={`flex justify-end flex-col sm:flex-row gap-5`}>

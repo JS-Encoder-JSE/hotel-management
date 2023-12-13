@@ -11,7 +11,7 @@ const HotelList = ({hotels}) => {
   return (
     <div className="card w-full bg-white shadow-xl">
       <div className="card-body">
-        <h1 className="text-2xl text-center ">Hotel List</h1>
+        <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5">Hotel List</h1>
         {hotels?.length ? (
           <div className=" h-[29em] overflow-y-scroll">
             <div className="overflow-x-auto">
