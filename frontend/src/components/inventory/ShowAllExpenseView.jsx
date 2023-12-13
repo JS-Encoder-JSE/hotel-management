@@ -4,6 +4,7 @@ import {
   FaRegEdit,
   FaRegFilePdf,
   FaRupeeSign,
+  FaTrash,
 } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
@@ -16,6 +17,7 @@ import ShowAllExpenseViewPrint from "./ShowAllExpenseViewPrint";
 import { FaPrint } from "react-icons/fa6";
 import AddBooking from "../room/AddBooking";
 import Modal from "../Modal";
+import RemoveExpenses from "./RemoveExpenses";
 
 const ShowAllExpenseView = () => {
   const componentRef = useRef();
@@ -25,10 +27,7 @@ const ShowAllExpenseView = () => {
 
   const { id } = useParams();
 
-
   const { data: itemExpense } = useGetExpenseByIdQuery(id);
-
-
 
   function calculateTotalPrice(items) {
     // Ensure items is not null or undefined
@@ -55,47 +54,45 @@ const ShowAllExpenseView = () => {
     setCurrentPage(page);
   };
   const navigate = useNavigate();
-  const handle = () => {
-   
-  };
+  const handle = () => {};
 
   const [editItemData, setEditItemData] = useState(null);
+
+  console.log({ editItemData });
   const [index, setIndex] = useState();
 
   const currentDate = new Date();
-    const formattedCurrentDate = currentDate.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).replace(/\//g, '-');
+  const formattedCurrentDate = currentDate
+    .toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    .replace(/\//g, "-");
 
+  // pagination setup for today's expenses
+  const itemsPerPage = 10;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
 
- // pagination setup for today's expenses
- const itemsPerPage = 10;
- const [currentPageItem, setCurrentPageItem] = useState(0);
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+  const totalPage =
+    itemExpense && Math.ceil(itemExpense?.items.length / itemsPerPage);
 
- const handlePageChange = ({ selected }) => {
-   setCurrentPageItem(selected);
- };
- const totalPage =
-   itemExpense &&
-   Math.ceil(itemExpense?.items.length / itemsPerPage);
+  const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
- const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
- const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = itemExpense?.items.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
- const currentItems = itemExpense?.items.slice(
-   indexOfFirstItem,
-   indexOfLastItem
- );
-
- const handleScrollToTop = () => {
-   // Scroll to the top of the page
-   window.scrollTo({ top: 0, behavior: "smooth" });
- };
-
- console.log("itemExpense", itemExpense);
+  const handleScrollToTop = () => {
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -131,7 +128,10 @@ const ShowAllExpenseView = () => {
         />
       </div>
       <div>
-        <h1 className="text-center text-2xl bg-green-slimy w-72 mx-auto text-white p-1 rounded-md"> Expenses Information</h1>
+        <h1 className="text-center text-2xl bg-green-slimy w-72 mx-auto text-white p-1 rounded-md">
+          {" "}
+          Expenses Information
+        </h1>
       </div>
       <div className="overflow-x-auto">
         <table className="table">
@@ -149,35 +149,45 @@ const ShowAllExpenseView = () => {
           </thead>
           <tbody>
             {itemExpense?.items &&
-            currentItems.map((item, idx) => {
-              return (
-                <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
-                  <th>{idx + 1}</th>
-                  <td>{new Date(itemExpense?.date).toLocaleDateString()}</td>
-                  <td>{item?.name}</td>
-                  <td>{item?.quantity}</td>
-                  <td>{item?.description}</td>
-                  <td>
-                    <FaRupeeSign className="inline" />
-                    <span>{item?.price}</span>
-                  </td>
-                  <td>{item?.remark ? item?.remark : ""}</td>
-                  <td>
-                    <button
-                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                      onClick={() => {
-                        setEditItemData(item);
-                        window.eb_modal.showModal();
-                        setIndex(idx);
-                      
-                      }}
-                    >
-                      <FaRegEdit />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+              currentItems.map((item, idx) => {
+                return (
+                  <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                    <th>{idx + 1}</th>
+                    <td>{new Date(itemExpense?.date).toLocaleDateString()}</td>
+                    <td>{item?.name}</td>
+                    <td>{item?.quantity}</td>
+                    <td>{item?.description}</td>
+                    <td>
+                      <FaRupeeSign className="inline" />
+                      <span>{item?.price}</span>
+                    </td>
+                    <td>{item?.remark ? item?.remark : ""}</td>
+                    <td className="flex gap-2">
+                      <button
+                        className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                        onClick={() => {
+                          setEditItemData(item);
+                          window.eb_modal.showModal();
+                          setIndex(idx);
+                        }}
+                      >
+                        <FaRegEdit />
+                      </button>
+                      <button
+                        className="btn btn-sm hover:bg-red-600 bg-transparent hover:text-white text-red-600 !border-red-600 normal-case rounded"
+                        title={`Cancel`}
+                        onClick={() => {
+                          setEditItemData(item);
+                          window.remove_expenses.showModal();
+                          setIndex(idx);
+                        }}
+                      >
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
           <tfoot className={`text-[1.2rem] font-bold`}>
             <tr>
@@ -189,11 +199,7 @@ const ShowAllExpenseView = () => {
                   <div>
                     <FaRupeeSign />
                   </div>
-                  <div>
-                    {" "}
-                    {totalItemsAmount}
-                   
-                  </div>
+                  <div> {totalItemsAmount}</div>
                 </div>
               </td>
             </tr>
@@ -207,11 +213,16 @@ const ShowAllExpenseView = () => {
           data={editItemData}
         />
       </Modal>
+      <Modal id={`remove_expenses`}>
+        <RemoveExpenses
+          index={index}
+          allItems={itemExpense}
+          data={editItemData}
+        />
+      </Modal>
       {/* pagination */}
-      <div className="flex justify-center mt-10"
-        onClick={handleScrollToTop}
-      >
-      <ReactPaginate
+      <div className="flex justify-center mt-10" onClick={handleScrollToTop}>
+        <ReactPaginate
           containerClassName="join rounded-none"
           pageLinkClassName="join-item btn btn-md bg-transparent"
           activeLinkClassName="btn-active !bg-green-slimy text-white"
@@ -228,7 +239,6 @@ const ShowAllExpenseView = () => {
           onPageChange={handlePageChange}
           renderOnZeroPageCount={null}
           forcePage={currentPage}
-          
         />
       </div>
     </div>

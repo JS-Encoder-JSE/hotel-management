@@ -76,15 +76,16 @@ const FoodCheckout = () => {
       total_price: finalTotal,
       items: orderData.data.items,
       current_order: false,
-      payment_status: "Paid",
+      payment_status: "Pending",
     };
     setCheckoutLoading(true);
     const response = await updateOrder({
-      data: orderData?.data?.room_id
-        ? updateForRoom
-        : orderData?.data?.table_id
-        ? checkoutForTable
-        : null,
+      data:
+        orderData?.data?.dedicated_to === "room"
+          ? updateForRoom
+          : orderData?.data?.dedicated_to === "table"
+          ? checkoutForTable
+          : null,
       id,
     });
     setCheckoutLoading(true);
@@ -151,7 +152,9 @@ const FoodCheckout = () => {
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
-                    <th>Action</th>
+                    {orderData?.data?.order_status === "CheckedOut" ? null : (
+                      <th>Action</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -161,6 +164,11 @@ const FoodCheckout = () => {
                       handleDeleteItems={handleDeleteItems}
                       item={item}
                       key={i}
+                      showDelete={
+                        orderData?.data?.order_status === "CheckedOut"
+                          ? false
+                          : true
+                      }
                     />
                   ))}
                 </tbody>
@@ -252,35 +260,26 @@ const FoodCheckout = () => {
           content={() => componentRef.current}
         />
 
-        {/* <button
-          onClick={handleCheckout}
-          className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
-        >
-     
-  <>
-    {path.includes("orderDetails") ? "Update Order" : "Checkout"}
-  </>
-  {isLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
-         
-        </button> */}
-
-        <button
-          onClick={handleCheckout}
-          className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
-        >
-          <>{path.includes("orderDetails") ? "Update Order" : "Checkout"}</>
-          {checkoutLoading ? (
-            <span
-              className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-              role="status"
-            ></span>
-          ) : null}
-        </button>
+        {orderData?.data?.order_status === "CheckedOut" ? (
+          ""
+        ) : (
+          <button
+            onClick={handleCheckout}
+            className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
+          >
+            <>
+              {orderData?.data?.dedicated_to === "room"
+                ? "Update Order"
+                : "Checkout"}
+            </>
+            {checkoutLoading ? (
+              <span
+                className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                role="status"
+              ></span>
+            ) : null}
+          </button>
+        )}
       </div>
     </div>
   );
