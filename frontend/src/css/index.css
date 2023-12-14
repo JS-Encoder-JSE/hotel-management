@@ -29,7 +29,6 @@
   border-radius: 4px;
 }
 
-
 /* Chrome, Safari, Edge, Opera */
 .hide-number-arrow-input::-webkit-outer-spin-button,
 .hide-number-arrow-input::-webkit-inner-spin-button {
@@ -38,10 +37,35 @@
 }
 
 /* Firefox */
-.hide-number-arrow-input[type=number] {
+.hide-number-arrow-input[type="number"] {
   -moz-appearance: textfield;
 }
 
 .db-currency path {
   stroke: white;
+}
+.page-footer,
+.page-footer-space {
+  height: 30px;
+}
+.page-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding-right: 60px;
+}
+.signature {
+  position: fixed;
+  bottom: 10;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.page {
+  page-break-after: always;
+}
+
+@page {
+  margin-bottom: 4mm;
 }

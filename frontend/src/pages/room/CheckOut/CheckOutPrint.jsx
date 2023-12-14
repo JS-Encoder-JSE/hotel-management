@@ -53,7 +53,7 @@ const CheckOutPrint = ({
       </div>
       {isHotelSuccess && (
         <div>
-          <div className="px-4 mt-5 flex gap-10 ">
+          <div className="px-4 mt-5 flex justify-between gap-10 ">
             <AuthoInfoPrint
               hotelInfo={hotelInfo}
               isHotelSuccess={isHotelSuccess}
@@ -63,13 +63,17 @@ const CheckOutPrint = ({
           </div>
           <div className=" px-4 py-2">
             <h2 className="font-bold">Balance Summary</h2>
-            <div className="flex gap-4 items-center">
+            <div className="flex flex-col items-start">
+              <div className="grid grid-cols-2 gap-9  ">
+                <p>Advanced Balance</p>
+                <p>: {data?.total_balance}</p>
+              </div>
               <div>
-                <div className="grid grid-cols-2 ">
+                <div className="grid grid-cols-2 gap-2 ">
                   <p>Total Payable Amount</p>
                   <p>: {totalPayableAmount}</p>
                 </div>
-                <div className="grid grid-cols-2  ">
+                {/* <div className="grid grid-cols-2  ">
                   <p>Total Unpaid Amount</p>
                   <p>
                     :
@@ -78,14 +82,10 @@ const CheckOutPrint = ({
                       : totalPayableAmount - data?.paid_amount}
                   </p>
                 </div>
-                <div className="grid grid-cols-2  ">
-                  <p>Total Balance</p>
-                  <p>: {data?.total_balance}</p>
-                </div>
                 <div className="grid grid-cols-2 ">
                   <p>Current Balance</p>
                   <p >: {calculateBalance + +calculateCollectedAmount}</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
