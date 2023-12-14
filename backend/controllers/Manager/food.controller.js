@@ -391,125 +391,129 @@ export const updateOrder = async (req, res) => {
       bookingInfo.total_payable_amount -= reduced_amount;
       bookingInfo.total_unpaid_amount -= reduced_amount;
     }
-    if (updateData.order_status === "CheckedOut") {
-      const currentDate = new Date();
-      const date = currentDate.toLocaleDateString();
-      const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
-      const year = currentDate.getFullYear().toString();
+    if (updateData.order_status) {
+      if (updateData.order_status === "CheckedOut") {
+        const currentDate = new Date();
+        const date = currentDate.toLocaleDateString();
+        const month_name = currentDate.toLocaleString("en-US", {
+          month: "long",
+        }); // Full month name
+        const year = currentDate.getFullYear().toString();
 
-      const new_paid_amount =
-        updateData.paid_amount - existingOrder.paid_amount;
+        const new_paid_amount =
+          updateData.paid_amount - existingOrder.paid_amount;
 
-      console.log(new_paid_amount);
+        console.log(new_paid_amount);
 
-      const user = await User.findById(user_id);
+        const user = await User.findById(user_id);
 
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
-      const ownerDashboard = await Dashboard.findOne({
-        user_id: user.parent_id,
-      });
-      const managerDashboard = await Dashboard.findOne({ user_id: user_id });
-
-      ownerDashboard.total_amount += new_paid_amount;
-      managerDashboard.total_amount += new_paid_amount;
-
-      await ownerDashboard.save();
-      await managerDashboard.save();
-      const managerDashboardTable = await DashboardTable.findOne({
-        user_id: user_id,
-        month_name: month_name,
-        year: year,
-      });
-
-      if (managerDashboardTable) {
-        managerDashboardTable.total_income += new_paid_amount;
-        managerDashboardTable.total_profit += new_paid_amount;
-        await managerDashboardTable.save();
-      } else {
-        // Create a new dashboard table entry
-        const newDashboardTable = new DashboardTable({
-          user_id: user_id,
-          user_role: user.role,
-          month_name,
-          year,
-          total_income: new_paid_amount,
-          total_profit: new_paid_amount,
-        });
-        // Save the new dashboard table to the database
-        await newDashboardTable.save();
-      }
-      const ownerDashboardTable = await DashboardTable.findOne({
-        user_id: user.parent_id,
-        month_name: month_name,
-        year: year,
-      });
-
-      if (ownerDashboardTable) {
-        ownerDashboardTable.total_income += new_paid_amount;
-        ownerDashboardTable.total_profit += new_paid_amount;
-        await ownerDashboardTable.save();
-      } else {
-        const newDashboardTable = new DashboardTable({
+        if (!user) {
+          return res.status(404).json({
+            success: false,
+            message: "User not found",
+          });
+        }
+        const ownerDashboard = await Dashboard.findOne({
           user_id: user.parent_id,
-          user_role: "owner",
-          month_name,
-          year,
-          total_income: new_paid_amount,
-          total_profit: new_paid_amount,
         });
-        // Save the new dashboard table to the database
-        await newDashboardTable.save();
-      }
-      const existingStaticSubDashData = await StaticSubDashData.findOne({
-        user_id: user_id,
-      });
-      existingStaticSubDashData.total_restaurant_income += new_paid_amount;
-      existingStaticSubDashData.total_restaurant_profit += new_paid_amount;
-      await existingStaticSubDashData.save();
-      const existingDailySubDashData = await DailySubDashData.findOne({
-        user_id: user_id,
-        date,
-      });
-      if (existingDailySubDashData) {
-        existingDailySubDashData.today_restaurant_income += new_paid_amount;
-        existingDailySubDashData.today_restaurant_profit += new_paid_amount;
-        await existingDailySubDashData.save();
-      }
-      if (!existingDailySubDashData) {
-        const newDailySubDashData = new DailySubDashData({
+        const managerDashboard = await Dashboard.findOne({ user_id: user_id });
+
+        ownerDashboard.total_amount += new_paid_amount;
+        managerDashboard.total_amount += new_paid_amount;
+
+        await ownerDashboard.save();
+        await managerDashboard.save();
+        const managerDashboardTable = await DashboardTable.findOne({
           user_id: user_id,
-          user_role: user.role,
+          month_name: month_name,
+          year: year,
+        });
+
+        if (managerDashboardTable) {
+          managerDashboardTable.total_income += new_paid_amount;
+          managerDashboardTable.total_profit += new_paid_amount;
+          await managerDashboardTable.save();
+        } else {
+          // Create a new dashboard table entry
+          const newDashboardTable = new DashboardTable({
+            user_id: user_id,
+            user_role: user.role,
+            month_name,
+            year,
+            total_income: new_paid_amount,
+            total_profit: new_paid_amount,
+          });
+          // Save the new dashboard table to the database
+          await newDashboardTable.save();
+        }
+        const ownerDashboardTable = await DashboardTable.findOne({
+          user_id: user.parent_id,
+          month_name: month_name,
+          year: year,
+        });
+
+        if (ownerDashboardTable) {
+          ownerDashboardTable.total_income += new_paid_amount;
+          ownerDashboardTable.total_profit += new_paid_amount;
+          await ownerDashboardTable.save();
+        } else {
+          const newDashboardTable = new DashboardTable({
+            user_id: user.parent_id,
+            user_role: "owner",
+            month_name,
+            year,
+            total_income: new_paid_amount,
+            total_profit: new_paid_amount,
+          });
+          // Save the new dashboard table to the database
+          await newDashboardTable.save();
+        }
+        const existingStaticSubDashData = await StaticSubDashData.findOne({
+          user_id: user_id,
+        });
+        existingStaticSubDashData.total_restaurant_income += new_paid_amount;
+        existingStaticSubDashData.total_restaurant_profit += new_paid_amount;
+        await existingStaticSubDashData.save();
+        const existingDailySubDashData = await DailySubDashData.findOne({
+          user_id: user_id,
           date,
-          today_restaurant_income: new_paid_amount,
-          today_restaurant_profit: new_paid_amount,
         });
-        await newDailySubDashData.save();
-      }
-      const existingMonthlySubDashData = await MonthlySubDashData.findOne({
-        user_id: user_id,
-        month_name,
-        year,
-      });
-      if (existingMonthlySubDashData) {
-        existingMonthlySubDashData.total_restaurant_income += new_paid_amount;
-        existingMonthlySubDashData.total_restaurant_profit += new_paid_amount;
-        await existingMonthlySubDashData.save();
-      }
-      if (!existingMonthlySubDashData) {
-        const newMonthlySubDashData = new MonthlySubDashData({
+        if (existingDailySubDashData) {
+          existingDailySubDashData.today_restaurant_income += new_paid_amount;
+          existingDailySubDashData.today_restaurant_profit += new_paid_amount;
+          await existingDailySubDashData.save();
+        }
+        if (!existingDailySubDashData) {
+          const newDailySubDashData = new DailySubDashData({
+            user_id: user_id,
+            user_role: user.role,
+            date,
+            today_restaurant_income: new_paid_amount,
+            today_restaurant_profit: new_paid_amount,
+          });
+          await newDailySubDashData.save();
+        }
+        const existingMonthlySubDashData = await MonthlySubDashData.findOne({
           user_id: user_id,
-          user_role: user.role,
           month_name,
           year,
-          total_restaurant_income: new_paid_amount,
-          total_restaurant_profit: new_paid_amount,
         });
-        await newMonthlySubDashData.save();
+        if (existingMonthlySubDashData) {
+          existingMonthlySubDashData.total_restaurant_income += new_paid_amount;
+          existingMonthlySubDashData.total_restaurant_profit += new_paid_amount;
+          await existingMonthlySubDashData.save();
+        }
+        if (!existingMonthlySubDashData) {
+          const newMonthlySubDashData = new MonthlySubDashData({
+            user_id: user_id,
+            user_role: user.role,
+            month_name,
+            year,
+            total_restaurant_income: new_paid_amount,
+            total_restaurant_profit: new_paid_amount,
+          });
+          await newMonthlySubDashData.save();
+        }
       }
     }
     // Update the order with the provided data
