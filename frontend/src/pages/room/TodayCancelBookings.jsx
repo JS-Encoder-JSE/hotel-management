@@ -9,13 +9,15 @@ import {
   useGetBookingsByHotelQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import TodayCancelBookingList from "./TodayCancelBookingList.jsx";
 import { checkinListFromDate, checkinListoDate } from "../../utils/utils.js";
 
 const TodayCancelBookings = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const navigate = useNavigate();
+  const conditionIsMet = true;
 
   const [searchParams] = useSearchParams();
   const managerId = searchParams.get("manager_id");
@@ -55,11 +57,12 @@ const TodayCancelBookings = () => {
       <h1 className="bg-green-slimy text-center text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
         Today's Canceled Booking{" "}
       </h1>
-      <div>
+      {/* <div>
         <Link to={`/dashboard `}>
           <button
             type="button"
             className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            onClick={()=>navigate(-1)}
           >
             <dfn>
               <abbr title="Back">
@@ -70,7 +73,37 @@ const TodayCancelBookings = () => {
             <span className="tracking-wider font-semibold text-[1rem]"></span>
           </button>
         </Link>
-      </div>
+      </div> */}
+<div>
+  {conditionIsMet ? (
+    <button
+      type="button"
+      className="text-white bg-green-slimy font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1"
+      onClick={() => navigate(-1)}
+    >
+      <dfn>
+        <abbr title="Back">
+          <FaArrowLeft />
+        </abbr>
+      </dfn>
+      <span className="tracking-wider font-semibold text-[1rem]"></span>
+    </button>
+  ) : (
+    <Link to="/dashboard">
+      <button
+        type="button"
+        className="text-white bg-green-slimy font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1"
+      >
+        <dfn>
+          <abbr title="Dashboard">
+            <FaDashboard /> 
+          </abbr>
+        </dfn>
+        <span className="tracking-wider font-semibold text-[1rem]"></span>
+      </button>
+    </Link>
+  )}
+</div>
       <div className="flex justify-end">
         <div className={`flex flex-col md:flex-row gap-4`}>
           <div className={`relative sm:min-w-[20rem]`}>

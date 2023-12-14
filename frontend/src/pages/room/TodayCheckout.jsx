@@ -93,10 +93,11 @@ const TodayCheckout = () => {
         Today's Checkout{" "}
       </h1>
       <div>
-        <Link to={`/dashboard `}>
+        {/* <Link to={`/dashboard `}> */}
           <button
             type="button"
             className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            onClick={()=> navigate(-1)}
           >
             <dfn>
               <abbr title="Back">
@@ -106,7 +107,7 @@ const TodayCheckout = () => {
 
             <span className="tracking-wider font-semibold text-[1rem]"></span>
           </button>
-        </Link>
+        {/* </Link> */}
       </div>
       <div className="flex justify-end">
         <div className={`flex flex-col md:flex-row gap-4 `}>
