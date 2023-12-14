@@ -63,7 +63,6 @@ const CheckOut = () => {
   // set errormessage for trx
   const [trxError, setTrxError] = useState(false);
 
-
   const {
     refundAmount,
     additionalCharge,
@@ -247,14 +246,24 @@ const CheckOut = () => {
       e.preventDefault();
     }
   };
+  const updateNodFun = (toDate) => {
+    const updatedNod = Math.ceil(
+      Math.abs(
+        new Date(checkout?.data?.room_bookings[0]?.from) - new Date(toDate)
+      ) /
+        (24 * 60 * 60 * 1000)
+    );
+    dispatch(setCalculateNOD(updatedNod));
+  };
   const updateCheckoutTime = () => {
-    const selectedDate = new Date(checkout?.data?.room_bookings[0]?.to);
+    const selectedDate = new Date();
 
     const [hours, minutes] = getCurrentTime().split(":");
 
     selectedDate.setHours(hours, minutes, 0, 0);
     const updatedToDate = selectedDate.toISOString();
     dispatch(setToDate(updatedToDate));
+    updateNodFun(updatedToDate);
   };
   const transformedRooms = rooms?.data?.docs
     ?.filter((room) => room.status === "CheckedIn")
@@ -279,7 +288,6 @@ const CheckOut = () => {
       updateCheckoutTime();
       dispatch(setFromDate(checkout?.data?.room_bookings[0]?.from));
       dispatch(setBookingInfo(checkout?.data?.booking_info));
-      dispatch(setCalculateNOD(checkout?.data?.room_bookings[0]?.no_of_days));
       dispatch(setCalculateTotalRent(checkout?.data?.booking_info?.total_rent));
       // dispatch(
       //   setCalculateBalance(checkout?.data?.booking_info?.total_balance)
