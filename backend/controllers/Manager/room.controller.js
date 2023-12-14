@@ -253,11 +253,10 @@ export const getRoomPostedBills = async (req, res) => {
   try {
     const room_id = req.params.room_id;
     // Find food orders for the given room_id
-    const activeBookings = await Booking.find({
+    const activeBookings = await Booking.findOne({
       room_id,
       status: "CheckedIn",
     });
-    console.log(activeBookings.food_order_ids);
     const foodOrders = await FoodOrder.find({
       _id: { $in: activeBookings.food_order_ids },
       room_id,
