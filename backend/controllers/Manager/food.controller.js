@@ -373,7 +373,7 @@ export const updateOrder = async (req, res) => {
   try {
     const user_id = req.user.userId;
     const orderId = req.params.order_id; // Assuming you use "order_id" as the parameter name
-    const updateData = req.body;
+    const { updateData, reduced_amount } = req.body;
 
     const existingOrder = await FoodOrder.findById(orderId);
 
@@ -382,6 +382,14 @@ export const updateOrder = async (req, res) => {
         success: false,
         message: "Order not found",
       });
+    }
+    if (reduced_amount >= 1) {
+      const bookingInfo = await BookingInfo.findOne({
+        booking_ids: existingOrder.booking_id,
+      });
+      bookingInfo.total_posted_bills -= reduced_amount;
+      bookingInfo.total_payable_amount -= reduced_amount;
+      bookingInfo.total_unpaid_amount -= reduced_amount;
     }
     if (updateData.order_status === "CheckedOut") {
       const currentDate = new Date();
