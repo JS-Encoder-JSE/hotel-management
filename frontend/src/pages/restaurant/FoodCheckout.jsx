@@ -74,13 +74,15 @@ const FoodCheckout = () => {
       tax: taxPercentage,
     };
     const updateForRoom = {
-      paid_amount: 0,
-      unpaid_amount: finalTotal,
-      total_price: finalTotal,
-      items: orderData.data.items,
-      current_order: false,
-      payment_status: "Pending",
-      grand_total: finalTotal,
+      updateData: {
+        paid_amount: 0,
+        unpaid_amount: finalTotal,
+        total_price: finalTotal,
+        items: orderData.data.items,
+        current_order: false,
+        payment_status: "Pending",
+        grand_total: finalTotal,
+      },
       reduced_amount: totalReduceAmount,
     };
     setCheckoutLoading(true);
