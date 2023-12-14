@@ -15,6 +15,7 @@ const FoodCheckout = () => {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { data, isLoading } = useGetOrderByIdQuery(id);
   const [orderData, setOrderData] = useState({});
+  const [reduceData, setReduceData] = useState([]);
   const [input, setInput] = useState(1);
   const navigate = useNavigate();
   const [updateOrder, isCheckLoader] = useUpdateOrderMutation();
@@ -42,7 +43,8 @@ const FoodCheckout = () => {
     },
   });
 
-  const handleDeleteItems = (index) => {
+  const handleDeleteItems = (index, item) => {
+    setReduceData([...reduceData, item]);
     setOrderData((prev) => {
       const updatedItems = [...prev?.data?.items];
       updatedItems.splice(index, 1);
@@ -55,8 +57,10 @@ const FoodCheckout = () => {
       };
     });
   };
-
   const handleCheckout = async () => {
+    const totalReduceAmount = reduceData.reduce((acc, current) => {
+      return acc + current.total;
+    }, 0);
     setCheckoutLoading(true);
     const checkoutForTable = {
       paid_amount: finalTotal,
@@ -77,6 +81,7 @@ const FoodCheckout = () => {
       current_order: false,
       payment_status: "Pending",
       grand_total: finalTotal,
+      reduced_amount: totalReduceAmount,
     };
     setCheckoutLoading(true);
     const response = await updateOrder({
@@ -92,9 +97,11 @@ const FoodCheckout = () => {
     if (response?.error) {
       toast.error(response.error.data.message);
       setCheckoutLoading(false);
+      setReduceData([]);
     } else {
       toast.success("Checkout successful");
       setCheckoutLoading(false);
+      setReduceData([]);
       handlePrint();
     }
   };
