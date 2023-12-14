@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaMinus, FaPlus, FaTrash, FaArrowLeft } from "react-icons/fa";
-import { setQuantity } from "../../redux/add-order/addOrderSlice.js";
+import { FaArrowLeft } from "react-icons/fa";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   useGetOrderByIdQuery,
@@ -11,13 +10,10 @@ import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem.j
 import toast from "react-hot-toast";
 import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
-import { current } from "@reduxjs/toolkit";
-import CheckOut from "./../room/CheckOut/CheckOut";
 const FoodCheckout = () => {
   const { id } = useParams();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { data, isLoading } = useGetOrderByIdQuery(id);
-  console.log({ orderDetails: data });
   const [orderData, setOrderData] = useState({});
   const [input, setInput] = useState(1);
   const navigate = useNavigate();
@@ -67,9 +63,11 @@ const FoodCheckout = () => {
       items: orderData.data.items,
       order_status: "CheckedOut",
       current_order: false,
-      total_price: finalTotal,
+      total_price: grandTotal,
       unpaid_amount: 0,
       payment_status: "Paid",
+      grand_total: finalTotal,
+      tax: taxPercentage,
     };
     const updateForRoom = {
       paid_amount: 0,
@@ -176,55 +174,51 @@ const FoodCheckout = () => {
                   ))}
                 </tbody>
                 <tfoot>
-                  {orderData?.data?.order_status !== "CheckedOut" ? (
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>Service Charge</td>
-                      <td>
-                        {" "}
-                        <span>
-                          <input
-                            className=" border border-gray-500/80 p-2 -ml-20 text-center"
-                            placeholder="Service Charge"
-                            type="number"
-                            name="addSrvCrg"
-                            id=""
-                            onChange={(e) =>
-                              setServiceCharge(Number(e.target.value))
-                            }
-                          />
-                        </span>
-                      </td>
-                      <td></td>
-                    </tr>
-                  ) : null}
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Service Charge</td>
+                    <td>
+                      {" "}
+                      <span>
+                        <input
+                          className=" border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
+                          placeholder="Service Charge"
+                          type="number"
+                          name="addSrvCrg"
+                          id=""
+                          onChange={(e) =>
+                            setServiceCharge(Number(e.target.value))
+                          }
+                        />
+                      </span>
+                    </td>
+                    <td></td>
+                  </tr>
 
-                  {orderData?.data?.order_status !== "CheckedOut" ? (
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>GST/Tax</td>
-                      <td>
-                        {" "}
-                        <span>
-                          <input
-                            className="border border-gray-500/80 p-2 -ml-20 text-center"
-                            placeholder=" GST/Tax"
-                            type="number"
-                            name="addTax"
-                            id=""
-                            onChange={(e) =>
-                              setTaxPercentage(Number(e.target.value))
-                            }
-                          />
-                        </span>
-                      </td>
-                      <td></td>
-                    </tr>
-                  ) : null}
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>GST/Tax</td>
+                    <td>
+                      {" "}
+                      <span>
+                        <input
+                          className="border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
+                          placeholder=" GST/Tax"
+                          type="number"
+                          name="addTax"
+                          id=""
+                          onChange={(e) =>
+                            setTaxPercentage(Number(e.target.value))
+                          }
+                        />
+                      </span>
+                    </td>
+                    <td></td>
+                  </tr>
                   <tr>
                     <td></td>
                     <td></td>

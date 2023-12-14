@@ -159,9 +159,7 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
           <tbody>
             <tr>
               <td>Overall Room Bills</td>
-              <td className="pl-2">
-                {Math.ceil(totalUnpaidAmount)}
-              </td>
+              <td className="pl-2">{Math.ceil(totalUnpaidAmount)}</td>
             </tr>
             <div className={`mt-5`}></div>
             <tr>

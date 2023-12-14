@@ -51,31 +51,31 @@ const HotelExpense = () => {
   return (
     <>
       {/* back button */}
-  
-      <div className="space-y-20 min-h-screen bg-white p-3 rounded-xl">
-      <div className={`mb-5`}>
-        <div>
-          <Link to={`/dashboard `}>
-            <button
-              type="button"
-              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-            >
-              <dfn>
-                <abbr title="Back">
-                  <FaArrowLeft />
-                </abbr>
-              </dfn>
 
-              <span className="tracking-wider font-semibold text-[1rem]"></span>
-            </button>
-          </Link>
+      <div className="space-y-20 min-h-screen bg-white p-3 rounded-xl">
+        <div className={`mb-5`}>
+          <div>
+            <Link to={`/dashboard `}>
+              <button
+                type="button"
+                className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+              >
+                <dfn>
+                  <abbr title="Back">
+                    <FaArrowLeft />
+                  </abbr>
+                </dfn>
+
+                <span className="tracking-wider font-semibold text-[1rem]"></span>
+              </button>
+            </Link>
+          </div>
+          <div className="mt-7">
+            <h1 className="bg-green-slimy text-2xl text-center text-white max-w-[18rem]   mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+              Hotel Expenses{" "}
+            </h1>
+          </div>
         </div>
-        <div className="mt-7">
-          <h1 className="bg-green-slimy text-2xl text-center text-white max-w-[18rem]   mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
-            Hotel Expenses{" "}
-          </h1>
-        </div>
-      </div>
         {/* Select Room Section */}
         <section className="max-w-full mx-auto flex flex-col md:flex-row gap-5 items-center justify-center">
           <p>Hotel Branch Name :</p>

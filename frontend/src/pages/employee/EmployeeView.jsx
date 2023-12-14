@@ -59,33 +59,80 @@ const EmployeeView = () => {
                 {/* profile image end */}
 
                 {/* personal information  */}
-                <div className=" grid md:grid-cols-2 gap-4 mt-9">
-                  <div>
-                    <h2 className="card-title mb-3"> Personal information </h2>
-                    <h6> Name : {userData?.name}</h6>
-                    <h6> Address : {userData?.address}</h6>
-                    <h6> Phone Number : {userData.phone_no}</h6>
-                    <h6> Emergency Contact : {userData.emergency_contact}</h6>
-                    <h6> Email : {userData?.email}</h6>
-                  </div>
+               <div>
+               <div className="grid md:grid-cols-2 gap-4 mt-9">
+                  <table className="w-54">
+                    <tbody>
+                      <tr>
+                        <th className="text-start pl-16">
+                        Name
+                        </th>
+                        <td className="text-center">:</td>
+                        <td>{userData?.name}</td>
+                      </tr>
+                      <tr>
+                        <th className="text-start pl-16">
+                        Address
+                        </th>
+                        <td className="w-4 text-center">:</td>
+                        <td>{userData?.address}</td>
+                      </tr> 
+                      <tr>
+                        <th className="text-start pl-16">
+                        Phone Number
+                        </th>
+                        <td className="w-4 text-center">:</td>
+                        <td>{userData?.phone_no}</td>
+                      </tr> 
+                      <tr>
+                        <th className="text-start pl-16">
+                        Emergency Contact
+                        </th>
+                        <td className="w-4 text-center">:</td>
+                        <td>{userData?.phone_no}</td>
+                      </tr> 
+                      <tr>
+                        <th className="text-start pl-16">
+                        Email
+                        </th>
+                        <td className="w-4 text-center">:</td>
+                        <td>{userData?.email}</td>
+                      </tr> 
+                    </tbody>
+                  </table>
                   <div>
                     <h2 className="card-title mb-3"> Other information </h2>
-                    <h6>
-                      {" "}
-                      Joining Date :{" "}
-                      {new Date(userData?.joining_date).toLocaleDateString()}
-                    </h6>
-                    <h6> Salary : {userData?.salary}</h6>
-                    <h6>
-                      Status :{" "}
-                      {userData?.status === "Active"
+                    <table>
+                    <tbody>
+                      <tr>
+                        <th className="text-start">
+                        Joining Date
+                        </th>
+                        <td className="w-4 text-center">:</td>
+                        <td>{new Date(userData?.joining_date).toLocaleDateString()}</td>
+                      </tr>
+                      <tr>
+                        <th className="text-start">
+                       Salary
+                        </th>
+                        <td className="w-4 text-center">:</td>
+                        <td>{userData?.salary}</td>
+                      </tr> 
+                      <tr>
+                        <th className="text-start">
+                       Status
+                        </th>
+                        <td className="w-4 text-center">:</td>
+                        <td>{userData?.status === "Active"
                         ? "In Duty"
                         : userData?.status === "Deactive"
                         ? "Resign"
-                        : "Deleted"}
-                    </h6>
+                        : "Deleted"}</td>
+                      </tr> 
+                    </tbody>
+                  </table>
                   </div>
-                  <div>
+                  <div className="ml-16">
                     <h2 className="card-title mb-3">
                       {userData?.images?.driving_lic_img?.length
                         ? "Driving Licenses"
@@ -117,6 +164,7 @@ const EmployeeView = () => {
                     </ul>
                   </div>
                 </div>
+               </div>
               </>
             ) : (
               <Rings

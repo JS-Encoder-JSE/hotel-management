@@ -42,6 +42,7 @@ import { clearAddOrderSlice } from "../../../redux/add-order/addOrderSlice";
 import Modal from "../../../components/Modal";
 import RefundPaymentModal from "./RefundPaymentModal";
 import { useReactToPrint } from "react-to-print";
+import { getCurrentTime } from "../../../utils/timeZone";
 
 const CheckOut = () => {
   const [getCheckout, { data: checkout, isSuccess, isLoading }] =
@@ -58,6 +59,11 @@ const CheckOut = () => {
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
   const componentRef = useRef();
+
+  // set errormessage for trx
+  const [trxError, setTrxError] = useState(false);
+
+
   const {
     refundAmount,
     additionalCharge,
@@ -82,7 +88,6 @@ const CheckOut = () => {
   //   isLoading: checkoutLoading,
   //   isSuccess,
   // } = useGetCOInfoQuery(fetch);
-
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
@@ -148,47 +153,68 @@ const CheckOut = () => {
       const paid_amount =
         calculateBalance < 0 ? Number(paymentList[0]?.amount) : 0;
 
-      const response = await addCheckout({
-        booking_id: bookingId,
-        new_total_room_rent,
-        new_no_of_days: calculateNOD,
-        to: toDate,
-        new_total_rent: calculateTotalRent,
-        new_total_rent_after_dis: calculateAmountAfterDis,
-        new_total_posted_bills,
-        new_total_payable_amount: totalPayableAmount,
-        new_total_paid_amount,
-        new_total_unpaid_amount: initialUnpaidAmount,
-        new_total_balance,
-        new_total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
-        new_total_additional_charges:
-          checkout?.data?.booking_info?.total_additional_charges +
-          additionalCharge,
-        new_total_service_charges:
-          checkout?.data?.booking_info?.total_service_charges + serviceCharge,
-        guestName: checkout?.data?.booking_info?.guestName,
-        room_numbers,
-        payment_method: paymentList[0].method ? paymentList[0].method : "Cash",
-
-        tran_id: paymentList[0].trx ? paymentList[0].trx : "",
-        checked_in: checkout?.data?.room_bookings[0]?.from,
-        checked_out: toDate,
-        paid_amount,
-        total_checkout_bills: pBill,
-        restaurant_income: selectedRoomFoodBill,
-      });
-      if (response?.error) {
-        toast.error(response.error.data.message);
+      if (
+        calculateBalance < 0 &&
+        paymentList[0]?.method !== "Cash" &&
+        paymentList[0]?.trx === ""
+      ) {
+        setTrxError(true);
+        return;
       } else {
-        toast.success("Checkout Successful");
-        // navigate("/dashboard/checkout");
-        if (
-          totalRefund > 0 &&
-          checkout?.data?.booking_info?.room_ids?.length === 1
-        ) {
-          window.refundPayment.showModal();
+        const response = await addCheckout({
+          booking_id: bookingId,
+          new_total_room_rent,
+          new_no_of_days: calculateNOD,
+          to: toDate,
+          new_total_rent: calculateTotalRent,
+          new_total_rent_after_dis: calculateAmountAfterDis,
+          new_total_posted_bills,
+          new_total_payable_amount: totalPayableAmount,
+          new_total_paid_amount,
+          new_total_unpaid_amount: initialUnpaidAmount,
+          new_total_balance,
+          new_total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
+          new_total_additional_charges:
+            checkout?.data?.booking_info?.total_additional_charges +
+            additionalCharge,
+          new_total_service_charges:
+            checkout?.data?.booking_info?.total_service_charges + serviceCharge,
+          guestName: checkout?.data?.booking_info?.guestName,
+          room_numbers,
+          payment_method: paymentList[0].method
+            ? paymentList[0].method
+            : "Cash",
+
+          tran_id: paymentList[0].trx ? paymentList[0].trx : "",
+          checked_in: checkout?.data?.room_bookings[0]?.from,
+          checked_out: toDate,
+          paid_amount,
+          total_checkout_bills: pBill,
+          restaurant_income: selectedRoomFoodBill,
+        });
+        if (response?.error) {
+          toast.error(response.error.data.message);
         } else {
-          handlePrint();
+          setTrxError(false);
+          toast.success("Checkout Successful");
+          // navigate("/dashboard/checkout");
+          if (
+            totalRefund > 0 &&
+            checkout?.data?.booking_info?.room_ids?.length === 1
+          ) {
+            window.refundPayment.showModal();
+          } else {
+            setTrxError(false);
+            // navigate("/dashboard/checkout");
+            if (
+              totalRefund > 0 &&
+              checkout?.data?.booking_info?.room_ids?.length === 1
+            ) {
+              window.refundPayment.showModal();
+            } else {
+              handlePrint();
+            }
+          }
         }
       }
     },
@@ -221,6 +247,15 @@ const CheckOut = () => {
       e.preventDefault();
     }
   };
+  const updateCheckoutTime = () => {
+    const selectedDate = new Date(checkout?.data?.room_bookings[0]?.to);
+
+    const [hours, minutes] = getCurrentTime().split(":");
+
+    selectedDate.setHours(hours, minutes, 0, 0);
+    const updatedToDate = selectedDate.toISOString();
+    dispatch(setToDate(updatedToDate));
+  };
   const transformedRooms = rooms?.data?.docs
     ?.filter((room) => room.status === "CheckedIn")
     ?.map((room) => ({
@@ -241,7 +276,7 @@ const CheckOut = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(updateSubTotal(totalBilling));
-      dispatch(setToDate(checkout?.data?.room_bookings[0]?.to));
+      updateCheckoutTime();
       dispatch(setFromDate(checkout?.data?.room_bookings[0]?.from));
       dispatch(setBookingInfo(checkout?.data?.booking_info));
       dispatch(setCalculateNOD(checkout?.data?.room_bookings[0]?.no_of_days));
@@ -282,6 +317,9 @@ const CheckOut = () => {
     setPaymentList([{ method: "", amount: "", trx: "", date: "" }]);
     dispatch(setCalculateCollectedAmount(0));
   }, [pBill]);
+  useEffect(() => {
+    setTrxError(false);
+  }, [paymentList[0].trx]);
   return (
     <div className="space-y-8">
       <div className="mb-7">
@@ -386,6 +424,7 @@ const CheckOut = () => {
               totalPayableAmount={totalPayableAmount}
               totalRefund={totalRefund}
               componentRef={componentRef}
+              trxError={trxError}
             />
             <Modal id={`refundPayment`}>
               <RefundPaymentModal

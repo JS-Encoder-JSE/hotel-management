@@ -42,21 +42,104 @@ const AdminOwnerView = () => {
           <div className="card-body grid md:grid-cols-2 gap-4">
             <div className="">
               <h2 className="card-title mb-3">Client Information </h2>
-              <h6>Username : {data?.username}</h6>
+              <table>
+                <tbody>
+                  <tr>
+                    <th className="text-start">User Name</th>
+                    <td className="pl-10">:</td>
+                    <td>{data?.username}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Name</th>
+                    <td className="pl-10">:</td>
+                    <td>{data?.name}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Address</th>
+                    <td className="pl-10">:</td>
+                    <td>{data?.address}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Contact No</th>
+                    <td className="pl-10">:</td>
+                    <td>{data?.phone_no}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Email</th>
+                    <td className="pl-10">:</td>
+                    <td>{data?.email}</td>
+                  </tr>
+                </tbody>
+              </table>
+              {/* <h6>Username : {data?.username}</h6>
               <h6>Name : {data?.name}</h6>
               <h6>Address : {data?.address}</h6>
               <h6>Contact Number : {data?.phone_no}</h6>
               <h6>Emergency Contact: {data?.emergency_contact}</h6>
-              <h6>Email : {data?.email}</h6>
+              <h6>Email : {data?.email}</h6> */}
             </div>
             <div className="">
               <h2 className="card-title mb-3">License Information </h2>
-              <h6>
+
+                <table>
+                  <tbody>
+                    <tr>
+                      <th className="text-start">License Key</th>
+                      <td className="pl-10">:</td>
+                      <td>{data?.license_key}</td>
+                    </tr>
+                    <tr>
+                      <th className="text-start">Purchase Date</th>
+                      <td className="pl-10">:</td>
+                      <td>{new Date(
+                  data?.createdAt
+                ).toLocaleDateString()}</td>
+                    </tr>
+                    <tr>
+                      <th className="text-start">Renew Date</th>
+                      <td className="pl-10">:</td>
+                      <td>{new Date(data?.bill_from).toLocaleDateString()}</td>
+                    </tr>
+                     <tr>
+                      <th className="text-start">Expire Date</th>
+                      <td className="pl-10">:</td>
+                      <td> {new Date(data?.bill_to).toLocaleDateString()}</td>
+                    </tr>
+                    <tr>
+                      <th className="text-start">Remain Days</th>
+                      <td className="pl-10">:</td>
+                      <td> {Math.floor(
+                  Math.abs(new Date(data?.bill_to) - new Date()) /
+                    (24 * 60 * 60 * 1000)
+                )}{" "}
+                Days</td>
+                    </tr>
+                    <tr>
+                      <th className="text-start"> Status</th>
+                      <td className="pl-10">:</td>
+                      <td>{data?.status}</td>
+                    </tr>
+
+                    <tr>
+                      <th className="text-start">Number Of Hotels</th>
+                      <td className="pl-10">:</td>
+                      <td className="flex gap-2 items-center"> {data?.maxHotels} <span
+                  className={`cursor-pointer`}
+                  onClick={() => window.hle_modal.showModal()}
+                >
+                  <FaEdit />
+                </span></td>
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              {/* <h6>
                 {" "}
                 License Key : {data?.license_key}
                 {/* {new Date(data?.bill_to).toLocaleDateString()} */}
-              </h6>
-              <h6>
+              {/* </h6> */}
+              {/* <h6>
                 {" "}
                 Purchase Date :{new Date(
                   data?.createdAt
@@ -64,28 +147,28 @@ const AdminOwnerView = () => {
               </h6>
               <h6>
                 Renew Date : {new Date(data?.bill_from).toLocaleDateString()}
-              </h6>
-              <h6>
+              </h6> */}
+              {/* <h6>
                 Expire Date : {new Date(data?.bill_to).toLocaleDateString()}
-              </h6>
-              <h6>
+              </h6> */}
+              {/* <h6>
                 Remaining Days:{" "}
                 {Math.floor(
                   Math.abs(new Date(data?.bill_to) - new Date()) /
                     (24 * 60 * 60 * 1000)
                 )}{" "}
                 Days
-              </h6>
-              <h6 className="capitalize">Status : {data?.status}</h6>
-              <div className="flex gap-1.5">
-                <h6>Number Of Hotels : {data?.maxHotels}</h6>
-                <span
-                  className={`cursor-pointer`}
-                  onClick={() => window.hle_modal.showModal()}
-                >
-                  <FaEdit />
-                </span>
-              </div>
+              </h6> */}
+                {/* <h6 className="capitalize">Status : {data?.status}</h6>
+                <div className="flex gap-1.5">
+                  <h6>Number Of Hotels : {data?.maxHotels}</h6>
+                  <span
+                    className={`cursor-pointer`}
+                    onClick={() => window.hle_modal.showModal()}
+                  >
+                    <FaEdit />
+                  </span>
+                </div> */}
             </div>
           </div>
         </div>

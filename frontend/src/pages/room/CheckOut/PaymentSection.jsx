@@ -27,6 +27,7 @@ const PaymentSection = ({
   addCheckOutLoading,
   totalPayableAmount,
   componentRef,
+  trxError
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -122,6 +123,7 @@ const PaymentSection = ({
             totalRefund={totalRefund}
             pBill={pBill}
             roomData={roomData}
+            trxError={trxError}
           />
         </div>
         {/* Right Side */}

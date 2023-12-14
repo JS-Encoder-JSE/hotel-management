@@ -64,6 +64,7 @@ const AddHotelExpense = () => {
 
   let totalExpense = [...totalItems];
 
+
   // total calculation
   const calculateTotal = () => {
     return totalItems
@@ -73,7 +74,7 @@ const AddHotelExpense = () => {
 
   const formik = useFormik({
     initialValues: {
-      date: "",
+      date: new Date(),
       name: "",
       quantity: "",
       price: "",
@@ -116,7 +117,7 @@ const AddHotelExpense = () => {
       totalItems.every(
         (item) =>
           new Date(item.date).toLocaleDateString() ===
-          new Date(totalItems[0].date).toLocaleDateString()
+          new Date(totalItems[0].date).toLocaleDateString() || ""
       );
 
     if (!areAllDatesSame) {

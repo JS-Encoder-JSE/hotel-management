@@ -73,9 +73,10 @@ const AddExpenses = () => {
       .toFixed(2);
   };
 
+
   const formik = useFormik({
     initialValues: {
-      date: "",
+      date: new Date(),
       name: "",
       quantity: "",
       price: "",

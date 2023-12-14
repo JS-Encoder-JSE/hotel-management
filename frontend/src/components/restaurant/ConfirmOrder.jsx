@@ -164,7 +164,7 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                     <COItem key={idx} idx={idx} food={food} />
                   ))}
                 </tbody>
-                
+
                 <tfoot lassName={`text-[2rem] font-bold`}>
                   <tr>
                     <td colSpan={6}>
@@ -250,7 +250,7 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                       <div className="mt-3">
                         <div className="pl-2 mb-4 w-[70%] text-[1rem] font-semibold">
                           <p className="flex gap-3">
-                            Total Price :<span >   {orderCalc.total}</span>
+                            Total Price :<span> {orderCalc.total}</span>
                           </p>
                           {/* <p className="flex justify-between">
                             Tax : <span>{orderCalc.tax}</span>
@@ -267,21 +267,31 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
             </div>
             {/* singature */}
             {isheaderHide && (
-            <div>
-              <div className="flex justify-between mt-24">
-                <div>
-                  {/* office signature */}
-                  <div className="h-[2px] w-48 divider"></div>
-                  <div className="text-center">Office Signature</div>
-                </div>
-                {/* customer signature  */}
-                <div>
-                  <div className="h-[2px] w-48 divider"></div>
-                  <div className="text-center">Customer Signature</div>
+              <div>
+                <div className="flex justify-between mt-24">
+                  <div>
+                    {/* office signature */}
+                    <div className="h-[2px] w-48 divider"></div>
+                    <div className="text-center">Office Signature</div>
+                  </div>
+                  {/* customer signature  */}
+                  <div>
+                    <div className="h-[2px] w-48 divider"></div>
+                    <div className="text-center">Customer Signature</div>
+                  </div>
                 </div>
               </div>
-            </div>)}
-            {isheaderHide && <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[16%] md:left-[18%]">Powered by <span className="text-green-slimy text-lg font-semibold">JS Encoder</span>. Copyright © {currentYear}. All rights reserved. Version {versionControl} </p>}
+            )}
+            {isheaderHide && (
+              <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[16%] md:left-[18%]">
+                Powered by{" "}
+                <span className="text-green-slimy text-lg font-semibold">
+                  JS Encoder
+                </span>
+                . Copyright © {currentYear}. All rights reserved. Version{" "}
+                {versionControl}{" "}
+              </p>
+            )}
           </div>
           <div className={`mt-5 text-end`}>
             <button

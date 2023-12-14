@@ -27,7 +27,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 // import { useLocation } from 'react-router-dom';
 
 const UserDashBoard = ({ managerId }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const location = useLocation();
   const { user } = useSelector((store) => store.authSlice);
   const { pathname } = useLocation();
@@ -36,15 +36,14 @@ const UserDashBoard = ({ managerId }) => {
     isSuccess,
     isLoading,
     isError,
-    refetch
+    refetch,
   } = useGetDashboardInfoQuery(managerId ? managerId : user?._id);
   const [userHotel, setUserHotel] = useState(
     user?.role === "manager" || user?.role === "owner"
   );
-  console.log({dashboardData});
-  useEffect(()=>{
-    refetch()
-    },[location.pathname])
+  useEffect(() => {
+    refetch();
+  }, [location.pathname]);
 
   if (isLoading || isError) {
     return (
@@ -57,9 +56,6 @@ const UserDashBoard = ({ managerId }) => {
     );
   }
 
-   
-
-
   return (
     <>
       <div className="min-h-screen">
@@ -71,26 +67,48 @@ const UserDashBoard = ({ managerId }) => {
             <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
               {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
             </div>
-          <div onClick={()=> navigate(userHotel && "todays-checkin-list")} className="cursor-pointer" >
-          <h6 className="text-xs text-slate-400 ">
-              {userHotel ? "TODAY'S CHECK IN" : "TOTAL SELL"}
-            </h6>
-            <p className="text-2xl font-semibold mt-3">
-              {Math.floor(
-                userHotel
-                  ? dashboardData?.daily_datas[0]
-                    ? dashboardData?.daily_datas[0]?.today_checkin
+            <div
+              onClick={() =>
+                navigate(
+                  user?.role === "manager"
+                    ? "todays-checkin-list"
+                    : user?.role === "owner"
+                    ? `/dashboard/owner-todays-checkin-list?manager_id=${managerId}`
+                    : ""
+                )
+              }
+              className="cursor-pointer"
+            >
+              <h6 className="text-xs text-slate-400 ">
+                {userHotel ? "TODAY'S CHECK IN" : "TOTAL SELL"}
+              </h6>
+              <p className="text-2xl font-semibold mt-3">
+                {Math.floor(
+                  userHotel
+                    ? dashboardData?.daily_datas[0]
+                      ? dashboardData?.daily_datas[0]?.today_checkin
+                      : 0
+                    : dashboardData?.permanent_datas
+                    ? dashboardData?.permanent_datas?.total_sell_lic
                     : 0
-                  : dashboardData?.permanent_datas
-                  ? dashboardData?.permanent_datas?.total_sell_lic
-                  : 0
-              )}
-              {}
-            </p>
-          </div>
+                )}
+                {}
+              </p>
+            </div>
             <hr />
             {userHotel ? (
-              <div onClick={()=>navigate("/dashboard/today-checkouts")} className="cursor-pointer">
+              <div
+                onClick={() =>
+                  navigate(
+                    user?.role === "manager"
+                      ? "/dashboard/today-checkouts"
+                      : user?.role === "owner"
+                      ? `/dashboard/owner-todays-checkout-list?manager_id=${managerId}`
+                      : ""
+                  )
+                }
+                className="cursor-pointer"
+              >
                 <h6 className="text-xs text-slate-400 mt-4">
                   TODAY'S CHECK OUT
                 </h6>
@@ -109,25 +127,49 @@ const UserDashBoard = ({ managerId }) => {
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
                 <BsClipboard2DataFill />
               </div>
-            <div className="cursor-pointer" onClick={()=> navigate(userHotel && '/dashboard/today-bookings')}>
-            <h6 className="text-xs text-slate-400 uppercase">
-                TODAY'S Booking
-              </h6>
-              <p className="text-2xl font-semibold mt-3">
-                {Math.floor(dashboardData?.daily_datas[0]?.today_booking || 0)}
-              </p>
-            </div>
+              <div
+                className="cursor-pointer"
+                onClick={() =>
+                  navigate(
+                    user?.role === "manager"
+                      ? "/dashboard/today-bookings"
+                      : user?.role === "owner"
+                      ? `/dashboard/owner-today-bookings-list?manager_id=${managerId}`
+                      : ""
+                  )
+                }
+              >
+                <h6 className="text-xs text-slate-400 uppercase">
+                  TODAY'S Booking
+                </h6>
+                <p className="text-2xl font-semibold mt-3">
+                  {Math.floor(
+                    dashboardData?.daily_datas[0]?.today_booking || 0
+                  )}
+                </p>
+              </div>
               <hr />
-            <div className="cursor-pointer" onClick={()=>navigate("/dashboard/today-cancel-bookings")}>
-            <h6 className="text-xs text-slate-400 mt-4">
-                TODAY'S CANCELED BOOKING
-              </h6>
-              <p className="text-2xl font-semibold mt-4">
-                {Math.floor(
-                  dashboardData?.daily_datas[0]?.today_canceled_bookings || 0
-                )}
-              </p>
-            </div>
+              <div
+                className="cursor-pointer"
+                onClick={() =>
+                  navigate(
+                    user?.role === "manager"
+                      ? "/dashboard/today-cancel-bookings"
+                      : user?.role === "owner"
+                      ? `/dashboard/owner-today-bookings-cancel?manager_id=${managerId}`
+                      : ""
+                  )
+                }
+              >
+                <h6 className="text-xs text-slate-400 mt-4">
+                  TODAY'S CANCELED BOOKING
+                </h6>
+                <p className="text-2xl font-semibold mt-4">
+                  {Math.floor(
+                    dashboardData?.daily_datas[0]?.today_canceled_bookings || 0
+                  )}
+                </p>
+              </div>
             </div>
           ) : (
             ""
@@ -254,9 +296,8 @@ const UserDashBoard = ({ managerId }) => {
         </div>
       )} */}
         </section>
-   
 
-      {user?.role === "manager" ||
+        {user?.role === "manager" ||
         isValidUrl("dashboard/finance", pathname) ? (
           <section>
             <AllExpeseAnalytics

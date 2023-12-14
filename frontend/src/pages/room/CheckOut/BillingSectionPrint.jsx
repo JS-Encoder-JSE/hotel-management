@@ -18,6 +18,8 @@ const BillingSectionPrint = ({
     discountOffer,
     grandTotal,
     roomPostedBill,
+    texAmount,
+    calculatePayableAmount,
   } = billingState;
   return (
     <section>
@@ -28,6 +30,7 @@ const BillingSectionPrint = ({
           <p>Additional Changes</p>
           <p>Service Charge</p>
           <p>Room Posted Bill</p>
+          <p>Tex Amount</p>
           <p className="text-lg font-bold">GrandTotal</p>
         </div>
         <div className="space-y-4">
@@ -36,10 +39,15 @@ const BillingSectionPrint = ({
           <p>: Rs.{" " + additionalCharge}</p>
           <p>: Rs.{" " + serviceCharge}</p>
           <p>: Rs.{" " + roomPostedBill}</p>
+          <p>: Rs.{" " + texAmount}</p>
           <p>
             : Rs.
             {" " +
-              (subTotals + additionalCharge + serviceCharge + roomPostedBill)}
+              (subTotals +
+                additionalCharge +
+                serviceCharge +
+                roomPostedBill +
+                texAmount)}
           </p>
         </div>
       </div>

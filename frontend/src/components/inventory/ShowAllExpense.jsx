@@ -333,7 +333,7 @@ const ShowAllExpense = () => {
                     </table>
                   </div>
                 ) : (
-                  <p className="flex justify-center items-center mt-24">
+                  <p className="flex justify-center items-center my-48">
                     No Expenses Today
                   </p>
                 )}
@@ -342,7 +342,7 @@ const ShowAllExpense = () => {
 
             {/* pagination */}
 
-            <div
+            {resExpenses && resExpenses?.docs[0]?.items.length ? <div
               onClick={handleScrollToTop}
               className="flex justify-center mt-10"
             >
@@ -363,7 +363,7 @@ const ShowAllExpense = () => {
                 onPageChange={handlePageChange}
                 renderOnZeroPageCount={null}
               />
-            </div>
+            </div> :""}
           </div>
 
           {/* Restaurant Expenses */}

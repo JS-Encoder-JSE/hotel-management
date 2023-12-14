@@ -81,7 +81,6 @@ const ManageCheckinModal = () => {
   const [upload, { isError, error }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [addBooking] = useAddBookingMutation();
-  console.log({ isError, error });
   // handleAmount
   const handleAmount = (e) => {
     const inputValue = e.target.value;

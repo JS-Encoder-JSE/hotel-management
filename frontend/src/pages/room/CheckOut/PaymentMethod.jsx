@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlineClear } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import DatePicker from "react-datepicker";
@@ -15,7 +15,46 @@ const PaymentMethod = ({
   totalRefund,
   pBill,
   roomData,
+  trxError
 }) => {
+
+const [isRequired,setRequired]=useState("")
+console.log(trxError)
+//   // form validation
+// const validationSchema = yup.object({
+//   room_arr: yup.array().required("Room IDs are required"),
+//   // hotel_id: yup.string().required("Hotel ID is required"),
+//   guestName: yup.string().required("Guest name is required"),
+//   address: yup.string().required("Address is required"),
+//   mobileNumber: yup.string().required("Mobile number is required"),
+//   emergency_contact: yup.string().required("Emergency contact is required"),
+//   adult: yup
+//     .number()
+//     .required("Adult is required")
+//     .positive("Adult must be a positive number")
+//     .integer("Adult must be an integer"),
+//   //   children: yup.number().when([], {
+//   //   is: (children) => children && children.length > 0,
+//   //   children: yup
+//   //     .number()
+//   //     .positive("Children must be a positive number")
+//   //     .integer("Children must be an integer"),
+//   // }),
+//   children: yup.number(),
+
+//   paymentMethod: yup.string().required("Payment method is required"),
+//   trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
+//     if (paymentMethod !== "Cash")
+//       return schema.required("Transaction ID is required");
+//     else return schema;
+//   }),
+
+//   from: yup.string().required("From Date is required"),
+//   to: yup.string().required("To Date is required"),
+//   amount: yup.number(),
+//   nationality: yup.string().required("Nationality is required"),
+//   bookingMethod: yup.string().required("Booking method is required"),
+// });
   const paymentSchema = yup.object({
     // method: yup.string().required("Payment method is required"),
     // amount: yup.number().required("Amount is required"),
@@ -32,7 +71,7 @@ const PaymentMethod = ({
     initialValues: paymentList,
     validationSchema: yup.array().of(paymentSchema),
   });
-
+console.log(paymentList)
   return (
     <div className={`mt-5 space-y-3`}>
       {paymentList.map((elem, idx) => {
@@ -80,11 +119,11 @@ const PaymentMethod = ({
                     className="input input-sm input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
                     onChange={(e) => handleChange(e, idx)}
                   />
-                  {formik.touched.trx && Boolean(formik.errors.trx) ? (
-                <small className="text-red-600">
-                  {formik.touched.trx && formik.errors.trx}
-                </small>
-              ) : null}
+                 {Boolean(trxError) ? (
+                    <small className="text-red-600">
+                      Trx ID is Required
+                    </small>
+                  ) : null}
                 </div>
               ) : null}
               

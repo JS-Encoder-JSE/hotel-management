@@ -25,18 +25,16 @@ const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
   // );
   const amountAfterDis = Math.ceil(totalRoomRent - discountPerRoom);
 
-  useEffect(()=>{
     dispatch(updateSubTotal(amountAfterDis))
-  },[amountAfterDis])
+
   // console.log(roomData?.total_room_rent, discountPerRoom);
   useEffect(() => {
     !isNaN(amountAfterDis) ? dispatch(setAmountAfterDis(amountAfterDis)) : "";
     dispatch(setBookingId(roomData?._id));
   }, [data]);
 
-  useEffect(() => {
     dispatch(setAmountAfterDis(amountAfterDis));
-  }, [amountAfterDis]);
+ 
 
   // const afterDiscountAm = roomData?.total_room_rent - discountAmount
   // console.log(discountAmount,"disco",afterDiscountAm)

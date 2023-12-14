@@ -1,17 +1,24 @@
 import React from "react";
-import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
-import logo from "../../assets/logo.png"
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
+import logo from "../../assets/logo.png";
 import { getFormateDateAndTime, versionControl } from "../../utils/utils";
 
-const RestaurantSalesReport = ({ values, header,date }) => {
-    // SL	Date	Items Name	Description	Quantity	Price	Action
-    const desiredHeaders = ["Serial No", "date","today_restaurant_income"];
-    const tableHeaders =["Serial No","Date","Today Restaurant Income"]
-    const jsEncoderTextStyle = {
-      color: "green",
-      fontWeight: "bold",
-    };
-  
+const RestaurantSalesReport = ({ values, header, date }) => {
+  // SL	Date	Items Name	Description	Quantity	Price	Action
+  const desiredHeaders = ["Serial No", "date", "today_restaurant_income"];
+  const tableHeaders = ["Serial No", "Date", "Today Restaurant Income"];
+  const jsEncoderTextStyle = {
+    color: "green",
+    fontWeight: "bold",
+  };
+
   const currentYear = new Date().getFullYear();
   const styles = StyleSheet.create({
     page: {
@@ -22,7 +29,7 @@ const RestaurantSalesReport = ({ values, header,date }) => {
     table: {
       display: "table",
       width: "100%",
-      borderStyle: "solid", 
+      borderStyle: "solid",
       borderWidth: 1,
       borderColor: "#e8e8e8",
     },
@@ -61,11 +68,14 @@ const RestaurantSalesReport = ({ values, header,date }) => {
             alignItems: "center",
           }}
         >
-           <Image src={logo} style={{
-              width:"54px",
-              height:"54px",
-              marginBottom:"10px"
-            }}/>
+          <Image
+            src={logo}
+            style={{
+              width: "54px",
+              height: "54px",
+              marginBottom: "10px",
+            }}
+          />
           <View>
             <Text>{header?.title}</Text>
             <Text
@@ -111,7 +121,11 @@ const RestaurantSalesReport = ({ values, header,date }) => {
           ))}
         </View>
         <View style={styles.footer}>
-          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
+          <Text>
+            Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>.
+            Copyright ©{currentYear}. All rights reserved. Version{" "}
+            {versionControl}
+          </Text>
         </View>
       </Page>
     </Document>
