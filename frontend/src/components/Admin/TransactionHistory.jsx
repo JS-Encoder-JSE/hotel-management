@@ -70,12 +70,8 @@ const TransactionHistory = () => {
   return (
     <div className="card w-full bg-white shadow-xl">
       <div className="card-body space-y-10">
-        <h1
-          className={`bg-green-slimy text-[20px] text-white max-w-[15rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}
-        >
-          Transaction History
-        </h1>
-        <div className="flex flex-col sm:flex-col md:flex-row justify-between gap-2">
+        <h1  className={`bg-green-slimy text-[20px] text-white max-w-[15rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}>Transaction History</h1>
+        <div className="flex justify-between gap-2">
           <div className={`flex flex-col md:flex-row gap-3`}>
             <DatePicker
               autoComplete={`off`}
