@@ -172,51 +172,59 @@ const FoodCheckout = () => {
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Service Charge</td>
-                    <td>
-                      {" "}
-                      <span>
-                        <input
-                          className=" border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
-                          placeholder="Service Charge"
-                          type="number"
-                          name="addSrvCrg"
-                          id=""
-                          onChange={(e) =>
-                            setServiceCharge(Number(e.target.value))
-                          }
-                        />
-                      </span>
-                    </td>
-                    <td></td>
-                  </tr>
+                  {orderData?.data?.dedicated_to !== "room" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Service Charge (%)</td>
+                      <td>
+                        {" "}
+                        <span>
+                          <input
+                            className=" border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
+                            placeholder="Service Charge"
+                            type="number"
+                            name="addSrvCrg"
+                            id=""
+                            onChange={(e) =>
+                              setServiceCharge(Number(e.target.value))
+                            }
+                          />
+                        </span>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
 
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>GST/Tax</td>
-                    <td>
-                      {" "}
-                      <span>
-                        <input
-                          className="border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
-                          placeholder=" GST/Tax"
-                          type="number"
-                          name="addTax"
-                          id=""
-                          onChange={(e) =>
-                            setTaxPercentage(Number(e.target.value))
-                          }
-                        />
-                      </span>
-                    </td>
-                    <td></td>
-                  </tr>
+                  {orderData?.data?.dedicated_to !== "room" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>GST/Tax (%)</td>
+                      <td>
+                        {" "}
+                        <span>
+                          <input
+                            className="border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
+                            placeholder=" GST/Tax"
+                            type="number"
+                            name="addTax"
+                            id=""
+                            onChange={(e) =>
+                              setTaxPercentage(Number(e.target.value))
+                            }
+                          />
+                        </span>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
                   <tr>
                     <td></td>
                     <td></td>

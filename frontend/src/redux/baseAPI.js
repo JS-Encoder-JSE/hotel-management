@@ -44,6 +44,7 @@ const baseAPI = createApi({
     "expenses",
     "mainDashboard",
     "subDashboard",
+    "updateOrder",
   ],
   baseQuery: baseQueryWithReAuth,
   endpoints: (build) => ({

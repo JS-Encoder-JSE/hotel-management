@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const CustomerReservation = ({ userHotel, monthlyData,managerId,userId }) => {
+const CustomerReservation = ({ userHotel, monthlyData, managerId, userId }) => {
   const [chartProps, setChartProps] = useState({
     series: [
       {
@@ -59,19 +59,19 @@ const CustomerReservation = ({ userHotel, monthlyData,managerId,userId }) => {
         },
         min: 0,
       },
-      tooltip: {
-        shared:true,
-        show:true,
-        intersect:false,
-        y: {
-          formatter: function (y) {
-            if (typeof y !== "undefined") {
-              return y.toFixed(0) + (userHotel ? " checked In" : " renew");
-            }
-            return y;
-          },
-        },
-      },
+      // tooltip: {
+      //   shared:true,
+      //   show:true,
+      //   intersect:false,
+      //   y: {
+      //     formatter: function (y) {
+      //       if (typeof y !== "undefined") {
+      //         return y.toFixed(0) + (userHotel ? " checked In" : " renew");
+      //       }
+      //       return y;
+      //     },
+      //   },
+      // },
     },
   });
 
@@ -119,7 +119,7 @@ const CustomerReservation = ({ userHotel, monthlyData,managerId,userId }) => {
         labels: convertedDate,
       },
     }));
-  }, [monthlyData,managerId,userId]);
+  }, [monthlyData, managerId, userId]);
 
   return (
     <ReactApexChart

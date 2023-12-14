@@ -50,7 +50,8 @@ const foodAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["food", "order"],
+      providesTags: ["addOrder"],
+      invalidatesTags: ["food", "order", "updateOrder"],
     }),
     deleteOrder: build.mutation({
       query: (id) => {
@@ -95,7 +96,7 @@ const foodAPI = baseAPI.injectEndpoints({
     }),
     getOrderById: build.query({
       query: (id) => `foods/get-order-by-id/${id}`,
-      providesTags: ["checkout"],
+      providesTags: ["checkout", "updateOrder"],
     }),
     updateOrder: build.mutation({
       query: ({ data, id }) => {
@@ -105,7 +106,8 @@ const foodAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["checkout", "order"],
+      providesTags: ["updateOrder"],
+      invalidatesTags: ["checkout", "order", "addOrder"],
     }),
     getCategory: build.query({
       query: () => "foods/get-food-categories-by-hotel",

@@ -82,7 +82,7 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
     } else {
       dispatch(resetFoodOrder());
       // closeRef.current.click();
-      // toast.success(response.data.message);
+      toast.success(response.data.message);
       setSuccess(arr);
     }
   };

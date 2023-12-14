@@ -24,7 +24,6 @@ const EmployeeView = () => {
     const blob = await response.blob();
     saveAs(blob, `${new Date().toLocaleDateString()}.jpg`);
   };
-  
 
   return (
     <>
@@ -59,112 +58,102 @@ const EmployeeView = () => {
                 {/* profile image end */}
 
                 {/* personal information  */}
-               <div>
-               <div className="grid md:grid-cols-2 gap-4 mt-9">
-                  <table className="w-54">
-                    <tbody>
-                      <tr>
-                        <th className="text-start pl-16">
-                        Name
-                        </th>
-                        <td className="text-center">:</td>
-                        <td>{userData?.name}</td>
-                      </tr>
-                      <tr>
-                        <th className="text-start pl-16">
-                        Address
-                        </th>
-                        <td className="w-4 text-center">:</td>
-                        <td>{userData?.address}</td>
-                      </tr> 
-                      <tr>
-                        <th className="text-start pl-16">
-                        Phone Number
-                        </th>
-                        <td className="w-4 text-center">:</td>
-                        <td>{userData?.phone_no}</td>
-                      </tr> 
-                      <tr>
-                        <th className="text-start pl-16">
-                        Emergency Contact
-                        </th>
-                        <td className="w-4 text-center">:</td>
-                        <td>{userData?.phone_no}</td>
-                      </tr> 
-                      <tr>
-                        <th className="text-start pl-16">
-                        Email
-                        </th>
-                        <td className="w-4 text-center">:</td>
-                        <td>{userData?.email}</td>
-                      </tr> 
-                    </tbody>
-                  </table>
-                  <div>
-                    <h2 className="card-title mb-3"> Other information </h2>
-                    <table>
-                    <tbody>
-                      <tr>
-                        <th className="text-start">
-                        Joining Date
-                        </th>
-                        <td className="w-4 text-center">:</td>
-                        <td>{new Date(userData?.joining_date).toLocaleDateString()}</td>
-                      </tr>
-                      <tr>
-                        <th className="text-start">
-                       Salary
-                        </th>
-                        <td className="w-4 text-center">:</td>
-                        <td>{userData?.salary}</td>
-                      </tr> 
-                      <tr>
-                        <th className="text-start">
-                       Status
-                        </th>
-                        <td className="w-4 text-center">:</td>
-                        <td>{userData?.status === "Active"
-                        ? "In Duty"
-                        : userData?.status === "Deactive"
-                        ? "Resign"
-                        : "Deleted"}</td>
-                      </tr> 
-                    </tbody>
-                  </table>
-                  </div>
-                  <div className="ml-16">
-                    <h2 className="card-title mb-3">
-                      {userData?.images?.driving_lic_img?.length
-                        ? "Driving Licenses"
-                        : userData?.images?.nid?.length
-                        ? "NID"
-                        : "Passport"}
-                    </h2>
-                    <ul className={`list-disc list-inside`}>
-                      {(userData?.images?.driving_lic_img?.length
-                        ? [...userData?.images?.driving_lic_img]
-                        : userData?.images?.nid?.length
-                        ? [...userData?.images?.nid]
-                        : [...userData?.images?.passport]
-                      )?.map((img, idx) => (
-                        <li>
-                          <div className={`inline-flex gap-1.5`}>
-                            <span className={`-mt-0.5`}>
-                              Attachment {++idx}
-                            </span>
-                            <span
-                              onClick={() => downloadFile(img)}
-                              className={`hover:text-green-slimy transition-colors duration-500 cursor-pointer`}
-                            >
-                              <FaDownload />
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                <div>
+                  <div className="grid md:grid-cols-2 gap-4 mt-9">
+                    <table className="w-54">
+                      <tbody>
+                        <tr>
+                          <th className="text-start w-24">Name</th>
+                          <td className="text-center">:</td>
+                          <td>{userData?.name}</td>
+                        </tr>
+                        <tr>
+                          <th className="text-start w-24">Address</th>
+                          <td className="w-4 text-center">:</td>
+                          <td>{userData?.address}</td>
+                        </tr>
+                        <tr>
+                          <th className="text-start w-24">Phone Number</th>
+                          <td className="w-4 text-center">:</td>
+                          <td>{userData?.phone_no}</td>
+                        </tr>
+                        <tr>
+                          <th className="text-start w-24">Emergency Contact</th>
+                          <td className="w-4 text-center">:</td>
+                          <td>{userData?.phone_no}</td>
+                        </tr>
+                        <tr>
+                          <th className="text-start w-24">Email</th>
+                          <td className="w-4 text-center">:</td>
+                          <td>{userData?.email}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div>
+                      <h2 className="card-title mb-3"> Other information </h2>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <th className="text-start">Joining Date</th>
+                            <td className="w-4 text-center">:</td>
+                            <td>
+                              {new Date(
+                                userData?.joining_date
+                              ).toLocaleDateString()}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th className="text-start">Salary</th>
+                            <td className="w-4 text-center">:</td>
+                            <td>{userData?.salary}</td>
+                          </tr>
+                          <tr>
+                            <th className="text-start">Status</th>
+                            <td className="w-4 text-center">:</td>
+                            <td>
+                              {userData?.status === "Active"
+                                ? "In Duty"
+                                : userData?.status === "Deactive"
+                                ? "Resign"
+                                : "Deleted"}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="">
+                      <h2 className="card-title mb-3">
+                        {userData?.images?.driving_lic_img?.length
+                          ? "Driving Licenses"
+                          : userData?.images?.nid?.length
+                          ? "NID"
+                          : "Passport"}
+                      </h2>
+                      <ul className={`list-disc list-inside`}>
+                        {(userData?.images?.driving_lic_img?.length
+                          ? [...userData?.images?.driving_lic_img]
+                          : userData?.images?.nid?.length
+                          ? [...userData?.images?.nid]
+                          : [...userData?.images?.passport]
+                        )?.map((img, idx) => (
+                          <li>
+                            <div className={`inline-flex gap-1.5`}>
+                              <span className={`-mt-0.5`}>
+                                Attachment {++idx}
+                              </span>
+                              <span
+                                onClick={() => downloadFile(img)}
+                                className={`hover:text-green-slimy transition-colors duration-500 cursor-pointer`}
+                              >
+                                <FaDownload />
+                              </span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
-               </div>
               </>
             ) : (
               <Rings
