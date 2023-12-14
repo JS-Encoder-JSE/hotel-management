@@ -236,9 +236,11 @@ export const addOrder = async (req, res) => {
       bookingInfo.total_payable_amount += unpaid_amount;
       bookingInfo.total_unpaid_amount += unpaid_amount;
       await bookingInfo.save();
+      const booking = await Booking.findOne({ room_id, status: "CheckedIn" });
       const existingFoodOrder = await FoodOrder.findOne({
         hotel_id,
         room_id,
+        booking_id: booking._id,
         dedicated_to,
         current_order,
         order_status: "Current",
@@ -259,8 +261,8 @@ export const addOrder = async (req, res) => {
       }
       const newFoodOrder = new FoodOrder({
         room_id,
-        table_id,
         hotel_id,
+        booking_id: booking._id,
         unique_id,
         current_order,
         items,
@@ -272,7 +274,6 @@ export const addOrder = async (req, res) => {
         order_status: "Current",
       });
       const savedFoodOrder = await newFoodOrder.save();
-      const booking = await Booking.findOne({ room_id, status: "CheckedIn" });
       booking.food_order_ids.push(savedFoodOrder._id);
       await booking.save();
       res.status(201).json({
@@ -304,7 +305,6 @@ export const addOrder = async (req, res) => {
         });
       }
       const newFoodOrder = new FoodOrder({
-        room_id,
         table_id,
         hotel_id,
         unique_id,

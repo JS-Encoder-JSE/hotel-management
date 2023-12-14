@@ -86,6 +86,10 @@ const foodOrderSchema = new mongoose.Schema(
       required: false,
       ref: "Room",
     },
+    booking_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+    },
     table_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
