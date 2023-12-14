@@ -65,8 +65,6 @@ const AddHotelExpense = () => {
   let totalExpense = [...totalItems];
 
 
-  console.log(totalItems)
-
   // total calculation
   const calculateTotal = () => {
     return totalItems

@@ -41,7 +41,6 @@ const validationSchema = yup.object({
 
 const CheckInDyn = ({ data }) => {
   const { id } = useParams();
-  console.log({ id });
   const closeRef = useRef(null);
   const [upload, { isError }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);

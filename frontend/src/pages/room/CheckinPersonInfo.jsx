@@ -25,7 +25,6 @@ const CheckinPersonInfo = () => {
   const { id } = useParams();
   const { data: booking, isLoading } = useGetBookingInfoByIdQuery(id);
 
-  console.log("booking", booking);
   useEffect(() => {
     const roomId = booking?.data?.room_id?._id;
     setRoomId(roomId);
@@ -47,7 +46,6 @@ const CheckinPersonInfo = () => {
     }
   }, [modalOpen]);
 
-  console.log(postedBill);
 
   const documentTypes = {
     driving_lic_img: booking?.data?.doc_images?.driving_lic_img,
@@ -221,12 +219,18 @@ const CheckinPersonInfo = () => {
           {booking?.data && <EditBooking data={booking?.data} />}
         </Modal>
       </div>
-      <div className="mb-20 mt-10">
-        <CheckinCardDetails data={booking?.data} />
-      </div>
-      {/* payment system */}
-      <div>
-        <PaymentMethodCard booking={booking?.data} />
+      <Modal id={`ci_modal`}>
+        <CheckInDyn data={data} />
+      </Modal>
+      <Modal id={`eb_modal`}>
+        {booking?.data && <EditBooking data={booking?.data} />}
+      </Modal>
+    <div className="mb-20 mt-10">
+      <CheckinCardDetails data={booking?.data} />
+    </div>
+    {/* payment system */}
+    <div >
+            <PaymentMethodCard booking={booking?.data} isLoading={isLoading} />
       </div>
       {/* Room rent */}
       {/* <div className="mt-20">

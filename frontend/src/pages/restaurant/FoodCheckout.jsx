@@ -114,9 +114,11 @@ const FoodCheckout = () => {
           <FaArrowLeft />
         </span>
       </div>
-      <h3 className="text-2xl font-semibold text-center">
+     <div>
+     <h3 className="text-2xl font-semibold text-center bg-green-slimy text-white py-2 max-w-[20rem] mx-auto rounded-lg">
         {path.includes("orderDetails") ? "Order details" : "Checkout"}
       </h3>
+     </div>
       <hr />
       <div>
         <div className={`flex items-center gap-3 `}>
@@ -259,7 +261,7 @@ const FoodCheckout = () => {
           trigger={() => (
             <button
               title="please select payment method"
-              className="bg-green-slimy text-white px-2 rounded-sm"
+              className="bg-green-slimy text-white px-4 py-1 rounded-md"
             >
               Print
             </button>
@@ -272,7 +274,7 @@ const FoodCheckout = () => {
         ) : (
           <button
             onClick={handleCheckout}
-            className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case"
+            className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case "
           >
             <>
               {orderData?.data?.dedicated_to === "room"

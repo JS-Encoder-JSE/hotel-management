@@ -73,7 +73,6 @@ const AddExpenses = () => {
       .toFixed(2);
   };
 
-  console.log(totalItems)
 
   const formik = useFormik({
     initialValues: {

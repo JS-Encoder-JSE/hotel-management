@@ -25,6 +25,7 @@ const validationSchema = yup.object({
 });
 
 const PaymentMethodCard = (booking) => {
+  const [isLoading,setLoading] = useState(false);
   const { id } = useParams();
   const [hotelLimit, setHotelLimit] = useState(0);
   const { user } = useSelector((state) => state.authSlice);
@@ -42,6 +43,7 @@ const PaymentMethodCard = (booking) => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
+      setLoading(true);
       const response = await makePayment({
         manager_id: user._id,
         booking_id: id,
@@ -54,6 +56,7 @@ const PaymentMethodCard = (booking) => {
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {
+        setLoading(false);
         formikHelpers.resetForm();
         toast.success(response.data.message);
       }
@@ -165,10 +168,17 @@ const PaymentMethodCard = (booking) => {
           {/* submit button */}
           <div className=" col-span-full text-end mb-5 ">
             <button
+             disabled={isLoading}
               type="submit"
               className=" btn btn-sm  bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case max-w-xs px-9 h-auto md:me-0"
             >
               Pay
+              {isLoading ? (
+        <span
+          className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+          role="status"
+        ></span>
+      ) : null}
             </button>
           </div>
         </form>
