@@ -4,6 +4,7 @@ import Modal from "../../components/Modal.jsx";
 import ConfirmOrder from "../../components/restaurant/ConfirmOrder.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { FaArrowLeft, FaSearch } from "react-icons/fa";
+import * as Yup from "yup";
 
 import { useFormik } from "formik";
 import {
@@ -20,6 +21,22 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
+const validationSchema = Yup.object().shape({
+  type: Yup.string().required("Please choose the type"),
+  roomId: Yup.string().when("type", {
+    is: "Room",
+    then: Yup.string().required("Room ID is required when type is Room"),
+    otherwise: Yup.string().notRequired(),
+  }),
+  tableId: Yup.string().when("type", {
+    is: "Table",
+    then: Yup.string().required("Table ID is required when type is Table"),
+    otherwise: Yup.string().notRequired(),
+  }),
+  search: Yup.string(),
+  method: Yup.string(),
+});
+
 const AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
@@ -35,7 +52,7 @@ const AddOrder = () => {
       roomId: "",
       tableId: "",
     },
-
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       // setKeyword(values.search);
     },
@@ -51,7 +68,6 @@ const AddOrder = () => {
   };
 
   const { isLoading, data: rooms } = useRoomsQuery({
-    id: "655084bc24936415423bfa2f",
     cp: "0",
     filter: "",
     search: "",

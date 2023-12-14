@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import logo from "../../assets/logo.png";
 import COItem from "./COItem.jsx";
 import {
   resetFoodOrder,
@@ -17,12 +16,13 @@ import toast from "react-hot-toast";
 import { useAddOrderMutation } from "../../redux/restaurant/foodAPI.js";
 import Select from "react-select";
 import FoodList from "./FoodList.jsx";
-import { useReactToPrint } from "react-to-print";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
 import RestaurantPDF from "../../pages/restaurant/RestaurantPDF.jsx";
 import { versionControl } from "../../utils/utils.js";
+import { FaPrint } from "react-icons/fa";
+import ConfirmOrderPrint from "./ConfirmOrderPrint.jsx";
 
 // current year
-const currentYear = new Date().getFullYear();
 // form validation
 const validationSchema = yup.object({
   roomNumber: yup.string().required("Room number is required"),
@@ -205,24 +205,9 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
             Order placed successfully.
           </h3>
           <div
-            ref={componentRef}
             className={`overflow-x-auto border ${isheaderHide ? "p-5" : ""}`}
           >
             <div>
-              {/* header rendering by condition */}
-              {isheaderHide && (
-                <div className={`text-center mb-6`}>
-                  <img
-                    className="w-24 h-24 mx-auto p-2"
-                    src={logo}
-                    alt="logo"
-                  />
-                  <h1 className="font-bold text-2xl">DAK Hospital LTD</h1>
-                  <span>Customer Receipt</span> <br />
-                  <span>Issue Date: {formattedDate} </span>
-                </div>
-              )}
-
               <table className="table">
                 <thead>
                   <tr className={`text-lg`}>
@@ -265,41 +250,24 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
                 </tfoot>
               </table>
             </div>
-            {/* singature */}
-            {isheaderHide && (
-              <div>
-                <div className="flex justify-between mt-24">
-                  <div>
-                    {/* office signature */}
-                    <div className="h-[2px] w-48 divider"></div>
-                    <div className="text-center">Office Signature</div>
-                  </div>
-                  {/* customer signature  */}
-                  <div>
-                    <div className="h-[2px] w-48 divider"></div>
-                    <div className="text-center">Customer Signature</div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {isheaderHide && (
-              <p className=" text-xs text-center  md:text-sm mr-10 md:text-center absolute bottom-0 left-[16%] md:left-[18%]">
-                Powered by{" "}
-                <span className="text-green-slimy text-lg font-semibold">
-                  JS Encoder
-                </span>
-                . Copyright © {currentYear}. All rights reserved. Version{" "}
-                {versionControl}{" "}
-              </p>
-            )}
           </div>
           <div className={`mt-5 text-end`}>
-            <button
-              onClick={handleButtonClick}
-              className="btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-            >
-              Print
-            </button>
+            <div style={{ display: "none" }}>
+              <div className="p-4" ref={componentRef}>
+                <ConfirmOrderPrint success={success} orderCalc={orderCalc} />
+              </div>
+            </div>
+            <ReactToPrint
+              trigger={() => (
+                <button
+                  title="please select payment method"
+                  className="bg-green-slimy text-white p-2 rounded-sm"
+                >
+                  <FaPrint className="inline" /> Print
+                </button>
+              )}
+              content={() => componentRef.current}
+            />
           </div>
         </div>
       )}

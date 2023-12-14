@@ -51,7 +51,7 @@ const foodAPI = baseAPI.injectEndpoints({
         };
       },
       providesTags: ["addOrder"],
-      invalidatesTags: ["food", "order", "updateOrder"],
+      invalidatesTags: ["food", "order", "updateOrder", "roomPostedBill"],
     }),
     deleteOrder: build.mutation({
       query: (id) => {

@@ -104,7 +104,7 @@ const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
             </div>
           </div>
         </div> */}
-        <h1 className=" page-footer">
+        <h1 className="page-footer">
           Powered by{" "}
           <span className="text-xl text-green-slimy">JS Encoder</span>.
           Copyright © 2023. All rights reserved.Version {versionControl}

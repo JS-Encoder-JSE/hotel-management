@@ -45,6 +45,7 @@ const baseAPI = createApi({
     "mainDashboard",
     "subDashboard",
     "updateOrder",
+    "roomPostedBill",
   ],
   baseQuery: baseQueryWithReAuth,
   endpoints: (build) => ({
