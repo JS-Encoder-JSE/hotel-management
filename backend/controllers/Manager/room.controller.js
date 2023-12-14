@@ -1,4 +1,5 @@
 ﻿import BarOrder from "../../models/Manager/bar.model.js";
+import { Booking } from "../../models/Manager/booking.model.js";
 import { FoodOrder } from "../../models/Manager/food.model.js";
 import GymBills from "../../models/Manager/gym.model.js";
 import PoolBills from "../../models/Manager/pool.model.js";
