@@ -19,7 +19,7 @@ const SingleCheckoutItem = ({
       {showDelete?<td>
         <button
           onClick={() => {
-            handleDeleteItems(index);
+            handleDeleteItems(index,item);
           }}
           type="button"
           className="text-red-600 hover:text-red-400 transition-colors duration-500"
