@@ -9,7 +9,7 @@ import {
   useGetBookingsByHotelQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TodayBookingList from "../../components/room/TodayBookingList.jsx";
 import { checkinListFromDate, checkinListoDate } from "../../utils/utils.js";
 
@@ -18,6 +18,7 @@ const TodayBookings = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchParams] = useSearchParams();
   const managerId = searchParams.get("manager_id");
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -63,10 +64,11 @@ const TodayBookings = () => {
         Today's Bookings{" "}
       </h1>
       <div>
-        <Link to={`/dashboard `}>
+        {/* <Link to={`/dashboard `}> */}
           <button
             type="button"
             className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            onClick={()=> navigate(-1)}
           >
             <dfn>
               <abbr title="Back">
@@ -76,7 +78,7 @@ const TodayBookings = () => {
 
             <span className="tracking-wider font-semibold text-[1rem]"></span>
           </button>
-        </Link>
+        {/* </Link> */}
       </div>
       <div className="flex justify-end">
         <div className={`flex flex-col md:flex-row gap-4`}>
