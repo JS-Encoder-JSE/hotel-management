@@ -76,6 +76,7 @@ const FoodCheckout = () => {
       items: orderData.data.items,
       current_order: false,
       payment_status: "Pending",
+      grand_total: finalTotal,
     };
     setCheckoutLoading(true);
     const response = await updateOrder({
