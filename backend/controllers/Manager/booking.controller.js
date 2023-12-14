@@ -24,6 +24,7 @@ export const addBooking = async (req, res) => {
       transection_id,
       remark,
       from,
+      checkin_date,
       to,
       no_of_days,
       room_discount,
@@ -76,6 +77,7 @@ export const addBooking = async (req, res) => {
           guestName,
           mobileNumber,
           from,
+          checkin_date,
           to,
           no_of_days,
           rent_per_day: rent_per_day,
@@ -841,7 +843,7 @@ export const addToCheckin = async (req, res) => {
     // Find the Booking document by ID
     await Booking.updateMany(
       { _id: { $in: booking_ids } },
-      { $set: { status: "CheckedIn" } }
+      { $set: { status: "CheckedIn", checkin_date: currentDate.toISOString() } }
     );
 
     // Find the associated BookingInfo document
