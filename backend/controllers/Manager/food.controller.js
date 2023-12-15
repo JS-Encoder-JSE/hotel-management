@@ -387,9 +387,11 @@ export const updateOrder = async (req, res) => {
       const bookingInfo = await BookingInfo.findOne({
         booking_ids: existingOrder.booking_id,
       });
+
       bookingInfo.total_posted_bills -= reduced_amount;
       bookingInfo.total_payable_amount -= reduced_amount;
       bookingInfo.total_unpaid_amount -= reduced_amount;
+      bookingInfo.save();
     }
     if (updateData.order_status) {
       if (updateData.order_status === "CheckedOut") {

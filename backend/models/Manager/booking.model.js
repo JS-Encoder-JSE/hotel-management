@@ -165,6 +165,7 @@ const bookingSchema = new mongoose.Schema(
       default: "",
     },
     from: { type: Date, required: true },
+    checkin_date: { type: Date, required: false },
     to: { type: Date, required: true },
     no_of_days: {
       type: Number,
