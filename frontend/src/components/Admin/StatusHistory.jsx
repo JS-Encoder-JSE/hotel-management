@@ -85,8 +85,12 @@ const StatusHistory = () => {
   return (
     <div className="card w-full bg-white shadow-xl">
       <div className="card-body space-y-10">
-        <h1  className={`bg-green-slimy text-[20px] text-white max-w-[12rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}>Status History</h1>
-        <div className="flex justify-between gap-2">
+        <h1
+          className={`bg-green-slimy text-[20px] text-white max-w-[12rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}
+        >
+          Status History
+        </h1>
+        <div className="flex flex-col md:flex-row justify-between gap-2">
           <div className={`flex flex-col md:flex-row gap-3`}>
             <DatePicker
               autoComplete={`off`}
@@ -94,7 +98,7 @@ const StatusHistory = () => {
               name="startDate"
               placeholderText={`From`}
               selected={formik.values.startDate}
-              className={`input input-sm input-bordered rounded focus:outline-none`}
+              className={`input w-full md:w-auto input-sm input-bordered rounded focus:outline-none`}
               onChange={(date) => {
                 formik.setFieldValue("startDate", date);
                 setToDate(date);
@@ -107,7 +111,7 @@ const StatusHistory = () => {
               name="endDate"
               placeholderText={`To`}
               selected={formik.values.endDate}
-              className={`input input-sm input-bordered rounded focus:outline-none`}
+              className={`input w-full md:w-auto input-sm input-bordered rounded focus:outline-none`}
               onChange={(date) => {
                 formik.setFieldValue("endDate", date);
                 setFromData(date);
@@ -193,13 +197,13 @@ const StatusHistory = () => {
                         <td>
                           {item?.extended_time?.from
                             ? new Date(
-                                item?.extended_time.from,
+                                item?.extended_time.from
                               ).toLocaleDateString()
                             : ""}{" "}
                           -
                           {item?.extended_time?.to
                             ? new Date(
-                                item?.extended_time?.to,
+                                item?.extended_time?.to
                               ).toLocaleDateString()
                             : ""}
                         </td>

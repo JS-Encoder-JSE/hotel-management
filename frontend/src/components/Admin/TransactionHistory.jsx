@@ -75,7 +75,7 @@ const TransactionHistory = () => {
         >
           Transaction History
         </h1>
-        <div className="flex flex-col sm:flex-col md:flex-row justify-between gap-2">
+        <div className="flex flex-col items-center sm:flex-col md:flex-row justify-between gap-2">
           <div className={`flex flex-col md:flex-row gap-3`}>
             <DatePicker
               autoComplete={`off`}

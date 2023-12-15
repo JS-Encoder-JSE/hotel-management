@@ -15,20 +15,16 @@ import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
 
-const RestaurantBillsCard = ({ food_bills
-}) => {
-
-
-  
+const RestaurantBillsCard = ({ food_bills }) => {
   const allItems = food_bills?.reduce((accumulator, bill) => {
     // Concatenate the items array of each bill to the accumulator array
     return accumulator.concat(bill.items);
   }, []);
-  console.log(allItems)
+  console.log(allItems);
   const totalPrice = allItems?.reduce((total, item) => {
     // Add the price of each item to the total
     return total + item.price;
-  }, 0); 
+  }, 0);
 
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
@@ -53,25 +49,20 @@ const RestaurantBillsCard = ({ food_bills
   };
 
   // pagination setup for today's expenses
-const itemsPerPage = 6;
-const [currentPageItem, setCurrentPageItem] = useState(0);
+  const itemsPerPage = 6;
+  const [currentPageItem, setCurrentPageItem] = useState(0);
 
-const handlePageChange = ({ selected }) => {
-  setCurrentPageItem(selected);
-};
-const totalPage =
-food_bills && Math.ceil(allItems.length / itemsPerPage);
+  const handlePageChange = ({ selected }) => {
+    setCurrentPageItem(selected);
+  };
+  const totalPage = food_bills && Math.ceil(allItems.length / itemsPerPage);
 
-const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
+  const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-const currentItems =food_bills && allItems?.slice(
-indexOfFirstItem,
-indexOfLastItem
-);
-
-
+  const currentItems =
+    food_bills && allItems?.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className={`space-y-5 mt-20 `}>
@@ -84,8 +75,8 @@ indexOfLastItem
               </h3>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="table">
+            <div className="overflow-x-auto pt-2">
+              <table className="table overflow-x-scroll overflow-y-auto">
                 <thead>
                   <tr>
                     <th>SL</th>
@@ -102,7 +93,7 @@ indexOfLastItem
                       return (
                         <tr
                           className={
-                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                            idx % 2 === 0 ? "bg-gray-50 hover" : "hover"
                           }
                         >
                           <td>{++idx}</td>
@@ -136,41 +127,45 @@ indexOfLastItem
                     );
                   })} */}
                 </tbody>
-                <tfoot className={`text-[1.2rem] font-bold`}>
-                  <tr>
-                    <td colSpan={4} className={`text-end `}>
-                      Total :
-                    </td>
-                    <td>
-                      <div className="flex ">
-                        <div>
-                          <BiRupee />
+                {totalPrice ? (
+                  <tfoot className={`text-[1.2rem] font-bold`}>
+                    <tr>
+                      <td colSpan={4} className={`text-end `}>
+                        Total :
+                      </td>
+                      <td>
+                        <div className="flex ">
+                          <div>
+                            <BiRupee />
+                          </div>
+                          <div>{totalPrice}</div>
                         </div>
-                        <div>{totalPrice}</div>
-                      </div>
-                    </td>
-                  </tr>
-                </tfoot>
+                      </td>
+                    </tr>
+                  </tfoot>
+                ) : (
+                  ""
+                )}
               </table>
             </div>
           </div>
           <div className="flex justify-center mt-10">
             <ReactPaginate
-            containerClassName="join rounded-none"
-            pageLinkClassName="join-item btn btn-md bg-transparent"
-            activeLinkClassName="btn-active !bg-green-slimy text-white"
-            disabledLinkClassName="btn-disabled"
-            previousLinkClassName="join-item btn btn-md bg-transparent"
-            nextLinkClassName="join-item btn btn-md bg-transparent"
-            breakLinkClassName="join-item btn btn-md bg-transparent"
-            previousLabel="<"
-            nextLabel=">"
-            breakLabel="..."
-            pageCount={totalPage}
-            pageRangeDisplayed={2}
-            marginPagesDisplayed={2}
-            onPageChange={handlePageChange}
-            renderOnZeroPageCount={null}
+              containerClassName="join rounded-none"
+              pageLinkClassName="join-item btn btn-md bg-transparent"
+              activeLinkClassName="btn-active !bg-green-slimy text-white"
+              disabledLinkClassName="btn-disabled"
+              previousLinkClassName="join-item btn btn-md bg-transparent"
+              nextLinkClassName="join-item btn btn-md bg-transparent"
+              breakLinkClassName="join-item btn btn-md bg-transparent"
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel="..."
+              pageCount={totalPage}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              onPageChange={handlePageChange}
+              renderOnZeroPageCount={null}
             />
           </div>
         </div>

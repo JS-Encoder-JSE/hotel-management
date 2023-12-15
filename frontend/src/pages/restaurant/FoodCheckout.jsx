@@ -31,6 +31,8 @@ const FoodCheckout = () => {
     0
   );
 
+  const grand_total = orderData?.data?.grand_total;
+
   const taxAmount = (grandTotal * taxPercentage) / 100;
   const serviceChargeTax = (grandTotal * serviceTax) / 100;
 
@@ -124,11 +126,11 @@ const FoodCheckout = () => {
           <FaArrowLeft />
         </span>
       </div>
-     <div>
-     <h3 className="text-2xl font-semibold text-center bg-green-slimy text-white py-2 max-w-[20rem] mx-auto rounded-lg">
-        {path.includes("orderDetails") ? "Order details" : "Checkout"}
-      </h3>
-     </div>
+      <div>
+        <h3 className="text-2xl font-semibold text-center bg-green-slimy text-white py-2 max-w-[20rem] mx-auto rounded-lg">
+          {path.includes("orderDetails") ? "Order details" : "Checkout"}
+        </h3>
+      </div>
       <hr />
       <div>
         <div className={`flex items-center gap-3 `}>
@@ -184,7 +186,8 @@ const FoodCheckout = () => {
                   ))}
                 </tbody>
                 <tfoot>
-                  {orderData?.data?.dedicated_to !== "room" ? (
+                  {orderData?.data?.dedicated_to !== "room" &&
+                  orderData?.data?.order_status !== "CheckedOut" ? (
                     <tr>
                       <td></td>
                       <td></td>
@@ -211,7 +214,8 @@ const FoodCheckout = () => {
                     ""
                   )}
 
-                  {orderData?.data?.dedicated_to !== "room" ? (
+                  {orderData?.data?.dedicated_to !== "room" &&
+                  orderData?.data?.order_status !== "CheckedOut" ? (
                     <tr>
                       <td></td>
                       <td></td>
@@ -242,7 +246,7 @@ const FoodCheckout = () => {
                     <td></td>
                     <td></td>
                     <td>Grand Total</td>
-                    <td>{finalTotal}</td>
+                    <td>{grand_total}</td>
                     <td></td>
                   </tr>
                 </tfoot>
@@ -264,7 +268,7 @@ const FoodCheckout = () => {
       <div className={`flex gap-4 justify-end mt-4`}>
         <div style={{ display: "none" }}>
           <div className="p-4" ref={componentRef}>
-            <FoodCheckoutPrint orderData={orderData} finalTotal={finalTotal} />
+            <FoodCheckoutPrint orderData={orderData} finalTotal={grand_total} />
           </div>
         </div>
         <ReactToPrint

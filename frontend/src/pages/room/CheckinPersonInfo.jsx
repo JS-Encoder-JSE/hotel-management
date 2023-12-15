@@ -46,7 +46,6 @@ const CheckinPersonInfo = () => {
     }
   }, [modalOpen]);
 
-
   const documentTypes = {
     driving_lic_img: booking?.data?.doc_images?.driving_lic_img,
     nid: booking?.data?.doc_images?.nid,
@@ -225,12 +224,12 @@ const CheckinPersonInfo = () => {
       <Modal id={`eb_modal`}>
         {booking?.data && <EditBooking data={booking?.data} />}
       </Modal>
-    <div className="mb-20 mt-10">
-      <CheckinCardDetails data={booking?.data} />
-    </div>
-    {/* payment system */}
-    <div >
-            <PaymentMethodCard booking={booking?.data} isLoading={isLoading} />
+      <div className="mb-20 mt-10">
+        <CheckinCardDetails data={booking?.data} />
+      </div>
+      {/* payment system */}
+      <div>
+        <PaymentMethodCard booking={booking?.data} isLoading={isLoading} />
       </div>
       {/* Room rent */}
       {/* <div className="mt-20">
@@ -238,17 +237,14 @@ const CheckinPersonInfo = () => {
       </div> */}
 
       {/*  Bill system*/}
-      <div
-        // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))]  mb-20`}
-        className="grid md:grid-cols-3 gap-3"
-      >
-        <div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-10">
+        <div className="flex-1 h-full bg-white">
           <RestaurantBillsCard food_bills={postedBill?.data?.food_bills} />
         </div>
-        <div>
+        <div className="flex-1 h-full bg-white">
           <GymBills GymBill={postedBill?.data?.gym_bills} />
         </div>
-        <div>
+        <div className="flex-1 h-full bg-white">
           <PoolsBill poolBills={postedBill?.data?.pool_bills} />
         </div>
       </div>

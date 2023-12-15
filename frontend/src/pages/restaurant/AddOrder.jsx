@@ -41,6 +41,8 @@ const AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
   const [error, setError] = useState("");
+  const [tableIdRequired, setTableIdRequired] = useState("");
+  const [roomIdRequired, setRoomIdRequired] = useState("");
 
   const dispatch = useDispatch();
 
@@ -91,12 +93,24 @@ const AddOrder = () => {
   const handleConfirmOrder = () => {
     if (formik.values.type && formik.values.type === "Table") {
       dispatch(setTableId(formik.values.tableId));
-      window.fp_modal.showModal();
+      if (!formik.values.tableId) {
+        setTableIdRequired("Select the table!");
+        return;
+      } else {
+        setTableIdRequired("");
+        window.fp_modal.showModal();
+      }
 
       setError("");
     } else if (formik.values.type && formik.values.type === "Room") {
       dispatch(setRoomId(formik.values.roomId));
-      window.fp_modal.showModal();
+      if (!formik.values.roomId) {
+        setRoomIdRequired("Select the room");
+        return;
+      } else {
+        setRoomIdRequired("");
+        window.fp_modal.showModal();
+      }
 
       setError("");
     } else {
@@ -173,6 +187,11 @@ const AddOrder = () => {
                   placeholder: () => "!m-0",
                 }}
               />
+              {roomIdRequired && (
+                <span className="text-red-600 ms-2">
+                  <small>{roomIdRequired}</small>
+                </span>
+              )}
             </div>
           ) : null}
           {formik.values.type && formik.values.type === "Table" ? (
@@ -194,6 +213,11 @@ const AddOrder = () => {
                   placeholder: () => "!m-0",
                 }}
               />
+              {tableIdRequired && (
+                <span className="text-red-600 ms-2">
+                  <small>{tableIdRequired}</small>
+                </span>
+              )}
             </div>
           ) : null}
         </div>

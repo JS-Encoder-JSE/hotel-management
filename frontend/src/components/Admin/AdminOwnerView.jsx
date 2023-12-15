@@ -27,7 +27,7 @@ const AdminOwnerView = () => {
   return (
     <>
       <div className={`space-y-10 container`}>
-        <div className="card w-full max-w-full bg-white shadow-xl p-5">
+        <div className="card w-full max-w-full bg-white shadow-xl sm:p-5">
           <div>
             <span
               className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
@@ -73,7 +73,7 @@ const AdminOwnerView = () => {
                     <th className="text-start text-xs sm:text-sm md:text-base lg:text-lg ">
                       Address
                     </th>
-                    <td className="md:pl-2 max-w-[10px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
+                    <td className="mt-4 md:pl-2 max-w-[10px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
                       : <span>{data?.address}</span>
                     </td>
                   </tr>
@@ -82,7 +82,7 @@ const AdminOwnerView = () => {
                       Contact No
                     </th>
                     <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
-                      : {data?.phone_no}
+                      : <span className="break-all">{data?.phone_no}</span>
                     </td>
                   </tr>
                   <tr>
@@ -90,7 +90,7 @@ const AdminOwnerView = () => {
                       Email
                     </th>
                     <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
-                      : <span>{data?.email}</span>
+                      : <span className="break-all">{data?.email}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -109,9 +109,13 @@ const AdminOwnerView = () => {
               <table>
                 <tbody>
                   <tr>
-                    <th className="text-start">License Key</th>
+                    <th className="text-start text-xs sm:text-sm md:text-base lg:text-lg ">
+                      License Key
+                    </th>
                     <td className="pl-10">:</td>
-                    <td>{data?.license_key}</td>
+                    <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg break-all">
+                      {data?.license_key}
+                    </td>
                   </tr>
                   <tr>
                     <th className="text-start">Purchase Date</th>
@@ -151,9 +155,11 @@ const AdminOwnerView = () => {
                     <td className="pl-10">:</td>
                     <td className="flex gap-2 items-center">
                       {" "}
-                      {data?.maxHotels}{" "}
+                      <span className="mt-6 sm:mt-0">
+                        {data?.maxHotels}
+                      </span>{" "}
                       <span
-                        className={`cursor-pointer`}
+                        className={`cursor-pointer mt-6 sm:mt-0`}
                         onClick={() => window.hle_modal.showModal()}
                       >
                         <FaEdit />

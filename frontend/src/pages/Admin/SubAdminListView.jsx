@@ -49,8 +49,10 @@ const SubAdminListView = () => {
             <FaArrowLeft />
           </span>
         </div>
-        <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5">Sub Admin Information</h1>
-        <div className="card-body grid md:grid-cols-2 gap-4">
+        <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5">
+          Sub Admin Information
+        </h1>
+        <div className="card-body grid sm:grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="">
             <h2 className="card-title mb-3">Sub Admin Information </h2>
             <table>
@@ -58,27 +60,37 @@ const SubAdminListView = () => {
                 <tr>
                   <th className="text-start">User Name</th>
                   <td className="pl-5">:</td>
-                  <td>{userData?.username}</td>
+                  <td>
+                    <span className="break-all">{userData?.username}</span>
+                  </td>
                 </tr>
                 <tr>
                   <th className="text-start">Name</th>
                   <td className="pl-5">:</td>
-                  <td>{userData?.name}</td>
+                  <td>
+                    <span className="break-all">{userData?.name}</span>
+                  </td>
                 </tr>
                 <tr>
                   <th className="text-start">Address</th>
                   <td className="pl-5">:</td>
-                  <td>{userData?.address}</td>
+                  <td>
+                    <span className="break-all">{userData?.address}</span>
+                  </td>
                 </tr>
                 <tr>
-                  <th>Emergency Contact</th>
+                  <th className="text-start">Emergency Contact</th>
                   <td className="pl-5">:</td>
-                  <td>{userData?.emergency_contact}</td>
+                  <td>
+                    <span className="break-all">
+                      {userData?.emergency_contact}
+                    </span>
+                  </td>
                 </tr>
                 <tr>
                   <th className="text-start">Email</th>
                   <td className="pl-5">:</td>
-                  <td>{userData?.email}</td>
+                  <td className="break-all">{userData?.email}</td>
                 </tr>
               </tbody>
             </table>

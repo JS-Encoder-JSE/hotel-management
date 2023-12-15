@@ -86,12 +86,12 @@ const Report = () => {
   useEffect(() => {
     if (reports) setPageCount(reports?.totalPages);
   }, [reports]);
- 
+
   useEffect(() => {
     if (reports) {
       const total = reports.docs.reduce(
         (total, current) => total + current.paid_amount,
-        0,
+        0
       );
 
       setTotalAmount(total);
@@ -138,23 +138,27 @@ const Report = () => {
   return (
     <div className={`space-y-5`}>
       <div className={`bg-white p-4 rounded`}>
-      <div>
-            <Link to={`/dashboard `}>
-              <button
-                type="button"
-                className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-              >
-                <dfn>
-                  <abbr title="Back">
-                    <FaArrowLeft />
-                  </abbr>
-                </dfn>
+        <div>
+          <Link to={`/dashboard `}>
+            <button
+              type="button"
+              className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+            >
+              <dfn>
+                <abbr title="Back">
+                  <FaArrowLeft />
+                </abbr>
+              </dfn>
 
-                <span className="tracking-wider font-semibold text-[1rem]"></span>
-              </button>
-            </Link>
-          </div>
-          <h3  className={`bg-green-slimy text-[20px] text-white max-w-[12rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}>All Report</h3>  
+              <span className="tracking-wider font-semibold text-[1rem]"></span>
+            </button>
+          </Link>
+        </div>
+        <h3
+          className={`bg-green-slimy text-[20px] text-white max-w-[12rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}
+        >
+          All Report
+        </h3>
         <div className={`flex flex-wrap gap-1.5 justify-end`}>
           <div className="flex gap-1.5">
             <div className={`flex gap-1.5`}>
@@ -168,23 +172,28 @@ const Report = () => {
                 CSV
               </button>
               {PDF.length ? (
-                  <PDFDownloadLink
-                    document={<CreateReport values={PDF} header={{
-                      title: "DAK Hospitality LTD",
-                      name: "All Report",
-                    }} />}
-                    fileName={`${new Date().toLocaleDateString()}.pdf`}
-                    className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-                  >
-                    PDF
-                  </PDFDownloadLink>
+                <PDFDownloadLink
+                  document={
+                    <CreateReport
+                      values={PDF}
+                      header={{
+                        title: "DAK Hospitality LTD",
+                        name: "All Report",
+                      }}
+                    />
+                  }
+                  fileName={`${new Date().toLocaleDateString()}.pdf`}
+                  className="btn btn-sm min-w-[5rem] bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+                >
+                  PDF
+                </PDFDownloadLink>
               ) : null}
             </div>
           </div>
         </div>
         <hr className={`my-5`} />
         <div className={`flex flex-col gap-5`}>
-          <div    className={`flex flex-col md:flex-row gap-3`}>
+          <div className={`flex flex-col md:flex-row gap-3`}>
             <div className={`space-x-1.5`}>
               <span>Show</span>
               <select
@@ -224,7 +233,7 @@ const Report = () => {
               name="startDate"
               placeholderText={`From`}
               selected={formik.values.startDate}
-              className={`input input-sm input-bordered rounded focus:outline-none`}
+              className={`input w-full md:w-auto input-sm input-bordered rounded focus:outline-none`}
               onChange={(date) => formik.setFieldValue("startDate", date)}
               onBlur={formik.handleBlur}
               onKeyUp={(e) => {
@@ -238,7 +247,7 @@ const Report = () => {
               name="endDate"
               placeholderText={`To`}
               selected={formik.values.endDate}
-              className={`input input-sm input-bordered rounded focus:outline-none`}
+              className={`input w-full md:w-auto input-sm input-bordered rounded focus:outline-none`}
               onChange={(date) => formik.setFieldValue("endDate", date)}
               onBlur={formik.handleBlur}
               onKeyUp={(e) => {
@@ -261,7 +270,7 @@ const Report = () => {
               onClick={() => {
                 setCurrentPage(0);
                 setForcePage(0);
-                formik.handleSubmit()
+                formik.handleSubmit();
               }}
               className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
@@ -317,7 +326,7 @@ const Report = () => {
                             : a.username.toLowerCase() <
                               b.username.toLowerCase()
                             ? -1
-                            : 0,
+                            : 0
                         )
                         ?.map((report, idx) => {
                           return (
@@ -336,7 +345,7 @@ const Report = () => {
                                 {extractTimeOrDate(report.bill_from, "time")} */}
                               </td>
                               <td>
-                              {getformatDateTime(report?.bill_to)}
+                                {getformatDateTime(report?.bill_to)}
                                 {/* {extractTimeOrDate(report?.bill_to, "date")}
                                 <br />{" "}
                                 {extractTimeOrDate(report.bill_to, "time")} */}
