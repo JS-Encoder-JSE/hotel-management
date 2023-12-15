@@ -50,13 +50,14 @@ const validationSchema = yup.object({
 
 const EditFood = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { isLoading, data: food } = useFoodQuery(id);
   const [updateFood] = useUpdateFoodMutation();
   const [uploadSingle] = useUploadSingleMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [showPass, setShowPass] = useState(false);
+  const navigate = useNavigate();
+
   const { data: categories, isLoading: categoryLoading } =
     useGetCategoryQuery();
   const formik = useFormik({
@@ -128,6 +129,7 @@ const EditFood = () => {
         toast.error(response.error.data.message);
       } else {
         toast.success(response.data.message);
+        navigate("/dashboard/add-order");
       }
 
       setLoading(false);

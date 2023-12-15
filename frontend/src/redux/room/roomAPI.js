@@ -272,6 +272,25 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       invalidatesTags: ["room", "bookingToCheckIn"],
     }),
+    addCheckoutData: build.mutation({
+      query: (data) => {
+        return {
+          url: "checkouts/add-checkout-data",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: [
+        "room",
+        "bookingToCheckIn",
+        "getCheckoutDataByBookingId",
+      ],
+    }),
+    getCheckoutDataByBookingId: build.query({
+      query: (booking_id) =>
+        `/checkouts/get-checkout-data-by-booking-id/${booking_id}`,
+      providesTags: ["getCheckoutDataByBookingId"],
+    }),
     cashback: build.mutation({
       query: (data) => {
         return {
@@ -305,6 +324,7 @@ export const {
   useUpdateExpenseMutation,
   useAddRoomMutation,
   useGetBookingsByHotelQuery,
+  useGetCheckoutDataByBookingIdQuery,
   useDeleteRoomMutation,
   useUpdateRoomMutation,
   useAddBookingMutation,
@@ -316,6 +336,7 @@ export const {
   useGetCOInfoQuery,
   useGetDailyDataQuery,
   useAddCheckoutMutation,
+  useAddCheckoutDataMutation,
   useGetTablesQuery,
   useGetItemsQuery,
   useGetHotelByManagerIdQuery,

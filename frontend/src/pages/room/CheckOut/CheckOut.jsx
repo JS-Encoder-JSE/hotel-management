@@ -6,8 +6,10 @@ import BillingSection from "./BillingSection";
 import PaymentSection from "./PaymentSection";
 import { BiReset } from "react-icons/bi";
 import {
+  useAddCheckoutDataMutation,
   useAddCheckoutMutation,
   useGetCOInfoQuery,
+  useGetCheckoutDataByBookingIdQuery,
   useGetCheckoutMutation,
   useGetHotelByManagerIdQuery,
   useGetRoomsAndHotelsQuery,
@@ -52,6 +54,8 @@ const CheckOut = () => {
   const roomFromQuery = searchParams.get("room");
   const [addCheckout, { isLoading: addCheckOutLoading }] =
     useAddCheckoutMutation();
+  const [addCheckoutData, { isLoading: addCheckoutDataLoading }] =
+    useAddCheckoutDataMutation();
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
@@ -102,6 +106,38 @@ const CheckOut = () => {
       navigate("/dashboard/report");
     },
   });
+
+  // add Checkout data collection
+  const room_Ids = checkout?.data?.room_bookings[0].room_id?._id;
+  const hotel_id = user?.assignedHotel[0];
+  const booking_info_id = checkout?.data?.booking_info?._id;
+  const booking_id = checkout?.data?.booking_info?.booking_ids[0];
+  const food_order_ids = checkout?.data?.food_bills?.map((fId) => fId?._id);
+  const pool_bill_ids = checkout?.data?.pool_bills?.map((fId) => fId?._id);
+  const gym_bill_ids = checkout?.data?.gym_bills?.map((fId) => fId?._id);
+  const guestName = checkout?.data?.booking_info?.guestName;
+  const address = checkout?.data?.booking_info?.address;
+  const mobileNumber = checkout?.data?.booking_info?.mobileNumber;
+  const emergency_contact = checkout?.data?.booking_info?.emergency_contact;
+  const adult = checkout?.data?.booking_info?.adult;
+  const children = checkout?.data?.booking_info?.children;
+  // const bookingMethod=
+  const total_rent = checkout?.data?.booking_info?.total_rent;
+  const room_discount = checkout?.data?.booking_info?.room_discount;
+  const total_rent_after_dis =
+    checkout?.data?.booking_info?.total_rent_after_dis;
+  const total_posted_bills = checkout?.data?.booking_info?.total_posted_bills;
+  const total_tax = checkout?.data?.booking_info?.total_tax;
+  const total_additional_charges =
+    checkout?.data?.booking_info?.total_additional_charges;
+  const nationality = checkout?.data?.booking_info?.nationality;
+  const doc_number = checkout?.data?.booking_info?.doc_number;
+
+  const { data: getCheckoutData } =
+    useGetCheckoutDataByBookingIdQuery(booking_id);
+  console.log(getCheckoutData);
+
+  console.log(checkout, doc_number);
   // this is use for Print
   // const componentRef = useRef();
   // dispatch
@@ -206,15 +242,52 @@ const CheckOut = () => {
           ) {
             window.refundPayment.showModal();
           } else {
-            setTrxError(false);
-            // navigate("/dashboard/checkout");
-            if (
-              totalRefund > 0 &&
-              checkout?.data?.booking_info?.room_ids?.length === 1
-            ) {
-              window.refundPayment.showModal();
+            handlePrint();
+            const response = addCheckoutData({
+              room_id: room_Ids,
+              hotel_id: hotel_id,
+              booking_info_id: booking_info_id,
+              booking_id: booking_id,
+              food_order_ids: food_order_ids,
+              pool_bill_ids: pool_bill_ids,
+              gym_bill_ids: gym_bill_ids,
+              guestName: guestName,
+              address: address,
+              mobileNumber: mobileNumber,
+              emergency_contact: emergency_contact,
+              adult: adult,
+              children: children,
+              bookingMethod: "Offline",
+              total_rent: calculateTotalRent,
+              room_discount: room_discount,
+              total_rent_after_dis: calculateAmountAfterDis,
+              total_posted_bills: total_posted_bills,
+              total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
+              total_additional_charges:
+                checkout?.data?.booking_info?.total_additional_charges +
+                additionalCharge,
+              total_service_charges:
+                checkout?.data?.booking_info?.total_service_charges +
+                serviceCharge,
+              total_payable_amount: totalPayableAmount,
+              paid_amount: paid_amount,
+              total_unpaid_amount: initialUnpaidAmount,
+              total_balance: new_total_balance,
+              refunded_amount: 0,
+              deleted: false,
+              nationality: nationality,
+              doc_number: doc_number,
+              from: checkout?.data?.room_bookings[0]?.from,
+              checkin_date: checkin_date,
+              to: toDate,
+              no_of_days: calculateNOD,
+              rent_per_day: checkout?.data?.room_bookings[0]?.rent_per_day,
+              total_room_rent: new_total_room_rent,
+            });
+            if (response?.error) {
+              toast.error(response.error.data.message);
             } else {
-              handlePrint();
+              // toast.success(response?.success?.data.message);
             }
           }
         }

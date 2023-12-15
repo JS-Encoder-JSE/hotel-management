@@ -45,6 +45,7 @@ const EditInventory = () => {
         toast.error(response.error.data.message);
       } else {
         toast.success(response.data.message);
+        navigate(-1);
       }
     },
   });
@@ -143,11 +144,11 @@ const EditInventory = () => {
           >
             Update
             {isLoading ? (
-                  <span
-                    className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
-                    role="status"
-                  ></span>
-                ) : null}
+              <span
+                className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                role="status"
+              ></span>
+            ) : null}
           </button>
         </div>
       </form>

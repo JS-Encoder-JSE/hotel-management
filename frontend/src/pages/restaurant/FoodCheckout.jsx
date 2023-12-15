@@ -75,7 +75,7 @@ const FoodCheckout = () => {
         payment_status: "Pending",
         grand_total: finalTotal,
       },
-      reduced_amount: totalReduceAmount,
+      // reduced_amount: totalReduceAmount,
     };
     setCheckoutLoading(true);
     const response = await updateOrder({
