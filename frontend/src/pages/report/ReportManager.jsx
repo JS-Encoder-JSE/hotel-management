@@ -93,7 +93,7 @@ const ReportManager = () => {
       formik.handleSubmit();
     }
   };
-
+  console.log(reports);
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-5 py-5 rounded `}>

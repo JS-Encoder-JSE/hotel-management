@@ -63,6 +63,9 @@ const CheckOut = () => {
   // set errormessage for trx
   const [trxError, setTrxError] = useState(false);
 
+  console.log(checkout?.data?.room_bookings[0].checkin_date);
+  const checkin_date = checkout?.data?.room_bookings[0].checkin_date;
+
   const {
     refundAmount,
     additionalCharge,
@@ -185,7 +188,7 @@ const CheckOut = () => {
             : "Cash",
 
           tran_id: paymentList[0].trx ? paymentList[0].trx : "",
-          checked_in: checkout?.data?.room_bookings[0]?.from,
+          checked_in: checkin_date,
           checked_out: toDate,
           paid_amount,
           total_checkout_bills: pBill,
