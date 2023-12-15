@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   delOrder,
   manipulateQuantity,
+  removeAction,
   setOrderCalc,
   setQuantity,
 } from "../../redux/add-order/addOrderSlice.js";
@@ -61,6 +62,10 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
     dispatch(manipulateQuantity({ food, quantity: input }));
     dispatch(setOrderCalc());
   }, [input]);
+
+  // useEffect(()=>{
+  //   dispatch(removeAction())
+  // },[])
 
   useEffect(() => {
     if (reset) {
@@ -145,6 +150,7 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
             title={`Remove`}
             onClick={() => {
               dispatch(delOrder(food));
+              dispatch(removeAction({quantity: input,price:food?.price}))
             }}
           >
             <FaMinusCircle />
