@@ -23,6 +23,7 @@ import expenseRoute from "./routes/expense.route.js";
 import { fileURLToPath } from "url";
 // Manager Routes
 import bookingRoute from "./routes/Manager/booking.route.js";
+import checkoutRoute from "./routes/Manager/checkout.route.js";
 import roomRoute from "./routes/Manager/room.route.js";
 import tableRoute from "./routes/Manager/table.route.js";
 
@@ -61,6 +62,7 @@ app.use("/dashboards", dashboardRoute);
 app.use("/subdashboards", subdashboardRoute);
 app.use("/balances", hotelBalanceRoute);
 app.use("/expenses", expenseRoute);
+app.use("/checkouts", checkoutRoute);
 // app.use("/employee", employeeRoute);
 
 app.use("/", uploadRoute);
