@@ -4,7 +4,12 @@ import RefundPaymentSection from "../../../components/room/RefundPaymentSection.
 import RefundPaymentCheckout from "./RefundPaymentCheckout.jsx";
 import { useSelector } from "react-redux";
 
-const RefundPaymentModal = ({ data, totalRefund, handlePrintOpen }) => {
+const RefundPaymentModal = ({
+  data,
+  totalRefund,
+  handlePrintOpen,
+  saveCheckoutDataObj,
+}) => {
   const { refundAmount, additionalCharge, serviceCharge, texAmount } =
     useSelector((state) => state.checkoutInfoCalSlice);
   // const totalRefund =
@@ -24,6 +29,7 @@ const RefundPaymentModal = ({ data, totalRefund, handlePrintOpen }) => {
           totalRefund={totalRefund}
           data={data}
           closeRef={closeRef}
+          saveCheckoutDataObj={saveCheckoutDataObj}
         />
       </div>
     </>

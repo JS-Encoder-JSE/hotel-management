@@ -88,7 +88,7 @@ const FoodCheckout = () => {
       setCheckoutLoading(false);
       setReduceData([]);
     } else {
-      toast.success("Checkout successful");
+      toast.success("Order update successfully");
       setCheckoutLoading(false);
       setReduceData([]);
       handlePrint();
@@ -141,7 +141,11 @@ const FoodCheckout = () => {
       setCheckoutLoading(false);
       setReduceData([]);
     } else {
-      toast.success("Checkout successful");
+      if (orderData?.data?.dedicated_to === "room") {
+        toast.success("Order update successful");
+      } else {
+        toast.success("Checkout successful");
+      }
       setCheckoutLoading(false);
       setReduceData([]);
       handlePrint();

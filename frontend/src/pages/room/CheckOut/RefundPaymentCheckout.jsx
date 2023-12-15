@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import toast from "react-hot-toast";
-import { useCashbackMutation } from "../../../redux/room/roomAPI";
+import {
+  useAddCheckoutDataMutation,
+  useCashbackMutation,
+} from "../../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
 
 // form validation
@@ -18,9 +21,18 @@ const validationSchema = yup.object({
   amount: yup.number(),
 });
 
-const RefundPaymentCheckout = ({ totalRefund, data, handlePrintOpen,closeRef }) => {
+const RefundPaymentCheckout = ({
+  totalRefund,
+  data,
+  handlePrintOpen,
+  closeRef,
+  saveCheckoutDataObj,
+}) => {
   // console.log({ totalRefundFromRefund: totalRefund });
+  console.log(saveCheckoutDataObj);
   const [cashback] = useCashbackMutation();
+  const [addCheckoutData, { isLoading: addCheckoutDataLoading }] =
+    useAddCheckoutDataMutation();
   const { user } = useSelector((state) => state.authSlice);
   const formik = useFormik({
     initialValues: {
@@ -45,6 +57,15 @@ const RefundPaymentCheckout = ({ totalRefund, data, handlePrintOpen,closeRef }) 
         toast.success("Refund Successful");
         closeRef.current.click();
         handlePrintOpen();
+        const response = addCheckoutData({
+          ...saveCheckoutDataObj,
+          refunded_amount: totalRefund,
+        });
+        if (response?.error) {
+          toast.error(response.error.data.message);
+        } else {
+          // toast.success(response?.success?.data.message);
+        }
         // navigate("/dashboard/checkout");
       }
     },

@@ -60,6 +60,9 @@ const CheckOut = () => {
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
+
+  const [saveCheckoutDataObj, setSaveCheckoutDataOj] = useState({});
+
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
   const componentRef = useRef();
@@ -199,6 +202,49 @@ const CheckOut = () => {
         setTrxError(true);
         return;
       } else {
+        const saveCheckoutInfoObj = {
+          room_id: room_Ids,
+          hotel_id: hotel_id,
+          booking_info_id: booking_info_id,
+          booking_id: booking_id,
+          food_order_ids: food_order_ids,
+          pool_bill_ids: pool_bill_ids,
+          gym_bill_ids: gym_bill_ids,
+          guestName: guestName,
+          address: address,
+          mobileNumber: mobileNumber,
+          emergency_contact: emergency_contact,
+          adult: adult,
+          children: children,
+          bookingMethod: checkout?.data?.booking_info?.bookingMethod
+            ? checkout?.data?.booking_info?.bookingMethod
+            : "Offline",
+          total_rent: calculateTotalRent,
+          room_discount: room_discount,
+          total_rent_after_dis: calculateAmountAfterDis,
+          total_posted_bills: total_posted_bills,
+          total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
+          total_additional_charges:
+            checkout?.data?.booking_info?.total_additional_charges +
+            additionalCharge,
+          total_service_charges:
+            checkout?.data?.booking_info?.total_service_charges + serviceCharge,
+          total_payable_amount: totalPayableAmount,
+          paid_amount: paid_amount,
+          total_unpaid_amount: initialUnpaidAmount,
+          total_balance: new_total_balance,
+          refunded_amount: 0,
+          deleted: false,
+          nationality: nationality,
+          doc_number: doc_number,
+          from: checkout?.data?.room_bookings[0]?.from,
+          checkin_date: checkin_date,
+          to: toDate,
+          no_of_days: calculateNOD,
+          rent_per_day: checkout?.data?.room_bookings[0]?.rent_per_day,
+          total_room_rent: new_total_room_rent,
+        };
+        setSaveCheckoutDataOj(saveCheckoutInfoObj);
         const response = await addCheckout({
           booking_id: bookingId,
           new_total_room_rent,
@@ -243,47 +289,8 @@ const CheckOut = () => {
             window.refundPayment.showModal();
           } else {
             handlePrint();
-            const response = addCheckoutData({
-              room_id: room_Ids,
-              hotel_id: hotel_id,
-              booking_info_id: booking_info_id,
-              booking_id: booking_id,
-              food_order_ids: food_order_ids,
-              pool_bill_ids: pool_bill_ids,
-              gym_bill_ids: gym_bill_ids,
-              guestName: guestName,
-              address: address,
-              mobileNumber: mobileNumber,
-              emergency_contact: emergency_contact,
-              adult: adult,
-              children: children,
-              bookingMethod: "Offline",
-              total_rent: calculateTotalRent,
-              room_discount: room_discount,
-              total_rent_after_dis: calculateAmountAfterDis,
-              total_posted_bills: total_posted_bills,
-              total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
-              total_additional_charges:
-                checkout?.data?.booking_info?.total_additional_charges +
-                additionalCharge,
-              total_service_charges:
-                checkout?.data?.booking_info?.total_service_charges +
-                serviceCharge,
-              total_payable_amount: totalPayableAmount,
-              paid_amount: paid_amount,
-              total_unpaid_amount: initialUnpaidAmount,
-              total_balance: new_total_balance,
-              refunded_amount: 0,
-              deleted: false,
-              nationality: nationality,
-              doc_number: doc_number,
-              from: checkout?.data?.room_bookings[0]?.from,
-              checkin_date: checkin_date,
-              to: toDate,
-              no_of_days: calculateNOD,
-              rent_per_day: checkout?.data?.room_bookings[0]?.rent_per_day,
-              total_room_rent: new_total_room_rent,
-            });
+
+            const response = addCheckoutData(saveCheckoutInfoObj);
             if (response?.error) {
               toast.error(response.error.data.message);
             } else {
@@ -515,6 +522,7 @@ const CheckOut = () => {
                 totalRefund={totalRefund}
                 data={checkout?.data?.booking_info}
                 handlePrintOpen={handlePrint}
+                saveCheckoutDataObj={saveCheckoutDataObj}
               />
             </Modal>
           </div>
