@@ -65,15 +65,17 @@ const FoodCheckout = () => {
     }, 0);
     setCheckoutLoading(true);
     const checkoutForTable = {
-      paid_amount: finalTotal,
-      items: orderData.data.items,
-      order_status: "CheckedOut",
-      current_order: false,
-      total_price: grandTotal,
-      unpaid_amount: 0,
-      payment_status: "Paid",
-      grand_total: finalTotal,
-      tax: taxPercentage,
+      updateData: {
+        paid_amount: finalTotal,
+        items: orderData.data.items,
+        order_status: "CheckedOut",
+        current_order: false,
+        total_price: grandTotal,
+        unpaid_amount: 0,
+        payment_status: "Paid",
+        grand_total: finalTotal,
+        tax: taxPercentage,
+      },
     };
     const updateForRoom = {
       updateData: {
