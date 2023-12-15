@@ -502,10 +502,7 @@ export const getCheckoutDataByBookingId = async (req, res) => {
     const bookingId = req.params.booking_id;
 
     // Assuming that "CheckOutData" has a field named "booking_id"
-    const checkoutData = await CheckOutData.findOne({ booking_id: bookingId })
-      .populate("food_order_ids")
-      .populate("pool_bill_ids")
-      .populate("gym_bill_ids");
+    const checkoutData = await CheckOutData.findOne({ booking_id: bookingId });
 
     if (!checkoutData) {
       return res

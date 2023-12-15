@@ -236,7 +236,7 @@ const AddBookingSelect = ({ room }) => {
         <hr />
         <form
           autoComplete="off"
-          className="form-control grid grid-cols-1 gap-4 mt-5"
+          className="form-control grid md:grid-cols-2 grid-cols-1 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
           {/*<div className="flex flex-col gap-3">*/}
