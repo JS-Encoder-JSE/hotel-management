@@ -366,341 +366,341 @@ const CheckInModal = ({ room }) => {
           {/*  /!*) : null}*!/*/}
           {/*</div>*/}
 
-          <div className="flex flex-col gap-3">
-            <select
-              name="room_arr"
-              className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.room_arr}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                {room.data.roomNumber + " - " + room.data.category}
-              </option>
-            </select>
-            {/*{formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (*/}
-            {/*  <small className="text-red-600">*/}
-            {/*    {formik.touched.room_arr && formik.errors.room_arr}*/}
-            {/*  </small>*/}
-            {/*) : null}*/}
-          </div>
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-5 ">
+            <div className="flex flex-col gap-3">
+              <select
+                name="room_arr"
+                className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.room_arr}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" selected disabled>
+                  {room.data.roomNumber + " - " + room.data.category}
+                </option>
+              </select>
+            </div>
 
-          {/* Guest box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Guest name"
-              name="guestName"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.guestName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.guestName && Boolean(formik.errors.guestName) ? (
-              <small className="text-red-600">
-                {formik.touched.guestName && formik.errors.guestName}
-              </small>
-            ) : null}
-          </div>
-          {/* Address box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Address"
-              name="address"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.address}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.address && Boolean(formik.errors.address) ? (
-              <small className="text-red-600">
-                {formik.touched.address && formik.errors.address}
-              </small>
-            ) : null}
-          </div>
-          {/* mobileNumber box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Mobile number"
-              name="mobileNumber"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.mobileNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.mobileNumber &&
-            Boolean(formik.errors.mobileNumber) ? (
-              <small className="text-red-600">
-                {formik.touched.mobileNumber && formik.errors.mobileNumber}
-              </small>
-            ) : null}
-          </div>
-          {/* emergency  box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Emergency Number"
-              name="emergency_contact"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.emergency_contact}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.emergency_contact &&
-            Boolean(formik.errors.emergency_contact) ? (
-              <small className="text-red-600">
-                {formik.touched.emergency_contact &&
-                  formik.errors.emergency_contact}
-              </small>
-            ) : null}
-          </div>
-
-          {/* adult box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="number"
-              placeholder="Adult"
-              name="adult"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.adult}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.adult && Boolean(formik.errors.adult) ? (
-              <small className="text-red-600">
-                {formik.touched.adult && formik.errors.adult}
-              </small>
-            ) : null}
-          </div>
-
-          {/* children box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="number"
-              placeholder="Children"
-              name="children"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.children}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.children && Boolean(formik.errors.children) ? (
-              <small className="text-red-600">
-                {formik.touched.children && formik.errors.children}
-              </small>
-            ) : null}
-          </div>
-
-          {/* advanced amount */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="number"
-              placeholder="Advanced Amount"
-              name="amount"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.amount}
-              onChange={handleAmount}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.amount && Boolean(formik.errors.amount) ? (
-              <small className="text-red-600">
-                {formik.touched.amount && formik.errors.amount}
-              </small>
-            ) : null}
-          </div>
-
-          {/* payment method box */}
-          <div className="flex flex-col gap-3">
-            <select
-              name="paymentMethod"
-              className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-              value={formik.values.paymentMethod}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                Payment Method
-              </option>
-              <option value="Cash">Cash</option>
-              <option value="Card">Card</option>
-              <option value="Mobile_Banking">Mobile Banking</option>
-            </select>
-            {formik.touched.paymentMethod &&
-            Boolean(formik.errors.paymentMethod) ? (
-              <small className="text-red-600">
-                {formik.touched.paymentMethod && formik.errors.paymentMethod}
-              </small>
-            ) : null}
-          </div>
-          {formik.values.paymentMethod &&
-          formik.values.paymentMethod !== "Cash" ? (
+            {/* Guest box */}
             <div className="flex flex-col gap-3">
               <input
                 type="text"
-                placeholder="Transaction ID"
-                name="trxID"
+                placeholder="Guest name"
+                name="guestName"
                 className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-                value={formik.values.trxID}
+                value={formik.values.guestName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.trxID && Boolean(formik.errors.trxID) ? (
+              {formik.touched.guestName && Boolean(formik.errors.guestName) ? (
                 <small className="text-red-600">
-                  {formik.touched.trxID && formik.errors.trxID}
+                  {formik.touched.guestName && formik.errors.guestName}
                 </small>
               ) : null}
             </div>
-          ) : null}
+            {/* Address box */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Address"
+                name="address"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.address}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.address && Boolean(formik.errors.address) ? (
+                <small className="text-red-600">
+                  {formik.touched.address && formik.errors.address}
+                </small>
+              ) : null}
+            </div>
+            {/* mobileNumber box */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Mobile number"
+                name="mobileNumber"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.mobileNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.mobileNumber &&
+              Boolean(formik.errors.mobileNumber) ? (
+                <small className="text-red-600">
+                  {formik.touched.mobileNumber && formik.errors.mobileNumber}
+                </small>
+              ) : null}
+            </div>
+            {/* emergency  box */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Emergency Number"
+                name="emergency_contact"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.emergency_contact}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.emergency_contact &&
+              Boolean(formik.errors.emergency_contact) ? (
+                <small className="text-red-600">
+                  {formik.touched.emergency_contact &&
+                    formik.errors.emergency_contact}
+                </small>
+              ) : null}
+            </div>
 
-          <div className="flex flex-col gap-3">
-            <input
-              type="number"
-              placeholder="Discount"
-              name="discount"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.discount}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
-            {/*  <small className="text-red-600">*/}
-            {/*    {formik.touched.discount && formik.errors.discount}*/}
-            {/*  </small>*/}
-            {/*) : null}*/}
-          </div>
+            {/* adult box */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="number"
+                placeholder="Adult"
+                name="adult"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.adult}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.adult && Boolean(formik.errors.adult) ? (
+                <small className="text-red-600">
+                  {formik.touched.adult && formik.errors.adult}
+                </small>
+              ) : null}
+            </div>
 
-          {/* Date */}
-          <div className="flex flex-col gap-3">
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              name="from"
-              placeholderText={`From`}
-              selected={formik.values.from}
-              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("from", date)}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.from && Boolean(formik.errors.from) ? (
-              <small className="text-red-600">
-                {formik.touched.from && formik.errors.from}
-              </small>
-            ) : null}
-          </div>
+            {/* children box */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="number"
+                placeholder="Children"
+                name="children"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.children}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.children && Boolean(formik.errors.children) ? (
+                <small className="text-red-600">
+                  {formik.touched.children && formik.errors.children}
+                </small>
+              ) : null}
+            </div>
 
-          {/* Date */}
-          <div className="flex flex-col gap-3">
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              name="to"
-              placeholderText={`To`}
-              selected={formik.values.to}
-              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("to", date)}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.to && Boolean(formik.errors.to) ? (
-              <small className="text-red-600">
-                {formik.touched.to && formik.errors.to}
-              </small>
-            ) : null}
-          </div>
+            {/* advanced amount */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="number"
+                placeholder="Advanced Amount"
+                name="amount"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.amount}
+                onChange={handleAmount}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.amount && Boolean(formik.errors.amount) ? (
+                <small className="text-red-600">
+                  {formik.touched.amount && formik.errors.amount}
+                </small>
+              ) : null}
+            </div>
 
-          {/* Nationality box */}
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Nationality"
-              name="nationality"
-              className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
-              value={formik.values.nationality}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.nationality &&
-            Boolean(formik.errors.nationality) ? (
-              <small className="text-red-600">
-                {formik.touched.nationality && formik.errors.nationality}
-              </small>
-            ) : null}
-          </div>
-          <div className="flex flex-col gap-3">
-            <select
-              name="documentsType"
-              className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
-              value={formik.values.documentsType}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              <option value="" selected disabled>
-                Type Of Documents
-              </option>
-              <option value="Aadhar Card">Aadhar Card / ID</option>
-              <option value="Passport">Passport</option>
-              <option value="Driving Licence">Driving Licence</option>
-            </select>
-            {formik.touched.documentsType &&
-            Boolean(formik.errors.documentsType) ? (
-              <small className="text-red-600">
-                {formik.touched.documentsType && formik.errors.documentsType}
-              </small>
-            ) : null}
-          </div>
-          {formik.values.documentsType ? (
-            <>
+            {/* payment method box */}
+            <div className="flex flex-col gap-3">
+              <select
+                name="paymentMethod"
+                className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+                value={formik.values.paymentMethod}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" selected disabled>
+                  Payment Method
+                </option>
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+                <option value="Mobile_Banking">Mobile Banking</option>
+              </select>
+              {formik.touched.paymentMethod &&
+              Boolean(formik.errors.paymentMethod) ? (
+                <small className="text-red-600">
+                  {formik.touched.paymentMethod && formik.errors.paymentMethod}
+                </small>
+              ) : null}
+            </div>
+            {formik.values.paymentMethod &&
+            formik.values.paymentMethod !== "Cash" ? (
               <div className="flex flex-col gap-3">
                 <input
                   type="text"
-                  placeholder="Document Number"
-                  name="doc_number"
-                  className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
-                  value={formik.values.doc_number}
+                  placeholder="Transaction ID"
+                  name="trxID"
+                  className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                  value={formik.values.trxID}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.doc_number &&
-                Boolean(formik.errors.doc_number) ? (
+                {formik.touched.trxID && Boolean(formik.errors.trxID) ? (
                   <small className="text-red-600">
-                    {formik.touched.doc_number && formik.errors.doc_number}
+                    {formik.touched.trxID && formik.errors.trxID}
                   </small>
                 ) : null}
               </div>
-              <div className={`flex space-x-1.5`}>
-                <div className="flex flex-col gap-3 w-full">
-                  <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                    {formik.values.documents ? (
-                      <span>{formik.values.documents.length + " files"}</span>
-                    ) : (
-                      <span className={`flex items-baseline space-x-1.5`}>
-                        <FaUpload />
-                        <span>Choose documents</span>
-                      </span>
-                    )}
-                    <input
-                      type="file"
-                      multiple
-                      name="documents"
-                      className="absolute left-0 top-0  overflow-hidden h-0"
-                      onChange={(e) =>
-                        formik.setFieldValue("documents", e.currentTarget.files)
-                      }
-                      onBlur={formik.handleBlur}
-                    />
-                  </label>
-                  {formik.touched.documents &&
-                  Boolean(formik.errors.documents) ? (
+            ) : null}
+
+            <div className="flex flex-col gap-3">
+              <input
+                type="number"
+                placeholder="Discount"
+                name="discount"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.discount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
+              {/*  <small className="text-red-600">*/}
+              {/*    {formik.touched.discount && formik.errors.discount}*/}
+              {/*  </small>*/}
+              {/*) : null}*/}
+            </div>
+
+            {/* Date */}
+            <div className="flex flex-col gap-3">
+              <DatePicker
+                dateFormat="dd/MM/yyyy"
+                name="from"
+                placeholderText={`From`}
+                selected={formik.values.from}
+                className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+                onChange={(date) => formik.setFieldValue("from", date)}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.from && Boolean(formik.errors.from) ? (
+                <small className="text-red-600">
+                  {formik.touched.from && formik.errors.from}
+                </small>
+              ) : null}
+            </div>
+
+            {/* Date */}
+            <div className="flex flex-col gap-3">
+              <DatePicker
+                dateFormat="dd/MM/yyyy"
+                name="to"
+                placeholderText={`To`}
+                selected={formik.values.to}
+                className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+                onChange={(date) => formik.setFieldValue("to", date)}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.to && Boolean(formik.errors.to) ? (
+                <small className="text-red-600">
+                  {formik.touched.to && formik.errors.to}
+                </small>
+              ) : null}
+            </div>
+
+            {/* Nationality box */}
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Nationality"
+                name="nationality"
+                className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"
+                value={formik.values.nationality}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.nationality &&
+              Boolean(formik.errors.nationality) ? (
+                <small className="text-red-600">
+                  {formik.touched.nationality && formik.errors.nationality}
+                </small>
+              ) : null}
+            </div>
+            <div className="flex flex-col gap-3">
+              <select
+                name="documentsType"
+                className="select select-md bg-transparent select-bordered border-gray-500/50 p-2 rounded w-full focus:outline-none"
+                value={formik.values.documentsType}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" selected disabled>
+                  Type Of Documents
+                </option>
+                <option value="Aadhar Card">Aadhar Card / ID</option>
+                <option value="Passport">Passport</option>
+                <option value="Driving Licence">Driving Licence</option>
+              </select>
+              {formik.touched.documentsType &&
+              Boolean(formik.errors.documentsType) ? (
+                <small className="text-red-600">
+                  {formik.touched.documentsType && formik.errors.documentsType}
+                </small>
+              ) : null}
+            </div>
+            {formik.values.documentsType ? (
+              <>
+                <div className="flex flex-col gap-3">
+                  <input
+                    type="text"
+                    placeholder="Document Number"
+                    name="doc_number"
+                    className="input input-md input-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none p-2"
+                    value={formik.values.doc_number}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.doc_number &&
+                  Boolean(formik.errors.doc_number) ? (
                     <small className="text-red-600">
-                      {formik.touched.documents && formik.errors.documents}
+                      {formik.touched.doc_number && formik.errors.doc_number}
                     </small>
                   ) : null}
                 </div>
-              </div>
-            </>
-          ) : null}
+                <div className={`flex space-x-1.5`}>
+                  <div className="flex flex-col gap-3 w-full">
+                    <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
+                      {formik.values.documents ? (
+                        <span>{formik.values.documents.length + " files"}</span>
+                      ) : (
+                        <span className={`flex items-baseline space-x-1.5`}>
+                          <FaUpload />
+                          <span>Choose documents</span>
+                        </span>
+                      )}
+                      <input
+                        type="file"
+                        multiple
+                        name="documents"
+                        className="absolute left-0 top-0  overflow-hidden h-0"
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            "documents",
+                            e.currentTarget.files
+                          )
+                        }
+                        onBlur={formik.handleBlur}
+                      />
+                    </label>
+                    {formik.touched.documents &&
+                    Boolean(formik.errors.documents) ? (
+                      <small className="text-red-600">
+                        {formik.touched.documents && formik.errors.documents}
+                      </small>
+                    ) : null}
+                  </div>
+                </div>
+              </>
+            ) : null}
+          </div>
 
           {/* button */}
-          <div className={`flex justify-between`}>
+          <div className={`flex justify-between md:w-[60%] md:mx-auto `}>
             <button
               disabled={isLoading}
               type={"submit"}

@@ -14,7 +14,7 @@ import CheckInModal from "./CheckInModal.jsx";
 const ManageSingleRoom = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoading, data: room } = useRoomQuery(id); 
+  const { isLoading, data: room } = useRoomQuery(id);
 
   return (
     <div className={`bg-white max-w-6xl mx-auto rounded-3xl p-10 space-y-10`}>
@@ -110,9 +110,7 @@ const ManageSingleRoom = () => {
                       CheckIn
                     </button>
                   </>
-                ) : room?.data?.status ===
-                  "Booked" ? // 		className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `} // 	<button // (
-                // 		onClick={() =>
+                ) : room?.data?.status === "Booked" ? // 		onClick={() => // 		className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `} // 	<button // (
                 // 			navigate("/dashboard/checkin", {
                 // 				state: room,
                 // 			})
@@ -146,11 +144,11 @@ const ManageSingleRoom = () => {
             <RoomTabs description={room?.data?.description} />
           </div>
           {/* Modal Booking */}
-          <Modal id={`ab_modal`}>
+          <Modal id={`ab_modal`} classNames={`bg-white  sm:max-w-[60%]`}>
             <AddBookingSelect room={room} />
           </Modal>
 
-          <Modal id={`ci_modal`}>
+          <Modal id={`ci_modal`} classNames={`bg-white  sm:max-w-[60%]`}>
             <CheckInModal room={room} />
           </Modal>
         </>
