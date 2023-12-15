@@ -1,5 +1,6 @@
 import BarOrder from "../../models/Manager/bar.model.js";
 import { Booking, BookingInfo } from "../../models/Manager/booking.model.js";
+import CheckOutData from "../../models/Manager/checkout.model.js";
 import { FoodOrder } from "../../models/Manager/food.model.js";
 import GymBills from "../../models/Manager/gym.model.js";
 import PoolBills from "../../models/Manager/pool.model.js";
@@ -47,11 +48,11 @@ export const getCheckoutInfoByRoom = async (req, res) => {
     }
     const activeBookingIds = activeBookings.map((booking) => booking._id);
     const food_order_ids = activeBookings
-    .map((booking) => booking.food_order_ids)
-    .flat();
+      .map((booking) => booking.food_order_ids)
+      .flat();
     console.log(activeBookingIds);
     console.log(food_order_ids);
-    
+
     const bookingInfo = await BookingInfo.findOne({
       booking_ids: { $in: activeBookingIds },
     }).populate({
@@ -401,6 +402,96 @@ export const checkedOut = async (req, res) => {
     res.status(201).json({ message: "Successfully Checked-Out" });
   } catch (error) {
     // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const addCheckoutData = async (req, res) => {
+  try {
+    // Assuming that the request body contains the necessary data for CheckOutData
+    const {
+      room_id,
+      hotel_id,
+      booking_info_id,
+      booking_id,
+      food_order_ids,
+      pool_bill_ids,
+      gym_bill_ids,
+      guestName,
+      address,
+      mobileNumber,
+      emergency_contact,
+      adult,
+      children,
+      bookingMethod,
+      total_rent,
+      room_discount,
+      total_rent_after_dis,
+      total_posted_bills,
+      total_tax,
+      total_additional_charges,
+      total_service_charges,
+      total_payable_amount,
+      paid_amount,
+      total_unpaid_amount,
+      total_balance,
+      refunded_amount,
+      deleted,
+      nationality,
+      doc_number,
+      doc_images,
+      from,
+      checkin_date,
+      to,
+      no_of_days,
+      rent_per_day,
+      total_room_rent,
+    } = req.body;
+
+    const newCheckOutData = new CheckOutData({
+      room_id,
+      hotel_id,
+      booking_info_id,
+      booking_id,
+      food_order_ids,
+      pool_bill_ids,
+      gym_bill_ids,
+      guestName,
+      address,
+      mobileNumber,
+      emergency_contact,
+      adult,
+      children,
+      bookingMethod,
+      total_rent,
+      room_discount,
+      total_rent_after_dis,
+      total_posted_bills,
+      total_tax,
+      total_additional_charges,
+      total_service_charges,
+      total_payable_amount,
+      paid_amount,
+      total_unpaid_amount,
+      total_balance,
+      refunded_amount,
+      deleted,
+      nationality,
+      doc_number,
+      doc_images,
+      from,
+      checkin_date,
+      to,
+      no_of_days,
+      rent_per_day,
+      total_room_rent,
+    });
+
+    const savedCheckOutData = await newCheckOutData.save();
+
+    res.status(201).json(savedCheckOutData);
+  } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
