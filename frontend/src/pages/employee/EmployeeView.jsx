@@ -59,33 +59,33 @@ const EmployeeView = () => {
 
                 {/* personal information  */}
                 <div>
-                  <div className="grid md:grid-cols-2 gap-4 mt-9">
+                  <div className="grid lg:grid-cols-2 gap-4 mt-9">
                     <table className="w-54">
                       <tbody>
                         <tr>
                           <th className="text-start w-24">Name</th>
                           <td className="text-center">:</td>
-                          <td>{userData?.name}</td>
+                          <td className="break-all">{userData?.name}</td>
                         </tr>
                         <tr>
                           <th className="text-start w-24">Address</th>
                           <td className="w-4 text-center">:</td>
-                          <td>{userData?.address}</td>
+                          <td className="break-all">{userData?.address}</td>
                         </tr>
                         <tr>
                           <th className="text-start w-24">Phone Number</th>
                           <td className="w-4 text-center">:</td>
-                          <td>{userData?.phone_no}</td>
+                          <td className="break-all">{userData?.phone_no}</td>
                         </tr>
                         <tr>
                           <th className="text-start w-24">Emergency Contact</th>
                           <td className="w-4 text-center">:</td>
-                          <td>{userData?.phone_no}</td>
+                          <td className="break-all">{userData?.phone_no}</td>
                         </tr>
                         <tr>
                           <th className="text-start w-24">Email</th>
                           <td className="w-4 text-center">:</td>
-                          <td>{userData?.email}</td>
+                          <td className="break-all">{userData?.email}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -96,7 +96,7 @@ const EmployeeView = () => {
                           <tr>
                             <th className="text-start">Joining Date</th>
                             <td className="w-4 text-center">:</td>
-                            <td>
+                            <td className="break-all">
                               {new Date(
                                 userData?.joining_date
                               ).toLocaleDateString()}
@@ -105,12 +105,12 @@ const EmployeeView = () => {
                           <tr>
                             <th className="text-start">Salary</th>
                             <td className="w-4 text-center">:</td>
-                            <td>{userData?.salary}</td>
+                            <td className="break-all">{userData?.salary}</td>
                           </tr>
                           <tr>
                             <th className="text-start">Status</th>
                             <td className="w-4 text-center">:</td>
-                            <td>
+                            <td className="break-all">
                               {userData?.status === "Active"
                                 ? "In Duty"
                                 : userData?.status === "Deactive"
@@ -122,14 +122,14 @@ const EmployeeView = () => {
                       </table>
                     </div>
                     <div className="">
-                      <h2 className="card-title mb-3">
+                      <h2 className="card-title mb-3 break-all">
                         {userData?.images?.driving_lic_img?.length
                           ? "Driving Licenses"
                           : userData?.images?.nid?.length
                           ? "NID"
                           : "Passport"}
                       </h2>
-                      <ul className={`list-disc list-inside`}>
+                      <ul className={`list-disc list-inside break-all`}>
                         {(userData?.images?.driving_lic_img?.length
                           ? [...userData?.images?.driving_lic_img]
                           : userData?.images?.nid?.length

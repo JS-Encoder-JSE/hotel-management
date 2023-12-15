@@ -155,7 +155,7 @@ const EditEmployee = () => {
           <hr className={`my-5`} />
         </div>
 
-        <div className="max-auto">
+        <div className="max-auto p-2 md:p-4">
           <form
             autoComplete="off"
             className="form-control grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"

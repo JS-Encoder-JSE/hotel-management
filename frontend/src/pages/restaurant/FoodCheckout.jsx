@@ -30,7 +30,7 @@ const FoodCheckout = () => {
     (accumulator, item) => accumulator + item.total,
     0
   );
-
+  console.log(grandTotal);
   const grand_total = orderData?.data?.grand_total;
 
   const taxAmount = (grandTotal * taxPercentage) / 100;
@@ -59,6 +59,42 @@ const FoodCheckout = () => {
       };
     });
   };
+
+  const handleUpdateFood = async () => {
+    const totalReduceAmount = reduceData.reduce((acc, current) => {
+      return acc + current.total;
+    }, 0);
+
+    const checkoutForTable = {
+      updateData: {
+        paid_amount: 0,
+        unpaid_amount: finalTotal,
+        total_price: finalTotal,
+        items: orderData.data.items,
+        current_order: true,
+        payment_status: "Pending",
+        grand_total: finalTotal,
+      },
+      reduced_amount: totalReduceAmount,
+    };
+    setCheckoutLoading(true);
+    const response = await updateOrder({
+      data: checkoutForTable,
+      id,
+    });
+    setCheckoutLoading(true);
+    if (response?.error) {
+      toast.error(response.error.data.message);
+      setCheckoutLoading(false);
+      setReduceData([]);
+    } else {
+      toast.success("Checkout successful");
+      setCheckoutLoading(false);
+      setReduceData([]);
+      handlePrint();
+    }
+  };
+
   const handleCheckout = async () => {
     const totalReduceAmount = reduceData.reduce((acc, current) => {
       return acc + current.total;
@@ -248,7 +284,7 @@ const FoodCheckout = () => {
                     <td></td>
                     <td></td>
                     <td>Grand Total</td>
-                    <td>{grand_total}</td>
+                    <td>{finalTotal}</td>
                     <td></td>
                   </tr>
                 </tfoot>
@@ -270,7 +306,7 @@ const FoodCheckout = () => {
       <div className={`flex gap-4 justify-end mt-4`}>
         <div style={{ display: "none" }}>
           <div className="p-4" ref={componentRef}>
-            <FoodCheckoutPrint orderData={orderData} finalTotal={grand_total} />
+            <FoodCheckoutPrint orderData={orderData} finalTotal={finalTotal} />
           </div>
         </div>
         <ReactToPrint
@@ -284,6 +320,26 @@ const FoodCheckout = () => {
           )}
           content={() => componentRef.current}
         />
+
+        {orderData?.data?.dedicated_to !== "room" ? (
+          <div>
+            <button
+              onClick={handleUpdateFood}
+              type="button"
+              className="btn btn-sm hover:bg-green-slimy bg-transparent hover:text-white text-green-slimy !border-green-slimy rounded normal-case "
+            >
+              <>Update</>
+              {checkoutLoading ? (
+                <span
+                  className="inline-block h-4 w-4 border-2 border-current border-r-transparent rounded-full animate-spin"
+                  role="status"
+                ></span>
+              ) : null}
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
 
         {orderData?.data?.order_status === "CheckedOut" ? (
           ""

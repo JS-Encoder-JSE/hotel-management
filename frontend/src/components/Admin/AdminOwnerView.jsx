@@ -27,7 +27,7 @@ const AdminOwnerView = () => {
   return (
     <>
       <div className={`space-y-10 container`}>
-        <div className="card w-full max-w-full bg-white shadow-xl sm:p-5">
+        <div className="card w-full max-w-full bg-white shadow-xl p-2 sm:p-5">
           <div>
             <span
               className={`inline-flex w-8 h-8 items-center justify-center bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy border border-green-slimy cursor-pointer rounded-full normal-case transition-colors duration-500`}
@@ -54,43 +54,34 @@ const AdminOwnerView = () => {
               <table className="table-auto w-full overflow-x-auto">
                 <tbody>
                   <tr>
-                    <th className="text-start text-xs sm:text-sm md:text-base lg:text-lg ">
-                      User Name
-                    </th>
-                    <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
-                      : {data?.username}
+                    <th className="text-start">User Name</th>
+                    <td className="pl-5">:</td>
+                    <td className="break-all">{data?.username}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Name</th>
+                    <td className="pl-5">:</td>
+                    <td className="break-all"> {data?.name}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Address</th>
+                    <td className="pl-5">:</td>
+                    <td className="break-all">
+                      <span>{data?.address}</span>
                     </td>
                   </tr>
                   <tr>
-                    <th className="text-start text-xs sm:text-sm md:text-base lg:text-lg ">
-                      Name
-                    </th>
-                    <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
-                      : {data?.name}
+                    <th className="text-start">Contact No</th>
+                    <td className="pl-5">:</td>
+                    <td className="break-all">
+                      <span className="break-all">{data?.phone_no}</span>
                     </td>
                   </tr>
                   <tr>
-                    <th className="text-start text-xs sm:text-sm md:text-base lg:text-lg ">
-                      Address
-                    </th>
-                    <td className="mt-4 md:pl-2 max-w-[10px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
-                      : <span>{data?.address}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="text-start text-xs sm:text-sm md:text-base lg:text-lg ">
-                      Contact No
-                    </th>
-                    <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
-                      : <span className="break-all">{data?.phone_no}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="text-start text-xs sm:text-sm md:text-base lg:text-lg ">
-                      Email
-                    </th>
-                    <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg">
-                      : <span className="break-all">{data?.email}</span>
+                    <th className="text-start">Email</th>
+                    <td className="pl-5">:</td>
+                    <td className="break-all">
+                      <span className="break-all">{data?.email}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -109,9 +100,7 @@ const AdminOwnerView = () => {
               <table>
                 <tbody>
                   <tr>
-                    <th className="text-start text-xs sm:text-sm md:text-base lg:text-lg ">
-                      License Key
-                    </th>
+                    <th className="text-start">License Key</th>
                     <td className="pl-10">:</td>
                     <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg break-all">
                       {data?.license_key}
@@ -120,22 +109,29 @@ const AdminOwnerView = () => {
                   <tr>
                     <th className="text-start">Purchase Date</th>
                     <td className="pl-10">:</td>
-                    <td>{new Date(data?.createdAt).toLocaleDateString()}</td>
+                    <td className="break-all">
+                      {new Date(data?.createdAt).toLocaleDateString()}
+                    </td>
                   </tr>
                   <tr>
                     <th className="text-start">Renew Date</th>
                     <td className="pl-10">:</td>
-                    <td>{new Date(data?.bill_from).toLocaleDateString()}</td>
+                    <td className="break-all">
+                      {new Date(data?.bill_from).toLocaleDateString()}
+                    </td>
                   </tr>
                   <tr>
                     <th className="text-start">Expire Date</th>
                     <td className="pl-10">:</td>
-                    <td> {new Date(data?.bill_to).toLocaleDateString()}</td>
+                    <td className="break-all">
+                      {" "}
+                      {new Date(data?.bill_to).toLocaleDateString()}
+                    </td>
                   </tr>
                   <tr>
                     <th className="text-start">Remain Days</th>
                     <td className="pl-10">:</td>
-                    <td>
+                    <td className="break-all">
                       {" "}
                       {Math.floor(
                         Math.abs(new Date(data?.bill_to) - new Date()) /
@@ -147,19 +143,17 @@ const AdminOwnerView = () => {
                   <tr>
                     <th className="text-start"> Status</th>
                     <td className="pl-10">:</td>
-                    <td>{data?.status}</td>
+                    <td className="break-all">{data?.status}</td>
                   </tr>
 
                   <tr>
                     <th className="text-start">Number Of Hotels</th>
                     <td className="pl-10">:</td>
-                    <td className="flex gap-2 items-center">
+                    <td className="flex gap-2 items-center mt-4 md:mt-0">
                       {" "}
-                      <span className="mt-6 sm:mt-0">
-                        {data?.maxHotels}
-                      </span>{" "}
+                      <span className="">{data?.maxHotels}</span>{" "}
                       <span
-                        className={`cursor-pointer mt-6 sm:mt-0`}
+                        className={`cursor-pointer`}
                         onClick={() => window.hle_modal.showModal()}
                       >
                         <FaEdit />
