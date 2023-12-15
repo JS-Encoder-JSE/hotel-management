@@ -496,3 +496,26 @@ export const addCheckoutData = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const getCheckoutDataByBookingId = async (req, res) => {
+  try {
+    const bookingId = req.params.booking_id;
+
+    // Assuming that "CheckOutData" has a field named "booking_id"
+    const checkoutData = await CheckOutData.findOne({ booking_id: bookingId })
+      .populate("food_order_ids")
+      .populate("pool_bill_ids")
+      .populate("gym_bill_ids");
+
+    if (!checkoutData) {
+      return res
+        .status(404)
+        .json({ error: "Checkout data not found for the provided booking ID" });
+    }
+
+    res.status(200).json(checkoutData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
