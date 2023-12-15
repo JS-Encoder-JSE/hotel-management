@@ -88,7 +88,7 @@ const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
               <span>{totalItemsAmount}</span>
             </div>
           </div> */}
-<div className="flex justify-end items-center  md:ms-[20rem] mt-4 mr-[8.2rem]">
+<div className="flex justify-end items-center  md:ms-[20rem] mt-4 mr-[10rem]">
  <div>
  <h1 className="text-xl font-bold">Grand Total :</h1>
  </div>
