@@ -86,8 +86,7 @@ const CheckIn = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [addBooking] = useAddBookingMutation();
 
-
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   // handleAmount
   const handleAmount = (e) => {
@@ -186,6 +185,7 @@ const CheckIn = () => {
           transection_id: obj.trxID,
           from: obj.from,
           to: obj.to,
+          checkin_date: new Date().toISOString(),
           no_of_days,
           room_discount: obj.discount,
           paid_amount: typeof obj.amount === "number" ? obj.amount : 0,
@@ -204,7 +204,7 @@ const CheckIn = () => {
           formikHelpers.resetForm();
           setSelectedImages([]);
           toast.success(response.data.message);
-          navigate("/dashboard/manage-checkin")
+          navigate("/dashboard/manage-checkin");
         }
       } else {
         toast.error("Image is not uploaded");

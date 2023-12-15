@@ -37,9 +37,11 @@ const AdminOwnerView = () => {
             </span>
           </div>
           <div>
-          <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5">Client Information</h1>
+            <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5">
+              Client Information
+            </h1>
           </div>
-          <div className="card-body grid md:grid-cols-2 gap-4">
+          <div className="card-body grid grid-cols lg:grid-cols-2 gap-4">
             <div className="">
               <h2 className="card-title mb-3">Client Information </h2>
               <table>
@@ -81,58 +83,62 @@ const AdminOwnerView = () => {
             <div className="">
               <h2 className="card-title mb-3">License Information </h2>
 
-                <table>
-                  <tbody>
-                    <tr>
-                      <th className="text-start">License Key</th>
-                      <td className="pl-10">:</td>
-                      <td>{data?.license_key}</td>
-                    </tr>
-                    <tr>
-                      <th className="text-start">Purchase Date</th>
-                      <td className="pl-10">:</td>
-                      <td>{new Date(
-                  data?.createdAt
-                ).toLocaleDateString()}</td>
-                    </tr>
-                    <tr>
-                      <th className="text-start">Renew Date</th>
-                      <td className="pl-10">:</td>
-                      <td>{new Date(data?.bill_from).toLocaleDateString()}</td>
-                    </tr>
-                     <tr>
-                      <th className="text-start">Expire Date</th>
-                      <td className="pl-10">:</td>
-                      <td> {new Date(data?.bill_to).toLocaleDateString()}</td>
-                    </tr>
-                    <tr>
-                      <th className="text-start">Remain Days</th>
-                      <td className="pl-10">:</td>
-                      <td> {Math.floor(
-                  Math.abs(new Date(data?.bill_to) - new Date()) /
-                    (24 * 60 * 60 * 1000)
-                )}{" "}
-                Days</td>
-                    </tr>
-                    <tr>
-                      <th className="text-start"> Status</th>
-                      <td className="pl-10">:</td>
-                      <td>{data?.status}</td>
-                    </tr>
+              <table>
+                <tbody>
+                  <tr>
+                    <th className="text-start">License Key</th>
+                    <td className="pl-10">:</td>
+                    <td>{data?.license_key}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Purchase Date</th>
+                    <td className="pl-10">:</td>
+                    <td>{new Date(data?.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Renew Date</th>
+                    <td className="pl-10">:</td>
+                    <td>{new Date(data?.bill_from).toLocaleDateString()}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Expire Date</th>
+                    <td className="pl-10">:</td>
+                    <td> {new Date(data?.bill_to).toLocaleDateString()}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Remain Days</th>
+                    <td className="pl-10">:</td>
+                    <td>
+                      {" "}
+                      {Math.floor(
+                        Math.abs(new Date(data?.bill_to) - new Date()) /
+                          (24 * 60 * 60 * 1000)
+                      )}{" "}
+                      Days
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start"> Status</th>
+                    <td className="pl-10">:</td>
+                    <td>{data?.status}</td>
+                  </tr>
 
-                    <tr>
-                      <th className="text-start">Number Of Hotels</th>
-                      <td className="pl-10">:</td>
-                      <td className="flex gap-2 items-center"> {data?.maxHotels} <span
-                  className={`cursor-pointer`}
-                  onClick={() => window.hle_modal.showModal()}
-                >
-                  <FaEdit />
-                </span></td>
-                    </tr>
-
-                  </tbody>
-                </table>
+                  <tr>
+                    <th className="text-start">Number Of Hotels</th>
+                    <td className="pl-10">:</td>
+                    <td className="flex gap-2 items-center">
+                      {" "}
+                      {data?.maxHotels}{" "}
+                      <span
+                        className={`cursor-pointer`}
+                        onClick={() => window.hle_modal.showModal()}
+                      >
+                        <FaEdit />
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
               {/* <h6>
                 {" "}
@@ -159,7 +165,7 @@ const AdminOwnerView = () => {
                 )}{" "}
                 Days
               </h6> */}
-                {/* <h6 className="capitalize">Status : {data?.status}</h6>
+              {/* <h6 className="capitalize">Status : {data?.status}</h6>
                 <div className="flex gap-1.5">
                   <h6>Number Of Hotels : {data?.maxHotels}</h6>
                   <span
