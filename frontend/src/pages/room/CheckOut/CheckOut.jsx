@@ -136,11 +136,6 @@ const CheckOut = () => {
   const nationality = checkout?.data?.booking_info?.nationality;
   const doc_number = checkout?.data?.booking_info?.doc_number;
 
-  const { data: getCheckoutData } =
-    useGetCheckoutDataByBookingIdQuery(booking_id);
-  console.log(getCheckoutData);
-
-  console.log(checkout, doc_number);
   // this is use for Print
   // const componentRef = useRef();
   // dispatch

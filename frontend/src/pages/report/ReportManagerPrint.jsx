@@ -1,48 +1,7 @@
-// import PaymentMethod from "./PaymentMethod";
-// import CustomerInfoSection from "./CustomerInfoSection";
-// import RoomDetailsSection from "./RoomDetailsSection";
-// import { FaTrash } from "react-icons/fa";
-// import DatePicker from "react-datepicker";
-// import PaymentMethodPrint from "./PaymentMethodPrint";
-// import BalanceDetailsPrint from "./BalanceDetailsPrint";
-// import CustomerInfoPrint from "./CustomerInfoPrint";
-// import { useSelector } from "react-redux";
-// import AuthoInfoPrint from "./AuthoInfoPrint";
 import logo from "../../assets/logo.png";
-// import BillingSection from "./BillingSection";
-// import BillingSectionPrint from "./BillingSectionPrint";
-// import { useGetHotelByManagerIdQuery } from "../../../redux/room/roomAPI";
-// import { versionControl } from "../../../utils/utils";
+import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI";
 
-// current date
-// const currentDate = new Date();
-
-// const year = currentDate.getFullYear();
-// const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are zero-based
-// const day = String(currentDate.getDate()).padStart(2, "0");
-
-// const formattedDate = `${year}-${month}-${day}`;
-
-const ReportManagerPrint = (
-  {
-    // data,
-    // paymentList,
-    // setPll,
-    // hotelInfo,
-    // isHotelSuccess,
-    // roomData,
-  }
-) => {
-  // const {
-  //   calculateBalance,
-  //   calculateCollectedAmount,
-  //   calculatePayableAmount,
-  //   additionalCharge,
-  //   serviceCharge,
-  //   texAmount,
-  // } = useSelector((state) => state.checkoutInfoCalSlice);
-  // const totalPayableAmount =
-  //   calculatePayableAmount + additionalCharge + serviceCharge + texAmount;
+const ReportManagerPrint = ({ data }) => {
   return (
     <div>
       <div>
@@ -68,9 +27,7 @@ const ReportManagerPrint = (
 
                 <div className="grid grid-cols-2">
                   <p>Email</p>
-                  <p className="">
-                    :dakhospitlky@gmail.com
-                  </p>
+                  <p className="">:dakhospitlky@gmail.com</p>
                 </div>
 
                 <div className="grid grid-cols-2">

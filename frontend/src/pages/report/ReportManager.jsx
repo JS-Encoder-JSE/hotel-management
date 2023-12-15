@@ -1,5 +1,11 @@
-import React, { useEffect, useState,useRef } from "react";
-import { FaArrowLeft, FaEye, FaFileInvoice, FaPrint, FaSearch } from "react-icons/fa";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaFileInvoice,
+  FaPrint,
+  FaSearch,
+} from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CreateCustomerReceipt from "../../components/pdf/CreateCustomerReceipt.jsx";
@@ -18,9 +24,9 @@ import { Rings } from "react-loader-spinner";
 import { getFormateDateAndTime, getISOStringDate } from "../../utils/utils.js";
 import ManagerReport from "./ManagerReport.jsx";
 import { getformatDateTime } from "../../utils/timeZone.js";
-import ReactToPrint from "react-to-print";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
 import ReportManagerPrint from "./ReportManagerPrint.jsx";
-
+import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI.js";
 
 const ReportManager = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -32,6 +38,7 @@ const ReportManager = () => {
   const [PDF, setPDF] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [keyword, setKeyword] = useState(null);
+  const [bookingId, setBookingId] = useState("");
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -40,6 +47,19 @@ const ReportManager = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
+
+  const { data: getCheckoutData, isSuccess } =
+    useGetCheckoutDataByBookingIdQuery(bookingId);
+  console.log({ getCheckoutData });
+  console.log(getCheckoutData);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+  // onAfterPrint: () => {
+  //   navigate("/dashboard/report");
+  // },
+
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -98,6 +118,14 @@ const ReportManager = () => {
     }
   };
   console.log(reports);
+
+  useEffect(() => {
+    console.log(componentRef.current);
+    if (isSuccess && componentRef.current) {
+      handlePrint();
+    }
+  }, [getCheckoutData, componentRef.current]);
+
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-5 py-5 rounded `}>
@@ -262,7 +290,10 @@ const ReportManager = () => {
               </thead>
               <tbody>
                 {reports?.data?.docs?.map((report, idx) => {
-
+                  // const { data: getCheckoutData } =
+                  //   useGetCheckoutDataByBookingIdQuery(report?.booking_ids[0]);
+                  // console.log({ getCheckoutData });
+                  // console.log(getCheckoutData);
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
@@ -276,28 +307,26 @@ const ReportManager = () => {
                       <td>{report?.paid_amount}</td>
                       <td className={`space-x-1.5`}>
                         {/* <button><LuPrinter /></button> */}
-                        <ReactToPrint
-                          trigger={() => (
-                            <button
+
+                        <ReactToPrint content={() => componentRef.current}>
+                          <button
+                            onClick={() => setBookingId(report?.booking_ids[0])}
                             className="bg-green-slimy text-white px-2 rounded-md py-2"
                           >
                             <FaPrint className="inline" /> Print
                           </button>
-                          )}
-                          content={() => componentRef.current}
-                        />
+                        </ReactToPrint>
                         <div style={{ display: "none" }}>
-                          <div 
-                          ref={componentRef}
-                          >
+                          <div ref={componentRef}>
                             <ReportManagerPrint
-                              // pBill={pBill}
-                              // colAmount={colAmount}
-                              // data={data}
-                              // paymentList={paymentList}
-                              // isHotelSuccess={isHotelSuccess}
-                              // hotelInfo={hotelInfo}
-                              // roomData={roomData}
+                            // pBill={pBill}
+                            // colAmount={colAmount}
+                            // data={data}
+                            // paymentList={paymentList}
+                            // isHotelSuccess={isHotelSuccess}
+                            // hotelInfo={hotelInfo}
+                            // roomData={roomData}
+                            // data={getCheckoutData}
                             />
                           </div>
                         </div>
