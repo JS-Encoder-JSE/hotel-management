@@ -1,7 +1,10 @@
+import { useSelector } from "react-redux";
 import logo from "../../assets/logo.png";
 import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI";
+import { getFormateDateAndTime } from "../../utils/timeZone";
 
-const ReportManagerPrint = ({ data }) => {
+const ReportManagerPrint = ({ data, hotelInfo }) => {
+  console.log({ hotelInfo });
   return (
     <div>
       <div>
@@ -21,23 +24,23 @@ const ReportManagerPrint = ({ data }) => {
               <h2 className="font-bold">Invoice From</h2>
               <div>
                 <div className="grid grid-cols-2 ">
-                  <p>Hotel Name</p>
-                  <p>:Dak Hospitality</p>
+                  <p>Hotel Name :</p>
+                  <p>{hotelInfo?.name}</p>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <p>Email</p>
-                  <p className="">:dakhospitlky@gmail.com</p>
+                  <p>Email :</p>
+                  <p className="">{hotelInfo?.email}</p>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <p>Phone</p>
-                  <p>:+884854654</p>
+                  <p>Phone :</p>
+                  <p>{hotelInfo?.phone_no}</p>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <p>Address</p>
-                  <p>:India</p>
+                  <p>Address :</p>
+                  <p>{hotelInfo?.address}</p>
                 </div>
               </div>
             </div>
@@ -45,12 +48,12 @@ const ReportManagerPrint = ({ data }) => {
               <h2 className="font-bold">Invoice To</h2>
               <div className="flex gap-4 items-center">
                 <div className="grid grid-cols-2">
-                  <p>Name</p>
-                  <p>:Dak Hotel</p>
-                  <p>Phone</p>
-                  <p>:+8545646</p>
-                  <p>Address</p>
-                  <p>:India</p>
+                  <p>Name :</p>
+                  <p>{data?.guestName}</p>
+                  <p>Phone :</p>
+                  <p>{data?.mobileNumber}</p>
+                  <p>Address :</p>
+                  <p>{data?.address}</p>
                 </div>
               </div>
             </div>
@@ -62,12 +65,12 @@ const ReportManagerPrint = ({ data }) => {
             <div className="flex flex-col items-start">
               <div className="grid grid-cols-2 gap-9  ">
                 <p>Advanced Balance</p>
-                <p>:2500</p>
+                <p>{data?.total_balance}</p>
               </div>
               <div>
                 <div className="grid grid-cols-2 gap-2 ">
                   <p>Total Payable Amount</p>
-                  <p>:2510</p>
+                  <p>{data?.total_payable_amount}</p>
                 </div>
               </div>
             </div>
@@ -122,15 +125,27 @@ const ReportManagerPrint = ({ data }) => {
                   </tbody>
                   <tbody>
                     <tr>
-                      <td className="p-2 border border-black/20 align-top text-xs"></td>
-                      <td className="p-2 border border-black/20 align-top text-xs"></td>
-                      <td className="p-2 border border-black/20 align-top text-xs"></td>
-                      <td className="p-2 border border-black/20 align-top text-xs"></td>
-                      <td className="p-2 border border-black/20 align-top text-xs"></td>
                       <td className="p-2 border border-black/20 align-top text-xs">
-                        %
+                        {new Date(data?.checkin_date).toLocaleDateString()}
                       </td>
-                      <td className="p-2 border border-black/20 align-top text-xs"></td>
+                      <td className="p-2 border border-black/20 align-top text-xs">
+                        {new Date(data?.to).toLocaleDateString()}
+                      </td>
+                      <td className="p-2 border border-black/20 align-top text-xs">
+                        {data?.no_of_days}
+                      </td>
+                      <td className="p-2 border border-black/20 align-top text-xs">
+                        {data?.rent_per_day}
+                      </td>
+                      <td className="p-2 border border-black/20 align-top text-xs">
+                        {data?.total_room_rent}
+                      </td>
+                      <td className="p-2 border border-black/20 align-top text-xs">
+                        {data?.room_discount} %
+                      </td>
+                      <td className="p-2 border border-black/20 align-top text-xs">
+                        {data?.total_rent_after_dis}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -153,12 +168,19 @@ const ReportManagerPrint = ({ data }) => {
             <p className="text-lg font-bold">GrandTotal</p>
           </div>
           <div className="space-y-2">
-            <p>: Rs.</p>
-            <p>: Rs.</p>
-            <p>: Rs.</p>
-            <p>: Rs.</p>
-            <p>: Rs.</p>
-            <p>: Rs.</p>
+            <p>: Rs. {data?.total_rent_after_dis}</p>
+            <p>: Rs. {data?.total_additional_charges}</p>
+            <p>: Rs. {data?.total_service_charges}</p>
+            <p>: Rs. {data?.total_posted_bills}</p>
+            <p>: Rs. {data?.total_tax}</p>
+            <p>
+              : Rs.{" "}
+              {data?.total_rent_after_dis +
+                data?.total_additional_charges +
+                data?.total_service_charges +
+                data?.total_posted_bills +
+                data?.total_tax}
+            </p>
           </div>
         </div>
       </section>

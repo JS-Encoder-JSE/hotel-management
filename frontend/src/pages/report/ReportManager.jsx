@@ -26,7 +26,12 @@ import ManagerReport from "./ManagerReport.jsx";
 import { getformatDateTime } from "../../utils/timeZone.js";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import ReportManagerPrint from "./ReportManagerPrint.jsx";
-import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI.js";
+import {
+  useGetCheckoutDataByBookingIdQuery,
+  useGetHotelByManagerIdQuery,
+} from "../../redux/room/roomAPI.js";
+import ReportPrint from "./ReportPrint.jsx";
+import { useSelector } from "react-redux";
 
 const ReportManager = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -47,11 +52,9 @@ const ReportManager = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
-
+  const { user } = useSelector((state) => state.authSlice);
   const { data: getCheckoutData, isSuccess } =
     useGetCheckoutDataByBookingIdQuery(bookingId);
-  console.log({ getCheckoutData });
-  console.log(getCheckoutData);
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -59,7 +62,11 @@ const ReportManager = () => {
   // onAfterPrint: () => {
   //   navigate("/dashboard/report");
   // },
-
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -117,11 +124,10 @@ const ReportManager = () => {
       formik.handleSubmit();
     }
   };
-  console.log(reports);
 
   useEffect(() => {
-    console.log(componentRef.current);
-    if (isSuccess && componentRef.current) {
+    // handlePrint();
+    if (isSuccess) {
       handlePrint();
     }
   }, [getCheckoutData, componentRef.current]);
@@ -307,29 +313,23 @@ const ReportManager = () => {
                       <td>{report?.paid_amount}</td>
                       <td className={`space-x-1.5`}>
                         {/* <button><LuPrinter /></button> */}
-
-                        <ReactToPrint content={() => componentRef.current}>
-                          <button
-                            onClick={() => setBookingId(report?.booking_ids[0])}
-                            className="bg-green-slimy text-white px-2 rounded-md py-2"
-                          >
-                            <FaPrint className="inline" /> Print
-                          </button>
-                        </ReactToPrint>
-                        <div style={{ display: "none" }}>
-                          <div ref={componentRef}>
-                            <ReportManagerPrint
-                            // pBill={pBill}
-                            // colAmount={colAmount}
-                            // data={data}
-                            // paymentList={paymentList}
-                            // isHotelSuccess={isHotelSuccess}
-                            // hotelInfo={hotelInfo}
-                            // roomData={roomData}
-                            // data={getCheckoutData}
-                            />
-                          </div>
-                        </div>
+                        <ReportPrint hotelInfo={hotelInfo[0]} booking_id={report?.booking_ids[0]} />
+                        {/* <ReactToPrint
+                          content={() => componentRef.current}
+                          trigger={() => (
+                            <button
+                              onClick={() => {
+                                setBookingId(report?.booking_ids[0]);
+                              }}
+                              className="bg-green-slimy text-white px-2 rounded-md py-2"
+                            >
+                              <FaPrint className="inline" /> Print
+                            </button>
+                          )}
+                        ></ReactToPrint>
+                        <div ref={componentRef}>
+                          <ReportManagerPrint data={getCheckoutData} />
+                        </div> */}
                       </td>
                     </tr>
                   );
