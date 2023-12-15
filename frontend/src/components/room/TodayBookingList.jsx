@@ -127,7 +127,7 @@ const TodayBookingList = ({ bookingList, setCurrentPage }) => {
               </th>
               <th>From</th>
               <th>To</th>
-              <th>Action</th>
+              {/* <th>Action</th> */}
             </tr>
           </thead>
           <tbody>
@@ -151,7 +151,7 @@ const TodayBookingList = ({ bookingList, setCurrentPage }) => {
                   <td>{new Date(item?.from).toLocaleDateString()}</td>
                   <td>{new Date(item?.to).toLocaleDateString()}</td>
 
-                  <td className={`flex flex-wrap gap-1.5`}>
+                  {/* <td className={`flex flex-wrap gap-1.5`}>
                     <span
                       className={`btn btn-sm bg-green-slimy text-[1.1rem] hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                       title={`View`}
@@ -168,7 +168,7 @@ const TodayBookingList = ({ bookingList, setCurrentPage }) => {
                     >
                       <MdOutlineCancel className="text-[17px]" />
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               );
             })}

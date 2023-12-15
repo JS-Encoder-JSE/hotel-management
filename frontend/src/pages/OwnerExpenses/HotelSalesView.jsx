@@ -71,7 +71,7 @@ console.log(orderedDataByDate,"hotel")
        
       </div>
       <div>
-          <h1 className="text-center text-2xl bg-green-slimy w-72 mx-auto text-white p-1 rounded-md"> Hotel Sales Information</h1>
+          <h1 className="text-center text-2xl bg-green-slimy w-[17rem] mx-auto text-white p-1 rounded-md"> Hotel Sales Information</h1>
         </div>
         <div>
         <div className={`flex justify-end mb-5 mr-5`}>
@@ -83,7 +83,7 @@ console.log(orderedDataByDate,"hotel")
                       values={orderedDataByDate?.data?.docs}
                         header={{
                           title: "DAK Hospitality LTD",
-                          name: "Today's Sales ",
+                          name: "Hotel Sales Information ",
                         }}
                       />
                     }

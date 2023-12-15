@@ -68,9 +68,11 @@ const addOrderSlice = createSlice({
     },
     setOrderCalc: (state, action) => {
       const total = state.order.foods.reduce(
-        (total, current) => total + current.quantity * current.price,
+        (total, current) =>total + current.quantity * current.price,
+       
         0
       );
+
       const tax = total * 0.03;
       const grandTotal = total + tax;
 
@@ -80,6 +82,16 @@ const addOrderSlice = createSlice({
         grandTotal: grandTotal.toFixed(2),
       };
     },
+
+    removeAction: (state, action) => {
+      const { quantity, price } = action.payload;
+      const totalToRemove = quantity * price;
+      console.log(action.payload);
+      console.log(state.total);
+      state.orderCalc.total = +state.orderCalc.total - totalToRemove;
+      
+    },
+    
     resetFoodOrder: (state) => {
       state.order = {
         roomId: "",
@@ -88,10 +100,11 @@ const addOrderSlice = createSlice({
       };
       // state.orderCalc = {
       //   total: 0,
-      //   tax: 0,
-      //   grandTotal: 0,
+      // // // //   tax: 0,
+      // // // //   grandTotal: 0,
       // };
     },
+
     setAmountAfterDis: (state, action) => {
       state.amountAfterDiscount = action.payload;
     },
@@ -110,6 +123,7 @@ export const {
   setQuantity,
   manipulateQuantity,
   setOrderCalc,
+  removeAction,
   resetFoodOrder,
   setRoomId,
   setTableId,

@@ -5,8 +5,9 @@ import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../
 
 const RestaurantSalesHistory = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
-    console.log("values",values)
-    const desiredHeaders = ["Serial No", "item", "serveyor_quantity", "quantity", "price"];
+    // console.log("values",values)
+    console.log("date",date)
+    const desiredHeaders = ["Serial No","date", "item", "serveyor_quantity", "quantity", "price"];
     const tableHeaders =["Serial No","Item","Surveyor Quantity", "Quantity", "Price"]
     const jsEncoderTextStyle = {
       color: "green",
@@ -105,8 +106,9 @@ const RestaurantSalesHistory = ({ values, header,date }) => {
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ?getformatDateTime(date) // Use the date prop here
+                    ?new Date(date).toLocaleDateString() // Use the date prop here
                     : item[key]}
+                    
                 </Text>
               ))}
             </View>

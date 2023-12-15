@@ -42,7 +42,7 @@ const validationSchema = yup.object({
     .string()
     .required("Description is required")
     .min(10, "Description at least 20 characters length"),
-  // photos: yup.mixed().required("Images are required"),
+  photos: yup.mixed().required("Choose Photo are required"),
 });
 
 const AddFood = () => {

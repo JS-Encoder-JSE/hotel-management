@@ -4,6 +4,7 @@ import COItem from "./COItem.jsx";
 import {
   resetFoodOrder,
   setOrder,
+  setOrderCalc,
 } from "../../redux/add-order/addOrderSlice.js";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -96,7 +97,9 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
 
   useEffect(() => {
+
     if (formik.values.roomNumber) dispatch(setOrder({ ...order }));
+   
   }, [formik.values.roomNumber]);
 
   // const transformedRooms = rooms?.data?.docs?.map((room) => ({
@@ -127,6 +130,14 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
   const day = String(currentDate.getDate()).padStart(2, "0");
 
   const formattedDate = `${year}-${month}-${day}`;
+
+  
+useEffect(()=>{
+  dispatch(setOrderCalc())
+},[dispatch])
+
+
+  
   return (
     <>
       <form autoComplete="off" method="dialog">

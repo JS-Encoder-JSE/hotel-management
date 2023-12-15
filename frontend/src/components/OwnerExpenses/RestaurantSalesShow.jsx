@@ -191,7 +191,7 @@ useEffect(() => {
               </div>
 
               <div 
-           className="min-h-64"
+           className="min-h-64 overflow-x-auto"
               >
                 {restaurantSalesToday && restaurantSalesToday?.data.length ? (
                   <table className="table">

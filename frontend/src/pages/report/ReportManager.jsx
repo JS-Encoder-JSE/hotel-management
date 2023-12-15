@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { FaArrowLeft, FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
+import React, { useEffect, useState,useRef } from "react";
+import { FaArrowLeft, FaEye, FaFileInvoice, FaPrint, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CreateCustomerReceipt from "../../components/pdf/CreateCustomerReceipt.jsx";
@@ -18,9 +18,13 @@ import { Rings } from "react-loader-spinner";
 import { getFormateDateAndTime, getISOStringDate } from "../../utils/utils.js";
 import ManagerReport from "./ManagerReport.jsx";
 import { getformatDateTime } from "../../utils/timeZone.js";
+import ReactToPrint from "react-to-print";
+import ReportManagerPrint from "./ReportManagerPrint.jsx";
+
 
 const ReportManager = () => {
   const [forcePage, setForcePage] = useState(null);
+  const componentRef = useRef();
   const navigate = useNavigate();
   const [reportsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(1);
@@ -252,11 +256,13 @@ const ReportManager = () => {
                   <th>Check In</th>
                   <th>Check Out</th>
                   <th>Paid Amount</th>
+                  <th>Action</th>
                   {/*<th>Deposit By</th>*/}
                 </tr>
               </thead>
               <tbody>
                 {reports?.data?.docs?.map((report, idx) => {
+
                   return (
                     <tr
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
@@ -268,7 +274,34 @@ const ReportManager = () => {
 
                       <td>{getformatDateTime(report?.checked_out)}</td>
                       <td>{report?.paid_amount}</td>
-                      <td className={`space-x-1.5`}></td>
+                      <td className={`space-x-1.5`}>
+                        {/* <button><LuPrinter /></button> */}
+                        <ReactToPrint
+                          trigger={() => (
+                            <button
+                            className="bg-green-slimy text-white px-2 rounded-md py-2"
+                          >
+                            <FaPrint className="inline" /> Print
+                          </button>
+                          )}
+                          content={() => componentRef.current}
+                        />
+                        <div style={{ display: "none" }}>
+                          <div 
+                          ref={componentRef}
+                          >
+                            <ReportManagerPrint
+                              // pBill={pBill}
+                              // colAmount={colAmount}
+                              // data={data}
+                              // paymentList={paymentList}
+                              // isHotelSuccess={isHotelSuccess}
+                              // hotelInfo={hotelInfo}
+                              // roomData={roomData}
+                            />
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   );
                 })}

@@ -80,7 +80,7 @@ const ManageInventory = () => {
             ) : null}
           </div>
         </div>
-        <div className={`flex space-x-1.5`}>
+        <div className={`flex space-x-1.5 flex-col md:flex-row gap-4`}>
           <button
             onClick={() => dispatch(resetInv())}
             type={`button`}

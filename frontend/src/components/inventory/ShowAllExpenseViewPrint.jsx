@@ -51,7 +51,8 @@ const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
                     className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                   >
                     <th>{++idx}</th>
-                    <td>{getformatDateTime(itemExpense?.date)}</td>
+                    {/* <td>{getformatDateTime(itemExpense?.date)}</td> */}
+                    <td>{itemExpense?.date && new Date(itemExpense.date).toLocaleDateString()}</td>
                     <td>{item?.name}</td>
                     <td>{item?.quantity}</td>
                     <td>{item?.description}</td>
@@ -79,14 +80,23 @@ const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
               })}
             </tbody>
           </table>
-          <div className={`flex justify-end mr-14   md:ms-[20rem] mt-4 gap-2`}>
+          {/* <div className={`flex justify-end mr-10 md:ms-[20rem] mt-4 gap-2`}>
             <h1>Grand Total :</h1>
             <div>
               <FaRupeeSign className="inline" />
 
               <span>{totalItemsAmount}</span>
             </div>
-          </div>
+          </div> */}
+<div className="flex justify-end items-center  md:ms-[20rem] mt-4 mr-[10rem]">
+ <div>
+ <h1 className="text-xl font-bold">Grand Total :</h1>
+ </div>
+  <div className="flex items-center gap-2">
+    <FaRupeeSign className="" />
+    <span>{totalItemsAmount}</span>
+  </div>
+</div>
         </div>
       </div>
       <div>
