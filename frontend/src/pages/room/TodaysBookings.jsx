@@ -84,7 +84,7 @@ const TodayBookings = () => {
         <div className={`flex flex-col md:flex-row gap-4`}>
           <div className={`relative sm:min-w-[20rem]`}>
             <input
-              type="text"
+              type="number"
               placeholder="Search by phone number..."
               name="search"
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"

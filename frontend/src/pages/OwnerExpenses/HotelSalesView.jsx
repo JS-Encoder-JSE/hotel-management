@@ -83,7 +83,7 @@ console.log(orderedDataByDate,"hotel")
                       values={orderedDataByDate?.data?.docs}
                         header={{
                           title: "DAK Hospitality LTD",
-                          name: "Today's Sales ",
+                          name: "Hotel Sales Information ",
                         }}
                       />
                     }

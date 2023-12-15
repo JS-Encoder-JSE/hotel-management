@@ -27,7 +27,7 @@ const ManageBooking = () => {
 
   const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
-    search: search,
+    search: formik.values.search,
     page: currentPage,
     filter: "Active",
   });
@@ -36,10 +36,11 @@ const ManageBooking = () => {
     if (e.key === "Enter" || e.keyCode === 13) {
       formik.handleSubmit();
     }
-    if (formik.values.search.length === 0) {
-      formik.handleSubmit();
-    }
+    // if (formik.values.search.length === 0) {
+    //   formik.handleSubmit();
+    // }
   };
+
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
@@ -75,7 +76,7 @@ const ManageBooking = () => {
           </button>
           <div className={`relative sm:min-w-[20rem]`}>
             <input
-              type="text"
+              type="number"
               placeholder="Search by phone number..."
               name="search"
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"

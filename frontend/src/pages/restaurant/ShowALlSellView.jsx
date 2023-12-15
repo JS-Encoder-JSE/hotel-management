@@ -100,7 +100,7 @@ const ShowALlSellView = () => {
                   values={currentItems}
                   header={{
                     title: "DAK Hospitality LTD",
-                    name: "Today's Sales ",
+                    name: "All Order Information ",
                   }}
                 />
               }
