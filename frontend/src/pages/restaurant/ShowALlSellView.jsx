@@ -47,6 +47,7 @@ const ShowALlSellView = () => {
     const todayItems = orderedDataByDate?.data?.map((obj) => obj?.items).flat();
     setTodayItem(todayItems);
   }, [orderedDataByDate]);
+  console.log("orderedDataByDate",orderedDataByDate)
 
   // pagination setup for today's expenses
   const itemsPerPage = 10;
@@ -63,6 +64,7 @@ const ShowALlSellView = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
   const currentItems = todayItem?.slice(indexOfFirstItem, indexOfLastItem);
+  console.log("todayItem",todayItem)
 
   const handleScrollToTop = () => {
     // Scroll to the top of the page
@@ -77,6 +79,7 @@ const ShowALlSellView = () => {
     setPdf(currentItems);
   }, [currentItems]);
 
+  console.log("currentItems",currentItems);
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between`}>
@@ -92,7 +95,8 @@ const ShowALlSellView = () => {
             <PDFDownloadLink
               document={
                 <RestaurantSalesHistory
-                  date={currentItems}
+                  date={dateParam}
+                  
                   values={currentItems}
                   header={{
                     title: "DAK Hospitality LTD",
@@ -111,7 +115,7 @@ const ShowALlSellView = () => {
         </div>
       </div>
       <div>
-        <h1 className="text-center text-2xl bg-green-slimy w-72 mx-auto text-white p-1 rounded-md"> All Order Information</h1>
+        <h1 className="text-center text-2xl bg-green-slimy w-[17rem] mx-auto text-white p-1 rounded-md"> All Order Information</h1>
       </div>
       <div className="overflow-x-auto">
         <table className="table">
