@@ -63,15 +63,17 @@ const FoodCheckout = () => {
     }, 0);
     setCheckoutLoading(true);
     const checkoutForTable = {
-      paid_amount: finalTotal,
-      items: orderData.data.items,
-      order_status: "CheckedOut",
-      current_order: false,
-      total_price: grandTotal,
-      unpaid_amount: 0,
-      payment_status: "Paid",
-      grand_total: finalTotal,
-      tax: taxPercentage,
+      updateData: {
+        paid_amount: finalTotal,
+        items: orderData.data.items,
+        order_status: "CheckedOut",
+        current_order: false,
+        total_price: grandTotal,
+        unpaid_amount: 0,
+        payment_status: "Paid",
+        grand_total: finalTotal,
+        tax: taxPercentage,
+      },
     };
     const updateForRoom = {
       updateData: {
@@ -124,11 +126,11 @@ const FoodCheckout = () => {
           <FaArrowLeft />
         </span>
       </div>
-     <div>
-     <h3 className="text-2xl font-semibold text-center bg-green-slimy text-white py-2 max-w-[20rem] mx-auto rounded-lg">
-        {path.includes("orderDetails") ? "Order details" : "Checkout"}
-      </h3>
-     </div>
+      <div>
+        <h3 className="text-2xl font-semibold text-center bg-green-slimy text-white py-2 max-w-[20rem] mx-auto rounded-lg">
+          {path.includes("orderDetails") ? "Order details" : "Checkout"}
+        </h3>
+      </div>
       <hr />
       <div>
         <div className={`flex items-center gap-3 `}>
