@@ -35,57 +35,57 @@ const ManageSingleRoom = () => {
 
               {/* Room Table */}
               <div className={`mt-4`}>
-                <div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-500 ">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem]  px-2 border-t border-l border-r border-gray-500 ">
                   <h6>Category </h6>
-                  <h6 className=" border-l px-2  border-gray-600">
+                  <h6 className=" border-l px-2 border-gray-600">
                     {room?.data?.category}
                   </h6>
                 </div>
-                <div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem] px-2 border-t border-l border-r border-gray-600">
                   <h6>Type </h6>
                   <h6 className="border-l px-2 border-gray-600">
                     {room?.data?.type}
                   </h6>
                 </div>
 
-                <div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem] px-2 border-t border-l border-r border-gray-600">
                   <h6 className="">Capacity </h6>
                   <h6 className="border-l px-2 border-gray-600">
                     {room?.data?.capacity}
                   </h6>
                 </div>
-                <div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem] px-2 border-t border-l border-r border-gray-600">
                   <h6 className="">Price </h6>
                   <h6 className="border-l px-2 border-gray-600">
                     {room?.data?.price}
                   </h6>
                 </div>
-                <div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem] px-2 border-t border-l border-r border-gray-600">
                   <h6 className="">Ac </h6>
                   <h6 className="border-l px-2 border-gray-600">
                     {room?.data?.air_conditioned ? "Yes" : "No"}
                   </h6>
                 </div>
-                <div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem] px-2 border-t border-l border-r border-gray-600">
                   <h6 className="">Bed Size </h6>
                   <h6 className="border-l px-2 border-gray-600">
                     {room?.data?.bedSize}
                   </h6>
                 </div>
-                <div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem] px-2 border-t border-l border-r border-gray-600">
                   <h6 className="">Floor Number </h6>
                   <h6 className="border-l px-2 border-gray-600">
                     {room?.data?.floorNumber}
                   </h6>
                 </div>
-                <div className="grid grid-cols-2 w-80  px-2 border-t border-l border-r border-gray-600">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem] px-2 border-t border-l border-r border-gray-600">
                   <h6 className="">Room Number </h6>
                   <h6 className=" border-l px-2 border-gray-600">
                     {" "}
                     {room?.data?.roomNumber}
                   </h6>
                 </div>
-                <div className="grid grid-cols-2 w-80  px-2 border-b border-t border-l border-r border-gray-600">
+                <div className="grid grid-cols-2 w-[17rem] md:w-[18rem] px-2 border-b border-t border-l border-r border-gray-600">
                   <h6 className="">Status </h6>
                   <h6 className=" border-l px-2 border-gray-600">
                     {room?.data?.status}
