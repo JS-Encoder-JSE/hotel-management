@@ -27,7 +27,7 @@ const PaymentSection = ({
   addCheckOutLoading,
   totalPayableAmount,
   componentRef,
-  trxError
+  trxError,
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -182,6 +182,7 @@ const PaymentSection = ({
         </div>
 
         <button
+          disabled={addCheckOutLoading}
           type={`button`}
           onClick={() => formik.handleSubmit()}
           className={`btn btn-md bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case 

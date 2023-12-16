@@ -9,6 +9,7 @@ const RefundPaymentModal = ({
   totalRefund,
   handlePrintOpen,
   saveCheckoutDataObj,
+  setCheckOutLoading,
 }) => {
   const { refundAmount, additionalCharge, serviceCharge, texAmount } =
     useSelector((state) => state.checkoutInfoCalSlice);
@@ -30,6 +31,7 @@ const RefundPaymentModal = ({
           data={data}
           closeRef={closeRef}
           saveCheckoutDataObj={saveCheckoutDataObj}
+          setCheckOutLoading={setCheckOutLoading}
         />
       </div>
     </>

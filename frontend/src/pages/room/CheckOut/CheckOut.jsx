@@ -52,25 +52,28 @@ const CheckOut = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomFromQuery = searchParams.get("room");
-  const [addCheckout, { isLoading: addCheckOutLoading }] =
-    useAddCheckoutMutation();
+  const [addCheckout] = useAddCheckoutMutation();
   const [addCheckoutData, { isLoading: addCheckoutDataLoading }] =
     useAddCheckoutDataMutation();
   const [showRooms, setShowRooms] = useState(false);
   const [totalBilling, setTotalBilling] = useState(0);
   const [fetch, setFetch] = useState(null);
   const [pBill, setPBill] = useState(0);
-
+  const [addCheckOutLoading, setCheckOutLoading] = useState(false);
   const [saveCheckoutDataObj, setSaveCheckoutDataOj] = useState({});
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
   const { bookingId } = useSelector((store) => store.addOrderSlice);
   const componentRef = useRef();
 
   // set errormessage for trx
   const [trxError, setTrxError] = useState(false);
 
-  console.log(checkout?.data?.room_bookings[0].checkin_date);
   const checkin_date = checkout?.data?.room_bookings[0].checkin_date;
 
   const {
@@ -85,6 +88,7 @@ const CheckOut = () => {
     calculateAmountAfterDis,
     calculateBalance,
     calculateCollectedAmount,
+    selectedRoomAmountAfterDiscount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalRefund =
     checkout?.data?.booking_info?.room_ids?.length === 1 && calculateBalance > 0
@@ -147,6 +151,7 @@ const CheckOut = () => {
       roomNumber: "",
     },
     onSubmit: async () => {
+      setCheckOutLoading(true);
       const room_numbers = checkout?.data?.room_bookings?.map(
         (i) => i?.room_id?.roomNumber
       );
@@ -216,7 +221,7 @@ const CheckOut = () => {
             : "Offline",
           total_rent: calculateTotalRent,
           room_discount: room_discount,
-          total_rent_after_dis: calculateAmountAfterDis,
+          total_rent_after_dis: selectedRoomAmountAfterDiscount,
           total_posted_bills: total_posted_bills,
           total_tax: checkout?.data?.booking_info?.total_tax + texAmount,
           total_additional_charges:
@@ -273,6 +278,7 @@ const CheckOut = () => {
         });
         if (response?.error) {
           toast.error(response.error.data.message);
+          setCheckOutLoading(false);
         } else {
           setTrxError(false);
           toast.success("Checkout Successful");
@@ -283,12 +289,12 @@ const CheckOut = () => {
           ) {
             window.refundPayment.showModal();
           } else {
-            handlePrint();
-
             const response = addCheckoutData(saveCheckoutInfoObj);
             if (response?.error) {
               toast.error(response.error.data.message);
             } else {
+              setCheckOutLoading(false);
+              handlePrint();
               // toast.success(response?.success?.data.message);
             }
           }
@@ -296,12 +302,6 @@ const CheckOut = () => {
       }
     },
   });
-
-  const {
-    data: hotelInfo,
-    isLoading: isHotelLoading,
-    isSuccess: isHotelSuccess,
-  } = useGetHotelByManagerIdQuery(user?._id);
 
   const { data: rooms } = useRoomsQuery({
     cp: "0",
@@ -518,6 +518,7 @@ const CheckOut = () => {
                 data={checkout?.data?.booking_info}
                 handlePrintOpen={handlePrint}
                 saveCheckoutDataObj={saveCheckoutDataObj}
+                setCheckOutLoading={setCheckOutLoading}
               />
             </Modal>
           </div>

@@ -31,7 +31,6 @@ const TodaysCheckinList = () => {
 
   const [searchParams] = useSearchParams();
   const managerId = searchParams.get("manager_id");
-  console.log(managerId);
 
   const navigate = useNavigate();
 
@@ -70,7 +69,6 @@ const TodaysCheckinList = () => {
 
   // refetch()
   const path = useLocation();
-  console.log(path.pathname);
   useEffect(() => {
     refetch();
   }, [path.pathname]);

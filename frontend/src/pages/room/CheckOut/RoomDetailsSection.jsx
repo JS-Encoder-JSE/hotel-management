@@ -5,7 +5,10 @@ import {
   setBookingId,
 } from "../../../redux/add-order/addOrderSlice";
 import { getDiscountAmount } from "../../../utils/utils";
-import { updateSubTotal } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
+import {
+  setSelectedRoomAmountAfterDiscount,
+  updateSubTotal,
+} from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 
 const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
   // console.log(bookingInfo)
@@ -18,14 +21,13 @@ const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
 
   const { subTotals } = billingState;
 
-
   // const discountPerRoom = getDiscountAmount(
   //   roomData?.total_room_rent,
   //   bookingInfo?.room_discount
   // );
   const amountAfterDis = Math.ceil(totalRoomRent - discountPerRoom);
 
-    dispatch(updateSubTotal(amountAfterDis))
+  dispatch(updateSubTotal(amountAfterDis));
 
   // console.log(roomData?.total_room_rent, discountPerRoom);
   useEffect(() => {
@@ -33,9 +35,11 @@ const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
     dispatch(setBookingId(roomData?._id));
   }, [data]);
 
-    dispatch(setAmountAfterDis(amountAfterDis));
- 
+  dispatch(setAmountAfterDis(amountAfterDis));
 
+  useEffect(() => {
+    dispatch(setSelectedRoomAmountAfterDiscount(amountAfterDis));
+  }, [amountAfterDis]);
   // const afterDiscountAm = roomData?.total_room_rent - discountAmount
   // console.log(discountAmount,"disco",afterDiscountAm)
 

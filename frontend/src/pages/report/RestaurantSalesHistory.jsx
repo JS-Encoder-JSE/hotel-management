@@ -6,7 +6,6 @@ import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../
 const RestaurantSalesHistory = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
     // console.log("values",values)
-    console.log("date",date)
     const desiredHeaders = ["Serial No","date", "item", "serveyor_quantity", "quantity", "price"];
     const tableHeaders =["Serial No","Item","Surveyor Quantity", "Quantity", "Price"]
     const jsEncoderTextStyle = {

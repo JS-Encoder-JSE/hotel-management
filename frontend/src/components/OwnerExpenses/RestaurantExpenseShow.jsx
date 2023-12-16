@@ -92,8 +92,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     limit: formik.values.entries,
   });
 
-  console.log(filteredExpenses)
-
   const {
     data: RestaurantExpenses,
     isLoading,
@@ -104,7 +102,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });
-console.log('RestaurantExpenses',RestaurantExpenses);
   useEffect(() => {
     if (filteredExpenses) setPageCount(filteredExpenses?.totalPages);
   }, [filteredExpenses]);

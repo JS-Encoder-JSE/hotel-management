@@ -186,7 +186,6 @@ const ShowAllExpense = () => {
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  console.log("resExpenses", resExpenses);
   return (
     <div className={`space-y-5`}>
       {resExpenses && filteredExpenses && (

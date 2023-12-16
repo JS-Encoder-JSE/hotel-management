@@ -4,7 +4,6 @@ import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI";
 import { getFormateDateAndTime } from "../../utils/timeZone";
 
 const ReportManagerPrint = ({ data, hotelInfo }) => {
-  console.log({ hotelInfo });
   return (
     <div>
       <div>

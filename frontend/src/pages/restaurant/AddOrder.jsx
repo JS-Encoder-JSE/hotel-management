@@ -76,7 +76,6 @@ const AddOrder = () => {
     limit: 1000000,
   });
 
-  console.log(rooms);
 
   const { data: tables } = useGetTablesQuery();
   const transformedRooms =

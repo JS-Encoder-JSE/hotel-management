@@ -15,7 +15,7 @@ const OwnerExpeseAnalytics = ({
   dashboardData,
   dummyData,
 }) => {
-  console.log(dashboardData);
+
   const { pathname } = useLocation();
   return (
     <div>

@@ -27,9 +27,6 @@ const RestaurantExpense = () => {
     }
   };
 
-  console.log("selectedHotel1", selectedHotel1);
-  console.log("hotels", hotels);
-
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,

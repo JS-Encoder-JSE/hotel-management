@@ -19,7 +19,6 @@ const PaymentMethod = ({
 }) => {
 
 const [isRequired,setRequired]=useState("")
-console.log(trxError)
 //   // form validation
 // const validationSchema = yup.object({
 //   room_arr: yup.array().required("Room IDs are required"),
@@ -71,7 +70,6 @@ console.log(trxError)
     initialValues: paymentList,
     validationSchema: yup.array().of(paymentSchema),
   });
-console.log(paymentList)
   return (
     <div className={`mt-5 space-y-3`}>
       {paymentList.map((elem, idx) => {

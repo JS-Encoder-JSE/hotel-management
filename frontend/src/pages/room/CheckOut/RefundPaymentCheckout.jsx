@@ -27,9 +27,9 @@ const RefundPaymentCheckout = ({
   handlePrintOpen,
   closeRef,
   saveCheckoutDataObj,
+  setCheckOutLoading
 }) => {
   // console.log({ totalRefundFromRefund: totalRefund });
-  console.log(saveCheckoutDataObj);
   const [cashback] = useCashbackMutation();
   const [addCheckoutData, { isLoading: addCheckoutDataLoading }] =
     useAddCheckoutDataMutation();
@@ -53,20 +53,22 @@ const RefundPaymentCheckout = ({
       });
       if (response?.error) {
         toast.error(response.error.data.message);
+        setCheckOutLoading(false)
       } else {
         toast.success("Refund Successful");
         closeRef.current.click();
-        handlePrintOpen();
+        
         const response = addCheckoutData({
           ...saveCheckoutDataObj,
           refunded_amount: totalRefund,
         });
         if (response?.error) {
           toast.error(response.error.data.message);
+          setCheckOutLoading(false)
         } else {
-          // toast.success(response?.success?.data.message);
+          setCheckOutLoading(false)
+          handlePrintOpen();
         }
-        // navigate("/dashboard/checkout");
       }
     },
   });

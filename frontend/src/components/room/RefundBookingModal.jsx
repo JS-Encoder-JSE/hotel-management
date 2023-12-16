@@ -14,7 +14,7 @@ import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
 import RefundPaymentSection from "./RefundPaymentSection.jsx";
 
 const RefundBookingModal = ({bookingId,paidAmt}) => {
-  console.log(paidAmt)
+
   const closeRef= useRef()
   return (
     <>

@@ -58,7 +58,7 @@ const AddEmployee = () => {
   const [isLoading, setLoading] = useState(false);
   const [upload, { isError }] = useUploadMutation();
   const [uploadSingle, { isError: singleError }] = useUploadSingleMutation();
-  console.log({ singleError, isError });
+
   const [addSubAdmin] = useAddSubAdminMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [showPass, setShowPass] = useState(false);

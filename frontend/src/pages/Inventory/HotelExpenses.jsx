@@ -198,7 +198,6 @@ const currentItems = hotelExpenses?.docs[0]?.items.slice(
   indexOfLastItem
 );
 
-console.log(hotelExpenses)
 
 
 const handleScrollToTop = () => {

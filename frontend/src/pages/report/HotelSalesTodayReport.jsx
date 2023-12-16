@@ -9,7 +9,6 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
 
 
     // SL	Date	Items Name	Description	Quantity	Price	Action
-    console.log("values",values)
     const desiredHeaders = ["Serial No", "guestName","checked_in","checked_out","paid_amount","payable_amount","room_numbers","unpaid_amount"
    ];
 

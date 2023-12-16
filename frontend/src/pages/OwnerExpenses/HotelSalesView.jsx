@@ -24,7 +24,6 @@ const HotelSalesView = () => {
 
   const dateParam = searchParams.get('date');
   const hotelId = searchParams.get("hotel")
-console.log(hotelId,dateParam)
 
 
 
@@ -35,7 +34,6 @@ console.log(hotelId,dateParam)
     hotelId:hotelId,
   });
 
-console.log(orderedDataByDate,"hotel")
 
 
 
@@ -52,7 +50,6 @@ console.log(orderedDataByDate,"hotel")
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("PDF Data:", orderedDataByDate?.data);
     setPdf(orderedDataByDate?.data.docs);
   }, [orderedDataByDate]);
 

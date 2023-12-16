@@ -58,7 +58,6 @@ const ShowAllExpenseView = () => {
 
   const [editItemData, setEditItemData] = useState(null);
 
-  console.log({ editItemData });
   const [index, setIndex] = useState();
 
   const currentDate = new Date();

@@ -30,8 +30,6 @@ const HotelSales = () => {
     }
   };
 
-  console.log(hotels);
-
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?.manager_acc?._id,
     hotelId: hotel?._id,

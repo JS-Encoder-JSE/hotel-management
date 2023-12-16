@@ -99,7 +99,6 @@ const RestaurantSalesShow = ({ hotelId,managerID }) => {
     filter:"restaurant"
   });
 
-  console.log("restaurantSalesHistory",restaurantSalesHistory)
 
 
 
@@ -114,7 +113,6 @@ const RestaurantSalesShow = ({ hotelId,managerID }) => {
 // Use flatMap to extract the items arrays into one array
 const allItemsArray = arrayOfObjects.flatMap((obj) => obj.items || []);
 
-console.log(allItemsArray);
 
 
 
@@ -145,10 +143,8 @@ console.log(allItemsArray);
   );
 
 
-console.log(currentItems)
 
 useEffect(() => {
-  console.log("PDF Data:", currentItems);
   setPdf(currentItems);
 }, [currentItems]);
 

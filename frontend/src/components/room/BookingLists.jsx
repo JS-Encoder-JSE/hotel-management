@@ -135,7 +135,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
           </thead>
           <tbody>
             {bookingList?.data.docs.map((item, idx) => {
-              console.log(item);
+
               return (
                 <tr
                   className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}

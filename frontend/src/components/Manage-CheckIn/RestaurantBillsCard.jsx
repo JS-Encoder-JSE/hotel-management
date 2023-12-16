@@ -20,7 +20,6 @@ const RestaurantBillsCard = ({ food_bills }) => {
     // Concatenate the items array of each bill to the accumulator array
     return accumulator.concat(bill.items);
   }, []);
-  console.log(allItems);
   const totalPrice = allItems?.reduce((total, item) => {
     // Add the price of each item to the total
     return total + item.price;

@@ -47,7 +47,6 @@ const ShowALlSellView = () => {
     const todayItems = orderedDataByDate?.data?.map((obj) => obj?.items).flat();
     setTodayItem(todayItems);
   }, [orderedDataByDate]);
-  console.log("orderedDataByDate",orderedDataByDate)
 
   // pagination setup for today's expenses
   const itemsPerPage = 10;
@@ -64,7 +63,6 @@ const ShowALlSellView = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
   const currentItems = todayItem?.slice(indexOfFirstItem, indexOfLastItem);
-  console.log("todayItem",todayItem)
 
   const handleScrollToTop = () => {
     // Scroll to the top of the page
@@ -79,7 +77,6 @@ const ShowALlSellView = () => {
     setPdf(currentItems);
   }, [currentItems]);
 
-  console.log("currentItems",currentItems);
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between`}>

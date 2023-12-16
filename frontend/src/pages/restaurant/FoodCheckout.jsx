@@ -30,7 +30,6 @@ const FoodCheckout = () => {
     (accumulator, item) => accumulator + item.total,
     0
   );
-  console.log(grandTotal);
   const grand_total = orderData?.data?.grand_total;
 
   const taxAmount = (grandTotal * taxPercentage) / 100;

@@ -29,7 +29,6 @@ const PaymentMethodCard = (booking) => {
   const { id } = useParams();
   const [hotelLimit, setHotelLimit] = useState(0);
   const { user } = useSelector((state) => state.authSlice);
-  console.log(booking);
   const [makePayment] = useMakePaymentMutation();
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -52,7 +51,6 @@ const PaymentMethodCard = (booking) => {
         tran_id: values.trxID,
         remark: "Advance payment",
       });
-      console.log("res", response);
       if (response?.error) {
         toast.error(response.error.data.message);
       } else {

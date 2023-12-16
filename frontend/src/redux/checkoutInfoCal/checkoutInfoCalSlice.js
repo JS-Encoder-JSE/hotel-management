@@ -23,6 +23,7 @@ const initialState = {
   calculateAmountAfterDis: 0,
   roomInfo: {},
   calculateCollectedAmount: 0,
+  selectedRoomAmountAfterDiscount: 0,
 };
 
 const checkoutInfoCalSlice = createSlice({
@@ -86,6 +87,9 @@ const checkoutInfoCalSlice = createSlice({
     setCalculateAmountAfterDis: (state, action) => {
       state.calculateAmountAfterDis = action.payload;
     },
+    setSelectedRoomAmountAfterDiscount: (state, action) => {
+      state.selectedRoomAmountAfterDiscount = action.payload;
+    },
     setCalculateTotalRent: (state, action) => {
       state.calculateTotalRent = action.payload;
     },
@@ -121,6 +125,7 @@ export const {
   setCalculateNOD,
   clearCheckoutCalSlice,
   setCalculateAmountAfterDis,
+  setSelectedRoomAmountAfterDiscount,
   setCalculateTotalRent,
   setCalculateBalance,
   setCalculateCollectedAmount,

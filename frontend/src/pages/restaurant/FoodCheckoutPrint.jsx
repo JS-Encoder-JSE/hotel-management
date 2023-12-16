@@ -4,7 +4,6 @@ import logo from "../../assets/logo.png";
 import { versionControl } from "../../utils/utils";
 
 const FoodCheckoutPrint = ({ orderData, finalTotal }) => {
-  console.log(finalTotal);
 
   const grandTotal = orderData?.data?.items?.reduce(
     (accumulator, item) => accumulator + item.total,

@@ -76,7 +76,6 @@ const TodayCheckout = () => {
 
   // refetch()
   const path = useLocation();
-  console.log(path.pathname);
   useEffect(() => {
     refetch();
   }, [path.pathname]);

@@ -19,7 +19,7 @@ const validationSchema = yup.object({
 
 const RefundPaymentSection = ({ bookingId, closeRef, paidAmt }) => {
   const [cancelBooking, { isLoading }] = useCancelBookingMutation();
-  console.log(paidAmt, "pp");
+
 
   const formik = useFormik({
     initialValues: {
@@ -29,7 +29,6 @@ const RefundPaymentSection = ({ bookingId, closeRef, paidAmt }) => {
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
-      console.log(values);
       const response = await cancelBooking({
         id: bookingId,
         data: {

@@ -48,7 +48,6 @@ const HotelSalesShow = ({managerId,hotelId}) => {
     fromDate: "",
     toDate: "",
   });
-console.log(searchParams)
 
   const formik = useFormik({
     initialValues: {
@@ -91,7 +90,6 @@ const {data:hotelTodaySales}=useGetReportsByDateQuery({
   hotelId: hotelId
 })
 
-console.log(hotelTodaySales)
 
 
 useEffect(() => {
@@ -130,10 +128,8 @@ useEffect(() => {
     filter:"hotel"
   });
 
-  console.log("hotelSalesHistory",hotelSalesHistory)
 
   useEffect(() => {
-    console.log("PDF Data:", hotelTodaySales?.data);
     setPdf(hotelTodaySales?.data.docs);
   }, [hotelTodaySales]);
 
@@ -141,9 +137,6 @@ useEffect(() => {
   // useEffect(() => {
   //   if (hotelSalesHistory) setCurrentPage(hotelSalesHistory?.data?.totalPages);
   // }, [hotelSalesHistory]);
-  
-  console.log(hotelSalesHistory?.data?.totalPages)
-  console.log(hotelTodaySales)
 
 
   return (
