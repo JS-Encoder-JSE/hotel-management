@@ -1,18 +1,42 @@
 import React from "react";
-import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
-import logo from "../../assets/logo.png"
-import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../utils/utils";
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
+import logo from "../../assets/logo.png";
+import {
+  getFormateDateAndTime,
+  getformatDateTime,
+  versionControl,
+} from "../../utils/utils";
 
-const RestaurantSalesHistory = ({ values, header,date }) => {
-    // SL	Date	Items Name	Description	Quantity	Price	Action
-    // console.log("values",values)
-    const desiredHeaders = ["Serial No","date", "item", "serveyor_quantity", "quantity", "price"];
-    const tableHeaders =["Serial No","Item","Surveyor Quantity", "Quantity", "Price"]
-    const jsEncoderTextStyle = {
-      color: "green",
-      fontWeight: "bold",
-    };
-  
+const RestaurantSalesHistory = ({ values, header, date }) => {
+  // SL	Date	Items Name	Description	Quantity	Price	Action
+  // console.log("values",values)
+  const desiredHeaders = [
+    "Serial No",
+    "date",
+    "item",
+    "serveyor_quantity",
+    "quantity",
+    "price",
+  ];
+  const tableHeaders = [
+    "Serial No",
+    "Item",
+    "Surveyor Quantity",
+    "Quantity",
+    "Price",
+  ];
+  const jsEncoderTextStyle = {
+    color: "green",
+    fontWeight: "bold",
+  };
+
   const currentYear = new Date().getFullYear();
 
   const styles = StyleSheet.create({
@@ -24,7 +48,7 @@ const RestaurantSalesHistory = ({ values, header,date }) => {
     table: {
       display: "table",
       width: "100%",
-      borderStyle: "solid", 
+      borderStyle: "solid",
       borderWidth: 1,
       borderColor: "#e8e8e8",
     },
@@ -63,11 +87,14 @@ const RestaurantSalesHistory = ({ values, header,date }) => {
             alignItems: "center",
           }}
         >
-           <Image src={logo} style={{
-              width:"54px",
-              height:"54px",
-              marginBottom:"10px"
-            }}/>
+          <Image
+            src={logo}
+            style={{
+              width: "54px",
+              height: "54px",
+              marginBottom: "10px",
+            }}
+          />
           <View>
             <Text>{header?.title}</Text>
             <Text
@@ -98,23 +125,29 @@ const RestaurantSalesHistory = ({ values, header,date }) => {
               </Text>
             ))}
           </View>
-          { values && values.map((item, rowIndex) => (
-            <View key={rowIndex} style={styles.tableRow}>
-              {desiredHeaders.map((key, cellIndex) => (
-                <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
-                  {key === "Serial No"
-                    ? rowIndex + 1
-                    : key === "date"
-                    ?new Date(date).toLocaleDateString() // Use the date prop here
-                    : item[key]}
-                    
-                </Text>
-              ))}
-            </View>
-          ))}
+          {values &&
+            values.map((item, rowIndex) => (
+              <View key={rowIndex} style={styles.tableRow}>
+                {desiredHeaders.map((key, cellIndex) => (
+                  <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
+                    {key === "Serial No"
+                      ? rowIndex + 1
+                      : key === "date"
+                      ? date
+                        ? new Date(date).toLocaleDateString()
+                        : new Date(item[key]).toLocaleDateString() // Use the date prop here
+                      : item[key]}
+                  </Text>
+                ))}
+              </View>
+            ))}
         </View>
         <View style={styles.footer}>
-          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
+          <Text>
+            Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>.
+            Copyright ©{currentYear}. All rights reserved. Version{" "}
+            {versionControl}
+          </Text>
         </View>
       </Page>
     </Document>
