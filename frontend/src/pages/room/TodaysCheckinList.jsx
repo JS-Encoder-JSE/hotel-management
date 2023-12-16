@@ -20,14 +20,17 @@ import {
 import CheckinList from "../../components/room/CheckinList.jsx";
 import { MdOutlineHail } from "react-icons/md";
 import ReactPaginate from "react-paginate";
-import { checkinListFromDate, checkinListoDate } from "../../utils/utils.js";
+import {
+  checkinListFromDate,
+  checkinListoDate,
+  getFormateDateAndTime,
+} from "../../utils/utils.js";
 
 const TodaysCheckinList = () => {
   const [search, setSearch] = useState("");
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   const [searchParams] = useSearchParams();
   const managerId = searchParams.get("manager_id");
@@ -86,19 +89,19 @@ const TodaysCheckinList = () => {
       </h1>
       <div>
         {/* <Link to={`/dashboard `}> */}
-          <button
-            type="button"
-            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-            onClick={() => navigate(-1)}
-          >
-            <dfn>
-              <abbr title="Back">
-                <FaArrowLeft />
-              </abbr>
-            </dfn>
+        <button
+          type="button"
+          className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          onClick={() => navigate(-1)}
+        >
+          <dfn>
+            <abbr title="Back">
+              <FaArrowLeft />
+            </abbr>
+          </dfn>
 
-            <span className="tracking-wider font-semibold text-[1rem]"></span>
-          </button>
+          <span className="tracking-wider font-semibold text-[1rem]"></span>
+        </button>
         {/* </Link> */}
       </div>
       <div className="flex justify-end">
@@ -170,8 +173,8 @@ const TodaysCheckinList = () => {
                         <td>{item?.mobileNumber}</td>
                         {/* <td>{item?.paid_amount}</td> */}
                         {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
-                        <td>{new Date(item?.from).toLocaleDateString()}</td>
-                        <td>{new Date(item?.to).toLocaleDateString()}</td>
+                        <td>{getFormateDateAndTime(item?.from)}</td>
+                        <td>{getFormateDateAndTime(item?.to)}</td>
 
                         {/* <td className={`flex flex-wrap gap-1.5`}>
                           <span

@@ -13,90 +13,17 @@ import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import { GiDoorHandle } from "react-icons/gi";
 import { FaRegEdit } from "react-icons/fa";
 import { BiSolidDoorOpen } from "react-icons/bi";
+import { getFormateDateAndTime } from "../../utils/utils.js";
 
 const CheckinList = ({ checkinList, page, handlePageClick }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
- 
-  //   const [updateBooking, { isLoading: isCancelledLoading, error }] =
-  //     useUpdateBookingMutation();
-  //   // const [bookingPerPage] = useState(10);
-  //   // const [pageCount, setPageCount] = useState(0);
-  //   const handlePageClick = ({ selected: page }) => {
-  //     setCurrentPage(page);
-  //   };
 
-  //   const handleDelete = (id) => {
-  //     Swal.fire({
-  //       title: "Are you sure?",
-  //       text: "Booking will be Cancel.",
-  //       icon: "warning",
-  //       showCancelButton: true,
-  //       confirmButtonColor: "#35bef0",
-  //       cancelButtonColor: "#d33",
-  //       confirmButtonText: "Yes, Cancel it!",
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         Swal.fire({
-  //           position: "center",
-  //           icon: "success",
-  //           title: "Deleted!",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         }).then(() => {
-  //           updateBooking({ id, data: { status: "Canceled" } });
-  //         });
-  //       }
-  //     });
-  //   };
-
-
-
-
-//   const [updateBooking, { isLoading: isCancelledLoading, error }] =
-//     useUpdateBookingMutation();
-//   // const [bookingPerPage] = useState(10);
-//   // const [pageCount, setPageCount] = useState(0);
-//   const handlePageClick = ({ selected: page }) => {
-//     setCurrentPage(page);
-//   };
-
-//   const handleDelete = (id) => {
-//     Swal.fire({
-//       title: "Are you sure?",
-//       text: "Booking will be Cancel.",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonColor: "#35bef0",
-//       cancelButtonColor: "#d33",
-//       confirmButtonText: "Yes, Cancel it!",
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         Swal.fire({
-//           position: "center",
-//           icon: "success",
-//           title: "Deleted!",
-//           showConfirmButton: false,
-//           timer: 1500,
-//         }).then(() => {
-//           updateBooking({ id, data: { status: "Canceled" } });
-//         });
-//       }
-//     });
-//   };
-
-//   const [editBookedData, setEditBookedData] = useState(null);
-
-//   useEffect(() => {
-//     if (data && modalOpen) {
-//       window.ci_modal.showModal();
-//       setModalOpen(false);
-//     }
-//   }, [modalOpen]);
-if(!checkinList){
-    return <p>Loading</p>
-}
+  console.log({ checkinList });
+  if (!checkinList) {
+    return <p>Loading</p>;
+  }
 
   return (
     <div>
@@ -123,8 +50,8 @@ if(!checkinList){
             </tr>
           </thead>
           <tbody>
-        {checkinList?.map((item,idx)=>{
-            return (
+            {checkinList?.map((item, idx) => {
+              return (
                 <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                   <td>
                     <div className="flex items-center space-x-3">
@@ -140,8 +67,8 @@ if(!checkinList){
                   <td>{item?.mobileNumber}</td>
                   {/* <td>{item?.paid_amount}</td> */}
                   {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
-                  <td>{new Date(item?.from).toLocaleDateString()}</td>
-                  <td>{new Date(item?.to).toLocaleDateString()}</td>
+                  <td>{getFormateDateAndTime(item?.from)}</td>
+                  <td>{getFormateDateAndTime(item?.to)}</td>
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span
@@ -153,7 +80,11 @@ if(!checkinList){
                     </span>
 
                     <Link
-                      onClick={()=> navigate(`/dashboard/checkout?room=${item?.room_id?._id}`)}
+                      onClick={() =>
+                        navigate(
+                          `/dashboard/checkout?room=${item?.room_id?._id}`
+                        )
+                      }
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                     >
                       <MdOutlineHail />

@@ -51,7 +51,7 @@ export const getformatDateTime = (date) => {
 
 export const convertedFromDate = (date) => {
   const fromDate = new Date(date);
-  fromDate.setHours(12, 0, 0, 0);
+  fromDate.setHours(18, 0, 0, 0);
   const isoFromDate = fromDate.toISOString();
   // Check if the selected time is before 11:59 am
   if (
@@ -62,9 +62,9 @@ export const convertedFromDate = (date) => {
   ) {
     // If before 6 am, set check-in date to the previous day at 12:00 pm
     const previousDay = addDays(date, -1);
-    previousDay.setHours(12, 0, 0, 0);
-    const isoFromDate = previousDay.toISOString();
-    return isoFromDate;
+    previousDay.setHours(18, 0, 0, 0);
+    const updatedFromDate = previousDay.toISOString();
+    return updatedFromDate;
   } else {
     // Otherwise, set check-in date to the selected date at 12:00 pm
     return isoFromDate;
@@ -72,7 +72,7 @@ export const convertedFromDate = (date) => {
 };
 export const convertedToDate = (date) => {
   const newDate = new Date(date);
-  newDate.setHours(11, 59, 0, 0);
+  newDate.setHours(17, 59, 0, 0);
   const isoToDate = newDate.toISOString();
   return isoToDate;
 };

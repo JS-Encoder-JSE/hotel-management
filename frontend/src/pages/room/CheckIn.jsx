@@ -21,6 +21,7 @@ import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import {
   fromDateIsoConverter,
+  getFormateDateAndTime,
   getNumberOfDays,
   toDateIsoConverter,
 } from "../../utils/utils.js";
@@ -131,7 +132,6 @@ const CheckIn = () => {
         from: convertedFromDate(values.from),
         to: convertedToDate(values.to),
       };
-
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr.map((elem) => elem.value);
@@ -197,7 +197,6 @@ const CheckIn = () => {
           remark: "advancePaymentForCheckIn",
           status: "CheckedIn",
         });
-
         if (response?.error) {
           toast.error(response.error.data.message);
         } else {
