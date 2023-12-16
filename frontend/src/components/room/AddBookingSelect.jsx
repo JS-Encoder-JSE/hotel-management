@@ -575,7 +575,7 @@ const AddBookingSelect = ({ room }) => {
           </div>
 
           {/* button */}
-          <div className={`flex justify-between`}>
+          <div className={`flex justify-between col-span-2 mx-auto w-[60%]`}>
             <button
               disabled={isLoading}
               type={"submit"}
