@@ -34,7 +34,7 @@ const expenseSchema = new mongoose.Schema(
       enum: ["restaurant", "hotel"],
     },
     date: {
-      type: String,
+      type: Date,
       required: true,
     },
     items: [itemSchema],

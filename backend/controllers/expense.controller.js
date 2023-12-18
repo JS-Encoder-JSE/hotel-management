@@ -18,10 +18,16 @@ export const addExpense = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     const newDate = new Date(date);
-    const localDate = newDate.toLocaleDateString();
 
     const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = newDate.getFullYear().toString();
+    // Adjust for the local time zone
+    const offset = newDate.getTimezoneOffset();
+    newDate.setMinutes(newDate.getMinutes() - offset);
+    // Set time to midnight
+    newDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const localDate = newDate.toISOString();
 
     const existingExpense = await Expense.findOne({
       date: localDate,
@@ -313,10 +319,17 @@ export const reduceExpense = async (req, res) => {
     await existingExpense.save();
 
     const newDate = new Date(existingExpense.createdAt);
-    const localDate = newDate.toLocaleDateString();
 
     const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = newDate.getFullYear().toString();
+    // Adjust for the local time zone
+    const offset = newDate.getTimezoneOffset();
+    newDate.setMinutes(newDate.getMinutes() - offset);
+    // Set time to midnight
+    newDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+
+    const localDate = newDate.toLocaleDateString();
 
     const existingStaticSubDashData = await StaticSubDashData.findOne({
       user_id: userId,

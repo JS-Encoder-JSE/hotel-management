@@ -42,10 +42,16 @@ export const addBooking = async (req, res) => {
 
     const currentDate = new Date();
     console.log(currentDate);
-    const date = currentDate.toLocaleDateString();
-    console.log(date);
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
+    // Adjust for the local time zone
+    const offset = currentDate.getTimezoneOffset();
+    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    // Set time to midnight
+    currentDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const date = currentDate.toISOString();
+    console.log(date);
 
     let total_rent = 0;
 
@@ -360,10 +366,16 @@ export const cancelBooking = async (req, res) => {
       });
     }
     const currentDate = new Date(booking.createdAt);
-    const date = currentDate.toLocaleDateString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
+    // Adjust for the local time zone
+    const offset = currentDate.getTimezoneOffset();
+    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    // Set time to midnight
+    currentDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const date = currentDate.toISOString();
 
     const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
 
@@ -816,10 +828,16 @@ export const addToCheckin = async (req, res) => {
     } = req.body;
 
     const currentDate = new Date();
-    const date = currentDate.toLocaleDateString();
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
+    // Adjust for the local time zone
+    const offset = currentDate.getTimezoneOffset();
+    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    // Set time to midnight
+    currentDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const date = currentDate.toISOString();
 
     const user = await User.findById(userId);
     if (!user) {

@@ -32,7 +32,15 @@ export const getSubDashboardInfo = async (req, res) => {
   try {
     const userId = req.params.user_id;
     const currentDate = new Date();
-    const date = currentDate.toLocaleDateString();
+
+    const newDate = new Date();
+    // Adjust for the local time zone
+    const offset = newDate.getTimezoneOffset();
+    newDate.setMinutes(newDate.getMinutes() - offset);
+    // Set time to midnight
+    newDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const date = newDate.toISOString();
 
     const permanent_datas = await StaticSubDashData.findOne({
       user_id: userId,
@@ -54,15 +62,15 @@ export const getSubDashboardInfo = async (req, res) => {
       date,
     });
     // Fetch daily datas for the last 7 days
-    const lastWeekStartDateIso = new Date(currentDate);
-    lastWeekStartDateIso.setDate(currentDate.getDate() - 6);
-    
-    console.log(lastWeekStartDateIso);
-    const lastWeekStartDate = lastWeekStartDateIso.toLocaleDateString();
-    console.log(lastWeekStartDate)
+    const lastWeekStartDate = new Date(date);
+    lastWeekStartDate.setDate(currentDate.getDate() - 6);
+
+    console.log(lastWeekStartDate);
+    const lastWeekStartDateIso = lastWeekStartDate.toISOString();
+    console.log(lastWeekStartDate);
     const one_day_datas = await DailySubDashData.find({
       user_id: userId,
-      date: { $gte: lastWeekStartDate, $lte: date },
+      date: { $gte: lastWeekStartDateIso, $lte: date },
     });
 
     // Calculate last_week_expenses as the sum of today_expenses for the last 7 days

@@ -80,7 +80,7 @@ const checkinfoSchema = new mongoose.Schema({
     enum: ["owner", "manager", "admin", "subadmin"],
   },
   date: {
-    type: String,
+    type: Date,
     required: false,
   },
   today_checkin: {
@@ -227,8 +227,15 @@ checkinfoSchema.pre("save", function (next) {
   // Check if date is not provided
   if (!this.date) {
     const currentDate = new Date();
+    // Adjust for the local time zone
+    const offset = currentDate.getTimezoneOffset();
+    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    // Set time to midnight
+    currentDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const isoString = currentDate.toISOString();
     // You can modify this part based on your specific requirements for formatting the date
-    this.date = this.date || currentDate.toLocaleDateString();
+    this.date = this.date || isoString;
   }
 
   next();

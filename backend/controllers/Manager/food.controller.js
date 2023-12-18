@@ -396,11 +396,17 @@ export const updateOrder = async (req, res) => {
     if (updateData.order_status) {
       if (updateData.order_status === "CheckedOut") {
         const currentDate = new Date();
-        const date = currentDate.toLocaleDateString();
         const month_name = currentDate.toLocaleString("en-US", {
           month: "long",
         }); // Full month name
         const year = currentDate.getFullYear().toString();
+        // Adjust for the local time zone
+        const offset = currentDate.getTimezoneOffset();
+        currentDate.setMinutes(currentDate.getMinutes() - offset);
+        // Set time to midnight
+        currentDate.setHours(0, 0, 0, 0);
+        // Convert to ISO string
+        const date = currentDate.toISOString();
 
         const new_paid_amount =
           updateData.paid_amount - existingOrder.paid_amount;

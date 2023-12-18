@@ -145,9 +145,17 @@ export const checkedOut = async (req, res) => {
       user.assignedHotel.length > 0 ? user.assignedHotel[0] : null;
 
     const currentDate = new Date();
-    const date = currentDate.toLocaleDateString();
+
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
+
+    // Adjust for the local time zone
+    const offset = currentDate.getTimezoneOffset();
+    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    // Set time to midnight
+    currentDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const date = currentDate.toISOString();
 
     const hotel_income = total_checkout_bills - restaurant_income;
 

@@ -170,7 +170,15 @@ export const getDashboardInfo = async (req, res) => {
   try {
     const userId = req.params.user_id;
     const currentDate = new Date();
-    const date = currentDate.toLocaleDateString();
+    const newDate = new Date();
+    // Adjust for the local time zone
+    const offset = newDate.getTimezoneOffset();
+    newDate.setMinutes(newDate.getMinutes() - offset);
+    // Set time to midnight
+    newDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const date = newDate.toISOString();
+
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -183,10 +191,11 @@ export const getDashboardInfo = async (req, res) => {
     // Calculate the start date for fetching the last 12 months
     const startDate = new Date();
     startDate.setMonth(currentDate.getMonth() - 11);
-
+    const isoStartDate = startDate.toISOString();
+    const isoEndingDate = currentDate.toISOString();
     const dashboardTable = await DashboardTable.find({
       user_id: userId,
-      createdAt: { $gte: startDate, $lte: currentDate },
+      createdAt: { $gte: isoStartDate, $lte: isoEndingDate },
     });
     if (!dashboardTable) {
       return res.status(404).json({ message: "Dashboard table not found" });
@@ -204,13 +213,16 @@ export const getDashboardInfo = async (req, res) => {
     let total_all_hotel_profit = 0;
     if (user.role === "owner") {
       const staticSubDashDataList = await StaticSubDashData.find({
-        user_id: {$in: user.manager_accounts},
+        user_id: { $in: user.manager_accounts },
       });
 
       staticSubDashDataList.forEach((staticSubDashData) => {
-        total_all_restaurant_expenses += staticSubDashData.total_restaurant_expenses || 0;
-        total_all_restaurant_income += staticSubDashData.total_restaurant_income || 0;
-        total_all_restaurant_profit += staticSubDashData.total_restaurant_profit || 0;
+        total_all_restaurant_expenses +=
+          staticSubDashData.total_restaurant_expenses || 0;
+        total_all_restaurant_income +=
+          staticSubDashData.total_restaurant_income || 0;
+        total_all_restaurant_profit +=
+          staticSubDashData.total_restaurant_profit || 0;
         total_all_hotel_expenses += staticSubDashData.total_hotel_expenses || 0;
         total_all_hotel_income += staticSubDashData.total_hotel_income || 0;
         total_all_hotel_profit += staticSubDashData.total_hotel_profit || 0;
