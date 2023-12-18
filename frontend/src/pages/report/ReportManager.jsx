@@ -21,9 +21,8 @@ import {
 } from "../../redux/admin/report/reportAPI.js";
 import { useGetManagerReportQuery } from "../../redux/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
-import { getFormateDateAndTime, getISOStringDate } from "../../utils/utils.js";
+import { getFormateDateAndTime, getISOStringDate, getformatDateTime } from "../../utils/utils.js";
 import ManagerReport from "./ManagerReport.jsx";
-import { getformatDateTime } from "../../utils/timeZone.js";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import ReportManagerPrint from "./ReportManagerPrint.jsx";
 import {
