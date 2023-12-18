@@ -184,7 +184,7 @@ const ManageCheckinModal = () => {
           transection_id: obj.trxID,
           from: obj.from,
           to: obj.to,
-          checkin_date: getConvertedLocalDate(),
+          checkin_date: new Date().toISOString(),
           no_of_days,
           // rent_per_day,
           total_rent,

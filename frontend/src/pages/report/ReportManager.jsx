@@ -21,7 +21,7 @@ import {
 } from "../../redux/admin/report/reportAPI.js";
 import { useGetManagerReportQuery } from "../../redux/report/reportAPI.js";
 import { Rings } from "react-loader-spinner";
-import { getFormateDateAndTime, getISOStringDate } from "../../utils/utils.js";
+import { getFormateDateAndTime, getISOStringDate, getformatDateTime } from "../../utils/utils.js";
 import ManagerReport from "./ManagerReport.jsx";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import ReportManagerPrint from "./ReportManagerPrint.jsx";
@@ -306,7 +306,7 @@ const ReportManager = () => {
                       <th>{++idx}</th>
                       <td>{report.guestName}</td>
                       <td>{report?.room_numbers.join(",")}</td>
-                      <td>{getFormateDateAndTime(report?.checked_in)}</td>
+                      <td>{getformatDateTime(report?.checked_in)}</td>
 
                       <td>{getFormateDateAndTime(report?.checked_out)}</td>
                       <td>{report?.paid_amount}</td>
