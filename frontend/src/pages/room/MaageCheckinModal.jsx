@@ -20,7 +20,11 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
-import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
+import {
+  convertedFromDate,
+  convertedToDate,
+  getConvertedLocalDate,
+} from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -180,7 +184,7 @@ const ManageCheckinModal = () => {
           transection_id: obj.trxID,
           from: obj.from,
           to: obj.to,
-          checkin_date: new Date().toISOString(),
+          checkin_date: getConvertedLocalDate(),
           no_of_days,
           // rent_per_day,
           total_rent,
