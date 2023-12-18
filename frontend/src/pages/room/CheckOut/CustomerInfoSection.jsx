@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { convertedToDate, getCurrentTime } from "../../../utils/timeZone";
+import {
+  convertedToDate,
+  getConvertedLocalDate,
+  getCurrentTime,
+} from "../../../utils/timeZone";
 import {
   setCalculateAmountAfterDis,
   setCalculateNOD,
@@ -13,7 +17,7 @@ import {
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import DateTimePicker from "react-datetime-picker";
 import { parseISO } from "date-fns/esm";
-import { getDiscountAmount } from "../../../utils/utils";
+import { getDiscountAmount, getFormateDateAndTime } from "../../../utils/utils";
 
 const CustomerInfoSection = ({ data }) => {
   const {
@@ -30,7 +34,7 @@ const CustomerInfoSection = ({ data }) => {
     calculateBalance,
     calculateCollectedAmount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
-
+  console.log(getFormateDateAndTime(toDate));
   const dispatch = useDispatch();
 
   //select check out time
@@ -78,11 +82,17 @@ const CustomerInfoSection = ({ data }) => {
 
   // when we are update the check out date we have to call this with new date
   const updateCheckoutDate = (newDate, hours) => {
+    const convertedCheckoutDate = getConvertedLocalDate(newDate);
     const checkInDate = new Date(fromDate);
-    const checkOutDate = new Date(newDate);
+    const checkOutDate = new Date(convertedCheckoutDate);
     const new_no_of_days = Math.ceil(
       Math.abs(checkInDate - checkOutDate) / (24 * 60 * 60 * 1000)
     );
+    console.log({
+      new_no_of_days,
+      fromDate,
+      newDate: getFormateDateAndTime(newDate),
+    });
     const newToDate = checkOutDate.toISOString();
     dispatch(setToDate(newToDate));
     dispatch(

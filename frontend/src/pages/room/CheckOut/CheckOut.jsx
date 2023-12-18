@@ -39,12 +39,12 @@ import {
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
 import * as yup from "yup";
-import { getISOStringDate } from "../../../utils/utils";
+import { getFormateDateAndTime, getISOStringDate } from "../../../utils/utils";
 import { clearAddOrderSlice } from "../../../redux/add-order/addOrderSlice";
 import Modal from "../../../components/Modal";
 import RefundPaymentModal from "./RefundPaymentModal";
 import { useReactToPrint } from "react-to-print";
-import { getCurrentTime } from "../../../utils/timeZone";
+import { getConvertedLocalDate, getCurrentTime } from "../../../utils/timeZone";
 
 const CheckOut = () => {
   const [getCheckout, { data: checkout, isSuccess, isLoading }] =
@@ -113,6 +113,10 @@ const CheckOut = () => {
       navigate("/dashboard/report");
     },
   });
+  // console.log({
+  //   booking_id: checkout?.data?.booking_info?.booking_ids[0],
+  //   bookingId,
+  // });
 
   // add Checkout data collection
   const room_Ids = checkout?.data?.room_bookings[0].room_id?._id;
@@ -206,7 +210,7 @@ const CheckOut = () => {
           room_id: room_Ids,
           hotel_id: hotel_id,
           booking_info_id: booking_info_id,
-          booking_id: booking_id,
+          booking_id: bookingId,
           food_order_ids: food_order_ids,
           pool_bill_ids: pool_bill_ids,
           gym_bill_ids: gym_bill_ids,
@@ -282,6 +286,7 @@ const CheckOut = () => {
         } else {
           setTrxError(false);
           toast.success("Checkout Successful");
+
           // navigate("/dashboard/checkout");
           if (
             totalRefund > 0 &&
@@ -293,6 +298,7 @@ const CheckOut = () => {
             if (response?.error) {
               toast.error(response.error.data.message);
             } else {
+              dispatch(clearCheckoutCalSlice());
               setCheckOutLoading(false);
               handlePrint();
               // toast.success(response?.success?.data.message);
@@ -333,12 +339,10 @@ const CheckOut = () => {
     );
     dispatch(setCalculateNOD(updatedNod));
   };
+  
   const updateCheckoutTime = () => {
-    const selectedDate = new Date();
 
-    const [hours, minutes] = getCurrentTime().split(":");
-
-    selectedDate.setHours(hours, minutes, 0, 0);
+    const selectedDate = getConvertedLocalDate();
     const updatedToDate = selectedDate.toISOString();
     dispatch(setToDate(updatedToDate));
     updateNodFun(updatedToDate);

@@ -6,7 +6,8 @@ import {
   useAddCheckoutDataMutation,
   useCashbackMutation,
 } from "../../../redux/room/roomAPI";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCheckoutCalSlice } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 
 // form validation
 const validationSchema = yup.object({
@@ -27,9 +28,10 @@ const RefundPaymentCheckout = ({
   handlePrintOpen,
   closeRef,
   saveCheckoutDataObj,
-  setCheckOutLoading
+  setCheckOutLoading,
 }) => {
   // console.log({ totalRefundFromRefund: totalRefund });
+  const dispatch = useDispatch();
   const [cashback] = useCashbackMutation();
   const [addCheckoutData, { isLoading: addCheckoutDataLoading }] =
     useAddCheckoutDataMutation();
@@ -53,21 +55,22 @@ const RefundPaymentCheckout = ({
       });
       if (response?.error) {
         toast.error(response.error.data.message);
-        setCheckOutLoading(false)
+        setCheckOutLoading(false);
       } else {
         toast.success("Refund Successful");
         closeRef.current.click();
-        
+
         const response = addCheckoutData({
           ...saveCheckoutDataObj,
           refunded_amount: totalRefund,
         });
         if (response?.error) {
           toast.error(response.error.data.message);
-          setCheckOutLoading(false)
+          setCheckOutLoading(false);
         } else {
-          setCheckOutLoading(false)
+          setCheckOutLoading(false);
           handlePrintOpen();
+          dispatch(clearCheckoutCalSlice());
         }
       }
     },
