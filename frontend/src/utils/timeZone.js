@@ -84,3 +84,10 @@ export const getCurrentTime = () => {
 
   return `${hours}:${minutes}`;
 };
+
+export const getConvertedLocalDate = (date) => {
+  const convertedDate = date ? new Date(date) : new Date();
+  const offset = convertedDate.getTimezoneOffset();
+  convertedDate.setMinutes(convertedDate.getMinutes() - offset);
+  return convertedDate;
+};

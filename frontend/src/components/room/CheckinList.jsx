@@ -89,11 +89,6 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
                     >
                       <MdOutlineHail />
                     </Link>
-                    {/* <span
-                      className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                    >
-                      <FaEdit />
-                    </span> */}
                   </td>
                 </tr>
               );
