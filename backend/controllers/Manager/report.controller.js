@@ -32,7 +32,7 @@ export const getReportsByHotelId = async (req, res) => {
 
     // Add date range criteria if provided
     if (fromDate && toDate) {
-      query.checked_in = { $gte: new Date(fromDate), $lte: new Date(toDate) };
+      query.checked_in = { $gte: fromDate, $lte: toDate };
     }
 
     const options = {
@@ -48,7 +48,8 @@ export const getReportsByHotelId = async (req, res) => {
     ]);
 
     // Extract the total value from the array
-    const totalPaidAmountValue = totalPaidAmount.length > 0 ? totalPaidAmount[0].total : 0;
+    const totalPaidAmountValue =
+      totalPaidAmount.length > 0 ? totalPaidAmount[0].total : 0;
 
     // Assign the total value directly
     reports.total_paid_amount = totalPaidAmountValue;
@@ -76,7 +77,6 @@ export const getReportsByHotelId = async (req, res) => {
   }
 };
 
-
 export const getReportsByDate = async (req, res) => {
   try {
     const { date, hotel_id, page = 1, limit = 10 } = req.query;
@@ -96,18 +96,26 @@ export const getReportsByDate = async (req, res) => {
       }
 
       // Convert date to a Date object and set time range for the entire day
-      const startDate = new Date(date);
-      startDate.setHours(12, 0, 0, 0);
-      startDate.toISOString(); // Set the time to the beginning of the day
-      console.log(startDate);
+      // const startDate = new Date(date);
+      // startDate.setHours(12, 0, 0, 0);
+      // startDate.toISOString(); // Set the time to the beginning of the day
+      // console.log(startDate);
+      // const endDate = new Date(date);
+      // endDate.setDate(endDate.getDate() + 1);
+      // endDate.setHours(11, 59, 59, 59);
+      // endDate.toISOString(); // Set the end date to the next day
+      // console.log(endDate);
       const endDate = new Date(date);
-      endDate.setDate(endDate.getDate() + 1);
-      endDate.setHours(11, 59, 59, 59);
-      endDate.toISOString(); // Set the end date to the next day
-      console.log(endDate);
+      // Adjust for the local time zone
+      const offset = endDate.getTimezoneOffset();
+      endDate.setMinutes(endDate.getMinutes() - offset);
+      // Set time to midnight
+      endDate.setHours(23, 59, 59, 999);
+      // Convert to ISO string
+      const isoEndDate = endDate.toISOString();
 
       // Add a createdAt filter to match orders created between start and end dates
-      query.createdAt = { $gte: startDate, $lt: endDate };
+      query.createdAt = { $gte: date, $lt: isoEndDate };
     }
 
     const options = {

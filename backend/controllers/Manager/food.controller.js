@@ -613,15 +613,15 @@ export const getOrdersByHotelId = async (req, res) => {
     if (fromDate && toDate) {
       // Assuming createdAt is a Date field in your schema
       query.createdAt = {
-        $gte: new Date(fromDate), // Greater than or equal to fromDate
-        $lte: new Date(toDate), // Less than or equal to toDate
+        $gte: fromDate, // Greater than or equal to fromDate
+        $lte: toDate, // Less than or equal to toDate
       };
     } else if (fromDate) {
       // If only fromDate is provided, use $gte for the minimum date filter
-      query.createdAt = { $gte: new Date(fromDate) };
+      query.createdAt = { $gte: fromDate };
     } else if (toDate) {
       // If only toDate is provided, use $lte for the maximum date filter
-      query.createdAt = { $gte: new Date(toDate) };
+      query.createdAt = { $gte: toDate };
     }
 
     const options = {
@@ -977,17 +977,20 @@ export const getOrdersByDate = async (req, res) => {
       console.log(date);
 
       // Convert date to a Date object and set time range for the entire day
-      const startDate = new Date(date);
-      startDate.setHours(12, 0, 0, 0);
-      startDate.toISOString(); // Set the time to the beginning of the day
-      console.log(startDate);
+      // const startDate = new Date(date);
+      // startDate.setHours(12, 0, 0, 0);
+      // startDate.toISOString(); // Set the time to the beginning of the day
+      // console.log(startDate);
       const endDate = new Date(date);
-      endDate.setDate(endDate.getDate() + 1);
-      endDate.setHours(11, 59, 59, 59);
-      endDate.toISOString(); // Set the end date to the next day
-      console.log(endDate);
+      // Adjust for the local time zone
+      const offset = endDate.getTimezoneOffset();
+      endDate.setMinutes(endDate.getMinutes() - offset);
+      // Set time to midnight
+      endDate.setHours(23, 59, 59, 999);
+      // Convert to ISO string
+      const isoEndDate = endDate.toISOString();
       // Add a createdAt filter to match orders created between start and end dates
-      query.createdAt = { $gte: startDate, $lt: endDate };
+      query.createdAt = { $gte: date, $lt: isoEndDate };
     }
 
     // Find orders without pagination and sort by createdAt in descending order
