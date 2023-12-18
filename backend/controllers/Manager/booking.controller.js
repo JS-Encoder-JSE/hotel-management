@@ -861,7 +861,7 @@ export const addToCheckin = async (req, res) => {
     // Find the Booking document by ID
     await Booking.updateMany(
       { _id: { $in: booking_ids } },
-      { $set: { status: "CheckedIn", checkin_date: currentDate.toISOString() } }
+      { $set: { status: "CheckedIn", checkin_date: new Date().toISOString() } }
     );
 
     // Find the associated BookingInfo document
