@@ -401,7 +401,7 @@ export const updateOrder = async (req, res) => {
         }); // Full month name
         const year = currentDate.getFullYear().toString();
 
-        convertedDate = new Date(currentDate.toLocaleDateString());
+        const convertedDate = new Date(currentDate.toLocaleDateString());
         // Adjust for the local time zone
         const offset = convertedDate.getTimezoneOffset();
         convertedDate.setMinutes(convertedDate.getMinutes() - offset);
@@ -984,7 +984,7 @@ export const getOrdersByDate = async (req, res) => {
       // startDate.toISOString(); // Set the time to the beginning of the day
       // console.log(startDate);
       const endDate = new Date(date);
-      convertedDate = new Date(endDate.toLocaleDateString());
+      const convertedDate = new Date(endDate.toLocaleDateString());
       // Adjust for the local time zone
       const offset = convertedDate.getTimezoneOffset();
       convertedDate.setMinutes(convertedDate.getMinutes() - offset);

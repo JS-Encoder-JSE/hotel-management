@@ -21,7 +21,7 @@ export const addExpense = async (req, res) => {
 
     const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = newDate.getFullYear().toString();
-    convertedDate = new Date(newDate.toLocaleDateString());
+    const convertedDate = new Date(newDate.toLocaleDateString());
     // Adjust for the local time zone
     const offset = convertedDate.getTimezoneOffset();
     convertedDate.setMinutes(convertedDate.getMinutes() - offset);
@@ -324,7 +324,7 @@ export const reduceExpense = async (req, res) => {
     const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = newDate.getFullYear().toString();
 
-    convertedDate = new Date(newDate.toLocaleDateString());
+    const convertedDate = new Date(newDate.toLocaleDateString());
     // Adjust for the local time zone
     const offset = convertedDate.getTimezoneOffset();
     convertedDate.setMinutes(convertedDate.getMinutes() - offset);

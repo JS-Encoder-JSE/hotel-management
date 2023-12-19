@@ -227,7 +227,7 @@ checkinfoSchema.pre("save", function (next) {
   // Check if date is not provided
   if (!this.date) {
     const currentDate = new Date();
-    convertedDate = new Date(currentDate.toLocaleDateString());
+    const convertedDate = new Date(currentDate.toLocaleDateString());
     // Adjust for the local time zone
     const offset = convertedDate.getTimezoneOffset();
     convertedDate.setMinutes(convertedDate.getMinutes() - offset);

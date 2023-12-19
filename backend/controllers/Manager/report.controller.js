@@ -106,7 +106,7 @@ export const getReportsByDate = async (req, res) => {
       // endDate.toISOString(); // Set the end date to the next day
       // console.log(endDate);
       const endDate = new Date(date);
-      convertedDate = new Date(endDate.toLocaleDateString());
+      const convertedDate = new Date(endDate.toLocaleDateString());
       // Adjust for the local time zone
       const offset = convertedDate.getTimezoneOffset();
       convertedDate.setMinutes(convertedDate.getMinutes() - offset);
