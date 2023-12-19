@@ -81,14 +81,14 @@ const ShowALlSellView = () => {
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between`}>
-        <div
-          className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
+      <div
+          className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500 `}
           onClick={() => navigate(-1)}
         >
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <div className={`flex justify-end mb-5 mr-5`}>
+        <div className={`flex justify-end`}>
           {PDF?.length ? (
             <PDFDownloadLink
               document={

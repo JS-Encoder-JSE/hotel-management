@@ -17,7 +17,7 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
-import { FaTrash, FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import {
   fromDateIsoConverter,
@@ -26,7 +26,7 @@ import {
   toDateIsoConverter,
 } from "../../utils/utils.js";
 import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // form validation
 const validationSchema = yup.object({
@@ -298,11 +298,29 @@ const CheckIn = () => {
 
   return (
     <div className={` bg-white rounded-2xl mx-auto p-8 sm:max-w-[90%]`}>
-      <h3
+        <div className="mb-5">
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
+    <div>
+    <h3
         className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
       >
         Check In
       </h3>
+    </div>
       <hr />
       <form
         autoComplete="off"
