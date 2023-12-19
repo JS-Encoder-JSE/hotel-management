@@ -126,6 +126,29 @@ export const getReportsByDate = async (req, res) => {
 
     // Find orders without pagination and sort by createdAt in descending order
     const reports = await ManagerReport.paginate(query, options);
+    const totalPaidAmount = await ManagerReport.aggregate([
+      { $match: query },
+      {
+        $group: {
+          _id: null,
+          total_paid_amount: { $sum: "$paid_amount" },
+          total_payable_amount: { $sum: "$payable_amount" },
+          total_unpaid_amount: { $sum: "$unpaid_amount" },
+        },
+      },
+      {
+        $project: {
+          _id: 0, // Exclude _id field
+          total_paid_amount: 1,
+          total_payable_amount: 1,
+          total_unpaid_amount: 1,
+        },
+      },
+    ]);
+
+    // Assign the total value directly
+    reports.push(...totalPaidAmount);
+
     return res.status(200).json({
       success: true,
       data: reports,

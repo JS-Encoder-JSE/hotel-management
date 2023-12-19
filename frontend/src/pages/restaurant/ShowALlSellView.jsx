@@ -69,7 +69,7 @@ const ShowALlSellView = () => {
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const totalPrice = currentItems?.reduce(
+  const totalPrice = todayItem?.reduce(
     (total, item) => total + item.price * item?.quantity,
     0
   );
@@ -81,7 +81,7 @@ const ShowALlSellView = () => {
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between`}>
-      <div
+        <div
           className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500 `}
           onClick={() => navigate(-1)}
         >

@@ -16,6 +16,7 @@ import CheckInModal from "../../pages/room/CheckInModal.jsx";
 import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import AddBooking from "./AddBooking.jsx";
 import RefundBookingModal from "./RefundBookingModal.jsx";
+import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
 
 const TodayBookingList = ({ bookingList, setCurrentPage }) => {
   const navigate = useNavigate();
@@ -132,6 +133,7 @@ const TodayBookingList = ({ bookingList, setCurrentPage }) => {
           </thead>
           <tbody>
             {bookingList?.data.docs.map((item, idx) => {
+              console.log(item)
               return (
                 <tr
                   className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
@@ -146,9 +148,9 @@ const TodayBookingList = ({ bookingList, setCurrentPage }) => {
                   </td>
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
-                  <td>{new Date(item?.createdAt).toLocaleDateString()}</td>
-                  <td>{new Date(item?.from).toLocaleDateString()}</td>
-                  <td>{new Date(item?.to).toLocaleDateString()}</td>
+                  <td>{getformatDateTime(item?.createdAt)}</td>
+                  <td>{getFormateDateAndTime(item?.from)}</td>
+                  <td>{getFormateDateAndTime(item?.to)}</td>
 
                   {/* <td className={`flex flex-wrap gap-1.5`}>
                     <span
