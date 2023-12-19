@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { FaDollarSign, FaUsers } from "react-icons/fa";
+import { FaArrowLeft, FaDollarSign, FaUsers } from "react-icons/fa";
 import { GiExpense } from "react-icons/gi";
 import { SiSellfy } from "react-icons/si";
 import { MdAttachMoney, MdOutlineLastPage } from "react-icons/md";
@@ -15,7 +15,7 @@ import { useGetSubDashBoardInfoQuery } from "../../redux/expensesAndSales/expens
 import { useSelector } from "react-redux";
 import { Rings } from "react-loader-spinner";
 import { dummyData, isValidUrl } from "../../utils/utils";
-import {useLocation, useNavigate } from 'react-router-dom';
+import {Link, useLocation, useNavigate } from 'react-router-dom';
 import { TbSquareRoundedLetterC } from "react-icons/tb";
 
 
@@ -54,6 +54,22 @@ const RestaurantDashboard = ({ managerId }) => {
 
   return (
     <>
+       <div className="mb-12">
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                  <dfn>
+                    <abbr title="Back">
+                      <FaArrowLeft />
+                    </abbr>
+                  </dfn>
+
+                  <span className="tracking-wider font-semibold text-[1rem]"></span>
+                </button>
+              </Link>
+            </div>
       <div
         // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-20`}
         className="grid md:grid-cols-3 gap-4 mb-20"
