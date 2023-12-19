@@ -54,17 +54,13 @@ const OrderList = () => {
       // chooseHotel: "",
     },
     onSubmit: (values) => {
+      setSearch(values.search);
       setSearchParams((p) => ({
         ...p,
-        toDate: p
-          ? getConvertedIsoEndDate(values.endDate)
-          : new Date().toLocaleDateString(),
-        fromDate: p
-          ? getConvertedIsoStartDate(values.startDate)
-          : new Date().toLocaleDateString(),
+        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
+        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
         unique_id: values.search,
       }));
-      setSearch(values.search);
     },
   });
 
