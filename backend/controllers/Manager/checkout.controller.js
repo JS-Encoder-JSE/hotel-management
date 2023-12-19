@@ -149,7 +149,7 @@ export const checkedOut = async (req, res) => {
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
-    convertedDate = new Date(currentDate.toLocaleDateString());
+    const convertedDate = new Date(currentDate.toLocaleDateString());
     // Adjust for the local time zone
     const offset = convertedDate.getTimezoneOffset();
     convertedDate.setMinutes(convertedDate.getMinutes() - offset);
