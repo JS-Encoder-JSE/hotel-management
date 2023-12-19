@@ -13,7 +13,7 @@ import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import { GiDoorHandle } from "react-icons/gi";
 import { FaRegEdit } from "react-icons/fa";
 import { BiSolidDoorOpen } from "react-icons/bi";
-import { getFormateDateAndTime } from "../../utils/utils.js";
+import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
 
 const CheckinList = ({ checkinList, page, handlePageClick }) => {
   const navigate = useNavigate();
@@ -66,7 +66,7 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
                   </td>
                   <td>{item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
-                  <td>{getFormateDateAndTime(item?.checkin_date)}</td>
+                  <td>{getformatDateTime(item?.checkin_date)}</td>
                   {/* <td>{item?.paid_amount}</td> */}
                   {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
                   <td>{getFormateDateAndTime(item?.from)}</td>
