@@ -164,6 +164,11 @@ const bookingSchema = new mongoose.Schema(
       required: false,
       default: "",
     },
+    bookingMethod: {
+      type: String,
+      enum: ["Online", "Offline"],
+      required: false,
+    },
     from: { type: Date, required: true },
     checkin_date: { type: Date, required: false },
     to: { type: Date, required: true },

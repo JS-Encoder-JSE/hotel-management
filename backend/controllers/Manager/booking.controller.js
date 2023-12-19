@@ -84,6 +84,7 @@ export const addBooking = async (req, res) => {
           hotel_id,
           guestName,
           mobileNumber,
+          bookingMethod,
           from,
           checkin_date,
           to,
@@ -569,6 +570,11 @@ export const getBookingsByHotel = async (req, res) => {
     if (arrayFilter) {
       const converted_array = arrayFilter.split(",");
       query.status = { $in: converted_array };
+      if (
+        converted_array == ["Active", "CheckedIn", "CheckedOut", "Canceled"]
+      ) {
+        query.bookingMethod = { $in: ["Online", "Offline"] };
+      }
     }
     console.log(query);
     if (fromDate && toDate) {
