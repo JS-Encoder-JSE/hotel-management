@@ -197,7 +197,15 @@ const CheckOut = () => {
 
       const paid_amount =
         calculateBalance < 0 ? Number(paymentList[0]?.amount) : 0;
+      const balance_refunded =
+        totalRefund > 0 && checkout?.data?.booking_info?.room_ids?.length === 1
+          ? totalRefund
+          : 0;
 
+      const balance_deducted =
+        checkout?.data?.booking_info?.total_balance > pBill
+          ? pBill
+          : checkout?.data?.booking_info?.total_balance;
       if (
         calculateBalance < 0 &&
         paymentList[0]?.method !== "Cash" &&
@@ -234,7 +242,7 @@ const CheckOut = () => {
           paid_amount: paid_amount,
           total_unpaid_amount: initialUnpaidAmount,
           total_balance: new_total_balance,
-          refunded_amount: 0,
+          refunded_amount: balance_refunded,
           deleted: false,
           nationality: nationality,
           doc_number: doc_number,
@@ -264,6 +272,8 @@ const CheckOut = () => {
             additionalCharge,
           new_total_service_charges:
             checkout?.data?.booking_info?.total_service_charges + serviceCharge,
+          balance_refunded,
+          balance_deducted,
           guestName: checkout?.data?.booking_info?.guestName,
           room_numbers,
           payment_method: paymentList[0].method
