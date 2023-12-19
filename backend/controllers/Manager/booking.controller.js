@@ -571,7 +571,8 @@ export const getBookingsByHotel = async (req, res) => {
       const converted_array = arrayFilter.split(",");
       query.status = { $in: converted_array };
       if (
-        converted_array == ["Active", "CheckedIn", "CheckedOut", "Canceled"]
+        converted_array.length ===
+        ["Active", "Canceled", "CheckedIn", "CheckedOut"].length
       ) {
         query.bookingMethod = { $in: ["Online", "Offline"] };
       }
