@@ -8,7 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png";
-import { getFormateDateAndTime, versionControl } from "../../utils/utils";
+import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../utils/utils";
 
 const RestaurantSalesReport = ({ values, header, date }) => {
   // SL	Date	Items Name	Description	Quantity	Price	Action
@@ -113,8 +113,10 @@ const RestaurantSalesReport = ({ values, header, date }) => {
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ? getFormateDateAndTime(item[key]) // Use the date prop here
-                    : item[key]}
+                    ? date
+                    ? new Date(date).toLocaleDateString()
+                    : new Date(item[key]).toLocaleDateString() // Use the date prop here
+                  : item[key]}
                 </Text>
               ))}
             </View>
