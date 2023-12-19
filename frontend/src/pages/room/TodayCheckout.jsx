@@ -25,6 +25,7 @@ import {
   checkinListoDate,
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
+  getFormateDateAndTime,
   getformatDateTime,
 } from "../../utils/utils.js";
 
@@ -187,7 +188,7 @@ const TodayCheckout = () => {
                         <td>{getformatDateTime(item?.checkin_date)}</td>
                         {/* {getformatDateTime(item?.checkin_date)} */}
                         {/* <td>{new Date(item?.to).toLocaleDateString()}</td> */}
-                        <td>{getformatDateTime(item?.to)}</td>
+                        <td>{getFormateDateAndTime(item?.to)}</td>
 
                         {/* <td className={`flex flex-wrap gap-1.5`}>
                           <span
