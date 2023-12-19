@@ -42,6 +42,16 @@ const reportSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    balance_deducted: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    balance_refunded: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     unpaid_amount: {
       type: Number,
       required: true,

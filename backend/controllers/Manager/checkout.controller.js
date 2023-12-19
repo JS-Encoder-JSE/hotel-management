@@ -135,6 +135,8 @@ export const checkedOut = async (req, res) => {
       checked_in,
       checked_out,
       paid_amount,
+      balance_deducted,
+      balance_refunded,
       total_checkout_bills,
       restaurant_income,
     } = req.body;
@@ -170,6 +172,8 @@ export const checkedOut = async (req, res) => {
       checked_out,
       payable_amount: total_checkout_bills,
       paid_amount,
+      balance_deducted,
+      balance_refunded,
       unpaid_amount: total_checkout_bills - paid_amount,
     });
     await newReport.save();
