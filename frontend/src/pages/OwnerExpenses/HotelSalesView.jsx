@@ -156,9 +156,9 @@ const HotelSalesView = () => {
                       <td>{getformatDateTime(item?.checked_out)} </td>
                       <td>{item?.room_numbers?.map((roomNum) => roomNum)}</td>
                       <td>{item?.payment_method}</td>
-                      <td>{item?.paid_amount}</td>
-                      <td>{item?.balance_deducted}</td>
-                      <td>{item?.balance_refunded}</td>
+                      <td className="text-end">{item?.paid_amount}</td>
+                      <td className="text-end">{item?.balance_deducted}</td>
+                      <td className="text-end">{item?.balance_refunded}</td>
                       <td>
                         {" "}
                         <ReportPrint
@@ -171,6 +171,26 @@ const HotelSalesView = () => {
                   );
                 })}
             </tbody>
+            <tfoot>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td className="text-black text-[14px] text-end">
+                  Total: {orderedDataByDate?.data?.total_paid_amount}
+                </td>
+                <td className="text-black text-[14px] text-end">
+                  Total: {orderedDataByDate?.data?.total_balance_deducted}
+                </td>
+                <td className="text-black text-[14px] text-end">
+                  Total: {orderedDataByDate?.data?.total_balance_refunded}
+                </td>
+                <td className="text-black text-md"></td>
+              </tr>
+            </tfoot>
           </table>
         ) : (
           <p className="text-center py-14"> No Sales Today</p>

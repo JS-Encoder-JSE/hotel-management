@@ -1,20 +1,46 @@
 import React from "react";
-import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
-import logo from "../../assets/logo.png"
-import { getFormateDateAndTime, getformatDateTime, versionControl } from "../../utils/utils";
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
+import logo from "../../assets/logo.png";
+import {
+  getFormateDateAndTime,
+  getformatDateTime,
+  versionControl,
+} from "../../utils/utils";
 
-const HotelSalesTodayReport = ({ values, header,date }) => {
+const HotelSalesTodayReport = ({ values, header, date }) => {
+  // SL	Date	Items Name	Description	Quantity	Price	Action
+  const desiredHeaders = [
+    "Serial No",
+    "guestName",
+    "checked_in",
+    "checked_out",
+    "room_numbers",
+    'payment_method',
+    "paid_amount",
+    "balance_deducted",
+    "balance_refunded",
+  ];
 
+  const tableHeaders = [
+    "Serial No",
+    "GuestName",
+    "Checked In",
+    "Checked Out",
+    "Room Numbers",
+    "Payment Method",
+    "Paid Amount",
+    "Deducted from Ballance",
+    "Refund Amount",
+  ];
 
-
-
-    // SL	Date	Items Name	Description	Quantity	Price	Action
-    const desiredHeaders = ["Serial No", "guestName","checked_in","checked_out","paid_amount","payable_amount","room_numbers","unpaid_amount"
-   ];
-
-   const tableHeaders =["Serial No","GuestName","Checked In", "Checked Out", "Paid Amount", "Payable Amount", "Room Numbers", "Unpaid Amount"]
-
-   const jsEncoderTextStyle = {
+  const jsEncoderTextStyle = {
     color: "green",
     fontWeight: "bold",
   };
@@ -30,7 +56,7 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
     table: {
       display: "table",
       width: "100%",
-      borderStyle: "solid", 
+      borderStyle: "solid",
       borderWidth: 1,
       borderColor: "#e8e8e8",
     },
@@ -41,7 +67,7 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
     },
     tableCell: {
       padding: 8,
-      wordWrap: "break-word", 
+      wordWrap: "break-word",
     },
     tableHeader: {
       backgroundColor: "#f2f2f2",
@@ -53,10 +79,10 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
     tableCell: {
       flex: 1,
       padding: 8,
-      width: "auto", 
+      width: "auto",
       wordWrap: "break-word",
     },
-     payableAmountCell: {
+    payableAmountCell: {
       flex: 1.5, // Adjust the width as needed
       padding: 8,
       wordWrap: "break-word",
@@ -87,11 +113,14 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
             alignItems: "center",
           }}
         >
-           <Image src={logo} style={{
-              width:"54px",
-              height:"54px",
-              marginBottom:"10px"
-            }}/>
+          <Image
+            src={logo}
+            style={{
+              width: "54px",
+              height: "54px",
+              marginBottom: "10px",
+            }}
+          />
           <View>
             <Text>{header?.title}</Text>
             <Text
@@ -116,26 +145,27 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-          {tableHeaders.map((header, index) => {
-                let cellStyle = styles.tableCell;
+            {tableHeaders.map((header, index) => {
+              let cellStyle = styles.tableCell;
 
-                // Apply specific styles for "payable_amount" and "room_numbers" columns
-                if (header === "Payable Amount") {
-                  cellStyle = styles.payableAmountCell;
-                } else if (header === "Room Numbers") {
-                  cellStyle = styles.roomNumbersCell;
-                }
+              // Apply specific styles for "payable_amount" and "room_numbers" columns
+              if (header === "Payable Amount") {
+                cellStyle = styles.payableAmountCell;
+              } else if (header === "Room Numbers") {
+                cellStyle = styles.roomNumbersCell;
+              }
 
-                return (
-                  <Text key={index} style={[cellStyle, styles.text]}>
-                    {header}
-                  </Text>
-                );
-              })}
+              return (
+                <Text key={index} style={[cellStyle, styles.text]}>
+                  {header}
+                </Text>
+              );
+            })}
           </View>
-          { values && values.map((item, rowIndex) => (
-            <View key={rowIndex} style={styles.tableRow}>
-               {desiredHeaders.map((key, cellIndex) => {
+          {values &&
+            values.map((item, rowIndex) => (
+              <View key={rowIndex} style={styles.tableRow}>
+                {desiredHeaders.map((key, cellIndex) => {
                   let cellStyle = styles.tableCell;
 
                   // Apply specific styles for "payable_amount" and "room_numbers" columns
@@ -151,17 +181,21 @@ const HotelSalesTodayReport = ({ values, header,date }) => {
                         ? rowIndex + 1
                         : key === "checked_in"
                         ? new Date(item[key]).toLocaleDateString()
-                        :key === "checked_out"
-                        ?new Date(item[key]).toLocaleDateString()
+                        : key === "checked_out"
+                        ? new Date(item[key]).toLocaleDateString()
                         : item[key]}
                     </Text>
                   );
                 })}
-            </View>
-          ))}
+              </View>
+            ))}
         </View>
         <View style={styles.footer}>
-          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
+          <Text>
+            Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>.
+            Copyright ©{currentYear}. All rights reserved. Version{" "}
+            {versionControl}
+          </Text>
         </View>
 
         {/* <View style={styles.table}>
