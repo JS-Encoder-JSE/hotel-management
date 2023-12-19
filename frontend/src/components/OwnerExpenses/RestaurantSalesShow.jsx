@@ -133,7 +133,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const totalPrice = currentItems?.reduce(
+  const totalPrice = allItemsArray?.reduce(
     (total, item) => total + item.price,
     0
   );
