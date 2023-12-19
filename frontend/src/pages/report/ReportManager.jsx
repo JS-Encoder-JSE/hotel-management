@@ -83,8 +83,12 @@ const ReportManager = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate:
+          p && values.endDate ? getConvertedIsoEndDate(values.endDate) : "",
+        fromDate:
+          p && values.startDate
+            ? getConvertedIsoStartDate(values.startDate)
+            : "",
         search: values.search,
       }));
     },
@@ -100,7 +104,7 @@ const ReportManager = () => {
     filter: formik.values.filter,
     limit: formik.values.entries,
   });
-  console.log("reports",reports)
+  console.log("reports", reports);
 
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
@@ -356,7 +360,7 @@ const ReportManager = () => {
                   <td colSpan={5} className={`text-end`}>
                     Total
                   </td>
-                  <td>{reports?.data?.total_paid_amount}</td>                
+                  <td>{reports?.data?.total_paid_amount}</td>
                 </tr>
               </tfoot>
             </table>

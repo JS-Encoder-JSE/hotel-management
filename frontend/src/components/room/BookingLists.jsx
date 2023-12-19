@@ -16,6 +16,7 @@ import CheckInModal from "../../pages/room/CheckInModal.jsx";
 import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import AddBooking from "./AddBooking.jsx";
 import RefundBookingModal from "./RefundBookingModal.jsx";
+import { getFormateDateAndTime } from "../../utils/utils.js";
 
 const BookingLists = ({ bookingList, setCurrentPage }) => {
   const navigate = useNavigate();
@@ -38,8 +39,8 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
   const handleDelete = (id) => {
     setBookingId(id);
     refetch();
-    if(isLastBooking?.success){
-      window.refundPay.showModal()
+    if (isLastBooking?.success) {
+      window.refundPay.showModal();
     }
     // if (isLastBooking?.success) {
     //   // If the condition is true, show the modal
@@ -135,7 +136,6 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
           </thead>
           <tbody>
             {bookingList?.data.docs.map((item, idx) => {
-
               return (
                 <tr
                   className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
@@ -151,8 +151,8 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
                   <td>{new Date(item?.createdAt).toLocaleDateString()}</td>
-                  <td>{new Date(item?.from).toLocaleDateString()}</td>
-                  <td>{new Date(item?.to).toLocaleDateString()}</td>
+                  <td>{getFormateDateAndTime(item?.from)}</td>
+                  <td>{getFormateDateAndTime(item?.to)}</td>
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span

@@ -132,7 +132,7 @@ const AddExpenses = () => {
     const response = await AddExpense({
       hotel_id: isHotelSuccess && hotelInfo[0]?._id,
       date: selectDate
-        ? getConvertedIsoStartDate(selectDate)
+        ? getConvertedIsoStartDate(new Date(selectDate).toLocaleDateString())
         : getConvertedIsoStartDate(new Date().toLocaleDateString()),
       spendedfor: "restaurant",
       items: totalExpense,

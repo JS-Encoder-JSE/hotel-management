@@ -44,6 +44,7 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
               </th>
               {/* <th>Booking <br />Date
               </th> */}
+              <th>CheckIn Date</th>
               <th>From</th>
               <th>To</th>
               <th>Action</th>
@@ -65,6 +66,7 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
                   </td>
                   <td>{item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
+                  <td>{getFormateDateAndTime(item?.checkin_date)}</td>
                   {/* <td>{item?.paid_amount}</td> */}
                   {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
                   <td>{getFormateDateAndTime(item?.from)}</td>

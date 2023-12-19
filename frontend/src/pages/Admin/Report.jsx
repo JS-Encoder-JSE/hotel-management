@@ -54,8 +54,12 @@ const Report = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate:
+          p && values.endDate ? getConvertedIsoEndDate(values.endDate) : "",
+        fromDate:
+          p && values.startDate
+            ? getConvertedIsoStartDate(values.startDate)
+            : "",
         search: values.search,
       }));
     },
