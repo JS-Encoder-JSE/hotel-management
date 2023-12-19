@@ -62,16 +62,16 @@ const CheckOutPrint = ({
             <CustomerInfoPrint data={data} />
           </div>
           <div className=" px-4 py-2">
-            <h2 className="font-bold">Balance Summary</h2>
+            {/* <h2 className="font-bold">Balance Summary</h2> */}
             <div className="flex flex-col items-start">
               <div className="grid grid-cols-2 gap-9  ">
-                <p>Advanced Balance</p>
-                <p>: {data?.total_balance}</p>
+                {/* <p>Advanced Balance</p>
+                <p>: {data?.total_balance}</p> */}
               </div>
               <div>
                 <div className="grid grid-cols-2 gap-2 ">
-                  <p>Total Payable Amount</p>
-                  <p>: {totalPayableAmount}</p>
+                  {/* <p>Total Payable Amount</p>
+                  <p>: {totalPayableAmount}</p> */}
                 </div>
                 {/* <div className="grid grid-cols-2  ">
                   <p>Total Unpaid Amount</p>
