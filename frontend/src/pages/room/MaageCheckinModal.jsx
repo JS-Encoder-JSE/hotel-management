@@ -20,7 +20,11 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
-import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
+import {
+  convertedFromDate,
+  convertedToDate,
+  getConvertedLocalDate,
+} from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
