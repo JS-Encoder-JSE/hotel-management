@@ -181,6 +181,14 @@ export const getReportsByDate = async (req, res) => {
       (acc, report) => acc + report.paid_amount,
       0
     );
+    const totalBalanceDeducted = reports.docs.reduce(
+      (acc, report) => acc + report.balance_deducted,
+      0
+    );
+    const totalBalanceRefunded = reports.docs.reduce(
+      (acc, report) => acc + report.balance_refunded,
+      0
+    );
     const totalUnpaidAmount = reports.docs.reduce(
       (acc, report) => acc + report.unpaid_amount,
       0
@@ -202,6 +210,8 @@ export const getReportsByDate = async (req, res) => {
         nextPage: reports.nextPage,
         total_payable_amount: totalPayableAmount,
         total_paid_amount: totalPaidAmount,
+        total_balance_deducted: totalBalanceDeducted,
+        total_balance_refunded: totalBalanceRefunded,
         total_unpaid_amount: totalUnpaidAmount,
       },
       message: "Reports retrieved successfully",
