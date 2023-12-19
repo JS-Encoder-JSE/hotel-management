@@ -194,11 +194,11 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                         <th>Guest Name</th>
                         <th>CheckIn Date</th>
                         <th>Checkout Date</th>
-                        <th>Paid Amount</th>
-                        <th>Payable Amount</th>
-                        <th>Payment Method</th>
                         <th>Room Numbers</th>
-                        <th>Unpaid Amount</th>
+                        <th>Payment Method</th>
+                        <th>Paid Amount</th>
+                        <th>Deducted from Ballance</th>
+                        <th>Refund Amount</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -224,13 +224,14 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                                   item?.checked_out
                                 ).toLocaleDateString()}{" "}
                               </td>
-                              <td>{item?.paid_amount}</td>
-                              <td>{item?.payable_amount}</td>
-                              <td>{item?.payment_method}</td>
                               <td>
                                 {item?.room_numbers?.map((roomNum) => roomNum)}
                               </td>
-                              <td>{item?.unpaid_amount}</td>
+                              <td>{item?.payment_method}</td>
+                              <td>{item?.paid_amount}</td>
+                              <td>{item?.balance_deducted}</td>
+
+                              <td>{item?.balance_refunded}</td>
                               <td>
                                 <ReportPrint
                                   hotelInfo={hotelInfo[0]}

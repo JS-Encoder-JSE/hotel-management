@@ -21,6 +21,7 @@ import {
 } from "../../redux/room/roomAPI";
 import {
   fromDateIsoConverterForAddExpenses,
+  getConvertedIsoStartDate,
   getformatDateTime,
 } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
@@ -59,7 +60,7 @@ const HotelSalesView = () => {
     isLoading: orderItemSuccess,
   } = useGetReportsByDateQuery({
     cp: currentPage,
-    date: new Date(dateParam).toLocaleDateString(),
+    date: getConvertedIsoStartDate(dateParam),
     hotelId: hotelId,
   });
 
@@ -133,11 +134,11 @@ const HotelSalesView = () => {
                 <th>Guest Name</th>
                 <th>CheckIn Date</th>
                 <th>Checkout Date</th>
-                <th>Paid Amount</th>
-                <th>Payable Amount</th>
-                <th>Payment Method</th>
                 <th>Room Numbers</th>
-                <th>Unpaid Amount</th>
+                <th>Payment Method</th>
+                <th>Paid Amount</th>
+                <th>Deducted from Ballance</th>
+                <th>Refund Amount</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -153,11 +154,11 @@ const HotelSalesView = () => {
                       <td>{item?.guestName}</td>
                       <td>{getformatDateTime(item?.checked_in)}</td>
                       <td>{getformatDateTime(item?.checked_out)} </td>
-                      <td>{item?.paid_amount}</td>
-                      <td>{item?.payable_amount}</td>
-                      <td>{item?.payment_method}</td>
                       <td>{item?.room_numbers?.map((roomNum) => roomNum)}</td>
-                      <td>{item?.unpaid_amount}</td>
+                      <td>{item?.payment_method}</td>
+                      <td>{item?.paid_amount}</td>
+                      <td>{item?.balance_deducted}</td>
+                      <td>{item?.balance_refunded}</td>
                       <td>
                         {" "}
                         <ReportPrint
