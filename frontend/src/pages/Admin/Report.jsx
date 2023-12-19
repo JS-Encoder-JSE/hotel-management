@@ -18,6 +18,7 @@ import { GrPowerReset } from "react-icons/gr";
 import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
+  getFormateDateAndTime,
   getformatDateTime,
 } from "../../utils/utils.js";
 
@@ -117,8 +118,10 @@ const Report = () => {
       const data = reports?.docs?.map((item) => ({
         Username: item.username,
         Phone: item.phone_no,
-        "Purchase Date": new Date(item.bill_from).toLocaleDateString(),
-        "Expire Date": new Date(item.bill_to).toLocaleDateString(),
+        "Purchase Date": getformatDateTime(new Date(item.bill_from)),
+        "Expire Date": getformatDateTime(new Date(item.bill_to)),
+        
+        // new Date(item.bill_to).toLocaleDateString(),
         "Deposit By": item.deposit_by,
         "Paid Amount": item.paid_amount,
       }));
