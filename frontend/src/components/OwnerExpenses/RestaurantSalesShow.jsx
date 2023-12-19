@@ -160,7 +160,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                   <PDFDownloadLink
                     document={
                       <RestaurantSalesHistory
-                        date={currentItems}
+                        // date={currentItems}
+                        date={new Date().toLocaleDateString()}
                         values={currentItems}
                         header={{
                           title: "DAK Hospitality LTD",
