@@ -400,13 +400,15 @@ export const updateOrder = async (req, res) => {
           month: "long",
         }); // Full month name
         const year = currentDate.getFullYear().toString();
+
+        convertedDate = new Date(currentDate.toLocaleDateString());
         // Adjust for the local time zone
-        const offset = currentDate.getTimezoneOffset();
-        currentDate.setMinutes(currentDate.getMinutes() - offset);
+        const offset = convertedDate.getTimezoneOffset();
+        convertedDate.setMinutes(convertedDate.getMinutes() - offset);
         // Set time to midnight
-        currentDate.setHours(0, 0, 0, 0);
+        convertedDate.setHours(0, 0, 0, 0);
         // Convert to ISO string
-        const date = currentDate.toISOString();
+        const date = convertedDate.toISOString();
 
         const new_paid_amount =
           updateData.paid_amount - existingOrder.paid_amount;
@@ -982,15 +984,16 @@ export const getOrdersByDate = async (req, res) => {
       // startDate.toISOString(); // Set the time to the beginning of the day
       // console.log(startDate);
       const endDate = new Date(date);
+      convertedDate = new Date(endDate.toLocaleDateString());
       // Adjust for the local time zone
-      const offset = endDate.getTimezoneOffset();
-      endDate.setMinutes(endDate.getMinutes() - offset);
+      const offset = convertedDate.getTimezoneOffset();
+      convertedDate.setMinutes(convertedDate.getMinutes() - offset);
       // Set time to midnight
-      endDate.setHours(23, 59, 59, 999);
+      convertedDate.setHours(23, 59, 59, 999);
       // Convert to ISO string
-      const isoEndDate = endDate.toISOString();
+      const isoEndDate = convertedDate.toISOString();
       // Add a createdAt filter to match orders created between start and end dates
-      query.createdAt = { $gte: date, $lt: isoEndDate };
+      query.updatedAt = { $gte: date, $lt: isoEndDate };
     }
 
     // Find orders without pagination and sort by createdAt in descending order

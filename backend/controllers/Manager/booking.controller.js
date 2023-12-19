@@ -44,13 +44,15 @@ export const addBooking = async (req, res) => {
     console.log(currentDate);
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
+
+    convertedDate = new Date(currentDate.toLocaleDateString());
     // Adjust for the local time zone
-    const offset = currentDate.getTimezoneOffset();
-    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    const offset = convertedDate.getTimezoneOffset();
+    convertedDate.setMinutes(convertedDate.getMinutes() - offset);
     // Set time to midnight
-    currentDate.setHours(0, 0, 0, 0);
+    convertedDate.setHours(0, 0, 0, 0);
     // Convert to ISO string
-    const date = currentDate.toISOString();
+    const date = convertedDate.toISOString();
     console.log(date);
 
     let total_rent = 0;
@@ -369,13 +371,15 @@ export const cancelBooking = async (req, res) => {
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
+
+    convertedDate = new Date(currentDate.toLocaleDateString());
     // Adjust for the local time zone
-    const offset = currentDate.getTimezoneOffset();
-    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    const offset = convertedDate.getTimezoneOffset();
+    convertedDate.setMinutes(convertedDate.getMinutes() - offset);
     // Set time to midnight
-    currentDate.setHours(0, 0, 0, 0);
+    convertedDate.setHours(0, 0, 0, 0);
     // Convert to ISO string
-    const date = currentDate.toISOString();
+    const date = convertedDate.toISOString();
 
     const bookingInfo = await BookingInfo.findOne({ booking_ids: bookingId });
 
@@ -831,13 +835,15 @@ export const addToCheckin = async (req, res) => {
 
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
+
+    convertedDate = new Date(currentDate.toLocaleDateString());
     // Adjust for the local time zone
-    const offset = currentDate.getTimezoneOffset();
-    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    const offset = convertedDate.getTimezoneOffset();
+    convertedDate.setMinutes(convertedDate.getMinutes() - offset);
     // Set time to midnight
-    currentDate.setHours(0, 0, 0, 0);
+    convertedDate.setHours(0, 0, 0, 0);
     // Convert to ISO string
-    const date = currentDate.toISOString();
+    const date = convertedDate.toISOString();
 
     const user = await User.findById(userId);
     if (!user) {

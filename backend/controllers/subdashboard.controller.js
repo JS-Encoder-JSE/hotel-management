@@ -33,14 +33,14 @@ export const getSubDashboardInfo = async (req, res) => {
     const userId = req.params.user_id;
     const currentDate = new Date();
 
-    const newDate = new Date();
+    convertedDate = new Date(currentDate.toLocaleDateString());
     // Adjust for the local time zone
-    const offset = newDate.getTimezoneOffset();
-    newDate.setMinutes(newDate.getMinutes() - offset);
+    const offset = convertedDate.getTimezoneOffset();
+    convertedDate.setMinutes(convertedDate.getMinutes() - offset);
     // Set time to midnight
-    newDate.setHours(0, 0, 0, 0);
+    convertedDate.setHours(0, 0, 0, 0);
     // Convert to ISO string
-    const date = newDate.toISOString();
+    const date = convertedDate.toISOString();
 
     const permanent_datas = await StaticSubDashData.findOne({
       user_id: userId,

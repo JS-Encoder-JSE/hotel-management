@@ -21,13 +21,14 @@ export const addExpense = async (req, res) => {
 
     const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = newDate.getFullYear().toString();
+    convertedDate = new Date(newDate.toLocaleDateString());
     // Adjust for the local time zone
-    const offset = newDate.getTimezoneOffset();
-    newDate.setMinutes(newDate.getMinutes() - offset);
+    const offset = convertedDate.getTimezoneOffset();
+    convertedDate.setMinutes(convertedDate.getMinutes() - offset);
     // Set time to midnight
-    newDate.setHours(0, 0, 0, 0);
+    convertedDate.setHours(0, 0, 0, 0);
     // Convert to ISO string
-    const localDate = newDate.toISOString();
+    const localDate = convertedDate.toISOString();
 
     const existingExpense = await Expense.findOne({
       date: localDate,
@@ -322,14 +323,15 @@ export const reduceExpense = async (req, res) => {
 
     const month_name = newDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = newDate.getFullYear().toString();
-    // Adjust for the local time zone
-    const offset = newDate.getTimezoneOffset();
-    newDate.setMinutes(newDate.getMinutes() - offset);
-    // Set time to midnight
-    newDate.setHours(0, 0, 0, 0);
-    // Convert to ISO string
 
-    const localDate = newDate.toLocaleDateString();
+    convertedDate = new Date(newDate.toLocaleDateString());
+    // Adjust for the local time zone
+    const offset = convertedDate.getTimezoneOffset();
+    convertedDate.setMinutes(convertedDate.getMinutes() - offset);
+    // Set time to midnight
+    convertedDate.setHours(0, 0, 0, 0);
+    // Convert to ISO string
+    const localDate = convertedDate.toISOString();
 
     const existingStaticSubDashData = await StaticSubDashData.findOne({
       user_id: userId,

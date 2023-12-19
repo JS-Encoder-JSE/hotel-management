@@ -227,13 +227,14 @@ checkinfoSchema.pre("save", function (next) {
   // Check if date is not provided
   if (!this.date) {
     const currentDate = new Date();
+    convertedDate = new Date(currentDate.toLocaleDateString());
     // Adjust for the local time zone
-    const offset = currentDate.getTimezoneOffset();
-    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    const offset = convertedDate.getTimezoneOffset();
+    convertedDate.setMinutes(convertedDate.getMinutes() - offset);
     // Set time to midnight
-    currentDate.setHours(0, 0, 0, 0);
+    convertedDate.setHours(0, 0, 0, 0);
     // Convert to ISO string
-    const isoString = currentDate.toISOString();
+    const isoString = convertedDate.toISOString();
     // You can modify this part based on your specific requirements for formatting the date
     this.date = this.date || isoString;
   }

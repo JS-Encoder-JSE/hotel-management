@@ -106,13 +106,14 @@ export const getReportsByDate = async (req, res) => {
       // endDate.toISOString(); // Set the end date to the next day
       // console.log(endDate);
       const endDate = new Date(date);
+      convertedDate = new Date(endDate.toLocaleDateString());
       // Adjust for the local time zone
-      const offset = endDate.getTimezoneOffset();
-      endDate.setMinutes(endDate.getMinutes() - offset);
+      const offset = convertedDate.getTimezoneOffset();
+      convertedDate.setMinutes(convertedDate.getMinutes() - offset);
       // Set time to midnight
-      endDate.setHours(23, 59, 59, 999);
+      convertedDate.setHours(23, 59, 59, 999);
       // Convert to ISO string
-      const isoEndDate = endDate.toISOString();
+      const isoEndDate = convertedDate.toISOString();
 
       // Add a createdAt filter to match orders created between start and end dates
       query.createdAt = { $gte: date, $lt: isoEndDate };

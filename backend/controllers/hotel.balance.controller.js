@@ -99,8 +99,6 @@ export const cashBack = async (req, res) => {
       remark,
     } = req.body;
 
-    const currentDate = new Date();
-
     const manager = await User.findById(manager_id);
     if (!manager) {
       return res.status(404).json({

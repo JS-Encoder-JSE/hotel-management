@@ -149,13 +149,14 @@ export const checkedOut = async (req, res) => {
     const month_name = currentDate.toLocaleString("en-US", { month: "long" }); // Full month name
     const year = currentDate.getFullYear().toString();
 
+    convertedDate = new Date(currentDate.toLocaleDateString());
     // Adjust for the local time zone
-    const offset = currentDate.getTimezoneOffset();
-    currentDate.setMinutes(currentDate.getMinutes() - offset);
+    const offset = convertedDate.getTimezoneOffset();
+    convertedDate.setMinutes(convertedDate.getMinutes() - offset);
     // Set time to midnight
-    currentDate.setHours(0, 0, 0, 0);
+    convertedDate.setHours(0, 0, 0, 0);
     // Convert to ISO string
-    const date = currentDate.toISOString();
+    const date = convertedDate.toISOString();
 
     const hotel_income = total_checkout_bills - restaurant_income;
 
