@@ -23,17 +23,15 @@ export const getISOStringDate = (date) => {
 };
 
 export const getConvertedIsoStartDate = (inputDate) => {
-  console.log("StartDate", inputDate);
   const date = new Date(inputDate);
   // Adjust for the local time zone
   const offset = date.getTimezoneOffset();
   date.setMinutes(date.getMinutes() - offset);
-
   // Set time to midnight
   date.setHours(0, 0, 0, 0);
 
   // Convert to ISO string
-  const isoString = date.toISOString();
+  const isoString = date ? date.toISOString() : "";
 
   return isoString;
 };
@@ -55,7 +53,19 @@ export const getConvertedIsoEndDate = (inputDate) => {
 
   return isoString;
 };
-
+export const getTodayFormateDate = (date) => {
+  return date
+    ? new Date(date).toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+      })
+    : new Date().toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+      });
+};
 export const fromDateIsoConverterForAddExpenses = (date) => {
   const fromDate = new Date(date);
   fromDate.setHours(18, 0, 0, 0);

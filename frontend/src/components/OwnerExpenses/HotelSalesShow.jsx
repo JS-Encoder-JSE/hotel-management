@@ -26,6 +26,7 @@ import {
   fromDateIsoConverterForAddExpenses,
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
+  getTodayFormateDate,
 } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
 import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
@@ -97,7 +98,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
 
   const { data: hotelTodaySales } = useGetReportsByDateQuery({
     cp: currentPage,
-    date: getConvertedIsoStartDate(new Date().toLocaleDateString()),
+    date: getConvertedIsoStartDate(getTodayFormateDate()),
     hotelId: hotelId,
   });
 

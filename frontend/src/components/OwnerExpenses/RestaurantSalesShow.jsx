@@ -25,6 +25,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getTodayFormateDate,
 } from "../../utils/utils";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
 import RestaurantSales from "../../pages/OwnerExpenses/RestaurantSales";
@@ -80,7 +81,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: getConvertedIsoStartDate(new Date().toLocaleDateString()),
+    date: getConvertedIsoStartDate(getTodayFormateDate()),
     order_status: "CheckedOut",
     hotel_id: hotelId,
   });

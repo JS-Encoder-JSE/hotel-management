@@ -24,6 +24,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils";
 import EditExpenses from "../../components/inventory/EditExpenses";
@@ -120,15 +121,14 @@ const ShowAllExpense = () => {
       setSearchParams(null);
     },
   });
-  console.log(new Date().toLocaleDateString());
   const {
     data: resExpenses,
     isLoading,
     isSuccess,
     refetch,
   } = useGetExpensesQuery({
-    fromDate: getConvertedIsoStartDate(new Date().toLocaleDateString()),
-    toDate: getConvertedIsoEndDate(new Date().toLocaleDateString()),
+    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
+    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });

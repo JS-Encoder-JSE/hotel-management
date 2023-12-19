@@ -26,6 +26,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getTodayFormateDate,
 } from "../../utils/utils";
 import RestaurantSalesHistory from "../report/RestaurantSalesHistory";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
@@ -78,7 +79,7 @@ const ShowAllSell = () => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: getConvertedIsoStartDate(new Date().toLocaleDateString()),
+    date: getConvertedIsoStartDate(getTodayFormateDate()),
     order_status: "CheckedOut",
     hotel_id: user?.assignedHotel[0],
   });

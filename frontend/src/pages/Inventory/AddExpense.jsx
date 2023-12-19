@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import {
   fromDateIsoConverterForAddExpenses,
   getConvertedIsoStartDate,
+  getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils";
 import { GrUpdate } from "react-icons/gr";
@@ -132,8 +133,8 @@ const AddExpenses = () => {
     const response = await AddExpense({
       hotel_id: isHotelSuccess && hotelInfo[0]?._id,
       date: selectDate
-        ? getConvertedIsoStartDate(new Date(selectDate).toLocaleDateString())
-        : getConvertedIsoStartDate(new Date().toLocaleDateString()),
+        ? getConvertedIsoStartDate(getTodayFormateDate(selectDate))
+        : getConvertedIsoStartDate(getTodayFormateDate()),
       spendedfor: "restaurant",
       items: totalExpense,
       total_amount: parseInt(calculateTotal()),

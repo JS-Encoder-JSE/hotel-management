@@ -23,6 +23,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils";
 import EditExpenses from "../../components/inventory/EditExpenses";
@@ -99,8 +100,8 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: getConvertedIsoStartDate(new Date().toLocaleDateString()),
-    toDate: getConvertedIsoEndDate(new Date().toLocaleDateString()),
+    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
+    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });

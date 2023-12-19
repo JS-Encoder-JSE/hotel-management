@@ -16,6 +16,7 @@ import {
   checkinListoDate,
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
+  getTodayFormateDate,
 } from "../../utils/utils.js";
 
 const TodayCancelBookings = () => {
@@ -43,8 +44,8 @@ const TodayCancelBookings = () => {
     search: search,
     page: currentPage,
     filter: "Canceled",
-    fromDate: getConvertedIsoStartDate(new Date().toLocaleDateString()),
-    toDate: getConvertedIsoEndDate(new Date().toLocaleDateString()),
+    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
+    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
     manager_id: managerId === "undefined" ? "" : managerId,
   });
 

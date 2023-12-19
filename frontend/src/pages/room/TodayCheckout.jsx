@@ -26,6 +26,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getFormateDateAndTime,
+  getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils.js";
 
@@ -65,8 +66,8 @@ const TodayCheckout = () => {
   } = useGetBookingsByHotelQuery({
     search: formik.values.search,
     page: currentPage,
-    fromDate: getConvertedIsoStartDate(new Date().toLocaleDateString()),
-    toDate: getConvertedIsoEndDate(new Date().toLocaleDateString()),
+    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
+    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
     filter: "CheckedOut",
     // arrayFilter: ["CheckedIn", "CheckedOut"],
     manager_id: managerId === "undefined" ? "" : managerId,
