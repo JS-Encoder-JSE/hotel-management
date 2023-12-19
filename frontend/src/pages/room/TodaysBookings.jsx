@@ -48,10 +48,9 @@ const TodayBookings = () => {
     hotel_id: formik.values.hotel_id,
     search: search,
     page: currentPage,
-    filter: "Active",
     fromDate: getConvertedIsoStartDate(new Date().toLocaleDateString()),
     toDate: getConvertedIsoEndDate(new Date().toLocaleDateString()),
-    arrayFilter: ["Active", "Canceled"],
+    arrayFilter: ["Active", "Canceled", "CheckedIn", "CheckedOut"],
     manager_id: managerId === "undefined" ? "" : managerId,
   });
 

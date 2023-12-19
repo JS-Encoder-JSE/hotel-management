@@ -80,6 +80,7 @@ const EditRoom = () => {
         toast.error(response.error.data.message);
       } else {
         toast.success(response.data.message);
+        navigate(-1);
       }
 
       setLoading(false);
