@@ -149,6 +149,7 @@ const TodaysCheckinList = () => {
                     </th>
                     {/* <th>Booking <br />Date
                     </th> */}
+                    <th>Checked In</th>
                     <th>From</th>
                     <th>To</th>
                     {/* <th>Action</th> */}
@@ -156,6 +157,7 @@ const TodaysCheckinList = () => {
                 </thead>
                 <tbody>
                   {checkinList?.data?.docs?.map((item, idx) => {
+                    console.log(item);
                     return (
                       <tr
                         className={
@@ -177,8 +179,8 @@ const TodaysCheckinList = () => {
                         {/* <td>{item?.paid_amount}</td> */}
                         {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
                         <td>{getformatDateTime(item?.checkin_date)}</td>
-                        
-                        <td>{getformatDateTime(item?.to)}</td>
+                        <td>{getFormateDateAndTime(item?.from)}</td>
+                        <td>{getFormateDateAndTime(item?.to)}</td>
 
                         {/* <td className={`flex flex-wrap gap-1.5`}>
                           <span

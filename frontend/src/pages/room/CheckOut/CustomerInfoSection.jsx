@@ -150,33 +150,33 @@ const CustomerInfoSection = ({ data }) => {
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Name :</p>
-            <p className="whitespace-nowrap">{data?.guestName}</p>
+            <p className=" break-all">{data?.guestName}</p>
           </div>
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Room No :</p>
-            <p className="whitespace-nowrap">
+            <p className="break-all">
               {data?.room_ids?.map((i) => i?.roomNumber).join(", ")}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Mobile No :</p>
-            <p className="whitespace-nowrap">{data?.mobileNumber}</p>
+            <p className="break-all">{data?.mobileNumber}</p>
           </div>
           <div className="grid grid-cols-2 gap-20">
-            <p className="whitespace-nowrap">Address :</p>
-            <p className="whitespace-nowrap">{data?.address}</p>
+            <p className="whitespace-nowrap break-all">Address :</p>
+            <p className=" break-words">{data?.address}</p>
           </div>
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Total Payable Amount :</p>
-            <p className="whitespace-nowrap">{totalPayableAmount}</p>
+            <p className=" break-all">{totalPayableAmount}</p>
           </div>
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Total Paid Amount :</p>
-            <p className="whitespace-nowrap">{data?.paid_amount}</p>
+            <p className="break-all">{data?.paid_amount}</p>
           </div>
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Total Unpaid Amount :</p>
-            <p className="whitespace-nowrap">
+            <p className="break-all">
               {totalPayableAmount - data?.paid_amount < 0
                 ? 0
                 : totalPayableAmount - data?.paid_amount}
@@ -184,17 +184,17 @@ const CustomerInfoSection = ({ data }) => {
           </div>
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Total Balance:</p>
-            <p className="whitespace-nowrap">{data?.total_balance}</p>
+            <p className="whitespace-nowrap break-all">{data?.total_balance}</p>
           </div>
           <div className="grid grid-cols-2 gap-20">
             <p className="whitespace-nowrap">Current Balance:</p>
-            <p className="whitespace-nowrap">
+            <p className="whitespace-nowrap break-all">
               {calculateBalance + +calculateCollectedAmount}
             </p>
           </div>
           <hr />
           <div className="grid grid-cols-2">
-            <p className="whitespace-nowrap">Select Checkout Date</p>
+            <p className="whitespace-nowrap break-all">Select Checkout Date</p>
             <div className="w-fll flex flex-col">
               <ReactDatePicker
                 dateFormat="dd/MM/yyyy"

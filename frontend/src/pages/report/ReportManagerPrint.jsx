@@ -60,7 +60,7 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
           </div>
 
           {/* blance info */}
-          <div className=" px-4 py-2">
+          {/* <div className=" px-4 py-2">
             <h2 className="font-bold">Balance Summary</h2>
             <div className="flex flex-col items-start">
               <div className="grid grid-cols-2 gap-9  ">
@@ -74,7 +74,7 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* blance info */}
         </div>
       </div>
