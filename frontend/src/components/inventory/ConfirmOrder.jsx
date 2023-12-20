@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COItem from "./COItem.jsx";
-import { setOrder } from "../../redux/add-order/addOrderSlice.js";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {
@@ -13,7 +12,7 @@ import { useAddOrderMutation } from "../../redux/restaurant/foodAPI.js";
 import toast from "react-hot-toast";
 import Select from "react-select";
 import { useOrderInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
-import { resetInv } from "../../redux/inventory/inventorySlice.js";
+import { resetInv, setOrder } from "../../redux/inventory/inventorySlice.js";
 
 // form validation
 const validationSchema = yup.object({
