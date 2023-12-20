@@ -16,7 +16,7 @@ import store from "../../redux/store.js";
 
 const SuspendList = () => {
   const navigate = useNavigate();
-
+  const [forcePage, setForcePage] = useState(null);
   const [renewPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
@@ -95,6 +95,8 @@ const SuspendList = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
             onKeyUp={(e) => {
+              e.target.value === "" &&  setForcePage(0)
+              e.target.value === "" && setCurrentPage(0)
               e.target.value === "" ? formik.handleSubmit() : null;
             }}
             onKeyDown={(e) => pressEnter(e)}
@@ -209,6 +211,7 @@ const SuspendList = () => {
                   marginPagesDisplayed={2}
                   onPageChange={handlePageClick}
                   renderOnZeroPageCount={null}
+                  forcePage={forcePage}
                 />
               </div>
             </>

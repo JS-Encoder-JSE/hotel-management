@@ -31,6 +31,8 @@ const Report = () => {
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
+
+  console.log(currentPage)
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -53,6 +55,7 @@ const Report = () => {
       endDate: "",
     },
     onSubmit: (values) => {
+
       setSearchParams((p) => ({
         ...p,
         toDate:
@@ -88,6 +91,7 @@ const Report = () => {
         uid: id || user._id,
         filter: formik.values.filter,
         limit: formik.values.entries,
+        search:formik.values.search
       });
 
   const exportExcel = async (data, name) => {
@@ -308,12 +312,17 @@ const Report = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
             />
             <button
-              onClick={formik.handleSubmit}
+              onClick={()=>{
+                setCurrentPage(0),
+                formik.handleSubmit()
+              }}
               type="button"
               className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >

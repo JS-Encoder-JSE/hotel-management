@@ -39,10 +39,10 @@ import ReportPrint from "./ReportPrint.jsx";
 import { useSelector } from "react-redux";
 
 const ReportManager = () => {
-  const [forcePage, setForcePage] = useState(null);
   const componentRef = useRef();
   const navigate = useNavigate();
   const [reportsPerPage] = useState(10);
+  const [forcePage, setForcePage] = useState(null);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [PDF, setPDF] = useState([]);
@@ -67,6 +67,7 @@ const ReportManager = () => {
   // onAfterPrint: () => {
   //   navigate("/dashboard/report");
   // },
+
   const {
     data: hotelInfo,
     isLoading: isHotelLoading,
@@ -81,6 +82,10 @@ const ReportManager = () => {
       endDate: "",
     },
     onSubmit: (values) => {
+      setKeyword(values.search)
+      if(values.search){
+        setCurrentPage(0)
+      }
       setSearchParams((p) => ({
         ...p,
         toDate:
@@ -100,10 +105,10 @@ const ReportManager = () => {
   });
   const { isLoading, data: reports } = useGetManagerReportQuery({
     ...searchParams,
-    cp: formik.values.search? 0: currentPage,
+    cp:currentPage,
     filter: formik.values.filter,
     limit: formik.values.entries,
-    search:formik.values.search,
+    search:keyword,
   });
   console.log("reports", reports);
 
@@ -282,6 +287,8 @@ const ReportManager = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}

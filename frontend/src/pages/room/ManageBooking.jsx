@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 
 const ManageBooking = () => {
   const [search, setSearch] = useState("");
+  const [forcePage, setForcePage] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const formik = useFormik({
     initialValues: {
@@ -27,7 +28,7 @@ const ManageBooking = () => {
 
   const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
-    page:formik.values.search? 0 : currentPage,
+    page:currentPage,
     search: formik.values.search, 
     filter: "Active",
   });
@@ -82,6 +83,11 @@ const ManageBooking = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
               onKeyDown={(e) => pressEnter(e)}
             />
             <button
@@ -100,6 +106,7 @@ const ManageBooking = () => {
             bookingList={bookingList}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            forcePage={forcePage}
           />
         ) : (
           <h3 className={`text-center`}>No data found!</h3>

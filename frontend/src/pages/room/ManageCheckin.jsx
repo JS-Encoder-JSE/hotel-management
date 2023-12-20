@@ -17,6 +17,7 @@ import CheckinList from "../../components/room/CheckinList.jsx";
 
 const ManageCheckin = () => {
   const [search, setSearch] = useState("");
+  const [forcePage, setForcePage] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
@@ -46,16 +47,23 @@ const ManageCheckin = () => {
     refetch,
   } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
-    search: formik.values.search,
-    page: formik.values.search ? 0 : currentPage,
+    search: search,
+    page: currentPage,
     filter: "CheckedIn",
   });
+
+  console.log(checkinList)
 
   // refetch()
   const path = useLocation();
   useEffect(() => {
     refetch();
   }, [path.pathname]);
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
+
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
@@ -103,6 +111,11 @@ const ManageCheckin = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
               onKeyDown={(e) => pressEnter(e)}
             />
             <button
@@ -120,6 +133,8 @@ const ManageCheckin = () => {
           <CheckinList
             page={checkinList?.data?.totalPages}
             checkinList={checkinList?.data?.docs}
+            handlePageClick={handlePageClick}
+            forcePage={forcePage}
           />
         ) : (
           <h3 className={`text-center`}>No data found!</h3>

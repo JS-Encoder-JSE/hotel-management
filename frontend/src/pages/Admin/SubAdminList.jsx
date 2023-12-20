@@ -38,6 +38,7 @@ const SubAdminList = () => {
 
   const navigate = useNavigate();
   const [subAdminPerPage] = useState(10);
+  const [forcePage, setForcePage] = useState(null);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [owner, setOwner] = useState(null);
@@ -98,7 +99,7 @@ const SubAdminList = () => {
   return (
     <div className={` space-y-5`}>
       <div className={`bg-white p-4 rounded`}>
-      <div>
+        <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -114,12 +115,12 @@ const SubAdminList = () => {
             </button>
           </Link>
         </div>
-     <div>
-     <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
-          Sub Admin List
-        </h1>
-     </div>
-      
+        <div>
+          <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+            Sub Admin List
+          </h1>
+        </div>
+
         <div></div>
         <div
           className={`flex flex-col sm:flex-row justify-end items-center gap-5`}
@@ -150,6 +151,8 @@ const SubAdminList = () => {
                 value={formik.values.search}
                 onChange={formik.handleChange}
                 onKeyUp={(e) => {
+                  e.target.value === "" && setForcePage(0);
+                  e.target.value === "" && setCurrentPage(0);
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}
                 onKeyDown={(e) => pressEnter(e)}
@@ -296,6 +299,7 @@ const SubAdminList = () => {
                     marginPagesDisplayed={2}
                     onPageChange={handlePageClick}
                     renderOnZeroPageCount={null}
+                    forcePage={forcePage}
                   />
                 </div>
                 <Modal id={`ol_modal`}>

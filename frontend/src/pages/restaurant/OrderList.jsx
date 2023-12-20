@@ -36,8 +36,11 @@ const OrderList = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const [ordersPerPage] = useState(10);
+  const [forcePage, setForcePage] = useState(null);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
+
+console.log(forcePage)
 
   const [deleteOrder] = useDeleteOrderMutation();
   const [searchParams, setSearchParams] = useState({
@@ -55,6 +58,9 @@ const OrderList = () => {
     },
     onSubmit: (values) => {
       setSearch(values.search);
+      if(values.search){
+        setCurrentPage(0)
+      }
       setSearchParams((p) => ({
         ...p,
         toDate:
@@ -201,6 +207,8 @@ const OrderList = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter2(e)}
@@ -302,6 +310,7 @@ const OrderList = () => {
                     marginPagesDisplayed={1}
                     onPageChange={handlePageClick}
                     renderOnZeroPageCount={null}
+                    forcePage={forcePage}
                   />
                 </div>
               </>

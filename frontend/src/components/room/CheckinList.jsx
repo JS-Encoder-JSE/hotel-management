@@ -15,7 +15,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { BiSolidDoorOpen } from "react-icons/bi";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
 
-const CheckinList = ({ checkinList, page, handlePageClick }) => {
+const CheckinList = ({ checkinList, page, handlePageClick, forcePage }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -115,6 +115,7 @@ const CheckinList = ({ checkinList, page, handlePageClick }) => {
           marginPagesDisplayed={2}
           onPageChange={handlePageClick}
           renderOnZeroPageCount={null}
+          forcePage={forcePage}
         />
       </div>
       {/* <Modal id={`eb_modal`}>

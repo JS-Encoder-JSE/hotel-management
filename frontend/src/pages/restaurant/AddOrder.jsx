@@ -40,6 +40,7 @@ const validationSchema = Yup.object().shape({
 const AddOrder = () => {
   const [keyword, setKeyword] = useState(null);
   const [reset, setReset] = useState(false);
+  const [forcePage, setForcePage] = useState(null);
   const [error, setError] = useState("");
   const [tableIdRequired, setTableIdRequired] = useState("");
   const [roomIdRequired, setRoomIdRequired] = useState("");
@@ -264,6 +265,8 @@ const AddOrder = () => {
         setReset={setReset}
         keyword={keyword}
         chooseHotel={formik.values.chooseHotel}
+        setForcePage={setForcePage}
+        forcePage={forcePage}
       />
       <Modal id={`fp_modal`} classNames={`w-full max-w-3xl`}>
         <ConfirmOrder />

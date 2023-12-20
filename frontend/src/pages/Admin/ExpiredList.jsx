@@ -23,6 +23,7 @@ const ExpiredList = () => {
   const navigate = useNavigate();
   const [renewPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
+  const [forcePage, setForcePage] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [keyword, setKeyword] = useState(null);
   const [owner, setOwner] = useState(null);
@@ -107,6 +108,8 @@ const ExpiredList = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
             onKeyUp={(e) => {
+              e.target.value === "" &&  setForcePage(0)
+              e.target.value === "" && setCurrentPage(0)
               e.target.value === "" ? formik.handleSubmit() : null;
             }}
             onKeyDown={(e) => pressEnter(e)}
@@ -233,6 +236,7 @@ const ExpiredList = () => {
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
+                forcePage={forcePage}
               />
             </div>
           </>

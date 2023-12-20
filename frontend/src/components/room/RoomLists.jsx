@@ -5,7 +5,7 @@ import ReactPaginate from "react-paginate";
 import { useDeleteRoomMutation } from "../../redux/room/roomAPI.js";
 import Swal from "sweetalert2";
 
-const RoomLists = ({ currentPage, setCurrentPage, rooms }) => {
+const RoomLists = ({ currentPage, setCurrentPage, rooms,forcePage }) => {
   const navigate = useNavigate();
   const [deleteRoom] = useDeleteRoomMutation();
   const [roomsPerPage] = useState(10);

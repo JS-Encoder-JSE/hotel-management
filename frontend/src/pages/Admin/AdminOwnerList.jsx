@@ -38,6 +38,7 @@ const AdminOwnerList = ({ title }) => {
 
   const navigate = useNavigate();
   const [ownersPerPage] = useState(10);
+  const [forcePage, setForcePage] = useState(null);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [owner, setOwner] = useState(null);
@@ -178,6 +179,8 @@ const AdminOwnerList = ({ title }) => {
                 value={formik.values.search}
                 onChange={formik.handleChange}
                 onKeyUp={(e) => {
+                  e.target.value === "" &&  setForcePage(0)
+                  e.target.value === "" && setCurrentPage(0)
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}
                 onKeyDown={(e) => pressEnter(e)}
@@ -325,6 +328,7 @@ const AdminOwnerList = ({ title }) => {
                   marginPagesDisplayed={2}
                   onPageChange={handlePageClick}
                   renderOnZeroPageCount={null}
+                  forcePage={forcePage}
                 />
               </div>
               <Modal id={`ol_modal`}>

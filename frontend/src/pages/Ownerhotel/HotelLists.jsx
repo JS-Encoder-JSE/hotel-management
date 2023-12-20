@@ -15,6 +15,7 @@ const HotelLists = () => {
   const { user } = useSelector((store) => store.authSlice);
   const navigate = useNavigate();
   const [hotelsPerPage] = useState(10);
+  const [forcePage, setForcePage] = useState(null);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [updateHotel] = useUpdateHotelMutation();
@@ -117,6 +118,8 @@ const HotelLists = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
             onKeyUp={(e) => {
+              e.target.value === "" &&  setForcePage(0)
+              e.target.value === "" && setCurrentPage(0)
               e.target.value === "" ? formik.handleSubmit() : null;
             }}
             onKeyDown={(e) => pressEnter(e)}
@@ -230,6 +233,7 @@ const HotelLists = () => {
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
+                forcePage={forcePage}
               />
             </div>
           </>

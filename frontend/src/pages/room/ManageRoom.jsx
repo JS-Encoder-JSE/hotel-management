@@ -14,6 +14,7 @@ const ManageRoom = () => {
  
   const { user } = useSelector((store) => store.authSlice);
   const [keyword, setKeyword] = useState(null);
+  const [forcePage, setForcePage] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const formik = useFormik({
     initialValues: {
@@ -115,6 +116,8 @@ const ManageRoom = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
@@ -135,6 +138,7 @@ const ManageRoom = () => {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             rooms={rooms}
+            forcePage={forcePage}
           />
         ) : (
           <h3 className="text-center">No data found!</h3>

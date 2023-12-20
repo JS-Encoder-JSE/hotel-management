@@ -21,6 +21,7 @@ const ManageEmployee = () => {
   const [keyword, setKeyword] = useState(null);
   const { data: hotelList } = useGetRoomsAndHotelsQuery();
   const [employeesPerPage] = useState(10);
+  const [forcePage, setForcePage] = useState(null);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteEmployee] = useDeleteEmployeeMutation();
@@ -33,6 +34,9 @@ const ManageEmployee = () => {
     },
     onSubmit: (values) => {
       setKeyword(values.search);
+      if(values.search){
+        setCurrentPage(0)
+      }
     },
   });
   const { isLoading, data: employees } = useGetUsersQuery({
@@ -112,6 +116,8 @@ const ManageEmployee = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
             onKeyUp={(e) => {
+              e.target.value === "" &&  setForcePage(0)
+              e.target.value === "" && setCurrentPage(0)
               e.target.value === "" ? formik.handleSubmit() : null;
             }}
             onKeyDown={(e) => pressEnter(e)}
@@ -247,6 +253,7 @@ const ManageEmployee = () => {
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
               renderOnZeroPageCount={null}
+              forcePage={forcePage}
             />
           </div>
         </>

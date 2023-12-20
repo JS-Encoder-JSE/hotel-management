@@ -7,17 +7,27 @@ import ReactPaginate from "react-paginate";
 import { useFoodsQuery } from "../../redux/restaurant/foodAPI.js";
 import { Rings } from "react-loader-spinner";
 
-const FoodLists = ({ formik, keyword, roomOrTable, reset, setReset }) => {
+const FoodLists = ({ formik, keyword, roomOrTable, reset, setReset ,forcePage,setForcePage }) => {
   const { order } = useSelector((store) => store.addOrderSlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const [foodsPerPage] = useState(10);
   const { isLoading, data: foods } = useFoodsQuery({
-    cp: formik.values.search? 0:currentPage,
+    cp:currentPage,
     pp: foodsPerPage,
     search: formik.values.search,
   });
+
+  // const [forcePage, setForcePage] = useState(null);
+
+useEffect(()=>{
+if(formik.values.search){
+  setCurrentPage(0)
+  setForcePage(0)
+}
+},[formik.values.search])
+
   const [pageCount, setPageCount] = useState(1);
 
   const handlePageClick = ({ selected: page }) => {
@@ -90,6 +100,7 @@ const FoodLists = ({ formik, keyword, roomOrTable, reset, setReset }) => {
             marginPagesDisplayed={2}
             onPageChange={handlePageClick}
             renderOnZeroPageCount={null}
+            forcePage={forcePage}
           />
         </div>
       </div>
