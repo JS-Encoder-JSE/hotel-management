@@ -70,7 +70,7 @@ const roomAPI = baseAPI.injectEndpoints({
         };
       },
       providesTags: ["cancelBooking"],
-      invalidatesTags: ["booking", "addBooking"],
+      invalidatesTags: ["booking", "addBooking","room"],
     }),
 
     addExpenses: build.mutation({
