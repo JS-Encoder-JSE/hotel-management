@@ -32,7 +32,7 @@ export const getReportsByHotelId = async (req, res) => {
 
     // Add date range criteria if provided
     if (fromDate && toDate) {
-      query.checked_in = { $gte: fromDate, $lte: toDate };
+      query.checked_out = { $gte: fromDate, $lte: toDate };
     }
 
     const options = {
@@ -42,23 +42,51 @@ export const getReportsByHotelId = async (req, res) => {
 
     // Use Mongoose pagination to retrieve reports
     const reports = await ManagerReport.paginate(query, options);
-    const totalPaidAmount = await ManagerReport.aggregate([
-      { $match: query },
-      { $group: { _id: null, total: { $sum: "$paid_amount" } } },
-    ]);
+    const allReports = await ManagerReport.find(query);
+    // Calculate total payable, paid, and unpaid amounts
+    const totalPayableAmount = allReports.reduce(
+      (acc, report) => acc + report.payable_amount,
+      0
+    );
+    const totalPaidAmount = allReports.reduce(
+      (acc, report) => acc + report.paid_amount,
+      0
+    );
+    const totalBalanceDeducted = allReports.reduce(
+      (acc, report) => acc + report.balance_deducted,
+      0
+    );
+    const totalBalanceRefunded = allReports.reduce(
+      (acc, report) => acc + report.balance_refunded,
+      0
+    );
+    const totalUnpaidAmount = allReports.reduce(
+      (acc, report) => acc + report.unpaid_amount,
+      0
+    );
 
-    // Extract the total value from the array
-    const totalPaidAmountValue =
-      totalPaidAmount.length > 0 ? totalPaidAmount[0].total : 0;
-
-    // Assign the total value directly
-    reports.total_paid_amount = totalPaidAmountValue;
-
-    res.status(200).json({
+    const response = {
       success: true,
-      data: reports,
+      data: {
+        docs: reports.docs,
+        totalDocs: reports.totalDocs,
+        limit: reports.limit,
+        totalPages: reports.totalPages,
+        page: reports.page,
+        pagingCounter: reports.pagingCounter,
+        hasPrevPage: reports.hasPrevPage,
+        hasNextPage: reports.hasNextPage,
+        prevPage: reports.prevPage,
+        nextPage: reports.nextPage,
+        total_payable_amount: totalPayableAmount,
+        total_paid_amount: totalPaidAmount,
+        total_balance_deducted: totalBalanceDeducted,
+        total_balance_refunded: totalBalanceRefunded,
+        total_unpaid_amount: totalUnpaidAmount,
+      },
       message: "Reports retrieved successfully",
-    });
+    };
+    return res.status(200).json(response);
   } catch (error) {
     console.error(error);
 
@@ -173,23 +201,23 @@ export const getReportsByDate = async (req, res) => {
     const reports = await ManagerReport.paginate(query, options);
     const allReports = await ManagerReport.find(query);
     // Calculate total payable, paid, and unpaid amounts
-    const totalPayableAmount = allReports.docs.reduce(
+    const totalPayableAmount = allReports.reduce(
       (acc, report) => acc + report.payable_amount,
       0
     );
-    const totalPaidAmount = allReports.docs.reduce(
+    const totalPaidAmount = allReports.reduce(
       (acc, report) => acc + report.paid_amount,
       0
     );
-    const totalBalanceDeducted = allReports.docs.reduce(
+    const totalBalanceDeducted = allReports.reduce(
       (acc, report) => acc + report.balance_deducted,
       0
     );
-    const totalBalanceRefunded = allReports.docs.reduce(
+    const totalBalanceRefunded = allReports.reduce(
       (acc, report) => acc + report.balance_refunded,
       0
     );
-    const totalUnpaidAmount = allReports.docs.reduce(
+    const totalUnpaidAmount = allReports.reduce(
       (acc, report) => acc + report.unpaid_amount,
       0
     );
