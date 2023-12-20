@@ -89,6 +89,7 @@ const Report = () => {
         filter: formik.values.filter,
         limit: formik.values.entries,
       });
+      console.log("reports",reports)
 
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
@@ -384,7 +385,8 @@ const Report = () => {
                       <tr>
                         <td colSpan={6}></td>
                         <td>Total</td>
-                        <td>{totalAmount}</td>
+                        {/* <td>{totalAmount}</td> */}
+                        <td>{reports.total_paid_amount}</td>
                       </tr>
                     </tfoot>
                   </table>

@@ -88,8 +88,10 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ? getFormateDateAndTime(item[key]) // Use the date prop here
-                    : item[key]}
+                    ? date
+                    ? new Date(date).toLocaleDateString()
+                    : new Date(item[key]).toLocaleDateString() // Use the date prop here
+                  : item[key]}
                 </Text>
               ))}
             </View>
