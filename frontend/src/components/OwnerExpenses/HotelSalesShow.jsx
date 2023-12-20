@@ -165,7 +165,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
             </div>
             <div>
               <div className={`flex justify-end mb-5 mr-5`}>
-                {PDF?.length ? (
+                {hotelTodaySales?.data?.docs?.length ? (
                   <PDFDownloadLink
                     document={
                       <HotelSalesTodayReport
@@ -190,7 +190,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
               <div className=" overflow-x-auto overflow-y-auto">
                 {hotelTodaySales && hotelTodaySales?.data?.docs?.length ? (
                   <table className="table">
-                    <thead>
+                    <thead className="">
                       <tr>
                         <th>SL</th>
                         <th>Guest Name</th>
@@ -198,9 +198,9 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                         <th>Checkout Date</th>
                         <th>Room Numbers</th>
                         <th>Payment Method</th>
-                        <th>Paid Amount</th>
-                        <th>Deducted from Ballance</th>
-                        <th>Refund Amount</th>
+                        <th className="text-end">Paid Amount</th>
+                        <th className="text-end">Deducted from Ballance</th>
+                        <th className="text-end">Refund Amount</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -305,7 +305,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
             </h3>
           </div>
           <div className={`flex justify-end mb-5 mr-5`}>
-            {PDF?.length ? (
+            {hotelSalesHistory?.data?.docs?.length ? (
               <PDFDownloadLink
                 document={
                   <HotelSalesHistoryReport

@@ -181,7 +181,7 @@ const HotelExpensesShow = ({ hotelId }) => {
                 </h3>
               </div>
               <div className={`flex justify-end mb-5 mr-5`}>
-                {PDF?.length ? (
+                {currentItems.length ? (
                   <PDFDownloadLink
                     document={
                       <RestaurantExpenseReport
@@ -332,7 +332,7 @@ const HotelExpensesShow = ({ hotelId }) => {
               </h3>
             </div>
             <div className="flex justify-end mr-5">
-              {PDF?.length ? (
+              {filteredExpenses?.docs.length? (
                 <PDFDownloadLink
                   document={
                     <ExpensesHistoryReport
@@ -478,7 +478,7 @@ const HotelExpensesShow = ({ hotelId }) => {
                 </table>
               </div>
               <div className="flex justify-center mt-10">
-                <ReactPaginate
+                {filteredExpenses?.docs.length? <ReactPaginate
                   containerClassName="join rounded-none"
                   pageLinkClassName="join-item btn btn-md bg-transparent"
                   activeLinkClassName="btn-active !bg-green-slimy text-white"
@@ -495,7 +495,7 @@ const HotelExpensesShow = ({ hotelId }) => {
                   onPageChange={handlePageClick}
                   renderOnZeroPageCount={null}
                   forcePage={forcePage}
-                />
+                />:null}
               </div>
             </div>
           ) : (
