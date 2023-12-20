@@ -36,22 +36,14 @@ const authPersistConfig = {
   blacklist: ["checkoutInfoCalSlice", "addOrderSlice", "inventorySlice"],
 };
 
-const appReducer = combineReducers({
+const rootReducer = combineReducers({
   authSlice,
   addOrderSlice,
   inventorySlice,
   checkoutInfoCalSlice,
   [baseAPI.reducerPath]: baseAPI.reducer,
 });
-const rootReducer = (state, action) => {
-  if (action.type === "auth/signOut") {
-    // this applies to all keys defined in persistConfig(s)
-    storage.removeItem("persist:auth");
 
-    state = {};
-  }
-  return appReducer(state, action);
-};
 const persistedReducer = persistReducer(authPersistConfig, rootReducer);
 
 const store = configureStore({

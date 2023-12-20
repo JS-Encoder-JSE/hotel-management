@@ -212,7 +212,6 @@ const CheckOut = () => {
         paymentList[0]?.trx === ""
       ) {
         setTrxError(true);
-        setCheckOutLoading(false);
         return;
       } else {
         const saveCheckoutInfoObj = {
