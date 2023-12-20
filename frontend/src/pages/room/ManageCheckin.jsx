@@ -47,7 +47,7 @@ const ManageCheckin = () => {
   } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
     search: formik.values.search,
-    page: currentPage,
+    page: formik.values.search ? 0 : currentPage,
     filter: "CheckedIn",
   });
 
@@ -87,7 +87,6 @@ const ManageCheckin = () => {
         <h1>Manage CheckIn</h1>
       </div>
       <div className="flex justify-end">
-        
         <div className={`flex flex-col md:flex-row gap-4 `}>
           <button
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}

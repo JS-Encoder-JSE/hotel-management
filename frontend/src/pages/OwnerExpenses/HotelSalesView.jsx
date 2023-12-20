@@ -137,7 +137,7 @@ const HotelSalesView = () => {
                 <th>Room Numbers</th>
                 <th>Payment Method</th>
                 <th>Paid Amount</th>
-                <th>Deducted from Ballance</th>
+                <th>Deducted from Balance</th>
                 <th>Refund Amount</th>
                 <th>Action</th>
               </tr>

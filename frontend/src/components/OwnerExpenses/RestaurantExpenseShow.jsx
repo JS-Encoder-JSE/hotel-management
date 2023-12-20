@@ -293,7 +293,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                   </table>
                 </div>
               ) : (
-                <p className="text-center mt-16">No expense</p>
+                <p className="text-center my-44">No expense</p>
               )}
             </div>
           </div>
