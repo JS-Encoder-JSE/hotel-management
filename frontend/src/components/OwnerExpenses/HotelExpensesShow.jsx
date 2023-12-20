@@ -181,7 +181,7 @@ const HotelExpensesShow = ({ hotelId }) => {
                 </h3>
               </div>
               <div className={`flex justify-end mb-5 mr-5`}>
-                {currentItems.length ? (
+                {currentItems?.length ? (
                   <PDFDownloadLink
                     document={
                       <RestaurantExpenseReport
