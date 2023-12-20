@@ -27,7 +27,7 @@ const RestaurantSalesHistory = ({ values, header, date }) => {
   ];
   const tableHeaders = [
     "Serial No",
-    "date",
+    "Date",
     "Item",
     "Surveyor Quantity",
     "Quantity",

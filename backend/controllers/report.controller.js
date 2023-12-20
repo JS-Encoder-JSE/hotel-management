@@ -32,14 +32,14 @@ export const getReport = async (req, res) => {
     } else if (fromDate) {
       // If only fromDate is provided, use $gte for the minimum date filter
       query.$and = [
-        {createdAt:{ $gte: new Date(fromDate) }},
-        {updatedAt:{ $gte: new Date(fromDate) }},
+        { createdAt: { $gte: new Date(fromDate) } },
+        { updatedAt: { $gte: new Date(fromDate) } },
       ];
     } else if (toDate) {
       // If only toDate is provided, use $lte for the maximum date filter
       query.$and = [
-        {createdAt:{ $lte: new Date(toDate) }},
-        {updatedAt:{ $lte: new Date(toDate) }},
+        { createdAt: { $lte: new Date(toDate) } },
+        { updatedAt: { $lte: new Date(toDate) } },
       ];
     }
     if (["Sold", "Renew", "Expired"].includes(filter)) {
@@ -90,14 +90,14 @@ export const getAllReport = async (req, res) => {
     } else if (fromDate) {
       // If only fromDate is provided, use $gte for the minimum date filter
       query.$and = [
-        {createdAt:{ $gte: new Date(fromDate) }},
-        {updatedAt:{ $gte: new Date(fromDate) }},
+        { createdAt: { $gte: new Date(fromDate) } },
+        { updatedAt: { $gte: new Date(fromDate) } },
       ];
     } else if (toDate) {
       // If only toDate is provided, use $lte for the maximum date filter
       query.createdAt = [
-        {createdAt:{ $lte: new Date(toDate) }},
-        {updatedAt:{ $lte: new Date(toDate) }},
+        { createdAt: { $lte: new Date(toDate) } },
+        { updatedAt: { $lte: new Date(toDate) } },
       ];
     }
     if (["Sold", "Renew", "Expired"].includes(filter)) {
@@ -117,7 +117,12 @@ export const getAllReport = async (req, res) => {
     };
 
     const result = await Report.paginate(query, options);
-
+    const allReports = await Report.find(query);
+    const totalPaidAmount = allReports.reduce(
+      (acc, report) => acc + report.paid_amount,
+      0
+    );
+    result.total_paid_amount = totalPaidAmount;
     return res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching transaction logs:", error);
