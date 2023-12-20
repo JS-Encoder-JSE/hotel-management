@@ -117,7 +117,8 @@ export const getAllReport = async (req, res) => {
     };
 
     const result = await Report.paginate(query, options);
-    const totalPaidAmount = result.docs.reduce(
+    const allReports = await Report.find(query);
+    const totalPaidAmount = allReports.docs.reduce(
       (acc, report) => acc + report.paid_amount,
       0
     );

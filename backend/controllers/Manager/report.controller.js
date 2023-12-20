@@ -171,25 +171,25 @@ export const getReportsByDate = async (req, res) => {
     };
 
     const reports = await ManagerReport.paginate(query, options);
-
+    const allReports = await ManagerReport.find(query);
     // Calculate total payable, paid, and unpaid amounts
-    const totalPayableAmount = reports.docs.reduce(
+    const totalPayableAmount = allReports.docs.reduce(
       (acc, report) => acc + report.payable_amount,
       0
     );
-    const totalPaidAmount = reports.docs.reduce(
+    const totalPaidAmount = allReports.docs.reduce(
       (acc, report) => acc + report.paid_amount,
       0
     );
-    const totalBalanceDeducted = reports.docs.reduce(
+    const totalBalanceDeducted = allReports.docs.reduce(
       (acc, report) => acc + report.balance_deducted,
       0
     );
-    const totalBalanceRefunded = reports.docs.reduce(
+    const totalBalanceRefunded = allReports.docs.reduce(
       (acc, report) => acc + report.balance_refunded,
       0
     );
-    const totalUnpaidAmount = reports.docs.reduce(
+    const totalUnpaidAmount = allReports.docs.reduce(
       (acc, report) => acc + report.unpaid_amount,
       0
     );
