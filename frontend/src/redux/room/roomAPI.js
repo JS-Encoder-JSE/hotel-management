@@ -283,6 +283,7 @@ const roomAPI = baseAPI.injectEndpoints({
         "room",
         "bookingToCheckIn",
         "getCheckoutDataByBookingId",
+        "subDashboard"
       ],
     }),
     getCheckoutDataByBookingId: build.query({
