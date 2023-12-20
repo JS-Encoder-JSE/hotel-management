@@ -306,6 +306,8 @@ const ReportManager = () => {
                   <th>Check In</th>
                   <th>Check Out</th>
                   <th>Paid Amount</th>
+                  {/* balance_deducted */}
+                  <th>Deducted From Balance</th>
                   <th>Action</th>
                   {/*<th>Deposit By</th>*/}
                 </tr>
@@ -327,6 +329,7 @@ const ReportManager = () => {
 
                       <td>{getFormateDateAndTime(report?.checked_out)}</td>
                       <td>{report?.paid_amount}</td>
+                      <td>{report?.balance_deducted}</td>
                       <td className={`space-x-1.5`}>
                         {/* <button><LuPrinter /></button> */}
                         <ReportPrint
