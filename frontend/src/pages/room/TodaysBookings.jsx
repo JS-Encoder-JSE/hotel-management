@@ -126,6 +126,7 @@ const TodayBookings = () => {
             bookingList={bookingList}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            forcePage={forcePage}
           />
         ) : (
           <h3 className={`text-center`}>No data found!</h3>
