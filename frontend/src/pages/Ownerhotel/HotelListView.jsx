@@ -102,18 +102,64 @@ const HotelListView = () => {
         </div>
         {!isLoading ? (
           <>
-            <h1 className="text-center text-2xl bg-green-slimy w-72 mx-auto text-white p-1 rounded-md mt-7">Hotel - information</h1>
-            <div className="card-body grid md:grid-cols-2 gap-4">
-              <div className="">
-                <h2 className="card-title mb-3">Hotel Description </h2>
-                <h6> Name : {hotel?.name}</h6>
-                <h6> Branch : {hotel?.branch_name}</h6>
-                <h6> Address : {hotel?.address}</h6>
-                <h6> Number : {hotel?.phone_no}</h6>
-                <h6> Email : {hotel?.email}</h6>
-                <h6> Username : {hotel?.manager_acc?.username}</h6>
-              </div>
+            <h1 className="text-center md:text-2xl bg-green-slimy max-w-72 mx-auto text-white p-1 rounded-md mt-7">Hotel - information</h1>
+            <div className="card-body grid grid-cols xl:grid-cols-2 gap-4">
+            <div className="">
+              <h2 className="card-title mb-3">Hotel Description </h2>
+              {/* <div
+                className="sm:flex-row"
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <span style={{ flexBasis: "50%" }}>Address</span>
+                <span style={{ flexBasis: "50%" }}>{data?.address}</span>
+              </div> */}
+              <table className="table-auto w-full overflow-x-auto">
+                <tbody>
+                  <tr>
+                    <th className="text-start">Name</th>
+                    <td className="">:</td>
+                    <td className="break-all">{hotel?.name}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Branch</th>
+                    <td className="">:</td>
+                    <td className="break-all">{hotel?.branch_name}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Address</th>
+                    <td className="">:</td>
+                    <td className="break-all">
+                      <span>{hotel?.address}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Number</th>
+                    <td className="">:</td>
+                    <td className="break-all">
+                      <span className="break-all">{hotel?.phone_no}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Email</th>
+                    <td className="">:</td>
+                    <td className="break-all">
+                      <span className="break-all">
+                      {hotel?.email}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Username</th>
+                    <td className="">:</td>
+                    <td className="break-all">
+                      <span className="break-all">{hotel?.manager_acc?.username}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          
+          </div>
           </>
         ) : (
           <Rings
