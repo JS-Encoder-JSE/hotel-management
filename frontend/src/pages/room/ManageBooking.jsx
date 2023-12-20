@@ -27,8 +27,8 @@ const ManageBooking = () => {
 
   const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
-    search: formik.values.search,
-    page: currentPage,
+    page:formik.values.search? 0 : currentPage,
+    search: formik.values.search, 
     filter: "Active",
   });
 

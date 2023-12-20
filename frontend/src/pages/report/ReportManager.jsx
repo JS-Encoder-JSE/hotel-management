@@ -100,9 +100,10 @@ const ReportManager = () => {
   });
   const { isLoading, data: reports } = useGetManagerReportQuery({
     ...searchParams,
-    cp: currentPage,
+    cp: formik.values.search? 0: currentPage,
     filter: formik.values.filter,
     limit: formik.values.entries,
+    search:formik.values.search,
   });
   console.log("reports", reports);
 

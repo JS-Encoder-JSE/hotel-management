@@ -15,7 +15,7 @@ const roomAPI = baseAPI.injectEndpoints({
           search ? `&search=${search}` : ""
         }`,
       providesTags: ["room"],
-      invalidatesTags: ["bookingToCheckIn"],
+      invalidatesTags: ["bookingToCheckIn","cancelBooking"],
     }),
     room: build.query({
       query: (id) => `rooms/get-room-by-id/${id}`,

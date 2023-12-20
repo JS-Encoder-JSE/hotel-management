@@ -30,6 +30,7 @@ const ManageInventory = () => {
   });
   const { data: ItemsData } = useGetItemsQuery();
   const { order } = useSelector((store) => store.inventorySlice);
+  console.log(order)
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {

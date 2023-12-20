@@ -47,6 +47,7 @@ const baseAPI = createApi({
     "updateOrder",
     "roomPostedBill",
     "getManagerReport",
+    "cancelBooking"
   ],
   baseQuery: baseQueryWithReAuth,
   endpoints: (build) => ({

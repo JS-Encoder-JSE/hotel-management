@@ -26,7 +26,7 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
   const dispatch = useDispatch();
   const [deleteFood] = useDeleteFoodMutation();
   const [input, setInput] = useState(1);
-
+ 
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -52,15 +52,17 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
   };
 
   useEffect(() => {
-    const findFoodIdx = order.foods.findIndex((item) => item._id === food._id);
+    const findFoodIdx = order?.foods?.findIndex((item) => item?._id === food?._id);
 
     if (findFoodIdx !== -1) setAdd(true);
     else setAdd(false);
   }, [order.foods]);
 
+
+
   useEffect(() => {
     dispatch(manipulateQuantity({ food, quantity: input }));
-    dispatch(setOrderCalc());
+    setOrderCalc && dispatch(setOrderCalc());
   }, [input]);
 
   // useEffect(()=>{

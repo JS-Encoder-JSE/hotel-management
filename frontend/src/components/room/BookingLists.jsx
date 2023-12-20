@@ -16,7 +16,7 @@ import CheckInModal from "../../pages/room/CheckInModal.jsx";
 import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import AddBooking from "./AddBooking.jsx";
 import RefundBookingModal from "./RefundBookingModal.jsx";
-import { getFormateDateAndTime } from "../../utils/utils.js";
+import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
 
 const BookingLists = ({ bookingList, setCurrentPage }) => {
   const navigate = useNavigate();
@@ -150,7 +150,7 @@ const BookingLists = ({ bookingList, setCurrentPage }) => {
                   </td>
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
-                  <td>{new Date(item?.createdAt).toLocaleDateString()}</td>
+                  <td>{getformatDateTime(item?.createdAt)}</td>
                   <td>{getFormateDateAndTime(item?.from)}</td>
                   <td>{getFormateDateAndTime(item?.to)}</td>
 

@@ -132,9 +132,9 @@ const ConfirmOrder = ({ selectRoomId, selectTableId }) => {
   const formattedDate = `${year}-${month}-${day}`;
 
   
-useEffect(()=>{
-  dispatch(setOrderCalc())
-},[dispatch])
+// useEffect(()=>{
+//   dispatch(setOrderCalc())
+// },[dispatch])
 
 
   

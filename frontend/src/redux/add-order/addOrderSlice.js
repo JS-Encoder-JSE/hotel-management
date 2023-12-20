@@ -67,7 +67,7 @@ const addOrderSlice = createSlice({
       }
     },
     setOrderCalc: (state, action) => {
-      const total = state.order.foods.reduce(
+      const total = state?.order?.foods?.reduce(
         (total, current) =>total + current.quantity * current.price,
        
         0
