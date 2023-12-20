@@ -220,7 +220,7 @@ const ShowAllExpense = () => {
                 </h3>
               </div>
               <div className={`flex justify-end mb-5 mr-5`}>
-                {PDF?.length ? (
+                {resExpenses && resExpenses?.docs[0]?.items.length ? (
                   <PDFDownloadLink
                     document={
                       <RestaurantExpenseReport
@@ -383,7 +383,7 @@ const ShowAllExpense = () => {
               </h3>
             </div>
             <div className="flex justify-end mr-5">
-              {PDF?.length ? (
+              {filteredExpenses?.docs.length? (
                 <PDFDownloadLink
                   document={
                     <ExpensesHistoryReport
@@ -475,7 +475,7 @@ const ShowAllExpense = () => {
           </div>
           <hr className={`my-5 mb-4`} />
           <div className={`space-y-10`}>
-            <div className=" overflow-x-auto overflow-y-auto">
+           {filteredExpenses?.docs.length? <div className=" overflow-x-auto overflow-y-auto">
               <table className="table">
                 <thead>
                   <tr>
@@ -521,9 +521,9 @@ const ShowAllExpense = () => {
                   })}
                 </tbody>
               </table>
-            </div>
+            </div>:<p className="text-center my-24">No Expenses Yet!</p>}
             <div className="flex justify-center mt-10">
-              <ReactPaginate
+             {filteredExpenses?.docs.length? <ReactPaginate
                 containerClassName="join rounded-none"
                 pageLinkClassName="join-item btn btn-md bg-transparent"
                 activeLinkClassName="btn-active !bg-green-slimy text-white"
@@ -540,7 +540,7 @@ const ShowAllExpense = () => {
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
                 forcePage={currentPage}
-              />
+              />:null}
             </div>
           </div>
         </div>

@@ -184,7 +184,7 @@ const HotelExpenses = () => {
                 </h3>
               </div>
               <div className={`flex justify-end mb-5 mr-5`}>
-                {PDF?.length ? (
+                {currentItems?.length ? (
                   <PDFDownloadLink
                     document={
                       <RestaurantExpenseReport
@@ -343,7 +343,7 @@ const HotelExpenses = () => {
               </h3>
             </div>
             <div className="flex justify-end mr-5">
-              {PDF?.length ? (
+              {filteredExpenses?.docs?.length ? (
                 <PDFDownloadLink
                   document={
                     <ExpensesHistoryReport
