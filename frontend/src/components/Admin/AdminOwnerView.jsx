@@ -118,21 +118,21 @@ const AdminOwnerView = () => {
                   <tr>
                     <th className="text-start">Purchase Date</th>
                     <td className="pl-10">:</td>
-                    <td className="break-all">
+                    <td className="md:pl-2 break-all">
                       {new Date(data?.createdAt).toLocaleDateString()}
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Renew Date</th>
                     <td className="pl-10">:</td>
-                    <td className="break-all">
+                    <td className="md:pl-2 break-all">
                       {new Date(data?.bill_from).toLocaleDateString()}
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Expire Date</th>
                     <td className="pl-10">:</td>
-                    <td className="break-all">
+                    <td className="md:pl-2 break-all">
                       {" "}
                       {new Date(data?.bill_to).toLocaleDateString()}
                     </td>
@@ -140,7 +140,7 @@ const AdminOwnerView = () => {
                   <tr>
                     <th className="text-start">Remain Days</th>
                     <td className="pl-10">:</td>
-                    <td className="break-all">
+                    <td className="md:pl-2 break-all">
                       {" "}
                       {Math.floor(
                         Math.abs(new Date(data?.bill_to) - new Date()) /
@@ -152,7 +152,7 @@ const AdminOwnerView = () => {
                   <tr>
                     <th className="text-start"> Status</th>
                     <td className="pl-10">:</td>
-                    <td className="break-all">{data?.status}</td>
+                    <td className="md:pl-2 break-all">{data?.status}</td>
                   </tr>
 
                   <tr>
@@ -160,7 +160,7 @@ const AdminOwnerView = () => {
                     <td className="pl-10">:</td>
                     <td className="flex gap-2 items-center mt-4 md:mt-0">
                       {" "}
-                      <span className="">{data?.maxHotels}</span>{" "}
+                      <span className="md:pl-2">{data?.maxHotels}</span>{" "}
                       <span
                         className={`cursor-pointer`}
                         onClick={() => window.hle_modal.showModal()}
