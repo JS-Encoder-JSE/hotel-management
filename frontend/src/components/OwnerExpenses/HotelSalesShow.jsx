@@ -26,7 +26,6 @@ import {
   fromDateIsoConverterForAddExpenses,
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
-  getFormateDateAndTime,
   getTodayFormateDate,
 } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
@@ -34,7 +33,6 @@ import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
 import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 import ReportPrint from "../../pages/report/ReportPrint";
-import { getformatDateTime } from "./../../utils/timeZone";
 
 const HotelSalesShow = ({ managerId, hotelId }) => {
   // console.log('------hotelId',managerId);
@@ -216,23 +214,24 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                             >
                               <th>{++idx}</th>
                               <td>{item?.guestName}</td>
-                              <td>{getformatDateTime(item?.checked_in)}</td>
-
                               <td>
-                                {getFormateDateAndTime(item?.checked_out)}
+                                {new Date(
+                                  item?.checked_in
+                                ).toLocaleDateString()}
+                              </td>
+                              <td>
+                                {new Date(
+                                  item?.checked_out
+                                ).toLocaleDateString()}{" "}
                               </td>
                               <td>
                                 {item?.room_numbers?.map((roomNum) => roomNum)}
                               </td>
                               <td>{item?.payment_method}</td>
                               <td className="text-end">{item?.paid_amount}</td>
-                              <td className="text-end">
-                                {item?.balance_deducted}
-                              </td>
+                              <td className="text-end">{item?.balance_deducted}</td>
 
-                              <td className="text-end">
-                                {item?.balance_refunded}
-                              </td>
+                              <td className="text-end">{item?.balance_refunded}</td>
                               <td>
                                 <ReportPrint
                                   hotelInfo={hotelInfo[0]}
@@ -261,7 +260,8 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                         <td className="text-black text-[14px] text-end">
                           Total: {hotelTodaySales?.data?.total_balance_refunded}
                         </td>
-                        <td className="text-black text-md"></td>
+                        <td className="text-black text-md">
+                        </td>
                       </tr>
                     </tfoot>
                   </table>

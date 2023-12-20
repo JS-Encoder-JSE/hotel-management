@@ -70,7 +70,7 @@ const roomAPI = baseAPI.injectEndpoints({
         };
       },
       providesTags: ["cancelBooking"],
-      invalidatesTags: ["booking", "addBooking","room"],
+      invalidatesTags: ["booking", "addBooking"],
     }),
 
     addExpenses: build.mutation({
@@ -79,9 +79,10 @@ const roomAPI = baseAPI.injectEndpoints({
           url: "expenses/add-expense",
           method: "POST",
           body: data,
+          invalidatesTags: ["GetExpenses"],
         };
       },
-      invalidatesTags: ["addRestaurantExpenses", "GetExpenses","subDashboard"],
+      invalidatesTags: ["addRestaurantExpenses", "GetExpenses"],
     }),
     getCheckout: build.mutation({
       query: (ids) => {

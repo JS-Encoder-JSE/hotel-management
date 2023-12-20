@@ -313,10 +313,7 @@ const ReportManager = () => {
                   <th>Room Numbers</th>
                   <th>Check In</th>
                   <th>Check Out</th>
-                  <th >Paid Amount</th>
-                  {/* balance_deducted */}
-                  <th>Deducted From Balance</th>
-                  <th>Refund Amount</th>
+                  <th>Paid Amount</th>
                   <th>Action</th>
                   {/*<th>Deposit By</th>*/}
                 </tr>
@@ -337,9 +334,7 @@ const ReportManager = () => {
                       <td>{getformatDateTime(report?.checked_in)}</td>
 
                       <td>{getFormateDateAndTime(report?.checked_out)}</td>
-                      <td className="text-end">{report?.paid_amount}</td>
-                      <td className="text-end">{report?.balance_deducted}</td>
-                      <td className="text-end">{report?.balance_refunded}</td>
+                      <td>{report?.paid_amount}</td>
                       <td className={`space-x-1.5`}>
                         {/* <button><LuPrinter /></button> */}
                         <ReportPrint
@@ -370,31 +365,10 @@ const ReportManager = () => {
               </tbody>
               <tfoot className={`text-sm`}>
                 <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td className="text-end">Total : {reports?.data?.total_paid_amount}</td>
-                  <td className="text-end">
-                    Total : {reports?.data?.total_balance_deducted}
-                  </td>
-                  <td className="text-end">
-                    Total : {reports?.data?.total_balance_refunded}
-                  </td>
-                  <td></td>
-                  {/* <td colSpan={5} className={`text-end`}>
-                    Total
-                  </td> */}
-                  {/* <td>{reports?.data?.total_paid_amount}</td> */}
-                  {/* <td colSpan={7} className={`text-end`}>
-                    Total
-                  </td> */}
-                  {/* <td>{reports?.data?.total_balance_deducted}</td>
-                  <td colSpan={8} className={`text-end`}>
+                  <td colSpan={5} className={`text-end`}>
                     Total
                   </td>
-                  <td>{reports?.data?.total_balance_refunded}</td> */}
+                  <td>{reports?.data?.total_paid_amount}</td>
                 </tr>
               </tfoot>
             </table>

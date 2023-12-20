@@ -180,9 +180,9 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
                       {key === "Serial No"
                         ? rowIndex + 1
                         : key === "checked_in"
-                        ? getformatDateTime(item[key])
+                        ? new Date(item[key]).toLocaleDateString()
                         : key === "checked_out"
-                        ? getFormateDateAndTime(item[key])
+                        ? new Date(item[key]).toLocaleDateString()
                         : item[key]}
                     </Text>
                   );

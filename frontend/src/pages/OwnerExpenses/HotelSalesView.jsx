@@ -22,7 +22,6 @@ import {
 import {
   fromDateIsoConverterForAddExpenses,
   getConvertedIsoStartDate,
-  getFormateDateAndTime,
   getformatDateTime,
 } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
@@ -154,7 +153,7 @@ const HotelSalesView = () => {
                       <th>{++idx}</th>
                       <td>{item?.guestName}</td>
                       <td>{getformatDateTime(item?.checked_in)}</td>
-                      <td>{getFormateDateAndTime (item?.checked_out)} </td>
+                      <td>{getformatDateTime(item?.checked_out)} </td>
                       <td>{item?.room_numbers?.map((roomNum) => roomNum)}</td>
                       <td>{item?.payment_method}</td>
                       <td className="text-end">{item?.paid_amount}</td>
