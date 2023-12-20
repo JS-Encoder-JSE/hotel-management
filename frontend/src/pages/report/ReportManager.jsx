@@ -313,11 +313,11 @@ const ReportManager = () => {
                   <th>Room Numbers</th>
                   <th>Check In</th>
                   <th>Check Out</th>
-                  <th >Paid Amount</th>
+                  <th className="text-end">Paid Amount</th>
                   {/* balance_deducted */}
-                  <th>Deducted From Balance</th>
-                  <th>Refund Amount</th>
-                  <th>Action</th>
+                  <th className="text-end">Deducted From Balance</th>
+                  <th className="text-end">Refund Amount</th>
+                  <th className="text-end">Action</th>
                   {/*<th>Deposit By</th>*/}
                 </tr>
               </thead>
@@ -343,7 +343,7 @@ const ReportManager = () => {
                       <td className={`space-x-1.5`}>
                         {/* <button><LuPrinter /></button> */}
                         <ReportPrint
-                          hotelInfo={hotelInfo[0]}
+                          hotelInfo={hotelInfo && hotelInfo[0]}
                           booking_id={report?.booking_ids[0]}
                           roomNumber={report?.room_numbers}
                         />

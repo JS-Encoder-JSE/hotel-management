@@ -15,7 +15,7 @@ import Modal from "../../components/Modal.jsx";
 import RefundBookingModal from "../../components/room/RefundBookingModal.jsx";
 
 
-const TodayCancelBookingList = ({ bookingList, setCurrentPage }) => {
+const TodayCancelBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -169,6 +169,7 @@ const TodayCancelBookingList = ({ bookingList, setCurrentPage }) => {
           marginPagesDisplayed={2}
           onPageChange={handlePageClick}
           renderOnZeroPageCount={null}
+          forcePage={forcePage}
         />
       </div>
       <Modal id={`refundPay`}>

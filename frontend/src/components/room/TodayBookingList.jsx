@@ -18,7 +18,7 @@ import AddBooking from "./AddBooking.jsx";
 import RefundBookingModal from "./RefundBookingModal.jsx";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
 
-const TodayBookingList = ({ bookingList, setCurrentPage }) => {
+const TodayBookingList = ({ bookingList, setCurrentPage,forcePage }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -193,6 +193,7 @@ const TodayBookingList = ({ bookingList, setCurrentPage }) => {
           marginPagesDisplayed={2}
           onPageChange={handlePageClick}
           renderOnZeroPageCount={null}
+          forcePage={forcePage}
         />
       </div>
       <Modal id={`refundPay`}>

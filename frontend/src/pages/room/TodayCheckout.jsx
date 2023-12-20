@@ -33,6 +33,7 @@ import {
 const TodayCheckout = () => {
   const [search, setSearch] = useState("");
   const [pageCount, setPageCount] = useState(1);
+  const [forcePage, setForcePage] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams] = useSearchParams();
@@ -64,7 +65,7 @@ const TodayCheckout = () => {
     isLoading,
     refetch,
   } = useGetBookingsByHotelQuery({
-    search: formik.values.search,
+    search: search,
     page: currentPage,
     fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
     toDate: getConvertedIsoEndDate(getTodayFormateDate()),
@@ -127,6 +128,11 @@ const TodayCheckout = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
               onKeyDown={(e) => pressEnter(e)}
             />
             <button
@@ -237,6 +243,7 @@ const TodayCheckout = () => {
                 marginPagesDisplayed={2}
                 onPageChange={handlePageClick}
                 renderOnZeroPageCount={null}
+                forcePage={forcePage}
               />
             </div>
             {/* <Modal id={`eb_modal`}>

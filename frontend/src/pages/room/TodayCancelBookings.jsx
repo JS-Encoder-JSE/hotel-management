@@ -22,6 +22,7 @@ import {
 const TodayCancelBookings = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const [forcePage, setForcePage] = useState(null);
   const navigate = useNavigate();
   const conditionIsMet = true;
 
@@ -36,6 +37,7 @@ const TodayCancelBookings = () => {
     onSubmit: (values) => {
       setSearch(values.search);
       setCurrentPage(0);
+      setForcePage(0)
     },
   });
 
@@ -120,6 +122,11 @@ const TodayCancelBookings = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
               onKeyDown={(e) => pressEnter(e)}
             />
             <button
@@ -138,6 +145,7 @@ const TodayCancelBookings = () => {
             bookingList={bookingList}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            forcePage={forcePage}
           />
         ) : (
           <h3 className={`text-center`}>No data found!</h3>

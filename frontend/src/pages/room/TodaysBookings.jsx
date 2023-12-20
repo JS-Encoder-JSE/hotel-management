@@ -27,6 +27,7 @@ import {
 const TodayBookings = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const [forcePage, setForcePage] = useState(null);
   const [searchParams] = useSearchParams();
   const managerId = searchParams.get("manager_id");
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const TodayBookings = () => {
     onSubmit: (values) => {
       setSearch(values.search);
       setCurrentPage(0);
+      setForcePage(0)
     },
   });
 
@@ -101,6 +103,11 @@ const TodayBookings = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={formik.handleChange}
+              onKeyUp={(e) => {
+                e.target.value === "" &&  setForcePage(0)
+                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" ? formik.handleSubmit() : null;
+              }}
               onKeyDown={(e) => pressEnter(e)}
             />
             <button
