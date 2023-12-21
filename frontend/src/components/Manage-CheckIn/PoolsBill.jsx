@@ -14,6 +14,7 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
+import { getOnlyFormatDate } from "../../utils/utils";
 
 const PoolsBill = ({ poolBills }) => {
   const [managersPerPage] = useState(10);
@@ -90,7 +91,8 @@ const PoolsBill = ({ poolBills }) => {
                       >
                         <th>{++idx}</th>
                         <td>
-                          {new Date(pool?.createdAt).toLocaleDateString()}
+                          {getOnlyFormatDate(pool?.createdAt)}
+                          {/* {new Date(pool?.createdAt).toLocaleDateString()} */}
                         </td>
                         <td>{pool?.price}</td>
                         <td>{pool?.paid_amount}</td>

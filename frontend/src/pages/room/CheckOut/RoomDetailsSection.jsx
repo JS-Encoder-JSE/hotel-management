@@ -4,7 +4,7 @@ import {
   setAmountAfterDis,
   setBookingId,
 } from "../../../redux/add-order/addOrderSlice";
-import { getDiscountAmount } from "../../../utils/utils";
+import { getDiscountAmount, getOnlyFormatDate } from "../../../utils/utils";
 import {
   setSelectedRoomAmountAfterDiscount,
   updateSubTotal,
@@ -114,10 +114,12 @@ const RoomDetailsSection = ({ data, roomData, bookingInfo }) => {
                 <tbody>
                   <tr>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {new Date(roomData?.from).toLocaleDateString()}
+                      {getOnlyFormatDate(roomData?.from)}
+                      {/* {new Date(roomData?.from).toLocaleDateString()} */}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
-                      {new Date(billingState?.toDate).toLocaleDateString()}
+                      {getOnlyFormatDate(billingState?.toDate)}
+                      {/* {new Date(billingState?.toDate).toLocaleDateString()} */}
                     </td>
                     <td className="p-2 border border-black/20 align-top text-xs">
                       {billingState?.calculateNOD}

@@ -18,6 +18,7 @@ import RestaurantBillsCard from "../../components/Manage-CheckIn/RestaurantBills
 import GymBills from "../../components/Manage-CheckIn/GymBills.jsx";
 import PoolsBill from "../../components/Manage-CheckIn/PoolsBill.jsx";
 import { MdOutlineHail } from "react-icons/md";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const CheckinPersonInfo = () => {
   const [roomId, setRoomId] = useState("");
@@ -195,12 +196,17 @@ const CheckinPersonInfo = () => {
                 <tr>
                   <th className={`text-start`}>From</th>
                   <td className={`w-4 text-center`}>:</td>
-                  <td>{new Date(booking?.data?.from).toLocaleDateString()}</td>
+                  <td>
+                    {getOnlyFormatDate(booking?.data?.from)}
+                    {/* {new Date(booking?.data?.from).toLocaleDateString()} */}
+                    </td>
                 </tr>
                 <tr>
                   <th className={`text-start`}>To</th>
                   <td className={`w-4 text-center`}>:</td>
-                  <td>{new Date(booking?.data?.to).toLocaleDateString()}</td>
+                  <td>{getOnlyFormatDate(booking?.data?.to)}
+                    {/* {new Date(booking?.data?.to).toLocaleDateString()} */}
+                    </td>
                 </tr>
                 <tr>
                   <th className={`text-start`}>Status</th>

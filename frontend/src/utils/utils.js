@@ -1,14 +1,27 @@
 export const getFormateDateAndTime = (date) => {
-  const formattedDate = new Date(date).toLocaleString("en-US", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
+  // const formattedDate = new Date(date).toLocaleString("en-US", {
+  //   year: "numeric",
+  //   month: "numeric",
+  //   day: "numeric",
+  //   hour: "numeric",
+  //   minute: "numeric",
+  //   second: "numeric",
+  //   timeZone: "UTC",
+  // });
+  // return formattedDate;
+  const rawDate = new Date(date || new Date());
+  const day = rawDate.toLocaleString("en-US", { day: "2-digit" });
+  const month = rawDate.toLocaleString("en-US", { month: "2-digit" });
+  const year = rawDate.toLocaleString("en-US", { year: "numeric" });
+  const hourMinuteSecond = rawDate.toLocaleString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
     timeZone: "UTC",
   });
-  return formattedDate;
+  const formattedDateTime = `${day}/${month}/${year}, ${hourMinuteSecond}`;
+  return formattedDateTime;
 };
 
 export const getISOStringDate = (date) => {
@@ -53,6 +66,14 @@ export const getConvertedIsoEndDate = (inputDate) => {
 
   return isoString;
 };
+export const getOnlyFormatDate =(date)=>{
+  const rawDate = new Date(date || new Date());
+  const day = rawDate.toLocaleString("en-US", { day: "2-digit" });
+  const month = rawDate.toLocaleString("en-US", { month: "2-digit" });
+  const year = rawDate.toLocaleString("en-US", { year: "numeric" });
+  const formattedDateTime = `${day}/${month}/${year}`;
+  return formattedDateTime;
+}
 export const getTodayFormateDate = (date) => {
   return date
     ? new Date(date).toLocaleDateString("en-US", {
@@ -66,6 +87,7 @@ export const getTodayFormateDate = (date) => {
         year: "numeric",
       });
 };
+
 export const fromDateIsoConverterForAddExpenses = (date) => {
   const fromDate = new Date(date);
   fromDate.setHours(18, 0, 0, 0);
@@ -112,20 +134,28 @@ export const toDateIsoConverter = (date) => {
 
 export const getformatDateTime = (date) => {
   const options = {
-    year: "numeric",
-    month: "2-digit",
     day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
     hour12: true,
   };
 
-  const formattedDateTime = new Date(date || new Date()).toLocaleString(
-    "en-US",
-    options
-  );
+  const rawDate = new Date(date || new Date());
+  const day = rawDate.toLocaleString("en-US", { day: "2-digit" });
+  const month = rawDate.toLocaleString("en-US", { month: "2-digit" });
+  const year = rawDate.toLocaleString("en-US", { year: "numeric" });
+  const hourMinuteSecond = rawDate.toLocaleString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  const formattedDateTime = `${day}/${month}/${year}, ${hourMinuteSecond}`;
   return formattedDateTime;
+
 };
 
 export const getNumberOfDays = (fromDate, toDate) => {

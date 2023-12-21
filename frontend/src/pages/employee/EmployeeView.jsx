@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { saveAs } from "file-saver";
 import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import { Rings } from "react-loader-spinner";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const EmployeeView = () => {
   const { id } = useParams();
@@ -97,9 +98,10 @@ const EmployeeView = () => {
                             <th className="text-start">Joining Date</th>
                             <td className="w-4 text-center">:</td>
                             <td className="break-all">
-                              {new Date(
+                              {getOnlyFormatDate( userData?.joining_date)}
+                              {/* {new Date(
                                 userData?.joining_date
-                              ).toLocaleDateString()}
+                              ).toLocaleDateString()} */}
                             </td>
                           </tr>
                           <tr>

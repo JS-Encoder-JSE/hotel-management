@@ -87,8 +87,8 @@ const RestaurantDashboard = ({ managerId }) => {
               <div>
                 <span>
                   {isValidUrl("restaurant",pathname)
-                    ? data?.daily_datas[0]?.today_restaurant_expenses
-                    : data?.daily_datas[0]?.today_hotel_expenses}
+                    ? data?.daily_datas[0]?.today_restaurant_expenses || 0
+                    : data?.daily_datas[0]?.today_hotel_expenses || 0} 
                 </span>
               </div>
             </div>
@@ -111,8 +111,8 @@ const RestaurantDashboard = ({ managerId }) => {
                 <div>
                   <span>
                     {isValidUrl("restaurant",pathname)
-                      ? data?.daily_datas[0]?.today_restaurant_income
-                      : data?.daily_datas[0]?.today_hotel_income}
+                      ? data?.daily_datas[0]?.today_restaurant_income ||0
+                      : data?.daily_datas[0]?.today_hotel_income || 0}
                   </span>
                 </div>
               </div>
@@ -133,8 +133,8 @@ const RestaurantDashboard = ({ managerId }) => {
               <div>
                 <span>
                   {isValidUrl("restaurant",pathname)
-                    ? data?.daily_datas[0]?.today_restaurant_profit
-                    : data?.daily_datas[0]?.today_hotel_profit}
+                    ? data?.daily_datas[0]?.today_restaurant_profit ||0
+                    : data?.daily_datas[0]?.today_hotel_profit||0}
                 </span>
               </div>
             </div>

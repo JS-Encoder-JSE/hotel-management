@@ -18,6 +18,7 @@ import { FaPrint } from "react-icons/fa6";
 import AddBooking from "../room/AddBooking";
 import Modal from "../Modal";
 import RemoveExpenses from "./RemoveExpenses";
+import { getOnlyFormatDate } from "../../utils/utils";
 
 const ShowAllExpenseView = () => {
   const componentRef = useRef();
@@ -156,7 +157,9 @@ const ShowAllExpenseView = () => {
                 return (
                   <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                     <th>{idx + 1}</th>
-                    <td>{new Date(itemExpense?.date).toLocaleDateString()}</td>
+                    <td>{getOnlyFormatDate(itemExpense?.date)}
+                      {/* {new Date(itemExpense?.date).toLocaleDateString()} */}
+                      </td>
                     <td>{item?.name}</td>
                     <td>{item?.quantity}</td>
                     <td>{item?.description}</td>

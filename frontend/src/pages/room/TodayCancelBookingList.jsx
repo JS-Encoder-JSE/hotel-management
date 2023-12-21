@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import Modal from "../../components/Modal.jsx";
 import RefundBookingModal from "../../components/room/RefundBookingModal.jsx";
+import { getFormateDateAndTime } from "../../utils/utils.js";
 
 
 const TodayCancelBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
@@ -143,9 +144,18 @@ const TodayCancelBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
                   </td>
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
-                  <td>{new Date(item?.createdAt).toLocaleDateString()}</td>
-                  <td>{new Date(item?.from).toLocaleDateString()}</td>
-                  <td>{new Date(item?.to).toLocaleDateString()}</td>
+                  <td>
+                    {getFormateDateAndTime(item?.createdAt)}
+                    {/* {new Date(item?.createdAt).toLocaleDateString()} */}
+                    </td>
+                  <td>
+                    {getFormateDateAndTime(item?.from)}
+                    {/* {new Date(item?.from).toLocaleDateString()} */}
+                    </td>
+                  <td>
+                    {getFormateDateAndTime(item?.to)}
+                    {/* {new Date(item?.to).toLocaleDateString()} */}
+                    </td>
                 </tr>
               );
             })}

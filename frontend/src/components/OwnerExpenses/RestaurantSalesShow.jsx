@@ -25,6 +25,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getOnlyFormatDate,
   getTodayFormateDate,
 } from "../../utils/utils";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
@@ -389,7 +390,9 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>{new Date(item?.date).toLocaleDateString()}</td>
+                          <td> {getOnlyFormatDate(item?.date)}
+                            {/* {new Date(item?.date).toLocaleDateString()} */}
+                            </td>
                           <td>
                             <div className="flex">
                               <div>

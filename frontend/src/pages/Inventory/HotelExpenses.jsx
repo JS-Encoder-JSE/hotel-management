@@ -23,6 +23,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getOnlyFormatDate,
   getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils";
@@ -235,9 +236,10 @@ const HotelExpenses = () => {
                               >
                                 <th>{++idx}</th>
                                 <td>
-                                  {new Date(
+                                  {getOnlyFormatDate(hotelExpenses?.docs[0]?.date)}
+                                  {/* {new Date(
                                     hotelExpenses?.docs[0]?.date
-                                  ).toLocaleDateString()}
+                                  ).toLocaleDateString()} */}
                                 </td>
                                 <td>{item?.name}</td>
                                 <td>{item?.description}</td>
@@ -460,7 +462,10 @@ const HotelExpenses = () => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>{new Date(item?.date).toLocaleDateString()}</td>
+                          <td>
+                            {getOnlyFormatDate(item?.date)}
+                            {/* {new Date(item?.date).toLocaleDateString()} */}
+                            </td>
                           <td>
                             <FaRupeeSign className="inline" />
                             <span>{item?.total_amount}</span>

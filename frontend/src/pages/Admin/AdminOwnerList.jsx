@@ -19,6 +19,7 @@ import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 
 import Swal from "sweetalert2";
 import store from "../../redux/store.js";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const AdminOwnerList = ({ title }) => {
   const { user } = store.getState().authSlice;
@@ -252,11 +253,10 @@ const AdminOwnerList = ({ title }) => {
                               )}
                             </td>
                             <td>
-                              {`${new Date(
-                                owner?.bill_from
-                              ).toLocaleDateString()} - ${new Date(
-                                owner?.bill_to
-                              ).toLocaleDateString()}`}
+                            {/* {getformatDateTime(report?.bill_from)} */}
+                            {getOnlyFormatDate(owner?.bill_from)} <span className="px-1"> - </span>
+                            { getOnlyFormatDate(owner?.bill_to)}
+                            
                             </td>
                             <td className={`flex flex-wrap gap-1.5`}>
                               <span

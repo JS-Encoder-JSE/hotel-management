@@ -9,6 +9,7 @@ import StatusHistory from "./StatusHistory.jsx";
 import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import store from "../../redux/store.js";
 import { useSelector } from "react-redux";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const AdminOwnerView = () => {
   const navigate = useNavigate();
@@ -119,14 +120,16 @@ const AdminOwnerView = () => {
                     <th className="text-start">Purchase Date</th>
                     <td className="pl-10">:</td>
                     <td className="md:pl-2 break-all">
-                      {new Date(data?.createdAt).toLocaleDateString()}
+                      {getOnlyFormatDate(data?.createdAt)}
+                     
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Renew Date</th>
                     <td className="pl-10">:</td>
                     <td className="md:pl-2 break-all">
-                      {new Date(data?.bill_from).toLocaleDateString()}
+                      {getOnlyFormatDate(data?.bill_from)}
+                    
                     </td>
                   </tr>
                   <tr>
@@ -134,7 +137,8 @@ const AdminOwnerView = () => {
                     <td className="pl-10">:</td>
                     <td className="md:pl-2 break-all">
                       {" "}
-                      {new Date(data?.bill_to).toLocaleDateString()}
+                      {getOnlyFormatDate(data?.bill_to)}
+                     
                     </td>
                   </tr>
                   <tr>
