@@ -16,6 +16,7 @@ import StatusHistory from "../../components/Admin/StatusHistory";
 import AdminOwnerList from "./AdminOwnerList";
 import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI";
 import Report from "./Report.jsx";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const SubAdminListView = () => {
   const navigate = useNavigate();
@@ -110,7 +111,8 @@ const SubAdminListView = () => {
                   <th className="text-start">Joining Date</th>
                   <td className="pl-5">:</td>
                   <td>
-                    {new Date(userData?.joining_date).toLocaleDateString()}
+                    {getOnlyFormatDate(userData?.joining_date)}
+               
                   </td>
                 </tr>
                 <tr>

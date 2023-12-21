@@ -12,6 +12,7 @@ import { GrPowerReset } from "react-icons/gr";
 import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
+  getOnlyFormatDate,
 } from "../../utils/utils.js";
 
 const LicenseHistory = () => {
@@ -165,8 +166,8 @@ const LicenseHistory = () => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>
-                            {new Date(item?.createdAt).toLocaleDateString()}
+                          <td> {getOnlyFormatDate(item?.createdAt)}
+                            {/* {new Date(item?.createdAt).toLocaleDateString()} */}
                           </td>
                           <td>{item.tran_id}</td>
                           <td>{item?.payment_method}</td>

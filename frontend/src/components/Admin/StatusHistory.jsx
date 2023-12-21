@@ -10,6 +10,8 @@ import { useGetStatuslogsQuery } from "../../redux/admin/ownerlist/ownerListAPI.
 import { data } from "autoprefixer";
 import { GrPowerReset } from "react-icons/gr";
 import { Rings } from "react-loader-spinner";
+import { getOnlyFormatDate } from "../../utils/utils.js";
+// import { getOnlyFormatDate } from './../../utils/utils';
 
 const StatusHistory = () => {
   const navigate = useNavigate();
@@ -62,7 +64,8 @@ const StatusHistory = () => {
   useEffect(() => {
     if (statusHistory) {
       const values = statusHistory?.docs?.map((item) => ({
-        Date: new Date(item?.createdAt).toLocaleDateString(),
+        Date:getOnlyFormatDate(item?.createdAt),
+        // new Date(item?.createdAt).toLocaleDateString(),
         "Previous Status": item?.pre_status,
         "Updated Status": item?.updated_status,
         Remarks: item?.remark,
@@ -184,7 +187,8 @@ const StatusHistory = () => {
                       >
                         <th> {++idx}</th>
                         <td>
-                          {new Date(item?.createdAt).toLocaleDateString()}
+                          {getOnlyFormatDate(item?.createdAt)}
+                        
                         </td>
                         {/* <td>
                       {new Date().toLocaleDateString()} -{" "}

@@ -9,6 +9,7 @@ import { useGetTransactionlogsQuery } from "../../redux/admin/ownerlist/ownerLis
 import { useParams } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
 import { Rings } from "react-loader-spinner";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const TransactionHistory = () => {
   const [historyPerPage] = useState(10);
@@ -54,7 +55,10 @@ const TransactionHistory = () => {
   useEffect(() => {
     if (data) {
       const values = data?.docs?.map((item) => ({
-        Date: new Date(item?.createdAt).toLocaleDateString(),
+        Date:  getOnlyFormatDate(item?.createdAt),
+        // new Date(item?.createdAt).toLocaleDateString()
+        // ,
+       
         "Transaction Id": item.tran_id,
         "Payment Method": item?.payment_method,
         "License Duration": item?.payment_for,
@@ -169,7 +173,8 @@ const TransactionHistory = () => {
                       >
                         <th>{++idx}</th>
                         <td>
-                          {new Date(item?.createdAt).toLocaleDateString()}
+                          {getOnlyFormatDate(item?.createdAt)}
+                        
                         </td>
                         <td>{item.tran_id}</td>
                         <td>{item?.payment_method}</td>

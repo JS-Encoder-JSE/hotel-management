@@ -28,6 +28,7 @@ import DatePicker from "react-datepicker";
 import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
+  getFormateDateAndTime,
   getISOStringDate,
 } from "../../utils/utils.js";
 // import StatusSettings from "./StatusSettings.jsx";
@@ -252,7 +253,8 @@ console.log(forcePage)
                             <th>{++idx}</th>
                             <td>{order?.unique_id}</td>
                             <td>
-                              {new Date(order?.createdAt).toLocaleString()}
+                              {getFormateDateAndTime(order?.createdAt)}
+                              {/* {new Date(order?.createdAt).toLocaleString()} */}
                             </td>
                             <td>
                               {order?.room_id

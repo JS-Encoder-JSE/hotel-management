@@ -14,6 +14,7 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
+import { getOnlyFormatDate } from "../../utils/utils";
 
 const RestaurantBillsCard = ({ food_bills }) => {
   const allItems = food_bills?.reduce((accumulator, bill) => {
@@ -98,10 +99,11 @@ const RestaurantBillsCard = ({ food_bills }) => {
                         >
                           <td>{++idx}</td>
                           <td>
-                            {food_bills &&
+                            {getOnlyFormatDate( food_bills[0]?.createdAt)}
+                            {/* {food_bills &&
                               new Date(
                                 food_bills[0]?.createdAt
-                              ).toLocaleDateString()}
+                              ).toLocaleDateString()} */}
                           </td>
                           <td className="whitespace-nowrap">
                             {itemBill?.item}

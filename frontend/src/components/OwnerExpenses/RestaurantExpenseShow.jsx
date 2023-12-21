@@ -23,6 +23,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getOnlyFormatDate,
   getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils";
@@ -452,7 +453,9 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{new Date(item?.date).toLocaleDateString()}</td>
+                      <td>{getOnlyFormatDate(item?.date)}
+                        {/* {new Date(item?.date).toLocaleDateString()} */}
+                        </td>
                       <td>
                         <FaRupeeSign className="inline" />
                         <span>{item?.total_amount}</span>

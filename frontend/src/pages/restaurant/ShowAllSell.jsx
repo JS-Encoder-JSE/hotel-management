@@ -26,6 +26,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getOnlyFormatDate,
   getTodayFormateDate,
 } from "../../utils/utils";
 import RestaurantSalesHistory from "../report/RestaurantSalesHistory";
@@ -407,7 +408,10 @@ const ShowAllSell = () => {
                         }
                       >
                         <th>{++idx}</th>
-                        <td>{new Date(item?.date).toLocaleDateString()}</td>
+                        <td>
+                          {getOnlyFormatDate(item?.date)}
+                          {/* {new Date(item?.date).toLocaleDateString()} */}
+                          </td>
                         <td>
                           <div className="flex">
                             <div>

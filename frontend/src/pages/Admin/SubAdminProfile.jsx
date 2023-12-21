@@ -11,6 +11,7 @@ import {
 } from "../../redux/admin/subadmin/subadminAPI.js";
 import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 import { TbReplaceFilled } from "react-icons/tb";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -360,7 +361,8 @@ const SubAdminProfile = () => {
             <div className="flex flex-col w-full space-y-2">
               <input
                 type="text"
-                placeholder={new Date(user?.joining_date).toLocaleDateString()}
+                placeholder={getOnlyFormatDate(user?.joining_date)}
+                // {new Date(user?.joining_date).toLocaleDateString()}
                 className="input input-md bg-transparent w-full input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy input-disabled"
                 readOnly
               />

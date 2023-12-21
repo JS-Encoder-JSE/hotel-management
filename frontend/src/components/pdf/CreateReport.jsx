@@ -1,7 +1,7 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet,Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
-import { versionControl } from "../../utils/utils";
+import { getOnlyFormatDate, versionControl } from "../../utils/utils";
 
 const CreateReport = ({ values, header }) => {
 
@@ -84,7 +84,7 @@ const CreateReport = ({ values, header }) => {
                 fontSize: 10,
               }}
             >
-              Printed Date: {new Date().toLocaleDateString()}
+              Printed Date: {getOnlyFormatDate()}
             </Text>
           </View>
         </View>

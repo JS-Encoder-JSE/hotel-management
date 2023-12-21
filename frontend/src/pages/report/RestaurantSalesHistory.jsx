@@ -10,6 +10,7 @@ import {
 import logo from "../../assets/logo.png";
 import {
   getFormateDateAndTime,
+  getOnlyFormatDate,
   getformatDateTime,
   versionControl,
 } from "../../utils/utils";
@@ -114,7 +115,8 @@ const RestaurantSalesHistory = ({ values, header, date }) => {
                 fontSize: 10,
               }}
             >
-              Printed Date: {new Date().toLocaleDateString()}
+              Printed Date: {getOnlyFormatDate()}
+              {/* {new Date().toLocaleDateString()} */}
             </Text>
           </View>
         </View>
@@ -135,7 +137,8 @@ const RestaurantSalesHistory = ({ values, header, date }) => {
                       ? rowIndex + 1
                       : key === "date"
                       ? date
-                        ? new Date(date).toLocaleDateString()
+                        ? getOnlyFormatDate(date)
+                        // new Date(date).toLocaleDateString()
                         : new Date(item[key]).toLocaleDateString() // Use the date prop here
                       : item[key]}
                   </Text>

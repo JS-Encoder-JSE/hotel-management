@@ -27,14 +27,16 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getFormateDateAndTime,
+  getOnlyFormatDate,
   getTodayFormateDate,
+  getformatDateTime,
 } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
 import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
 import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 import ReportPrint from "../../pages/report/ReportPrint";
-import { getformatDateTime } from "./../../utils/timeZone";
+// import { getformatDateTime } from "./../../utils/timeZone";
 
 const HotelSalesShow = ({ managerId, hotelId }) => {
   // console.log('------hotelId',managerId);
@@ -406,7 +408,10 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>{new Date(item?.date).toLocaleDateString()}</td>
+                          <td>
+                            {getOnlyFormatDate(item?.date)}
+                            {/* {new Date(item?.date).toLocaleDateString()} */}
+                            </td>
                           <td>
                             <div className="flex">
                               <div>

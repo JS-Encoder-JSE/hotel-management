@@ -10,6 +10,7 @@ import {
 import logo from "../../assets/logo.png";
 import {
   getFormateDateAndTime,
+  getOnlyFormatDate,
   getformatDateTime,
   versionControl,
 } from "../../utils/utils";
@@ -139,7 +140,8 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
                 fontSize: 10,
               }}
             >
-              Printed Date: {new Date().toLocaleDateString()}
+              Printed Date: {getOnlyFormatDate()}
+               {/* {new Date().toLocaleDateString()} */}
             </Text>
           </View>
         </View>

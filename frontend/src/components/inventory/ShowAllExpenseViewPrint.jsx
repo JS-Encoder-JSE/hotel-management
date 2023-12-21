@@ -2,6 +2,7 @@ import React from "react";
 import { FaRegEdit, FaRupeeSign } from "react-icons/fa";
 import {
   getCurrentDateWithDay,
+  getOnlyFormatDate,
   getformatDateTime,
   versionControl,
 } from "../../utils/utils";
@@ -21,7 +22,8 @@ const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
         <p className="text-center">
           Print Date :{" "}
           <span className="text-center ml-2">
-            {new Date().toLocaleDateString()}
+            {getOnlyFormatDate()}
+            {/* {new Date().toLocaleDateString()} */}
           </span>
         </p>
       </div>
@@ -52,7 +54,9 @@ const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
                   >
                     <th>{++idx}</th>
                     {/* <td>{getformatDateTime(itemExpense?.date)}</td> */}
-                    <td>{itemExpense?.date && new Date(itemExpense.date).toLocaleDateString()}</td>
+                    <td>{getOnlyFormatDate(itemExpense.date)}
+                      {/* {itemExpense?.date && new Date(itemExpense.date).toLocaleDateString()} */}
+                    </td>
                     <td>{item?.name}</td>
                     <td>{item?.quantity}</td>
                     <td>{item?.description}</td>
