@@ -22,6 +22,7 @@ import { validationSchema } from "../../components/Yup/AdminNewLicenseVal.jsx";
 import { useAddLicenseMutation } from "../../redux/admin/sls/slsAPI.js";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { Link } from "react-router-dom";
+import { set } from "date-fns/esm";
 
 const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
@@ -93,32 +94,64 @@ const AdminNewLicense = () => {
       const formData2 = new FormData();
       const formData3 = new FormData();
 
-      for (let i = 0; i < utilities.length; i++) {
-        const photoName = utilities[i].name.substring(
-          0,
-          utilities[i].name.lastIndexOf(".")
-        );
+      selectedImages.map((selectImage) => {
+        if (selectImage.name === "utilities") {
+          const photoName = selectImage.file.name.substring(
+            0,
+            selectImage.file.name.lastIndexOf(".")
+          );
+          formData1.append(photoName, selectImage.file);
+        } else if (selectImage.name === "tradeLicenses") {
+          const photoName = selectImage.file.name.substring(
+            0,
+            selectImage.file.name.lastIndexOf(".")
+          );
+          formData2.append(photoName, selectImage.file);
+        } else if (selectImage.name === "panCard") {
+          const photoName = selectImage.file.name.substring(
+            0,
+            selectImage.file.name.lastIndexOf(".")
+          );
+          formData3.append(photoName, selectImage.file);
+        }
+      });
 
-        formData1.append(photoName, utilities[i]);
+      for (const pair of formData1.entries()) {
+        console.log(`Name: ${pair[0]}, Value: ${pair[1]}`);
+      }
+      for (const pair of formData2.entries()) {
+        console.log(`Name: ${pair[0]}, Value: ${pair[1]}`);
+      }
+      for (const pair of formData3.entries()) {
+        console.log(`Name: ${pair[0]}, Value: ${pair[1]}`);
       }
 
-      for (let i = 0; i < tradeLicenses.length; i++) {
-        const photoName = tradeLicenses[i].name.substring(
-          0,
-          tradeLicenses[i].name.lastIndexOf(".")
-        );
+      // for (let i = 0; i < utilities.length; i++) {
+      //   const photoName = utilities[i].name.substring(
+      //     0,
+      //     utilities[i].name.lastIndexOf(".")
+      //   );
 
-        formData2.append(photoName, tradeLicenses[i]);
-      }
+      //   formData1.append(photoName, utilities[i]);
+      // }
 
-      for (let i = 0; i < panCard.length; i++) {
-        const photoName = panCard[i].name.substring(
-          0,
-          panCard[i].name.lastIndexOf(".")
-        );
+      // for (let i = 0; i < tradeLicenses.length; i++) {
+      //   const photoName = tradeLicenses[i].name.substring(
+      //     0,
+      //     tradeLicenses[i].name.lastIndexOf(".")
+      //   );
 
-        formData3.append(photoName, panCard[i]);
-      }
+      //   formData2.append(photoName, tradeLicenses[i]);
+      // }
+
+      // for (let i = 0; i < panCard.length; i++) {
+      //   const photoName = panCard[i].name.substring(
+      //     0,
+      //     panCard[i].name.lastIndexOf(".")
+      //   );
+
+      //   formData3.append(photoName, panCard[i]);
+      // }
 
       await upload(formData1).then(
         (result) => (tempImages.utilities = result.data.imageUrls)
@@ -166,28 +199,68 @@ const AdminNewLicense = () => {
     enableReinitialize: false,
   });
 
-  const handleDelete = (idx) => {
+  const handleDelete = (idx, image) => {
     const tempImgs = [
-      ...selectedImages.slice(0, idx),
-      ...selectedImages.slice(idx + 1),
+      ...selectedImages,
+      // ...selectedImages.slice(0, idx),
+      // ...selectedImages.slice(idx + 1),
     ];
+    tempImgs.splice(idx, 1);
+    if (image.name === "utilities") {
+      setUtilitiesFiles((prev) => {
+        const prevState = [...prev];
+        prevState.splice(image.index, 1);
+        return prevState;
+      });
+    } else if (image.name === "tradeLicenses") {
+      setTradeLicenses((prev) => {
+        const prevState = [...prev];
+        prevState.splice(image.index, 1);
+        return prevState;
+      });
+    } else if (image.name === "panCard") {
+      setPanCardFiles((prev) => {
+        const prevState = [...prev];
+        prevState.splice(image.index, 1);
+        return prevState;
+      });
+    }
+
+    // console.log("tempImgs",tempImgs)
     const dataTransfer = new DataTransfer();
 
     for (const file of tempImgs) {
-      dataTransfer.items.add(file);
+      dataTransfer.items.add(file.file);
     }
 
     setSelectedImages(tempImgs);
   };
 
-  const handleChange = (idx, newFile) => {
+  const handleChange = (idx, newFile,image) => {
     const updatedImages = [...selectedImages];
-    updatedImages[idx] = newFile;
+    updatedImages.splice(idx,1,{name:image.name,file:newFile,index:idx})
+    // updatedImages[idx] = newFile;
+    if(image.name === "utilities"){
+      const updatedUtilitiesImage = [...utilitiesFiles];
+      updatedUtilitiesImage.splice(image.index,1,newFile)
+      setUtilitiesFiles(updatedUtilitiesImage);
+    }
+   else if(image.name === "tradeLicenses"){
+      const updatedTradeLicensesImage = [...tradeLicenses];
+      updatedTradeLicensesImage.splice(image.index,1,newFile)
+      setTradeLicenses(updatedTradeLicensesImage);
+    }
+   else if(image.name === "panCard"){
+      const updatedPanCardImage = [...panCardFiles];
+      updatedPanCardImage.splice(image.index,1,newFile)
+      setPanCardFiles(updatedPanCardImage);
+    }
+ 
 
     const dataTransfer = new DataTransfer();
 
     for (const file of updatedImages) {
-      dataTransfer.items.add(file);
+      dataTransfer.items.add(file.file);
     }
 
     setSelectedImages(updatedImages);
@@ -199,7 +272,6 @@ const AdminNewLicense = () => {
 
       const allUtilitiesFiles = [...utilitiesFiles, ...utilitiesArray];
       setUtilitiesFiles(allUtilitiesFiles);
-      // console.log("utilitiesArray",utilitiesArray)
 
       const utilitiesArrayMap = utilitiesArray.map((name, index) => ({
         name: "utilities",
@@ -207,7 +279,7 @@ const AdminNewLicense = () => {
         file: name,
       }));
 
-      setSelectedImages((prevFiles) => ([
+      setSelectedImages((prevFiles) => [
         ...prevFiles,
 
         ...allUtilitiesFiles
@@ -217,20 +289,18 @@ const AdminNewLicense = () => {
           .map((file, Index) => ({
             name: "utilities",
             file: file,
-            Index: prevFiles.length,
+            Index: allUtilitiesFiles.indexOf(file),
           })),
-        ]));
+      ]);
     }
   }, [formik.values.utilities]);
-  console.log("SelectedImages",selectedImages)
+  console.log("SelectedImages", selectedImages);
 
   useEffect(() => {
     if (formik.values.tradeLicenses) {
-      const tradeLicensesArray = Array.from(
-        formik.values.tradeLicenses
-      );
+      const tradeLicensesArray = Array.from(formik.values.tradeLicenses);
 
-      const allTradeLicenses = [...tradeLicenses,...tradeLicensesArray];
+      const allTradeLicenses = [...tradeLicenses, ...tradeLicensesArray];
       setTradeLicenses(allTradeLicenses);
 
       const tradeLicensesArrayMap = tradeLicensesArray.map((name, index) => ({
@@ -239,7 +309,7 @@ const AdminNewLicense = () => {
         file: name,
       }));
 
-      setSelectedImages((prevFiles) => ([
+      setSelectedImages((prevFiles) => [
         ...prevFiles,
 
         ...allTradeLicenses
@@ -249,18 +319,17 @@ const AdminNewLicense = () => {
           .map((file, Index) => ({
             name: "tradeLicenses",
             file: file,
-            Index: prevFiles.length,
+            Index: allTradeLicenses.indexOf(file),
           })),
-        ]));
+      ]);
     }
   }, [formik.values.tradeLicenses]);
-  // console.log("tradeLicenses",selectedImages);
 
   useEffect(() => {
     if (formik.values.panCard) {
       const panCardArray = Array.from(formik.values.panCard);
 
-      const allPanCardFiles = [...panCardFiles,...panCardArray];
+      const allPanCardFiles = [...panCardFiles, ...panCardArray];
 
       setPanCardFiles(allPanCardFiles);
 
@@ -270,7 +339,7 @@ const AdminNewLicense = () => {
         file: name,
       }));
 
-      setSelectedImages((prevFiles) => ([
+      setSelectedImages((prevFiles) => [
         ...prevFiles,
 
         ...allPanCardFiles
@@ -280,15 +349,14 @@ const AdminNewLicense = () => {
           .map((file, Index) => ({
             name: "panCard",
             file: file,
-            Index: prevFiles.length,
+            Index: allPanCardFiles.indexOf(file),
           })),
-        ]));
-
-
-   
+      ]);
     }
   }, [formik.values.panCard]);
-  // console.log("panCard",selectedImages);
+
+
+console.log("utilities",utilitiesFiles)
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -329,7 +397,7 @@ const AdminNewLicense = () => {
                 <MdOutlineKeyboardArrowRight />
               </div>
             </div>
-            {/* <Swiper
+            <Swiper
               modules={[Navigation]}
               navigation={{
                 enabled: true,
@@ -352,21 +420,21 @@ const AdminNewLicense = () => {
                                 type="file"
                                 className="absolute left-0 top-0  overflow-hidden h-0"
                                 onChange={(e) =>
-                                  handleChange(idx, e.currentTarget.files[0])
+                                  handleChange(idx, e.currentTarget.files[0],image)
                                 }
                               />
                             </label>
                             <button
                               type="button"
                               className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                              onClick={() => handleDelete(idx)}
+                              onClick={() => handleDelete(idx, image)}
                             >
                               <FaTrash />
                             </button>
                           </div>
                           <img
                             key={idx}
-                            src={URL.createObjectURL(image)}
+                            src={URL.createObjectURL(image.file)}
                             alt=""
                             className={`w-full h-96 object-cover rounded`}
                           />
@@ -375,7 +443,7 @@ const AdminNewLicense = () => {
                     );
                   })
                 : null}
-            </Swiper> */}
+            </Swiper>
           </div>
         ) : null}
         {/*Client name box */}
@@ -645,9 +713,7 @@ const AdminNewLicense = () => {
           <div className="flex flex-col gap-3 w-full">
             <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
               {formik.values.utilities ? (
-                <span>
-                  {"Utilities " + formik.values.utilities.length + " files"}
-                </span>
+                <span>{"Utilities " + utilitiesFiles.length + " files"}</span>
               ) : (
                 <span className={`flex items-baseline space-x-1.5`}>
                   <FaUpload />
@@ -678,9 +744,7 @@ const AdminNewLicense = () => {
             <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
               {formik.values.tradeLicenses ? (
                 <span>
-                  {"Trade Licenses " +
-                    formik.values.tradeLicenses.length +
-                    " files"}
+                  {"Trade Licenses " + tradeLicenses.length + " files"}
                 </span>
               ) : (
                 <span className={`flex items-baseline space-x-1.5`}>
@@ -713,9 +777,7 @@ const AdminNewLicense = () => {
           <div className="flex flex-col gap-3 w-full">
             <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
               {formik.values.panCard ? (
-                <span>
-                  {"Pan card " + formik.values.panCard.length + " files"}
-                </span>
+                <span>{"Pan card " + panCardFiles.length + " files"}</span>
               ) : (
                 <span className={`flex items-baseline space-x-1.5`}>
                   <FaUpload />
