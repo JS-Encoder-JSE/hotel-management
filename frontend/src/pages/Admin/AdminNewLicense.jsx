@@ -26,6 +26,10 @@ import { Link } from "react-router-dom";
 const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [utilitiesFiles, setUtilitiesFiles] = useState([]);
+  const [tradeLicenses, setTradeLicenses] = useState([]);
+  const [panCardFiles, setPanCardFiles] = useState([]);
+
   const [images, setImages] = useState({});
   const [addLicense] = useAddLicenseMutation();
   const [upload, { isError }] = useUploadMutation();
@@ -191,28 +195,100 @@ const AdminNewLicense = () => {
 
   useEffect(() => {
     if (formik.values.utilities) {
-      const selectedUtilitiesArray = Array.from(formik.values.utilities);
-      setSelectedImages([...selectedImages, ...selectedUtilitiesArray]);
+      const utilitiesArray = Array.from(formik.values.utilities); //01
+
+      const allUtilitiesFiles = [...utilitiesFiles, ...utilitiesArray];
+      setUtilitiesFiles(allUtilitiesFiles);
+      // console.log("utilitiesArray",utilitiesArray)
+
+      const utilitiesArrayMap = utilitiesArray.map((name, index) => ({
+        name: "utilities",
+        Index: index,
+        file: name,
+      }));
+
+      setSelectedImages((prevFiles) => ([
+        ...prevFiles,
+
+        ...allUtilitiesFiles
+          .filter(
+            (file) => !prevFiles.some((prevFile) => prevFile.file === file)
+          )
+          .map((file, Index) => ({
+            name: "utilities",
+            file: file,
+            Index: prevFiles.length,
+          })),
+        ]));
     }
   }, [formik.values.utilities]);
+  console.log("SelectedImages",selectedImages)
 
   useEffect(() => {
     if (formik.values.tradeLicenses) {
-      const selectedTradeLicensesArray = Array.from(
+      const tradeLicensesArray = Array.from(
         formik.values.tradeLicenses
       );
 
-      setSelectedImages([...selectedImages, ...selectedTradeLicensesArray]);
+      const allTradeLicenses = [...tradeLicenses,...tradeLicensesArray];
+      setTradeLicenses(allTradeLicenses);
+
+      const tradeLicensesArrayMap = tradeLicensesArray.map((name, index) => ({
+        name: "tradeLicenses",
+        Index: index,
+        file: name,
+      }));
+
+      setSelectedImages((prevFiles) => ([
+        ...prevFiles,
+
+        ...allTradeLicenses
+          .filter(
+            (file) => !prevFiles.some((prevFile) => prevFile.file === file)
+          )
+          .map((file, Index) => ({
+            name: "tradeLicenses",
+            file: file,
+            Index: prevFiles.length,
+          })),
+        ]));
     }
   }, [formik.values.tradeLicenses]);
+  // console.log("tradeLicenses",selectedImages);
 
   useEffect(() => {
     if (formik.values.panCard) {
-      const selectedPanCardArray = Array.from(formik.values.panCard);
+      const panCardArray = Array.from(formik.values.panCard);
 
-      setSelectedImages([...selectedImages, ...selectedPanCardArray]);
+      const allPanCardFiles = [...panCardFiles,...panCardArray];
+
+      setPanCardFiles(allPanCardFiles);
+
+      const panCardArrayMap = panCardArray.map((name, index) => ({
+        name: "panCard",
+        Index: index,
+        file: name,
+      }));
+
+      setSelectedImages((prevFiles) => ([
+        ...prevFiles,
+
+        ...allPanCardFiles
+          .filter(
+            (file) => !prevFiles.some((prevFile) => prevFile.file === file)
+          )
+          .map((file, Index) => ({
+            name: "panCard",
+            file: file,
+            Index: prevFiles.length,
+          })),
+        ]));
+
+
+   
     }
   }, [formik.values.panCard]);
+  // console.log("panCard",selectedImages);
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -253,7 +329,7 @@ const AdminNewLicense = () => {
                 <MdOutlineKeyboardArrowRight />
               </div>
             </div>
-            <Swiper
+            {/* <Swiper
               modules={[Navigation]}
               navigation={{
                 enabled: true,
@@ -299,7 +375,7 @@ const AdminNewLicense = () => {
                     );
                   })
                 : null}
-            </Swiper>
+            </Swiper> */}
           </div>
         ) : null}
         {/*Client name box */}
