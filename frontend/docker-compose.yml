@@ -9,6 +9,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"  # Map the container's port 3033 to the host
+    environment:
+      - TZ=Asia/Kolkata
     networks:
       - nodeNETWORK
 
@@ -18,7 +20,9 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./app:/var/www/html
     ports:
-      - "80:80"
+      - "90:80"
+    environment:
+      - TZ=Asia/Kolkata
     depends_on:
       - app
     networks:
