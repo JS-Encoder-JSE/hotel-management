@@ -61,7 +61,8 @@ const HotelSalesView = () => {
     isLoading: orderItemSuccess,
   } = useGetReportsByDateQuery({
     cp: currentPage,
-    date: getConvertedIsoStartDate(dateParam),
+    date:new Date(dateParam).toLocaleDateString(),
+    //  getConvertedIsoStartDate(dateParam),
     hotelId: hotelId,
   });
 

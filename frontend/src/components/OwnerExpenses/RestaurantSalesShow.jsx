@@ -82,7 +82,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: getConvertedIsoStartDate(getTodayFormateDate()),
+    date:new Date().toLocaleDateString(),
     order_status: "CheckedOut",
     hotel_id: hotelId,
   });
