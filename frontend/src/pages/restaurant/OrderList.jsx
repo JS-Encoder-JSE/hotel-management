@@ -30,7 +30,9 @@ import {
   getConvertedIsoStartDate,
   getFormateDateAndTime,
   getISOStringDate,
+  getformatDateTime,
 } from "../../utils/utils.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 // import StatusSettings from "./StatusSettings.jsx";
 
 const OrderList = () => {
@@ -41,7 +43,7 @@ const OrderList = () => {
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
 
-console.log(forcePage)
+  console.log(forcePage);
 
   const [deleteOrder] = useDeleteOrderMutation();
   const [searchParams, setSearchParams] = useState({
@@ -59,17 +61,14 @@ console.log(forcePage)
     },
     onSubmit: (values) => {
       setSearch(values.search);
-      if(values.search){
-        setCurrentPage(0)
+      if (values.search) {
+        setCurrentPage(0);
       }
       setSearchParams((p) => ({
         ...p,
-        toDate:
-          p && values.endDate ? getConvertedIsoEndDate(values.endDate) : "",
+        toDate: p && values.endDate ? convertedEndDate(values.endDate) : "",
         fromDate:
-          p && values.startDate
-            ? getConvertedIsoStartDate(values.startDate)
-            : "",
+          p && values.startDate ? convertedStartDate(values.startDate) : "",
         unique_id: values.search,
       }));
     },
@@ -208,8 +207,8 @@ console.log(forcePage)
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter2(e)}
@@ -252,10 +251,7 @@ console.log(forcePage)
                           >
                             <th>{++idx}</th>
                             <td>{order?.unique_id}</td>
-                            <td>
-                              {getFormateDateAndTime(order?.createdAt)}
-                              {/* {new Date(order?.createdAt).toLocaleString()} */}
-                            </td>
+                            <td>{getformatDateTime(order?.createdAt)}</td>
                             <td>
                               {order?.room_id
                                 ? `Room: ${order?.room_id?.roomNumber}`

@@ -38,7 +38,7 @@ export const getformatDateTime = (date) => {
     minute: "2-digit",
     second: "2-digit",
     hour12: true,
-    timeZone: "Asia/Dhaka", // Set the timezone to Bangladesh
+    timeZone: "Asia/Kolkata", // Set the timezone to Bangladesh
   };
 
   const formattedDateTime = new Date(date || new Date()).toLocaleString(
@@ -123,7 +123,30 @@ export const getEndDateOfBookingIst = (toDate) => {
   return isoFormat;
 };
 
+export const convertedStartDate = (newDate) => {
+  const inputDate = getTodayFormateDate(newDate ? newDate : new Date());
+  console.log(inputDate);
+  // Parse the input date string
+  const [month, day, year] = inputDate.split("/").map(Number);
 
+  // Create a new Date object with the parsed values
+  const date = new Date(Date.UTC(year, month - 1, day - 1, 18, 30, 0, 0));
+  // Format the date to ISO string
+  const isoFormat = date.toISOString();
+  return isoFormat;
+};
+export const convertedEndDate = (newDate) => {
+  const inputDate = getTodayFormateDate(newDate ? newDate : new Date());
+  console.log(inputDate);
+  // Parse the input date string
+  const [month, day, year] = inputDate.split("/").map(Number);
+
+  // Create a new Date object with the parsed values
+  const date = new Date(Date.UTC(year, month - 1, day, 17, 30, 0, 0));
+  // Format the date to ISO string
+  const isoFormat = date.toISOString();
+  return isoFormat;
+};
 export const convertedToDate = (date) => {
   const newDate = new Date(date);
   newDate.setHours(17, 59, 0, 0);
