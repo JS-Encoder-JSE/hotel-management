@@ -21,9 +21,8 @@ import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
 import {
-  convertedFromDate,
-  convertedToDate,
-  getConvertedLocalDate,
+  getEndDateOfBookingIst,
+  getStartDateOFBookingIST,
 } from "../../utils/timeZone.js";
 
 // form validation
@@ -125,8 +124,8 @@ const ManageCheckinModal = () => {
       setLoading(true);
       const obj = {
         ...values,
-        from: convertedFromDate(values.from),
-        to: convertedToDate(values.to),
+        from: getStartDateOFBookingIST(values.from),
+        to: getEndDateOfBookingIst(values.to),
       };
 
       if (!obj.discount) obj.discount = 0;

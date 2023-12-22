@@ -21,7 +21,7 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
-import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
+import { getEndDateOfBookingIst, getStartDateOFBookingIST } from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -115,8 +115,8 @@ const CheckInModal = ({ room }) => {
       setLoading(true);
       const obj = {
         ...values,
-        from: convertedFromDate(values.from),
-        to: convertedToDate(values.to),
+        from: getStartDateOFBookingIST(values.from),
+        to: getEndDateOfBookingIst(values.to),
       };
 
       if (!obj.discount) obj.discount = 0;
