@@ -236,33 +236,10 @@ const AddBookingSelect = ({ room }) => {
         <hr />
         <form
           autoComplete="off"
-          className="form-control grid md:grid-cols-2 grid-cols-1 gap-4 mt-5"
+          className="form-control md:grid md:grid-cols-2 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
-          {/*<div className="flex flex-col gap-3">*/}
-          {/*  <select*/}
-          {/*    name="hotel_id"*/}
-          {/*    className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"*/}
-          {/*    value={formik.values.hotel_id}*/}
-          {/*    onChange={formik.handleChange}*/}
-          {/*    onBlur={formik.handleBlur}*/}
-          {/*  >*/}
-          {/*    <option value="" selected disabled>*/}
-          {/*      Choose Hotel*/}
-          {/*    </option>*/}
-
-          {/*    {hotelsList?.map((i) => (*/}
-          {/*      <option key={i._id} value={i._id}>*/}
-          {/*        {i.name}*/}
-          {/*      </option>*/}
-          {/*    ))}*/}
-          {/*  </select>*/}
-          {/*  {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*/}
-          {/*    <small className="text-red-600">*/}
-          {/*      {formik.touched.hotel_id && formik.errors.hotel_id}*/}
-          {/*    </small>*/}
-          {/*  ) : null}*/}
-          {/*</div>*/}
+      
           <div className="flex flex-col gap-3">
             <select
               name="bookingMethod"
@@ -295,41 +272,9 @@ const AddBookingSelect = ({ room }) => {
                 {room.data.roomNumber + " - " + room.data.category}
               </option>
             </select>
-            {/*{formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (*/}
-            {/*  <small className="text-red-600">*/}
-            {/*    {formik.touched.room_arr && formik.errors.room_arr}*/}
-            {/*  </small>*/}
-            {/*) : null}*/}
+         
           </div>
 
-          {/* <div className="flex flex-col gap-3">
-            <Select
-              placeholder="Select Rooms"
-              defaultValue={formik.values.room_arr}
-              options={transformedRooms}
-              isMulti
-              isSearchable
-              closeMenuOnSelect={false}
-              // onKeyDown={handleKeyDown}
-              onChange={(e) => formik.setFieldValue("room_arr", e)}
-              noOptionsMessage={() => "No room available"}
-              classNames={{
-                control: (state) =>
-                  `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
-                    state.isFocused ? "!shadow-none" : ""
-                  }`,
-                valueContainer: () => "!p-0",
-                placeholder: () => "!m-0",
-              }}
-            />
-            {formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (
-              <small className="text-red-600">
-                {formik.touched.room_arr && formik.errors.room_arr}
-              </small>
-            ) : null}
-          </div> */}
-
-          {/* Guest box */}
           <div className="flex flex-col gap-3">
             <input
               type="text"
@@ -575,7 +520,7 @@ const AddBookingSelect = ({ room }) => {
           </div>
 
           {/* button */}
-          <div className={`flex justify-between col-span-2 mx-auto w-[60%]`}>
+          <div className={`flex justify-between col-span-2 mx-auto md:w-[60%] w-full`}>
             <button
               disabled={isLoading}
               type={"submit"}

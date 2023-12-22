@@ -7,7 +7,7 @@ import {
   FaTrash,
 } from "react-icons/fa";
 import { useFormik } from "formik";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { AiFillSetting } from "react-icons/ai";
 import Modal from "../../components/Modal.jsx";
 import OwnerSettings from "../../components/Admin/OwnerSettings.jsx";
@@ -19,7 +19,7 @@ import { useGetUsersQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 
 import Swal from "sweetalert2";
 import store from "../../redux/store.js";
-import { getOnlyFormatDate } from "../../utils/utils.js";
+import { getOnlyFormatDate, isValidUrl } from "../../utils/utils.js";
 
 const AdminOwnerList = ({ title }) => {
   const { user } = store.getState().authSlice;
@@ -116,10 +116,13 @@ const AdminOwnerList = ({ title }) => {
     }
   }, [modalOpen]);
 
+  const location = useLocation();
+  const {  pathname  } = location;
+
   return (
     <div>
       <div className={`space-y-8 bg-white p-4 rounded-2xl`}>
-      <div>
+        {/* <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -134,13 +137,35 @@ const AdminOwnerList = ({ title }) => {
               <span className="tracking-wider font-semibold text-[1rem] "></span>
             </button>
           </Link>
+        </div> */}
+
+        <span>
+                  {isValidUrl("adminowner-list",pathname)
+                    ?
+                     ( <div>
+                      <Link to={`/dashboard `}>
+                        <button
+                          type="button"
+                          className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                        >
+                          <dfn>
+                            <abbr title="Back">
+                              <FaArrowLeft />
+                            </abbr>
+                          </dfn>
+            
+                          <span className="tracking-wider font-semibold text-[1rem] "></span>
+                        </button>
+                      </Link>
+                    </div>)
+                    : ""}
+                </span>
+        <div>
+          <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
+            Owner List
+          </h1>
         </div>
-      <div>
-      <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
-          Owner List
-        </h1>
-      </div>
-      
+
         {/* {title && (
           <h1
             className={`bg-green-slimy text-[20px] text-white max-w-[15rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}
@@ -180,8 +205,8 @@ const AdminOwnerList = ({ title }) => {
                 value={formik.values.search}
                 onChange={formik.handleChange}
                 onKeyUp={(e) => {
-                  e.target.value === "" &&  setForcePage(0)
-                  e.target.value === "" && setCurrentPage(0)
+                  e.target.value === "" && setForcePage(0);
+                  e.target.value === "" && setCurrentPage(0);
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}
                 onKeyDown={(e) => pressEnter(e)}
@@ -253,10 +278,10 @@ const AdminOwnerList = ({ title }) => {
                               )}
                             </td>
                             <td>
-                            {/* {getformatDateTime(report?.bill_from)} */}
-                            {getOnlyFormatDate(owner?.bill_from)} <span className="px-1"> - </span>
-                            { getOnlyFormatDate(owner?.bill_to)}
-                            
+                              {/* {getformatDateTime(report?.bill_from)} */}
+                              {getOnlyFormatDate(owner?.bill_from)}{" "}
+                              <span className="px-1"> - </span>
+                              {getOnlyFormatDate(owner?.bill_to)}
                             </td>
                             <td className={`flex flex-wrap gap-1.5`}>
                               <span
