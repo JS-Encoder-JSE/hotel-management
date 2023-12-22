@@ -29,6 +29,7 @@ import {
   getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils.js";
+import { getIndianFormattedDate } from "../../utils/timeZone.js";
 
 const TodayCheckout = () => {
   const [search, setSearch] = useState("");
@@ -129,8 +130,8 @@ const TodayCheckout = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
@@ -182,44 +183,13 @@ const TodayCheckout = () => {
                           <div className="flex items-center space-x-3">
                             <div>
                               <div className="font-bold">{item.guestName}</div>
-                              {/* <div className="text-sm opacity-50">
-                                Rooms: {item?.room_ids?.map((i) => i.roomNumber)}
-                              </div> */}
                             </div>
                           </div>
                         </td>
                         <td>{item?.room_id?.roomNumber}</td>
                         <td>{item?.mobileNumber}</td>
-                        {/* <td>{item?.paid_amount}</td> */}
-                        {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
                         <td>{getformatDateTime(item?.checkin_date)}</td>
-                        {/* {getformatDateTime(item?.checkin_date)} */}
-                        {/* <td>{new Date(item?.to).toLocaleDateString()}</td> */}
-                        <td>{getFormateDateAndTime(item?.to)}</td>
-
-                        {/* <td className={`flex flex-wrap gap-1.5`}>
-                          <span
-                            className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                            title={`View`}
-                            onClick={() => navigate(`/dashboard/manage-checkin/${item._id}`)}
-                          >
-                            <FaEye />
-                          </span>
-      
-                          <Link
-                            onClick={()=> navigate(`/dashboard/checkout?room=${item?.room_id?._id}`)}
-                            className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                          >
-                            <MdOutlineHail />
-                          </Link>
-                       
-                        </td> */}
-
-                        {/* <span
-                            className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                          >
-                            <FaEdit />
-                          </span> */}
+                        <td>{getIndianFormattedDate(item?.to)}</td>
                       </tr>
                     );
                   })}

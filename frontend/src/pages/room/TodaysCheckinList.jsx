@@ -29,6 +29,7 @@ import {
   getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils.js";
+import { getIndianFormattedDate } from "../../utils/timeZone.js";
 
 const TodaysCheckinList = () => {
   const [search, setSearch] = useState("");
@@ -186,8 +187,8 @@ const TodaysCheckinList = () => {
                         {/* <td>{item?.paid_amount}</td> */}
                         {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
                         <td>{getformatDateTime(item?.checkin_date)}</td>
-                        <td>{getFormateDateAndTime(item?.from)}</td>
-                        <td>{getFormateDateAndTime(item?.to)}</td>
+                        <td>{getIndianFormattedDate(item?.from)}</td>
+                        <td>{getIndianFormattedDate(item?.to)}</td>
 
                         {/* <td className={`flex flex-wrap gap-1.5`}>
                           <span
