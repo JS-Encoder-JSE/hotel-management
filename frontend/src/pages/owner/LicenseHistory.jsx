@@ -14,6 +14,7 @@ import {
   getConvertedIsoStartDate,
   getOnlyFormatDate,
 } from "../../utils/utils.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const LicenseHistory = () => {
   const formik = useFormik({
@@ -24,8 +25,8 @@ const LicenseHistory = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
         search: values.search,
       }));
     },
@@ -166,7 +167,9 @@ const LicenseHistory = () => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td> {getOnlyFormatDate(item?.createdAt)}
+                          <td>
+                            {" "}
+                            {getOnlyFormatDate(item?.createdAt)}
                             {/* {new Date(item?.createdAt).toLocaleDateString()} */}
                           </td>
                           <td>{item.tran_id}</td>

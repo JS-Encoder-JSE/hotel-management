@@ -32,6 +32,7 @@ import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport"
 import RestaurantSales from "../../pages/OwnerExpenses/RestaurantSales";
 import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import RestaurantSalesReport from "../../pages/report/RestaurantSalesReport";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
 const RestaurantSalesShow = ({ hotelId, managerID }) => {
   // console.log('------hotelId',hotelId);
@@ -55,8 +56,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -82,7 +83,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: getConvertedIsoStartDate(getTodayFormateDate()),
+    date: convertedStartDate(),
     order_status: "CheckedOut",
     hotel_id: hotelId,
   });
@@ -390,9 +391,11 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td> {getOnlyFormatDate(item?.date)}
+                          <td>
+                            {" "}
+                            {getOnlyFormatDate(item?.date)}
                             {/* {new Date(item?.date).toLocaleDateString()} */}
-                            </td>
+                          </td>
                           <td>
                             <div className="flex">
                               <div>

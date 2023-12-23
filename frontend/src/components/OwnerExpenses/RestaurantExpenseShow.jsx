@@ -37,6 +37,7 @@ import {
   useHotelsQuery,
   useUpdateHotelMutation,
 } from "../../redux/Owner/hotelsAPI";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
 const RestaurantExpenseShow = ({ hotelId }) => {
   const [forcePage, setForcePage] = useState(null);
@@ -71,8 +72,8 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -101,8 +102,8 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
-    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
+    fromDate: convertedEndDate(),
+    toDate: convertedStartDate(),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });
@@ -339,7 +340,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
             </h3>
           </div>
           <div className="flex justify-end">
-            {filteredExpenses?.docs?.length? (
+            {filteredExpenses?.docs?.length ? (
               <PDFDownloadLink
                 document={
                   <ExpensesHistoryReport
@@ -453,9 +454,10 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                       className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                     >
                       <th>{++idx}</th>
-                      <td>{getOnlyFormatDate(item?.date)}
+                      <td>
+                        {getOnlyFormatDate(item?.date)}
                         {/* {new Date(item?.date).toLocaleDateString()} */}
-                        </td>
+                      </td>
                       <td>
                         <FaRupeeSign className="inline" />
                         <span>{item?.total_amount}</span>
