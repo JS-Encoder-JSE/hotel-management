@@ -44,7 +44,12 @@ import { clearAddOrderSlice } from "../../../redux/add-order/addOrderSlice";
 import Modal from "../../../components/Modal";
 import RefundPaymentModal from "./RefundPaymentModal";
 import { useReactToPrint } from "react-to-print";
-import { getConvertedLocalDate, getCurrentTime } from "../../../utils/timeZone";
+import {
+  getConvertedIndiaLocalDate,
+  getConvertedLocalDate,
+  getCurrentTime,
+  getIndianFormattedDate,
+} from "../../../utils/timeZone";
 
 const CheckOut = () => {
   const [getCheckout, { data: checkout, isSuccess, isLoading }] =
@@ -96,11 +101,7 @@ const CheckOut = () => {
       : 0;
   const totalPayableAmount =
     calculatePayableAmount + additionalCharge + serviceCharge + texAmount;
-  // const {
-  //   data: checkout,
-  //   isLoading: checkoutLoading,
-  //   isSuccess,
-  // } = useGetCOInfoQuery(fetch);
+
   const [paymentList, setPaymentList] = useState([
     { method: "", amount: "", trx: "", date: "" },
   ]);
@@ -113,10 +114,6 @@ const CheckOut = () => {
       navigate("/dashboard/report");
     },
   });
-  // console.log({
-  //   booking_id: checkout?.data?.booking_info?.booking_ids[0],
-  //   bookingId,
-  // });
 
   // add Checkout data collection
   const room_Ids = checkout?.data?.room_bookings[0].room_id?._id;
@@ -349,8 +346,7 @@ const CheckOut = () => {
   };
 
   const updateCheckoutTime = () => {
-    const selectedDate = getConvertedLocalDate();
-    const updatedToDate = selectedDate.toISOString();
+    const updatedToDate = getConvertedIndiaLocalDate();
     dispatch(setToDate(updatedToDate));
     updateNodFun(updatedToDate);
   };

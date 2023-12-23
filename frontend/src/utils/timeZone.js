@@ -1,5 +1,6 @@
 import { addDays, isBefore, set } from "date-fns";
 import { getTodayFormateDate } from "./utils";
+import moment from "moment";
 
 export const getFormateDateAndTime = (date) => {
   const formattedDate = new Date(date).toLocaleString("en-US", {
@@ -110,7 +111,7 @@ export const getStartDateOFBookingIST = (fromDate) => {
 
 // for booking or checkin we need to select the last date. then we have to call this func. this func will return iso date of indian time 11.59 am
 export const getEndDateOfBookingIst = (toDate) => {
-  const inputDate = getTodayFormateDate(toDate);
+  const inputDate = getTodayFormateDate(toDate ? toDate : new Date());
   // Parse the input date string
   const [month, day, year] = inputDate.split("/").map(Number);
 
@@ -147,6 +148,15 @@ export const convertedEndDate = (newDate) => {
   const isoFormat = date.toISOString();
   return isoFormat;
 };
+export const getIndianTimeForCheckout = (date, time) => {
+  // Assuming date is in MM/DD/YYYY format
+  let parsedDate = moment(date + " " + time, "MM/DD/YYYY HH:mm");
+
+  // Convert them to ISO format and specify the output timezone
+  let isoDate = parsedDate.utcOffset("+05:30").toISOString();
+
+  return isoDate;
+};
 export const convertedToDate = (date) => {
   const newDate = new Date(date);
   newDate.setHours(17, 59, 0, 0);
@@ -169,6 +179,17 @@ export const getConvertedLocalDate = (date) => {
   convertedDate.setMinutes(convertedDate.getMinutes() - offset);
   return convertedDate;
 };
+export const getConvertedIndiaLocalDate = (date) => {
+  const currentDate = date ? new Date(date) : new Date();
+
+  // Set the time zone to India Standard Time (IST)
+  currentDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+
+  // Get the ISO string date in UTC format
+  const isoDateForIndia = currentDate.toISOString();
+
+  return isoDateForIndia;
+};
 
 // this function will return indian time formatted date
 export const getIndianFormattedDate = (date) => {
@@ -181,4 +202,29 @@ export const getIndianFormattedDate = (date) => {
     minute: "numeric",
     hour12: true,
   });
+};
+
+export const getCurrentTimeInIndia = () => {
+  // Get current date and time
+  const now = new Date();
+
+  // Set the time zone to India Standard Time (IST)
+  const options = { timeZone: "Asia/Kolkata" };
+
+  // Get hours, minutes, and seconds in the specified time zone
+  const hours = now.toLocaleString("en-US", {
+    ...options,
+    hour: "numeric",
+    hour12: false,
+  });
+  const minutes = now.toLocaleString("en-US", {
+    ...options,
+    minute: "numeric",
+  });
+  const seconds = now.toLocaleString("en-US", {
+    ...options,
+    second: "numeric",
+  });
+
+  return `${hours}:${minutes}`;
 };

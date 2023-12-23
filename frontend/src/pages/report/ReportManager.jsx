@@ -37,7 +37,11 @@ import {
 } from "../../redux/room/roomAPI.js";
 import ReportPrint from "./ReportPrint.jsx";
 import { useSelector } from "react-redux";
-import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
+import {
+  convertedEndDate,
+  convertedStartDate,
+  getIndianFormattedDate,
+} from "../../utils/timeZone.js";
 
 const ReportManager = () => {
   const componentRef = useRef();
@@ -334,7 +338,7 @@ const ReportManager = () => {
                       <td>{report?.room_numbers.join(",")}</td>
                       <td>{getformatDateTime(report?.checked_in)}</td>
 
-                      <td>{getFormateDateAndTime(report?.checked_out)}</td>
+                      <td>{getIndianFormattedDate(report?.checked_out)}</td>
                       <td className="text-end">{report?.paid_amount}</td>
                       <td className="text-end">{report?.balance_deducted}</td>
                       <td className="text-end">{report?.balance_refunded}</td>
