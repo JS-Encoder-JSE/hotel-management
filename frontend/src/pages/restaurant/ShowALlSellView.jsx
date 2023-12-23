@@ -30,7 +30,9 @@ const ShowALlSellView = () => {
     error: orderError,
     isLoading: orderItemSuccess,
   } = useGetOrdersByDateQuery({
-    date: getConvertedIsoStartDate(dateParam),
+    date: new Date(dateParam).toLocaleDateString()
+    // getConvertedIsoStartDate(dateParam)
+    ,
     order_status: "CheckedOut",
     hotel_id: hotelId ? hotelId : user?.assignedHotel[0],
   });

@@ -23,7 +23,7 @@ const RestaurantSalesView = () => {
 
 // query by searchParams
   const { data:orderedDataByDate, error:orderError, isLoading:orderItemSuccess } = useGetOrdersByDateQuery({
-    date: dateParam,
+    date: new Date(dateParam).toLocaleDateString(),
     order_status: 'CheckedOut',
     hotel_id:hotelId,
   });
