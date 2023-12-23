@@ -4,7 +4,7 @@ import { versionControl } from "../utils/utils";
 
 const Footer = () => {
   return (
-   <div className="h-[39px] w-full mb-5">
+   <div className="h-[39px] w-full mb-10">
      <footer className={`bg-white py-5 text-center absolute bottom-0 w-full
      `}>
       <div className="container">
