@@ -22,6 +22,7 @@ import { validationSchema } from "../../components/Yup/AdminNewLicenseVal.jsx";
 import { useAddLicenseMutation } from "../../redux/admin/sls/slsAPI.js";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { Link } from "react-router-dom";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
@@ -136,8 +137,8 @@ const AdminNewLicense = () => {
           phone_no,
           emergency_contact,
           bill_info,
-          bill_from,
-          bill_to,
+          bill_from: convertedStartDate(bill_from),
+          bill_to: convertedEndDate(bill_to),
           maxHotels,
           payment_method,
           tran_id,

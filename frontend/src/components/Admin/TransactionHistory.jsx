@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
 import { Rings } from "react-loader-spinner";
 import { getOnlyFormatDate } from "../../utils/utils.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const TransactionHistory = () => {
   const [historyPerPage] = useState(10);
@@ -32,8 +33,8 @@ const TransactionHistory = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        fromDate: formik.values.startDate,
-        toDate: formik.values.endDate,
+        fromDate: convertedStartDate(formik.values.startDate),
+        toDate: convertedEndDate(formik.values.endDate),
       }));
     },
     onReset: () => {
@@ -55,10 +56,10 @@ const TransactionHistory = () => {
   useEffect(() => {
     if (data) {
       const values = data?.docs?.map((item) => ({
-        Date:  getOnlyFormatDate(item?.createdAt),
+        Date: getOnlyFormatDate(item?.createdAt),
         // new Date(item?.createdAt).toLocaleDateString()
         // ,
-       
+
         "Transaction Id": item.tran_id,
         "Payment Method": item?.payment_method,
         "License Duration": item?.payment_for,
@@ -172,10 +173,7 @@ const TransactionHistory = () => {
                         }
                       >
                         <th>{++idx}</th>
-                        <td>
-                          {getOnlyFormatDate(item?.createdAt)}
-                        
-                        </td>
+                        <td>{getOnlyFormatDate(item?.createdAt)}</td>
                         <td>{item.tran_id}</td>
                         <td>{item?.payment_method}</td>
                         <td>{item?.payment_for}</td>
