@@ -29,7 +29,7 @@ const Header = ({
   }, []);
   
   return (
-    <div>
+    <div >
       <div className="navbar bg-white justify-between">
         <div>
           <div>
