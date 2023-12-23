@@ -22,7 +22,7 @@ import {
   getformatDateTime,
   isValidUrl,
 } from "../../utils/utils.js";
-import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
+import { convertedEndDate, convertedStartDate, getIndianFormattedDate } from "../../utils/timeZone.js";
 
 const Report = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -392,13 +392,13 @@ const Report = () => {
                               <td>{report?.username}</td>
                               <td>{report?.phone_no}</td>
                               <td>
-                                {getformatDateTime(report?.bill_from)}
+                                {getIndianFormattedDate(report?.bill_from)}
                                 {/* {extractTimeOrDate(report?.bill_from, "date")}
                                 <br />{" "}
                                 {extractTimeOrDate(report.bill_from, "time")} */}
                               </td>
                               <td>
-                                {getformatDateTime(report?.bill_to)}
+                                {getIndianFormattedDate(report?.bill_to)}
                                 {/* {extractTimeOrDate(report?.bill_to, "date")}
                                 <br />{" "}
                                 {extractTimeOrDate(report.bill_to, "time")} */}

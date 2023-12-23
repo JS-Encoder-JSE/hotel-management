@@ -143,7 +143,7 @@ export const convertedEndDate = (newDate) => {
   const [month, day, year] = inputDate.split("/").map(Number);
 
   // Create a new Date object with the parsed values
-  const date = new Date(Date.UTC(year, month - 1, day, 17, 30, 0, 0));
+  const date = new Date(Date.UTC(year, month - 1, day, 18, 29, 0, 0));
   // Format the date to ISO string
   const isoFormat = date.toISOString();
   return isoFormat;
