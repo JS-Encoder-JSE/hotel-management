@@ -37,6 +37,7 @@ import {
 } from "../../redux/room/roomAPI.js";
 import ReportPrint from "./ReportPrint.jsx";
 import { useSelector } from "react-redux";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const ReportManager = () => {
   const componentRef = useRef();
@@ -82,18 +83,15 @@ const ReportManager = () => {
       endDate: "",
     },
     onSubmit: (values) => {
-      setKeyword(values.search)
-      if(values.search){
-        setCurrentPage(0)
+      setKeyword(values.search);
+      if (values.search) {
+        setCurrentPage(0);
       }
       setSearchParams((p) => ({
         ...p,
-        toDate:
-          p && values.endDate ? getConvertedIsoEndDate(values.endDate) : "",
+        toDate: p && values.endDate ? convertedEndDate(values.endDate) : "",
         fromDate:
-          p && values.startDate
-            ? getConvertedIsoStartDate(values.startDate)
-            : "",
+          p && values.startDate ? convertedStartDate(values.startDate) : "",
         search: values.search,
       }));
     },
@@ -105,10 +103,10 @@ const ReportManager = () => {
   });
   const { isLoading, data: reports } = useGetManagerReportQuery({
     ...searchParams,
-    cp:currentPage,
+    cp: currentPage,
     filter: formik.values.filter,
     limit: formik.values.entries,
-    search:keyword,
+    search: keyword,
   });
   console.log("reports", reports);
 
@@ -287,8 +285,8 @@ const ReportManager = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
@@ -375,7 +373,9 @@ const ReportManager = () => {
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td className="text-end">Total : {reports?.data?.total_paid_amount}</td>
+                  <td className="text-end">
+                    Total : {reports?.data?.total_paid_amount}
+                  </td>
                   <td className="text-end">
                     Total : {reports?.data?.total_balance_deducted}
                   </td>

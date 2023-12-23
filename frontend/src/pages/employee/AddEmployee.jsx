@@ -24,6 +24,7 @@ import {
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 import { Link } from "react-router-dom";
 import EmployeeView from "./EmployeeView";
+import { convertedStartDate } from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -146,7 +147,7 @@ const AddEmployee = () => {
           designation,
           address,
           salary,
-          joining_date,
+          joining_date: convertedStartDate(joining_date),
           images: obj.images,
         });
         if (response?.error) {
