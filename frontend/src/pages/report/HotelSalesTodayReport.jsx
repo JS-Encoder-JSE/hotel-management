@@ -180,7 +180,7 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
                         : key === "checked_in"
                         ? getformatDateTime(item[key])
                         : key === "checked_out"
-                        ? getFormateDateAndTime(item[key])
+                        ? getformatDateTime(item[key])
                         : item[key]}
                     </Text>
                   );

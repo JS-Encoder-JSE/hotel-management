@@ -108,10 +108,10 @@ const currentYear = new Date().getFullYear();
                 //   cellValue = new Date(cellValue).toLocaleDateString();
                 // }
                 if (key === "checked_in") {
-                  cellValue = getFormateDateAndTime(new Date(cellValue));
+                  cellValue = getformatDateTime(new Date(cellValue));
                 }
                 if (key === "checked_out") {
-                  cellValue = getFormateDateAndTime(new Date(cellValue));
+                  cellValue = getformatDateTime(new Date(cellValue));
                 }
 
                 return (

@@ -222,7 +222,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                               <td>{getformatDateTime(item?.checked_in)}</td>
 
                               <td>
-                                {getFormateDateAndTime(item?.checked_out)}
+                                {getformatDateTime(item?.checked_out)}
                               </td>
                               <td>
                                 {item?.room_numbers?.map((roomNum) => roomNum)}

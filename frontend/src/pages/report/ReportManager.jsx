@@ -319,7 +319,7 @@ const ReportManager = () => {
                   {/* balance_deducted */}
                   <th className="text-end">Deducted From Balance</th>
                   <th className="text-end">Refund Amount</th>
-                  <th className="text-end">Action</th>
+                  <th className="">Action</th>
                   {/*<th>Deposit By</th>*/}
                 </tr>
               </thead>
