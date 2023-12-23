@@ -3,7 +3,7 @@ import { FaArrowLeft, FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
@@ -20,6 +20,7 @@ import {
   getConvertedIsoStartDate,
   getFormateDateAndTime,
   getformatDateTime,
+  isValidUrl,
 } from "../../utils/utils.js";
 
 const Report = () => {
@@ -157,10 +158,13 @@ const Report = () => {
     }
   };
 
+  const location = useLocation();
+  const {  pathname  } = location;
+
   return (
     <div className={`space-y-5`}>
       <div className={`bg-white p-4 rounded`}>
-        <div>
+        {/* <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -175,7 +179,28 @@ const Report = () => {
               <span className="tracking-wider font-semibold text-[1rem]"></span>
             </button>
           </Link>
-        </div>
+        </div> */}
+        <span>
+                  {isValidUrl("admin-report",pathname)
+                    ?
+                     ( <div>
+                      <Link to={`/dashboard `}>
+                        <button
+                          type="button"
+                          className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                        >
+                          <dfn>
+                            <abbr title="Back">
+                              <FaArrowLeft />
+                            </abbr>
+                          </dfn>
+            
+                          <span className="tracking-wider font-semibold text-[1rem] "></span>
+                        </button>
+                      </Link>
+                    </div>)
+                    : ""}
+                </span>
         <h3
           className={`bg-green-slimy text-[20px] text-white max-w-[12rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}
         >

@@ -102,7 +102,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
 
   const { data: hotelTodaySales } = useGetReportsByDateQuery({
     cp: currentPage,
-    date: getConvertedIsoStartDate(getTodayFormateDate()),
+    date: new Date().toLocaleDateString(),
     hotelId: hotelId,
   });
 
