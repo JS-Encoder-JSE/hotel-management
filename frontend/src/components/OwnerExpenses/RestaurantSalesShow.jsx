@@ -272,7 +272,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
             </h3>
           </div>
           <div className="flex justify-end">
-            {PDF?.length ? (
+          {/* hotelSalesHistory?.data?.docs?.length ? */}
+            {restaurantSalesHistory?.data?.docs?.length ? (
               <PDFDownloadLink
                 document={
                   <RestaurantSalesReport

@@ -106,7 +106,7 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
                   {key === "Serial No"
                     ? rowIndex + 1
                     : key === "date"
-                    ? getOnlyFormatDate()
+                    ? getOnlyFormatDate(item[key])
                     // new Date(item[key]).toLocaleDateString() // Use the date prop here
                     : item[key]}
                 </Text>
