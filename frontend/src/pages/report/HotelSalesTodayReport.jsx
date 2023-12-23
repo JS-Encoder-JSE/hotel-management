@@ -14,6 +14,7 @@ import {
   getformatDateTime,
   versionControl,
 } from "../../utils/utils";
+import { getIndianFormattedDate } from "../../utils/timeZone";
 
 const HotelSalesTodayReport = ({ values, header, date }) => {
   // SL	Date	Items Name	Description	Quantity	Price	Action
@@ -180,7 +181,7 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
                         : key === "checked_in"
                         ? getformatDateTime(item[key])
                         : key === "checked_out"
-                        ? getformatDateTime(item[key])
+                        ? getIndianFormattedDate(item[key])
                         : item[key]}
                     </Text>
                   );
