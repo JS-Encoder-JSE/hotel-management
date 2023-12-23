@@ -11,6 +11,7 @@ import { data } from "autoprefixer";
 import { GrPowerReset } from "react-icons/gr";
 import { Rings } from "react-loader-spinner";
 import { getOnlyFormatDate } from "../../utils/utils.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 // import { getOnlyFormatDate } from './../../utils/utils';
 
 const StatusHistory = () => {
@@ -36,8 +37,8 @@ const StatusHistory = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        fromDate: values.startDate || "",
-        toDate: values.endDate || "",
+        fromDate: convertedStartDate(values.startDate) || "",
+        toDate: convertedEndDate(values.endDate) || "",
       }));
     },
     onReset: (values) => {
@@ -64,7 +65,7 @@ const StatusHistory = () => {
   useEffect(() => {
     if (statusHistory) {
       const values = statusHistory?.docs?.map((item) => ({
-        Date:getOnlyFormatDate(item?.createdAt),
+        Date: getOnlyFormatDate(item?.createdAt),
         // new Date(item?.createdAt).toLocaleDateString(),
         "Previous Status": item?.pre_status,
         "Updated Status": item?.updated_status,
@@ -186,10 +187,7 @@ const StatusHistory = () => {
                         }
                       >
                         <th> {++idx}</th>
-                        <td>
-                          {getOnlyFormatDate(item?.createdAt)}
-                        
-                        </td>
+                        <td>{getOnlyFormatDate(item?.createdAt)}</td>
                         {/* <td>
                       {new Date().toLocaleDateString()} -{" "}
                       {new Date().toLocaleDateString()}

@@ -13,8 +13,8 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import Modal from "../../components/Modal.jsx";
 import RefundBookingModal from "../../components/room/RefundBookingModal.jsx";
-import { getFormateDateAndTime } from "../../utils/utils.js";
-
+import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
+import { getIndianFormattedDate } from "../../utils/timeZone.js";
 
 const TodayCancelBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
   const navigate = useNavigate();
@@ -145,17 +145,17 @@ const TodayCancelBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
                   <td>
-                    {getFormateDateAndTime(item?.createdAt)}
+                    {getformatDateTime(item?.createdAt)}
                     {/* {new Date(item?.createdAt).toLocaleDateString()} */}
-                    </td>
+                  </td>
                   <td>
-                    {getFormateDateAndTime(item?.from)}
+                    {getIndianFormattedDate(item?.from)}
                     {/* {new Date(item?.from).toLocaleDateString()} */}
-                    </td>
+                  </td>
                   <td>
-                    {getFormateDateAndTime(item?.to)}
+                    {getIndianFormattedDate(item?.to)}
                     {/* {new Date(item?.to).toLocaleDateString()} */}
-                    </td>
+                  </td>
                 </tr>
               );
             })}

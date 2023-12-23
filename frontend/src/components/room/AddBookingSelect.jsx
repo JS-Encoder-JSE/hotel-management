@@ -13,9 +13,13 @@ import toast from "react-hot-toast";
 import {
   fromDateIsoConverter,
   getNumberOfDays,
+  getTodayFormateDate,
   toDateIsoConverter,
 } from "../../utils/utils.js";
-import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
+import {
+  getEndDateOfBookingIst,
+  getStartDateOFBookingIST,
+} from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -104,9 +108,10 @@ const AddBookingSelect = ({ room }) => {
     onSubmit: async (values, formikHelpers) => {
       const obj = {
         ...values,
-        from: convertedFromDate(values.from),
-        to: convertedToDate(values.to),
+        from: getStartDateOFBookingIST(values.from),
+        to: getEndDateOfBookingIst(values.to),
       };
+      console.log(obj);
 
       if (!obj.discount) obj.discount = 0;
 

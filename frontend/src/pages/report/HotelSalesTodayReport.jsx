@@ -66,10 +66,6 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
       borderBottomWidth: 1,
       borderBottomColor: "#e8e8e8",
     },
-    tableCell: {
-      padding: 8,
-      wordWrap: "break-word",
-    },
     tableHeader: {
       backgroundColor: "#f2f2f2",
     },

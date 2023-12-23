@@ -17,8 +17,9 @@ import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import AddBooking from "./AddBooking.jsx";
 import RefundBookingModal from "./RefundBookingModal.jsx";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
+import { getIndianFormattedDate } from "../../utils/timeZone.js";
 
-const TodayBookingList = ({ bookingList, setCurrentPage,forcePage }) => {
+const TodayBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -133,7 +134,7 @@ const TodayBookingList = ({ bookingList, setCurrentPage,forcePage }) => {
           </thead>
           <tbody>
             {bookingList?.data.docs.map((item, idx) => {
-              console.log(item)
+              console.log(item);
               return (
                 <tr
                   className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
@@ -149,27 +150,8 @@ const TodayBookingList = ({ bookingList, setCurrentPage,forcePage }) => {
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
                   <td>{getformatDateTime(item?.createdAt)}</td>
-                  <td>{getFormateDateAndTime(item?.from)}</td>
-                  <td>{getFormateDateAndTime(item?.to)}</td>
-
-                  {/* <td className={`flex flex-wrap gap-1.5`}>
-                    <span
-                      className={`btn btn-sm bg-green-slimy text-[1.1rem] hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
-                      title={`View`}
-                      onClick={() => navigate(`/dashboard/manage-booking/${item._id}`)}
-                    >
-                      <FaEye />
-                    </span>
-                    <button
-                      onClick={() => {
-                        handleDelete(item?._id);
-                      }}
-                      className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
-                      title={`Cancel`}
-                    >
-                      <MdOutlineCancel className="text-[17px]" />
-                    </button>
-                  </td> */}
+                  <td>{getIndianFormattedDate(item?.from)}</td>
+                  <td>{getIndianFormattedDate(item?.to)}</td>
                 </tr>
               );
             })}

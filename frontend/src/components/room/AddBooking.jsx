@@ -11,7 +11,10 @@ import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
 import toast from "react-hot-toast";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
-import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
+import {
+  getEndDateOfBookingIst,
+  getStartDateOFBookingIST,
+} from "../../utils/timeZone.js";
 import { parseISO } from "date-fns";
 
 // form validation
@@ -98,21 +101,19 @@ const AddBooking = () => {
     onSubmit: async (values, formikHelpers) => {
       const obj = {
         ...values,
-        from: convertedFromDate(values.from),
-        to: convertedToDate(values.to),
+        from: getStartDateOFBookingIST(values.from),
+        to: getEndDateOfBookingIst(values.to),
       };
 
       if (!obj.discount) obj.discount = 0;
 
       const room_ids = obj.room_arr?.map((elem) => elem.value);
 
-
       // const fromDate = new Date(obj.from);
       // const toDate = new Date(obj.to);
 
       // const formatedFromDate = fromDate.setHours()
       // const formatedToDate =
-
 
       const no_of_days = Math.ceil(
         Math.abs(new Date(obj.to) - new Date(obj.from)) / (24 * 60 * 60 * 1000)
@@ -554,7 +555,7 @@ const AddBooking = () => {
           {/* button */}
           <div className={`flex justify-between sm:col-span-2`}>
             <button
-            disabled={isLoading}
+              disabled={isLoading}
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >

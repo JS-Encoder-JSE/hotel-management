@@ -32,6 +32,7 @@ import {
 import RestaurantSalesHistory from "../report/RestaurantSalesHistory";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RestaurantSalesReport from "../report/RestaurantSalesReport";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 // import EditExpenses from "./EditExpenses";
 
 const ShowAllSell = () => {
@@ -63,8 +64,8 @@ const ShowAllSell = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -411,7 +412,7 @@ const ShowAllSell = () => {
                         <td>
                           {getOnlyFormatDate(item?.date)}
                           {/* {new Date(item?.date).toLocaleDateString()} */}
-                          </td>
+                        </td>
                         <td>
                           <div className="flex">
                             <div>

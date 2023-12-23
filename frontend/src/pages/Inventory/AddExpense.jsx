@@ -20,6 +20,7 @@ import {
 import toast from "react-hot-toast";
 
 import { BiRupee } from "react-icons/bi";
+import { convertedStartDate } from "../../utils/timeZone";
 
 // form validation
 const validationSchema = yup.object({
@@ -133,8 +134,8 @@ const AddExpenses = () => {
     const response = await AddExpense({
       hotel_id: isHotelSuccess && hotelInfo[0]?._id,
       date: selectDate
-        ? getConvertedIsoStartDate(getTodayFormateDate(selectDate))
-        : getConvertedIsoStartDate(getTodayFormateDate()),
+        ? getTodayFormateDate(selectDate)
+        : getTodayFormateDate(),
       spendedfor: "restaurant",
       items: totalExpense,
       total_amount: parseInt(calculateTotal()),

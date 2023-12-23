@@ -27,6 +27,7 @@ import { Rings } from "react-loader-spinner";
 import { MdCancel } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import { getFormateDateAndTime, getOnlyFormatDate } from "../../utils/utils.js";
+import { getformatDateTime } from "../../utils/timeZone.js";
 // import StatusSettings from "./StatusSettings.jsx";
 
 const CurOrderList = () => {
@@ -125,7 +126,9 @@ const CurOrderList = () => {
           </Link>
         </div>
 
-        <h3 className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+        <h3
+          className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+        >
           Current Order List
         </h3>
         <div className={` gap-3`}>
@@ -161,8 +164,8 @@ const CurOrderList = () => {
                 value={formik.values.search}
                 onChange={formik.handleChange}
                 onKeyUp={(e) => {
-                  e.target.value === "" &&  setForcePage(0)
-                  e.target.value === "" && setCurrentPage(0)
+                  e.target.value === "" && setForcePage(0);
+                  e.target.value === "" && setCurrentPage(0);
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}
                 onKeyDown={(e) => pressEnter2(e)}
@@ -177,32 +180,7 @@ const CurOrderList = () => {
             </div>
           </div>
         </div>
-        {/*<div className={`flex `}>*/}
-        {/*  <div className="flex flex-col gap-3">*/}
-        {/*    <select*/}
-        {/*      name="chooseHotel"*/}
-        {/*      className="input input-md h-8 bg-transparent input-bordered border-green-slimy rounded focus:outline-none focus:border-green-slimy"*/}
-        {/*      value={formik.values.chooseHotel}*/}
-        {/*      onChange={formik.handleChange}*/}
-        {/*      onBlur={formik.handleBlur}*/}
-        {/*    >*/}
-        {/*      <option value="" selected disabled>*/}
-        {/*        Choose Hotel*/}
-        {/*      </option>*/}
-        {/*      {hotelList?.map((i) => (*/}
-        {/*        <option key={i._id} value={i._id}>*/}
-        {/*          {i.name}*/}
-        {/*        </option>*/}
-        {/*      ))}*/}
-        {/*    </select>*/}
-        {/*    {formik.touched.chooseHotel &&*/}
-        {/*    Boolean(formik.errors.chooseHotel) ? (*/}
-        {/*      <small className="text-red-600">*/}
-        {/*        {formik.touched.chooseHotel && formik.errors.chooseHotel}*/}
-        {/*      </small>*/}
-        {/*    ) : null}*/}
-        {/*  </div>*/}
-        {/*</div>*/}
+
         <hr className={`my-5`} />
         <div className={`space-y-10`}>
           {!isLoading ? (
@@ -231,7 +209,7 @@ const CurOrderList = () => {
                             <th>{++idx}</th>
                             <td>{order?.unique_id}</td>
                             <td>
-                             {getFormateDateAndTime(order?.createdAt)}
+                              {getformatDateTime(order?.createdAt)}
                               {/* {new Date(order?.createdAt).toLocaleString()} */}
                             </td>
                             <td>{order?.table_id?.table_number}</td>

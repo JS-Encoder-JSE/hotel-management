@@ -22,6 +22,7 @@ import {
   getformatDateTime,
   isValidUrl,
 } from "../../utils/utils.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const Report = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -33,7 +34,7 @@ const Report = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  console.log(currentPage)
+  console.log(currentPage);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -56,15 +57,11 @@ const Report = () => {
       endDate: "",
     },
     onSubmit: (values) => {
-
       setSearchParams((p) => ({
         ...p,
-        toDate:
-          p && values.endDate ? getConvertedIsoEndDate(values.endDate) : "",
+        toDate: p && values.endDate ? convertedEndDate(values.endDate) : "",
         fromDate:
-          p && values.startDate
-            ? getConvertedIsoStartDate(values.startDate)
-            : "",
+          p && values.startDate ? convertedStartDate(values.startDate) : "",
         search: values.search,
       }));
     },
@@ -92,9 +89,9 @@ const Report = () => {
         uid: id || user._id,
         filter: formik.values.filter,
         limit: formik.values.entries,
-        search:formik.values.search
+        search: formik.values.search,
       });
-      console.log("reports",reports)
+  console.log("reports", reports);
 
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
@@ -126,7 +123,7 @@ const Report = () => {
         Phone: item.phone_no,
         "Purchase Date": getformatDateTime(new Date(item.bill_from)),
         "Expire Date": getformatDateTime(new Date(item.bill_to)),
-        
+
         // new Date(item.bill_to).toLocaleDateString(),
         "Deposit By": item.deposit_by,
         "Paid Amount": item.paid_amount,
@@ -338,16 +335,15 @@ const Report = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
             />
             <button
-              onClick={()=>{
-                setCurrentPage(0),
-                formik.handleSubmit()
+              onClick={() => {
+                setCurrentPage(0), formik.handleSubmit();
               }}
               type="button"
               className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"

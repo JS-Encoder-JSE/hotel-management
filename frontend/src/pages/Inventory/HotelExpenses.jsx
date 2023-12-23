@@ -33,6 +33,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
 const HotelExpenses = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -72,8 +73,8 @@ const HotelExpenses = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -87,8 +88,8 @@ const HotelExpenses = () => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
-    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
+    fromDate: getTodayFormateDate(),
+    toDate: getTodayFormateDate(),
     hotel_id: hotelId,
     spendedfor: "hotel",
   });
@@ -236,7 +237,9 @@ const HotelExpenses = () => {
                               >
                                 <th>{++idx}</th>
                                 <td>
-                                  {getOnlyFormatDate(hotelExpenses?.docs[0]?.date)}
+                                  {getOnlyFormatDate(
+                                    hotelExpenses?.docs[0]?.date
+                                  )}
                                   {/* {new Date(
                                     hotelExpenses?.docs[0]?.date
                                   ).toLocaleDateString()} */}
@@ -465,7 +468,7 @@ const HotelExpenses = () => {
                           <td>
                             {getOnlyFormatDate(item?.date)}
                             {/* {new Date(item?.date).toLocaleDateString()} */}
-                            </td>
+                          </td>
                           <td>
                             <FaRupeeSign className="inline" />
                             <span>{item?.total_amount}</span>

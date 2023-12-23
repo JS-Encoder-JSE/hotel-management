@@ -36,6 +36,7 @@ import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
 import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 import ReportPrint from "../../pages/report/ReportPrint";
+import { convertedEndDate, convertedFromDate } from "../../utils/timeZone";
 // import { getformatDateTime } from "./../../utils/timeZone";
 
 const HotelSalesShow = ({ managerId, hotelId }) => {
@@ -73,8 +74,8 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedFromDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -411,7 +412,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                           <td>
                             {getOnlyFormatDate(item?.date)}
                             {/* {new Date(item?.date).toLocaleDateString()} */}
-                            </td>
+                          </td>
                           <td>
                             <div className="flex">
                               <div>

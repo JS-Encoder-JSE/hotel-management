@@ -3,9 +3,13 @@ import ReactDatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getIndianTimeForCheckout,
   convertedToDate,
+  getConvertedIndiaLocalDate,
   getConvertedLocalDate,
   getCurrentTime,
+  getCurrentTimeInIndia,
+  getIndianFormattedDate,
 } from "../../../utils/timeZone";
 import {
   setCalculateAmountAfterDis,
@@ -17,7 +21,11 @@ import {
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import DateTimePicker from "react-datetime-picker";
 import { parseISO } from "date-fns/esm";
-import { getDiscountAmount, getFormateDateAndTime } from "../../../utils/utils";
+import {
+  getDiscountAmount,
+  getFormateDateAndTime,
+  getTodayFormateDate,
+} from "../../../utils/utils";
 
 const CustomerInfoSection = ({ data }) => {
   const {
@@ -34,7 +42,7 @@ const CustomerInfoSection = ({ data }) => {
     calculateBalance,
     calculateCollectedAmount,
   } = useSelector((state) => state.checkoutInfoCalSlice);
-  console.log(getFormateDateAndTime(toDate));
+  // console.log(getFormateDateAndTime(toDate));
   const dispatch = useDispatch();
 
   //select check out time
@@ -82,41 +90,48 @@ const CustomerInfoSection = ({ data }) => {
 
   // when we are update the check out date we have to call this with new date
   const updateCheckoutDate = (newDate, hours) => {
-    const convertedCheckoutDate = getConvertedLocalDate(newDate);
+    // const convertedCheckoutDate = getConvertedIndiaLocalDate(newDate);
     const checkInDate = new Date(fromDate);
-    const checkOutDate = new Date(convertedCheckoutDate);
+    const checkOutDate = new Date(newDate);
     const new_no_of_days = Math.ceil(
       Math.abs(checkInDate - checkOutDate) / (24 * 60 * 60 * 1000)
     );
     console.log({
       new_no_of_days,
       fromDate,
-      newDate: getFormateDateAndTime(newDate),
+      newDate: newDate,
+      convertedCheckoutDate: newDate,
+      formatCheckoutDate: getIndianFormattedDate(newDate),
     });
     const newToDate = checkOutDate.toISOString();
     dispatch(setToDate(newToDate));
     dispatch(
       setCalculateNOD(
-        hours >= 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
+        hours > 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
       )
     );
     updatePayableAmount(
-      hours >= 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
+      hours > 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
     );
     updatedTotalRent(
-      hours >= 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
+      hours > 12 && hours < 15 ? new_no_of_days - 1 : new_no_of_days
     );
   };
 
   // initially check out time is 11.49 am if manager change the time then this func will call and update the new time and this function will check if the time is more then 3 pm then it will add one day more.
   const updateCheckoutTime = (newTime, newDate) => {
-    const selectedDate = new Date(newDate);
+    // const selectedDate = new Date(newDate);
 
     const [hours, minutes] = newTime.split(":");
 
-    selectedDate.setHours(hours, minutes, 0, 0);
+    // selectedDate.setHours(hours, minutes, 0, 0);
 
     const hoursNumeric = parseInt(hours, 10);
+    console.log({ date: getTodayFormateDate(newDate), newTime });
+    const selectedDate = getIndianTimeForCheckout(
+      getTodayFormateDate(newDate),
+      newTime
+    );
     updateCheckoutDate(selectedDate, hoursNumeric);
   };
 
