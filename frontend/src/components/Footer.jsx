@@ -4,9 +4,9 @@ import { versionControl } from "../utils/utils";
 
 const Footer = () => {
   return (
-    <footer className={`bg-white py-5 -mb-10 mt-10 text-center 
+   <div className="h-[39px] w-full mb-10">
+     <footer className={`bg-white py-5 text-center absolute bottom-0 w-full
      `}>
-      {/* absolute md:static bottom-0 h-full */}
       <div className="container">
         <div>
           <h3>
@@ -18,6 +18,8 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+   </div>
+
   );
 };
 
