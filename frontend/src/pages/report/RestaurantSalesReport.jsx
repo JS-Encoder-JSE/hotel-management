@@ -118,7 +118,7 @@ const RestaurantSalesReport = ({ values, header, date }) => {
                     ? date
                     ?
                      new Date(date).toLocaleDateString()
-                    :getOnlyFormatDate(date)
+                    :getOnlyFormatDate(item[key])
                     //  new Date(item[key]).toLocaleDateString() // Use the date prop here
                   : item[key]}
                 </Text>

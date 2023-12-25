@@ -292,7 +292,7 @@ const ShowAllSell = () => {
             </h3>
           </div>
           <div className="flex justify-end mr-5">
-            {PDF?.length ? (
+            {restaurantSalesHistory?.data?.docs?.length ? (
               <PDFDownloadLink
                 document={
                   <RestaurantSalesReport

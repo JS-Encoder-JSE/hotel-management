@@ -91,7 +91,7 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
                     : key === "date"
                     ? date
                     ? new Date(date).toLocaleDateString()
-                    :getOnlyFormatDate()
+                    :getOnlyFormatDate(item[key])
                     //  new Date(item[key]).toLocaleDateString() // Use the date prop here
                   : item[key]}
                 </Text>

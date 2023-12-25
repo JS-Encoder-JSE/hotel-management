@@ -36,7 +36,7 @@ import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
 import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 import ReportPrint from "../../pages/report/ReportPrint";
-import { convertedEndDate, convertedFromDate } from "../../utils/timeZone";
+import { convertedEndDate, convertedFromDate, getIndianFormattedDate } from "../../utils/timeZone";
 // import { getformatDateTime } from "./../../utils/timeZone";
 
 const HotelSalesShow = ({ managerId, hotelId }) => {
@@ -222,7 +222,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                               <td>{getformatDateTime(item?.checked_in)}</td>
 
                               <td>
-                                {getFormateDateAndTime(item?.checked_out)}
+                                {getIndianFormattedDate(item?.checked_out)}
                               </td>
                               <td>
                                 {item?.room_numbers?.map((roomNum) => roomNum)}

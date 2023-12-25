@@ -2,6 +2,7 @@ import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
 import { getFormateDateAndTime, getOnlyFormatDate, getformatDateTime, versionControl } from "../../utils/utils";
+import { getIndianFormattedDate } from "../../utils/timeZone";
 
 const ManagerReport = ({ values, header }) => {
     const desiredHeaders = ["Serial No", "guestName", "room_numbers", "checked_in", "checked_out", "paid_amount"];
@@ -108,10 +109,10 @@ const currentYear = new Date().getFullYear();
                 //   cellValue = new Date(cellValue).toLocaleDateString();
                 // }
                 if (key === "checked_in") {
-                  cellValue = getFormateDateAndTime(new Date(cellValue));
+                  cellValue = getformatDateTime(new Date(cellValue));
                 }
                 if (key === "checked_out") {
-                  cellValue = getFormateDateAndTime(new Date(cellValue));
+                  cellValue = getIndianFormattedDate(new Date(cellValue));
                 }
 
                 return (
