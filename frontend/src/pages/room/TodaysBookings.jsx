@@ -107,6 +107,8 @@ const TodayBookings = () => {
                 e.target.value === "" &&  setForcePage(0)
                 e.target.value === "" && setCurrentPage(0)
                 e.target.value === "" ? formik.handleSubmit() : null;
+                // console.log("first")
+                
               }}
               onKeyDown={(e) => pressEnter(e)}
             />

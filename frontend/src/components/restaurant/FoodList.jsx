@@ -27,6 +27,7 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
   const [deleteFood] = useDeleteFoodMutation();
   const [input, setInput] = useState(1);
  
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -38,13 +39,14 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+       
         Swal.fire({
           position: "center",
           icon: "success",
           title: "Deleted!",
           showConfirmButton: false,
           timer: 1500,
-        }).then(() => {
+        }).then(() => {        
           deleteFood(id);
         });
       }
@@ -110,6 +112,7 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
           onClick={() => {
             input > 1 ? setInput((prevState) => --prevState) : null;
           }}
+          
         >
           <FaMinus />
         </button>
@@ -121,10 +124,15 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
           onChange={(e) => {
             if (e.target.value > 0 || e.target.value === "")
               setInput(e.target.value);
-          }}
+          }
+        }
+          
           onBlur={(e) => {
             dispatch(setQuantity({ food, quantity: +e.target.value }));
+           
+            
           }}
+          disabled={food?.status === "Unavailable"}
         />
         <button
           type="button"
@@ -136,9 +144,11 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
       <td className={`text-center`}>
         {!isAdd ? (
           <span
-            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ${
+            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case 
+            ${
               food?.status === "Unavailable" ? "btn-disabled" : ""
-            }`}
+            }
+            `}
             title={`Add`}
             onClick={() => {
               handleOrder({ food, input });
