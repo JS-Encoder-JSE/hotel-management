@@ -102,8 +102,8 @@ const RestaurantExpenseShow = ({ hotelId }) => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: convertedEndDate(),
-    toDate: convertedStartDate(),
+    fromDate: convertedStartDate(),
+    toDate: convertedEndDate(),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });
