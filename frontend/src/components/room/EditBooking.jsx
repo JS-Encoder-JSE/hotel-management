@@ -61,6 +61,7 @@ const EditBooking = ({ data, bookingId }) => {
   // current date for from
   const [currentDate, setCurrentDate] = useState(new Date());
   const [updateBookingInfo, { isLoading }] = useUpdateBookingInfoMutation();
+  const [updateBooking] = useUpdateBookingMutation();
 
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -79,6 +80,45 @@ const EditBooking = ({ data, bookingId }) => {
     },
 
     validationSchema,
+    // onSubmit: async (values, formikHelpers) => {
+    //   const obj = {
+    //     guestName: values.guestName,
+    //     address: values.address,
+    //     mobileNumber: values.mobileNumber,
+    //     emergency_contact: values.emergency_contact,
+    //     adult: Number(values.adult),
+    //     children: Number(values.children),
+    //     nationality: values.nationality,
+    //   };
+     
+    //   try {
+    //     const response = await updateBookingInfo({
+    //       id: id,
+    //       data: obj,
+    //     });
+
+    //     if (response?.error) {
+    //       toast.error(response.error.data.message);
+    //     } else {
+    //       // formikHelpers.resetForm();
+    //       // closeRef.current.click();
+    //       // toast.success(response.data.message);
+    //     }
+    //     const responses = await updateBooking({
+    //       id: id,
+    //       data : updateBookings
+    //     });
+    //     if (response?.error) {
+    //       toast.error(response.error.data.message);
+    //     }
+    //     else {
+    //       formikHelpers.resetForm();
+    //       closeRef.current.click();
+    //       toast.success(response.data.message);
+    //     }
+    //   } 
+    //   catch (error) {}
+    // },
     onSubmit: async (values, formikHelpers) => {
       const obj = {
         guestName: values.guestName,
@@ -89,22 +129,37 @@ const EditBooking = ({ data, bookingId }) => {
         children: Number(values.children),
         nationality: values.nationality,
       };
-     
+    
       try {
+        // First asynchronous operation
         const response = await updateBookingInfo({
           id: id,
           data: obj,
         });
-
+    
         if (response?.error) {
           toast.error(response.error.data.message);
         } else {
-          formikHelpers.resetForm();
-          closeRef.current.click();
-          toast.success(response.data.message);
+          // Second asynchronous operation
+          const updateBookingResponse = await updateBooking({
+            id: id,
+            data: obj,
+          });
+    
+          if (updateBookingResponse?.error) {
+            toast.error(updateBookingResponse.error.data.message);
+          } else {
+            formikHelpers.resetForm();
+            closeRef.current.click();
+            toast.success(updateBookingResponse.data.message);
+          }
         }
-      } catch (error) {}
+      } catch (error) {
+        // Handle errors for both asynchronous operations
+        console.error('Error:', error);
+      }
     },
+    
   });
 
   useEffect(() => {
