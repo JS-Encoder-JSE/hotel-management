@@ -220,9 +220,9 @@ const roomAPI = baseAPI.injectEndpoints({
     getDailyCheckoutData: build.query({
       query: ({ manager_id, fromDate, toDate, page, limit, search }) => {
         return `bookings/get-perday-total-checkedout-list?${
+          fromDate ? "fromDate=" + fromDate : ""
+        }&&${toDate ? "toDate=" + toDate : ""}&&${
           manager_id ? "manager_id=" + manager_id : ""
-        }&&${fromDate ? "fromDate=" + fromDate : ""}&&${
-          toDate ? "toDate=" + toDate : ""
         }&&page=${++page}&&limit=${limit}&&${search ? "search=" + search : ""}`;
       },
       providesTags: ["room", "booking"],
@@ -393,5 +393,5 @@ export const {
   useGetDailyBookingDataQuery,
   useGetDailyCheckInDataQuery,
   useGetDailyCheckoutDataQuery,
-  useGetDailyCancelBookingDataQuery
+  useGetDailyCancelBookingDataQuery,
 } = roomAPI;

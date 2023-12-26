@@ -57,7 +57,7 @@ const TodayBookings = () => {
     page: currentPage,
     fromDate: convertedStartDate(),
     toDate: convertedEndDate(),
-    manager_id: managerId ? managerId : user?._id,
+    manager_id: managerId === "undefined" ? "" : managerId,
     limit: 10,
   });
 

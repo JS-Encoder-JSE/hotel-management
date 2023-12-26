@@ -71,7 +71,7 @@ const TodaysCheckinList = () => {
     page: currentPage,
     fromDate: convertedStartDate(),
     toDate: convertedEndDate(),
-    manager_id: managerId ? managerId : user?._id,
+    manager_id: managerId === "undefined" ? "" : managerId,
     limit: 10,
   });
   // "65794401b015daaae34ae94a"
