@@ -75,7 +75,7 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
           if (result.isConfirmed) {
             try {
               const response = await cancelBooking({
-                id: id,
+                id: bookingId,
                 data: {
                   tran_id: "",
                   payment_method: "",

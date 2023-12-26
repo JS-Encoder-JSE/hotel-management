@@ -17,6 +17,12 @@ import {
 import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const LicenseHistory = () => {
+  const [historyPerPage] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const { user } = useSelector((store) => store.authSlice);
+
   const formik = useFormik({
     initialValues: {
       startDate: "",
@@ -25,21 +31,17 @@ const LicenseHistory = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? convertedEndDate(values.endDate) : "",
-        fromDate: p ? convertedStartDate(values.startDate) : "",
+        toDate: values.endDate ? convertedEndDate(values.endDate) : "",
+        // p ? convertedEndDate(values.endDate) : "",
+        fromDate: values.startDate ? convertedStartDate(values.startDate) : "",
+        // p ? convertedStartDate(values.startDate) : "",
         search: values.search,
       }));
     },
     onReset: (values) => {
-      setSearchParams(null);
+      setSearchParams({ ...searchParams, fromDate: "", toDate: "" });
     },
   });
-
-  const [historyPerPage] = useState(10);
-  const [pageCount, setPageCount] = useState(1);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const { user } = useSelector((store) => store.authSlice);
 
   const [searchParams, setSearchParams] = useState({
     id: user._id,
@@ -175,13 +177,15 @@ const LicenseHistory = () => {
                           <td>{item.tran_id}</td>
                           <td>{item?.payment_method}</td>
                           <td>
-                            {Math.floor(
+                          {  Math.ceil( Math.abs( (new Date(item?.bill_to) - new
+                            Date(item?.bill_from)) / (24 * 60 * 60 * 1000) ) )}
+                            {/* {Math.ceil(
                               Math.abs(
                                 new Date(item?.bill_from) -
                                   new Date(item?.bill_to)
                               )
                             ) /
-                              (24 * 60 * 60 * 1000)}
+                              (24 * 60 * 60 * 1000)} */}
                           </td>
                           <td>{item?.payment_for}</td>
                           <td>{item?.amount}</td>
