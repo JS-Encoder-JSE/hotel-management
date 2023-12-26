@@ -35,25 +35,20 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
 
   // console.log(isLastBooking)
 
-  const { data: isLastBooking, refetch } =
-    useGetLastActiveBookingQuery(bookingId);
+  const {
+    data: isLastBooking,
+    isSuccess,
+    refetch,
+  } = useGetLastActiveBookingQuery(bookingId);
   const handleDelete = (id) => {
     setBookingId(id);
     refetch();
-    if (isLastBooking?.success) {
-      window.refundPay.showModal();
-    }
-    // if (isLastBooking?.success) {
-    //   // If the condition is true, show the modal
-    //   window.refundPay.showModal();
-    // } else {
-    //   // If the condition is false, show the confirmation dialog
-    // }
   };
 
   useEffect(() => {
+    console.log("hello");
     if (isLastBooking) {
-      if (isLastBooking?.success) {
+      if (isLastBooking?.success && isLastBooking?.paid_amount > 0) {
         window.refundPay.showModal();
       } else {
         Swal.fire({
@@ -68,7 +63,7 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
           if (result.isConfirmed) {
             try {
               const response = await cancelBooking({
-                id: id,
+                id: bookingId,
                 data: {
                   tran_id: "",
                   payment_method: "",
@@ -97,6 +92,9 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
                 text: "Something went wrong!",
               });
             }
+          } else {
+            console.log("cancel");
+            
           }
         });
       }

@@ -28,8 +28,8 @@ const ManageBooking = () => {
 
   const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({
     hotel_id: formik.values.hotel_id,
-    page:currentPage,
-    search: formik.values.search, 
+    page: currentPage,
+    search: formik.values.search,
     filter: "Active",
   });
 
@@ -41,7 +41,6 @@ const ManageBooking = () => {
     //   formik.handleSubmit();
     // }
   };
-
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
@@ -73,7 +72,7 @@ const ManageBooking = () => {
             onClick={() => window.ab_modal.showModal()}
           >
             <FaPlus />
-            <span>Add Booking</span>
+            {/* <span>Add Booking</span> */}
           </button>
           <div className={`relative sm:min-w-[20rem]`}>
             <input
@@ -84,8 +83,8 @@ const ManageBooking = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
