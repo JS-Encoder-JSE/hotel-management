@@ -121,6 +121,7 @@ const roomAPI = baseAPI.injectEndpoints({
         `foods/get-orders-by-date?${
           date ? `date=${date}` : ""
         }&order_status=${order_status}&hotel_id=${hotel_id}`,
+        providesTags:["checkout"]
     }),
     // getDailyData:build.query({
     //   query: ({ managerId, fromDate, toDate }) =>
@@ -135,7 +136,7 @@ const roomAPI = baseAPI.injectEndpoints({
         }${
           filter ? `&filter=${filter}` : ""
         }&manager_id=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,
-      providesTags: ["getDailyData"],
+      providesTags: ["getDailyData","checkout"],
     }),
 
     getExpenseById: build.query({

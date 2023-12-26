@@ -45,6 +45,7 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
     refetch();
   };
 
+
   useEffect(() => {
     console.log("hello");
     if (isLastBooking) {
