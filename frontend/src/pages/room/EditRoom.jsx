@@ -249,7 +249,7 @@ const EditRoom = () => {
               <option value="Standard">Standard</option>
               <option value="Deluxe">Deluxe</option>
               <option value="Super_Deluxe">Super Deluxe</option>
-              <option value="President Suite">President Suite</option>
+              <option value="President_Suite">President Suite</option>
             </select>
             {formik.touched.category && Boolean(formik.errors.category) ? (
               <small className="text-red-600">
