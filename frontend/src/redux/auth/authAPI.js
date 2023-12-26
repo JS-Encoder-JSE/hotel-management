@@ -14,7 +14,7 @@ const authAPI = baseAPI.injectEndpoints({
     }),
     user: build.query({
       query: () => "users/get-login-user",
-      providesTags: ["auth"],
+      providesTags: ["auth","subadmin"]
     }),
     
   }),
