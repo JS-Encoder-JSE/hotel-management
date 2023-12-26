@@ -37,12 +37,18 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
 
   const { data: isLastBooking, refetch } =
     useGetLastActiveBookingQuery(bookingId);
+    
+  console.log("isLastBooking",isLastBooking)
   const handleDelete = (id) => {
     setBookingId(id);
     refetch();
     if (isLastBooking?.success) {
       window.refundPay.showModal();
     }
+  
+
+
+   
     // if (isLastBooking?.success) {
     //   // If the condition is true, show the modal
     //   window.refundPay.showModal();
@@ -50,6 +56,7 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
     //   // If the condition is false, show the confirmation dialog
     // }
   };
+
 
   useEffect(() => {
     if (isLastBooking) {

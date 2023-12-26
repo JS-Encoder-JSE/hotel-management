@@ -33,19 +33,23 @@ const TransactionHistory = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        fromDate: convertedStartDate(formik.values.startDate),
-        toDate: convertedEndDate(formik.values.endDate),
+        fromDate:values.startDate ? convertedStartDate(values.startDate) : "",
+        //  convertedStartDate(formik.values.startDate),
+        toDate: values.endDate ? convertedEndDate(values.endDate) : "",
+        //  convertedEndDate(formik.values.endDate),
       }));
     },
     onReset: () => {
       setCurrentPage(0);
       setForcePage(0);
+      // setSearchParams({...searchParams,FormData:"",toDate:""})
     },
   });
 
   const { data, error, isLoading, isSuccess } = useGetTransactionlogsQuery({
     ...searchParams,
     cp: currentPage,
+   
   });
   // 65451c80dd95504ee1047f0b
   const handlePageClick = ({ selected: page }) => {
