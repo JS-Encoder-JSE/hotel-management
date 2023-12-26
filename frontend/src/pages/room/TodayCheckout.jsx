@@ -9,6 +9,7 @@ import {
   useGetBookingsByHotelQuery,
   useMakePaymentMutation,
   useGetTodayCheckoutQuery,
+  useGetDailyCheckoutDataQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import {
@@ -29,7 +30,12 @@ import {
   getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils.js";
-import { getIndianFormattedDate } from "../../utils/timeZone.js";
+import {
+  convertedEndDate,
+  convertedStartDate,
+  getIndianFormattedDate,
+} from "../../utils/timeZone.js";
+import { useSelector } from "react-redux";
 
 const TodayCheckout = () => {
   const [search, setSearch] = useState("");
@@ -39,7 +45,7 @@ const TodayCheckout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const managerId = searchParams.get("manager_id");
-
+  const { user } = useSelector((store) => store.authSlice);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -65,14 +71,13 @@ const TodayCheckout = () => {
     data: checkinList,
     isLoading,
     refetch,
-  } = useGetBookingsByHotelQuery({
+  } = useGetDailyCheckoutDataQuery({
     search: search,
     page: currentPage,
-    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
-    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
-    filter: "CheckedOut",
-    // arrayFilter: ["CheckedIn", "CheckedOut"],
-    manager_id: managerId === "undefined" ? "" : managerId,
+    fromDate: convertedStartDate(),
+    toDate: convertedEndDate(),
+    manager_id: managerId ? managerId : user?._id,
+    limit: 10,
   });
 
   //  const {data:checkinList,isLoading,refetch}= useGetTodayCheckoutQuery();

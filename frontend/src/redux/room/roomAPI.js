@@ -15,7 +15,7 @@ const roomAPI = baseAPI.injectEndpoints({
           search ? `&search=${search}` : ""
         }`,
       providesTags: ["room"],
-      invalidatesTags: ["bookingToCheckIn","cancelBooking"],
+      invalidatesTags: ["bookingToCheckIn", "cancelBooking"],
     }),
     room: build.query({
       query: (id) => `rooms/get-room-by-id/${id}`,
@@ -70,7 +70,7 @@ const roomAPI = baseAPI.injectEndpoints({
         };
       },
       providesTags: ["cancelBooking"],
-      invalidatesTags: ["booking", "addBooking","room"],
+      invalidatesTags: ["booking", "addBooking", "room"],
     }),
 
     addExpenses: build.mutation({
@@ -81,7 +81,7 @@ const roomAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["addRestaurantExpenses", "GetExpenses","subDashboard"],
+      invalidatesTags: ["addRestaurantExpenses", "GetExpenses", "subDashboard"],
     }),
     getCheckout: build.mutation({
       query: (ids) => {
@@ -197,6 +197,46 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       providesTags: ["bookingInfo", "booking"],
     }),
+    getDailyBookingData: build.query({
+      query: ({ manager_id, fromDate, toDate, page, limit, search }) => {
+        return `bookings/get-perday-total-booking-list?${
+          manager_id ? "manager_id=" + manager_id : ""
+        }&&${fromDate ? "fromDate=" + fromDate : ""}&&${
+          toDate ? "toDate=" + toDate : ""
+        }&&page=${++page}&&limit=${limit}&&${search ? "search=" + search : ""}`;
+      },
+      providesTags: ["room", "booking"],
+    }),
+    getDailyCheckInData: build.query({
+      query: ({ manager_id, fromDate, toDate, page, limit, search }) => {
+        return `bookings/get-perday-total-checkedin-list?${
+          manager_id ? "manager_id=" + manager_id : ""
+        }&&${fromDate ? "fromDate=" + fromDate : ""}&&${
+          toDate ? "toDate=" + toDate : ""
+        }&&page=${++page}&&limit=${limit}&&${search ? "search=" + search : ""}`;
+      },
+      providesTags: ["room", "booking"],
+    }),
+    getDailyCheckoutData: build.query({
+      query: ({ manager_id, fromDate, toDate, page, limit, search }) => {
+        return `bookings/get-perday-total-checkedout-list?${
+          manager_id ? "manager_id=" + manager_id : ""
+        }&&${fromDate ? "fromDate=" + fromDate : ""}&&${
+          toDate ? "toDate=" + toDate : ""
+        }&&page=${++page}&&limit=${limit}&&${search ? "search=" + search : ""}`;
+      },
+      providesTags: ["room", "booking"],
+    }),
+    getDailyCancelBookingData: build.query({
+      query: ({ manager_id, fromDate, toDate, page, limit, search }) => {
+        return `bookings/get-perday-total-canceled-booking-list?${
+          manager_id ? "manager_id=" + manager_id : ""
+        }&&${fromDate ? "fromDate=" + fromDate : ""}&&${
+          toDate ? "toDate=" + toDate : ""
+        }&&page=${++page}&&limit=${limit}&&${search ? "search=" + search : ""}`;
+      },
+      providesTags: ["room", "booking"],
+    }),
 
     getRoomPostedBills: build.query({
       query: (roomId) => {
@@ -283,7 +323,7 @@ const roomAPI = baseAPI.injectEndpoints({
         "room",
         "bookingToCheckIn",
         "getCheckoutDataByBookingId",
-        "subDashboard"
+        "subDashboard",
       ],
     }),
     getCheckoutDataByBookingId: build.query({
@@ -350,4 +390,8 @@ export const {
   useMakePaymentMutation,
   useCashbackMutation,
   useGetTodayCheckoutQuery,
+  useGetDailyBookingDataQuery,
+  useGetDailyCheckInDataQuery,
+  useGetDailyCheckoutDataQuery,
+  useGetDailyCancelBookingDataQuery
 } = roomAPI;
