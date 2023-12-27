@@ -57,6 +57,7 @@ const ManageCheckin = () => {
       : convertedEndDate(),
     manager_id: user._id,
     limit: 10,
+    filter:"checkin"
   });
   const formik = useFormik({
     initialValues: {
@@ -174,7 +175,7 @@ const ManageCheckin = () => {
                 <tr>
                   <th>SL</th>
                   <th>Date</th>
-                  <th>Amount</th>
+                  <th>Number of CheckIn</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -194,9 +195,6 @@ const ManageCheckin = () => {
                         </td>
                         <td>
                           <div className="flex">
-                            <div>
-                              <FaRupeeSign />
-                            </div>
                             <div>
                               <span>{item?.today_remaining_checkin}</span>
                             </div>
