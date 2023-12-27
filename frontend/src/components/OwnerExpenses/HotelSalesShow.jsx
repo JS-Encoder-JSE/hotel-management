@@ -273,7 +273,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                 )}
               </div>
             </div>
-            {hotelTodaySales?.data?.docs?.length && (
+            {hotelTodaySales?.data?.docs?.length > 0 && (
               <div className="flex justify-center mt-10">
                 <ReactPaginate
                   containerClassName="join rounded-none"
@@ -304,7 +304,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
             >
-              Hotel Sales
+              Hotel Sales History
             </h3>
           </div>
           <div className={`flex justify-end mb-5 mr-5`}>
@@ -449,7 +449,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
               <p className="text-center my-16">No sales yet!</p>
             )}
           </div>
-          {hotelSalesHistory?.data?.docs?.length && (
+          {hotelSalesHistory?.data?.docs?.length > 0 &&  (
             <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"

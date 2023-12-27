@@ -372,15 +372,16 @@ const Report = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {[...reports?.docs]
-                        ?.sort((a, b) =>
-                          a.username.toLowerCase() > b.username.toLowerCase()
-                            ? 1
-                            : a.username.toLowerCase() <
-                              b.username.toLowerCase()
-                            ? -1
-                            : 0
-                        )
+                      {
+                      [...reports?.docs]
+                        // ?.sort((a, b) =>
+                        //   a.username.toLowerCase() > b.username.toLowerCase()
+                        //     ? 1
+                        //     : a.username.toLowerCase() <
+                        //       b.username.toLowerCase()
+                        //     ? -1
+                        //     : 0
+                        // )
                         ?.map((report, idx) => {
                           return (
                             <tr
