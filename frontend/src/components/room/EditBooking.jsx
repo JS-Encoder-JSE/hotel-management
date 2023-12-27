@@ -61,6 +61,8 @@ const EditBooking = ({ data, bookingId }) => {
   // current date for from
   const [currentDate, setCurrentDate] = useState(new Date());
   const [updateBookingInfo, { isLoading }] = useUpdateBookingInfoMutation();
+
+  const [close,setClose] = useState(false);
   const [updateBooking] = useUpdateBookingMutation();
 
   const closeRef = useRef(null);
@@ -131,7 +133,7 @@ const EditBooking = ({ data, bookingId }) => {
         from: new Date(data?.from),
       }));
     }
-  }, [data]);
+  }, [data,close]);
 
   // children validation
   const handleChildrenEditBooking = (e) => {
@@ -151,6 +153,7 @@ const EditBooking = ({ data, bookingId }) => {
       <form autoComplete="off" method="dialog">
         <button
           ref={closeRef}
+          onClick={() => setClose((prevClose) => !prevClose)}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
         >
           ✕
