@@ -8,12 +8,15 @@ import {
   useGetRoomsAndHotelsQuery,
   useGetBookingsByHotelQuery,
   useMakePaymentMutation,
+  useGetDailyDataQuery,
+  useGetDailyHotelDataQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import { Link, useLocation } from "react-router-dom";
 import CheckInModal from "./CheckInModal.jsx";
 import ManageCheckinModal from "./MaageCheckinModal.jsx";
 import CheckinList from "../../components/room/CheckinList.jsx";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const ManageCheckin = () => {
   const [search, setSearch] = useState("");
@@ -29,6 +32,15 @@ const ManageCheckin = () => {
     }, 3000);
   };
 
+  const { data: hotelSalesHistory, error } = useGetDailyHotelDataQuery({
+    // ...searchParams,
+    page: 0,
+    fromDate: convertedStartDate(),
+    toDate: convertedEndDate(),
+    // managerId: managerId,
+    limit: 10,
+  });
+  console.log({ hotelSalesHistory });
   const formik = useFormik({
     initialValues: {
       filter: "",
@@ -52,7 +64,7 @@ const ManageCheckin = () => {
     filter: "CheckedIn",
   });
 
-  console.log(checkinList)
+  console.log(checkinList);
 
   // refetch()
   const path = useLocation();
@@ -63,7 +75,6 @@ const ManageCheckin = () => {
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
-
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
@@ -112,8 +123,8 @@ const ManageCheckin = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}

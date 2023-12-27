@@ -76,7 +76,7 @@ export const convertedFromDate = (date) => {
 // for booking or checkin we need to select the start or from date. then we have to call this func. this func will return iso formatted date of indian time 12.00 pm
 export const getStartDateOFBookingIST = (fromDate) => {
   const inputDate = getTodayFormateDate(fromDate);
-  console.log(inputDate);
+  // console.log(inputDate);
   // Parse the input date string
   const [month, day, year] = inputDate.split("/").map(Number);
 
@@ -126,7 +126,7 @@ export const getEndDateOfBookingIst = (toDate) => {
 
 export const convertedStartDate = (newDate) => {
   const inputDate = getTodayFormateDate(newDate ? newDate : new Date());
-  console.log(inputDate);
+  // console.log(inputDate);
   // Parse the input date string
   const [month, day, year] = inputDate.split("/").map(Number);
 
@@ -138,7 +138,7 @@ export const convertedStartDate = (newDate) => {
 };
 export const convertedEndDate = (newDate) => {
   const inputDate = getTodayFormateDate(newDate ? newDate : new Date());
-  console.log(inputDate);
+  // console.log(inputDate);
   // Parse the input date string
   const [month, day, year] = inputDate.split("/").map(Number);
 

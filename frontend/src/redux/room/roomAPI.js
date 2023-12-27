@@ -121,7 +121,7 @@ const roomAPI = baseAPI.injectEndpoints({
         `foods/get-orders-by-date?${
           date ? `date=${date}` : ""
         }&order_status=${order_status}&hotel_id=${hotel_id}`,
-        providesTags:["checkout"]
+      providesTags: ["checkout"],
     }),
     // getDailyData:build.query({
     //   query: ({ managerId, fromDate, toDate }) =>
@@ -136,7 +136,7 @@ const roomAPI = baseAPI.injectEndpoints({
         }${
           filter ? `&filter=${filter}` : ""
         }&manager_id=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,
-      providesTags: ["getDailyData","checkout"],
+      providesTags: ["getDailyData", "checkout"],
     }),
 
     getExpenseById: build.query({
@@ -198,12 +198,22 @@ const roomAPI = baseAPI.injectEndpoints({
       },
       providesTags: ["bookingInfo", "booking"],
     }),
+    getDailyHotelData: build.query({
+      query: ({ manager_id, fromDate, toDate, page, limit, search }) => {
+        return `bookings/get-hotel-daily-datas?${
+          fromDate ? "fromDate=" + fromDate : ""
+        }&&${toDate ? "toDate=" + toDate : ""}${
+          manager_id ? "&&manager_id=" + manager_id : ""
+        }&&page=${++page}&&limit=${limit}${search ? "&&search=" + search : ""}`;
+      },
+      providesTags: ["room", "booking"],
+    }),
     getDailyBookingData: build.query({
       query: ({ manager_id, fromDate, toDate, page, limit, search }) => {
         return `bookings/get-perday-total-booking-list?${
+          fromDate ? "fromDate=" + fromDate : ""
+        }&&${toDate ? "toDate=" + toDate : ""}&&${
           manager_id ? "manager_id=" + manager_id : ""
-        }&&${fromDate ? "fromDate=" + fromDate : ""}&&${
-          toDate ? "toDate=" + toDate : ""
         }&&page=${++page}&&limit=${limit}&&${search ? "search=" + search : ""}`;
       },
       providesTags: ["room", "booking"],
@@ -211,9 +221,9 @@ const roomAPI = baseAPI.injectEndpoints({
     getDailyCheckInData: build.query({
       query: ({ manager_id, fromDate, toDate, page, limit, search }) => {
         return `bookings/get-perday-total-checkedin-list?${
+          fromDate ? "fromDate=" + fromDate : ""
+        }&&${toDate ? "toDate=" + toDate : ""}&&${
           manager_id ? "manager_id=" + manager_id : ""
-        }&&${fromDate ? "fromDate=" + fromDate : ""}&&${
-          toDate ? "toDate=" + toDate : ""
         }&&page=${++page}&&limit=${limit}&&${search ? "search=" + search : ""}`;
       },
       providesTags: ["room", "booking"],
@@ -395,4 +405,5 @@ export const {
   useGetDailyCheckInDataQuery,
   useGetDailyCheckoutDataQuery,
   useGetDailyCancelBookingDataQuery,
+  useGetDailyHotelDataQuery,
 } = roomAPI;
