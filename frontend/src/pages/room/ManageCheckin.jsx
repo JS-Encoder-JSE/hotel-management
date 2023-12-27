@@ -57,6 +57,7 @@ const ManageCheckin = () => {
       : convertedEndDate(),
     manager_id: user._id,
     limit: 10,
+    filter:"checkin"
   });
   const formik = useFormik({
     initialValues: {
