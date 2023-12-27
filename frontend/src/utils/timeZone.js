@@ -116,7 +116,7 @@ export const getEndDateOfBookingIst = (toDate) => {
   const [month, day, year] = inputDate.split("/").map(Number);
 
   // Create a new Date object with the parsed values
-  const date = new Date(Date.UTC(year, month - 1, day, 5, 29, 0, 0));
+  const date = new Date(Date.UTC(year, month - 1, day, 5, 29, 59, 999));
 
   // Format the date to ISO string
   const isoFormat = date.toISOString();
@@ -143,7 +143,7 @@ export const convertedEndDate = (newDate) => {
   const [month, day, year] = inputDate.split("/").map(Number);
 
   // Create a new Date object with the parsed values
-  const date = new Date(Date.UTC(year, month - 1, day, 18, 29, 0, 0));
+  const date = new Date(Date.UTC(year, month - 1, day, 18, 29, 59, 999));
   // Format the date to ISO string
   const isoFormat = date.toISOString();
   return isoFormat;

@@ -57,10 +57,13 @@ const validationSchema = yup.object({
 
 const EditBooking = ({ data, bookingId }) => {
   const { id } = useParams();
- 
+
   // current date for from
   const [currentDate, setCurrentDate] = useState(new Date());
   const [updateBookingInfo, { isLoading }] = useUpdateBookingInfoMutation();
+
+  const [close,setClose] = useState(false);
+  const [updateBooking] = useUpdateBookingMutation();
 
   const closeRef = useRef(null);
   const formik = useFormik({
@@ -89,8 +92,9 @@ const EditBooking = ({ data, bookingId }) => {
         children: Number(values.children),
         nationality: values.nationality,
       };
-     
+
       try {
+        // First asynchronous operation
         const response = await updateBookingInfo({
           id: id,
           data: obj,
@@ -99,11 +103,24 @@ const EditBooking = ({ data, bookingId }) => {
         if (response?.error) {
           toast.error(response.error.data.message);
         } else {
-          formikHelpers.resetForm();
-          closeRef.current.click();
-          toast.success(response.data.message);
+          // Second asynchronous operation
+          const updateBookingResponse = await updateBooking({
+            id: id,
+            data: obj,
+          });
+
+          if (updateBookingResponse?.error) {
+            toast.error(updateBookingResponse.error.data.message);
+          } else {
+            formikHelpers.resetForm();
+            closeRef.current.click();
+            toast.success(updateBookingResponse.data.message);
+          }
         }
-      } catch (error) {}
+      } catch (error) {
+        // Handle errors for both asynchronous operations
+        console.error("Error:", error);
+      }
     },
   });
 
@@ -116,7 +133,7 @@ const EditBooking = ({ data, bookingId }) => {
         from: new Date(data?.from),
       }));
     }
-  }, [data]);
+  }, [data,close]);
 
   // children validation
   const handleChildrenEditBooking = (e) => {
@@ -136,6 +153,7 @@ const EditBooking = ({ data, bookingId }) => {
       <form autoComplete="off" method="dialog">
         <button
           ref={closeRef}
+          onClick={() => setClose((prevClose) => !prevClose)}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
         >
           ✕
