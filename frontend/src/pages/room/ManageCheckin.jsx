@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import BookingLists from "../../components/room/BookingLists.jsx";
-import { FaArrowLeft, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaPlus,
+  FaRupeeSign,
+  FaSearch,
+  FaTrash,
+} from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
 import AddBooking from "../../components/room/AddBooking.jsx";
 import {
@@ -17,6 +24,8 @@ import CheckInModal from "./CheckInModal.jsx";
 import ManageCheckinModal from "./MaageCheckinModal.jsx";
 import CheckinList from "../../components/room/CheckinList.jsx";
 import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
+import { useSelector } from "react-redux";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const ManageCheckin = () => {
   const [search, setSearch] = useState("");
@@ -31,13 +40,13 @@ const ManageCheckin = () => {
       setIsModalOpen(false);
     }, 3000);
   };
-
+  const { user } = useSelector((store) => store.authSlice);
   const { data: hotelSalesHistory, error } = useGetDailyHotelDataQuery({
     // ...searchParams,
     page: 0,
     fromDate: convertedStartDate(),
     toDate: convertedEndDate(),
-    // managerId: managerId,
+    managerId: user._id,
     limit: 10,
   });
   console.log({ hotelSalesHistory });
@@ -105,6 +114,57 @@ const ManageCheckin = () => {
       >
         <h1>Manage CheckIn</h1>
       </div>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>SL</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {hotelSalesHistory &&
+            hotelSalesHistory?.data?.docs?.map((item, idx) => {
+              return (
+                <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
+                  <th>{++idx}</th>
+                  <td>
+                    {getOnlyFormatDate(item?.date)}
+                    {/* {new Date(item?.date).toLocaleDateString()} */}
+                  </td>
+                  <td>
+                    <div className="flex">
+                      <div>
+                        <FaRupeeSign />
+                      </div>
+                      <div>
+                        <span>{item?.today_remaining_checkin}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className={`space-x-1.5`}>
+                    <span
+                      className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                      onClick={() =>
+                        navigate(
+                          `/dashboard/hotel-sales-details?date=${item?.date}&&hotel=${hotelId}&managerId=${managerId}`
+                        )
+                      }
+                    >
+                      <FaEye />
+                    </span>
+                    {/* <span
+                          className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                        >
+                          <AiTwotoneDelete />
+                        </span> */}
+                  </td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
       <div className="flex justify-end">
         <div className={`flex flex-col md:flex-row gap-4 `}>
           <button
