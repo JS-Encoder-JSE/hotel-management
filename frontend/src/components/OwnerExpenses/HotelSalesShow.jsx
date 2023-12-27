@@ -59,8 +59,6 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(managerId);
-
-  const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",

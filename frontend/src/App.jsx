@@ -113,6 +113,7 @@ import TodaysCheckinList from "./pages/room/TodaysCheckinList.jsx";
 import TodayBookings from "./pages/room/TodaysBookings.jsx";
 import TodayCheckout from "./pages/room/TodayCheckout.jsx";
 import TodayCancelBookings from "./pages/room/TodayCancelBookings.jsx";
+import DailyCheckin from "./pages/room/DailyCheckin.jsx";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -216,6 +217,14 @@ const App = () => {
               element: (
                 <ManagerRoute>
                   <ManageCheckin />
+                </ManagerRoute>
+              ),
+            },
+            {
+              path: "daily-checkin",
+              element: (
+                <ManagerRoute>
+                  <DailyCheckin />
                 </ManagerRoute>
               ),
             },
