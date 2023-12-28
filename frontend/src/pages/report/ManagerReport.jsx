@@ -24,6 +24,8 @@ const ManagerReport = ({ values, header }) => {
     "checked_in",
     "checked_out",
     "paid_amount",
+    "balance_deducted",
+    "balance_refunded",
   ];
   const tableHeaders = [
     "Serial No",
@@ -32,6 +34,8 @@ const ManagerReport = ({ values, header }) => {
     "Checked In",
     "Checked Out",
     "Paid Amount",
+    "Deducted From Balance",
+    "Refund Amount",
   ];
 
   const jsEncoderTextStyle = {
