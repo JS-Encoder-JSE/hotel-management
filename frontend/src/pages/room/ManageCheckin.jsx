@@ -166,10 +166,10 @@ const ManageCheckin = () => {
         </div>
       </div>
 
-      <div className="flex justify-end"></div>
+      {/* <div className="flex justify-end"></div> */}
       {!isLoading ? (
         checkInData?.data?.docs?.length ? (
-          <>
+          <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -239,7 +239,7 @@ const ManageCheckin = () => {
                 />
               </div>
             )}
-          </>
+          </div>
         ) : (
           <h3 className={`text-center`}>No data found!</h3>
         )

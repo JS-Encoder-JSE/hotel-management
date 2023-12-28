@@ -453,6 +453,14 @@ const App = () => {
               ),
             },
             {
+              path: "all-hotel-expenses/:id",
+              element: (
+                <ManagerRoute>
+                  <ShowAllExpenseView />
+                </ManagerRoute>
+              ),
+            },
+            {
               path: "hotel-dashboard",
               element: (
                 <ManagerRoute>
