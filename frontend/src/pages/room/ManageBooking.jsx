@@ -72,7 +72,7 @@ const ManageBooking = () => {
             onClick={() => window.ab_modal.showModal()}
           >
             <FaPlus />
-            {/* <span>Add Booking</span> */}
+            <span>Add Booking</span>
           </button>
           <div className={`relative sm:min-w-[20rem]`}>
             <input

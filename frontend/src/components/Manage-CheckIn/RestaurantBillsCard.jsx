@@ -19,8 +19,17 @@ import { getOnlyFormatDate } from "../../utils/utils";
 const RestaurantBillsCard = ({ food_bills }) => {
   const allItems = food_bills?.reduce((accumulator, bill) => {
     // Concatenate the items array of each bill to the accumulator array
-    return accumulator.concat(bill.items);
+  
+    return accumulator.concat(
+      bill.items.map(item => ({
+        ...item,
+        createdAt: bill.createdAt // Add createdAt property to each item
+      }))
+    );
   }, []);
+
+  console.log("allItems",allItems)
+ 
   
   const totalPrice = allItems?.reduce((total, item) => {
     // Add the price of each item to the total
@@ -65,6 +74,7 @@ const RestaurantBillsCard = ({ food_bills }) => {
   const currentItems =
     food_bills && allItems?.slice(indexOfFirstItem, indexOfLastItem);
 
+    console.log("currentItems",currentItems)
   return (
     <div className={`space-y-5 mt-20 `}>
       <div>
@@ -99,7 +109,7 @@ const RestaurantBillsCard = ({ food_bills }) => {
                         >
                           <td>{++idx}</td>
                           <td>
-                            {getOnlyFormatDate( food_bills[0]?.createdAt)}
+                            {getOnlyFormatDate( itemBill?.createdAt)}
                             {/* {food_bills &&
                               new Date(
                                 food_bills[0]?.createdAt

@@ -203,9 +203,20 @@ export const getConvertedIndiaLocalDate = (date) => {
 };
 
 // this function will return indian time formatted date
+// export const getIndianFormattedDate = (date) => {
+  
+//   return new Date(date).toLocaleString("en-IN", {
+//     timeZone: "Asia/Kolkata",
+//     day: "numeric",
+//     month: "numeric",
+//     year: "numeric",
+//     hour: "numeric",
+//     minute: "numeric",
+//     hour12: true,
+//   });
+// };
 export const getIndianFormattedDate = (date) => {
-
-  return new Date(date).toLocaleString("en-IN", {
+  const options = {
     timeZone: "Asia/Kolkata",
     day: "numeric",
     month: "numeric",
@@ -213,8 +224,19 @@ export const getIndianFormattedDate = (date) => {
     hour: "numeric",
     minute: "numeric",
     hour12: true,
-  });
+    hourCycle: 'h23', // Use 24-hour clock format
+    ...(Intl.DateTimeFormat().resolvedOptions().locale.startsWith('en') && {
+      // Add options only if the locale starts with 'en' (English)
+      hourCycle: 'h12',
+      hour12: true,
+    }),
+  };
 
+
+  const formattedDate = new Date(date).toLocaleString("en-IN", options);
+
+  // Convert the AM/PM part to uppercase
+  return formattedDate.replace(/\b(?:am|pm)\b/gi, match => match.toUpperCase());
 };
 export const getCurrentTimeInIndia = () => {
   // Get current date and time

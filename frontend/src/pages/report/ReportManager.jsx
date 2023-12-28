@@ -338,7 +338,7 @@ const ReportManager = () => {
                       <td>{report?.room_numbers.join(",")}</td>
                       <td>{getformatDateTime(report?.checked_in)}</td>
 
-                      <td className="uppercase">{getIndianFormattedDate(report?.checked_out)}</td>
+                      <td >{getIndianFormattedDate(report?.checked_out)}</td>
                       <td className="text-end">{report?.paid_amount}</td>
                       <td className="text-end">{report?.balance_deducted}</td>
                       <td className="text-end">{report?.balance_refunded}</td>
