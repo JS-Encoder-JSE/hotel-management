@@ -232,13 +232,12 @@ export const getIndianFormattedDate = (date) => {
     }),
   };
 
+
   const formattedDate = new Date(date).toLocaleString("en-IN", options);
 
   // Convert the AM/PM part to uppercase
   return formattedDate.replace(/\b(?:am|pm)\b/gi, match => match.toUpperCase());
 };
-
-
 export const getCurrentTimeInIndia = () => {
   // Get current date and time
   const now = new Date();
