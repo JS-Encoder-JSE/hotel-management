@@ -14,7 +14,7 @@ import { GiDoorHandle } from "react-icons/gi";
 import { FaRegEdit } from "react-icons/fa";
 import { BiSolidDoorOpen } from "react-icons/bi";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
-import { getIndianFormattedDate } from "../../utils/timeZone.js";
+import { bookingDateFormatter, getIndianFormattedDate } from "../../utils/timeZone.js";
 
 const CheckinList = ({ checkinList, page, handlePageClick, forcePage }) => {
   const navigate = useNavigate();
@@ -70,8 +70,8 @@ const CheckinList = ({ checkinList, page, handlePageClick, forcePage }) => {
                   <td>{getformatDateTime(item?.checkin_date)}</td>
                   {/* <td>{item?.paid_amount}</td> */}
                   {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
-                  <td>{getIndianFormattedDate(item?.from)}</td>
-                  <td>{getIndianFormattedDate(item?.to)}</td>
+                  <td className="uppercase">{bookingDateFormatter(item?.from)}</td>
+                  <td className="uppercase">{bookingDateFormatter(item?.to)}</td>
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span

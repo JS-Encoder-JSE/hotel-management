@@ -194,7 +194,7 @@ const TodayCheckout = () => {
                         <td>{item?.room_id?.roomNumber}</td>
                         <td>{item?.mobileNumber}</td>
                         <td>{getformatDateTime(item?.checkin_date)}</td>
-                        <td>{getIndianFormattedDate(item?.to)}</td>
+                        <td className="uppercase">{getIndianFormattedDate(item?.to)}</td>
                       </tr>
                     );
                   })}
