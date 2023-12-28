@@ -47,9 +47,26 @@ const ShowALlSellView = () => {
 
   const [todayItem, setTodayItem] = useState([]);
   useEffect(() => {
-    const todayItems = orderedDataByDate?.data?.map((obj) => obj?.items).flat();
-    todayItems ? setTodayItem(todayItems) : null;
+    const todayItems = orderedDataByDate?.data?.reduce(
+      (accumulator, items) => {
+        // Concatenate the items array of each bill to the accumulator array
+        return accumulator.concat(
+          items.items.map((item) => ({
+            ...item,
+            ...(items.room_id
+              ? { roomNumber: items.room_id.roomNumber }
+              : items.table_id? { tableNumber: items.table_id.table_number}
+              : {}), // Add createdAt property to each item
+          }))
+        );
+      },
+      []
+    );
+    // console.log("allItemsWithCreatedAt",allItemsWithCreatedAt)
+
+    setTodayItem(todayItems);
   }, [orderedDataByDate]);
+  console.log("today item",todayItem)
 
   // pagination setup for today's expenses
   const itemsPerPage = 10;
@@ -126,6 +143,7 @@ const ShowALlSellView = () => {
               <th>SL</th>
               <th>Date</th>
               <th>Items Name</th>
+              <th>Room /Table</th>
               <th>Surveyor Quantity</th>
               <th>Quantity</th>
               <th>Price</th>
@@ -147,6 +165,11 @@ const ShowALlSellView = () => {
                       {/* {new Date(dateParam).toLocaleDateString()} */}
                       </td>
                     <td>{item?.item}</td>
+                    <td>
+                            {item?.roomNumber
+                              ? item.roomNumber
+                              : item?.tableNumber}
+                          </td>
                     <td>{item?.serveyor_quantity}</td>
                     <td>{item?.quantity}</td>
                     <td>{item?.price * item?.quantity}</td>
