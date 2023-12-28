@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 import Modal from "../../components/Modal.jsx";
 import RefundBookingModal from "../../components/room/RefundBookingModal.jsx";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
-import { getIndianFormattedDate } from "../../utils/timeZone.js";
+import { bookingDateFormatter, getIndianFormattedDate } from "../../utils/timeZone.js";
 
 const TodayCancelBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
   const navigate = useNavigate();
@@ -148,12 +148,12 @@ const TodayCancelBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
                     {getformatDateTime(item?.createdAt)}
                     {/* {new Date(item?.createdAt).toLocaleDateString()} */}
                   </td>
-                  <td>
-                    {getIndianFormattedDate(item?.from)}
+                  <td className="uppercase">
+                    {bookingDateFormatter(item?.from)}
                     {/* {new Date(item?.from).toLocaleDateString()} */}
                   </td>
-                  <td>
-                    {getIndianFormattedDate(item?.to)}
+                  <td className="uppercase">
+                    {bookingDateFormatter(item?.to)}
                     {/* {new Date(item?.to).toLocaleDateString()} */}
                   </td>
                 </tr>

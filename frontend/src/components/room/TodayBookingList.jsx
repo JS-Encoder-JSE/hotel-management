@@ -17,7 +17,7 @@ import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import AddBooking from "./AddBooking.jsx";
 import RefundBookingModal from "./RefundBookingModal.jsx";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
-import { getIndianFormattedDate } from "../../utils/timeZone.js";
+import { bookingDateFormatter, getIndianFormattedDate } from "../../utils/timeZone.js";
 
 const TodayBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
   const navigate = useNavigate();
@@ -150,8 +150,8 @@ const TodayBookingList = ({ bookingList, setCurrentPage, forcePage }) => {
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
                   <td>{getformatDateTime(item?.createdAt)}</td>
-                  <td>{getIndianFormattedDate(item?.from)}</td>
-                  <td>{getIndianFormattedDate(item?.to)}</td>
+                  <td className="uppercase">{bookingDateFormatter(item?.from)}</td>
+                  <td className="uppercase">{bookingDateFormatter(item?.to)}</td>
                 </tr>
               );
             })}
