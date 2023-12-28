@@ -438,53 +438,59 @@ const RestaurantExpenseShow = ({ hotelId }) => {
         <hr className={`my-5 mb-4`} />
         <div className={`space-y-10`}>
           <div className="overflow-x-auto">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Date</th>
-                  <th>Total Amount</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredExpenses?.docs.map((item, idx) => {
-                  return (
-                    <tr
-                      className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
-                    >
-                      <th>{++idx}</th>
-                      <td>
-                        {getOnlyFormatDate(item?.date)}
-                        {/* {new Date(item?.date).toLocaleDateString()} */}
-                      </td>
-                      <td>
-                        <FaRupeeSign className="inline" />
-                        <span>{item?.total_amount}</span>
-                      </td>
-                      <td className={`space-x-1.5`}>
-                        <span
-                          className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                          onClick={() =>
-                            navigate(
-                              `/dashboard/restaurant-expenses/${item?._id}`
-                            )
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                        {/* <span
-                          className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                        >
-                          <AiTwotoneDelete />
-                        </span> */}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            {filteredExpenses && filteredExpenses?.docs?.length ? (
+                <table className="table">
+                <thead>
+                  <tr>
+                    <th>SL</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredExpenses?.docs.map((item, idx) => {
+                    return (
+                      <tr
+                        className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                      >
+                        <th>{++idx}</th>
+                        <td>
+                          {getOnlyFormatDate(item?.date)}
+                          {/* {new Date(item?.date).toLocaleDateString()} */}
+                        </td>
+                        <td>
+                          <FaRupeeSign className="inline" />
+                          <span>{item?.total_amount}</span>
+                        </td>
+                        <td className={`space-x-1.5`}>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                            onClick={() =>
+                              navigate(
+                                `/dashboard/restaurant-expenses/${item?._id}`
+                              )
+                            }
+                          >
+                            <FaEye />
+                          </span>
+                          {/* <span
+                            className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                          >
+                            <AiTwotoneDelete />
+                          </span> */}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <p className="text-center my-16">No Expenses yet !</p>
+            )}
+          
           </div>
+
           <div className="flex justify-center mt-10">
             <ReactPaginate
               containerClassName="join rounded-none"

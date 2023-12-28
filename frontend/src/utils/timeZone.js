@@ -204,7 +204,7 @@ export const getConvertedIndiaLocalDate = (date) => {
 
 // this function will return indian time formatted date
 export const getIndianFormattedDate = (date) => {
-  
+
   return new Date(date).toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata",
     day: "numeric",
@@ -214,8 +214,15 @@ export const getIndianFormattedDate = (date) => {
     minute: "numeric",
     hour12: true,
   });
-};
 
+};
+export const bookingDateFormatter = (date) => {
+  const formattedDate = moment(date)
+    .utcOffset("+06:30")
+    .format("DD/MM/YYYY hh:mm a");
+  return formattedDate;
+
+};
 export const getCurrentTimeInIndia = () => {
   // Get current date and time
   const now = new Date();

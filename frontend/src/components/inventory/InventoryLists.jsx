@@ -65,6 +65,15 @@ const InventoryLists = ({ filter, keyword, chooseHotel }) => {
   //   if (foods) setPageCount(foods.data.totalPages);
   // }, [foods]);
 
+
+  
+  useEffect(() => {
+    if (lists) {
+      setPageCount(lists.totalPages);
+    }
+  }, [lists]);
+
+
   return lists?.docs?.length ? (
     <div>
       <div className="overflow-x-auto border">

@@ -115,7 +115,7 @@ const DailyCheckin = () => {
       <div
         className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
       >
-        <h1>Manage CheckIn</h1>
+        <h1>CheckIn List</h1>
       </div>
       <div className="flex justify-end">
         <div className={`flex flex-col md:flex-row gap-4 `}>
