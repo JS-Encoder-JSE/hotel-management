@@ -66,8 +66,9 @@ const TransactionHistory = () => {
 
         "Transaction Id": item.tran_id,
         "Payment Method": item?.payment_method,
-        "License Duration": item?.payment_for,
-        Amount: item?.amount,
+        "License Duration": `${getOnlyFormatDate(item?.bill_from)} - ${getOnlyFormatDate(item?.bill_to)}`,
+        // item?.payment_for,
+        // Amount: item?.amount,
         "Payment For": item?.payment_for,
         "Deposit By": item?.to,
       }));
