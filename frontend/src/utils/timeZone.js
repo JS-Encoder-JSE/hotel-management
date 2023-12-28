@@ -216,13 +216,6 @@ export const getIndianFormattedDate = (date) => {
   });
 
 };
-export const bookingDateFormatter = (date) => {
-  const formattedDate = moment(date)
-    .utcOffset("+06:30")
-    .format("DD/MM/YYYY hh:mm a");
-  return formattedDate;
-
-};
 export const getCurrentTimeInIndia = () => {
   // Get current date and time
   const now = new Date();
