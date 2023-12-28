@@ -17,7 +17,10 @@ import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import AddBooking from "./AddBooking.jsx";
 import RefundBookingModal from "./RefundBookingModal.jsx";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
-import { bookingDateFormatter, getIndianFormattedDate } from "../../utils/timeZone.js";
+import {
+  bookingDateFormatter,
+  getIndianFormattedDate,
+} from "../../utils/timeZone.js";
 
 const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
   const navigate = useNavigate();
@@ -42,58 +45,63 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
   const handleDelete = (id) => {
     setBookingId(id);
     if (id === bookingId) {
-      refetch();
+      cancelBookingFunction();
     }
   };
-  if (isLastBooking && isSuccess) {
-    if (isLastBooking?.success && isLastBooking?.paid_amount > 0) {
-      window.refundPay.showModal();
-    } else {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "Booking will be Cancel.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#35bef0",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Cancel it!",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          try {
-            const response = await cancelBooking({
-              id: bookingId,
-              data: {
-                tran_id: "",
-                payment_method: "",
-              },
-            });
-            if (response) {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Canceled!",
-                showConfirmButton: false,
-                timer: 1500,
+  const cancelBookingFunction = () => {
+    if (isLastBooking && isSuccess) {
+      if (isLastBooking?.success && isLastBooking?.paid_amount > 0) {
+        window.refundPay.showModal();
+      } else {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Booking will be Cancel.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#35bef0",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Cancel it!",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await cancelBooking({
+                id: bookingId,
+                data: {
+                  tran_id: "",
+                  payment_method: "",
+                },
               });
-            } else {
+              if (response) {
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Canceled!",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
+              }
+            } catch (error) {
+              console.error("Error:", error);
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "Something went wrong!",
               });
             }
-          } catch (error) {
-            console.error("Error:", error);
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Something went wrong!",
-            });
           }
-        }
-      });
+        });
+      }
     }
-  }
+  };
+  useEffect(() => {
+    cancelBookingFunction();
+  }, [isLastBooking]);
 
   useEffect(() => {
     if (data && modalOpen) {
@@ -144,8 +152,12 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
                   <td>{getformatDateTime(item?.createdAt)}</td>
-                  <td className="uppercase">{bookingDateFormatter(item?.from)}</td>
-                  <td className="uppercase">{bookingDateFormatter(item?.to)}</td>
+                  <td className="uppercase">
+                    {bookingDateFormatter(item?.from)}
+                  </td>
+                  <td className="uppercase">
+                    {bookingDateFormatter(item?.to)}
+                  </td>
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span
