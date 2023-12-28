@@ -51,13 +51,11 @@ const ManageCheckin = () => {
     page: currentPage,
     fromDate: searchParams?.fromDate
       ? convertedStartDate(searchParams.fromDate)
-      : convertedStartDate(),
-    toDate: searchParams?.toDate
-      ? convertedEndDate(searchParams.toDate)
-      : convertedEndDate(),
+      : "",
+    toDate: searchParams?.toDate ? convertedEndDate(searchParams.toDate) : "",
     manager_id: user._id,
     limit: 10,
-    filter:"checkin"
+    filter: "checkin",
   });
   const formik = useFormik({
     initialValues: {
