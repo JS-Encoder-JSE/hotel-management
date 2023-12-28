@@ -66,8 +66,9 @@ const TransactionHistory = () => {
 
         "Transaction Id": item.tran_id,
         "Payment Method": item?.payment_method,
-        "License Duration": item?.payment_for,
-        Amount: item?.amount,
+        "License Duration": `${getOnlyFormatDate(item?.bill_from)} - ${getOnlyFormatDate(item?.bill_to)}`,
+        // item?.payment_for,
+        // Amount: item?.amount,
         "Payment For": item?.payment_for,
         "Deposit By": item?.to,
       }));
@@ -75,6 +76,7 @@ const TransactionHistory = () => {
       setPDF(values);
     }
   }, [data]);
+  console.log("data",data)
 
   return (
     <div className="card w-full bg-white shadow-xl">
@@ -180,7 +182,13 @@ const TransactionHistory = () => {
                         <td>{getOnlyFormatDate(item?.createdAt)}</td>
                         <td>{item.tran_id}</td>
                         <td>{item?.payment_method}</td>
-                        <td>{item?.payment_for}</td>
+                        {/* <td>{item?.payment_for}</td> */}
+                        <td>
+                              {/* {getformatDateTime(report?.bill_from)} */}
+                              {getOnlyFormatDate(item?.bill_from)}
+                              <span className="px-1"> - </span>
+                              {getOnlyFormatDate(item?.bill_to)}
+                            </td>
                         <td>{item?.amount}</td>
                         <td>{item?.payment_for}</td>
                         <td>{item?.to}</td>

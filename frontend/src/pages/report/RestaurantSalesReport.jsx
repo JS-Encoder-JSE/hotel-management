@@ -13,7 +13,7 @@ import { getFormateDateAndTime, getOnlyFormatDate, getformatDateTime, versionCon
 const RestaurantSalesReport = ({ values, header, date }) => {
   // SL	Date	Items Name	Description	Quantity	Price	Action
   const desiredHeaders = ["Serial No", "date", "today_restaurant_income"];
-  const tableHeaders = ["Serial No", "Date", "Today Restaurant Income"];
+  const tableHeaders = ["Serial No", "Date", "Amount"];
   const jsEncoderTextStyle = {
     color: "green",
     fontWeight: "bold",

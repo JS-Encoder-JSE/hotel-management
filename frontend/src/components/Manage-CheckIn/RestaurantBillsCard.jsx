@@ -33,8 +33,9 @@ const RestaurantBillsCard = ({ food_bills }) => {
   
   const totalPrice = allItems?.reduce((total, item) => {
     // Add the price of each item to the total
-    return total + item.price;
+    return total + item.price * item.quantity;
   }, 0);
+  // console.log("totalPrice",totalPrice)
 
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
@@ -74,7 +75,7 @@ const RestaurantBillsCard = ({ food_bills }) => {
   const currentItems =
     food_bills && allItems?.slice(indexOfFirstItem, indexOfLastItem);
 
-    console.log("currentItems",currentItems)
+    // console.log("currentItems",currentItems)
   return (
     <div className={`space-y-5 mt-20 `}>
       <div>

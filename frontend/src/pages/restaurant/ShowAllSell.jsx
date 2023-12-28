@@ -114,14 +114,35 @@ const ShowAllSell = () => {
 
   const [todayItem, setTodayItem] = useState([]);
 
+  // useEffect(() => {
+  //   const todayItems = restaurantSalesToday?.data
+  //     ?.map((obj) => obj?.items)
+  //     .flat();
+  //   setTodayItem(todayItems);
+  // }, [restaurantSalesToday]);
+
   useEffect(() => {
-    const todayItems = restaurantSalesToday?.data
-      ?.map((obj) => obj?.items)
-      .flat();
+    const todayItems = restaurantSalesToday?.data?.reduce(
+      (accumulator, items) => {
+        // Concatenate the items array of each bill to the accumulator array
+        return accumulator.concat(
+          items.items.map((item) => ({
+            ...item,
+            ...(items.room_id
+              ? { roomNumber: items.room_id.roomNumber }
+              : items.table_id? { tableNumber: items.table_id.table_number}
+              : {}), // Add createdAt property to each item
+          }))
+        );
+      },
+      []
+    );
+    // console.log("allItemsWithCreatedAt",allItemsWithCreatedAt)
+
     setTodayItem(todayItems);
   }, [restaurantSalesToday]);
 
-  console.log(restaurantSalesToday?.data);
+  console.log("restaurantSalesToday", restaurantSalesToday);
   // pagination setup for today's expenses
   const itemsPerPage = 10;
   const [currentPageItem, setCurrentPageItem] = useState(0);
@@ -151,7 +172,9 @@ const ShowAllSell = () => {
   useEffect(() => {
     setPdf(currentItems);
   }, [todayItem]);
-  // console.log(currentItems);
+
+  // console.log("todayItem",todayItem);
+  console.log("currentItems", currentItems);
 
   return (
     <div className={`space-y-5`}>
@@ -211,6 +234,7 @@ const ShowAllSell = () => {
                   <tr>
                     <th>SL</th>
                     <th>Item</th>
+                    <th>Room/Table</th>
                     <th>Surveyor Quantity</th>
                     <th>Quantity</th>
                     <th>Price</th>
@@ -227,6 +251,11 @@ const ShowAllSell = () => {
                         >
                           <th>{++idx}</th>
                           <td>{item?.item}</td>
+                          <td>
+                            {item?.roomNumber
+                              ? item.roomNumber
+                              : item?.tableNumber}
+                          </td>
                           <td>{item?.serveyor_quantity}</td>
                           <td>{item?.quantity}</td>
                           <td>{item?.price * item?.quantity}</td>

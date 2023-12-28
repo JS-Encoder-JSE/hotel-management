@@ -24,6 +24,11 @@ const HotelLists = () => {
     initialValues: {
       search: "",
     },
+    onSubmit: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
+      
+    },
   });
 
   const { isLoading, data: hotels } = useHotelsQuery({
@@ -118,7 +123,7 @@ const HotelLists = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
             onKeyUp={(e) => {
-              e.target.value === "" &&  setForcePage(0)
+              e.target.value === "" &&  setForcePage(1)
               e.target.value === "" && setCurrentPage(0)
               e.target.value === "" ? formik.handleSubmit() : null;
             }}

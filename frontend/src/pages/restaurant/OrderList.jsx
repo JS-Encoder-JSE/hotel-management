@@ -60,10 +60,11 @@ const OrderList = () => {
       // chooseHotel: "",
     },
     onSubmit: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
       setSearch(values.search);
-      if (values.search) {
-        setCurrentPage(0);
-      }
+      // if (values.search) {
+      // }
       setSearchParams((p) => ({
         ...p,
         toDate: p && values.endDate ? convertedEndDate(values.endDate) : "",
@@ -207,7 +208,7 @@ const OrderList = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setForcePage(1);
                 e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}

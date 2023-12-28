@@ -23,19 +23,6 @@ import Modal from "../../components/Modal.jsx";
 import Swal from "sweetalert2";
 
 const SubAdminList = () => {
-  const [keyword, setKeyword] = useState(null);
-  const formik = useFormik({
-    initialValues: {
-      search: "",
-      filter: "",
-    },
-    onSubmit: (values) => {
-      setKeyword(values.search);
-      setCurrentPage(0);
-    },
-  });
-  const [updateLicenseStatus] = useUpdateLicenseStatusMutation();
-
   const navigate = useNavigate();
   const [subAdminPerPage] = useState(10);
   const [forcePage, setForcePage] = useState(null);
@@ -44,6 +31,22 @@ const SubAdminList = () => {
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const parentId = store.getState().authSlice.user._id;
+  const [keyword, setKeyword] = useState(null);
+  
+  const formik = useFormik({
+    initialValues: {
+      search: "",
+      filter: "",
+    },
+    onSubmit: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
+      setKeyword(values.search);
+    },
+  });
+  const [updateLicenseStatus] = useUpdateLicenseStatusMutation();
+
+
   const { isLoading, data: subadmins } = useGetUsersByAdminQuery({
     cp: currentPage,
     filter: formik.values.filter,
@@ -151,7 +154,7 @@ const SubAdminList = () => {
                 value={formik.values.search}
                 onChange={formik.handleChange}
                 onKeyUp={(e) => {
-                  e.target.value === "" && setForcePage(0);
+                  e.target.value === "" && setForcePage(1);
                   e.target.value === "" && setCurrentPage(0);
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}

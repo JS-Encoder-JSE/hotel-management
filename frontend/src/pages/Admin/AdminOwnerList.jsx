@@ -31,8 +31,9 @@ const AdminOwnerList = ({ title }) => {
       filter: "",
     },
     onSubmit: (values) => {
-      setKeyword(values.search);
       setCurrentPage(0);
+      setForcePage(0);
+      setKeyword(values.search);
     },
   });
   const [updateLicenseStatus] = useUpdateLicenseStatusMutation();
@@ -205,7 +206,7 @@ const AdminOwnerList = ({ title }) => {
                 value={formik.values.search}
                 onChange={formik.handleChange}
                 onKeyUp={(e) => {
-                  e.target.value === "" && setForcePage(0);
+                  e.target.value === "" && setForcePage(1);
                   e.target.value === "" && setCurrentPage(0);
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}

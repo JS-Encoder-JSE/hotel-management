@@ -61,6 +61,9 @@ const Report = () => {
       endDate: "",
     },
     onSubmit: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
+
       setSearchParams((p) => ({
         ...p,
         toDate: p && values.endDate ? convertedEndDate(values.endDate) : "",
@@ -125,8 +128,8 @@ const Report = () => {
       const data = reports?.docs?.map((item) => ({
         Username: item.username,
         Phone: item.phone_no,
-        "Purchase Date": getformatDateTime(new Date(item.bill_from)),
-        "Expire Date": getformatDateTime(new Date(item.bill_to)),
+        "Purchase Date": getIndianFormattedDate(new Date(item.bill_from)),
+        "Expire Date": getIndianFormattedDate(new Date(item.bill_to)),
 
         // new Date(item.bill_to).toLocaleDateString(),
         "Deposit By": item.deposit_by,
@@ -340,7 +343,7 @@ const Report = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setForcePage(1);
                 e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}

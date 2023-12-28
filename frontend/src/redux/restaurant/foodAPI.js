@@ -107,7 +107,7 @@ const foodAPI = baseAPI.injectEndpoints({
         };
       },
       providesTags: ["updateOrder"],
-      invalidatesTags: ["checkout", "order", "addOrder", "subDashboard"],
+      invalidatesTags: ["checkout", "order", "addOrder", "subDashboard","roomPostedBill"],
     }),
     getCategory: build.query({
       query: () => "foods/get-food-categories-by-hotel",
