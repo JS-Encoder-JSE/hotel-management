@@ -261,7 +261,8 @@ const roomAPI = baseAPI.injectEndpoints({
       query: (roomId) => {
         return `rooms/get-room-posted-bills/${roomId}`;
       },
-      providesTags: ["roomPostedBill"],
+      providesTags: ["roomPostedBill"]
+      
     }),
 
     getHotelById: build.query({

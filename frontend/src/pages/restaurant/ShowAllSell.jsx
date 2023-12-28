@@ -151,7 +151,7 @@ const ShowAllSell = () => {
   useEffect(() => {
     setPdf(currentItems);
   }, [todayItem]);
-  // console.log(currentItems);
+  console.log("currentItems",currentItems);
 
   return (
     <div className={`space-y-5`}>
@@ -211,6 +211,7 @@ const ShowAllSell = () => {
                   <tr>
                     <th>SL</th>
                     <th>Item</th>
+                    {/* <th>Room/Table</th> */}
                     <th>Surveyor Quantity</th>
                     <th>Quantity</th>
                     <th>Price</th>

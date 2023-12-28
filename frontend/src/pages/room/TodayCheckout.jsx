@@ -55,8 +55,9 @@ const TodayCheckout = () => {
       // hotel_id: "",
     },
     onSubmit: (values) => {
-      setSearch(values.search);
       setCurrentPage(0);
+      setForcePage(0);
+      setSearch(values.search);
     },
   });
 
@@ -135,7 +136,7 @@ const TodayCheckout = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setForcePage(1);
                 e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}

@@ -52,9 +52,9 @@ const DailyCheckin = () => {
       // hotel_id: "",
     },
     onSubmit: (values) => {
-      console.log({ values });
-      setSearch(values.search);
       setCurrentPage(0);
+      setForcePage(0);
+      setSearch(values.search);
     },
     onReset: (values) => {
       setCurrentPage(0);
@@ -129,13 +129,14 @@ const DailyCheckin = () => {
           <div className={`relative sm:min-w-[20rem]`}>
             <input
               type="number"
+              onWheel={(event) => event.currentTarget.blur()}
               placeholder="Search by phone number..."
               name="search"
-              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
+              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setForcePage(1);
                 e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
