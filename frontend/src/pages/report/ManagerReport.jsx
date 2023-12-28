@@ -1,19 +1,45 @@
 import React from "react";
-import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
-import logo from "../../assets/logo.png"
-import { getFormateDateAndTime, getOnlyFormatDate, getformatDateTime, versionControl } from "../../utils/utils";
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
+import logo from "../../assets/logo.png";
+import {
+  getFormateDateAndTime,
+  getOnlyFormatDate,
+  getformatDateTime,
+  versionControl,
+} from "../../utils/utils";
 import { getIndianFormattedDate } from "../../utils/timeZone";
 
 const ManagerReport = ({ values, header }) => {
-    const desiredHeaders = ["Serial No", "guestName", "room_numbers", "checked_in", "checked_out", "paid_amount"];
-    const tableHeaders =["Serial No","Guest Name","Room Numbers","Checked In","Checked Out","Paid Amount" ]
-     
+  const desiredHeaders = [
+    "Serial No",
+    "guestName",
+    "room_numbers",
+    "checked_in",
+    "checked_out",
+    "paid_amount",
+  ];
+  const tableHeaders = [
+    "Serial No",
+    "Guest Name",
+    "Room Numbers",
+    "Checked In",
+    "Checked Out",
+    "Paid Amount",
+  ];
+
   const jsEncoderTextStyle = {
     color: "green",
     fontWeight: "bold",
   };
 
-const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -62,11 +88,14 @@ const currentYear = new Date().getFullYear();
             alignItems: "center",
           }}
         >
-           <Image src={logo} style={{
-              width:"54px",
-              height:"54px",
-              marginBottom:"10px"
-            }}/>
+          <Image
+            src={logo}
+            style={{
+              width: "54px",
+              height: "54px",
+              marginBottom: "10px",
+            }}
+          />
           <View>
             <Text>{header?.title}</Text>
             <Text
@@ -91,16 +120,16 @@ const currentYear = new Date().getFullYear();
           </View>
         </View>
         <View style={styles.table}>
-  <View style={[styles.tableRow, styles.tableHeader]}>
-    {tableHeaders.map((header, index) => (
-      <Text key={index} style={[styles.tableCell, styles.text]}>
-        {header}
-      </Text>
-    ))}
-  </View>
-  {values.map((item, rowIndex) => (
-    <View key={rowIndex} style={styles.tableRow}>
-     {desiredHeaders.map((key, cellIndex) => {
+          <View style={[styles.tableRow, styles.tableHeader]}>
+            {tableHeaders.map((header, index) => (
+              <Text key={index} style={[styles.tableCell, styles.text]}>
+                {header}
+              </Text>
+            ))}
+          </View>
+          {values.map((item, rowIndex) => (
+            <View key={rowIndex} style={styles.tableRow}>
+              {desiredHeaders.map((key, cellIndex) => {
                 let cellValue = item[key];
 
                 // Format "checked_in" and "checked_out" to toLocaleDateString
@@ -112,22 +141,27 @@ const currentYear = new Date().getFullYear();
                   cellValue = getformatDateTime(new Date(cellValue));
                 }
                 if (key === "checked_out") {
-                  cellValue = getIndianFormattedDate(new Date(cellValue));
+                  cellValue =getIndianFormattedDate(new Date(cellValue))
+                  
                 }
 
                 return (
-                  <Text key={cellIndex} style={[styles.tableCell, styles.text]}>
+                  <Text className="uppercase" key={cellIndex} style={[styles.tableCell, styles.text]}>
                     {key === "Serial No" ? rowIndex + 1 : cellValue}
                   </Text>
                 );
               })}
-    </View>
-  ))}
-</View>
-        <View style={styles.footer}>
-          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
+            </View>
+          ))}
         </View>
-        
+        <View style={styles.footer}>
+          <Text>
+            Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>.
+            Copyright ©{currentYear}. All rights reserved. Version{" "}
+            {versionControl}
+          </Text>
+        </View>
+
         {/* <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
             {Object?.keys(values[0]).map((header, index) => (

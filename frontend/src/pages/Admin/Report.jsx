@@ -391,13 +391,13 @@ const Report = () => {
                               <th>{++idx}</th>
                               <td>{report?.username}</td>
                               <td>{report?.phone_no}</td>
-                              <td>
+                              <td >
                                 {getIndianFormattedDate(report?.bill_from)}
                                 {/* {extractTimeOrDate(report?.bill_from, "date")}
                                 <br />{" "}
                                 {extractTimeOrDate(report.bill_from, "time")} */}
                               </td>
-                              <td>
+                              <td >
                                 {getIndianFormattedDate(report?.bill_to)}
                                 {/* {extractTimeOrDate(report?.bill_to, "date")}
                                 <br />{" "}

@@ -155,7 +155,7 @@ const ManageCheckin = () => {
         >
           Apply Filter
         </button>
-        <div className={`flex flex-col md:flex-row gap-4 `}>
+        <div className={`flex flex-col md:flex-row gap-5  `}>
           <button
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
             onClick={() => window.cci_modal.showModal()}
