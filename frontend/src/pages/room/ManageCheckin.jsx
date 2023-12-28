@@ -51,13 +51,11 @@ const ManageCheckin = () => {
     page: currentPage,
     fromDate: searchParams?.fromDate
       ? convertedStartDate(searchParams.fromDate)
-      : convertedStartDate(),
-    toDate: searchParams?.toDate
-      ? convertedEndDate(searchParams.toDate)
-      : convertedEndDate(),
+      : "",
+    toDate: searchParams?.toDate ? convertedEndDate(searchParams.toDate) : "",
     manager_id: user._id,
     limit: 10,
-    filter:"checkin"
+    filter: "checkin",
   });
   const formik = useFormik({
     initialValues: {
@@ -166,10 +164,10 @@ const ManageCheckin = () => {
         </div>
       </div>
 
-      <div className="flex justify-end"></div>
+      {/* <div className="flex justify-end"></div> */}
       {!isLoading ? (
         checkInData?.data?.docs?.length ? (
-          <>
+          <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -239,7 +237,7 @@ const ManageCheckin = () => {
                 />
               </div>
             )}
-          </>
+          </div>
         ) : (
           <h3 className={`text-center`}>No data found!</h3>
         )

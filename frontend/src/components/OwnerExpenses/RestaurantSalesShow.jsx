@@ -433,7 +433,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
               <p className="text-center my-16">No sales yet!</p>
             )}
           </div>
-          {restaurantSalesHistory?.data?.docs?.length && (
+          {restaurantSalesHistory?.data?.docs?.length > 0 && (
             <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"

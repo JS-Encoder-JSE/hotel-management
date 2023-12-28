@@ -27,7 +27,6 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
     useUpdateBookingMutation();
   const [cancelBooking] = useCancelBookingMutation();
   const [bookingId, setBookingId] = useState("");
-  // const { data: isLastBooking } = useGetLastActiveBookingQuery(bookingId);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -39,68 +38,62 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
     data: isLastBooking,
     isSuccess,
     refetch,
-  } = useGetLastActiveBookingQuery(bookingId);
+  } = useGetLastActiveBookingQuery(bookingId, { skip: bookingId === "" });
   const handleDelete = (id) => {
     setBookingId(id);
-    refetch();
+    if (id === bookingId) {
+      refetch();
+    }
   };
-
-
-  useEffect(() => {
-    console.log("hello");
-    if (isLastBooking) {
-      if (isLastBooking?.success && isLastBooking?.paid_amount > 0) {
-        window.refundPay.showModal();
-      } else {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "Booking will be Cancel.",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#35bef0",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Cancel it!",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-              const response = await cancelBooking({
-                id: bookingId,
-                data: {
-                  tran_id: "",
-                  payment_method: "",
-                },
+  if (isLastBooking && isSuccess) {
+    if (isLastBooking?.success && isLastBooking?.paid_amount > 0) {
+      window.refundPay.showModal();
+    } else {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Booking will be Cancel.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#35bef0",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Cancel it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await cancelBooking({
+              id: bookingId,
+              data: {
+                tran_id: "",
+                payment_method: "",
+              },
+            });
+            if (response) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Canceled!",
+                showConfirmButton: false,
+                timer: 1500,
               });
-              if (response) {
-                Swal.fire({
-                  position: "center",
-                  icon: "success",
-                  title: "Canceled!",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-              } else {
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: "Something went wrong!",
-                });
-              }
-            } catch (error) {
-              console.error("Error:", error);
+            } else {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "Something went wrong!",
               });
             }
-          } else {
-            console.log("cancel");
-            
+          } catch (error) {
+            console.error("Error:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
           }
-        });
-      }
+        }
+      });
     }
-  }, [isLastBooking]);
+  }
 
   useEffect(() => {
     if (data && modalOpen) {

@@ -20,13 +20,13 @@ import { useDeleteFoodMutation } from "../../redux/restaurant/foodAPI.js";
 import { useNavigate } from "react-router-dom";
 
 const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
+  console.log({ food });
   const navigate = useNavigate();
   const [isAdd, setAdd] = useState(false);
   const { order } = useSelector((store) => store.addOrderSlice);
   const dispatch = useDispatch();
   const [deleteFood] = useDeleteFoodMutation();
   const [input, setInput] = useState(1);
- 
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -39,14 +39,13 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-       
         Swal.fire({
           position: "center",
           icon: "success",
           title: "Deleted!",
           showConfirmButton: false,
           timer: 1500,
-        }).then(() => {        
+        }).then(() => {
           deleteFood(id);
         });
       }
@@ -54,13 +53,13 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
   };
 
   useEffect(() => {
-    const findFoodIdx = order?.foods?.findIndex((item) => item?._id === food?._id);
+    const findFoodIdx = order?.foods?.findIndex(
+      (item) => item?._id === food?._id
+    );
 
     if (findFoodIdx !== -1) setAdd(true);
     else setAdd(false);
   }, [order.foods]);
-
-
 
   useEffect(() => {
     dispatch(manipulateQuantity({ food, quantity: input }));
@@ -112,26 +111,21 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
           onClick={() => {
             input > 1 ? setInput((prevState) => --prevState) : null;
           }}
-          
         >
           <FaMinus />
         </button>
         <input
-        onWheel={ event => event.currentTarget.blur() }
+          onWheel={(event) => event.currentTarget.blur()}
           type="number"
           value={input}
           className="input-hide_Arrows w-12 flex outline-none text-center rounded-md p-1 placeholder:text-black border focus:border-green-slimy"
           onChange={(e) => {
             if (e.target.value > 0 || e.target.value === "")
               setInput(e.target.value);
-          }
-        }
-          
-          onBlur={(e) => {
-            dispatch(setQuantity({ food, quantity: +e.target.value }));
-           
-            
           }}
+          // onBlur={(e) => {
+          //   dispatch(setQuantity({ food, quantity: +e.target.value }));
+          // }}
           disabled={food?.status === "Unavailable"}
         />
         <button
@@ -145,9 +139,7 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
         {!isAdd ? (
           <span
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case 
-            ${
-              food?.status === "Unavailable" ? "btn-disabled" : ""
-            }
+            ${food?.status === "Unavailable" ? "btn-disabled" : ""}
             `}
             title={`Add`}
             onClick={() => {
@@ -162,7 +154,7 @@ const FoodList = ({ idx, food, handleOrder, reset, setReset }) => {
             title={`Remove`}
             onClick={() => {
               dispatch(delOrder(food));
-              dispatch(removeAction({quantity: input,price:food?.price}))
+              dispatch(removeAction({ quantity: input, price: food?.price }));
             }}
           >
             <FaMinusCircle />
