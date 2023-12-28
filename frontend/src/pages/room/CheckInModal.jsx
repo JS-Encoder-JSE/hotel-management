@@ -21,12 +21,13 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
-import { getEndDateOfBookingIst, getStartDateOFBookingIST } from "../../utils/timeZone.js";
+import {
+  getEndDateOfBookingIst,
+  getStartDateOFBookingIST,
+} from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
-  // room_arr: yup.array().required("Room IDs are required"),
-  // hotel_id: yup.string().required("Hotel ID is required"),
   guestName: yup.string().required("Guest name is required"),
   address: yup.string().required("Address is required"),
   mobileNumber: yup.string().required("Mobile number is required"),
@@ -36,26 +37,21 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
-  // children: yup.number().when([], {
-  //   is: (children) => children && children.length > 0,
-  //   then: yup
-  //     .number()
-  //     .positive("Children must be a positive number")
-  //     .integer("Children must be an integer"),
-  // }),
-  paymentMethod: yup.string().required("Payment method is required"),
-
-  trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-    if (paymentMethod !== "Cash")
-      return schema.required("Transaction ID is required");
-    else return schema;
+  paymentMethod: yup.string().when(["amount"], (amount, schema) => {
+    if (amount.length > 1 || (amount > 0 && amount !== undefined)) {
+      return schema.required("Payment method is required");
+    } else {
+      return schema;
+    }
   }),
-
-  // trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-  //   if (paymentMethod !== "cash")
-  //     return schema.required("Transaction ID is required");
-  //   else return schema;
-  // }),
+  amount: yup.number(),
+  trxID: yup.string().when(["paymentMethod"], (paymentMethod, schema) => {
+    if (paymentMethod !== "Cash") {
+      return schema.required("Transaction ID is required");
+    } else {
+      return schema;
+    }
+  }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
   amount: yup.number(),

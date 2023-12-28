@@ -44,17 +44,25 @@ const validationSchema = yup.object({
   children: yup.number(),
   discount: yup.number(),
 
-  paymentMethod: yup.string().required("Payment method is required"),
+  paymentMethod: yup.string().when(["amount"], (amount, schema) => {
+    if (amount.length > 1 || (amount > 0 && amount !== undefined)) {
 
-  trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-    if (paymentMethod !== "Cash")
+      return schema.required("Payment method is required");
+    } else {
+      return schema;
+    }
+  }),
+  amount: yup.number(),
+  trxID: yup.string().when(["paymentMethod"], (paymentMethod, schema) => {
+    if (paymentMethod !== "Cash") {
       return schema.required("Transaction ID is required");
-    else return schema;
+    } else {
+      return schema;
+    }
   }),
 
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  amount: yup.number(),
   nationality: yup.string().required("Nationality is required"),
   bookingMethod: yup.string().required("Booking method is required"),
   // trxID: yup.string().required("Transection code is required")
@@ -244,7 +252,6 @@ const AddBookingSelect = ({ room }) => {
           className="form-control md:grid md:grid-cols-2 gap-4 mt-5"
           onSubmit={formik.handleSubmit}
         >
-      
           <div className="flex flex-col gap-3">
             <select
               name="bookingMethod"
@@ -277,7 +284,6 @@ const AddBookingSelect = ({ room }) => {
                 {room.data.roomNumber + " - " + room.data.category}
               </option>
             </select>
-         
           </div>
 
           <div className="flex flex-col gap-3">
@@ -525,7 +531,9 @@ const AddBookingSelect = ({ room }) => {
           </div>
 
           {/* button */}
-          <div className={`flex justify-between col-span-2 mx-auto md:w-[60%] w-full`}>
+          <div
+            className={`flex justify-between col-span-2 mx-auto md:w-[60%] w-full`}
+          >
             <button
               disabled={isLoading}
               type={"submit"}

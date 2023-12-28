@@ -30,25 +30,26 @@ const validationSchema = yup.object({
     .required("Adult is required")
     .positive("Adult must be a positive number")
     .integer("Adult must be an integer"),
-  //   children: yup.number().when([], {
-  //   is: (children) => children && children.length > 0,
-  //   children: yup
-  //     .number()
-  //     .positive("Children must be a positive number")
-  //     .integer("Children must be an integer"),
-  // }),
   children: yup.number(),
-
-  paymentMethod: yup.string().required("Payment method is required"),
-  trxID: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-    if (paymentMethod !== "Cash")
+  paymentMethod: yup.string().when(["amount"], (amount, schema) => {
+    if (amount.length > 1 || (amount > 0 && amount !== undefined)) {
+      return schema.required("Payment method is required");
+    } else {
+      return schema;
+    }
+  }),
+  amount: yup.number(),
+  trxID: yup.string().when(["paymentMethod"], (paymentMethod, schema) => {
+    if (paymentMethod !== "Cash") {
       return schema.required("Transaction ID is required");
-    else return schema;
+    } else {
+      return schema;
+    }
   }),
 
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  amount: yup.number(),
+
   nationality: yup.string().required("Nationality is required"),
   bookingMethod: yup.string().required("Booking method is required"),
 });

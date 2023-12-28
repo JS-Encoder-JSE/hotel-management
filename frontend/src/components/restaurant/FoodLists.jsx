@@ -24,7 +24,7 @@ const FoodLists = ({ formik, keyword, roomOrTable, reset, setReset ,forcePage,se
 useEffect(()=>{
 if(formik.values.search){
   setCurrentPage(0)
-  setForcePage(0)
+  setForcePage(1)
 }
 },[formik.values.search])
 

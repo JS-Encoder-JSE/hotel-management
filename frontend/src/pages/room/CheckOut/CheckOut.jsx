@@ -121,6 +121,7 @@ const CheckOut = () => {
       navigate("/dashboard/report");
     },
   });
+ 
 
   // add Checkout data collection
   const room_Ids = checkout?.data?.room_bookings[0].room_id?._id;

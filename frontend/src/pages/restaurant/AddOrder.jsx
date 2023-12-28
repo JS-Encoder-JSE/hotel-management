@@ -58,7 +58,6 @@ const AddOrder = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       // setForcePage(1)
-     
       // setKeyword(values.search);
     },
   });
@@ -254,11 +253,10 @@ const AddOrder = () => {
               name="search"
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
-              onChange={formik.handleChange}
-              // onKeyUp={(e)=>{
-              //   e.target.value === "" && setForcePage(1);
-              //   e.target.value === "" && setCurrentPage(0);
-              // }}
+              onChange={(e) => {
+                setForcePage(1)
+                formik.handleChange(e);
+              }}
             />
           </div>
         </div>

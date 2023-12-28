@@ -30,13 +30,21 @@ const validationSchema = yup.object({
   documentsType: yup.string().required("Documents type is required"),
   doc_number: yup.string().required("Document number is required"),
   documents: yup.string().required("Documents is required"),
+  paymentMethod: yup.string().when(["amount"], (amount, schema) => {
+    if (amount.length > 1 || (amount > 0 && amount !== undefined)) {
+      return schema.required("Payment method is required");
+    } else {
+      return schema;
+    }
+  }),
   amount: yup.number(),
-  // paymentMethod: yup.string().required("Payment method is required"),
-  // transection_id: yup.string().when(["paymentMethod"], ([paymentMethod], schema) => {
-  //   if (paymentMethod !== "Cash")
-  //     return schema.required("Transaction ID is required");
-  //   else return schema;
-  // }),
+  trxID: yup.string().when(["paymentMethod"], (paymentMethod, schema) => {
+    if (paymentMethod !== "Cash") {
+      return schema.required("Transaction ID is required");
+    } else {
+      return schema;
+    }
+  }),
 });
 
 const CheckInDyn = ({ data }) => {
@@ -61,9 +69,8 @@ const CheckInDyn = ({ data }) => {
     }
   };
 
-// navigate to manage checkIn page
-  const navigate =useNavigate()
-
+  // navigate to manage checkIn page
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -130,7 +137,7 @@ const CheckInDyn = ({ data }) => {
         } else {
           closeRef.current.click();
           toast.success(response.data.message);
-          navigate("/dashboard/manage-checkin")
+          navigate("/dashboard/manage-checkin");
         }
       } else {
         toast.error("Image is not uploaded");
@@ -175,8 +182,6 @@ const CheckInDyn = ({ data }) => {
     }
   }, [formik.values.documents]);
 
-
- 
   return (
     <>
       <form autoComplete="off" method="dialog">
