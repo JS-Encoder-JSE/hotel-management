@@ -34,7 +34,10 @@ import {
   setFromDate,
   setRefundAmount,
   setRoomInfo,
+  setTexAmount,
   setToDate,
+  updateAdditionalCharge,
+  updateServiceCharge,
   updateSubTotal,
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
@@ -111,6 +114,10 @@ const CheckOut = () => {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     onAfterPrint: () => {
+      // dispatch(updateServiceCharge(0));
+      // dispatch(updateAdditionalCharge(0));
+      // dispatch(setTexAmount(0));
+      dispatch(clearCheckoutCalSlice);
       navigate("/dashboard/report");
     },
   });

@@ -100,7 +100,29 @@ const checkoutInfoCalSlice = createSlice({
       state.calculateCollectedAmount = action.payload;
     },
     clearCheckoutCalSlice: (state) => {
-      state = initialState;
+      state.calculatePayableAmount = 0;
+      state.calculateUnpaidAmount = 0;
+      state.calculateTotalRent = 0;
+      state.calculateBalance = 0;
+      state.subTotals = 0;
+      state.tax = 0;
+      state.serviceCharge = 0;
+      state.additionalCharge = 0;
+      state.discountOffer = 0;
+      state.grandTotal = 0;
+      state.roomPostedBill = 0;
+      state.extraDiscount = 0;
+      state.refundAmount = 0;
+      state.bookingInfo = "";
+      state.collectedAmount = 0;
+      state.texAmount = 0;
+      state.toDate = "";
+      state.fromDate = "";
+      state.calculateNOD = 0;
+      state.calculateAmountAfterDis = 0;
+      state.roomInfo = {};
+      state.calculateCollectedAmount = 0;
+      state.selectedRoomAmountAfterDiscount = 0;
     },
   },
 });
