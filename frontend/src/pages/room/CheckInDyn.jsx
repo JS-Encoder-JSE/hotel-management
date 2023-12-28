@@ -122,7 +122,7 @@ const CheckInDyn = ({ data }) => {
             data?.total_unpaid_amount - paidAmount
           ),
           remark: "advancePaymentForCheckIn",
-          booking_ids: [id],
+          booking_id: id,
         });
 
         if (response?.error) {
