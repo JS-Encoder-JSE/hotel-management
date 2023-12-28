@@ -47,8 +47,6 @@ const AddOrder = () => {
 
   const dispatch = useDispatch();
 
-  console.log(keyword)
-
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -78,7 +76,6 @@ const AddOrder = () => {
     search: "",
     limit: 1000000,
   });
-
 
   const { data: tables } = useGetTablesQuery();
   const transformedRooms =
@@ -173,7 +170,6 @@ const AddOrder = () => {
               <Select
                 placeholder="Select room"
                 name={`roomId`}
-                // defaultValue={formik.values.roomNumber}
                 options={transformedRooms}
                 isSearchable
                 onChange={(e) => {
@@ -201,7 +197,6 @@ const AddOrder = () => {
               <Select
                 placeholder="Select table"
                 name={`tableId`}
-                // defaultValue={formik.values.roomNumber}
                 options={transformedTables}
                 isSearchable
                 onChange={(e) => formik.setFieldValue("tableId", e.value)}
@@ -229,6 +224,9 @@ const AddOrder = () => {
             onClick={() => {
               dispatch(resetFoodOrder());
               setReset(true);
+              formik.resetForm();
+              setTableIdRequired("");
+              setRoomIdRequired("");
             }}
             type={`button`}
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
