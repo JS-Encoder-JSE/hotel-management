@@ -478,7 +478,7 @@ const HotelExpenses = () => {
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                               onClick={() =>
                                 navigate(
-                                  `/dashboard/show-all-expense/${item?._id}`
+                                  `/dashboard/all-hotel-expenses/${item?._id}`
                                 )
                               }
                             >

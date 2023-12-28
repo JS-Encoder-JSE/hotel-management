@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import logo from "../../assets/logo.png";
 import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI";
 import { getFormateDateAndTime } from "../../utils/timeZone";
-import { getOnlyFormatDate } from "../../utils/utils";
+import { getOnlyFormatDate, versionControl } from "../../utils/utils";
 
 const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
   console.log(roomNumber);
@@ -226,7 +226,7 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
       </div>
       <h1 className="text-center absolute bottom-0 pb-2 w-full">
         Powered by <span className="text-xl text-green-slimy">JS Encoder</span>.
-        Copyright © 2023. All rights reserved.Version
+        Copyright © 2023. All rights reserved.Version {versionControl} 
         {/* {versionControl} */}
       </h1>
     </div>
