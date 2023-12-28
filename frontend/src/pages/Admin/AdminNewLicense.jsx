@@ -28,7 +28,7 @@ const AdminNewLicense = () => {
   const [isLoading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [utilitiesFiles, setUtilitiesFiles] = useState([]);
-  const [tradeLicenses, setTradeLicenses] = useState([]);
+  const [tradeLicensesFiles, setTradeLicensesFiles] = useState([]);
   const [panCardFiles, setPanCardFiles] = useState([]);
 
   const [images, setImages] = useState({});
@@ -200,11 +200,8 @@ const AdminNewLicense = () => {
   });
 
   const handleDelete = (idx, image) => {
-    const tempImgs = [
-      ...selectedImages,
-      // ...selectedImages.slice(0, idx),
-      // ...selectedImages.slice(idx + 1),
-    ];
+    console.log({ image });
+    const tempImgs = [...selectedImages];
     tempImgs.splice(idx, 1);
     if (image.name === "utilities") {
       setUtilitiesFiles((prev) => {
@@ -213,7 +210,7 @@ const AdminNewLicense = () => {
         return prevState;
       });
     } else if (image.name === "tradeLicenses") {
-      setTradeLicenses((prev) => {
+      setTradeLicensesFiles((prev) => {
         const prevState = [...prev];
         prevState.splice(image.index, 1);
         return prevState;
@@ -236,26 +233,27 @@ const AdminNewLicense = () => {
     setSelectedImages(tempImgs);
   };
 
-  const handleChange = (idx, newFile,image) => {
+  const handleChange = (idx, newFile, image) => {
     const updatedImages = [...selectedImages];
-    updatedImages.splice(idx,1,{name:image.name,file:newFile,index:idx})
+    updatedImages.splice(idx, 1, {
+      name: image.name,
+      file: newFile,
+      index: image.index,
+    });
     // updatedImages[idx] = newFile;
-    if(image.name === "utilities"){
+    if (image.name === "utilities") {
       const updatedUtilitiesImage = [...utilitiesFiles];
-      updatedUtilitiesImage.splice(image.index,1,newFile)
+      updatedUtilitiesImage.splice(image.index, 1, newFile);
       setUtilitiesFiles(updatedUtilitiesImage);
-    }
-   else if(image.name === "tradeLicenses"){
-      const updatedTradeLicensesImage = [...tradeLicenses];
-      updatedTradeLicensesImage.splice(image.index,1,newFile)
-      setTradeLicenses(updatedTradeLicensesImage);
-    }
-   else if(image.name === "panCard"){
+    } else if (image.name === "tradeLicenses") {
+      const updatedTradeLicensesImage = [...tradeLicensesFiles];
+      updatedTradeLicensesImage.splice(image.index, 1, newFile);
+      setTradeLicensesFiles(updatedTradeLicensesImage);
+    } else if (image.name === "panCard") {
       const updatedPanCardImage = [...panCardFiles];
-      updatedPanCardImage.splice(image.index,1,newFile)
+      updatedPanCardImage.splice(image.index, 1, newFile);
       setPanCardFiles(updatedPanCardImage);
     }
- 
 
     const dataTransfer = new DataTransfer();
 
@@ -300,8 +298,8 @@ const AdminNewLicense = () => {
     if (formik.values.tradeLicenses) {
       const tradeLicensesArray = Array.from(formik.values.tradeLicenses);
 
-      const allTradeLicenses = [...tradeLicenses, ...tradeLicensesArray];
-      setTradeLicenses(allTradeLicenses);
+      const allTradeLicenses = [...tradeLicensesFiles, ...tradeLicensesArray];
+      setTradeLicensesFiles(allTradeLicenses);
 
       const tradeLicensesArrayMap = tradeLicensesArray.map((name, index) => ({
         name: "tradeLicenses",
@@ -355,8 +353,9 @@ const AdminNewLicense = () => {
     }
   }, [formik.values.panCard]);
 
-
-console.log("utilities",utilitiesFiles)
+  console.log("utilities", utilitiesFiles);
+  console.log("tradeLicensesFiles", tradeLicensesFiles);
+  console.log("panCard", panCardFiles);
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
@@ -420,7 +419,11 @@ console.log("utilities",utilitiesFiles)
                                 type="file"
                                 className="absolute left-0 top-0  overflow-hidden h-0"
                                 onChange={(e) =>
-                                  handleChange(idx, e.currentTarget.files[0],image)
+                                  handleChange(
+                                    idx,
+                                    e.currentTarget.files[0],
+                                    image
+                                  )
                                 }
                               />
                             </label>
@@ -744,7 +747,7 @@ console.log("utilities",utilitiesFiles)
             <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
               {formik.values.tradeLicenses ? (
                 <span>
-                  {"Trade Licenses " + tradeLicenses.length + " files"}
+                  {"Trade Licenses " + tradeLicensesFiles.length + " files"}
                 </span>
               ) : (
                 <span className={`flex items-baseline space-x-1.5`}>
