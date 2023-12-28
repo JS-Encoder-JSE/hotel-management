@@ -203,7 +203,7 @@ export const getIndianFormattedDate = (date) => {
     hour12: true,
   });
 };
-export const bookingDateFormatter = () => {
+export const bookingDateFormatter = (date) => {
   const formattedDate = moment(date)
     .utcOffset("+06:30")
     .format("DD/MM/YYYY hh:mm a");
