@@ -86,8 +86,8 @@ const addOrderSlice = createSlice({
     removeAction: (state, action) => {
       const { quantity, price } = action.payload;
       const totalToRemove = quantity * price;
-      console.log(action.payload);
-      console.log(state.total);
+      // console.log(action.payload);
+      // console.log(state.total);
       state.orderCalc.total = +state.orderCalc.total - totalToRemove;
       
     },

@@ -1,14 +1,16 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
-    container_name: dak-hotel-frontend  # Set the custom container name
-    image: dak-hotel-frontend  # Set the custom container name
+    container_name: dak-hotel-frontend
+    image: dak-hotel-frontend
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"  # Map the container's port 3033 to the host
+      - "3000:3000"
+    environment:
+      - TZ=Asia/Kolkata # Set the time zone for the app service
     networks:
       - nodeNETWORK
 
@@ -21,10 +23,11 @@ services:
       - "80:80"
     depends_on:
       - app
+    environment:
+      - TZ=Asia/Kolkata # Set the time zone for the nginx service
     networks:
       - nodeNETWORK
 
 networks:
   nodeNETWORK:
     external: true
-

@@ -10,6 +10,10 @@ import { useGetStatuslogsQuery } from "../../redux/admin/ownerlist/ownerListAPI.
 import { data } from "autoprefixer";
 import { GrPowerReset } from "react-icons/gr";
 import { Rings } from "react-loader-spinner";
+import { getOnlyFormatDate } from "../../utils/utils.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
+// import { getOnlyFormatDate } from './../../utils/utils';
+
 
 const StatusHistory = () => {
   const navigate = useNavigate();
@@ -26,6 +30,7 @@ const StatusHistory = () => {
     toDate: "",
   });
 
+  
   const formik = useFormik({
     initialValues: {
       startDate: "",
@@ -34,13 +39,17 @@ const StatusHistory = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        fromDate: values.startDate || "",
-        toDate: values.endDate || "",
+        fromDate:  values.startDate ? convertedStartDate(values.startDate) : "",
+        // convertedStartDate(values.startDate) || "",
+        toDate: values.endDate ? convertedEndDate(values.endDate) : "",
+        //  convertedEndDate(values.endDate) || "",
       }));
     },
     onReset: (values) => {
       setCurrentPage(0);
       setForcePage(0);
+      setSearchParams({...searchParams,fromDate:"",toDate:""});
+    
     },
   });
 
@@ -48,7 +57,9 @@ const StatusHistory = () => {
     data: statusHistory,
     error,
     isLoading,
-  } = useGetStatuslogsQuery({ ...searchParams, cp: currentPage });
+  } = useGetStatuslogsQuery({ ...searchParams, cp: currentPage});
+
+  console.log("statusHistory",statusHistory)
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -62,7 +73,8 @@ const StatusHistory = () => {
   useEffect(() => {
     if (statusHistory) {
       const values = statusHistory?.docs?.map((item) => ({
-        Date: new Date(item?.createdAt).toLocaleDateString(),
+        Date: getOnlyFormatDate(item?.createdAt),
+        // new Date(item?.createdAt).toLocaleDateString(),
         "Previous Status": item?.pre_status,
         "Updated Status": item?.updated_status,
         Remarks: item?.remark,
@@ -100,7 +112,7 @@ const StatusHistory = () => {
               selected={formik.values.startDate}
               className={`input w-full md:w-auto input-sm input-bordered rounded focus:outline-none`}
               onChange={(date) => {
-                formik.setFieldValue("startDate", date);
+               return formik.setFieldValue("startDate", date);
                 setToDate(date);
               }}
               onBlur={formik.handleBlur}
@@ -113,9 +125,10 @@ const StatusHistory = () => {
               selected={formik.values.endDate}
               className={`input w-full md:w-auto input-sm input-bordered rounded focus:outline-none`}
               onChange={(date) => {
-                formik.setFieldValue("endDate", date);
+               return formik.setFieldValue("endDate", date);
                 setFromData(date);
               }}
+            
               onBlur={formik.handleBlur}
             />
             <button
@@ -183,9 +196,7 @@ const StatusHistory = () => {
                         }
                       >
                         <th> {++idx}</th>
-                        <td>
-                          {new Date(item?.createdAt).toLocaleDateString()}
-                        </td>
+                        <td>{getOnlyFormatDate(item?.createdAt)}</td>
                         {/* <td>
                       {new Date().toLocaleDateString()} -{" "}
                       {new Date().toLocaleDateString()}

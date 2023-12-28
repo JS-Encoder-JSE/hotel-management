@@ -5,6 +5,7 @@ import EditBooking from "../../components/room/EditBooking.jsx";
 import Modal from "../../components/Modal.jsx";
 import { useGetBookingInfoByIdQuery } from "../../redux/room/roomAPI.js";
 import CheckInDyn from "./CheckInDyn.jsx";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const BookingView = () => {
   const navigate = useNavigate();
@@ -98,7 +99,10 @@ const BookingView = () => {
               <tr>
                 <th className={`text-start`}>Booking Date</th>
                 <td className={`w-4 text-center`}>:</td>
-                <td>{new Date(booking?.data?.createdAt).toLocaleString()}</td>
+                <td>
+                  {getOnlyFormatDate(booking?.data?.createdAt)}
+                  {/* {new Date(booking?.data?.createdAt).toLocaleString()} */}
+                  </td>
               </tr>
               {/* <tr>
                 <th className={`text-start`}>Booking No</th>
@@ -149,12 +153,18 @@ const BookingView = () => {
               <tr>
                 <th className={`text-start`}>From</th>
                 <td className={`w-4 text-center`}>:</td>
-                <td>{new Date(booking?.data?.from).toLocaleDateString()}</td>
+                <td>
+                  {getOnlyFormatDate(booking?.data?.from)}
+                  {/* {new Date(booking?.data?.from).toLocaleDateString()} */}
+                  </td>
               </tr>
               <tr>
                 <th className={`text-start`}>To</th>
                 <td className={`w-4 text-center`}>:</td>
-                <td>{new Date(booking?.data?.to).toLocaleDateString()}</td>
+                <td>
+                  {getOnlyFormatDate(booking?.data?.to)}
+                  {/* {new Date(booking?.data?.to).toLocaleDateString()} */}
+                  </td>
               </tr>
             </tbody>
           </table>

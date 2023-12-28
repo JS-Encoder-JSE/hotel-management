@@ -8,6 +8,8 @@ import {
   useGetRoomsAndHotelsQuery,
   useGetBookingsByHotelQuery,
   useMakePaymentMutation,
+  useGetDailyBookingDataQuery,
+  useGetDailyCheckInDataQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import {
@@ -29,6 +31,13 @@ import {
   getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils.js";
+import {
+  bookingDateFormatter,
+  convertedEndDate,
+  convertedStartDate,
+  getIndianFormattedDate,
+} from "../../utils/timeZone.js";
+import { useSelector } from "react-redux";
 
 const TodaysCheckinList = () => {
   const [search, setSearch] = useState("");
@@ -39,7 +48,7 @@ const TodaysCheckinList = () => {
 
   const [searchParams] = useSearchParams();
   const managerId = searchParams.get("manager_id");
-
+  const { user } = useSelector((store) => store.authSlice);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -58,13 +67,13 @@ const TodaysCheckinList = () => {
     data: checkinList,
     isLoading,
     refetch,
-  } = useGetBookingsByHotelQuery({
-    search:search,
+  } = useGetDailyCheckInDataQuery({
+    search: search,
     page: currentPage,
-    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
-    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
-    arrayFilter: ["CheckedIn", "CheckedOut"],
+    fromDate: convertedStartDate(),
+    toDate: convertedEndDate(),
     manager_id: managerId === "undefined" ? "" : managerId,
+    limit: 10,
   });
   // "65794401b015daaae34ae94a"
   useEffect(() => {
@@ -120,8 +129,8 @@ const TodaysCheckinList = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
@@ -186,8 +195,8 @@ const TodaysCheckinList = () => {
                         {/* <td>{item?.paid_amount}</td> */}
                         {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
                         <td>{getformatDateTime(item?.checkin_date)}</td>
-                        <td>{getFormateDateAndTime(item?.from)}</td>
-                        <td>{getFormateDateAndTime(item?.to)}</td>
+                        <td className="uppercase">{bookingDateFormatter(item?.from)}</td>
+                        <td className="uppercase">{bookingDateFormatter(item?.to)}</td>
 
                         {/* <td className={`flex flex-wrap gap-1.5`}>
                           <span

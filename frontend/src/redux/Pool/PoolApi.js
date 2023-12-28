@@ -54,7 +54,9 @@ const roomAPI = baseAPI.injectEndpoints({
 					method: "POST",
 					body: data,
 				};
+
 			},
+			invalidatesTags: ["roomPostedBill"],
 		}),
 
 		

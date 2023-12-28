@@ -173,7 +173,7 @@ const AddFood = () => {
     { key: "Liquor", value: "Liquor", label: "Liquor" },
     { key: "Rice", value: "Rice", label: "Rice" },
     { key: "Full Meal", value: "Full Meal", label: "Full Meal" },
-    { key: "Sneaks", value: "Sneaks", label: "Sneaks" },
+    { key: "Snacks", value: "Snacks", label: "Snacks" },
     { key: "Drinks", value: "Drinks", label: "Drinks" },
     { key: "Deserts", value: "Deserts", label: "Deserts" },
     { key: "Juices", value: "Juices", label: "Juices" },

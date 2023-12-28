@@ -26,11 +26,13 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getOnlyFormatDate,
   getTodayFormateDate,
 } from "../../utils/utils";
 import RestaurantSalesHistory from "../report/RestaurantSalesHistory";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RestaurantSalesReport from "../report/RestaurantSalesReport";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 // import EditExpenses from "./EditExpenses";
 
 const ShowAllSell = () => {
@@ -62,8 +64,8 @@ const ShowAllSell = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -79,7 +81,7 @@ const ShowAllSell = () => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: getConvertedIsoStartDate(getTodayFormateDate()),
+    date: new Date().toLocaleDateString(),
     order_status: "CheckedOut",
     hotel_id: user?.assignedHotel[0],
   });
@@ -286,11 +288,11 @@ const ShowAllSell = () => {
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
             >
-              Restaurant sales
+              Restaurant sales History
             </h3>
           </div>
           <div className="flex justify-end mr-5">
-            {PDF?.length ? (
+            {restaurantSalesHistory?.data?.docs?.length ? (
               <PDFDownloadLink
                 document={
                   <RestaurantSalesReport
@@ -407,7 +409,10 @@ const ShowAllSell = () => {
                         }
                       >
                         <th>{++idx}</th>
-                        <td>{new Date(item?.date).toLocaleDateString()}</td>
+                        <td>
+                          {getOnlyFormatDate(item?.date)}
+                          {/* {new Date(item?.date).toLocaleDateString()} */}
+                        </td>
                         <td>
                           <div className="flex">
                             <div>

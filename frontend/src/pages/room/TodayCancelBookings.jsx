@@ -7,6 +7,8 @@ import AddBooking from "../../components/room/AddBooking.jsx";
 import {
   useGetRoomsAndHotelsQuery,
   useGetBookingsByHotelQuery,
+  useGetDailyCheckInDataQuery,
+  useGetDailyCancelBookingDataQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -18,6 +20,8 @@ import {
   getConvertedIsoStartDate,
   getTodayFormateDate,
 } from "../../utils/utils.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
+import { useSelector } from "react-redux";
 
 const TodayCancelBookings = () => {
   const [search, setSearch] = useState("");
@@ -28,6 +32,7 @@ const TodayCancelBookings = () => {
 
   const [searchParams] = useSearchParams();
   const managerId = searchParams.get("manager_id");
+  const { user } = useSelector((store) => store.authSlice);
 
   const formik = useFormik({
     initialValues: {
@@ -37,18 +42,17 @@ const TodayCancelBookings = () => {
     onSubmit: (values) => {
       setSearch(values.search);
       setCurrentPage(0);
-      setForcePage(0)
+      setForcePage(0);
     },
   });
 
-  const { data: bookingList, isLoading } = useGetBookingsByHotelQuery({
-    hotel_id: formik.values.hotel_id,
+  const { data: bookingList, isLoading } = useGetDailyCancelBookingDataQuery({
     search: search,
     page: currentPage,
-    filter: "Canceled",
-    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
-    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
+    fromDate: convertedStartDate(),
+    toDate: convertedEndDate(),
     manager_id: managerId === "undefined" ? "" : managerId,
+    limit: 10,
   });
 
   const pressEnter = (e) => {
@@ -123,8 +127,8 @@ const TodayCancelBookings = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}

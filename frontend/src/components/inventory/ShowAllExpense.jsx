@@ -24,6 +24,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getOnlyFormatDate,
   getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils";
@@ -34,6 +35,7 @@ import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
 import EditExpensesView from "./EditExpensesView";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
 const ShowAllExpense = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -59,40 +61,6 @@ const ShowAllExpense = () => {
 
   const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
 
-  // const { data: resExpenses, isLoading, isSuccess } = useGetExpensesQuery({
-  //   cp: 1,
-  //   fromDate: fromDateIsoConverter(new Date()),
-  //   hotel_id: hotelId,
-  //   spendedfor: "restaurant",
-  //   limit: 10,
-  // });
-
-  // const { data: RestaurantExpenses, isLoading, isSuccess } = useGetExpensesQuery({
-  //   cp: 1,
-  //   fromDate: fromDateIsoConverter(new Date()),
-  //   hotel_id: hotelId,
-  //   spendedfor: "restaurant",
-  //   limit: 10,
-  // });
-
-  // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
-  //   const {data:RestaurantExpenses, isLoading,isSuccess} = useGetExpensesQuery({
-  //     cp: 1,
-  //     fromDate: fromDateIsoConverter(new Date()),
-  //     hotel_id: hotelId,
-  //     spendedfor: "restaurant",
-  //     limit: 10,
-  //   });
-
-  // // https://hotel-jse.onrender.com/expenses/get-expenses?fromDate=&toDate=&hotel_id=655dfd9967d644ac2f5df54e&spendedfor=restaurant
-  //   const {data:resExpenses, isLoading,isSuccess} = useGetExpensesQuery({
-  //     cp: 1,
-  //     fromDate: fromDateIsoConverter(new Date()),
-  //     hotel_id: hotelId,
-  //     spendedfor: "restaurant",
-  //     limit: 10,
-  //   });
-
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -111,8 +79,8 @@ const ShowAllExpense = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -268,9 +236,12 @@ const ShowAllExpense = () => {
                               >
                                 <th>{++idx}</th>
                                 <td>
-                                  {new Date(
+                                  {getOnlyFormatDate(
                                     resExpenses?.docs[0]?.date
-                                  ).toLocaleDateString()}
+                                  )}
+                                  {/* {new Date(
+                                    resExpenses?.docs[0]?.date
+                                  ).toLocaleDateString()} */}
                                 </td>
                                 <td>{item?.name}</td>
                                 <td>{item?.description}</td>
@@ -383,7 +354,7 @@ const ShowAllExpense = () => {
               </h3>
             </div>
             <div className="flex justify-end mr-5">
-              {filteredExpenses?.docs.length? (
+              {filteredExpenses?.docs.length ? (
                 <PDFDownloadLink
                   document={
                     <ExpensesHistoryReport
@@ -475,72 +446,81 @@ const ShowAllExpense = () => {
           </div>
           <hr className={`my-5 mb-4`} />
           <div className={`space-y-10`}>
-           {filteredExpenses?.docs.length? <div className=" overflow-x-auto overflow-y-auto">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>SL</th>
-                    <th>Date</th>
-                    <th>Total Amount</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredExpenses?.docs?.map((item, idx) => {
-                    return (
-                      <tr
-                        className={
-                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                        }
-                      >
-                        <th>{++idx}</th>
-                        <td>{new Date(item?.date).toLocaleDateString()}</td>
-                        <td>
-                          <FaRupeeSign className="inline" />
-                          <span>{item?.total_amount}</span>
-                        </td>
-                        <td className={`space-x-1.5`}>
-                          <span
-                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
-                            onClick={() =>
-                              navigate(
-                                `/dashboard/show-all-expense/${item?._id}`
-                              )
-                            }
-                          >
-                            <FaEye />
-                          </span>
-                          {/* <span
+            {filteredExpenses?.docs.length ? (
+              <div className=" overflow-x-auto overflow-y-auto">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>SL</th>
+                      <th>Date</th>
+                      <th>Total Amount</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredExpenses?.docs?.map((item, idx) => {
+                      return (
+                        <tr
+                          className={
+                            idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                          }
+                        >
+                          <th>{++idx}</th>
+                          <td>
+                            {getOnlyFormatDate(item?.date)}
+                            {/* {new Date(item?.date).toLocaleDateString()} */}
+                          </td>
+                          <td>
+                            <FaRupeeSign className="inline" />
+                            <span>{item?.total_amount}</span>
+                          </td>
+                          <td className={`space-x-1.5`}>
+                            <span
+                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                              onClick={() =>
+                                navigate(
+                                  `/dashboard/show-all-expense/${item?._id}`
+                                )
+                              }
+                            >
+                              <FaEye />
+                            </span>
+                            {/* <span
                           className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
                         >
                           <AiTwotoneDelete />
                         </span> */}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>:<p className="text-center my-24">No Expenses Yet!</p>}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-center my-24">No Expenses Yet!</p>
+            )}
             <div className="flex justify-center mt-10">
-             {filteredExpenses?.docs.length? <ReactPaginate
-                containerClassName="join rounded-none"
-                pageLinkClassName="join-item btn btn-md bg-transparent"
-                activeLinkClassName="btn-active !bg-green-slimy text-white"
-                disabledLinkClassName="btn-disabled"
-                previousLinkClassName="join-item btn btn-md bg-transparent"
-                nextLinkClassName="join-item btn btn-md bg-transparent"
-                breakLinkClassName="join-item btn btn-md bg-transparent"
-                previousLabel="<"
-                nextLabel=">"
-                breakLabel="..."
-                pageCount={pageCount}
-                pageRangeDisplayed={2}
-                marginPagesDisplayed={2}
-                onPageChange={handlePageClick}
-                renderOnZeroPageCount={null}
-                forcePage={currentPage}
-              />:null}
+              {filteredExpenses?.docs.length ? (
+                <ReactPaginate
+                  containerClassName="join rounded-none"
+                  pageLinkClassName="join-item btn btn-md bg-transparent"
+                  activeLinkClassName="btn-active !bg-green-slimy text-white"
+                  disabledLinkClassName="btn-disabled"
+                  previousLinkClassName="join-item btn btn-md bg-transparent"
+                  nextLinkClassName="join-item btn btn-md bg-transparent"
+                  breakLinkClassName="join-item btn btn-md bg-transparent"
+                  previousLabel="<"
+                  nextLabel=">"
+                  breakLabel="..."
+                  pageCount={pageCount}
+                  pageRangeDisplayed={2}
+                  marginPagesDisplayed={2}
+                  onPageChange={handlePageClick}
+                  renderOnZeroPageCount={null}
+                  forcePage={currentPage}
+                />
+              ) : null}
             </div>
           </div>
         </div>

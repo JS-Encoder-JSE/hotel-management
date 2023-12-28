@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <section className={`py-10`}>
+      <section className={`py-10 relative min-h-screen`}>
         <div
           className={`grid grid-cols-1 md:grid-cols-[18rem_calc(100%_-_18rem)]`}
         >
@@ -107,10 +107,8 @@ const Dashboard = () => {
             <div className={`px-4`}>
               <Outlet />
             </div>
-            <div className={`mt-auto`}>
-              <Footer />
-            </div>
           </div>
+        <Footer />
         </div>
       </section>
     </>

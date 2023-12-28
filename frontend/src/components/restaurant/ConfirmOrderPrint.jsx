@@ -1,5 +1,5 @@
 import React from "react";
-import { versionControl } from "../../utils/utils";
+import { getOnlyFormatDate, versionControl } from "../../utils/utils";
 import logo from "../../assets/logo.png";
 
 const ConfirmOrderPrint = ({ success, orderCalc }) => {
@@ -17,9 +17,9 @@ const ConfirmOrderPrint = ({ success, orderCalc }) => {
     <div>
       <div className={`text-center mb-6`}>
         <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
-        <h1 className="font-bold text-2xl">DAK Hospital LTD</h1>
+        {/* <h1 className="font-bold text-2xl">DAK Hospital LTD</h1> */}
         <span>Customer Receipt</span> <br />
-        <span>Issue Date: {formattedDate} </span>
+        <span>Issue Date: {getOnlyFormatDate()} </span>
       </div>
       <div>
         <table className="table">

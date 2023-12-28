@@ -23,6 +23,7 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getOnlyFormatDate,
   getTodayFormateDate,
   getformatDateTime,
 } from "../../utils/utils";
@@ -32,6 +33,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
 const HotelExpenses = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -71,8 +73,8 @@ const HotelExpenses = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -86,8 +88,8 @@ const HotelExpenses = () => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
-    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
+    fromDate: getTodayFormateDate(),
+    toDate: getTodayFormateDate(),
     hotel_id: hotelId,
     spendedfor: "hotel",
   });
@@ -235,9 +237,12 @@ const HotelExpenses = () => {
                               >
                                 <th>{++idx}</th>
                                 <td>
-                                  {new Date(
+                                  {getOnlyFormatDate(
                                     hotelExpenses?.docs[0]?.date
-                                  ).toLocaleDateString()}
+                                  )}
+                                  {/* {new Date(
+                                    hotelExpenses?.docs[0]?.date
+                                  ).toLocaleDateString()} */}
                                 </td>
                                 <td>{item?.name}</td>
                                 <td>{item?.description}</td>
@@ -460,7 +465,10 @@ const HotelExpenses = () => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>{new Date(item?.date).toLocaleDateString()}</td>
+                          <td>
+                            {getOnlyFormatDate(item?.date)}
+                            {/* {new Date(item?.date).toLocaleDateString()} */}
+                          </td>
                           <td>
                             <FaRupeeSign className="inline" />
                             <span>{item?.total_amount}</span>
@@ -470,7 +478,7 @@ const HotelExpenses = () => {
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                               onClick={() =>
                                 navigate(
-                                  `/dashboard/show-all-expense/${item?._id}`
+                                  `/dashboard/all-hotel-expenses/${item?._id}`
                                 )
                               }
                             >

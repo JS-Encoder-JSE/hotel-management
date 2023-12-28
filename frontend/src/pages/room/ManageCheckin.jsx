@@ -1,76 +1,80 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import BookingLists from "../../components/room/BookingLists.jsx";
-import { FaArrowLeft, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaPlus,
+  FaRupeeSign,
+  FaSearch,
+  FaTrash,
+} from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
+import DatePicker from "react-datepicker";
 import AddBooking from "../../components/room/AddBooking.jsx";
 import {
   useGetRoomsAndHotelsQuery,
   useGetBookingsByHotelQuery,
   useMakePaymentMutation,
+  useGetDailyDataQuery,
+  useGetDailyHotelDataQuery,
 } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CheckInModal from "./CheckInModal.jsx";
 import ManageCheckinModal from "./MaageCheckinModal.jsx";
 import CheckinList from "../../components/room/CheckinList.jsx";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
+import { useSelector } from "react-redux";
+import { getOnlyFormatDate } from "../../utils/utils.js";
+import { GrPowerReset } from "react-icons/gr";
+import ReactPaginate from "react-paginate";
 
 const ManageCheckin = () => {
-  const [search, setSearch] = useState("");
   const [forcePage, setForcePage] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useState({
+    fromDate: "",
+    toDate: "",
+  });
 
-    // Automatically close the modal after 3 seconds (adjust as needed)
-    setTimeout(() => {
-      setIsModalOpen(false);
-    }, 3000);
-  };
-
+  const { user } = useSelector((store) => store.authSlice);
+  // console.log(user._id);
+  const {
+    data: checkInData,
+    error,
+    isLoading,
+  } = useGetDailyHotelDataQuery({
+    // ...searchParams,
+    page: currentPage,
+    fromDate: searchParams?.fromDate
+      ? convertedStartDate(searchParams.fromDate)
+      : "",
+    toDate: searchParams?.toDate ? convertedEndDate(searchParams.toDate) : "",
+    manager_id: user._id,
+    limit: 10,
+    filter: "checkin",
+  });
   const formik = useFormik({
     initialValues: {
-      filter: "",
-      search: "",
-      // hotel_id: "",
+      fromDate: "",
+      toDate: "",
     },
     onSubmit: (values) => {
-      setSearch(values.search);
-      setCurrentPage(0);
+      setSearchParams({ fromDate: values.fromDate, toDate: values.toDate });
     },
   });
-
-  const {
-    data: checkinList,
-    isLoading,
-    refetch,
-  } = useGetBookingsByHotelQuery({
-    hotel_id: formik.values.hotel_id,
-    search: search,
-    page: currentPage,
-    filter: "CheckedIn",
-  });
-
-  console.log(checkinList)
-
-  // refetch()
-  const path = useLocation();
-  useEffect(() => {
-    refetch();
-  }, [path.pathname]);
-
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
   };
-
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
       formik.handleSubmit();
     }
   };
-  const { data: hotelsList } = useGetRoomsAndHotelsQuery();
   return (
     <div className={`space-y-10 bg-white p-4 rounded-2xl`}>
       <div>
@@ -94,7 +98,61 @@ const ManageCheckin = () => {
       >
         <h1>Manage CheckIn</h1>
       </div>
-      <div className="flex justify-end">
+      <div className={`flex flex-col md:flex-row gap-3`}>
+        <DatePicker
+          autoComplete={`off`}
+          dateFormat="dd/MM/yyyy"
+          name="fromDate"
+          placeholderText={`From`}
+          selected={formik.values.fromDate}
+          className={`input input-sm input-bordered rounded focus:outline-none`}
+          onChange={(date) => formik.setFieldValue("fromDate", date)}
+          onBlur={formik.handleBlur}
+          onKeyUp={(e) => {
+            e.target.value === "" ? formik.handleSubmit() : null;
+          }}
+          onKeyDown={(e) => pressEnter(e)}
+        />
+        <DatePicker
+          autoComplete={`off`}
+          dateFormat="dd/MM/yyyy"
+          name="toDate"
+          placeholderText={`To`}
+          selected={formik.values.toDate}
+          className={`input input-sm input-bordered rounded focus:outline-none`}
+          onChange={(date) => formik.setFieldValue("toDate", date)}
+          onBlur={formik.handleBlur}
+          onKeyUp={(e) => {
+            e.target.value === "" ? formik.handleSubmit() : null;
+          }}
+          onKeyDown={(e) => pressEnter(e)}
+        />
+        <button
+          type={"button"}
+          onClick={() => {
+            formik.resetForm();
+            formik.handleSubmit();
+          }}
+          className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+        >
+          <GrPowerReset className="text-green-slimy" />
+        </button>
+        <button
+          type={"button"}
+          onClick={() => {
+            setCurrentPage(0);
+            setForcePage(0);
+            formik.handleSubmit();
+          }}
+          disabled={
+            formik.values.startDate === "" || formik.values.endDate === ""
+              ? true
+              : false
+          }
+          className="btn btn-sm min-w-[5rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
+        >
+          Apply Filter
+        </button>
         <div className={`flex flex-col md:flex-row gap-4 `}>
           <button
             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
@@ -103,39 +161,83 @@ const ManageCheckin = () => {
             <FaPlus />
             <span>Add Check In</span>
           </button>
-          <div className={`relative sm:min-w-[20rem]`}>
-            <input
-              type="number"
-              placeholder="Search by phone number..."
-              name="search"
-              className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
-              value={formik.values.search}
-              onChange={formik.handleChange}
-              onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
-                e.target.value === "" ? formik.handleSubmit() : null;
-              }}
-              onKeyDown={(e) => pressEnter(e)}
-            />
-            <button
-              type="button"
-              onClick={formik.handleSubmit}
-              className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-            >
-              <FaSearch />
-            </button>
-          </div>
         </div>
       </div>
+
+      {/* <div className="flex justify-end"></div> */}
       {!isLoading ? (
-        checkinList?.data?.docs?.length ? (
-          <CheckinList
-            page={checkinList?.data?.totalPages}
-            checkinList={checkinList?.data?.docs}
-            handlePageClick={handlePageClick}
-            forcePage={forcePage}
-          />
+        checkInData?.data?.docs?.length ? (
+          <div className="overflow-x-auto">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  <th>Date</th>
+                  <th>Number of CheckIn</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {checkInData &&
+                  checkInData?.data?.docs?.map((item, idx) => {
+                    return (
+                      <tr
+                        className={
+                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                        }
+                      >
+                        <th>{++idx}</th>
+                        <td>
+                          {getOnlyFormatDate(item?.date)}
+                          {/* {new Date(item?.date).toLocaleDateString()} */}
+                        </td>
+                        <td>
+                          <div className="flex">
+                            <div>
+                              <span>{item?.today_remaining_checkin}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className={`space-x-1.5`}>
+                          <span
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
+                            onClick={() =>
+                              navigate(
+                                `/dashboard/daily-checkin?date=${item?.date}`
+                              )
+                            }
+                          >
+                            <FaEye />
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+            {checkInData?.data?.docs?.length && (
+              <div className="flex justify-center mt-10">
+                <ReactPaginate
+                  containerClassName="join rounded-none"
+                  pageLinkClassName="join-item btn btn-md bg-transparent"
+                  activeLinkClassName="btn-active !bg-green-slimy text-white"
+                  disabledLinkClassName="btn-disabled"
+                  previousLinkClassName="join-item btn btn-md bg-transparent"
+                  nextLinkClassName="join-item btn btn-md bg-transparent"
+                  breakLinkClassName="join-item btn btn-md bg-transparent"
+                  previousLabel="<"
+                  nextLabel=">"
+                  breakLabel="..."
+                  pageCount={checkInData?.data?.totalPages}
+                  pageRangeDisplayed={2}
+                  marginPagesDisplayed={2}
+                  onPageChange={handlePageClick}
+                  renderOnZeroPageCount={null}
+                  forcePage={forcePage}
+                />
+              </div>
+            )}
+          </div>
         ) : (
           <h3 className={`text-center`}>No data found!</h3>
         )

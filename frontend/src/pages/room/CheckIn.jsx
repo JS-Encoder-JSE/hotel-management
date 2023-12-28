@@ -25,7 +25,10 @@ import {
   getNumberOfDays,
   toDateIsoConverter,
 } from "../../utils/utils.js";
-import { convertedFromDate, convertedToDate } from "../../utils/timeZone.js";
+import {
+  getEndDateOfBookingIst,
+  getStartDateOFBookingIST,
+} from "../../utils/timeZone.js";
 import { Link, useNavigate } from "react-router-dom";
 
 // form validation
@@ -129,8 +132,8 @@ const CheckIn = () => {
       setLoading(true);
       const obj = {
         ...values,
-        from: convertedFromDate(values.from),
-        to: convertedToDate(values.to),
+        from: getStartDateOFBookingIST(values.from),
+        to: getEndDateOfBookingIst(values.to),
       };
       if (!obj.discount) obj.discount = 0;
 
@@ -298,7 +301,7 @@ const CheckIn = () => {
 
   return (
     <div className={` bg-white rounded-2xl mx-auto p-8 sm:max-w-[90%]`}>
-        <div className="mb-5">
+      <div className="mb-5">
         <Link to={`/dashboard `}>
           <button
             type="button"
@@ -314,13 +317,13 @@ const CheckIn = () => {
           </button>
         </Link>
       </div>
-    <div>
-    <h3
-        className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
-      >
-        Check In
-      </h3>
-    </div>
+      <div>
+        <h3
+          className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+        >
+          Check In
+        </h3>
+      </div>
       <hr />
       <form
         autoComplete="off"

@@ -26,6 +26,8 @@ import {
   useUpdateFoodMutation,
 } from "../../redux/restaurant/foodAPI.js";
 import { useUpdateRoomMutation } from "../../redux/room/roomAPI.js";
+import { useDispatch } from 'react-redux';
+import { resetFoodOrder } from "../../redux/add-order/addOrderSlice.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -60,6 +62,7 @@ const EditFood = () => {
   const [passwordRequired, setPassRequired] = useState(false);
   console.log(passwordRequired);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { data: categories, isLoading: categoryLoading } =
     useGetCategoryQuery();
@@ -140,6 +143,7 @@ const EditFood = () => {
         if (response?.error) {
           toast.error(response.error.data.message);
         } else {
+          dispatch(resetFoodOrder())
           setPassRequired(false);
           toast.success(response.data.message);
           navigate("/dashboard/add-order");

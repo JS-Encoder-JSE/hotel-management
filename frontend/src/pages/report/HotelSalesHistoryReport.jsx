@@ -1,7 +1,7 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png"
-import { getFormateDateAndTime } from "../../utils/utils";
+import { getFormateDateAndTime, getOnlyFormatDate } from "../../utils/utils";
 
 const HotelSalesHistoryReport = ({ values, header,date }) => {
     // SL	Date	Items Name	Description	Quantity	Price	Action
@@ -69,7 +69,8 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
                 fontSize: 10,
               }}
             >
-              Printed Date: {new Date().toLocaleDateString()}
+              Printed Date: {getOnlyFormatDate()}
+               {/* {new Date().toLocaleDateString()} */}
             </Text>
           </View>
         </View>
@@ -90,7 +91,8 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
                     : key === "date"
                     ? date
                     ? new Date(date).toLocaleDateString()
-                    : new Date(item[key]).toLocaleDateString() // Use the date prop here
+                    :getOnlyFormatDate(item[key])
+                    //  new Date(item[key]).toLocaleDateString() // Use the date prop here
                   : item[key]}
                 </Text>
               ))}

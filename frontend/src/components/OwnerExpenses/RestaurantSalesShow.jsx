@@ -25,12 +25,14 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getISOStringDate,
+  getOnlyFormatDate,
   getTodayFormateDate,
 } from "../../utils/utils";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
 import RestaurantSales from "../../pages/OwnerExpenses/RestaurantSales";
 import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import RestaurantSalesReport from "../../pages/report/RestaurantSalesReport";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
 const RestaurantSalesShow = ({ hotelId, managerID }) => {
   // console.log('------hotelId',hotelId);
@@ -54,8 +56,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -81,7 +83,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: getConvertedIsoStartDate(getTodayFormateDate()),
+    date: convertedStartDate(),
     order_status: "CheckedOut",
     hotel_id: hotelId,
   });
@@ -270,7 +272,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
             </h3>
           </div>
           <div className="flex justify-end">
-            {PDF?.length ? (
+          {/* hotelSalesHistory?.data?.docs?.length ? */}
+            {restaurantSalesHistory?.data?.docs?.length ? (
               <PDFDownloadLink
                 document={
                   <RestaurantSalesReport
@@ -389,7 +392,11 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>{new Date(item?.date).toLocaleDateString()}</td>
+                          <td>
+                            {" "}
+                            {getOnlyFormatDate(item?.date)}
+                            {/* {new Date(item?.date).toLocaleDateString()} */}
+                          </td>
                           <td>
                             <div className="flex">
                               <div>
@@ -426,7 +433,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
               <p className="text-center my-16">No sales yet!</p>
             )}
           </div>
-          {restaurantSalesHistory?.data?.docs?.length && (
+          {restaurantSalesHistory?.data?.docs?.length > 0 && (
             <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"

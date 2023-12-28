@@ -17,8 +17,9 @@ import CheckInDyn from "../../pages/room/CheckInDyn.jsx";
 import AddBooking from "./AddBooking.jsx";
 import RefundBookingModal from "./RefundBookingModal.jsx";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
+import { bookingDateFormatter, getIndianFormattedDate } from "../../utils/timeZone.js";
 
-const BookingLists = ({ bookingList, setCurrentPage,forcePage }) => {
+const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,7 +27,6 @@ const BookingLists = ({ bookingList, setCurrentPage,forcePage }) => {
     useUpdateBookingMutation();
   const [cancelBooking] = useCancelBookingMutation();
   const [bookingId, setBookingId] = useState("");
-  // const { data: isLastBooking } = useGetLastActiveBookingQuery(bookingId);
 
   const handlePageClick = ({ selected: page }) => {
     setCurrentPage(page);
@@ -34,73 +34,66 @@ const BookingLists = ({ bookingList, setCurrentPage,forcePage }) => {
 
   // console.log(isLastBooking)
 
-  const { data: isLastBooking, refetch } =
-    useGetLastActiveBookingQuery(bookingId);
+  const {
+    data: isLastBooking,
+    isSuccess,
+    refetch,
+  } = useGetLastActiveBookingQuery(bookingId, { skip: bookingId === "" });
   const handleDelete = (id) => {
     setBookingId(id);
-    refetch();
-    if (isLastBooking?.success) {
-      window.refundPay.showModal();
+    if (id === bookingId) {
+      refetch();
     }
-    // if (isLastBooking?.success) {
-    //   // If the condition is true, show the modal
-    //   window.refundPay.showModal();
-    // } else {
-    //   // If the condition is false, show the confirmation dialog
-    // }
   };
-
-  useEffect(() => {
-    if (isLastBooking) {
-      if (isLastBooking?.success) {
-        window.refundPay.showModal();
-      } else {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "Booking will be Cancel.",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#35bef0",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Cancel it!",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-              const response = await cancelBooking({
-                id: id,
-                data: {
-                  tran_id: "",
-                  payment_method: "",
-                },
+  if (isLastBooking && isSuccess) {
+    if (isLastBooking?.success && isLastBooking?.paid_amount > 0) {
+      window.refundPay.showModal();
+    } else {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Booking will be Cancel.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#35bef0",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Cancel it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await cancelBooking({
+              id: bookingId,
+              data: {
+                tran_id: "",
+                payment_method: "",
+              },
+            });
+            if (response) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Canceled!",
+                showConfirmButton: false,
+                timer: 1500,
               });
-              if (response) {
-                Swal.fire({
-                  position: "center",
-                  icon: "success",
-                  title: "Canceled!",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-              } else {
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: "Something went wrong!",
-                });
-              }
-            } catch (error) {
-              console.error("Error:", error);
+            } else {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "Something went wrong!",
               });
             }
+          } catch (error) {
+            console.error("Error:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
           }
-        });
-      }
+        }
+      });
     }
-  }, [isLastBooking]);
+  }
 
   useEffect(() => {
     if (data && modalOpen) {
@@ -151,8 +144,8 @@ const BookingLists = ({ bookingList, setCurrentPage,forcePage }) => {
                   <td> {item?.room_id?.roomNumber}</td>
                   <td>{item?.mobileNumber}</td>
                   <td>{getformatDateTime(item?.createdAt)}</td>
-                  <td>{getFormateDateAndTime(item?.from)}</td>
-                  <td>{getFormateDateAndTime(item?.to)}</td>
+                  <td className="uppercase">{bookingDateFormatter(item?.from)}</td>
+                  <td className="uppercase">{bookingDateFormatter(item?.to)}</td>
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span

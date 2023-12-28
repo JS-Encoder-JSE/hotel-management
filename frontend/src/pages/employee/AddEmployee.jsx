@@ -24,18 +24,13 @@ import {
 import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 import { Link } from "react-router-dom";
 import EmployeeView from "./EmployeeView";
+import { convertedStartDate } from "../../utils/timeZone.js";
 
 // form validation
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   userName: yup.string().required("Username is required"),
-  address: yup
-    .string()
-    .required("Address is required")
-    .matches(
-      /^[a-zA-Z][a-zA-Z0-9\s]*$/,
-      "Address must start with a character and can include characters and numbers"
-    ),
+  address: yup.string().required("Address is required"),
   email: yup
     .string()
     .email("Enter a valid email")
@@ -152,7 +147,7 @@ const AddEmployee = () => {
           designation,
           address,
           salary,
-          joining_date,
+          joining_date: convertedStartDate(joining_date),
           images: obj.images,
         });
         if (response?.error) {

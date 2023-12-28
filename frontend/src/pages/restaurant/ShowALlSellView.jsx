@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RestaurantSalesHistory from "../report/RestaurantSalesHistory";
-import { getConvertedIsoStartDate } from "../../utils/utils";
+import { getConvertedIsoStartDate, getOnlyFormatDate } from "../../utils/utils";
 
 const ShowALlSellView = () => {
   const [searchParams] = useSearchParams();
@@ -30,7 +30,9 @@ const ShowALlSellView = () => {
     error: orderError,
     isLoading: orderItemSuccess,
   } = useGetOrdersByDateQuery({
-    date: getConvertedIsoStartDate(dateParam),
+    date: new Date(dateParam).toLocaleDateString()
+    // getConvertedIsoStartDate(dateParam)
+    ,
     order_status: "CheckedOut",
     hotel_id: hotelId ? hotelId : user?.assignedHotel[0],
   });
@@ -141,7 +143,9 @@ const ShowALlSellView = () => {
                     className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                   >
                     <th>{++idx}</th>
-                    <td>{new Date(dateParam).toLocaleDateString()}</td>
+                    <td>{getOnlyFormatDate(dateParam)}
+                      {/* {new Date(dateParam).toLocaleDateString()} */}
+                      </td>
                     <td>{item?.item}</td>
                     <td>{item?.serveyor_quantity}</td>
                     <td>{item?.quantity}</td>

@@ -27,14 +27,17 @@ import {
   getConvertedIsoEndDate,
   getConvertedIsoStartDate,
   getFormateDateAndTime,
+  getOnlyFormatDate,
   getTodayFormateDate,
+  getformatDateTime,
 } from "../../utils/utils";
 import { useGetReportsByDateQuery } from "../../redux/expensesAndSales/expensesAndSalesApi";
 import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
 import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 import ReportPrint from "../../pages/report/ReportPrint";
-import { getformatDateTime } from "./../../utils/timeZone";
+import { convertedEndDate, convertedFromDate, getIndianFormattedDate } from "../../utils/timeZone";
+// import { getformatDateTime } from "./../../utils/timeZone";
 
 const HotelSalesShow = ({ managerId, hotelId }) => {
   // console.log('------hotelId',managerId);
@@ -56,8 +59,6 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(managerId);
-
-  const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -71,8 +72,8 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
-        fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
+        toDate: p ? convertedEndDate(values.endDate) : "",
+        fromDate: p ? convertedFromDate(values.startDate) : "",
       }));
     },
     onReset: (values) => {
@@ -100,7 +101,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
 
   const { data: hotelTodaySales } = useGetReportsByDateQuery({
     cp: currentPage,
-    date: getConvertedIsoStartDate(getTodayFormateDate()),
+    date: new Date().toLocaleDateString(),
     hotelId: hotelId,
   });
 
@@ -219,7 +220,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                               <td>{getformatDateTime(item?.checked_in)}</td>
 
                               <td>
-                                {getFormateDateAndTime(item?.checked_out)}
+                                {getIndianFormattedDate(item?.checked_out)}
                               </td>
                               <td>
                                 {item?.room_numbers?.map((roomNum) => roomNum)}
@@ -270,7 +271,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                 )}
               </div>
             </div>
-            {hotelTodaySales?.data?.docs?.length && (
+            {hotelTodaySales?.data?.docs?.length > 0 && (
               <div className="flex justify-center mt-10">
                 <ReactPaginate
                   containerClassName="join rounded-none"
@@ -301,7 +302,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
             <h3
               className={` bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
             >
-              Hotel Sales
+              Hotel Sales History
             </h3>
           </div>
           <div className={`flex justify-end mb-5 mr-5`}>
@@ -406,7 +407,10 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td>{new Date(item?.date).toLocaleDateString()}</td>
+                          <td>
+                            {getOnlyFormatDate(item?.date)}
+                            {/* {new Date(item?.date).toLocaleDateString()} */}
+                          </td>
                           <td>
                             <div className="flex">
                               <div>
@@ -443,7 +447,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
               <p className="text-center my-16">No sales yet!</p>
             )}
           </div>
-          {hotelSalesHistory?.data?.docs?.length && (
+          {hotelSalesHistory?.data?.docs?.length > 0 &&  (
             <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"

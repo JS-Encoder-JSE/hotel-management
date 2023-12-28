@@ -10,7 +10,7 @@ const gymAPI = baseAPI.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["bar"],
+      invalidatesTags: ["bar","roomPostedBill"],
     }),
     addOrder: build.mutation({
       query: (data) => {

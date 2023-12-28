@@ -130,8 +130,8 @@ const AddHotelExpense = () => {
     const response = await AddExpense({
       hotel_id: isHotelSuccess && hotelInfo[0]?._id,
       date: selectDate
-        ? getConvertedIsoStartDate(getTodayFormateDate(selectDate))
-        : getConvertedIsoStartDate(getTodayFormateDate()),
+        ? getTodayFormateDate(selectDate)
+        : getTodayFormateDate(),
       spendedfor: "hotel",
       items: totalExpense,
       total_amount: parseInt(calculateTotal()),

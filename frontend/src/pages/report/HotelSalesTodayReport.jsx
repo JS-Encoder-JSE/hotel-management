@@ -10,9 +10,11 @@ import {
 import logo from "../../assets/logo.png";
 import {
   getFormateDateAndTime,
+  getOnlyFormatDate,
   getformatDateTime,
   versionControl,
 } from "../../utils/utils";
+import { getIndianFormattedDate } from "../../utils/timeZone";
 
 const HotelSalesTodayReport = ({ values, header, date }) => {
   // SL	Date	Items Name	Description	Quantity	Price	Action
@@ -64,10 +66,6 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
       flexDirection: "row",
       borderBottomWidth: 1,
       borderBottomColor: "#e8e8e8",
-    },
-    tableCell: {
-      padding: 8,
-      wordWrap: "break-word",
     },
     tableHeader: {
       backgroundColor: "#f2f2f2",
@@ -139,7 +137,8 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
                 fontSize: 10,
               }}
             >
-              Printed Date: {new Date().toLocaleDateString()}
+              Printed Date: {getOnlyFormatDate()}
+               {/* {new Date().toLocaleDateString()} */}
             </Text>
           </View>
         </View>
@@ -182,7 +181,7 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
                         : key === "checked_in"
                         ? getformatDateTime(item[key])
                         : key === "checked_out"
-                        ? getFormateDateAndTime(item[key])
+                        ? getIndianFormattedDate(item[key])
                         : item[key]}
                     </Text>
                   );

@@ -15,9 +15,8 @@ import { useGetSubDashBoardInfoQuery } from "../../redux/expensesAndSales/expens
 import { useSelector } from "react-redux";
 import { Rings } from "react-loader-spinner";
 import { dummyData, isValidUrl } from "../../utils/utils";
-import {Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TbSquareRoundedLetterC } from "react-icons/tb";
-
 
 const RestaurantDashboard = ({ managerId }) => {
   // console.log("managerId",managerId)
@@ -48,28 +47,64 @@ const RestaurantDashboard = ({ managerId }) => {
   }
 
   const location = useLocation();
-  const {  pathname  } = location;
- 
-
+  const { pathname } = location;
 
   return (
     <>
-       <div className="mb-12">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                  <dfn>
-                    <abbr title="Back">
-                      <FaArrowLeft />
-                    </abbr>
-                  </dfn>
+      {/* <div className="mb-20">
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div> */}
+     <span>
+  {isValidUrl("restaurant-dashboard", pathname) ? (
+    <div className="mb-20">
+      <Link to={`/dashboard `}>
+        <button
+          type="button"
+          className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+        >
+          <dfn>
+            <abbr title="Back">
+              <FaArrowLeft />
+            </abbr>
+          </dfn>
+          <span className="tracking-wider font-semibold text-[1rem]"></span>
+        </button>
+      </Link>
+    </div>
+  ) : isValidUrl("hotel-dashboard", pathname) ? (
+    <div className="mb-20">
+      <Link to={`/dashboard `}>
+        <button
+          type="button"
+          className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+        >
+          <dfn>
+            <abbr title="Back">
+              <FaArrowLeft />
+            </abbr>
+          </dfn>
+          <span className="tracking-wider font-semibold text-[1rem]"></span>
+        </button>
+      </Link>
+    </div>
+  ) : (
+    ""
+  )}
+</span>
+
       <div
         // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-3 mb-20`}
         className="grid md:grid-cols-3 gap-4 mb-20"
@@ -86,9 +121,9 @@ const RestaurantDashboard = ({ managerId }) => {
               </div>
               <div>
                 <span>
-                  {isValidUrl("restaurant",pathname)
-                    ? data?.daily_datas[0]?.today_restaurant_expenses
-                    : data?.daily_datas[0]?.today_hotel_expenses}
+                  {isValidUrl("restaurant", pathname)
+                    ? data?.daily_datas[0]?.today_restaurant_expenses || 0
+                    : data?.daily_datas[0]?.today_hotel_expenses || 0}
                 </span>
               </div>
             </div>
@@ -97,11 +132,14 @@ const RestaurantDashboard = ({ managerId }) => {
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#26d360] to-[#44c60c8a] p-3 rounded-md">
-          <TbSquareRoundedLetterC />
+            <TbSquareRoundedLetterC />
           </div>
           <div>
             <h6 className="text-xs text-slate-400">
-              TODAY'S {isValidUrl("restaurant",pathname) ? "SALES" : "CHECKOUT REVENUE"}
+              TODAY'S{" "}
+              {isValidUrl("restaurant", pathname)
+                ? "SALES"
+                : "CHECKOUT REVENUE"}
             </h6>
             <p className="text-2xl font-semibold mt-4">
               <div className="flex justify-end">
@@ -110,9 +148,9 @@ const RestaurantDashboard = ({ managerId }) => {
                 </div>
                 <div>
                   <span>
-                    {isValidUrl("restaurant",pathname)
-                      ? data?.daily_datas[0]?.today_restaurant_income
-                      : data?.daily_datas[0]?.today_hotel_income}
+                    {isValidUrl("restaurant", pathname)
+                      ? data?.daily_datas[0]?.today_restaurant_income || 0
+                      : data?.daily_datas[0]?.today_hotel_income || 0}
                   </span>
                 </div>
               </div>
@@ -132,9 +170,9 @@ const RestaurantDashboard = ({ managerId }) => {
               </div>
               <div>
                 <span>
-                  {isValidUrl("restaurant",pathname)
-                    ? data?.daily_datas[0]?.today_restaurant_profit
-                    : data?.daily_datas[0]?.today_hotel_profit}
+                  {isValidUrl("restaurant", pathname)
+                    ? data?.daily_datas[0]?.today_restaurant_profit || 0
+                    : data?.daily_datas[0]?.today_hotel_profit || 0}
                 </span>
               </div>
             </div>
@@ -159,7 +197,7 @@ const RestaurantDashboard = ({ managerId }) => {
               </div>
               <div>
                 <span>
-                  {isValidUrl("restaurant",pathname)
+                  {isValidUrl("restaurant", pathname)
                     ? data?.last_week_data?.last_week_restaurant_expenses
                     : data?.last_week_data?.last_week_hotel_expenses}
                 </span>
@@ -173,7 +211,8 @@ const RestaurantDashboard = ({ managerId }) => {
             <LiaSellsy />
           </div>
           <h6 className="text-xs text-slate-400 ">
-            LAST WEEK {isValidUrl("restaurant",pathname) ? "SALES" : "CHECKOUT REVENUE"}
+            LAST WEEK{" "}
+            {isValidUrl("restaurant", pathname) ? "SALES" : "CHECKOUT REVENUE"}
           </h6>
           <p className="text-2xl font-semibold mt-4">
             <div className="flex justify-end">
@@ -182,7 +221,7 @@ const RestaurantDashboard = ({ managerId }) => {
               </div>
               <div>
                 <span>
-                  {isValidUrl("restaurant",pathname)
+                  {isValidUrl("restaurant", pathname)
                     ? data?.last_week_data?.last_week_restaurant_income
                     : data?.last_week_data?.last_week_hotel_income}
                 </span>
@@ -215,7 +254,7 @@ const RestaurantDashboard = ({ managerId }) => {
               </div>
               <div>
                 <span>
-                  {isValidUrl("restaurant",pathname)
+                  {isValidUrl("restaurant", pathname)
                     ? data?.last_week_data?.last_week_restaurant_profit
                     : data?.last_week_data?.last_week_hotel_profit}
                 </span>

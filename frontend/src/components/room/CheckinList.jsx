@@ -14,6 +14,7 @@ import { GiDoorHandle } from "react-icons/gi";
 import { FaRegEdit } from "react-icons/fa";
 import { BiSolidDoorOpen } from "react-icons/bi";
 import { getFormateDateAndTime, getformatDateTime } from "../../utils/utils.js";
+import { bookingDateFormatter, getIndianFormattedDate } from "../../utils/timeZone.js";
 
 const CheckinList = ({ checkinList, page, handlePageClick, forcePage }) => {
   const navigate = useNavigate();
@@ -69,14 +70,14 @@ const CheckinList = ({ checkinList, page, handlePageClick, forcePage }) => {
                   <td>{getformatDateTime(item?.checkin_date)}</td>
                   {/* <td>{item?.paid_amount}</td> */}
                   {/* <td>{new Date(item?.createdAt).toLocaleString()}</td> */}
-                  <td>{getFormateDateAndTime(item?.from)}</td>
-                  <td>{getFormateDateAndTime(item?.to)}</td>
+                  <td className="uppercase">{bookingDateFormatter(item?.from)}</td>
+                  <td className="uppercase">{bookingDateFormatter(item?.to)}</td>
 
                   <td className={`flex flex-wrap gap-1.5`}>
                     <span
                       className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
                       title={`View`}
-                      onClick={() => navigate(`${item._id}`)}
+                      onClick={() => navigate(`/dashboard/manage-checkin/${item._id}`)}
                     >
                       <FaEye />
                     </span>

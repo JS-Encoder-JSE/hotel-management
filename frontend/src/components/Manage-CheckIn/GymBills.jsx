@@ -14,6 +14,7 @@ import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import { MdCurrencyRupee } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
+import { getOnlyFormatDate } from "../../utils/utils";
 
 const GymBills = ({ GymBill }) => {
   const [managersPerPage] = useState(10);
@@ -93,7 +94,8 @@ const GymBills = ({ GymBill }) => {
                         >
                           <th>{++idx}</th>
                           <td>
-                            {new Date(gym?.createdAt).toLocaleDateString()}
+                            {getOnlyFormatDate(gym?.createdAt)}
+                            {/* {new Date(gym?.createdAt).toLocaleDateString()} */}
                           </td>
                           <td>{gym?.price}</td>
                           <td>{gym?.paid_amount}</td>

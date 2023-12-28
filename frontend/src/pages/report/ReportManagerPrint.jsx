@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import logo from "../../assets/logo.png";
 import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI";
 import { getFormateDateAndTime } from "../../utils/timeZone";
+import { getOnlyFormatDate, versionControl } from "../../utils/utils";
 
 const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
   console.log(roomNumber);
@@ -10,9 +11,9 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
       <div>
         <div className={`text-center mb-6`}>
           <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
-          <h1 className="font-bold text-2xl">DAK Hospital LTD</h1>
+          <h1 className="font-bold text-2xl">DAK HOSPITALITY  LTD</h1>
           <span>Customer Receipt</span> <br />
-          <span>Issue Date:</span>
+          <span>Issue Date:{getOnlyFormatDate()}</span>
         </div>
       </div>
 
@@ -128,10 +129,12 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
                   <tbody>
                     <tr>
                       <td className="p-2 border border-black/20 align-top text-xs">
-                        {new Date(data?.checkin_date).toLocaleDateString()}
+                        {getOnlyFormatDate(data?.checkin_date)}
+                        {/* {new Date(data?.checkin_date).toLocaleDateString()} */}
                       </td>
                       <td className="p-2 border border-black/20 align-top text-xs">
-                        {new Date(data?.to).toLocaleDateString()}
+                        {getOnlyFormatDate(data?.to)}
+                        {/* {new Date(data?.to).toLocaleDateString()} */}
                       </td>
                       <td className="p-2 border border-black/20 align-top text-xs">
                         {data?.no_of_days}
@@ -223,7 +226,7 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
       </div>
       <h1 className="text-center absolute bottom-0 pb-2 w-full">
         Powered by <span className="text-xl text-green-slimy">JS Encoder</span>.
-        Copyright © 2023. All rights reserved.Version
+        Copyright © 2023. All rights reserved.Version {versionControl} 
         {/* {versionControl} */}
       </h1>
     </div>

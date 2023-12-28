@@ -3,7 +3,7 @@ import { FaArrowLeft, FaEye, FaFileInvoice, FaSearch } from "react-icons/fa";
 import { useFormik } from "formik";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as XLSX from "xlsx";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import CreateReport from "../../components/pdf/CreateReport.jsx";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
@@ -20,7 +20,13 @@ import {
   getConvertedIsoStartDate,
   getFormateDateAndTime,
   getformatDateTime,
+  isValidUrl,
 } from "../../utils/utils.js";
+import {
+  convertedEndDate,
+  convertedStartDate,
+  getIndianFormattedDate,
+} from "../../utils/timeZone.js";
 
 const Report = () => {
   const [forcePage, setForcePage] = useState(null);
@@ -32,7 +38,7 @@ const Report = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  console.log(currentPage)
+  console.log(currentPage);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -55,15 +61,11 @@ const Report = () => {
       endDate: "",
     },
     onSubmit: (values) => {
-
       setSearchParams((p) => ({
         ...p,
-        toDate:
-          p && values.endDate ? getConvertedIsoEndDate(values.endDate) : "",
+        toDate: p && values.endDate ? convertedEndDate(values.endDate) : "",
         fromDate:
-          p && values.startDate
-            ? getConvertedIsoStartDate(values.startDate)
-            : "",
+          p && values.startDate ? convertedStartDate(values.startDate) : "",
         search: values.search,
       }));
     },
@@ -91,9 +93,9 @@ const Report = () => {
         uid: id || user._id,
         filter: formik.values.filter,
         limit: formik.values.entries,
-        search:formik.values.search
+        search: formik.values.search,
       });
-      console.log("reports",reports)
+  console.log("reports", reports);
 
   const exportExcel = async (data, name) => {
     const ws = XLSX.utils.json_to_sheet(data);
@@ -125,7 +127,7 @@ const Report = () => {
         Phone: item.phone_no,
         "Purchase Date": getformatDateTime(new Date(item.bill_from)),
         "Expire Date": getformatDateTime(new Date(item.bill_to)),
-        
+
         // new Date(item.bill_to).toLocaleDateString(),
         "Deposit By": item.deposit_by,
         "Paid Amount": item.paid_amount,
@@ -157,10 +159,13 @@ const Report = () => {
     }
   };
 
+  const location = useLocation();
+  const { pathname } = location;
+
   return (
     <div className={`space-y-5`}>
       <div className={`bg-white p-4 rounded`}>
-        <div>
+        {/* <div>
           <Link to={`/dashboard `}>
             <button
               type="button"
@@ -175,7 +180,29 @@ const Report = () => {
               <span className="tracking-wider font-semibold text-[1rem]"></span>
             </button>
           </Link>
-        </div>
+        </div> */}
+        <span>
+          {isValidUrl("admin-report", pathname) ? (
+            <div>
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                  <dfn>
+                    <abbr title="Back">
+                      <FaArrowLeft />
+                    </abbr>
+                  </dfn>
+
+                  <span className="tracking-wider font-semibold text-[1rem] "></span>
+                </button>
+              </Link>
+            </div>
+          ) : (
+            ""
+          )}
+        </span>
         <h3
           className={`bg-green-slimy text-[20px] text-white max-w-[12rem]  mx-auto py-2 px-5 rounded space-x-1.5 mb-9 mt-3 text-center `}
         >
@@ -313,16 +340,15 @@ const Report = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
             />
             <button
-              onClick={()=>{
-                setCurrentPage(0),
-                formik.handleSubmit()
+              onClick={() => {
+                setCurrentPage(0), formik.handleSubmit();
               }}
               type="button"
               className="absolute top-0 right-0 btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
@@ -351,44 +377,35 @@ const Report = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {[...reports?.docs]
-                        ?.sort((a, b) =>
-                          a.username.toLowerCase() > b.username.toLowerCase()
-                            ? 1
-                            : a.username.toLowerCase() <
-                              b.username.toLowerCase()
-                            ? -1
-                            : 0
-                        )
-                        ?.map((report, idx) => {
-                          return (
-                            <tr
-                              className={
-                                idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
-                              }
-                            >
-                              <th>{++idx}</th>
-                              <td>{report?.username}</td>
-                              <td>{report?.phone_no}</td>
-                              <td>
-                                {getformatDateTime(report?.bill_from)}
-                                {/* {extractTimeOrDate(report?.bill_from, "date")}
+                      {[...reports?.docs]?.map((report, idx) => {
+                        return (
+                          <tr
+                            className={
+                              idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                            }
+                          >
+                            <th>{++idx}</th>
+                            <td>{report?.username}</td>
+                            <td>{report?.phone_no}</td>
+                            <td>
+                              {getIndianFormattedDate(report?.bill_from)}
+                              {/* {extractTimeOrDate(report?.bill_from, "date")}
                                 <br />{" "}
                                 {extractTimeOrDate(report.bill_from, "time")} */}
-                              </td>
-                              <td>
-                                {getformatDateTime(report?.bill_to)}
-                                {/* {extractTimeOrDate(report?.bill_to, "date")}
+                            </td>
+                            <td>
+                              {getIndianFormattedDate(report?.bill_to)}
+                              {/* {extractTimeOrDate(report?.bill_to, "date")}
                                 <br />{" "}
                                 {extractTimeOrDate(report.bill_to, "time")} */}
-                              </td>
-                              <td>{report?.deposit_by}</td>
-                              <td>{report?.hotel_limit}</td>
-                              <td>{report?.paid_amount}</td>
-                              <td>{report?.status}</td>
-                            </tr>
-                          );
-                        })}
+                            </td>
+                            <td>{report?.deposit_by}</td>
+                            <td>{report?.hotel_limit}</td>
+                            <td>{report?.paid_amount}</td>
+                            <td>{report?.status}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                     <tfoot className={`text-sm`}>
                       <tr>

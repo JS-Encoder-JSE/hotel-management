@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 import { useUpdateUserMutation } from "../../redux/admin/subadmin/subadminAPI.js";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const Profile = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -147,7 +148,8 @@ const Profile = () => {
               <label className={`min-w-[5.5rem]`}>Expire Date</label>
               <span> : </span>
               <p className="text-slate-600 ml-2 break-all">
-                {new Date(user?.bill_to).toLocaleDateString()}
+                {getOnlyFormatDate(user?.bill_to)}
+                {/* {new Date(user?.bill_to).toLocaleDateString()} */}
               </p>
             </div>
             <div className="flex sm:flex-row sm:items-center sm:gap-5 py-2 px-2 rounded-md glass">
@@ -156,7 +158,8 @@ const Profile = () => {
               </label>
               <span>:</span>
               <p className="text-slate-600 ml-2 break-all">
-                {new Date(user?.bill_from).toLocaleDateString()}
+                {getOnlyFormatDate(user?.bill_from)}
+                {/* {new Date(user?.bill_from).toLocaleDateString()} */}
               </p>
             </div>
           </>

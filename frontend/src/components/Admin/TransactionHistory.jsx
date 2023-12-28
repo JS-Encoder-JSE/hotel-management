@@ -9,6 +9,8 @@ import { useGetTransactionlogsQuery } from "../../redux/admin/ownerlist/ownerLis
 import { useParams } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
 import { Rings } from "react-loader-spinner";
+import { getOnlyFormatDate } from "../../utils/utils.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const TransactionHistory = () => {
   const [historyPerPage] = useState(10);
@@ -31,19 +33,23 @@ const TransactionHistory = () => {
     onSubmit: (values) => {
       setSearchParams((p) => ({
         ...p,
-        fromDate: formik.values.startDate,
-        toDate: formik.values.endDate,
+        fromDate:values.startDate ? convertedStartDate(values.startDate) : "",
+        //  convertedStartDate(formik.values.startDate),
+        toDate: values.endDate ? convertedEndDate(values.endDate) : "",
+        //  convertedEndDate(formik.values.endDate),
       }));
     },
     onReset: () => {
       setCurrentPage(0);
       setForcePage(0);
+      // setSearchParams({...searchParams,FormData:"",toDate:""})
     },
   });
 
   const { data, error, isLoading, isSuccess } = useGetTransactionlogsQuery({
     ...searchParams,
     cp: currentPage,
+   
   });
   // 65451c80dd95504ee1047f0b
   const handlePageClick = ({ selected: page }) => {
@@ -54,7 +60,10 @@ const TransactionHistory = () => {
   useEffect(() => {
     if (data) {
       const values = data?.docs?.map((item) => ({
-        Date: new Date(item?.createdAt).toLocaleDateString(),
+        Date: getOnlyFormatDate(item?.createdAt),
+        // new Date(item?.createdAt).toLocaleDateString()
+        // ,
+
         "Transaction Id": item.tran_id,
         "Payment Method": item?.payment_method,
         "License Duration": item?.payment_for,
@@ -168,9 +177,7 @@ const TransactionHistory = () => {
                         }
                       >
                         <th>{++idx}</th>
-                        <td>
-                          {new Date(item?.createdAt).toLocaleDateString()}
-                        </td>
+                        <td>{getOnlyFormatDate(item?.createdAt)}</td>
                         <td>{item.tran_id}</td>
                         <td>{item?.payment_method}</td>
                         <td>{item?.payment_for}</td>

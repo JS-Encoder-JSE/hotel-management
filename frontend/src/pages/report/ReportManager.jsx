@@ -37,6 +37,11 @@ import {
 } from "../../redux/room/roomAPI.js";
 import ReportPrint from "./ReportPrint.jsx";
 import { useSelector } from "react-redux";
+import {
+  convertedEndDate,
+  convertedStartDate,
+  getIndianFormattedDate,
+} from "../../utils/timeZone.js";
 
 const ReportManager = () => {
   const componentRef = useRef();
@@ -82,18 +87,15 @@ const ReportManager = () => {
       endDate: "",
     },
     onSubmit: (values) => {
-      setKeyword(values.search)
-      if(values.search){
-        setCurrentPage(0)
+      setKeyword(values.search);
+      if (values.search) {
+        setCurrentPage(0);
       }
       setSearchParams((p) => ({
         ...p,
-        toDate:
-          p && values.endDate ? getConvertedIsoEndDate(values.endDate) : "",
+        toDate: p && values.endDate ? convertedEndDate(values.endDate) : "",
         fromDate:
-          p && values.startDate
-            ? getConvertedIsoStartDate(values.startDate)
-            : "",
+          p && values.startDate ? convertedStartDate(values.startDate) : "",
         search: values.search,
       }));
     },
@@ -105,10 +107,10 @@ const ReportManager = () => {
   });
   const { isLoading, data: reports } = useGetManagerReportQuery({
     ...searchParams,
-    cp:currentPage,
+    cp: currentPage,
     filter: formik.values.filter,
     limit: formik.values.entries,
-    search:keyword,
+    search: keyword,
   });
   console.log("reports", reports);
 
@@ -287,8 +289,8 @@ const ReportManager = () => {
               value={formik.values.search}
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                e.target.value === "" &&  setForcePage(0)
-                e.target.value === "" && setCurrentPage(0)
+                e.target.value === "" && setForcePage(0);
+                e.target.value === "" && setCurrentPage(0);
                 e.target.value === "" ? formik.handleSubmit() : null;
               }}
               onKeyDown={(e) => pressEnter(e)}
@@ -317,7 +319,7 @@ const ReportManager = () => {
                   {/* balance_deducted */}
                   <th className="text-end">Deducted From Balance</th>
                   <th className="text-end">Refund Amount</th>
-                  <th className="text-end">Action</th>
+                  <th className="">Action</th>
                   {/*<th>Deposit By</th>*/}
                 </tr>
               </thead>
@@ -336,7 +338,7 @@ const ReportManager = () => {
                       <td>{report?.room_numbers.join(",")}</td>
                       <td>{getformatDateTime(report?.checked_in)}</td>
 
-                      <td>{getFormateDateAndTime(report?.checked_out)}</td>
+                      <td className="uppercase">{getIndianFormattedDate(report?.checked_out)}</td>
                       <td className="text-end">{report?.paid_amount}</td>
                       <td className="text-end">{report?.balance_deducted}</td>
                       <td className="text-end">{report?.balance_refunded}</td>
@@ -375,7 +377,9 @@ const ReportManager = () => {
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td className="text-end">Total : {reports?.data?.total_paid_amount}</td>
+                  <td className="text-end">
+                    Total : {reports?.data?.total_paid_amount}
+                  </td>
                   <td className="text-end">
                     Total : {reports?.data?.total_balance_deducted}
                   </td>
