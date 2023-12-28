@@ -80,9 +80,6 @@ const AdminNewLicense = () => {
         trxID: tran_id,
         amount,
         remarks: remark,
-        utilities,
-        tradeLicenses,
-        panCard,
       } = obj;
       const tempImages = {
         trade_lic_img: [],
@@ -115,43 +112,6 @@ const AdminNewLicense = () => {
           formData3.append(photoName, selectImage.file);
         }
       });
-
-      for (const pair of formData1.entries()) {
-        console.log(`Name: ${pair[0]}, Value: ${pair[1]}`);
-      }
-      for (const pair of formData2.entries()) {
-        console.log(`Name: ${pair[0]}, Value: ${pair[1]}`);
-      }
-      for (const pair of formData3.entries()) {
-        console.log(`Name: ${pair[0]}, Value: ${pair[1]}`);
-      }
-
-      // for (let i = 0; i < utilities.length; i++) {
-      //   const photoName = utilities[i].name.substring(
-      //     0,
-      //     utilities[i].name.lastIndexOf(".")
-      //   );
-
-      //   formData1.append(photoName, utilities[i]);
-      // }
-
-      // for (let i = 0; i < tradeLicenses.length; i++) {
-      //   const photoName = tradeLicenses[i].name.substring(
-      //     0,
-      //     tradeLicenses[i].name.lastIndexOf(".")
-      //   );
-
-      //   formData2.append(photoName, tradeLicenses[i]);
-      // }
-
-      // for (let i = 0; i < panCard.length; i++) {
-      //   const photoName = panCard[i].name.substring(
-      //     0,
-      //     panCard[i].name.lastIndexOf(".")
-      //   );
-
-      //   formData3.append(photoName, panCard[i]);
-      // }
 
       await upload(formData1).then(
         (result) => (tempImages.utilities = result.data.imageUrls)
@@ -200,7 +160,6 @@ const AdminNewLicense = () => {
   });
 
   const handleDelete = (idx, image) => {
-    console.log({ image });
     const tempImgs = [...selectedImages];
     tempImgs.splice(idx, 1);
     if (image.name === "utilities") {
@@ -223,7 +182,6 @@ const AdminNewLicense = () => {
       });
     }
 
-    // console.log("tempImgs",tempImgs)
     const dataTransfer = new DataTransfer();
 
     for (const file of tempImgs) {
@@ -292,7 +250,6 @@ const AdminNewLicense = () => {
       ]);
     }
   }, [formik.values.utilities]);
-  console.log("SelectedImages", selectedImages);
 
   useEffect(() => {
     if (formik.values.tradeLicenses) {
@@ -352,10 +309,6 @@ const AdminNewLicense = () => {
       ]);
     }
   }, [formik.values.panCard]);
-
-  console.log("utilities", utilitiesFiles);
-  console.log("tradeLicensesFiles", tradeLicensesFiles);
-  console.log("panCard", panCardFiles);
 
   return (
     <div className={`space-y-10 bg-white p-10 rounded-2xl`}>
