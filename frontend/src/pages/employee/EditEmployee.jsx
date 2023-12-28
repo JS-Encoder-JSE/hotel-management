@@ -14,13 +14,6 @@ import { useUploadSingleMutation } from "../../redux/baseAPI.js";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
-  // address: yup
-  //   .string()
-  //   .required("Address is required")
-  //   .matches(
-  //     /^[a-zA-Z][a-zA-Z0-9\s]*$/,
-  //     "Address must start with a character and can include characters and numbers"
-  //   ),
   address: yup.string().required("Address is required"),
   email: yup
     .string()
@@ -153,9 +146,13 @@ const EditEmployee = () => {
               <FaArrowLeft />
             </span>
           </div>
-         <div>
-         <h2 className={`bg-green-slimy text-center text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded mt-4`}>Edit Employee</h2>
-         </div>
+          <div>
+            <h2
+              className={`bg-green-slimy text-center text-2xl text-white max-w-3xl mx-auto py-3 px-6 rounded mt-4`}
+            >
+              Edit Employee
+            </h2>
+          </div>
           <hr className={`my-5`} />
         </div>
 
