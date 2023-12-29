@@ -154,6 +154,7 @@ const AddRoom = () => {
       setSelectedImages(selectedImagesArray);
     }
   }, [formik.values.photos]);
+ 
 
   return (
     <>

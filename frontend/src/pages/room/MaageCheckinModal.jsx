@@ -43,7 +43,6 @@ const validationSchema = yup.object({
   discount: yup.number(),
   paymentMethod: yup.string().when(["amount"], (amount, schema) => {
     if (amount.length > 1 || (amount > 0 && amount !== undefined)) {
-
       return schema.required("Payment method is required");
     } else {
       return schema;
@@ -51,7 +50,11 @@ const validationSchema = yup.object({
   }),
   amount: yup.number(),
   trxID: yup.string().when(["paymentMethod"], (paymentMethod, schema) => {
-    if (paymentMethod !== "Cash") {
+    console.log(paymentMethod);
+    if (
+      paymentMethod.includes("Card") ||
+      paymentMethod.includes("Mobile_Banking")
+    ) {
       return schema.required("Transaction ID is required");
     } else {
       return schema;
