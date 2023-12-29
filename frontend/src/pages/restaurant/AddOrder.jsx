@@ -254,9 +254,10 @@ const AddOrder = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={(e) => {
-                setForcePage(1)
+                setForcePage(0)
                 formik.handleChange(e);
               }}
+              
             />
           </div>
         </div>

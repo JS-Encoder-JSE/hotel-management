@@ -69,9 +69,9 @@ const validationSchema = yup.object({
   documentsType: yup.string().required("Documents type is required"),
   doc_number: yup
     .number()
-    .required("Doc_number is required")
-    .positive("Doc_number must be a positive number")
-    .integer("Doc_number must be an integer"),
+    .required("Doc number is required")
+    .positive("Doc number must be a positive number")
+    .integer("Doc number must be an integer"),
   documents: yup.string().required("Documents is required"),
 });
 
