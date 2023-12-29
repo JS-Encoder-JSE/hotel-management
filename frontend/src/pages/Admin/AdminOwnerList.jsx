@@ -118,7 +118,7 @@ const AdminOwnerList = ({ title }) => {
   }, [modalOpen]);
 
   const location = useLocation();
-  const {  pathname  } = location;
+  const { pathname } = location;
 
   return (
     <div>
@@ -141,26 +141,27 @@ const AdminOwnerList = ({ title }) => {
         </div> */}
 
         <span>
-                  {isValidUrl("adminowner-list",pathname)
-                    ?
-                     ( <div>
-                      <Link to={`/dashboard `}>
-                        <button
-                          type="button"
-                          className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                        >
-                          <dfn>
-                            <abbr title="Back">
-                              <FaArrowLeft />
-                            </abbr>
-                          </dfn>
-            
-                          <span className="tracking-wider font-semibold text-[1rem] "></span>
-                        </button>
-                      </Link>
-                    </div>)
-                    : ""}
-                </span>
+          {isValidUrl("adminowner-list", pathname) ? (
+            <div>
+              <Link to={`/dashboard `}>
+                <button
+                  type="button"
+                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+                >
+                  <dfn>
+                    <abbr title="Back">
+                      <FaArrowLeft />
+                    </abbr>
+                  </dfn>
+
+                  <span className="tracking-wider font-semibold text-[1rem] "></span>
+                </button>
+              </Link>
+            </div>
+          ) : (
+            ""
+          )}
+        </span>
         <div>
           <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">
             Owner List
@@ -192,9 +193,13 @@ const AdminOwnerList = ({ title }) => {
                 <option value="Deactive">Deactivate</option>
                 <option value="Suspended">Suspend</option>
                 <option value="Expired">Expired</option>
-                {user.role === "admin" ? (
+                {/* {user.role === "admin" ? (
                   <option value="Deleted">Deleted</option>
-                ) : null}
+                ) : null } */}
+                {isValidUrl("dashboard/adminowner-list", pathname) &&
+                  user.role === "admin" && (
+                    <option value="Deleted">Deleted</option>
+                  )}
               </select>
             </div>
             <div className={`relative sm:min-w-[20rem]`}>
