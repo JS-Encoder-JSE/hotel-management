@@ -32,7 +32,7 @@ const RestaurantExpense = () => {
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
   const handleReset = () => {
-    setselectedHotel1("");
+    setselectedHotel1(null);
   };
 
   if (isLoading || isError) {
@@ -81,6 +81,7 @@ const RestaurantExpense = () => {
             <Select
               placeholder="Search with hotel branch name"
               defaultValue={selectedHotel1}
+              value={selectedHotel1}
               options={transformedHotel}
               isMulti={false}
               isSearchable

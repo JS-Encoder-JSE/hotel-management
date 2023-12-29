@@ -37,7 +37,7 @@ const RestaurantsAnalytics = () => {
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
   const handleReset = () => {
-    setselectedHotel("");
+    setselectedHotel(null);
   };
 
   if (isLoading || isError) {
@@ -97,7 +97,8 @@ const RestaurantsAnalytics = () => {
           <div className="flex flex-col md:flex-row gap-3">
             <Select
               placeholder="Search with hotel branch name"
-              defaultValue={selectedHotel}
+              // defaultValue={selectedHotel}
+              value={selectedHotel}
               options={transformedHotel}
               isMulti={false}
               isSearchable
