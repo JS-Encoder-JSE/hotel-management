@@ -31,7 +31,7 @@ const MonitorFinance = () => {
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
   const handleReset = () => {
-    setselectedHotel("");
+    setselectedHotel(null);
   };
 
   if (isLoading || isError) {
@@ -78,6 +78,7 @@ const MonitorFinance = () => {
             <Select
               placeholder="Search with hotel name"
               defaultValue={selectedHotel}
+              value={selectedHotel}
               options={transformedHotel}
               isMulti={false}
               isSearchable

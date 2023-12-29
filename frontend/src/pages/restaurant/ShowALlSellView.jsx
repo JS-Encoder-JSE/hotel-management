@@ -30,9 +30,8 @@ const ShowALlSellView = () => {
     error: orderError,
     isLoading: orderItemSuccess,
   } = useGetOrdersByDateQuery({
-    date: new Date(dateParam).toLocaleDateString()
+    date: new Date(dateParam).toLocaleDateString(),
     // getConvertedIsoStartDate(dateParam)
-    ,
     order_status: "CheckedOut",
     hotel_id: hotelId ? hotelId : user?.assignedHotel[0],
   });
@@ -47,26 +46,24 @@ const ShowALlSellView = () => {
 
   const [todayItem, setTodayItem] = useState([]);
   useEffect(() => {
-    const todayItems = orderedDataByDate?.data?.reduce(
-      (accumulator, items) => {
-        // Concatenate the items array of each bill to the accumulator array
-        return accumulator.concat(
-          items.items.map((item) => ({
-            ...item,
-            ...(items.room_id
-              ? { roomNumber: items.room_id.roomNumber }
-              : items.table_id? { tableNumber: items.table_id.table_number}
-              : {}), // Add createdAt property to each item
-          }))
-        );
-      },
-      []
-    );
+    const todayItems = orderedDataByDate?.data?.reduce((accumulator, items) => {
+      // Concatenate the items array of each bill to the accumulator array
+      return accumulator.concat(
+        items.items.map((item) => ({
+          ...item,
+          ...(items.room_id
+            ? { roomNumber: items.room_id.roomNumber }
+            : items.table_id
+            ? { tableNumber: items.table_id.table_number }
+            : {}), // Add createdAt property to each item
+        }))
+      );
+    }, []);
     // console.log("allItemsWithCreatedAt",allItemsWithCreatedAt)
 
     setTodayItem(todayItems);
   }, [orderedDataByDate]);
-  console.log("today item",todayItem)
+  console.log("today item", todayItem);
 
   // pagination setup for today's expenses
   const itemsPerPage = 10;
@@ -143,7 +140,9 @@ const ShowALlSellView = () => {
               <th>SL</th>
               <th>Date</th>
               <th>Items Name</th>
-              <th>Room /Table</th>
+              <th>
+                Room / Table <br /> Number
+              </th>
               <th>Surveyor Quantity</th>
               <th>Quantity</th>
               <th>Price</th>
@@ -161,15 +160,16 @@ const ShowALlSellView = () => {
                     className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
                   >
                     <th>{++idx}</th>
-                    <td>{getOnlyFormatDate(dateParam)}
+                    <td>
+                      {getOnlyFormatDate(dateParam)}
                       {/* {new Date(dateParam).toLocaleDateString()} */}
-                      </td>
+                    </td>
                     <td>{item?.item}</td>
                     <td>
-                            {item?.roomNumber
-                              ? item.roomNumber
-                              : item?.tableNumber}
-                          </td>
+                      {item?.roomNumber
+                        ? `Room : ${item.roomNumber}`
+                        : ` Table : ${item?.tableNumber}`}
+                    </td>
                     <td>{item?.serveyor_quantity}</td>
                     <td>{item?.quantity}</td>
                     <td>{item?.price * item?.quantity}</td>
