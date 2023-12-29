@@ -130,7 +130,8 @@ const ShowAllSell = () => {
             ...item,
             ...(items.room_id
               ? { roomNumber: items.room_id.roomNumber }
-              : items.table_id? { tableNumber: items.table_id.table_number}
+              : items.table_id
+              ? { tableNumber: items.table_id.table_number }
               : {}), // Add createdAt property to each item
           }))
         );
@@ -234,7 +235,9 @@ const ShowAllSell = () => {
                   <tr>
                     <th>SL</th>
                     <th>Item</th>
-                    <th>Room/Table</th>
+                    <th>
+                      Room / Table <br /> Number
+                    </th>
                     <th>Surveyor Quantity</th>
                     <th>Quantity</th>
                     <th>Price</th>
@@ -253,9 +256,10 @@ const ShowAllSell = () => {
                           <td>{item?.item}</td>
                           <td>
                             {item?.roomNumber
-                              ? item.roomNumber
-                              : item?.tableNumber}
+                              ? `Room : ${item.roomNumber}`
+                              : ` Table : ${item?.tableNumber}`}
                           </td>
+
                           <td>{item?.serveyor_quantity}</td>
                           <td>{item?.quantity}</td>
                           <td>{item?.price * item?.quantity}</td>
