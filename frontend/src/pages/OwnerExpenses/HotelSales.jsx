@@ -36,7 +36,7 @@ const HotelSales = () => {
     label: `${hotel.name} - ${hotel.branch_name}`,
   }));
   const handleReset = () => {
-    setselectedHotel("");
+    setselectedHotel(null);
   };
 
   if (isLoading || isError) {
@@ -85,6 +85,7 @@ const HotelSales = () => {
             <Select
               placeholder="Search with hotel branch name"
               defaultValue={selectedHotel}
+              value={selectedHotel}
               options={transformedHotel}
               isMulti={false}
               isSearchable

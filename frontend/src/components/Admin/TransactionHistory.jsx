@@ -70,7 +70,8 @@ const TransactionHistory = () => {
         // item?.payment_for,
         // Amount: item?.amount,
         "Payment For": item?.payment_for,
-        "Deposit By": item?.to,
+        "Deposit By": item?.from,
+        "Deposit To": item?.to,
       }));
 
       setPDF(values);
@@ -166,6 +167,7 @@ const TransactionHistory = () => {
                     <th>Amount</th>
                     <th>Payment For</th>
                     <th>Deposit By</th>
+                    <th>Deposit To</th>
 
                     {/*<th>Action</th>*/}
                   </tr>
@@ -191,6 +193,7 @@ const TransactionHistory = () => {
                             </td>
                         <td>{item?.amount}</td>
                         <td>{item?.payment_for}</td>
+                        <td>{item?.from}</td>
                         <td>{item?.to}</td>
                         {/*<td className={`space-x-1.5`}>*/}
                         {/*  <span*/}

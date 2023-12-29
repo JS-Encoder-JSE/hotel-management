@@ -57,7 +57,11 @@ const validationSchema = yup.object({
   }),
   amount: yup.number(),
   trxID: yup.string().when(["paymentMethod"], (paymentMethod, schema) => {
-    if (paymentMethod !== "Cash") {
+    console.log(paymentMethod);
+    if (
+      paymentMethod.includes("Card") ||
+      paymentMethod.includes("Mobile_Banking")
+    ) {
       return schema.required("Transaction ID is required");
     } else {
       return schema;
@@ -69,9 +73,9 @@ const validationSchema = yup.object({
   documentsType: yup.string().required("Documents type is required"),
   doc_number: yup
     .number()
-    .required("Doc_number is required")
-    .positive("Doc_number must be a positive number")
-    .integer("Doc_number must be an integer"),
+    .required("Doc number is required")
+    .positive("Doc number must be a positive number")
+    .integer("Doc number must be an integer"),
   documents: yup.string().required("Documents is required"),
 });
 
@@ -566,6 +570,7 @@ const CheckIn = () => {
             <select
               name="paymentMethod"
               className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+          
               value={formik.values.paymentMethod}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
