@@ -570,6 +570,7 @@ const CheckIn = () => {
             <select
               name="paymentMethod"
               className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
+          
               value={formik.values.paymentMethod}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
