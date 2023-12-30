@@ -30,6 +30,7 @@ const CheckOutPrint = ({
   hotelInfo,
   isHotelSuccess,
   roomData,
+  invoiceNumber
 }) => {
   const {
     calculateBalance,
@@ -41,16 +42,19 @@ const CheckOutPrint = ({
   } = useSelector((state) => state.checkoutInfoCalSlice);
   const totalPayableAmount =
     calculatePayableAmount + additionalCharge + serviceCharge + texAmount;
+    
+
   return (
     <div>
       <div>
         <div className={`text-center mb-6`}>
           <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
-          <h1 className="font-bold text-2xl">DAK HOSPITALITY  LTD</h1>
+          {/* <h1 className="font-bold text-2xl">DAK HOSPITALITY  LTD</h1> */}
           <span>Customer Receipt</span> <br />
           <span>Issue Date: {getOnlyFormatDate()}
             {/* {formattedDate} */}
-             </span>
+             </span> <br />
+             <span>Invoice number: {invoiceNumber}</span>
         </div>
       </div>
       {isHotelSuccess && (

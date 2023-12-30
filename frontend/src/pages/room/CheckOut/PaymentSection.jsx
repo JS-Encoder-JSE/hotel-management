@@ -28,6 +28,7 @@ const PaymentSection = ({
   totalPayableAmount,
   componentRef,
   trxError,
+  invoiceNumber
 }) => {
   const [PDF, setPDF] = useState([]);
   const [colAmount, setColAmount] = useState(0);
@@ -170,6 +171,7 @@ const PaymentSection = ({
         <div style={{ display: "none" }}>
           <div ref={componentRef}>
             <CheckOutPrint
+            invoiceNumber={invoiceNumber}
               pBill={pBill}
               colAmount={colAmount}
               data={data}

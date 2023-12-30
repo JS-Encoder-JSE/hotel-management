@@ -12,6 +12,8 @@ import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { getDiscountAmount } from "../../utils/utils.js";
 import { tr } from "date-fns/locale";
+import { useGetHotelByManagerIdQuery } from "../../redux/room/roomAPI.js";
+import { useSelector } from "react-redux";
 const FoodCheckout = () => {
   const { id } = useParams();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -47,11 +49,19 @@ const FoodCheckout = () => {
   const serviceChargeAmount = (discountTotal * serviceTax) / 100;
   const taxAmountAfter = (discountTotal * taxPercentage) / 100;
   // checkout information
-    const checkOutDiscount = (grandTotal *orderData?.data?.discount) / 100
-    const checkOutAmountAfterDiscount = grandTotal - checkOutDiscount;
-    const checkoutServiceCharge = (checkOutAmountAfterDiscount * orderData?.data?.service_charge) / 100;
-    const checkOutTax = (checkOutAmountAfterDiscount * orderData?.data?.tax) /100;
+  const checkOutDiscount = (grandTotal * orderData?.data?.discount) / 100;
+  const checkOutAmountAfterDiscount = grandTotal - checkOutDiscount;
+  const checkoutServiceCharge =
+    (checkOutAmountAfterDiscount * orderData?.data?.service_charge) / 100;
+  const checkOutTax =
+    (checkOutAmountAfterDiscount * orderData?.data?.tax) / 100;
 
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     onAfterPrint: () => {
@@ -400,9 +410,7 @@ const FoodCheckout = () => {
                       <td></td>
                       <td></td>
                       <td>GST/Tax</td>
-                      <td>
-                      {checkOutTax}
-                      </td>
+                      <td>{checkOutTax}</td>
                       <td></td>
                     </tr>
                   ) : (
@@ -447,6 +455,7 @@ const FoodCheckout = () => {
         <div style={{ display: "none" }}>
           <div className="p-4" ref={componentRef}>
             <FoodCheckoutPrint
+              hotelInfo={hotelInfo}
               orderData={orderData}
               finalTotal={finalTotal}
               discountAmount={discountAmount}

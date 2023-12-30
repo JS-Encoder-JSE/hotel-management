@@ -121,8 +121,8 @@ const CheckOut = () => {
       navigate("/dashboard/report");
     },
   });
- 
 
+  const invoiceNumber = Math.floor(Math.random() * 9000000000) + 1000000000;
   // add Checkout data collection
   const room_Ids = checkout?.data?.room_bookings[0].room_id?._id;
   const hotel_id = user?.assignedHotel[0];
@@ -513,6 +513,7 @@ const CheckOut = () => {
               />
             </div>
             <PaymentSection
+              invoiceNumber={invoiceNumber}
               data={checkout?.data?.booking_info}
               paymentList={paymentList}
               setPaymentList={setPaymentList}

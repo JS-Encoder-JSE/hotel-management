@@ -3,9 +3,18 @@ import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem";
 import logo from "../../assets/logo.png";
 import { getOnlyFormatDate, versionControl } from "../../utils/utils";
 
-const FoodCheckoutPrint = ({ orderData, finalTotal,discountAmount,
-  serviceChargeAmount,taxAmountAfter,checkOutTax,checkoutServiceCharge,checkOutDiscount }) => {
-    
+const FoodCheckoutPrint = ({
+  orderData,
+  finalTotal,
+  discountAmount,
+  serviceChargeAmount,
+  taxAmountAfter,
+  checkOutTax,
+  checkoutServiceCharge,
+  checkOutDiscount,
+  hotelInfo,
+}) => {
+  console.log({ hotelInfo });
 
   const grandTotal = orderData?.data?.items?.reduce(
     (accumulator, item) => accumulator + item.total,
@@ -27,30 +36,62 @@ const FoodCheckoutPrint = ({ orderData, finalTotal,discountAmount,
         <div>
           <div className={`text-center mb-6`}>
             <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
-            <h1 className="font-bold text-2xl">
-              {/* DAK Hospital LTD */}
-              </h1>
+            <h1 className="font-bold text-2xl">{/* DAK Hospital LTD */}</h1>
             <span>Customer Receipt</span> <br />
             <span>Issue Date: {getOnlyFormatDate()} </span>
           </div>
         </div>
       </div>
       <section>
-        <div>
-          <span className={`w-26`}>
-            {orderData?.data?.table_id ? "Table" : "Room"}
-          </span>
-          <span className="ml-14 mr-8">:</span>
-          <span>
-            {orderData?.data?.table_id
-              ? orderData?.data?.table_id?.table_number
-              : orderData?.data?.room_id?.roomNumber}
-          </span>
-          {/* {orderData?.data?.room_id && <span>{orderData?.data?.room_id}</span>} */}
-          <br />
-          <span className={`w-26`}>Invoice No</span>
-          <span className="ml-5 mr-8">:</span>
-          <span>{orderData?.data?.unique_id}</span>
+        <div className="grid grid-cols-2">
+          <div>
+            <div>
+              <span className={`w-3`}>Restaurant Name</span>
+              <span className="ml-5 mr-2">:</span>
+              <span>{hotelInfo[0]?.name}</span>
+            </div>
+            <div>
+              <span className={`w-3`}>Branch Name</span>
+              <span className="ml-12 mr-2">:</span>
+              <span>{hotelInfo[0]?.branch_name}</span>
+            </div>
+            <div>
+              <span className={`w-3`}>Phone Number</span>
+              <span className="ml-9 mr-2">:</span>
+              <span>{hotelInfo[0]?.phone_no}</span>
+            </div>
+            <div>
+              <span className={`w-3`}>Email</span>
+              <span className="ml-[105px] mr-2">:</span>
+              <span>{hotelInfo[0]?.email}</span>
+            </div>
+            <div className="grid grid-cols-2">
+              <div>
+                {" "}
+                <span className={`w-3`}>Address</span>
+                <span className="ml-[83px]">:</span>
+              </div>
+              <span className="-ml-9">
+                {hotelInfo[0]?.address} 
+              </span>
+            </div>
+          </div>
+          <div>
+            <span className={`w-26`}>
+              {orderData?.data?.table_id ? "Table" : "Room"}
+            </span>
+            <span className="ml-[108px] mr-8">:</span>
+            <span>
+              {orderData?.data?.table_id
+                ? orderData?.data?.table_id?.table_number
+                : orderData?.data?.room_id?.roomNumber}
+            </span>
+            {/* {orderData?.data?.room_id && <span>{orderData?.data?.room_id}</span>} */}
+            <br />
+            <span className={`w-26`}>Invoice No</span>
+            <span className="ml-[70px] mr-8">:</span>
+            <span>{orderData?.data?.unique_id}</span>
+          </div>
         </div>
         <div className="overflow-x-auto border mt-3 ">
           <table className="table">
@@ -78,7 +119,7 @@ const FoodCheckoutPrint = ({ orderData, finalTotal,discountAmount,
                 </tr>
               ))}
 
-              <tr className="border-none" >
+              <tr className="border-none">
                 <td></td>
                 <td></td>
                 <td></td>
@@ -92,8 +133,10 @@ const FoodCheckoutPrint = ({ orderData, finalTotal,discountAmount,
                 <td></td>
                 <td>Discount</td>
                 <td>
-                
-                  {orderData?.data?.order_status === "CheckedOut" ? checkOutDiscount : discountAmount}</td>
+                  {orderData?.data?.order_status === "CheckedOut"
+                    ? checkOutDiscount
+                    : discountAmount}
+                </td>
                 <td></td>
               </tr>
               <tr className="border-none">
@@ -101,7 +144,11 @@ const FoodCheckoutPrint = ({ orderData, finalTotal,discountAmount,
                 <td></td>
                 <td></td>
                 <td>Service Charge</td>
-                <td>{orderData?.data?.order_status === "CheckedOut" ? checkoutServiceCharge:  serviceChargeAmount}</td>
+                <td>
+                  {orderData?.data?.order_status === "CheckedOut"
+                    ? checkoutServiceCharge
+                    : serviceChargeAmount}
+                </td>
                 <td></td>
               </tr>
               <tr className="border-none">
@@ -109,28 +156,32 @@ const FoodCheckoutPrint = ({ orderData, finalTotal,discountAmount,
                 <td></td>
                 <td></td>
                 <td>GST/Tax </td>
-                <td>{orderData?.data?.order_status === "CheckedOut" ? checkOutTax: taxAmountAfter}</td>
+                <td>
+                  {orderData?.data?.order_status === "CheckedOut"
+                    ? checkOutTax
+                    : taxAmountAfter}
+                </td>
                 <td></td>
               </tr>
               {orderData?.data?.order_status === "CheckedOut" ? (
-                    <tr className="border-none">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>Grand Total</td>
-                      <td>{orderData?.data?.grand_total}</td>
-                      <td></td>
-                    </tr>
-                  ) : (
-                    <tr className="border-none">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>Grand Total</td>
-                      <td>{finalTotal}</td>
-                      <td></td>
-                    </tr>
-                  )}
+                <tr className="border-none">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>Grand Total</td>
+                  <td>{orderData?.data?.grand_total}</td>
+                  <td></td>
+                </tr>
+              ) : (
+                <tr className="border-none">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>Grand Total</td>
+                  <td>{finalTotal}</td>
+                  <td></td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
