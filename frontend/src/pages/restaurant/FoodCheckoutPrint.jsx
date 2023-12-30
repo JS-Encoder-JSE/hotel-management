@@ -14,7 +14,6 @@ const FoodCheckoutPrint = ({
   checkOutDiscount,
   hotelInfo,
 }) => {
-  console.log({ hotelInfo });
 
   const grandTotal = orderData?.data?.items?.reduce(
     (accumulator, item) => accumulator + item.total,

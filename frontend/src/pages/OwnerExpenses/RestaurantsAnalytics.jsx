@@ -39,18 +39,6 @@ const RestaurantsAnalytics = () => {
   const handleReset = () => {
     setselectedHotel(null);
   };
-
-  if (isLoading || isError) {
-    return (
-      <Rings
-        width="50"
-        height="50"
-        color="#37a000"
-        wrapperClass="justify-center"
-      />
-    );
-  }
-
   const location = useLocation();
 
   // console.log(location.pathname)
@@ -62,15 +50,20 @@ const RestaurantsAnalytics = () => {
   } else {
     pageTitle = "Restaurant Analytics";
   }
-
-
-// pathname update and reset
-// useEffect(()=>{
-
-// handleReset()
-// },[location.pathname === "/dashboard/hotel-analytics"])
-
-
+  // pathname update and reset
+  useEffect(() => {
+    handleReset();
+  }, [location.pathname]);
+  if (isLoading || isError) {
+    return (
+      <Rings
+        width="50"
+        height="50"
+        color="#37a000"
+        wrapperClass="justify-center"
+      />
+    );
+  }
 
   return (
     <>
