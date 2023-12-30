@@ -43,10 +43,15 @@ const BookingLists = ({ bookingList, setCurrentPage, forcePage }) => {
     refetch,
   } = useGetLastActiveBookingQuery(bookingId, { skip: bookingId === "" });
   const handleDelete = (id) => {
-    setBookingId(id);
-    if (id === bookingId) {
-      cancelBookingFunction();
-    }
+    setBookingId((previousID) => {
+      if (previousID === id) {
+        refetch();
+        cancelBookingFunction();
+        return previousID;
+      } else {
+        return id;
+      }
+    });
   };
   const cancelBookingFunction = () => {
     if (isLastBooking && isSuccess) {
