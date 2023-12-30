@@ -81,7 +81,7 @@ const ShowAllSell = () => {
     error: restaurantSaleEx,
     isLoading: dataLoading,
   } = useGetOrdersByDateQuery({
-    date: new Date().toLocaleDateString(),
+    date: convertedStartDate(),
     order_status: "CheckedOut",
     hotel_id: user?.assignedHotel[0],
   });
