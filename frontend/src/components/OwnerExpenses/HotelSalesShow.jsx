@@ -36,7 +36,7 @@ import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
 import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 import ReportPrint from "../../pages/report/ReportPrint";
-import { convertedEndDate, convertedFromDate, getIndianFormattedDate } from "../../utils/timeZone";
+import { convertedEndDate, convertedFromDate, convertedStartDate, getIndianFormattedDate } from "../../utils/timeZone";
 // import { getformatDateTime } from "./../../utils/timeZone";
 
 const HotelSalesShow = ({ managerId, hotelId }) => {
@@ -101,7 +101,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
 
   const { data: hotelTodaySales } = useGetReportsByDateQuery({
     cp: currentPage,
-    date: new Date().toLocaleDateString(),
+    date: convertedStartDate(),
     hotelId: hotelId,
   });
 
@@ -208,7 +208,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                     <tbody>
                       {hotelTodaySales &&
                         hotelTodaySales?.data?.docs?.map((item, idx) => {
-                          console.log();
+                          // console.log();
                           return (
                             <tr
                               className={

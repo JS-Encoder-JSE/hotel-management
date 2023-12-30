@@ -32,6 +32,7 @@ import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import HotelSalesTodayReport from "../report/HotelSalesTodayReport";
 import ReportPrint from "../report/ReportPrint";
 import { useSelector } from "react-redux";
+import { convertedStartDate } from "../../utils/timeZone";
 
 const HotelSalesView = () => {
   const [pageCount, setPageCount] = useState(0);
@@ -61,7 +62,7 @@ const HotelSalesView = () => {
     isLoading: orderItemSuccess,
   } = useGetReportsByDateQuery({
     cp: currentPage,
-    date:new Date(dateParam).toLocaleDateString(),
+    date:convertedStartDate(dateParam),
     //  getConvertedIsoStartDate(dateParam),
     hotelId: hotelId,
   });

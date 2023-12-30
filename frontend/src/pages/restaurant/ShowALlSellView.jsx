@@ -15,6 +15,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RestaurantSalesHistory from "../report/RestaurantSalesHistory";
 import { getConvertedIsoStartDate, getOnlyFormatDate } from "../../utils/utils";
+import { convertedStartDate } from "../../utils/timeZone";
 
 const ShowALlSellView = () => {
   const [searchParams] = useSearchParams();
@@ -30,7 +31,7 @@ const ShowALlSellView = () => {
     error: orderError,
     isLoading: orderItemSuccess,
   } = useGetOrdersByDateQuery({
-    date: new Date(dateParam).toLocaleDateString(),
+    date: convertedStartDate(dateParam),
     // getConvertedIsoStartDate(dateParam)
     order_status: "CheckedOut",
     hotel_id: hotelId ? hotelId : user?.assignedHotel[0],
