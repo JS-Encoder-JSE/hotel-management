@@ -260,7 +260,7 @@ const OrderList = () => {
                                 ? `Table: ${order?.table_id?.table_number}`
                                 : ""}
                             </td>
-                            <td>{order?.grand_total}</td>
+                            <td>{Math.round(order?.grand_total)}</td>
                             <td className={`flex gap-1.5`}>
                               <span
                                 onClick={() =>

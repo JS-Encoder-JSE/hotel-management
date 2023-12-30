@@ -126,7 +126,9 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
 
   const totalPage =
     restaurantSalesToday?.data &&
-    Math.ceil(todaySales.length / itemsPerPage);
+    Math.ceil(todaySales?.length / itemsPerPage);
+  
+
 
   const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 

@@ -65,10 +65,10 @@ const RestaurantsAnalytics = () => {
 
 
 // pathname update and reset
-useEffect(()=>{
+// useEffect(()=>{
 
-handleReset()
-},[location.pathname === "/dashboard/hotel-analytics"])
+// handleReset()
+// },[location.pathname === "/dashboard/hotel-analytics"])
 
 
 

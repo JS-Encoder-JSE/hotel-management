@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { getDiscountAmount } from "../../utils/utils.js";
+import { tr } from "date-fns/locale";
 const FoodCheckout = () => {
   const { id } = useParams();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -32,21 +33,24 @@ const FoodCheckout = () => {
     (accumulator, item) => accumulator + item.total,
     0
   );
-  const grand_total = orderData?.data?.grand_total;
+  // const grand_total = orderData?.data?.grand_total;
 
-const discountTotal = grandTotal-(grandTotal * discount)/100;
-console.log("discountTotal",discountTotal);
- 
+  const discountTotal = grandTotal - (grandTotal * discount) / 100;
+
   const taxAmount = (discountTotal * taxPercentage) / 100;
-  console.log("taxAmount",taxAmount);
+
   const serviceChargeTax = (discountTotal * serviceTax) / 100;
-  console.log("serviceChargeTax",serviceChargeTax);
 
-  const finalTotal = discountTotal + taxAmount + serviceChargeTax;
-  console.log("finalTotal",finalTotal);
- 
+  const finalTotal = Math.round(discountTotal + taxAmount + serviceChargeTax);
 
-
+  const discountAmount = (grandTotal * discount) / 100;
+  const serviceChargeAmount = (discountTotal * serviceTax) / 100;
+  const taxAmountAfter = (discountTotal * taxPercentage) / 100;
+  // checkout information
+    const checkOutDiscount = (grandTotal *orderData?.data?.discount) / 100
+    const checkOutAmountAfterDiscount = grandTotal - checkOutDiscount;
+    const checkoutServiceCharge = (checkOutAmountAfterDiscount * orderData?.data?.service_charge) / 100;
+    const checkOutTax = (checkOutAmountAfterDiscount * orderData?.data?.tax) /100;
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -69,7 +73,6 @@ console.log("discountTotal",discountTotal);
       };
     });
   };
-
   const handleUpdateFood = async () => {
     const totalReduceAmount = reduceData.reduce((acc, current) => {
       return acc + current.total;
@@ -78,12 +81,12 @@ console.log("discountTotal",discountTotal);
     const checkoutForTable = {
       updateData: {
         paid_amount: 0,
-        unpaid_amount: finalTotal,
-        total_price: finalTotal,
+        unpaid_amount: grandTotal,
+        total_price: grandTotal,
         items: orderData.data.items,
         current_order: true,
         payment_status: "Pending",
-        grand_total: finalTotal,
+        grand_total: grandTotal,
       },
       // reduced_amount: totalReduceAmount,
     };
@@ -121,6 +124,8 @@ console.log("discountTotal",discountTotal);
         payment_status: "Paid",
         grand_total: finalTotal,
         tax: taxPercentage,
+        service_charge: serviceTax,
+        discount: discount,
       },
     };
     const updateForRoom = {
@@ -159,7 +164,7 @@ console.log("discountTotal",discountTotal);
       setCheckoutLoading(false);
       setReduceData([]);
       // handlePrint();
-      if (orderData?.data?.dedicated_to === "table" ) {
+      if (orderData?.data?.dedicated_to === "table") {
         handlePrint();
       }
     }
@@ -167,6 +172,7 @@ console.log("discountTotal",discountTotal);
   useEffect(() => {
     setOrderData(data);
   }, [data]);
+  console.log("orderData", orderData);
 
   // for printing
   const componentRef = useRef();
@@ -220,6 +226,7 @@ console.log("discountTotal",discountTotal);
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
+
                     {orderData?.data?.order_status === "CheckedOut" ? null : (
                       <th>Action</th>
                     )}
@@ -231,6 +238,7 @@ console.log("discountTotal",discountTotal);
                       index={i}
                       handleDeleteItems={handleDeleteItems}
                       item={item}
+                      orderData={orderData}
                       key={i}
                       showDelete={
                         orderData?.data?.order_status === "CheckedOut"
@@ -243,7 +251,32 @@ console.log("discountTotal",discountTotal);
                 <tfoot>
                   {orderData?.data?.dedicated_to !== "room" &&
                   orderData?.data?.order_status !== "CheckedOut" ? (
-                    <tr>                   
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Total</td>
+                      <td>
+                        <td> {orderData?.data?.total_price}</td>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+                  {/* <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Total </td> 
+                       <td>
+                     {orderData?.data.total_price}
+                      </td> 
+                      <td></td>
+                    </tr>                 */}
+                  {orderData?.data?.dedicated_to !== "room" &&
+                  orderData?.data?.order_status !== "CheckedOut" ? (
+                    <tr>
                       <td></td>
                       <td></td>
                       <td></td>
@@ -253,7 +286,7 @@ console.log("discountTotal",discountTotal);
                         <span>
                           <input
                             className=" border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
-                            placeholder="Discount (%)"
+                            placeholder="Discount"
                             type="number"
                             name="addDiscount"
                             id=""
@@ -270,7 +303,7 @@ console.log("discountTotal",discountTotal);
                   )}
                   {orderData?.data?.dedicated_to !== "room" &&
                   orderData?.data?.order_status !== "CheckedOut" ? (
-                    <tr>                   
+                    <tr>
                       <td></td>
                       <td></td>
                       <td></td>
@@ -295,7 +328,6 @@ console.log("discountTotal",discountTotal);
                   ) : (
                     ""
                   )}
-
                   {orderData?.data?.dedicated_to !== "room" &&
                   orderData?.data?.order_status !== "CheckedOut" ? (
                     <tr>
@@ -323,14 +355,78 @@ console.log("discountTotal",discountTotal);
                   ) : (
                     ""
                   )}
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Grand Total</td>
-                    <td>{finalTotal}</td>
-                    <td></td>
-                  </tr>
+
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Total</td>
+                      <td>{grandTotal}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Discount</td>
+                      <td>{checkOutDiscount}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Services Charge</td>
+                      <td>{checkoutServiceCharge}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>GST/Tax</td>
+                      <td>
+                      {checkOutTax}
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Grand Total</td>
+                      <td>{orderData?.data?.grand_total}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Grand Total</td>
+                      <td>{finalTotal}</td>
+                      <td></td>
+                    </tr>
+                  )}
                 </tfoot>
               </table>
             </div>
@@ -350,7 +446,16 @@ console.log("discountTotal",discountTotal);
       <div className={`flex gap-4 justify-end mt-4`}>
         <div style={{ display: "none" }}>
           <div className="p-4" ref={componentRef}>
-            <FoodCheckoutPrint orderData={orderData} finalTotal={finalTotal} />
+            <FoodCheckoutPrint
+              orderData={orderData}
+              finalTotal={finalTotal}
+              discountAmount={discountAmount}
+              serviceChargeAmount={serviceChargeAmount}
+              taxAmountAfter={taxAmountAfter}
+              checkOutTax={checkOutTax}
+              checkoutServiceCharge={checkoutServiceCharge}
+              checkOutDiscount={checkOutDiscount}
+            />
           </div>
         </div>
         <ReactToPrint
@@ -365,7 +470,8 @@ console.log("discountTotal",discountTotal);
           content={() => componentRef.current}
         />
 
-        {orderData?.data?.dedicated_to !== "room" && orderData?.data?.order_status !== "CheckedOut" ? (
+        {orderData?.data?.dedicated_to !== "room" &&
+        orderData?.data?.order_status !== "CheckedOut" ? (
           <div>
             <button
               onClick={handleUpdateFood}

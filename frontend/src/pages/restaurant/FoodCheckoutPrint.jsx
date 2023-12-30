@@ -3,7 +3,9 @@ import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem";
 import logo from "../../assets/logo.png";
 import { getOnlyFormatDate, versionControl } from "../../utils/utils";
 
-const FoodCheckoutPrint = ({ orderData, finalTotal }) => {
+const FoodCheckoutPrint = ({ orderData, finalTotal,discountAmount,
+  serviceChargeAmount,taxAmountAfter,checkOutTax,checkoutServiceCharge,checkOutDiscount }) => {
+    
 
   const grandTotal = orderData?.data?.items?.reduce(
     (accumulator, item) => accumulator + item.total,
@@ -76,13 +78,59 @@ const FoodCheckoutPrint = ({ orderData, finalTotal }) => {
                 </tr>
               ))}
 
-              <tr>
+              <tr className="border-none" >
                 <td></td>
                 <td></td>
-                <td>Grand Total</td>
-                <td>{finalTotal}</td>
+                <td></td>
+                <td>Total</td>
+                <td>{orderData?.data?.total_price}</td>
                 <td></td>
               </tr>
+              <tr className="border-none">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Discount</td>
+                <td>
+                
+                  {orderData?.data?.order_status === "CheckedOut" ? checkOutDiscount : discountAmount}</td>
+                <td></td>
+              </tr>
+              <tr className="border-none">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Service Charge</td>
+                <td>{orderData?.data?.order_status === "CheckedOut" ? checkoutServiceCharge:  serviceChargeAmount}</td>
+                <td></td>
+              </tr>
+              <tr className="border-none">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>GST/Tax </td>
+                <td>{orderData?.data?.order_status === "CheckedOut" ? checkOutTax: taxAmountAfter}</td>
+                <td></td>
+              </tr>
+              {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr className="border-none">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Grand Total</td>
+                      <td>{orderData?.data?.grand_total}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    <tr className="border-none">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Grand Total</td>
+                      <td>{finalTotal}</td>
+                      <td></td>
+                    </tr>
+                  )}
             </tbody>
           </table>
         </div>
