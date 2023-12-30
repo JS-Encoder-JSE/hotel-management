@@ -10,6 +10,7 @@ import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem.j
 import toast from "react-hot-toast";
 import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { getDiscountAmount } from "../../utils/utils.js";
 const FoodCheckout = () => {
   const { id } = useParams();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -22,6 +23,7 @@ const FoodCheckout = () => {
 
   const [taxPercentage, setTaxPercentage] = useState(0);
   const [serviceTax, setServiceCharge] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   const location = useLocation();
   const path = location.pathname;
@@ -32,10 +34,19 @@ const FoodCheckout = () => {
   );
   const grand_total = orderData?.data?.grand_total;
 
-  const taxAmount = (grandTotal * taxPercentage) / 100;
-  const serviceChargeTax = (grandTotal * serviceTax) / 100;
+const discountTotal = grandTotal-(grandTotal * discount)/100;
+console.log("discountTotal",discountTotal);
+ 
+  const taxAmount = (discountTotal * taxPercentage) / 100;
+  console.log("taxAmount",taxAmount);
+  const serviceChargeTax = (discountTotal * serviceTax) / 100;
+  console.log("serviceChargeTax",serviceChargeTax);
 
-  const finalTotal = grandTotal + taxAmount + serviceChargeTax;
+  const finalTotal = discountTotal + taxAmount + serviceChargeTax;
+  console.log("finalTotal",finalTotal);
+ 
+
+
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -232,7 +243,34 @@ const FoodCheckout = () => {
                 <tfoot>
                   {orderData?.data?.dedicated_to !== "room" &&
                   orderData?.data?.order_status !== "CheckedOut" ? (
-                    <tr>
+                    <tr>                   
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Discount (%)</td>
+                      <td>
+                        {" "}
+                        <span>
+                          <input
+                            className=" border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
+                            placeholder="Discount (%)"
+                            type="number"
+                            name="addDiscount"
+                            id=""
+                            onChange={(e) =>
+                              setDiscount(Number(e.target.value))
+                            }
+                          />
+                        </span>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+                  {orderData?.data?.dedicated_to !== "room" &&
+                  orderData?.data?.order_status !== "CheckedOut" ? (
+                    <tr>                   
                       <td></td>
                       <td></td>
                       <td></td>
