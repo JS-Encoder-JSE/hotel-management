@@ -38,7 +38,7 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
     "Room Numbers",
     "Payment Method",
     "Paid Amount",
-    "Deducted from Ballance",
+    "Deducted from Balance",
     "Refund Amount",
   ];
 

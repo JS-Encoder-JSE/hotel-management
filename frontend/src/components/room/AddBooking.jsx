@@ -40,7 +40,7 @@ const validationSchema = yup.object({
   }),
   amount: yup.number(),
   trxID: yup.string().when(["paymentMethod"], (paymentMethod, schema) => {
-    console.log(paymentMethod);
+    // console.log(paymentMethod);
     if (
       paymentMethod.includes("Card") ||
       paymentMethod.includes("Mobile_Banking")

@@ -6,7 +6,7 @@ import {
   FaRupeeSign,
   FaTrash,
 } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
@@ -18,7 +18,7 @@ import { FaPrint } from "react-icons/fa6";
 import AddBooking from "../room/AddBooking";
 import Modal from "../Modal";
 import RemoveExpenses from "./RemoveExpenses";
-import { getOnlyFormatDate } from "../../utils/utils";
+import { getOnlyFormatDate, isValidUrl } from "../../utils/utils";
 
 const ShowAllExpenseView = () => {
   const componentRef = useRef();
@@ -94,6 +94,9 @@ const ShowAllExpenseView = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const location = useLocation();
+  const { pathname } = location;
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between `}>
@@ -133,9 +136,8 @@ const ShowAllExpenseView = () => {
           Expenses Information
         </h1> */}
         <h1 className="text-center text-2xl bg-green-slimy w-[17rem] mx-auto text-white p-1 rounded-md mt-7">
-  Expenses Information
-</h1>
-
+          Expenses Information
+        </h1>
       </div>
       <div className="overflow-x-auto">
         <table className="table">
@@ -148,7 +150,13 @@ const ShowAllExpenseView = () => {
               <th>Description</th>
               <th>Price</th>
               <th>Remark</th>
-              <th>Action</th>
+              {/* <th>Action</th> */}
+              {isValidUrl("dashboard/show-all-expense", pathname) ||
+                      isValidUrl("dashboard/all-hotel-expense", pathname) ? (
+                <th>Action</th>
+              ) : (
+                ""
+              )}
             </tr>
           </thead>
           <tbody>
@@ -157,9 +165,10 @@ const ShowAllExpenseView = () => {
                 return (
                   <tr className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}>
                     <th>{idx + 1}</th>
-                    <td>{getOnlyFormatDate(itemExpense?.date)}
+                    <td>
+                      {getOnlyFormatDate(itemExpense?.date)}
                       {/* {new Date(itemExpense?.date).toLocaleDateString()} */}
-                      </td>
+                    </td>
                     <td>{item?.name}</td>
                     <td>{item?.quantity}</td>
                     <td>{item?.description}</td>
@@ -168,7 +177,7 @@ const ShowAllExpenseView = () => {
                       <span>{item?.price}</span>
                     </td>
                     <td>{item?.remark ? item?.remark : ""}</td>
-                    <td className="flex gap-2">
+                    {/* <td className="flex gap-2">
                       <button
                         className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
                         onClick={() => {
@@ -190,7 +199,37 @@ const ShowAllExpenseView = () => {
                       >
                         <FaTrash />
                       </button>
-                    </td>
+                    </td> */}
+                    <span>
+                      {isValidUrl("dashboard/show-all-expense", pathname) ||
+                      isValidUrl("dashboard/all-hotel-expense", pathname) ? (
+                        <td className="flex gap-2">
+                          <button
+                            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
+                            onClick={() => {
+                              setEditItemData(item);
+                              window.eb_modal.showModal();
+                              setIndex(idx);
+                            }}
+                          >
+                            <FaRegEdit />
+                          </button>
+                          <button
+                            className="btn btn-sm hover:bg-red-600 bg-transparent hover:text-white text-red-600 !border-red-600 normal-case rounded"
+                            title={`Cancel`}
+                            onClick={() => {
+                              setEditItemData(item);
+                              window.remove_expenses.showModal();
+                              setIndex(idx);
+                            }}
+                          >
+                            <FaTrash />
+                          </button>
+                        </td>
+                      ) : (
+                        ""
+                      )}
+                    </span>
                   </tr>
                 );
               })}

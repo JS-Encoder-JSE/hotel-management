@@ -7,6 +7,7 @@ const SingleCheckoutItem = ({
   handleDeleteItems,
   index,
 }) => {
+  
   return (
     <tr>
       <td>{item?.item}</td>

@@ -200,7 +200,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                         <th>Room Numbers</th>
                         <th>Payment Method</th>
                         <th className="text-end">Paid Amount</th>
-                        <th className="text-end">Deducted from Ballance</th>
+                        <th className="text-end">Deducted from Balance</th>
                         <th className="text-end">Refund Amount</th>
                         <th>Action</th>
                       </tr>

@@ -10,6 +10,8 @@ import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem.j
 import toast from "react-hot-toast";
 import FoodCheckoutPrint from "./FoodCheckoutPrint.jsx";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { getDiscountAmount } from "../../utils/utils.js";
+import { tr } from "date-fns/locale";
 const FoodCheckout = () => {
   const { id } = useParams();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -22,6 +24,7 @@ const FoodCheckout = () => {
 
   const [taxPercentage, setTaxPercentage] = useState(0);
   const [serviceTax, setServiceCharge] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   const location = useLocation();
   const path = location.pathname;
@@ -30,12 +33,24 @@ const FoodCheckout = () => {
     (accumulator, item) => accumulator + item.total,
     0
   );
-  const grand_total = orderData?.data?.grand_total;
+  // const grand_total = orderData?.data?.grand_total;
 
-  const taxAmount = (grandTotal * taxPercentage) / 100;
-  const serviceChargeTax = (grandTotal * serviceTax) / 100;
+  const discountTotal = grandTotal - (grandTotal * discount) / 100;
 
-  const finalTotal = grandTotal + taxAmount + serviceChargeTax;
+  const taxAmount = (discountTotal * taxPercentage) / 100;
+
+  const serviceChargeTax = (discountTotal * serviceTax) / 100;
+
+  const finalTotal = Math.round(discountTotal + taxAmount + serviceChargeTax);
+
+  const discountAmount = (grandTotal * discount) / 100;
+  const serviceChargeAmount = (discountTotal * serviceTax) / 100;
+  const taxAmountAfter = (discountTotal * taxPercentage) / 100;
+  // checkout information
+    const checkOutDiscount = (grandTotal *orderData?.data?.discount) / 100
+    const checkOutAmountAfterDiscount = grandTotal - checkOutDiscount;
+    const checkoutServiceCharge = (checkOutAmountAfterDiscount * orderData?.data?.service_charge) / 100;
+    const checkOutTax = (checkOutAmountAfterDiscount * orderData?.data?.tax) /100;
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -58,7 +73,6 @@ const FoodCheckout = () => {
       };
     });
   };
-
   const handleUpdateFood = async () => {
     const totalReduceAmount = reduceData.reduce((acc, current) => {
       return acc + current.total;
@@ -67,12 +81,12 @@ const FoodCheckout = () => {
     const checkoutForTable = {
       updateData: {
         paid_amount: 0,
-        unpaid_amount: finalTotal,
-        total_price: finalTotal,
+        unpaid_amount: grandTotal,
+        total_price: grandTotal,
         items: orderData.data.items,
         current_order: true,
         payment_status: "Pending",
-        grand_total: finalTotal,
+        grand_total: grandTotal,
       },
       // reduced_amount: totalReduceAmount,
     };
@@ -110,6 +124,8 @@ const FoodCheckout = () => {
         payment_status: "Paid",
         grand_total: finalTotal,
         tax: taxPercentage,
+        service_charge: serviceTax,
+        discount: discount,
       },
     };
     const updateForRoom = {
@@ -148,7 +164,7 @@ const FoodCheckout = () => {
       setCheckoutLoading(false);
       setReduceData([]);
       // handlePrint();
-      if (orderData?.data?.dedicated_to === "table" ) {
+      if (orderData?.data?.dedicated_to === "table") {
         handlePrint();
       }
     }
@@ -156,6 +172,7 @@ const FoodCheckout = () => {
   useEffect(() => {
     setOrderData(data);
   }, [data]);
+  console.log("orderData", orderData);
 
   // for printing
   const componentRef = useRef();
@@ -209,6 +226,7 @@ const FoodCheckout = () => {
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
+
                     {orderData?.data?.order_status === "CheckedOut" ? null : (
                       <th>Action</th>
                     )}
@@ -220,6 +238,7 @@ const FoodCheckout = () => {
                       index={i}
                       handleDeleteItems={handleDeleteItems}
                       item={item}
+                      orderData={orderData}
                       key={i}
                       showDelete={
                         orderData?.data?.order_status === "CheckedOut"
@@ -230,6 +249,58 @@ const FoodCheckout = () => {
                   ))}
                 </tbody>
                 <tfoot>
+                  {orderData?.data?.dedicated_to !== "room" &&
+                  orderData?.data?.order_status !== "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Total</td>
+                      <td>
+                        <td> {orderData?.data?.total_price}</td>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+                  {/* <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Total </td> 
+                       <td>
+                     {orderData?.data.total_price}
+                      </td> 
+                      <td></td>
+                    </tr>                 */}
+                  {orderData?.data?.dedicated_to !== "room" &&
+                  orderData?.data?.order_status !== "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Discount (%)</td>
+                      <td>
+                        {" "}
+                        <span>
+                          <input
+                            className=" border border-gray-500/80 p-2 lg:-ml-20 md:text-center"
+                            placeholder="Discount"
+                            type="number"
+                            name="addDiscount"
+                            id=""
+                            onChange={(e) =>
+                              setDiscount(Number(e.target.value))
+                            }
+                          />
+                        </span>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
                   {orderData?.data?.dedicated_to !== "room" &&
                   orderData?.data?.order_status !== "CheckedOut" ? (
                     <tr>
@@ -257,7 +328,6 @@ const FoodCheckout = () => {
                   ) : (
                     ""
                   )}
-
                   {orderData?.data?.dedicated_to !== "room" &&
                   orderData?.data?.order_status !== "CheckedOut" ? (
                     <tr>
@@ -285,14 +355,78 @@ const FoodCheckout = () => {
                   ) : (
                     ""
                   )}
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Grand Total</td>
-                    <td>{finalTotal}</td>
-                    <td></td>
-                  </tr>
+
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Total</td>
+                      <td>{grandTotal}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Discount</td>
+                      <td>{checkOutDiscount}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Services Charge</td>
+                      <td>{checkoutServiceCharge}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>GST/Tax</td>
+                      <td>
+                      {checkOutTax}
+                      </td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
+                  {orderData?.data?.order_status === "CheckedOut" ? (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Grand Total</td>
+                      <td>{orderData?.data?.grand_total}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>Grand Total</td>
+                      <td>{finalTotal}</td>
+                      <td></td>
+                    </tr>
+                  )}
                 </tfoot>
               </table>
             </div>
@@ -312,7 +446,16 @@ const FoodCheckout = () => {
       <div className={`flex gap-4 justify-end mt-4`}>
         <div style={{ display: "none" }}>
           <div className="p-4" ref={componentRef}>
-            <FoodCheckoutPrint orderData={orderData} finalTotal={finalTotal} />
+            <FoodCheckoutPrint
+              orderData={orderData}
+              finalTotal={finalTotal}
+              discountAmount={discountAmount}
+              serviceChargeAmount={serviceChargeAmount}
+              taxAmountAfter={taxAmountAfter}
+              checkOutTax={checkOutTax}
+              checkoutServiceCharge={checkoutServiceCharge}
+              checkOutDiscount={checkOutDiscount}
+            />
           </div>
         </div>
         <ReactToPrint
@@ -327,7 +470,8 @@ const FoodCheckout = () => {
           content={() => componentRef.current}
         />
 
-        {orderData?.data?.dedicated_to !== "room" && orderData?.data?.order_status !== "CheckedOut" ? (
+        {orderData?.data?.dedicated_to !== "room" &&
+        orderData?.data?.order_status !== "CheckedOut" ? (
           <div>
             <button
               onClick={handleUpdateFood}
