@@ -43,6 +43,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
   const [search, setSearch] = useState("");
   const [forcePage, setForcePage] = useState(null);
   const [PDF, setPdf] = useState([]);
+  const [todaySales,setTodaySales] = useState([]);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -108,10 +109,12 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
       setPageCount(restaurantSalesHistory?.data?.totalPages);
   }, [restaurantSalesHistory]);
 
-  const arrayOfObjects = restaurantSalesToday?.data || [];
+// console.log("restaurantSalesToday",restaurantSalesToday)
 
-  // Use flatMap to extract the items arrays into one array
-  const allItemsArray = arrayOfObjects.flatMap((obj) => obj.items || []);
+  // const arrayOfObjects = restaurantSalesToday?.data || [];
+
+  // // Use flatMap to extract the items arrays into one array
+  // const allItemsArray = arrayOfObjects.flatMap((obj) => obj.items || []);
 
   // pagination setup for today's expenses
   const itemsPerPage = 10;
@@ -123,20 +126,20 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
 
   const totalPage =
     restaurantSalesToday?.data &&
-    Math.ceil(allItemsArray.length / itemsPerPage);
+    Math.ceil(todaySales.length / itemsPerPage);
 
   const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentItems = allItemsArray?.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = todaySales?.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleScrollToTop = () => {
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const totalPrice = allItemsArray?.reduce(
+  const totalPrice = todaySales?.reduce(
     (total, item) => total + item.price,
     0
   );
@@ -144,7 +147,33 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
   useEffect(() => {
     setPdf(currentItems);
   }, [currentItems]);
+  
+  useEffect(() => {
+    const todayItems = restaurantSalesToday?.data?.reduce(
+      (accumulator, items) => {
+        // Concatenate the items array of each bill to the accumulator array
+        return accumulator.concat(
+          items.items.map((item) => ({
+            ...item,
+            ...(items.room_id
+              ? { roomNumber: items.room_id.roomNumber }
+              : items.table_id
+              ? { tableNumber: items.table_id.table_number }
+              : {}), // Add createdAt property to each item
+          }))
+        );
+      },
+      []
+    );
+    // console.log("allItemsWithCreatedAt",allItemsWithCreatedAt)
 
+    setTodaySales(todayItems);
+ 
+  }, [restaurantSalesToday]);
+
+
+
+  // console.log("currentItems",currentItems)
   return (
     <div className={`space-y-5`}>
       <div className={`bg-white p-4 rounded-xl`}>
@@ -189,6 +218,9 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                       <tr>
                         <th>SL</th>
                         <th>Item</th>
+                        <th>
+                      Room / Table <br /> Number
+                    </th>
                         <th>Surveyor Quantity</th>
                         <th>Quantity</th>
                         <th>Price</th>
@@ -205,6 +237,11 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                             >
                               <th>{++idx}</th>
                               <td>{item?.item}</td>
+                              <td>
+                            {item?.roomNumber
+                              ? `Room : ${item.roomNumber}`
+                              : ` Table : ${item?.tableNumber}`}
+                          </td>
                               <td>{item?.serveyor_quantity}</td>
                               <td>{item?.quantity}</td>
                               <td>{item?.price}</td>
