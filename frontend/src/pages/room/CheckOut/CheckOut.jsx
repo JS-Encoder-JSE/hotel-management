@@ -69,6 +69,7 @@ const CheckOut = () => {
   const [pBill, setPBill] = useState(0);
   const [addCheckOutLoading, setCheckOutLoading] = useState(false);
   const [saveCheckoutDataObj, setSaveCheckoutDataOj] = useState({});
+  const [invoiceNumber, setInvoiceNumber] = useState("");
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const {
@@ -122,7 +123,6 @@ const CheckOut = () => {
     },
   });
 
-  const invoiceNumber = Math.floor(Math.random() * 9000000000) + 1000000000;
   // add Checkout data collection
   const room_Ids = checkout?.data?.room_bookings[0].room_id?._id;
   const hotel_id = user?.assignedHotel[0];
@@ -220,6 +220,8 @@ const CheckOut = () => {
         setCheckOutLoading(false);
         return;
       } else {
+        const invoice = Math.floor(Math.random() * 9000000000) + 1000000000;
+        setInvoiceNumber(`${invoice}`);
         const saveCheckoutInfoObj = {
           room_id: room_Ids,
           hotel_id: hotel_id,
@@ -307,7 +309,10 @@ const CheckOut = () => {
           ) {
             window.refundPayment.showModal();
           } else {
-            const response = addCheckoutData(saveCheckoutInfoObj);
+            const response = addCheckoutData({
+              ...saveCheckoutInfoObj,
+              invoice_no: `${invoice}`,
+            });
             if (response?.error) {
               toast.error(response.error.data.message);
             } else {
@@ -533,7 +538,10 @@ const CheckOut = () => {
                 totalRefund={totalRefund}
                 data={checkout?.data?.booking_info}
                 handlePrintOpen={handlePrint}
-                saveCheckoutDataObj={saveCheckoutDataObj}
+                saveCheckoutDataObj={{
+                  ...saveCheckoutDataObj,
+                  invoice_no: invoiceNumber,
+                }}
                 setCheckOutLoading={setCheckOutLoading}
               />
             </Modal>
