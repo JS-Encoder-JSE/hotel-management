@@ -18,6 +18,8 @@ import { Link } from "react-router-dom";
 const ManageInventory = () => {
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(0);
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -25,12 +27,14 @@ const ManageInventory = () => {
       chooseHotel: "",
     },
     onSubmit: (values) => {
+      setCurrentPage(0)
       setKeyword(values.search);
+      
     },
   });
   const { data: ItemsData } = useGetItemsQuery();
   const { order } = useSelector((store) => store.inventorySlice);
-  console.log(order)
+  console.log(order);
 
   const pressEnter = (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
@@ -40,27 +44,29 @@ const ManageInventory = () => {
 
   return (
     <div className={`space-y-10 bg-white p-5  rounded-2xl `}>
-            <div className="mb-7">
-              <Link to={`/dashboard `}>
-                <button
-                  type="button"
-                  className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
-                >
-                    <dfn>
-                      <abbr title="Back"><FaArrowLeft /></abbr>
-                    </dfn>
-                 
-                  <span className="tracking-wider font-semibold text-[1rem]"></span>
-                </button>
-              </Link>
-            </div>
-            <div  className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}>
+      <div className="mb-7">
+        <Link to={`/dashboard `}>
+          <button
+            type="button"
+            className="text-white bg-green-slimy  font-medium rounded-lg text-sm p-2.5 text-center inline-flex me-2 gap-1 "
+          >
+            <dfn>
+              <abbr title="Back">
+                <FaArrowLeft />
+              </abbr>
+            </dfn>
+
+            <span className="tracking-wider font-semibold text-[1rem]"></span>
+          </button>
+        </Link>
+      </div>
+      <div
+        className={`bg-green-slimy text-2xl text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 text-center`}
+      >
         <h1>Manage Items</h1>
       </div>
 
-      <div
-        className={`flex flex-col md:flex-row sm:justify-between gap-3`}
-      >
+      <div className={`flex flex-col md:flex-row sm:justify-between gap-3`}>
         <div className={`flex space-x-1.5 gap-2  `}>
           <div className="flex flex-col gap-2">
             <select
@@ -127,6 +133,8 @@ const ManageInventory = () => {
         </div>
       </div>
       <InventoryLists
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
         filter={formik.values.filter}
         keyword={keyword}
         chooseHotel={formik.values.chooseHotel}

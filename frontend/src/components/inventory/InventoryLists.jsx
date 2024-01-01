@@ -32,11 +32,10 @@ const lists = {
   ],
 };
 
-const InventoryLists = ({ filter, keyword, chooseHotel }) => {
+const InventoryLists = ({ currentPage, setCurrentPage, filter, keyword, chooseHotel }) => {
   const { order } = useSelector((store) => store.inventorySlice);
   const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(0);
   const [foodsPerPage] = useState(10);
   const { isLoading, data: lists } = useInventoryQuery({
     id: chooseHotel,
