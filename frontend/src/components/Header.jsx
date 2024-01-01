@@ -27,22 +27,45 @@ const Header = ({
 
     return () => clearInterval(clearTime);
   }, []);
- 
 
+  const getLatestDate = (allDate) => {
+    return allDate?.reduce((latestDate, entry) => {
+      const toDate = new Date(entry.to);
+      const latestToDateObj = new Date(latestDate);
 
+      // Compare the current entry's "to" date with the latest known "to" date
+      if (toDate > latestToDateObj) {
+        return entry.to;
+      } else {
+        return latestDate;
+      }
+    }, allDate[0]?.to);
+  };
+  const latestToDate = getLatestDate(user?.extended_time);
+  const latestManagerToDate = getLatestDate(dateData?.extended_time);
   // Use Array.reduce to find the latest "to" date
-  const latestToDate = user?.extended_time.reduce((latestDate, entry) => {
-    const toDate = new Date(entry.to);
-    const latestToDateObj = new Date(latestDate);
+  // const latestToDate = user?.extended_time.reduce((latestDate, entry) => {
+  //   const toDate = new Date(entry.to);
+  //   const latestToDateObj = new Date(latestDate);
 
-    // Compare the current entry's "to" date with the latest known "to" date
-    if (toDate > latestToDateObj) {
-      return entry.to;
-    } else {
-      return latestDate;
-    }
-  }, user?.extended_time[0]?.to); // Initialize with the first "to" date
+  //   // Compare the current entry's "to" date with the latest known "to" date
+  //   if (toDate > latestToDateObj) {
+  //     return entry.to;
+  //   } else {
+  //     return latestDate;
+  //   }
+  // }, user?.extended_time[0]?.to); // Initialize with the first "to" date
+  // const latestManagerToDate = dateData?.extended_time.reduce((latestDate, entry) => {
+  //   const toDate = new Date(entry.to);
+  //   const latestToDateObj = new Date(latestDate);
 
+  //   // Compare the current entry's "to" date with the latest known "to" date
+  //   if (toDate > latestToDateObj) {
+  //     return entry.to;
+  //   } else {
+  //     return latestDate;
+  //   }
+  // }, dateData?.extended_time[0]?.to); // Initialize with the first "to" date
 
   return (
     <div>
@@ -71,22 +94,28 @@ const Header = ({
               <span>
                 <GrLicense />
               </span>
-              <span className={`-mt-0.5`}>
+              <span className={`-mt-0.5 `}>
                 Your license will expire in{" "}
-                {Math.floor(
-                  Math.abs(
-                    new Date(latestToDate ? latestToDate : user?.bill_to) -
-                      new Date()
-                  ) /
-                    (24 * 60 * 60 * 1000)
-                )}{" "}
+                <span >
+                  {Math.floor(
+                    Math.abs(
+                      new Date(latestToDate ? latestToDate : user?.bill_to) -
+                        new Date()
+                    ) /
+                      (24 * 60 * 60 * 1000)
+                  )}{" "}
+                </span>
                 days
               </span>
             </h3>
           ) : null}
 
           {Math.floor(
-            Math.abs(new Date(dateData?.endsIn) - new Date()) /
+            Math.abs(
+              new Date(
+                latestManagerToDate ? latestManagerToDate : dateData?.endsIn
+              ) - new Date()
+            ) /
               (24 * 60 * 60 * 1000)
           ) <= 30 && user?.role === "manager" ? (
             <h3
@@ -99,7 +128,13 @@ const Header = ({
                 Your license will expire in
                 {/* {extendedTime(user?.bill_to)} */}
                 {Math.floor(
-                  Math.abs(new Date(dateData?.endsIn) - new Date()) /
+                  Math.abs(
+                    new Date(
+                      latestManagerToDate
+                        ? latestManagerToDate
+                        : dateData?.endsIn
+                    ) - new Date()
+                  ) /
                     (24 * 60 * 60 * 1000)
                 )}{" "}
                 days
