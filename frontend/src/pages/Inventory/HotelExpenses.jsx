@@ -76,6 +76,8 @@ const HotelExpenses = () => {
         toDate: p ? convertedEndDate(values.endDate) : "",
         fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
+      setCurrentPage(0);
+      setForcePage(0);
     },
     onReset: (values) => {
       setCurrentPage(0);
