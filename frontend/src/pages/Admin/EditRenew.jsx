@@ -6,6 +6,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { validationSchema } from "../../components/Yup/EditRenewVal.jsx";
 import { useRenewLicenseMutation } from "../../redux/admin/sls/slsAPI.js";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone.js";
 
 const EditRenew = () => {
   const { id: user_id } = useParams();
@@ -37,8 +38,8 @@ const EditRenew = () => {
 
       const response = await renewLicense({
         user_id,
-        bill_from,
-        bill_to,
+        bill_from:convertedStartDate(bill_from),
+        bill_to : convertedEndDate(bill_to),
         payment_method,
         tran_id,
         amount,
@@ -64,7 +65,7 @@ const EditRenew = () => {
           <FaArrowLeft />
         </span>
       </div>
-      <h1 className="text-2xl text-center capitalize">License Renew</h1>
+      <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7">License Renew</h1>
       <hr />
       <form autoComplete="off"
         className="form-control max-w-3xl mx-auto"

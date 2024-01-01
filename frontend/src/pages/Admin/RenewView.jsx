@@ -5,6 +5,7 @@ import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { useGetUserQuery } from "../../redux/admin/subadmin/subadminAPI.js";
 import { Rings } from "react-loader-spinner";
+import { getOnlyFormatDate } from "../../utils/utils.js";
 
 const RenewView = () => {
   const { id } = useParams();
@@ -44,24 +45,28 @@ const RenewView = () => {
           </span>
         </div>
         {!isLoading ? (
-          <div className="card-body grid md:grid-cols-2 gap-4">
-            <div className="">
+          <div className="card-body grid grid-cols-1 md:grid-cols-2 gap-4  overflow-x-auto">
+            <div className="mb-4 md:mb-0">
               <h2 className="card-title mb-3">Client Information </h2>
               <h6>Username : {data?.username}</h6>
               <h6>Name : {data?.name}</h6>
               <h6>Address : {data?.address}</h6>
               <h6>Contact Number : {data?.phone_no}</h6>
               <h6>Emergency Contact: {data?.emergency_contact}</h6>
-              <h6>Email : {data?.email}</h6>
+             <span></span>
+             <h6>Email : {data?.email}</h6>
             </div>
-            <div className="">
+            <div >
               <h2 className="card-title mb-3">License Information </h2>
-              <h6> License Key : {new Date(bill_to).toLocaleDateString()}</h6>
+              <h6> License Key : {data?.license_key}
+                {/* {new Date(bill_to).toLocaleDateString()} */}
+                </h6>
               <h6>
-                {" "}
-                Purchase Date :{new Date(
+              
+                Purchase Date : {getOnlyFormatDate(data?.createdAt)}
+                {/* {new Date(
                   data?.createdAt,
-                ).toLocaleDateString()}{" "}
+                ).toLocaleDateString()}{" "} */}
               </h6>
               <h6>
                 {" "}
@@ -69,7 +74,7 @@ const RenewView = () => {
                   data?.renew_date,
                 ).toLocaleDateString()}{" "}
               </h6>
-              <h6> Expire Date : {new Date(bill_to).toLocaleDateString()}</h6>
+              <h6> Expire Date :  {getOnlyFormatDate(data?.bill_to)}</h6>
               <h6>
                 {" "}
                 Remaining Days: {calculateRemainingDays(bill_to)}

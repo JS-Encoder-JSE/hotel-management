@@ -4,6 +4,8 @@ import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
 import * as yup from "yup";
 import { useUpdateLicenseStatusMutation } from "../../redux/admin/sls/slsAPI.js";
+import { useNavigate } from "react-router-dom";
+
 
 // form validation
 const validationSchema = yup.object({
@@ -25,6 +27,7 @@ const validationSchema = yup.object({
 const ExpiredSettings = ({ owner }) => {
   const closeRef = useRef(null);
   const [updateLicenseStatus, { isLoading }] = useUpdateLicenseStatusMutation();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       status: "",
@@ -59,6 +62,9 @@ const ExpiredSettings = ({ owner }) => {
     },
   });
 
+  // const handleRedirect = () => {
+  //   navigate("/dashboard/suspend-list");
+  // };
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -143,6 +149,12 @@ const ExpiredSettings = ({ owner }) => {
           <button
             type={"submit"}
             className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
+            // onClick={handleRedirect}
+            onClick={() =>
+              navigate(
+                `/dashboard/suspend-list`
+              )
+            }
           >
             <span>Confirm</span>
             {isLoading ? (

@@ -38,7 +38,7 @@ const Report = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  console.log(currentPage);
+  // console.log(currentPage);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",

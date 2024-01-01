@@ -95,8 +95,8 @@ const SuspendList = () => {
             value={formik.values.search}
             onChange={formik.handleChange}
             onKeyUp={(e) => {
-              e.target.value === "" &&  setForcePage(0)
-              e.target.value === "" && setCurrentPage(0)
+              e.target.value === "" && setForcePage(0);
+              e.target.value === "" && setCurrentPage(0);
               e.target.value === "" ? formik.handleSubmit() : null;
             }}
             onKeyDown={(e) => pressEnter(e)}
@@ -178,7 +178,7 @@ const SuspendList = () => {
                                 <FaEye />
                               </span>
                               <span
-                                className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
+                                className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
                                 onClick={() =>
                                   navigate(
                                     `/dashboard/edit-renew/${owner?._id}`
