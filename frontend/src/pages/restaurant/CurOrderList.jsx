@@ -26,7 +26,11 @@ import Swal from "sweetalert2";
 import { Rings } from "react-loader-spinner";
 import { MdCancel } from "react-icons/md";
 import DatePicker from "react-datepicker";
-import { getFormateDateAndTime, getOnlyFormatDate, getformatDateTime } from "../../utils/utils.js";
+import {
+  getFormateDateAndTime,
+  getOnlyFormatDate,
+  getformatDateTime,
+} from "../../utils/utils.js";
 // import { getformatDateTime } from "../../utils/timeZone.js";
 // import StatusSettings from "./StatusSettings.jsx";
 
@@ -63,7 +67,7 @@ const CurOrderList = () => {
     pp: ordersPerPage,
     table_number: searchTable,
   });
-
+  console.log({ orders });
   const modifiedData = orders?.data?.docs?.map((order) => ({
     ...order,
     grand_total: order.items.reduce((total, item) => total + item.total, 0),
@@ -249,7 +253,7 @@ const CurOrderList = () => {
                     previousLabel="<"
                     nextLabel=">"
                     breakLabel="..."
-                    pageCount={pageCount}
+                    pageCount={orders?.data?.totalPages}
                     pageRangeDisplayed={2}
                     marginPagesDisplayed={2}
                     onPageChange={handlePageClick}
