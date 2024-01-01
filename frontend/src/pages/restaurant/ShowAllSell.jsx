@@ -67,6 +67,8 @@ const ShowAllSell = () => {
         toDate: p ? convertedEndDate(values.endDate) : "",
         fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
+      setCurrentPage(0);
+      setForcePage(0);
     },
     onReset: (values) => {
       setCurrentPage(0);
@@ -467,11 +469,6 @@ const ShowAllSell = () => {
                           >
                             <FaEye />
                           </span>
-                          {/* <span
-                          className={`btn btn-sm bg-red-500 hover:bg-transparent text-white hover:text-red-500 !border-red-500 rounded normal-case`}
-                        >
-                          <AiTwotoneDelete />
-                        </span> */}
                         </td>
                       </tr>
                     );

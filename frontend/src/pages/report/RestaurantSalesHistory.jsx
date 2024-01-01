@@ -142,8 +142,10 @@ const RestaurantSalesHistory = ({ values, header, date }) => {
                       : key === "date"
                       ? date
                         ? getOnlyFormatDate(date)
-                        // new Date(date).toLocaleDateString()
-                        : new Date(item[key]).toLocaleDateString() // Use the date prop here
+                        : // new Date(date).toLocaleDateString()
+                          new Date(item[key]).toLocaleDateString() // Use the date prop here
+                      : key === "price"
+                      ? item["price"] * item["quantity"]
                       : item[key]}
                   </Text>
                 ))}
