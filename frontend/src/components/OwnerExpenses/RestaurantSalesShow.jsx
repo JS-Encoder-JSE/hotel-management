@@ -43,7 +43,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
   const [search, setSearch] = useState("");
   const [forcePage, setForcePage] = useState(null);
   const [PDF, setPdf] = useState([]);
-  const [todaySales,setTodaySales] = useState([]);
+  const [todaySales, setTodaySales] = useState([]);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -109,7 +109,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
       setPageCount(restaurantSalesHistory?.data?.totalPages);
   }, [restaurantSalesHistory]);
 
-// console.log("restaurantSalesToday",restaurantSalesToday)
+  // console.log("restaurantSalesToday",restaurantSalesToday)
 
   // const arrayOfObjects = restaurantSalesToday?.data || [];
 
@@ -125,10 +125,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
   };
 
   const totalPage =
-    restaurantSalesToday?.data &&
-    Math.ceil(todaySales?.length / itemsPerPage);
-  
-
+    restaurantSalesToday?.data && Math.ceil(todaySales?.length / itemsPerPage);
 
   const indexOfLastItem = (currentPageItem + 1) * itemsPerPage;
 
@@ -141,15 +138,12 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const totalPrice = todaySales?.reduce(
-    (total, item) => total + item.price,
-    0
-  );
+  const totalPrice = todaySales?.reduce((total, item) => total + item.price, 0);
 
   useEffect(() => {
     setPdf(currentItems);
   }, [currentItems]);
-  
+
   useEffect(() => {
     const todayItems = restaurantSalesToday?.data?.reduce(
       (accumulator, items) => {
@@ -170,10 +164,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     // console.log("allItemsWithCreatedAt",allItemsWithCreatedAt)
 
     setTodaySales(todayItems);
- 
   }, [restaurantSalesToday]);
-
-
 
   // console.log("currentItems",currentItems)
   return (
@@ -221,8 +212,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                         <th>SL</th>
                         <th>Item</th>
                         <th>
-                      Room / Table <br /> Number
-                    </th>
+                          Room / Table <br /> Number
+                        </th>
                         <th>Surveyor Quantity</th>
                         <th>Quantity</th>
                         <th>Price</th>
@@ -240,13 +231,13 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                               <th>{++idx}</th>
                               <td>{item?.item}</td>
                               <td>
-                            {item?.roomNumber
-                              ? `Room : ${item.roomNumber}`
-                              : ` Table : ${item?.tableNumber}`}
-                          </td>
+                                {item?.roomNumber
+                                  ? `Room : ${item.roomNumber}`
+                                  : ` Table : ${item?.tableNumber}`}
+                              </td>
                               <td>{item?.serveyor_quantity}</td>
                               <td>{item?.quantity}</td>
-                              <td>{item?.price}</td>
+                              <td>{Math.ceil(item?.price * item?.quantity)}</td>
                             </tr>
                           );
                         })}
@@ -311,7 +302,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
             </h3>
           </div>
           <div className="flex justify-end">
-          {/* hotelSalesHistory?.data?.docs?.length ? */}
+            {/* hotelSalesHistory?.data?.docs?.length ? */}
             {restaurantSalesHistory?.data?.docs?.length ? (
               <PDFDownloadLink
                 document={
