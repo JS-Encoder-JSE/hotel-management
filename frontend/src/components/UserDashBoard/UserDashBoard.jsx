@@ -63,7 +63,11 @@ const UserDashBoard = ({ managerId }) => {
           // className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5 `}
           className="grid md:grid-cols-4 gap-4 mt-4"
         >
-          <div className="relative bg-white p-3  text-right rounded shadow hover:shadow-md duration-200  mb-4">
+          <div
+            className={`relative bg-white p-3  text-right rounded shadow hover:shadow-md duration-200  mb-4 ${
+              userHotel ? "" : "pb-14 "
+            }`}
+          >
             <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
               {userHotel ? <FaCalendarDay /> : <FaDollyFlatbed />}
             </div>
@@ -123,7 +127,7 @@ const UserDashBoard = ({ managerId }) => {
                 </p>
               </div>
             ) : (
-              ""
+              <div></div>
             )}
           </div>
           {user?.role === "manager" || user?.role === "owner" ? (
