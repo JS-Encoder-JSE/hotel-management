@@ -1,13 +1,7 @@
 import * as yup from "yup";
 
 export const validationSchema = yup.object({
-  name: yup
-    .string()
-    .required("Client name is required")
-    .matches(
-      /^[a-zA-Z][a-zA-Z0-9\s]*$/,
-      "Client name must start with a character and can include characters and numbers"
-    ),
+  name: yup.string().required("Client name is required"),
   username: yup
     .string()
     .required("Client username is required")
