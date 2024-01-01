@@ -28,7 +28,7 @@ const FoodCheckoutPrint = ({
   const day = String(currentDate.getDate()).padStart(2, "0");
 
   const formattedDate = `${year}-${month}-${day}`;
-
+console.log("hotelInfo",hotelInfo)
   return (
     <div>
       <div>
@@ -47,22 +47,22 @@ const FoodCheckoutPrint = ({
             <div>
               <span className={`w-3`}>Restaurant Name</span>
               <span className="ml-5 mr-2">:</span>
-              <span>{hotelInfo[0]?.name}</span>
+              <span>{ hotelInfo ? hotelInfo[0]?.name :""}</span>
             </div>
             <div>
               <span className={`w-3`}>Branch Name</span>
               <span className="ml-12 mr-2">:</span>
-              <span>{hotelInfo[0]?.branch_name}</span>
+              <span>{hotelInfo ? hotelInfo[0]?.branch_name : ""}</span>
             </div>
             <div>
               <span className={`w-3`}>Phone Number</span>
               <span className="ml-9 mr-2">:</span>
-              <span>{hotelInfo[0]?.phone_no}</span>
+              <span>{ hotelInfo? hotelInfo[0]?.phone_no :""}</span>
             </div>
             <div>
               <span className={`w-3`}>Email</span>
               <span className="ml-[105px] mr-2">:</span>
-              <span>{hotelInfo[0]?.email}</span>
+              <span>{hotelInfo? hotelInfo[0]?.email :  ""}</span>
             </div>
             <div className="grid grid-cols-2">
               <div>
@@ -71,7 +71,7 @@ const FoodCheckoutPrint = ({
                 <span className="ml-[83px]">:</span>
               </div>
               <span className="-ml-9">
-                {hotelInfo[0]?.address} 
+                {hotelInfo? hotelInfo[0]?.address : ""} 
               </span>
             </div>
           </div>
