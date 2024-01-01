@@ -18,18 +18,34 @@ const Header = ({
   isHbMenu,
   setHbMenu,
 }) => {
-  const { user, } = useSelector((store) => store.authSlice);
+  const { user } = useSelector((store) => store.authSlice);
   const dispatch = useDispatch();
   const [time, setTime] = useState(new Date());
-  const { data: dateData,date:isLoading } = useGetLicenseDateQuery();
+  const { data: dateData, date: isLoading } = useGetLicenseDateQuery();
   useEffect(() => {
     const clearTime = setInterval(() => setTime(new Date()), 1000);
 
     return () => clearInterval(clearTime);
   }, []);
-  
+ 
+
+
+  // Use Array.reduce to find the latest "to" date
+  const latestToDate = user?.extended_time.reduce((latestDate, entry) => {
+    const toDate = new Date(entry.to);
+    const latestToDateObj = new Date(latestDate);
+
+    // Compare the current entry's "to" date with the latest known "to" date
+    if (toDate > latestToDateObj) {
+      return entry.to;
+    } else {
+      return latestDate;
+    }
+  }, user?.extended_time[0]?.to); // Initialize with the first "to" date
+
+
   return (
-    <div >
+    <div>
       <div className="navbar bg-white justify-between">
         <div>
           <div>
@@ -45,49 +61,45 @@ const Header = ({
           </div>
           {Math.floor(
             Math.abs(
-              new Date(dateData?.endsIn) - new Date()
-          
+              new Date(latestToDate ? latestToDate : user?.bill_to) - new Date()
             ) /
               (24 * 60 * 60 * 1000)
-          ) <= 30 &&
-
-          (user?.role === "owner") ? (
+          ) <= 30 && user?.role === "owner" ? (
             <h3
               className={`flex gap-1.5 text-xl font-bold animate-pulse text-yellow-500 ml-6`}
             >
               <span>
                 <GrLicense />
               </span>
-             <span className={`-mt-0.5`}>
+              <span className={`-mt-0.5`}>
                 Your license will expire in{" "}
                 {Math.floor(
-                 Math.abs(new Date(user?.bill_to) - new Date()) /
+                  Math.abs(
+                    new Date(latestToDate ? latestToDate : user?.bill_to) -
+                      new Date()
+                  ) /
                     (24 * 60 * 60 * 1000)
                 )}{" "}
                 days
               </span>
             </h3>
           ) : null}
-          
-          {Math.floor(
-            Math.abs(
-              new Date(dateData?.endsIn) - new Date()
-          
-            ) /
-              (24 * 60 * 60 * 1000)
-          ) <= 30 &&
 
-          (user?.role === "manager") ? (
+          {Math.floor(
+            Math.abs(new Date(dateData?.endsIn) - new Date()) /
+              (24 * 60 * 60 * 1000)
+          ) <= 30 && user?.role === "manager" ? (
             <h3
               className={`flex gap-1.5 text-xl font-bold animate-pulse text-yellow-500 ml-6`}
             >
               <span>
                 <GrLicense />
               </span>
-             <span className={`-mt-0.5`}>
-                Your license will expire in{" "}
+              <span className={`-mt-0.5`}>
+                Your license will expire in
+                {/* {extendedTime(user?.bill_to)} */}
                 {Math.floor(
-                 Math.abs(new Date(dateData?.endsIn) - new Date()) /
+                  Math.abs(new Date(dateData?.endsIn) - new Date()) /
                     (24 * 60 * 60 * 1000)
                 )}{" "}
                 days

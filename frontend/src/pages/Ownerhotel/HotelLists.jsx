@@ -115,6 +115,7 @@ const HotelLists = () => {
           </select>
         </div> */}
         <div className={`relative sm:min-w-[20rem]`}>
+        <input style={{ display: 'none' }} type="text" name="fakeUsernameremembered"/>
           <input
             type="text"
             placeholder="Search by name..."

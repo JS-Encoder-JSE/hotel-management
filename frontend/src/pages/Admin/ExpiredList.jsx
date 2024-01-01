@@ -28,27 +28,49 @@ const ExpiredList = () => {
   const [keyword, setKeyword] = useState(null);
   const [owner, setOwner] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [searchParams, setSearchParams] = useState({
+    search: "",
+  });
+
   const formik = useFormik({
     initialValues: {
       search: "",
     },
     onSubmit: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
       setKeyword(values.search);
+      setSearchParams((p) => ({
+        ...p,
+        toDate: p && values.endDate ? convertedEndDate(values.endDate) : "",
+        fromDate:
+          p && values.startDate ? convertedStartDate(values.startDate) : "",
+        search: values.search,
+      }));
+    },
+    onReset: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
+      setSearchParams(null);
     },
   });
+ 
 
   const { user } = store.getState().authSlice;
   const { isLoading, data: owners } =
     user.role === "admin"
       ? useGetOwnByAdminQuery({
+        ...searchParams,
           cp: currentPage,
           filter: "Expired",
           search: keyword,
         })
       : useGetUsersQuery({
+        ...searchParams,
           cp: currentPage,
           filter: "Expired",
-          search: keyword,
+          search: formik.values.keyword,
           role: "owner",
           parentId: user._id,
         });
@@ -100,15 +122,18 @@ const ExpiredList = () => {
 
       <div className={`flex justify-end flex-col sm:flex-row gap-5`}>
         <div className={`relative sm:min-w-[20rem]`}>
+        <input style={{ display: 'none' }} type="text" name="fakeUsernameremembered"/>
           <input
             type="text"
+            onWheel={(event) => event.currentTarget.blur()}
             placeholder="Search by name..."
             name="search"
+            autoComplete="off"
             className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.search}
             onChange={formik.handleChange}
             onKeyUp={(e) => {
-              e.target.value === "" &&  setForcePage(0)
+              e.target.value === "" &&  setForcePage(1)
               e.target.value === "" && setCurrentPage(0)
               e.target.value === "" ? formik.handleSubmit() : null;
             }}
