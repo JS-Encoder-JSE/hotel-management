@@ -122,10 +122,13 @@ const ExpiredList = () => {
 
       <div className={`flex justify-end flex-col sm:flex-row gap-5`}>
         <div className={`relative sm:min-w-[20rem]`}>
+        <input style={{ display: 'none' }} type="text" name="fakeUsernameremembered"/>
           <input
             type="text"
+            onWheel={(event) => event.currentTarget.blur()}
             placeholder="Search by name..."
             name="search"
+            autoComplete="off"
             className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
             value={formik.values.search}
             onChange={formik.handleChange}
