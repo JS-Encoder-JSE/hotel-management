@@ -72,6 +72,8 @@ const HotelExpensesShow = ({ hotelId }) => {
         toDate: p ? getConvertedIsoEndDate(values.endDate) : "",
         fromDate: p ? getConvertedIsoStartDate(values.startDate) : "",
       }));
+      setCurrentPage(0);
+      setForcePage(0);
     },
     onReset: (values) => {
       setCurrentPage(0);
@@ -228,7 +230,11 @@ const HotelExpensesShow = ({ hotelId }) => {
                                 }
                               >
                                 <th>{++idx}</th>
-                                <td> {getOnlyFormatDate(hotelExpenses?.docs[0]?.date)}
+                                <td>
+                                  {" "}
+                                  {getOnlyFormatDate(
+                                    hotelExpenses?.docs[0]?.date
+                                  )}
                                   {/* {new Date(
                                     hotelExpenses?.docs[0]?.date
                                   ).toLocaleDateString()} */}
@@ -333,7 +339,7 @@ const HotelExpensesShow = ({ hotelId }) => {
               </h3>
             </div>
             <div className="flex justify-end mr-5">
-              {filteredExpenses?.docs.length? (
+              {filteredExpenses?.docs.length ? (
                 <PDFDownloadLink
                   document={
                     <ExpensesHistoryReport
@@ -450,9 +456,11 @@ const HotelExpensesShow = ({ hotelId }) => {
                           }
                         >
                           <th>{++idx}</th>
-                          <td> {getOnlyFormatDate(item?.date)}
+                          <td>
+                            {" "}
+                            {getOnlyFormatDate(item?.date)}
                             {/* {new Date(item?.date).toLocaleDateString()} */}
-                            </td>
+                          </td>
                           <td>
                             <FaRupeeSign className="inline" />
                             <span>{item?.total_amount}</span>
@@ -481,24 +489,26 @@ const HotelExpensesShow = ({ hotelId }) => {
                 </table>
               </div>
               <div className="flex justify-center mt-10">
-                {filteredExpenses?.docs.length? <ReactPaginate
-                  containerClassName="join rounded-none"
-                  pageLinkClassName="join-item btn btn-md bg-transparent"
-                  activeLinkClassName="btn-active !bg-green-slimy text-white"
-                  disabledLinkClassName="btn-disabled"
-                  previousLinkClassName="join-item btn btn-md bg-transparent"
-                  nextLinkClassName="join-item btn btn-md bg-transparent"
-                  breakLinkClassName="join-item btn btn-md bg-transparent"
-                  previousLabel="<"
-                  nextLabel=">"
-                  breakLabel="..."
-                  pageCount={pageCount}
-                  pageRangeDisplayed={2}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  renderOnZeroPageCount={null}
-                  forcePage={forcePage}
-                />:null}
+                {filteredExpenses?.docs.length ? (
+                  <ReactPaginate
+                    containerClassName="join rounded-none"
+                    pageLinkClassName="join-item btn btn-md bg-transparent"
+                    activeLinkClassName="btn-active !bg-green-slimy text-white"
+                    disabledLinkClassName="btn-disabled"
+                    previousLinkClassName="join-item btn btn-md bg-transparent"
+                    nextLinkClassName="join-item btn btn-md bg-transparent"
+                    breakLinkClassName="join-item btn btn-md bg-transparent"
+                    previousLabel="<"
+                    nextLabel=">"
+                    breakLabel="..."
+                    pageCount={pageCount}
+                    pageRangeDisplayed={2}
+                    marginPagesDisplayed={2}
+                    onPageChange={handlePageClick}
+                    renderOnZeroPageCount={null}
+                    forcePage={forcePage}
+                  />
+                ) : null}
               </div>
             </div>
           ) : (
