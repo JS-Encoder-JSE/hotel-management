@@ -94,17 +94,32 @@ const OrderList = () => {
       confirmButtonColor: "#35bef0",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Deleted!",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          deleteOrder(id);
-        });
+        try {
+          const response = await deleteOrder(id);
+          if (!response.error) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Canceled!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        }
       }
     });
   };
