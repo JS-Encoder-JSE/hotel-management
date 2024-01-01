@@ -94,9 +94,9 @@ const Header = ({
               <span>
                 <GrLicense />
               </span>
-              <span className={`-mt-0.5 `}>
+              <span className={`-mt-0.5  `}>
                 Your license will expire in{" "}
-                <span >
+                <span className="m-2" >
                   {Math.floor(
                     Math.abs(
                       new Date(latestToDate ? latestToDate : user?.bill_to) -
@@ -124,10 +124,11 @@ const Header = ({
               <span>
                 <GrLicense />
               </span>
-              <span className={`-mt-0.5`}>
+              <span className={`-mt-0.5 `}>
                 Your license will expire in
                 {/* {extendedTime(user?.bill_to)} */}
-                {Math.floor(
+            <span className="m-2">
+            {Math.floor(
                   Math.abs(
                     new Date(
                       latestManagerToDate
@@ -137,6 +138,7 @@ const Header = ({
                   ) /
                     (24 * 60 * 60 * 1000)
                 )}{" "}
+            </span>
                 days
               </span>
             </h3>
