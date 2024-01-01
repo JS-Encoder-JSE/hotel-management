@@ -28,7 +28,6 @@ const FoodCheckoutPrint = ({
   const day = String(currentDate.getDate()).padStart(2, "0");
 
   const formattedDate = `${year}-${month}-${day}`;
-console.log("hotelInfo",hotelInfo)
   return (
     <div>
       <div>

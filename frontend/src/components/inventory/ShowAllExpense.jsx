@@ -82,6 +82,8 @@ const ShowAllExpense = () => {
         toDate: p ? convertedEndDate(values.endDate) : "",
         fromDate: p ? convertedStartDate(values.startDate) : "",
       }));
+      setCurrentPage(0);
+      setForcePage(0);
     },
     onReset: (values) => {
       setCurrentPage(0);
@@ -252,35 +254,7 @@ const ShowAllExpense = () => {
                                 </td>
                                 <td>{item?.remark ? item?.remark : ""}</td>
 
-                                {/* <td>
-                                  <button
-                                    className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case md:mb-2 mb-2 ms-2`}
-                                    onClick={() => {
-                                      setEditItemData(item);
-                                      setItemIndex(idx);
-                                      document
-                                        .getElementById("my_modal_3")
-                                        .showModal();
-                                    }}
-                                  >
-                                    <FaRegEdit />
-                                  </button>
-                                  <dialog id="my_modal_3" className="modal">
-                                    <div className="modal-box">
-                                      <form method="dialog">
-                                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                                          ✕
-                                        </button>
-                                      </form>
-
-                                      <EditExpenses
-                                        allItems={resExpenses?.docs[0]?.items}
-                                        index={itemIndex - 1}
-                                        data={editItemData}
-                                      />
-                                    </div>
-                                  </dialog>
-                                </td> */}
+                                
                               </tr>
                             );
                           })}
