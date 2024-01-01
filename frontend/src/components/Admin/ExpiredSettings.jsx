@@ -58,7 +58,13 @@ const ExpiredSettings = ({ owner }) => {
       } else {
         closeRef.current.click();
         toast.success(response.data.message);
+       
+          navigate(
+            `/dashboard/suspend-list`
+          )
+       
       }
+     
     },
   });
 
@@ -148,13 +154,7 @@ const ExpiredSettings = ({ owner }) => {
           </div>
           <button
             type={"submit"}
-            className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
-            // onClick={handleRedirect}
-            onClick={() =>
-              navigate(
-                `/dashboard/suspend-list`
-              )
-            }
+            className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"    
           >
             <span>Confirm</span>
             {isLoading ? (

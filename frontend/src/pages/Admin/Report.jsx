@@ -128,7 +128,7 @@ const Report = () => {
       const data = reports?.docs?.map((item) => ({
         Username: item.username,
         Phone: item.phone_no,
-        "Purchase Date": getIndianFormattedDate(new Date(item.bill_from)),
+        "Activation Date": getIndianFormattedDate(new Date(item.bill_from)),
         "Expire Date": getIndianFormattedDate(new Date(item.bill_to)),
 
         // new Date(item.bill_to).toLocaleDateString(),
@@ -371,7 +371,7 @@ const Report = () => {
                         <th>SL</th>
                         <th>User Name</th>
                         <th>Phone Number</th>
-                        <th>Purchase Date</th>
+                        <th>Activation Date</th>
                         <th>Expired Date</th>
                         <th>Deposit By</th>
                         <th>Hotel Limits</th>
