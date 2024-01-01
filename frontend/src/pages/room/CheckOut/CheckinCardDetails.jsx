@@ -8,14 +8,15 @@ import { TbCalendarDue } from "react-icons/tb";
 import { MdOutlineAccountBalance } from "react-icons/md";
 import { LuWallet } from "react-icons/lu";
 
-const CheckinCardDetails = ({data}) => {
-
-
+const CheckinCardDetails = ({ data }) => {
   let totalDueAmount;
 
-if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined) {
-  totalDueAmount = Math.max(data.total_payable_amount - data.paid_amount, 0);
-}
+  if (
+    data?.paid_amount !== undefined &&
+    data?.total_payable_amount !== undefined
+  ) {
+    totalDueAmount = Math.max(data.total_payable_amount - data.paid_amount, 0);
+  }
 
   return (
     <div>
@@ -25,11 +26,9 @@ if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined)
       >
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#06724c] p-2 rounded-md text-white">
-          <HiOutlineCurrencyRupee />
+            <HiOutlineCurrencyRupee />
           </div>
-          <h6 className="text-xs text-slate-400 ">
-            TOTAL PAID AMOUNT
-          </h6>
+          <h6 className="text-xs text-slate-400 ">TOTAL PAID AMOUNT</h6>
           <p className="text-2xl font-semibold mt-4">
             <div className="flex justify-end">
               <div>
@@ -44,7 +43,7 @@ if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined)
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#d32a26] to-[#d93935] p-3 rounded-md">
-          <LuWallet />
+            <LuWallet />
           </div>
           <div>
             <h6 className="text-xs text-slate-400">TOTAL BILL</h6>
@@ -63,7 +62,7 @@ if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined)
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#32cf8b] to-[#0d835a] p-3 rounded-md text-white">
-          <TbCalendarDue />
+            <TbCalendarDue />
           </div>
           <h6 className="text-xs text-slate-400 ">TOTAL DUE AMOUNT</h6>
           <p className="text-2xl font-semibold mt-4">
@@ -72,7 +71,11 @@ if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined)
                 <BiRupee />
               </div>
               <div>
-                <span>{data?.paid_amount<data?.total_payable_amount?  (data?.total_payable_amount - data?.paid_amount).toFixed(2) :0}</span>
+                <span>
+                  {data?.paid_amount < data?.total_payable_amount
+                    ? Math.ceil(data?.total_payable_amount - data?.paid_amount)
+                    : 0}
+                </span>
               </div>
             </div>
           </p>
@@ -80,7 +83,7 @@ if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined)
         </div>
         <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-4">
           <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#c6c624] to-[#4e7107] p-3 rounded-md text-white">
-          <MdOutlineAccountBalance />
+            <MdOutlineAccountBalance />
           </div>
           <h6 className="text-xs text-slate-400 ">AVAILABLE BALANCE</h6>
           <p className="text-2xl font-semibold mt-4">
@@ -89,7 +92,13 @@ if (data?.paid_amount !== undefined && data?.total_payable_amount !== undefined)
                 <BiRupee />
               </div>
               <div>
-              <span>{data?.paid_amount>data?.total_payable_amount? (data?.paid_amount - data?.total_payable_amount).toFixed(2):0}</span>
+                <span>
+                  {data?.paid_amount > data?.total_payable_amount
+                    ? (data?.paid_amount - data?.total_payable_amount).toFixed(
+                        2
+                      )
+                    : 0}
+                </span>
               </div>
             </div>
           </p>
