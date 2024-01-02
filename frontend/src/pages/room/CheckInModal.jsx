@@ -58,11 +58,13 @@ const validationSchema = yup.object({
   }),
   from: yup.string().required("From Date is required"),
   to: yup.string().required("To Date is required"),
-  amount: yup.number(),
+
   nationality: yup.string().required("Nationality is required"),
   documentsType: yup.string().required("Documents type is required"),
   doc_number: yup.string().required("Document number is required"),
-  documents: yup.string().required("Documents is required"),
+  documents: yup.array().test("fileCount", "Documents is required", (value) => {
+    return value && value.length > 0;
+  }),
 });
 
 const CheckInModal = ({ room }) => {
@@ -108,7 +110,7 @@ const CheckInModal = ({ room }) => {
       nationality: "",
       documentsType: "",
       doc_number: "",
-      documents: null,
+      documents: [],
     },
     validationSchema,
     onSubmit: async (values, formikHelpers) => {
@@ -154,13 +156,13 @@ const CheckInModal = ({ room }) => {
 
       const formData = new FormData();
 
-      for (let i = 0; i < obj.documents.length; i++) {
-        const photoName = obj.documents[i].name.substring(
+      for (let i = 0; i < selectedImages.length; i++) {
+        const photoName = selectedImages[i].name.substring(
           0,
-          obj.documents[i].name.lastIndexOf(".")
+          selectedImages[i].name.lastIndexOf(".")
         );
 
-        formData.append(photoName, obj.documents[i]);
+        formData.append(photoName, selectedImages[i]);
       }
 
       await upload(formData).then(
@@ -214,32 +216,17 @@ const CheckInModal = ({ room }) => {
   });
 
   const handleDelete = (idx) => {
-    const tempImgs = [
-      ...selectedImages.slice(0, idx),
-      ...selectedImages.slice(idx + 1),
-    ];
+    const updatedImages = [...selectedImages];
+    updatedImages.splice(idx, 1);
 
-    const dataTransfer = new DataTransfer();
-
-    for (const file of tempImgs) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(tempImgs);
+    formik.setFieldValue("documents", updatedImages);
+    setSelectedImages(updatedImages);
   };
 
   const handleChange = (idx, newFile) => {
     const updatedImages = [...selectedImages];
     updatedImages[idx] = newFile;
-
-    const dataTransfer = new DataTransfer();
-
-    for (const file of updatedImages) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
+    formik.setFieldValue("documents", updatedImages);
     setSelectedImages(updatedImages);
   };
 
@@ -249,28 +236,6 @@ const CheckInModal = ({ room }) => {
     }
   };
   const { data: hotel } = useGetHotelByIdQuery(room?.data?.hotel_id);
-
-  // useEffect(() => {
-  //   if (room?.data) {
-  //     formik.setValues({
-  //       room_arr: [
-  //         {
-  //           label: `${room.data.roomNumber} - ${room.data.category}`,
-  //           value: room.data._id,
-  //           price: room.data.price,
-  //         },
-  //       ],
-  //       hotel_id: room.data.hotel_id,
-  //     });
-  //   }
-  // }, [room?.data]);
-
-  useEffect(() => {
-    if (formik.values.documents) {
-      const selectedImagesArray = Array.from(formik.values.documents);
-      setSelectedImages(selectedImagesArray);
-    }
-  }, [formik.values.documents]);
 
   return (
     <>
@@ -347,24 +312,6 @@ const CheckInModal = ({ room }) => {
               </Swiper>
             </div>
           ) : null}
-          {/*<div className="flex flex-col gap-3">*/}
-          {/*  <select*/}
-          {/*    name="hotel_id"*/}
-          {/*    className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"*/}
-          {/*    value={formik.values.hotel_id}*/}
-          {/*    onChange={formik.handleChange}*/}
-          {/*    onBlur={formik.handleBlur}*/}
-          {/*  >*/}
-          {/*    <option value="" selected disabled>*/}
-          {/*      {hotel?.name}*/}
-          {/*    </option>*/}
-          {/*  </select>*/}
-          {/*  /!*{formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*!/*/}
-          {/*  /!*  <small className="text-red-600">*!/*/}
-          {/*  /!*    {formik.touched.hotel_id && formik.errors.hotel_id}*!/*/}
-          {/*  /!*  </small>*!/*/}
-          {/*  /!*) : null}*!/*/}
-          {/*</div>*/}
 
           <div className="grid md:grid-cols-2 grid-cols-1 gap-5 ">
             <div className="flex flex-col gap-3">
@@ -560,11 +507,6 @@ const CheckInModal = ({ room }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
-              {/*  <small className="text-red-600">*/}
-              {/*    {formik.touched.discount && formik.errors.discount}*/}
-              {/*  </small>*/}
-              {/*) : null}*/}
             </div>
 
             {/* Date */}
@@ -665,8 +607,8 @@ const CheckInModal = ({ room }) => {
                 <div className={`flex space-x-1.5`}>
                   <div className="flex flex-col gap-3 w-full">
                     <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                      {formik.values.documents ? (
-                        <span>{formik.values.documents.length + " files"}</span>
+                      {selectedImages.length ? (
+                        <span>{selectedImages.length + " files"}</span>
                       ) : (
                         <span className={`flex items-baseline space-x-1.5`}>
                           <FaUpload />
@@ -678,12 +620,19 @@ const CheckInModal = ({ room }) => {
                         multiple
                         name="documents"
                         className="absolute left-0 top-0  overflow-hidden h-0"
-                        onChange={(e) =>
-                          formik.setFieldValue(
-                            "documents",
+                        onChange={(e) => {
+                          const selectedImagesArray = Array.from(
                             e.currentTarget.files
-                          )
-                        }
+                          );
+                          formik.setFieldValue("documents", [
+                            ...formik.values.documents,
+                            ...selectedImagesArray,
+                          ]);
+                          setSelectedImages([
+                            ...selectedImages,
+                            ...selectedImagesArray,
+                          ]);
+                        }}
                         onBlur={formik.handleBlur}
                       />
                     </label>

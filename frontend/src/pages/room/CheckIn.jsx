@@ -49,7 +49,6 @@ const validationSchema = yup.object({
   discount: yup.number(),
   paymentMethod: yup.string().when(["amount"], (amount, schema) => {
     if (amount.length > 1 || (amount > 0 && amount !== undefined)) {
-
       return schema.required("Payment method is required");
     } else {
       return schema;
@@ -76,7 +75,9 @@ const validationSchema = yup.object({
     .required("Doc number is required")
     .positive("Doc number must be a positive number")
     .integer("Doc number must be an integer"),
-  documents: yup.string().required("Documents is required"),
+  documents: yup.array().test("fileCount", "Documents is required", (value) => {
+    return value && value.length > 0;
+  }),
 });
 
 const CheckIn = () => {
@@ -122,7 +123,7 @@ const CheckIn = () => {
       nationality: "",
       documentsType: "",
       doc_number: "",
-      documents: null,
+      documents: [],
     },
 
     validationSchema,
@@ -216,32 +217,17 @@ const CheckIn = () => {
   });
 
   const handleDelete = (idx) => {
-    const tempImgs = [
-      ...selectedImages.slice(0, idx),
-      ...selectedImages.slice(idx + 1),
-    ];
+    const updatedImages = [...selectedImages];
+    updatedImages.splice(idx, 1);
 
-    const dataTransfer = new DataTransfer();
-
-    for (const file of tempImgs) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(tempImgs);
+    formik.setFieldValue("documents", updatedImages);
+    setSelectedImages(updatedImages);
   };
 
   const handleChange = (idx, newFile) => {
     const updatedImages = [...selectedImages];
     updatedImages[idx] = newFile;
-
-    const dataTransfer = new DataTransfer();
-
-    for (const file of updatedImages) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
+    formik.setFieldValue("documents", updatedImages);
     setSelectedImages(updatedImages);
   };
 
@@ -570,7 +556,6 @@ const CheckIn = () => {
             <select
               name="paymentMethod"
               className="select select-md bg-transparent select-bordered border-gray-500/50 rounded w-full focus:outline-none"
-          
               value={formik.values.paymentMethod}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -725,8 +710,8 @@ const CheckIn = () => {
               <div className={`flex space-x-1.5`}>
                 <div className="flex flex-col gap-3 w-full">
                   <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                    {formik.values.documents ? (
-                      <span>{formik.values.documents.length + " files"}</span>
+                    {selectedImages.length ? (
+                      <span>{selectedImages.length + " files"}</span>
                     ) : (
                       <span className={`flex items-baseline space-x-1.5`}>
                         <FaUpload />
@@ -738,9 +723,19 @@ const CheckIn = () => {
                       multiple
                       name="documents"
                       className="absolute left-0 top-0  overflow-hidden h-0"
-                      onChange={(e) =>
-                        formik.setFieldValue("documents", e.currentTarget.files)
-                      }
+                      onChange={(e) => {
+                        const selectedImagesArray = Array.from(
+                          e.currentTarget.files
+                        );
+                        formik.setFieldValue("documents", [
+                          ...formik.values.documents,
+                          ...selectedImagesArray,
+                        ]);
+                        setSelectedImages([
+                          ...selectedImages,
+                          ...selectedImagesArray,
+                        ]);
+                      }}
                       onBlur={formik.handleBlur}
                     />
                   </label>
