@@ -88,7 +88,7 @@ const CheckIn = () => {
   const [upload, { isError }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [addBooking] = useAddBookingMutation();
-
+  const [selectorValue, setSelectorValue] = useState([]);
   const navigate = useNavigate();
 
   // handleAmount
@@ -370,42 +370,20 @@ const CheckIn = () => {
             </Swiper>
           </div>
         ) : null}
-        {/*<div className="flex flex-col gap-3">*/}
-        {/*  <select*/}
-        {/*    name="hotel_id"*/}
-        {/*    className="select select-md select-bordered bg-transparent rounded w-full border-gray-500/50 focus:outline-none"*/}
-        {/*    value={formik.values.hotel_id}*/}
-        {/*    onChange={formik.handleChange}*/}
-        {/*    onBlur={formik.handleBlur}*/}
-        {/*  >*/}
-        {/*    <option value="" selected disabled>*/}
-        {/*      Choose Hotel*/}
-        {/*    </option>*/}
-
-        {/*    {hotelsList?.map((i) => (*/}
-        {/*      <option key={i._id} value={i._id}>*/}
-        {/*        {i.name}*/}
-        {/*      </option>*/}
-        {/*    ))}*/}
-        {/*  </select>*/}
-        {/*  {formik.touched.hotel_id && Boolean(formik.errors.hotel_id) ? (*/}
-        {/*    <small className="text-red-600">*/}
-        {/*      {formik.touched.hotel_id && formik.errors.hotel_id}*/}
-        {/*    </small>*/}
-        {/*  ) : null}*/}
-        {/*</div>*/}
 
         <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
           <div className="flex flex-col gap-3">
             <Select
+              value={selectorValue}
               placeholder="Select Rooms"
-              defaultValue={formik.values.room_arr}
               options={transformedRooms}
               isMulti
               isSearchable
               closeMenuOnSelect={false}
-              // onKeyDown={handleKeyDown}
-              onChange={(e) => formik.setFieldValue("room_arr", e)}
+              onChange={(e) => {
+                setSelectorValue(e);
+                formik.setFieldValue("room_arr", e);
+              }}
               noOptionsMessage={() => "No room available"}
               classNames={{
                 control: (state) =>
