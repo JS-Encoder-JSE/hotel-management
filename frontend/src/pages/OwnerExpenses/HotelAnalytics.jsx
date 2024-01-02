@@ -11,6 +11,7 @@ import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpe
 import HotelExpensesShow from "../../components/OwnerExpenses/HotelExpensesShow.jsx";
 import HotelSalesShow from "../../components/OwnerExpenses/HotelSalesShow.jsx";
 import HotelAnalyticsShow from "../../components/OwnerExpenses/HotelAnalyticsShow.jsx";
+import { customFilterOption } from "../../utils/utils.js";
 
 const HotelSales = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -83,6 +84,7 @@ const HotelSales = () => {
               placeholder="Search with hotel branch name"
               defaultValue={selectedHotel}
               options={transformedHotel}
+              filterOption={customFilterOption}
               isMulti={false}
               isSearchable
               onKeyDown={handleKeyDown}

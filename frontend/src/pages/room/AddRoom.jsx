@@ -134,6 +134,7 @@ const AddRoom = () => {
     formik.setFieldValue("photos", updatedImages);
     setSelectedImages(updatedImages);
   };
+  
   return (
     <>
       <div className={`space-y-10`}>

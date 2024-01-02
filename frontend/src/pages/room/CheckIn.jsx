@@ -20,6 +20,7 @@ import { TbReplaceFilled } from "react-icons/tb";
 import { FaArrowLeft, FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
 import {
+  customFilterOption,
   fromDateIsoConverter,
   getFormateDateAndTime,
   getNumberOfDays,
@@ -204,6 +205,7 @@ const CheckIn = () => {
         } else {
           formikHelpers.resetForm();
           setSelectedImages([]);
+          setSelectorValue([]);
           toast.success(response.data.message);
           navigate("/dashboard/manage-checkin");
         }
@@ -377,6 +379,7 @@ const CheckIn = () => {
               value={selectorValue}
               placeholder="Select Rooms"
               options={transformedRooms}
+              filterOption={customFilterOption}
               isMulti
               isSearchable
               closeMenuOnSelect={false}

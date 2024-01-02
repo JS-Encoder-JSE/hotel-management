@@ -72,6 +72,12 @@ const OrderList = () => {
           p && values.startDate ? convertedStartDate(values.startDate) : "",
         unique_id: values.search,
       }));
+      
+    },
+    onReset: (values) => {
+      setCurrentPage(0);
+      setForcePage(0);
+      setSearchParams(null);
     },
   });
 
@@ -192,12 +198,13 @@ const OrderList = () => {
               onClick={() => {
                 formik.resetForm();
                 formik.handleSubmit();
-                setSearchParams(null);
+                // setSearchParams(null);
               }}
               className="btn btn-sm min-w-[2rem] bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case"
             >
               <GrPowerReset className="text-green-slimy" />
             </button>
+
             <button
               type={"button"}
               onClick={() => {

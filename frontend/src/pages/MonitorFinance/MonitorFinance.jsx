@@ -7,6 +7,7 @@ import { useHotelsQuery } from "../../redux/Owner/hotelsAPI.js";
 import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { customFilterOption } from "../../utils/utils.js";
 
 const MonitorFinance = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -80,6 +81,7 @@ const MonitorFinance = () => {
               defaultValue={selectedHotel}
               value={selectedHotel}
               options={transformedHotel}
+              filterOption={customFilterOption}
               isMulti={false}
               isSearchable
               onKeyDown={handleKeyDown}

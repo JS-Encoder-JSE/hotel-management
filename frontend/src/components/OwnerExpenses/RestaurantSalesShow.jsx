@@ -412,7 +412,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                   <tr>
                     <th>SL</th>
                     <th>Date</th>
-                    <th>Amount</th>
+                    <th>Amount With Tax</th>
                     <th>Action</th>
                   </tr>
                 </thead>

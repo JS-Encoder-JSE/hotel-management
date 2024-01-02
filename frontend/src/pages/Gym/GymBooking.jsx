@@ -17,6 +17,7 @@ import {
 import toast from "react-hot-toast";
 import { useAddGymMutation } from "../../redux/gym/gymAPI.js";
 import { Link } from "react-router-dom";
+import { customFilterOption } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -45,7 +46,7 @@ const validationSchema = yup.object({
 const GymBooking = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [addGym, { isLoading }] = useAddGymMutation();
-
+  const [selectorValue, setSelectorValue] = useState([]);
   // useEffect(() => {
   //   if (formik.values.roomNumber)
   //     dispatchEvent(setOrder({ ...order, roomNumber: formik.values.roomNumber }));
@@ -83,9 +84,11 @@ const GymBooking = () => {
 
       if (response?.error) {
         toast.error(response.error.data.message);
-      } else {
+      }
+       else {
         toast.success(response.data.message);
         formikHelpers.resetForm();
+        setSelectorValue([]);
       }
     },
   });
@@ -213,9 +216,13 @@ const GymBooking = () => {
                 placeholder="Select room"
                 name={`roomNumber`}
                 defaultValue={formik.values.roomNumber}
+                value={selectorValue}
                 options={transformedRooms}
+                filterOption={customFilterOption}
                 isSearchable
-                onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
+                onChange={(e) => {
+                  setSelectorValue(e);
+                  formik.setFieldValue("roomNumber", e.value)}}
                 noOptionsMessage={() => "No room available"}
                 classNames={{
                   control: (state) =>

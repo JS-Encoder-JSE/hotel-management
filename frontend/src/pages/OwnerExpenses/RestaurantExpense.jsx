@@ -8,6 +8,7 @@ import { Rings } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpenseShow.jsx";
+import { customFilterOption } from "../../utils/utils.js";
 
 const RestaurantExpense = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -83,6 +84,7 @@ const RestaurantExpense = () => {
               defaultValue={selectedHotel1}
               value={selectedHotel1}
               options={transformedHotel}
+              filterOption={customFilterOption}
               isMulti={false}
               isSearchable
               onKeyDown={handleKeyDown}

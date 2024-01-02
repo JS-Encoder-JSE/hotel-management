@@ -42,7 +42,7 @@ import {
 } from "../../../redux/checkoutInfoCal/checkoutInfoCalSlice";
 import { FaArrowLeft } from "react-icons/fa";
 import * as yup from "yup";
-import { getFormateDateAndTime, getISOStringDate } from "../../../utils/utils";
+import { customFilterOption, getFormateDateAndTime, getISOStringDate } from "../../../utils/utils";
 import { clearAddOrderSlice } from "../../../redux/add-order/addOrderSlice";
 import Modal from "../../../components/Modal";
 import RefundPaymentModal from "./RefundPaymentModal";
@@ -456,6 +456,7 @@ const CheckOut = () => {
             name={`roomNumber`}
             defaultValue={formik.values.roomNumber}
             options={transformedRooms}
+            filterOption={customFilterOption}
             isSearchable
             onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
             noOptionsMessage={() => "No room available"}

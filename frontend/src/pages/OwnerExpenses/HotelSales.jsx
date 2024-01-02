@@ -10,6 +10,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpenseShow.jsx";
 import HotelExpensesShow from "../../components/OwnerExpenses/HotelExpensesShow.jsx";
 import HotelSalesShow from "../../components/OwnerExpenses/HotelSalesShow.jsx";
+import { customFilterOption } from "../../utils/utils.js";
 
 const HotelSales = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -87,6 +88,7 @@ const HotelSales = () => {
               defaultValue={selectedHotel}
               value={selectedHotel}
               options={transformedHotel}
+              filterOption={customFilterOption}
               isMulti={false}
               isSearchable
               onKeyDown={handleKeyDown}

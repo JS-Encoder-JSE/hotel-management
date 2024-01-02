@@ -19,7 +19,7 @@ import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
-import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import { customFilterOption, fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
 import {
   getEndDateOfBookingIst,
   getStartDateOFBookingIST,
@@ -83,6 +83,7 @@ const ManageCheckinModal = () => {
   const [upload, { isError, error }] = useUploadMutation();
   const [selectedImages, setSelectedImages] = useState([]);
   const [addBooking] = useAddBookingMutation();
+  const [selectorValue, setSelectorValue] = useState([]);
   // handleAmount
   const handleAmount = (e) => {
     const inputValue = e.target.value;
@@ -205,6 +206,7 @@ const ManageCheckinModal = () => {
           formikHelpers.resetForm();
           closeRef.current.click();
           setSelectedImages([]);
+          setSelectorValue([])
           toast.success("Successfully check in");
         }
       } else {
@@ -353,12 +355,16 @@ const ManageCheckinModal = () => {
             <Select
               placeholder="Select Rooms"
               defaultValue={formik.values.room_arr}
+              value={selectorValue}
               options={transformedRooms}
+              filterOption={customFilterOption}
               isMulti
               isSearchable
               closeMenuOnSelect={false}
               // onKeyDown={handleKeyDown}
-              onChange={(e) => formik.setFieldValue("room_arr", e)}
+              onChange={(e) => {
+                setSelectorValue(e);
+                formik.setFieldValue("room_arr", e)}}
               noOptionsMessage={() => "No room available"}
               classNames={{
                 control: (state) =>

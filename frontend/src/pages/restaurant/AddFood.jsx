@@ -42,7 +42,9 @@ const validationSchema = yup.object({
     .string()
     .required("Description is required")
     .min(10, "Description at least 20 characters length"),
-  photos: yup.mixed().required("Choose Photo are required"),
+    photos: yup.array().test("fileCount", "Photo is required", (value) => {
+      return value && value.length > 0
+    }),
 });
 
 const AddFood = () => {
@@ -63,7 +65,7 @@ const AddFood = () => {
       name: "",
       price: "",
       description: "",
-      photos: null,
+      photos: [],
       surveyorQuantity: "",
       surveyorQuantityOthers: "",
       chooseHotel: "",
@@ -148,20 +150,13 @@ const AddFood = () => {
     setSelectedImages(tempImgs);
   };
 
+  // HandleChange
   const handleChange = (idx, newFile) => {
     const updatedImages = [...selectedImages];
     updatedImages[idx] = newFile;
-
-    const dataTransfer = new DataTransfer();
-
-    for (const file of updatedImages) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("photos", dataTransfer.files);
+    formik.setFieldValue("photos", updatedImages);
     setSelectedImages(updatedImages);
   };
-
   useEffect(() => {
     if (formik.values.photos) {
       const selectedImagesArray = Array.from(formik.values.photos);
@@ -529,9 +524,19 @@ const AddFood = () => {
                   multiple
                   name="photos"
                   className="absolute left-0 top-0  overflow-hidden h-0"
-                  onChange={(e) =>
-                    formik.setFieldValue("photos", e.currentTarget.files)
-                  }
+                  onChange={(e) => {
+                    const selectedImagesArray = Array.from(
+                      e.currentTarget.files
+                    );
+                    formik.setFieldValue("photos", [
+                      ...formik.values.photos,
+                      ...selectedImagesArray,
+                    ]);
+                    setSelectedImages([
+                      ...selectedImages,
+                      ...selectedImagesArray,
+                    ]);
+                  }}
                   onBlur={formik.handleBlur}
                 />
               </label>

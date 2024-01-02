@@ -74,6 +74,7 @@ const validationSchema = yup.object({
 
 const AddBookingSelect = ({ room }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectorValue, setSelectorValue] = useState([]);
 
   const handleAmount = (e) => {
     const inputValue = e.target.value;
