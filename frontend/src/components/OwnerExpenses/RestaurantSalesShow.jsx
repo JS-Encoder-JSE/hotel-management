@@ -140,7 +140,10 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const totalPrice = todaySales?.reduce((total, item) => total + item.price, 0);
+  const totalPrice = todaySales?.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   useEffect(() => {
     setPdf(currentItems);
