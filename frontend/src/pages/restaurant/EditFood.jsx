@@ -113,7 +113,6 @@ const EditFood = () => {
           );
         }
       }
-      console.log(password);
       if (
         (password === undefined && category === "Liquor") ||
         typeOfAlcohol === "Liquor"

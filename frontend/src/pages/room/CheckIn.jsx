@@ -583,11 +583,6 @@ const CheckIn = () => {
               onChange={handleDiscountCheckIn}
               onBlur={formik.handleBlur}
             />
-            {/*{formik.touched.discount && Boolean(formik.errors.discount) ? (*/}
-            {/*  <small className="text-red-600">*/}
-            {/*    {formik.touched.discount && formik.errors.discount}*/}
-            {/*  </small>*/}
-            {/*) : null}*/}
           </div>
 
           {/* Date */}
