@@ -42,9 +42,8 @@ const validationSchema = yup.object({
   salary: yup.number(),
   joiningDate: yup.string().required("Joining Date is required"),
   documentsType: yup.string().required("Documents type is required"),
-  documents: yup.string().when(["documentsType"], ([documentsType], schema) => {
-    if (documentsType) return schema.required(`${documentsType} is required`);
-    else return schema;
+  documents: yup.array().test("fileCount", "Documents is required", (value) => {
+    return value && value.length > 0;
   }),
 });
 
@@ -69,7 +68,7 @@ const AddEmployee = () => {
       joiningDate: "",
       userImg: null,
       documentsType: "",
-      documents: null,
+      documents: [],
       designation: "",
       shift: "",
     },
@@ -165,49 +164,6 @@ const AddEmployee = () => {
     },
   });
 
-  // const handleDelete = (idx) => {
-  //   const tempImgs = [
-  //     ...selectedImages.slice(0, idx),
-  //     ...selectedImages.slice(idx + 1),
-  //   ];
-  //   const dataTransfer = new DataTransfer();
-  //
-  //   for (const file of tempImgs) {
-  //     dataTransfer.items.add(file);
-  //   }
-  //
-  //   formik.setFieldValue("documents", dataTransfer.files);
-  //   setSelectedImages(tempImgs);
-  // };
-  //
-  // const handleChange = (idx, newFile) => {
-  //   const updatedImages = [...selectedImages];
-  //   updatedImages[idx] = newFile;
-  //
-  //   const dataTransfer = new DataTransfer();
-  //
-  //   for (const file of updatedImages) {
-  //     dataTransfer.items.add(file);
-  //   }
-  //
-  //   formik.setFieldValue("documents", dataTransfer.files);
-  //   setSelectedImages(updatedImages);
-  // };
-
-  useEffect(() => {
-    if (formik.values.documents || formik.values.userImg) {
-      const selectedImagesArray = formik.values.documents
-        ? Array.from(formik.values.documents)
-        : [];
-
-      if (formik.values.userImg) {
-        setSelectedImages([...selectedImagesArray, formik.values.userImg]);
-      } else {
-        setSelectedImages([...selectedImagesArray]);
-      }
-    }
-  }, [formik.values.documents, formik.values.userImg]);
-
   // Price Validation
   const handleSalary = (e) => {
     const inputValue = e.target.value;
@@ -283,26 +239,6 @@ const AddEmployee = () => {
                     ? selectedImages?.map((image, idx) => (
                         <SwiperSlide key={idx}>
                           <div className={`relative`}>
-                            {/*<div*/}
-                            {/*  className={`absolute top-3 right-3 space-x-1.5`}*/}
-                            {/*>*/}
-                            {/*  <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">*/}
-                            {/*    <TbReplaceFilled />*/}
-                            {/*    <input*/}
-                            {/*      type="file"*/}
-                            {/*      className="absolute left-0 top-0  overflow-hidden h-0"*/}
-                            {/*      onChange={(e) =>*/}
-                            {/*        handleChange(idx, e.currentTarget.files[0])*/}
-                            {/*      }*/}
-                            {/*    />*/}
-                            {/*  </label>*/}
-                            {/*  <button*/}
-                            {/*    className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"*/}
-                            {/*    onClick={() => handleDelete(idx)}*/}
-                            {/*  >*/}
-                            {/*    <FaTrash />*/}
-                            {/*  </button>*/}
-                            {/*</div>*/}
                             <img
                               key={idx}
                               src={URL.createObjectURL(image)}
@@ -524,7 +460,7 @@ const AddEmployee = () => {
               <div className={`flex space-x-1.5`}>
                 <div className="flex flex-col gap-3 w-full">
                   <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-                    {formik.values.documents ? (
+                    {formik.values.documents.length ? (
                       <span>{formik.values.documents.length + " files"}</span>
                     ) : (
                       <span className={`flex items-baseline space-x-1.5`}>
@@ -537,9 +473,19 @@ const AddEmployee = () => {
                       multiple
                       name="documents"
                       className="absolute left-0 top-0  overflow-hidden h-0"
-                      onChange={(e) =>
-                        formik.setFieldValue("documents", e.currentTarget.files)
-                      }
+                      onChange={(e) => {
+                        const selectedImagesArray = Array.from(
+                          e.currentTarget.files
+                        );
+                        formik.setFieldValue("documents", [
+                          ...formik.values.documents,
+                          ...selectedImagesArray,
+                        ]);
+                        setSelectedImages([
+                          ...selectedImages,
+                          ...selectedImagesArray,
+                        ]);
+                      }}
                       onBlur={formik.handleBlur}
                     />
                   </label>
@@ -573,9 +519,17 @@ const AddEmployee = () => {
                   name="userImg"
                   className="absolute left-0 top-0 w-0 h-0 overflow-hidden"
                   accept="image/*"
-                  onChange={(e) =>
-                    formik.setFieldValue("userImg", e.currentTarget.files[0])
-                  }
+                  onChange={(e) => {
+                    if (e.target.files[0]) {
+                      setSelectedImages((prev) => {
+                        const updatedImages = prev.filter((image) => {
+                          image !== formik.values.userImg;
+                        });
+                        formik.setFieldValue("userImg", e.target.files[0]);
+                        return [...updatedImages, e.target.files[0]];
+                      });
+                    }
+                  }}
                   onBlur={formik.handleBlur}
                 />
               </label>
@@ -585,36 +539,6 @@ const AddEmployee = () => {
                 </small>
               ) : null}
             </div>
-            {/* <div className={`flex space-x-1.5`}>
-          <div className="flex flex-col gap-3 w-full">
-            <label className="relative input input-md input-bordered flex items-center border-gray-500/50 rounded  focus:outline-none bg-transparent">
-              {formik.values.utility ? (
-                <span>{formik.values.utility.length + " files"}</span>
-              ) : (
-                <span className={`flex items-baseline space-x-1.5`}>
-                  <FaUpload />
-                  <span>Choose Utilities</span>
-                </span>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                name="utility"
-                className="absolute left-0 top-0  overflow-hidden h-0"
-                onChange={(e) =>
-                  formik.setFieldValue("utility", e.currentTarget.files)
-                }
-                onBlur={formik.handleBlur}
-              />
-            </label>
-            {formik.touched.utility && Boolean(formik.errors.utility) ? (
-              <small className="text-red-600">
-                {formik.touched.utility && formik.errors.utility}
-              </small>
-            ) : null}
-          </div>
-        </div> */}
 
             {/* submit button */}
             <div className=" col-span-full text-end mb-5 ">

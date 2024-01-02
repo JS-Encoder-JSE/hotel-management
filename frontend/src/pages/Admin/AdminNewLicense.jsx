@@ -148,7 +148,11 @@ const AdminNewLicense = () => {
         } else {
           toast.success(response.data.message);
           formikHelpers.resetForm();
+          setUtilitiesFiles([])
+          setTradeLicensesFiles([])
+          setPanCardFiles([])
           setSelectedImages([]);
+
         }
       } else {
         toast.error("Image is not uploaded");
