@@ -461,4 +461,4 @@ export const dummyData = [
 ];
 
 // DHK Version controller
-export const versionControl = "02.00.5";
+export const versionControl = "02.50.5";
