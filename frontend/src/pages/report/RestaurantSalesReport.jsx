@@ -13,7 +13,7 @@ import { getFormateDateAndTime, getOnlyFormatDate, getformatDateTime, versionCon
 const RestaurantSalesReport = ({ values, header, date }) => {
   // SL	Date	Items Name	Description	Quantity	Price	Action
   const desiredHeaders = ["Serial No", "date", "today_restaurant_income"];
-  const tableHeaders = ["Serial No", "Date", "Amount"];
+  const tableHeaders = ["Serial No", "Date", "Amount With Tax"];
   const jsEncoderTextStyle = {
     color: "green",
     fontWeight: "bold",
@@ -103,7 +103,7 @@ const RestaurantSalesReport = ({ values, header, date }) => {
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
             {tableHeaders.map((header, index) => (
-              <Text key={index} style={[styles.tableCell, styles.text]}>
+              <Text className ="text-center" key={index} style={[styles.tableCell, styles.text]}>
                 {header}
               </Text>
             ))}
