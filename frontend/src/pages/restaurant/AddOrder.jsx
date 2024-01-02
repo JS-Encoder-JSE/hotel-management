@@ -90,6 +90,11 @@ const AddOrder = () => {
     value: table._id,
     label: table.table_number,
   }));
+  const customFilterOption = (option, inputValue) => {
+    const labelString = option.label.toString().toLowerCase();
+    const inputString = inputValue.toLowerCase();
+    return labelString.includes(inputString);
+  };
   const handleConfirmOrder = () => {
     if (formik.values.type && formik.values.type === "Table") {
       dispatch(setTableId(formik.values.tableId));
@@ -171,6 +176,7 @@ const AddOrder = () => {
               <Select
                 placeholder="Select room"
                 name={`roomId`}
+                filterOption={customFilterOption}
                 options={transformedRooms}
                 isSearchable
                 onChange={(e) => {
@@ -198,6 +204,7 @@ const AddOrder = () => {
               <Select
                 placeholder="Select table"
                 name={`tableId`}
+                filterOption={customFilterOption}
                 options={transformedTables}
                 isSearchable
                 onChange={(e) => formik.setFieldValue("tableId", e.value)}
@@ -254,10 +261,9 @@ const AddOrder = () => {
               className="input input-sm input-bordered border-green-slimy rounded w-full focus:outline-none"
               value={formik.values.search}
               onChange={(e) => {
-                setForcePage(0)
+                setForcePage(0);
                 formik.handleChange(e);
               }}
-              
             />
           </div>
         </div>
