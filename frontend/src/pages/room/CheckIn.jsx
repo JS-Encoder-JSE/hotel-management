@@ -204,6 +204,7 @@ const CheckIn = () => {
         } else {
           formikHelpers.resetForm();
           setSelectedImages([]);
+          setSelectorValue([]);
           toast.success(response.data.message);
           navigate("/dashboard/manage-checkin");
         }

@@ -47,6 +47,7 @@ const PoolReservation = () => {
   const [addPool, { isLoading }] = useAddPoolMutation();
   const [selectedRooms, setSelectedRooms] = useState(null);
   const closeRef = useRef(null);
+  const [selectorValue, setSelectorValue] = useState([]);
   const formik = useFormik({
     initialValues: {
       roomNumber: "",
@@ -84,7 +85,9 @@ const PoolReservation = () => {
         } else {
           toast.success(response.data.message);
           formikHelpers.resetForm();
+          setSelectorValue([]);
         }
+        
       } catch (error) {
         toast.error(error.data.message);
       }
@@ -220,9 +223,12 @@ const PoolReservation = () => {
                 placeholder="Select room"
                 name={`roomNumber`}
                 defaultValue={formik.values.roomNumber}
+                value={selectorValue}
                 options={transformedRooms}
                 isSearchable
-                onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
+                onChange={(e) => {
+                  setSelectorValue(e);
+                  formik.setFieldValue("roomNumber", e.value)}}
                 noOptionsMessage={() => "No room available"}
                 classNames={{
                   control: (state) =>

@@ -60,6 +60,7 @@ const validationSchema = yup.object({
 
 const AddBooking = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectorValue, setSelectorValue] = useState([]);
 
   const handleAmount = (e) => {
     const inputValue = e.target.value;
@@ -162,6 +163,7 @@ const AddBooking = () => {
       } else {
         formikHelpers.resetForm();
         closeRef.current.click();
+        setSelectorValue([]);
         toast.success(response.data.message);
       }
     },
@@ -285,12 +287,15 @@ const AddBooking = () => {
             <Select
               placeholder="Select Rooms"
               defaultValue={formik.values.room_arr}
+              value={selectorValue}
               options={transformedRooms}
               isMulti
               isSearchable
               closeMenuOnSelect={false}
               // onKeyDown={handleKeyDown}
-              onChange={(e) => formik.setFieldValue("room_arr", e)}
+              onChange={(e) =>{ 
+                setSelectorValue(e);
+                formik.setFieldValue("room_arr", e)}}
               noOptionsMessage={() => "No room available"}
               classNames={{
                 control: (state) =>
