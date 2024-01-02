@@ -10,7 +10,7 @@ import {
 import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
 import toast from "react-hot-toast";
-import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import { customFilterOption, fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
 import {
   getEndDateOfBookingIst,
   getStartDateOFBookingIST,
@@ -289,6 +289,7 @@ const AddBooking = () => {
               defaultValue={formik.values.room_arr}
               value={selectorValue}
               options={transformedRooms}
+              filterOption={customFilterOption}
               isMulti
               isSearchable
               closeMenuOnSelect={false}

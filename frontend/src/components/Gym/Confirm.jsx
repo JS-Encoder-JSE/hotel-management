@@ -12,6 +12,7 @@ import {
 import toast from "react-hot-toast";
 import { useAddOrderMutation } from "../../redux/restaurant/foodAPI.js";
 import Select from "react-select";
+import { customFilterOption } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -121,6 +122,7 @@ const ConfirmOrder = () => {
               name={`roomNumber`}
               defaultValue={selectedOption}
               options={transformedRooms}
+              filterOption={customFilterOption}
               isSearchable
               closeMenuOnSelect={false}
               onChange={setSelectedOption}

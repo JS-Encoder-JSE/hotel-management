@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import Select from "react-select";
 import { useOrderInventoryMutation } from "../../redux/inventory/inventoryAPI.js";
 import { resetInv, setOrder } from "../../redux/inventory/inventorySlice.js";
+import { customFilterOption } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -93,6 +94,7 @@ const ConfirmOrder = () => {
               placeholder="Select room"
               name={`roomNumber`}
               defaultValue={formik.values.roomNumber}
+              filterOption={customFilterOption}
               options={transformedRooms}
               isSearchable
               onChange={(e) => formik.setFieldValue("roomNumber", e.value)}

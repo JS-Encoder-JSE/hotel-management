@@ -17,6 +17,7 @@ import {
 import toast from "react-hot-toast";
 import { useAddGymMutation } from "../../redux/gym/gymAPI.js";
 import { Link } from "react-router-dom";
+import { customFilterOption } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -217,6 +218,7 @@ const GymBooking = () => {
                 defaultValue={formik.values.roomNumber}
                 value={selectorValue}
                 options={transformedRooms}
+                filterOption={customFilterOption}
                 isSearchable
                 onChange={(e) => {
                   setSelectorValue(e);

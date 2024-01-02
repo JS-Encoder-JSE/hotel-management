@@ -19,7 +19,7 @@ import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
-import { fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import { customFilterOption, fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
 import {
   getEndDateOfBookingIst,
   getStartDateOFBookingIST,
@@ -357,6 +357,7 @@ const ManageCheckinModal = () => {
               defaultValue={formik.values.room_arr}
               value={selectorValue}
               options={transformedRooms}
+              filterOption={customFilterOption}
               isMulti
               isSearchable
               closeMenuOnSelect={false}

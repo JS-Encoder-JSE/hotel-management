@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import RestaurantExpenseShow from "../../components/OwnerExpenses/RestaurantExpenseShow.jsx";
 import RestaurantSalesShow from "./../../components/OwnerExpenses/RestaurantSalesShow";
+import { customFilterOption } from "../../utils/utils.js";
 
 const RestaurantSales = () => {
   const { user } = useSelector((state) => state.authSlice);
@@ -90,6 +91,7 @@ const RestaurantSales = () => {
             <Select
               placeholder="Search with hotel branch name"
               defaultValue={selectedHotel}
+              filterOption={customFilterOption}
               value={selectedHotel}
               options={transformedHotel}
               isMulti={false}

@@ -17,6 +17,7 @@ import {
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
 import { Link } from "react-router-dom";
+import { customFilterOption } from "../../utils/utils.js";
 
 // form validation
 const validationSchema = yup.object({
@@ -225,6 +226,7 @@ const PoolReservation = () => {
                 defaultValue={formik.values.roomNumber}
                 value={selectorValue}
                 options={transformedRooms}
+                filterOption={customFilterOption}
                 isSearchable
                 onChange={(e) => {
                   setSelectorValue(e);
