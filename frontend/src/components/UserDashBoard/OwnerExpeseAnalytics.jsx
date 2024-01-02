@@ -24,8 +24,8 @@ const OwnerExpeseAnalytics = ({
           <section
              className="grid md:grid-cols-3 gap-4 mt-4"
           >
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
-              <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-3">
+              <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#f67709] to-[#fe9302] p-3 rounded-md ">
                 <GiCoins className={`db-currency text-white`} />
               </div>
               <h6 className="text-xs text-slate-400">TOTAL EXPENSES</h6>
@@ -45,7 +45,7 @@ const OwnerExpeseAnalytics = ({
                 </div>
               </p>
             </div>
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-3">
               <div className="absolute -top-[20px] text-3xl text-white bg-gradient-to-tr from-[#282884] to-[#1616ff] p-3 rounded-md">
                 <GiCoins className={`db-currency text-white`} />
               </div>
@@ -68,7 +68,7 @@ const OwnerExpeseAnalytics = ({
             </div>
 
             {/* Total Amount */}
-            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200">
+            <div className="relative bg-white p-3 pb-14 text-right rounded shadow hover:shadow-md duration-200 mb-3">
               <div className="absolute -top-[20px] text-3xl bg-gradient-to-tr from-[#309267] to-[#4ba555] p-3 rounded-md">
                 <GiCoins className={`db-currency text-white`} />
               </div>
