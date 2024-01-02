@@ -12,6 +12,7 @@ import HotelExpensesShow from "../../components/OwnerExpenses/HotelExpensesShow.
 import HotelSalesShow from "../../components/OwnerExpenses/HotelSalesShow.jsx";
 import RestaurantAnalyticsShow from "../../components/OwnerExpenses/RestaurantAnalyticsShow.jsx";
 import RestaurantDashboard from "../restaurant/RestaurantDashboard.jsx";
+import { customFilterOption } from "../../utils/utils.js";
 
 const RestaurantsAnalytics = () => {
   const { user } = useSelector((store) => store.authSlice);
@@ -102,6 +103,7 @@ const RestaurantsAnalytics = () => {
               // defaultValue={selectedHotel}
               value={selectedHotel}
               options={transformedHotel}
+              filterOption={customFilterOption}
               isMulti={false}
               isSearchable
               onKeyDown={handleKeyDown}

@@ -341,7 +341,7 @@ const App = () => {
               ),
             },
             {
-              path: "single-checkout/:id",
+              path: "manage-booking/:id",
               element: (
                 <ManagerRoute>
                   <FoodCheckout />

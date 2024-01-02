@@ -74,6 +74,12 @@ export const getOnlyFormatDate =(date)=>{
   const formattedDateTime = `${day}/${month}/${year}`;
   return formattedDateTime;
 }
+export const customFilterOption = (option, inputValue) => {
+  const labelString = option.label.toString().toLowerCase();
+  const inputString = inputValue.toLowerCase();
+  return labelString.includes(inputString);
+};
+
 export const getTodayFormateDate = (date) => {
   return date
     ? new Date(date).toLocaleDateString("en-US", {
