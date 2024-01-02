@@ -58,6 +58,7 @@ const CurOrderList = () => {
       setSearch(values.search);
       setSearchTable(values.tableNumber);
       setCurrentPage(0);
+      setForcePage(0)
     },
   });
   const { isLoading, data: orders } = useOrdersQuery({
@@ -160,6 +161,8 @@ const CurOrderList = () => {
                 value={formik.values.tableNumber}
                 onChange={formik.handleChange}
                 onKeyUp={(e) => {
+                  e.target.value === "" && setForcePage(1);
+                  e.target.value === "" && setCurrentPage(0);
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}
                 onKeyDown={(e) => pressEnter(e)}
@@ -182,7 +185,7 @@ const CurOrderList = () => {
                 value={formik.values.search}
                 onChange={formik.handleChange}
                 onKeyUp={(e) => {
-                  e.target.value === "" && setForcePage(0);
+                  e.target.value === "" && setForcePage(1);
                   e.target.value === "" && setCurrentPage(0);
                   e.target.value === "" ? formik.handleSubmit() : null;
                 }}
