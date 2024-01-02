@@ -204,11 +204,11 @@ const FoodCheckout = () => {
       </div>
       <hr />
       <div>
-        <div className={`flex items-center gap-3 `}>
-          <span className={`w-26`}>
+        <div className={`flex gap-2`}>
+          <span className={``}>
             {orderData?.data?.table_id ? "Table" : "Room"}
           </span>
-          <span>:</span>
+          <span className="ms-[3.8rem]">:</span>
           <span>
             {orderData?.data?.table_id
               ? orderData?.data?.table_id?.table_number
@@ -218,7 +218,7 @@ const FoodCheckout = () => {
         </div>
         <div className={`flex items-center gap-3`}>
           <span className={`w-24`}>Invoice No</span>
-          <span className="ms-7">:</span>
+          <span className="">:</span>
           <span>{orderData?.data?.unique_id}</span>
         </div>
       </div>
@@ -261,7 +261,8 @@ const FoodCheckout = () => {
                 <tfoot>
                   {orderData?.data?.dedicated_to !== "room" &&
                   orderData?.data?.order_status !== "CheckedOut" ? (
-                    <tr>
+                    <tr className="border-t">
+                      
                       <td></td>
                       <td></td>
                       <td></td>
@@ -367,7 +368,7 @@ const FoodCheckout = () => {
                   )}
 
                   {orderData?.data?.order_status === "CheckedOut" ? (
-                    <tr>
+                    <tr className="border-t">
                       <td></td>
                       <td></td>
                       <td></td>
