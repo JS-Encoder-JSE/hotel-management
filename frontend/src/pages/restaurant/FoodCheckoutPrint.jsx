@@ -13,6 +13,7 @@ const FoodCheckoutPrint = ({
   checkoutServiceCharge,
   checkOutDiscount,
   hotelInfo,
+
 }) => {
 
   const grandTotal = orderData?.data?.items?.reduce(
@@ -122,7 +123,10 @@ const FoodCheckoutPrint = ({
                 <td></td>
                 <td></td>
                 <td>Total</td>
-                <td>{orderData?.data?.total_price}</td>
+                <td>
+                  {grandTotal}
+                  {/* {orderData?.data?.total_price} */}
+                  </td>
                 <td></td>
               </tr>
               <tr className="border-none">
