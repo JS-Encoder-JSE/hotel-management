@@ -40,8 +40,8 @@ const validationSchema = yup.object({
     .integer("Price must be an integer"),
   description: yup
     .string()
-    .required("Description is required")
-    .min(10, "Description at least 20 characters length"),
+    .required("Description is required"),
+    // .min(10, "Description at least 20 characters length"),
     photos: yup.array().test("fileCount", "Photo is required", (value) => {
       return value && value.length > 0
     }),
