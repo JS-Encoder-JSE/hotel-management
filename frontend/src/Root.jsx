@@ -9,8 +9,8 @@ const Root = () => {
   const [isHbMenu, setHbMenu] = useState(true);
 
   const handleResize = () => {
-    if (innerWidth >= 768) setHbMenu(false);
-    else setHbMenu(true);
+    // if (innerWidth >= 768) setHbMenu(false);
+    // else setHbMenu(false);
   };
 
   const enterFullscreen = () => {
@@ -53,26 +53,35 @@ const Root = () => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
       document.removeEventListener(
         "mozfullscreenchange",
-        handleFullscreenChange,
+        handleFullscreenChange
       );
       document.removeEventListener(
         "webkitfullscreenchange",
-        handleFullscreenChange,
+        handleFullscreenChange
       );
       document.removeEventListener(
         "MSFullscreenChange",
-        handleFullscreenChange,
+        handleFullscreenChange
       );
     };
   }, []);
 
+  // useEffect(() => {
+  //   handleResize();
+
+  //   addEventListener("resize", handleResize);
+
+  //   return () => removeEventListener("resize", handleResize);
+  // }, []);
+
   useEffect(() => {
     handleResize();
-
-    addEventListener("resize", handleResize);
-
-    return () => removeEventListener("resize", handleResize);
+  
+    window.addEventListener("resize", handleResize);
+  
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+  
 
   return (
     <>
