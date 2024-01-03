@@ -9,8 +9,8 @@ const Root = () => {
   const [isHbMenu, setHbMenu] = useState(true);
 
   const handleResize = () => {
-    // if (innerWidth >= 768) setHbMenu(false);
-    // else setHbMenu(false);
+    if (innerWidth >= 768) setHbMenu(false);
+    else setHbMenu(false);
   };
 
   const enterFullscreen = () => {
@@ -66,21 +66,21 @@ const Root = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   handleResize();
-
-  //   addEventListener("resize", handleResize);
-
-  //   return () => removeEventListener("resize", handleResize);
-  // }, []);
-
   useEffect(() => {
     handleResize();
-  
-    window.addEventListener("resize", handleResize);
-  
-    return () => window.removeEventListener("resize", handleResize);
+
+    addEventListener("resize", handleResize);
+
+    return () => removeEventListener("resize", handleResize);
   }, []);
+
+  // useEffect(() => {
+  //   handleResize();
+  
+  //   window.addEventListener("resize", handleResize);
+  
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
   
 
   return (
