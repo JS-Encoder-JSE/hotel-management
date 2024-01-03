@@ -233,11 +233,6 @@ const AdminNewLicense = () => {
       const allUtilitiesFiles = [...utilitiesFiles, ...utilitiesArray];
       setUtilitiesFiles(allUtilitiesFiles);
 
-      const utilitiesArrayMap = utilitiesArray.map((name, index) => ({
-        name: "utilities",
-        Index: index,
-        file: name,
-      }));
 
       setSelectedImages((prevFiles) => [
         ...prevFiles,
