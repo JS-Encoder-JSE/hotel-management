@@ -26,6 +26,7 @@ import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 import { Link } from "react-router-dom";
 import EmployeeView from "./EmployeeView";
 import { convertedStartDate } from "../../utils/timeZone.js";
+import { TbReplaceFilled } from "react-icons/tb";
 
 // form validation
 const validationSchema = yup.object({
@@ -198,6 +199,29 @@ const AddEmployee = () => {
     }
   };
 
+
+  const handleChange = (idx, newFile, image) => {
+    const updatedImages = [...selectedImages];
+    const updatedDocuments = formik.values.documents.map((file) =>
+      file === image.file ? newFile : file
+    );
+  
+    updatedImages.splice(idx, 1, {
+      name: image.name,
+      file: newFile,
+      index: image.index,
+    });
+  
+    if (image.name === "profile") {
+      formik.setFieldValue("userImg", newFile);
+    } else if (image.name === "docs") {
+      formik.setFieldValue("documents", updatedDocuments);
+    }
+  
+    setSelectedImages(updatedImages);
+  };
+
+
   return (
     <div className={`space-y-10 md:p-6`}>
       <div className="card bg-white shadow-xl">
@@ -268,6 +292,20 @@ const AddEmployee = () => {
                             />
                           </div>
                           <div className={`absolute top-3 right-3 space-x-1.5`}>
+                          <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                              <TbReplaceFilled />
+                              <input
+                                type="file"
+                                className="absolute left-0 top-0  overflow-hidden h-0"
+                                onChange={(e) =>
+                                  handleChange(
+                                    idx,
+                                    e.currentTarget.files[0],
+                                    image
+                                  )
+                                }
+                              />
+                            </label>
                           <button
                               type="button"
                               className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
