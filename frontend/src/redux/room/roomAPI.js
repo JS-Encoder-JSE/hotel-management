@@ -123,6 +123,14 @@ const roomAPI = baseAPI.injectEndpoints({
         }&order_status=${order_status}&hotel_id=${hotel_id}`,
       providesTags: ["checkout"],
     }),
+
+    getAvailableRoomsByDate: build.query({
+      query: ({ hotel_id, fromDate, toDate }) =>
+        `rooms/get-available-rooms-by-date/${
+          hotel_id ? hotel_id : ""
+        }?fromDate=${fromDate}&toDate=${toDate}`,
+    }),
+
     // getDailyData:build.query({
     //   query: ({ managerId, fromDate, toDate }) =>
     //   `hotels/get-daily-datas?managerId=${managerId}&fromDate=${fromDate}&toDate=${toDate}`,}),
@@ -261,8 +269,7 @@ const roomAPI = baseAPI.injectEndpoints({
       query: (roomId) => {
         return `rooms/get-room-posted-bills/${roomId}`;
       },
-      providesTags: ["roomPostedBill"]
-      
+      providesTags: ["roomPostedBill"],
     }),
 
     getHotelById: build.query({
@@ -375,6 +382,7 @@ const roomAPI = baseAPI.injectEndpoints({
 });
 
 export const {
+  useGetAvailableRoomsByDateQuery,
   useGetHotelByIdQuery,
   useRoomNumbersQuery,
   useRoomQuery,

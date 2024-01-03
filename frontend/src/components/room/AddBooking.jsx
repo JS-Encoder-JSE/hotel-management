@@ -4,13 +4,18 @@ import Select from "react-select";
 import * as yup from "yup";
 import {
   useAddBookingMutation,
+  useGetAvailableRoomsByDateQuery,
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
 import DatePicker from "react-datepicker";
 import store from "../../redux/store.js";
 import toast from "react-hot-toast";
-import { customFilterOption, fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import {
+  customFilterOption,
+  fromDateIsoConverter,
+  toDateIsoConverter,
+} from "../../utils/utils.js";
 import {
   getEndDateOfBookingIst,
   getStartDateOFBookingIST,
@@ -218,6 +223,16 @@ const AddBooking = () => {
     }
   };
 
+
+  
+    // const {data:availableRooms,isSuccess} = useGetAvailableRoomsByDateQuery({
+    //   hotel_id:"111",
+    //   fromDate:formik.values.from,
+    //   toDate:formik.values.to
+    // },{ skip: fromDate && toDate === "" })
+
+    // console.log(availableRooms)
+
   return (
     <>
       <form onClick={handleRefetch} autoComplete="off" method="dialog">
@@ -262,6 +277,50 @@ const AddBooking = () => {
           {/*    </small>*/}
           {/*  ) : null}*/}
           {/*</div>*/}
+          {/* Date */}
+          <div className="flex flex-col gap-3">
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="from"
+              placeholderText={`From`}
+              selected={formik.values.from}
+              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+              onChange={(date) => {
+                formik.setFieldValue("from", date);
+              }}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.from && Boolean(formik.errors.from) ? (
+              <small className="text-red-600">
+                {formik.touched.from && formik.errors.from}
+              </small>
+            ) : null}
+          </div>
+
+          {/* Date */}
+          <div className="flex flex-col gap-3">
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="to"
+              placeholderText={`To`}
+              selected={formik.values.to}
+              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+              onChange={(date) => {
+                formik.setFieldValue("to", date);
+              }}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.to && Boolean(formik.errors.to) ? (
+              <small className="text-red-600">
+                {formik.touched.to && formik.errors.to}
+              </small>
+            ) : null}
+          </div>
+          <div className="flex flex-col gap-3 md:col-span-2">
+            <div className="flex flex-col gap-3">
+              <button type="button" className="bg-green-slimy rounded py-2 text-white">Apply</button>
+            </div>
+          </div>
           <div className="flex flex-col gap-3">
             <select
               name="bookingMethod"
@@ -294,9 +353,10 @@ const AddBooking = () => {
               isSearchable
               closeMenuOnSelect={false}
               // onKeyDown={handleKeyDown}
-              onChange={(e) =>{ 
+              onChange={(e) => {
                 setSelectorValue(e);
-                formik.setFieldValue("room_arr", e)}}
+                formik.setFieldValue("room_arr", e);
+              }}
               noOptionsMessage={() => "No room available"}
               classNames={{
                 control: (state) =>
@@ -502,46 +562,6 @@ const AddBooking = () => {
             {/*    {formik.touched.discount && formik.errors.discount}*/}
             {/*  </small>*/}
             {/*) : null}*/}
-          </div>
-
-          {/* Date */}
-          <div className="flex flex-col gap-3">
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              name="from"
-              placeholderText={`From`}
-              selected={formik.values.from}
-              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => {
-                formik.setFieldValue("from", date);
-              }}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.from && Boolean(formik.errors.from) ? (
-              <small className="text-red-600">
-                {formik.touched.from && formik.errors.from}
-              </small>
-            ) : null}
-          </div>
-
-          {/* Date */}
-          <div className="flex flex-col gap-3">
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              name="to"
-              placeholderText={`To`}
-              selected={formik.values.to}
-              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => {
-                formik.setFieldValue("to", date);
-              }}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.to && Boolean(formik.errors.to) ? (
-              <small className="text-red-600">
-                {formik.touched.to && formik.errors.to}
-              </small>
-            ) : null}
           </div>
 
           {/* Nationality box */}

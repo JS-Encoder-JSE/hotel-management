@@ -19,7 +19,11 @@ import { Navigation } from "swiper/modules";
 import { TbReplaceFilled } from "react-icons/tb";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { useUploadMutation } from "../../redux/baseAPI.js";
-import { customFilterOption, fromDateIsoConverter, toDateIsoConverter } from "../../utils/utils.js";
+import {
+  customFilterOption,
+  fromDateIsoConverter,
+  toDateIsoConverter,
+} from "../../utils/utils.js";
 import {
   getEndDateOfBookingIst,
   getStartDateOFBookingIST,
@@ -206,7 +210,7 @@ const ManageCheckinModal = () => {
           formikHelpers.resetForm();
           closeRef.current.click();
           setSelectedImages([]);
-          setSelectorValue([])
+          setSelectorValue([]);
           toast.success("Successfully check in");
         }
       } else {
@@ -279,9 +283,12 @@ const ManageCheckinModal = () => {
     <>
       <form autoComplete="off" method="dialog">
         <button
+          onClick={() => {
+            setSelectedImages([])
+            closeRef.current.click();
+          }}
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={() => formik.handleReset()}
         >
           ✕
         </button>
@@ -364,7 +371,8 @@ const ManageCheckinModal = () => {
               // onKeyDown={handleKeyDown}
               onChange={(e) => {
                 setSelectorValue(e);
-                formik.setFieldValue("room_arr", e)}}
+                formik.setFieldValue("room_arr", e);
+              }}
               noOptionsMessage={() => "No room available"}
               classNames={{
                 control: (state) =>

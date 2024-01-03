@@ -12,6 +12,8 @@ const EmployeeView = () => {
   const { data: userData, error, isLoading } = useGetUserQuery(id);
   const navigate = useNavigate();
 
+  console.log(userData);
+
   useEffect(() => {
     if (userData) {
       const filteredImages = Object.values(userData?.images)
@@ -98,7 +100,7 @@ const EmployeeView = () => {
                             <th className="text-start">Joining Date</th>
                             <td className="w-4 text-center">:</td>
                             <td className="break-all">
-                              {getOnlyFormatDate( userData?.joining_date)}
+                              {getOnlyFormatDate(userData?.joining_date)}
                               {/* {new Date(
                                 userData?.joining_date
                               ).toLocaleDateString()} */}
@@ -125,33 +127,36 @@ const EmployeeView = () => {
                     </div>
                     <div className="">
                       <h2 className="card-title mb-3 break-all">
-                        {userData?.images?.driving_lic_img?.length
+                        {userData?.images?.driving_lic_img[0]?.length
                           ? "Driving Licenses"
-                          : userData?.images?.nid?.length
+                          : userData?.images?.nid[0]?.length
                           ? "NID"
                           : "Passport"}
                       </h2>
                       <ul className={`list-disc list-inside break-all`}>
-                        {(userData?.images?.driving_lic_img?.length
-                          ? [...userData?.images?.driving_lic_img]
-                          : userData?.images?.nid?.length
-                          ? [...userData?.images?.nid]
-                          : [...userData?.images?.passport]
-                        )?.map((img, idx) => (
-                          <li>
-                            <div className={`inline-flex gap-1.5`}>
-                              <span className={`-mt-0.5`}>
-                                Attachment {++idx}
-                              </span>
-                              <span
-                                onClick={() => downloadFile(img)}
-                                className={`hover:text-green-slimy transition-colors duration-500 cursor-pointer`}
-                              >
-                                <FaDownload />
-                              </span>
-                            </div>
-                          </li>
-                        ))}
+                        {(userData?.images?.driving_lic_img[0]?.length
+                          ? userData?.images?.driving_lic_img
+                          : userData?.images?.nid[0]?.length
+                          ? userData?.images?.nid
+                          : userData?.images?.passport
+                        )?.map((img, idx) => {
+                          console.log(img);
+                          return (
+                            <li key={idx}>
+                              <div className={`inline-flex gap-1.5`}>
+                                <span className={`-mt-0.5`}>
+                                  Attachment {idx + 1}
+                                </span>
+                                <span
+                                  onClick={() => downloadFile(img)}
+                                  className={`hover:text-green-slimy transition-colors duration-500 cursor-pointer`}
+                                >
+                                  <FaDownload />
+                                </span>
+                              </div>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   </div>

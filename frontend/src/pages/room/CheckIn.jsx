@@ -374,6 +374,41 @@ const CheckIn = () => {
         ) : null}
 
         <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
+             {/* Date */}
+             <div className="flex flex-col gap-3">
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="from"
+              placeholderText={`From`}
+              selected={formik.values.from}
+              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+              onChange={(date) => formik.setFieldValue("from", date)}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.from && Boolean(formik.errors.from) ? (
+              <small className="text-red-600">
+                {formik.touched.from && formik.errors.from}
+              </small>
+            ) : null}
+          </div>
+
+          {/* Date */}
+          <div className="flex flex-col gap-3">
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="to"
+              placeholderText={`To`}
+              selected={formik.values.to}
+              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+              onChange={(date) => formik.setFieldValue("to", date)}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.to && Boolean(formik.errors.to) ? (
+              <small className="text-red-600">
+                {formik.touched.to && formik.errors.to}
+              </small>
+            ) : null}
+          </div>
           <div className="flex flex-col gap-3">
             <Select
               value={selectorValue}
@@ -588,41 +623,7 @@ const CheckIn = () => {
             />
           </div>
 
-          {/* Date */}
-          <div className="flex flex-col gap-3">
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              name="from"
-              placeholderText={`From`}
-              selected={formik.values.from}
-              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("from", date)}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.from && Boolean(formik.errors.from) ? (
-              <small className="text-red-600">
-                {formik.touched.from && formik.errors.from}
-              </small>
-            ) : null}
-          </div>
-
-          {/* Date */}
-          <div className="flex flex-col gap-3">
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              name="to"
-              placeholderText={`To`}
-              selected={formik.values.to}
-              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("to", date)}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.to && Boolean(formik.errors.to) ? (
-              <small className="text-red-600">
-                {formik.touched.to && formik.errors.to}
-              </small>
-            ) : null}
-          </div>
+       
 
           {/* Nationality box */}
           <div className="flex flex-col gap-3">
