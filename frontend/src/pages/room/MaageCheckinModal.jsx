@@ -251,14 +251,6 @@ const ManageCheckinModal = () => {
     limit: 1000000,
   });
 
-  // const transformedRooms = rooms?.data?.docs
-  //   ?.filter((i) => i.status === "Available")
-  //   .map((room) => ({
-  //     label: `${room.roomNumber} - ${room.category}`,
-  //     value: room._id,
-  //     price: room.price,
-  //   }));
-
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 
   const handleChildrenCheckIn = (e) => {
@@ -292,10 +284,14 @@ const ManageCheckinModal = () => {
     toDate:formik.values.to? convertedEndDate(formik.values.to):"",
   },{skip:!formik.values.to})
 
-  const availableRoomsByDate = availableRooms?.data?.map((room) => ({
-    label: `${room.roomNumber} - ${room.category}`,
-    value: room._id,
-  }))
+  const availableRoomsByDate = availableRooms?.data
+    ?.filter((i) => i.status !== "CheckedIn")
+    .map((room) => ({
+      label: `${room.roomNumber} - ${room.category}`,
+      value: room._id,
+    }));
+
+    console.log(availableRooms)
  
   const [roomError,setRoomError]=useState("")
 
