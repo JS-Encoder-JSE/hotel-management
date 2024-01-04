@@ -126,9 +126,7 @@ const roomAPI = baseAPI.injectEndpoints({
 
     getAvailableRoomsByDate: build.query({
       query: ({ hotel_id, fromDate, toDate }) =>
-        `rooms/get-available-rooms-by-date/${
-          hotel_id ? hotel_id : ""
-        }?fromDate=${fromDate}&toDate=${toDate}`,
+        `rooms/get-available-rooms-by-date/${hotel_id}?fromDate=${fromDate}&toDate=${toDate}`,
     }),
 
     // getDailyData:build.query({

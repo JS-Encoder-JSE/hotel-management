@@ -4,6 +4,7 @@ import Select from "react-select";
 import * as yup from "yup";
 import {
   useAddBookingMutation,
+  useGetAvailableRoomsByDateQuery,
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
@@ -17,9 +18,12 @@ import {
   toDateIsoConverter,
 } from "../../utils/utils.js";
 import {
+  convertedEndDate,
+  convertedStartDate,
   getEndDateOfBookingIst,
   getStartDateOFBookingIST,
 } from "../../utils/timeZone.js";
+import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({

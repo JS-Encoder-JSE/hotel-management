@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import * as yup from "yup";
 import {
@@ -17,10 +17,13 @@ import {
   toDateIsoConverter,
 } from "../../utils/utils.js";
 import {
+  convertedEndDate,
+  convertedStartDate,
   getEndDateOfBookingIst,
   getStartDateOFBookingIST,
 } from "../../utils/timeZone.js";
 import { parseISO } from "date-fns";
+import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
@@ -224,14 +227,35 @@ const AddBooking = () => {
   };
 
 
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
   
-    // const {data:availableRooms,isSuccess} = useGetAvailableRoomsByDateQuery({
-    //   hotel_id:"111",
-    //   fromDate:formik.values.from,
-    //   toDate:formik.values.to
-    // },{ skip: fromDate && toDate === "" })
+    const {data:availableRooms,isSuccess,isLoading:availableRoomsLoading} = useGetAvailableRoomsByDateQuery({
+      hotel_id:user?.assignedHotel[0],
+      fromDate:formik.values.from ? convertedStartDate(formik.values.from):"",
+      toDate:formik.values.to? convertedEndDate(formik.values.to):"",
+    },{skip:!formik.values.to})
 
-    // console.log(availableRooms)
+    const availableRoomsByDate = availableRooms?.data?.map((room) => ({
+      label: `${room.roomNumber} - ${room.category}`,
+      value: room._id,
+    }))
+   
+    const [error,setError]=useState("")
+
+    const handleErrorForAvailableRooms = () => {
+      if (!formik.values.to) {
+        setError("Please select booking date");
+      }
+      if(formik.values.to){
+        setError("")
+      }
+    };
+
+    useEffect(()=>{
+      if(formik.values.to){
+        setError("")
+      }
+    },[formik.values.to])
 
   return (
     <>
@@ -316,11 +340,11 @@ const AddBooking = () => {
               </small>
             ) : null}
           </div>
-          <div className="flex flex-col gap-3 md:col-span-2">
+          {/* <div className="flex flex-col gap-3 md:col-span-2">
             <div className="flex flex-col gap-3">
               <button type="button" className="bg-green-slimy rounded py-2 text-white">Apply</button>
             </div>
-          </div>
+          </div> */}
           <div className="flex flex-col gap-3">
             <select
               name="bookingMethod"
@@ -342,15 +366,16 @@ const AddBooking = () => {
               </small>
             ) : null}
           </div>
-          <div className="flex flex-col gap-3">
+          <div onClick={handleErrorForAvailableRooms} className="flex flex-col gap-3">
             <Select
               placeholder="Select Rooms"
               defaultValue={formik.values.room_arr}
               value={selectorValue}
-              options={transformedRooms}
+              options={availableRoomsByDate}
               filterOption={customFilterOption}
               isMulti
               isSearchable
+              isDisabled={availableRoomsLoading || !formik.values.from || !formik.values.to}
               closeMenuOnSelect={false}
               // onKeyDown={handleKeyDown}
               onChange={(e) => {
@@ -367,9 +392,11 @@ const AddBooking = () => {
                 placeholder: () => "!m-0",
               }}
             />
+            {error&& <small className="text-red-600 text-small">{error}</small>}
             {formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (
               <small className="text-red-600">
                 {formik.touched.room_arr && formik.errors.room_arr}
+               
               </small>
             ) : null}
           </div>
