@@ -420,6 +420,7 @@ const ManageCheckinModal = () => {
               dateFormat="dd/MM/yyyy"
               name="to"
               placeholderText={`To`}
+              minDate={new Date()}
               selected={formik.values.to}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => formik.setFieldValue("to", date)}
