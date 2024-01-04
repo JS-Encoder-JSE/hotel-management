@@ -15,7 +15,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
+const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill,setComment }) => {
   const [discount, setDiscount] = useState(false);
   const [discountAmt, setDiscountAmt] = useState(0);
   const [breakAmt, setBreakAmt] = useState(0);
@@ -150,6 +150,11 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
       )
     );
   }, [totalUnpaidAmount, totalBilling, breakAmt, data]);
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+
   return (
     <section className="grid lg:grid-cols-3 gap-5">
       <div className="bg-white rounded">
@@ -222,7 +227,9 @@ const BillingSection = ({ data, totalBilling, setTotalBilling, setPBill }) => {
             <tr>
               <td className="align-top">Additional Charges Comments</td>
               <td className="pl-5">
-                <textarea className="border rounded-md p-[6px] bg-transparent outline-none resize-none"></textarea>
+                <textarea
+                onChange={handleCommentChange}
+                 className="border rounded-md p-[6px] bg-transparent outline-none resize-none"></textarea>
               </td>
             </tr>
           </tbody>

@@ -1,21 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import RoomThumbsSlider from "../../components/room/RoomThumbsSlider.jsx";
 import RoomTabs from "../../components/room/RoomTabs.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
 import RoomBookingEdit from "../../components/room/RoomBookingEdit.jsx";
-import { useRoomQuery } from "../../redux/room/roomAPI.js";
+import { useGetBookingsByRoomsQuery, useGetHotelByManagerIdQuery, useRoomQuery } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import AddBooking from "../../components/room/AddBooking.jsx";
 import AddBookingSelect from "../../components/room/AddBookingSelect.jsx";
 import CheckInModal from "./CheckInModal.jsx";
 import { DateTimePicker } from "react-datetime-picker";
+import { useSelector } from "react-redux";
+import { bookingDateFormatter } from "../../utils/timeZone.js";
+import ReactPaginate from "react-paginate";
+
 
 const ManageSingleRoom = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [forcePage, setForcePage] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
   const { isLoading, data: room } = useRoomQuery(id);
+
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
+
+  const hotelId = hotelInfo && isHotelSuccess && hotelInfo[0]?._id;
+
+
+  const {data:getBookingsByRooms}=useGetBookingsByRoomsQuery({
+    page:currentPage,
+    hotelId:hotelId,
+    roomId:room?.data?._id,
+    limit:10
+  },{skip:!hotelId || !room?.data?._id})
+
+  const handlePageClick = ({ selected: page }) => {
+    setCurrentPage(page);
+  };
+
 
   return (
     <>
@@ -191,7 +220,7 @@ const ManageSingleRoom = () => {
           <h2>All Booking Information</h2>
         </div>
         <div className="overflow-x-auto border mt-3 px-2">
-          <table className="table">
+        <table className="table">
             <thead>
               <tr>
                 <th>SL</th>
@@ -201,25 +230,49 @@ const ManageSingleRoom = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>1.</th>
-                <td>
-                  {status === "Booked" ? (
-                    <div className="badge min-w-[6rem] bg-orange-600 border-orange-600 text-white">
-                      Booked
-                    </div>
-                  ) : (
-                    <div className="badge min-w-[6rem] bg-red-600 border-red-600 text-white">
-                      Checked In
-                    </div>
-                  )}
-                </td>
-                <td>04/01/24</td>
-                <td>04/01/24</td>
-              </tr>
+              {
+                getBookingsByRooms?.data?.docs?.map((bookingsRoom,idx)=>{
+                  return  <tr>
+                  <th>{++idx}</th>
+                  <td>
+                    {status === "Active" ? (
+                      <div className="badge min-w-[6rem] bg-orange-600 border-orange-600 text-white">
+                        Booked
+                      </div>
+                    ) : (
+                      <div className="badge min-w-[6rem] bg-red-600 border-red-600 text-white">
+                        Checked In
+                      </div>
+                    )}
+                  </td>
+                  <td>{bookingDateFormatter(bookingsRoom.from)}</td>
+                  <td>{bookingDateFormatter(bookingsRoom.to)}</td>
+                </tr>
+                })
+              }
             </tbody>
           </table>
         </div>
+        <div className="flex justify-center mt-10">
+                <ReactPaginate
+                  containerClassName="join rounded-none"
+                  pageLinkClassName="join-item btn btn-md bg-transparent"
+                  activeLinkClassName="btn-active !bg-green-slimy text-white"
+                  disabledLinkClassName="btn-disabled"
+                  previousLinkClassName="join-item btn btn-md bg-transparent"
+                  nextLinkClassName="join-item btn btn-md bg-transparent"
+                  breakLinkClassName="join-item btn btn-md bg-transparent"
+                  previousLabel="<"
+                  nextLabel=">"
+                  breakLabel="..."
+                  pageCount={getBookingsByRooms?.data?.totalPages}
+                  pageRangeDisplayed={2}
+                  marginPagesDisplayed={2}
+                  onPageChange={handlePageClick}
+                  renderOnZeroPageCount={null}
+                  forcePage={forcePage}
+                />
+              </div>
       </div>
     </>
   );

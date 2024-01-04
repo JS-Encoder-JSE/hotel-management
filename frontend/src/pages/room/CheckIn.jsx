@@ -247,8 +247,6 @@ const CheckIn = () => {
     limit: 1000000,
   });
 
-
-
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 
   useEffect(() => {
@@ -299,12 +297,10 @@ const CheckIn = () => {
     { skip: !formik.values.to }
   );
 
-  const availableRoomsByDate = availableRooms?.data
-    ?.filter((i) => i.status !== "CheckedIn")
-    .map((room) => ({
-      label: `${room.roomNumber} - ${room.category}`,
-      value: room._id,
-    }));
+  const availableRoomsByDate = availableRooms?.data.map((room) => ({
+    label: `${room.roomNumber} - ${room.category}`,
+    value: room._id,
+  }));
 
   console.log(availableRooms);
 
@@ -421,6 +417,7 @@ const CheckIn = () => {
               name="from"
               placeholderText={`From`}
               selected={formik.values.from}
+              maxDate={currentDate}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => formik.setFieldValue("from", date)}
               onBlur={formik.handleBlur}
@@ -439,6 +436,7 @@ const CheckIn = () => {
               name="to"
               placeholderText={`To`}
               selected={formik.values.to}
+              minDate={currentDate}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => formik.setFieldValue("to", date)}
               onBlur={formik.handleBlur}
