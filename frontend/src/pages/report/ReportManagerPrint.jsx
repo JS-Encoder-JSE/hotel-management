@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import logo from "../../assets/logo.png";
 import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI";
-import { getFormateDateAndTime } from "../../utils/timeZone";
-import { getOnlyFormatDate, versionControl } from "../../utils/utils";
+import { getFormateDateAndTime, getIndianFormattedDate } from "../../utils/timeZone";
+import { getOnlyFormatDate, getformatDateTime, versionControl } from "../../utils/utils";
 
 const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
   console.log(roomNumber);
@@ -13,8 +13,8 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
           <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
           <h1 className="font-bold text-2xl">DAK HOSPITALITY  LTD</h1>
           <span>Customer Receipt</span> <br />
-          <span>Issue Date:{getOnlyFormatDate()}</span> <br />
-          <span>Invoice Number:{data?.invoice_no}</span>
+          <span>Issue Date : {getformatDateTime()}</span> <br />
+          <span>Invoice Number : {data?.invoice_no}</span>
         </div>
       </div>
 
@@ -56,6 +56,11 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
                   <p>{data?.mobileNumber}</p>
                   <p>Address :</p>
                   <p>{data?.address}</p>
+                  <p>CheckIn Date :</p>
+                  <p>{getIndianFormattedDate(data?.checkin_date)}</p>
+                  <p>CheckOut Date :</p>
+                  <p>{getIndianFormattedDate(data?.to)}</p>
+                 
                 </div>
               </div>
             </div>

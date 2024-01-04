@@ -205,7 +205,7 @@ const ExpiredList = () => {
                           </td>
                           <td className={`space-x-1.5`}>
                             <span
-                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ms-2`}
+                              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case mb-2 ml-[0.4rem]`}
                               onClick={() =>
                                 navigate(`/dashboard/edit-renew/${owner?._id}`)
                               }

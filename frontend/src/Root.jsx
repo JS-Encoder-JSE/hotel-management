@@ -57,7 +57,7 @@ const Root = () => {
       );
       document.removeEventListener(
         "webkitfullscreenchange",
-        handleFullscreenChange,
+        handleFullscreenChange
       );
       document.removeEventListener(
         "MSFullscreenChange",
@@ -73,6 +73,15 @@ const Root = () => {
 
     return () => removeEventListener("resize", handleResize);
   }, []);
+
+  // useEffect(() => {
+  //   handleResize();
+  
+  //   window.addEventListener("resize", handleResize);
+  
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
+  
 
   return (
     <>

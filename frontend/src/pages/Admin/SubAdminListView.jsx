@@ -50,85 +50,79 @@ const SubAdminListView = () => {
             <FaArrowLeft />
           </span>
         </div>
-        <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5">
+      <div>
+      <h1 className="bg-green-slimy text-2xl text-center text-white max-w-3xl  mx-auto py-3 px-5 rounded space-x-1.5 mb-7 mt-5">
           Sub Admin Information
         </h1>
-        <div className="card-body grid sm:grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="">
-            <h2 className="card-title mb-3">Sub Admin Information </h2>
-            <table>
-              <tbody>
-                <tr>
-                  <th className="text-start">User Name</th>
-                  <td className="pl-5">:</td>
-                  <td>
-                    <span className="break-all">{userData?.username}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="text-start">Name</th>
-                  <td className="pl-5">:</td>
-                  <td>
-                    <span className="break-all">{userData?.name}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="text-start">Address</th>
-                  <td className="pl-5">:</td>
-                  <td>
-                    <span className="break-all">{userData?.address}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="text-start">Emergency Contact</th>
-                  <td className="pl-5">:</td>
-                  <td>
-                    <span className="break-all">
-                      {userData?.emergency_contact}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="text-start">Email</th>
-                  <td className="pl-5">:</td>
-                  <td className="break-all">{userData?.email}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            {/* <h6>Username : {userData?.username}</h6> */}
-            {/* <h6>Name : {userData?.name}</h6>
-            <h6>Address : {userData?.address}</h6>
-            <h6>Phone : {userData?.phone_no}</h6>
-            <h6>Emergency Contact : {userData?.emergency_contact}</h6>
-            <h6>Email : {userData?.email}</h6> */}
-          </div>
-          <div className="">
+      </div>
+      {/* ===== */}
+      <div className="card-body grid grid-cols xl:grid-cols-2 ">
+         <div className="">
+         <h2 className="card-title mb-3">Sub Admin Information </h2>
+           <table className="table-auto overflow-x-auto ">
+             <tbody>
+               <tr>
+                 <th className="text-start">User Name </th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all pl-5">{userData?.username}</td>
+               </tr>
+               <tr>
+                 <th className="text-start">Name</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all pl-5"> {userData?.name}</td>
+               </tr>
+               <tr>
+                 <th className="text-start">Address</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all pl-5">
+                   <span>{userData?.address}</span>
+                 </td>
+               </tr>
+               <tr>
+                 <th className="text-start">Emergency No</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all">
+                   <span className="break-all pl-5"> {userData?.emergency_contact}</span>
+                 </td>
+               </tr>
+             
+               <tr>
+                 <th className="text-start">Email</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all pl-5">
+                   <span>{userData?.email}</span>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+         <div className="">
             <h2 className="card-title mb-3">Other Information </h2>
             <table>
               <tbody>
                 <tr>
                   <th className="text-start">Joining Date</th>
-                  <td className="pl-5">:</td>
-                  <td>
+                  <td className="pl-2">:</td>
+                  <td className="break-all pl-3">
                     {getOnlyFormatDate(userData?.joining_date)}
                
                   </td>
                 </tr>
                 <tr>
                   <th className="text-start">Salary</th>
-                  <td className="pl-5">:</td>
-                  <td>{userData?.salary}</td>
+                  <td className="pl-2">:</td>
+                  <td className="break-all pl-3">{userData?.salary}</td>
                 </tr>
                 <tr>
                   <th className="text-start">Status</th>
-                  <td className="pl-5">:</td>
-                  <td>{userData?.status}</td>
+                  <td className="pl-2">:</td>
+                  <td className="break-all pl-3">{userData?.status}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div>
+       </div>
+    
       </div>
       <AdminOwnerList title={"Owner List"} />
       <TransactionHistory />

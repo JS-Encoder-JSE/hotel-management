@@ -27,6 +27,7 @@ const ConfirmOrder = () => {
   const [orderInventory, { isLoading: inventoryLoading }] =
     useOrderInventoryMutation();
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectorValue, setSelectorValue] = useState([]);
   const formik = useFormik({
     initialValues: {
       roomNumber: "",
@@ -49,6 +50,7 @@ const ConfirmOrder = () => {
       } else {
         dispatch(resetInv());
         closeRef.current.click();
+        setSelectorValue([]);
         toast.success(response.data.message);
       }
     },
@@ -94,10 +96,13 @@ const ConfirmOrder = () => {
               placeholder="Select room"
               name={`roomNumber`}
               defaultValue={formik.values.roomNumber}
+              value={selectorValue}
               filterOption={customFilterOption}
               options={transformedRooms}
               isSearchable
-              onChange={(e) => formik.setFieldValue("roomNumber", e.value)}
+              onChange={(e) => {
+                setSelectorValue(e);
+                formik.setFieldValue("roomNumber", e.value)}}
               noOptionsMessage={() => "No room available"}
               classNames={{
                 control: (state) =>

@@ -45,54 +45,130 @@ const RenewView = () => {
           </span>
         </div>
         {!isLoading ? (
-          <div className="card-body grid grid-cols-1 md:grid-cols-2 gap-4  overflow-x-auto">
-            <div className="mb-4 md:mb-0">
-              <h2 className="card-title mb-3">Client Information </h2>
-              <h6>Username : {data?.username}</h6>
-              <h6>Name : {data?.name}</h6>
-              <h6>Address : {data?.address}</h6>
-              <h6>Contact Number : {data?.phone_no}</h6>
-              <h6>Emergency Contact: {data?.emergency_contact}</h6>
-             <span></span>
-             <h6>Email : {data?.email}</h6>
-            </div>
-            <div >
-              <h2 className="card-title mb-3">License Information </h2>
-              <h6> License Key : {data?.license_key}
-                {/* {new Date(bill_to).toLocaleDateString()} */}
-                </h6>
-              <h6>
-              
-                Purchase Date : {getOnlyFormatDate(data?.createdAt)}
-                {/* {new Date(
-                  data?.createdAt,
-                ).toLocaleDateString()}{" "} */}
-              </h6>
-              <h6>
-                {" "}
-                Renew Date :{new Date(
-                  data?.renew_date,
-                ).toLocaleDateString()}{" "}
-              </h6>
-              <h6> Expire Date :  {getOnlyFormatDate(data?.bill_to)}</h6>
-              <h6>
-                {" "}
-                Remaining Days: {calculateRemainingDays(bill_to)}
-                Days
-              </h6>
-              <h6 className="capitalize">Status : {data?.status}</h6>
-              <div className="flex gap-1.5">
-                <h6>Number Of Hotels : {data?.maxHotels}</h6>
-                {/* <span
-										className={`cursor-pointer`}
-										onClick={() =>
-											window.hle_modal.showModal()
-										}>
-										<FaEdit />
-									</span> */}
-              </div>
-            </div>
-          </div>
+         <div className="card-body grid grid-cols xl:grid-cols-2 ">
+         <div className="">
+           <h2 className="card-title mb-3">Client Information</h2>
+           <table className="table-auto overflow-x-auto ">
+             <tbody>
+               <tr>
+                 <th className="text-start">User Name </th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all pl-5">{data?.username}</td>
+               </tr>
+               <tr>
+                 <th className="text-start">Name</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all pl-5"> {data?.name}</td>
+               </tr>
+               <tr>
+                 <th className="text-start">Address</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all pl-5">
+                   <span>{data?.address}</span>
+                 </td>
+               </tr>
+               <tr>
+                 <th className="text-start">Contact No</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all">
+                   <span className="break-all pl-5">{data?.phone_no}</span>
+                 </td>
+               </tr>
+               <tr>
+                 <th className="text-start">Emergency No</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all">
+                   <span className="break-all pl-5">{data?.emergency_contact}</span>
+                 </td>
+               </tr>
+             
+               <tr>
+                 <th className="text-start">Email</th>
+                 <td className="pl-2">:</td>
+                 <td className="break-all pl-5">
+                   <span>{data?.email}</span>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+
+         <div className="">
+           <h2 className="card-title mb-3">License Information </h2>
+
+           <table>
+             <tbody>
+             <tr>
+                 <th className="text-start">License Key</th>
+                 <td className="pl-3">:</td>
+                 <td className="break-all pl-5">
+                   <span>{data?.license_key}</span>
+                 </td>
+               </tr>
+               <tr>
+                 <th className="text-start">Purchase Date</th>
+                 <td className="pl-3">:</td>
+                 <td className=" break-all pl-5">
+                   {getOnlyFormatDate(data?.createdAt)}
+                 </td>
+               </tr>
+               <tr>
+                 <th className="text-start">Renew Date</th>
+                 <td className="pl-3">:</td>
+                 <td className=" break-all pl-5">
+                   {getOnlyFormatDate(data?.bill_from)}
+                   {/* <h6>
+                     {" "}
+                     Renew Date :
+                     {new Date(data?.renew_date).toLocaleDateString()}{" "}
+                   </h6> */}
+                 </td>
+               </tr>
+               <tr>
+                 <th className="text-start">Expire Date</th>
+                 <td className="pl-3">:</td>
+                 <td className=" break-all pl-5">
+                   {" "}
+                   {getOnlyFormatDate(data?.bill_to)}
+                 </td>
+               </tr>
+               <tr>
+                 <th className="text-start">Remain Days</th>
+                 <td className="pl-3">:</td>
+                 <td className=" break-all pl-5">
+                   {/* {" "}
+                   {Math.floor(
+                     Math.abs(new Date(data?.bill_to) - new Date()) /
+                       (24 * 60 * 60 * 1000)
+                   )}{" "}
+                   Days */}
+                    {calculateRemainingDays(bill_to)} Days
+                 </td>
+               </tr>
+               <tr>
+                 <th className="text-start"> Status</th>
+                 <td className="pl-3">:</td>
+                 <td className=" break-all pl-5">{data?.status}</td>
+               </tr>
+
+               <tr>
+                 <th className="text-start">Number Of Hotels</th>
+                 <td className="pl-3">:</td>
+                 <td className="flex gap-2 items-center mt-4 md:mt-0">
+                   {" "}
+                   <span className=" pl-5">{data?.maxHotels}</span>
+                   <span
+                     className={`cursor-pointer`}
+                     onClick={() => window.hle_modal.showModal()}
+                   >
+                    
+                   </span>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+       </div>
         ) : (
           <Rings
             width="50"
