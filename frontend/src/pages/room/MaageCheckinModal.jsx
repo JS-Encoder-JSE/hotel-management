@@ -277,47 +277,53 @@ const ManageCheckinModal = () => {
   };
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
-  
-  const {data:availableRooms,isSuccess,isLoading:availableRoomsLoading} = useGetAvailableRoomsByDateQuery({
-    hotel_id:user?.assignedHotel[0],
-    fromDate:formik.values.from ? convertedStartDate(formik.values.from):"",
-    toDate:formik.values.to? convertedEndDate(formik.values.to):"",
-  },{skip:!formik.values.to})
 
-  const availableRoomsByDate = availableRooms?.data
-    ?.filter((i) => i.status !== "CheckedIn")
-    .map((room) => ({
-      label: `${room.roomNumber} - ${room.category}`,
-      value: room._id,
-    }));
+  const {
+    data: availableRooms,
+    isSuccess,
+    isLoading: availableRoomsLoading,
+  } = useGetAvailableRoomsByDateQuery(
+    {
+      hotel_id: user?.assignedHotel[0],
+      fromDate: formik.values.from
+        ? convertedStartDate(formik.values.from)
+        : "",
+      toDate: formik.values.to ? convertedEndDate(formik.values.to) : "",
+    },
+    { skip: !formik.values.to }
+  );
 
-    console.log(availableRooms)
- 
-  const [roomError,setRoomError]=useState("")
+  const availableRoomsByDate = availableRooms?.data.map((room) => ({
+    label: `${room.roomNumber} - ${room.category}`,
+    value: room._id,
+  }));
+
+
+  const [roomError, setRoomError] = useState("");
 
   const handleErrorForAvailableRooms = () => {
     if (!formik.values.to) {
       setRoomError("Please select booking date");
     }
-    if(formik.values.to){
-      setRoomError("")
+    if (formik.values.to) {
+      setRoomError("");
     }
   };
 
-  useEffect(()=>{
-    if(formik.values.to){
-      setRoomError("")
+  useEffect(() => {
+    if (formik.values.to) {
+      setRoomError("");
     }
-  },[formik.values.to])
+  }, [formik.values.to]);
 
   return (
     <>
       <form autoComplete="off" method="dialog">
         <button
           onClick={() => {
-            setSelectedImages([])
+            setSelectedImages([]);
             closeRef.current.click();
-            formik.resetForm()
+            formik.resetForm();
           }}
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -389,13 +395,14 @@ const ManageCheckinModal = () => {
               </Swiper>
             </div>
           ) : null}
-              {/* Date */}
+          {/* Date */}
           <div className="flex flex-col gap-3">
             <DatePicker
               dateFormat="dd/MM/yyyy"
               name="from"
               placeholderText={`From`}
               selected={formik.values.from}
+              maxDate={new Date()}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => formik.setFieldValue("from", date)}
               onBlur={formik.handleBlur}
@@ -424,7 +431,10 @@ const ManageCheckinModal = () => {
               </small>
             ) : null}
           </div>
-          <div onClick={handleErrorForAvailableRooms} className="flex flex-col gap-3">
+          <div
+            onClick={handleErrorForAvailableRooms}
+            className="flex flex-col gap-3"
+          >
             <Select
               placeholder="Select Rooms"
               defaultValue={formik.values.room_arr}
@@ -433,7 +443,11 @@ const ManageCheckinModal = () => {
               filterOption={customFilterOption}
               isMulti
               isSearchable
-              isDisabled={availableRoomsLoading || !formik.values.from || !formik.values.to}
+              isDisabled={
+                availableRoomsLoading ||
+                !formik.values.from ||
+                !formik.values.to
+              }
               closeMenuOnSelect={false}
               // onKeyDown={handleKeyDown}
               onChange={(e) => {
@@ -450,7 +464,9 @@ const ManageCheckinModal = () => {
                 placeholder: () => "!m-0",
               }}
             />
-            {roomError&& <small className="text-red-600 text-small">{roomError}</small>}
+            {roomError && (
+              <small className="text-red-600 text-small">{roomError}</small>
+            )}
             {formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (
               <small className="text-red-600">
                 {formik.touched.room_arr && formik.errors.room_arr}
@@ -638,8 +654,6 @@ const ManageCheckinModal = () => {
               onBlur={formik.handleBlur}
             />
           </div>
-
-        
 
           {/* Nationality box */}
           <div className="flex flex-col gap-3">
