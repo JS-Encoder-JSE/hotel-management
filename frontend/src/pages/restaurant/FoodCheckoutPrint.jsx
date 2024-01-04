@@ -40,7 +40,7 @@ const FoodCheckoutPrint = ({
             <h1 className="font-bold text-2xl">{/* DAK Hospital LTD */}</h1>
             <span>Customer Receipt</span> <br />
         
-            <span>Issue Date: {getformatDateTime()} </span>
+            <span>Issue Date : {getformatDateTime()} </span>
           </div>
         </div>
       </div>

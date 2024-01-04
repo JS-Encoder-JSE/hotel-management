@@ -10,7 +10,7 @@ const Root = () => {
 
   const handleResize = () => {
     if (innerWidth >= 768) setHbMenu(false);
-    else setHbMenu(false);
+    else setHbMenu(true);
   };
 
   const enterFullscreen = () => {
@@ -53,7 +53,7 @@ const Root = () => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
       document.removeEventListener(
         "mozfullscreenchange",
-        handleFullscreenChange
+        handleFullscreenChange,
       );
       document.removeEventListener(
         "webkitfullscreenchange",
@@ -61,7 +61,7 @@ const Root = () => {
       );
       document.removeEventListener(
         "MSFullscreenChange",
-        handleFullscreenChange
+        handleFullscreenChange,
       );
     };
   }, []);

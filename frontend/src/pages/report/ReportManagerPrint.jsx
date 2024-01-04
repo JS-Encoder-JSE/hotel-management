@@ -13,8 +13,8 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
           <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
           <h1 className="font-bold text-2xl">DAK HOSPITALITY  LTD</h1>
           <span>Customer Receipt</span> <br />
-          <span>Issue Date:{getformatDateTime()}</span> <br />
-          <span>Invoice Number:{data?.invoice_no}</span>
+          <span>Issue Date : {getformatDateTime()}</span> <br />
+          <span>Invoice Number : {data?.invoice_no}</span>
         </div>
       </div>
 
