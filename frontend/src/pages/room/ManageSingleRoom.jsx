@@ -5,18 +5,30 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import Modal from "../../components/Modal.jsx";
 import RoomBookingEdit from "../../components/room/RoomBookingEdit.jsx";
-import { useRoomQuery } from "../../redux/room/roomAPI.js";
+import { useGetBookingsByRoomsQuery, useRoomQuery } from "../../redux/room/roomAPI.js";
 import { Rings } from "react-loader-spinner";
 import AddBooking from "../../components/room/AddBooking.jsx";
 import AddBookingSelect from "../../components/room/AddBookingSelect.jsx";
 import CheckInModal from "./CheckInModal.jsx";
 import { DateTimePicker } from "react-datetime-picker";
+import { useSelector } from "react-redux";
 
 const ManageSingleRoom = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isLoading, data: room } = useRoomQuery(id);
 
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+
+
+  const {data:getBookingsByRooms}=useGetBookingsByRoomsQuery({
+    page:0,
+    hotelId:user?.assignedHotel[0],
+    roomId:room?.data?._id,
+    limit:10
+  })
+
+  console.log(getBookingsByRooms)
   return (
     <>
       <div

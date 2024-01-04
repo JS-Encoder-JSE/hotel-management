@@ -275,13 +275,13 @@ const roomAPI = baseAPI.injectEndpoints({
 
     getBookingsByRooms: build.query({
       query: ({ hotelId, roomId, page, limit }) => {
-        return `/bookings/get-bookings-by-room?${
-          page ? `&page=${page++}` : ""
-        }${hotelId ? `&hotelId=${hotelId}` : ""}${
-          roomId ? `&roomId=${roomId}` : ""
-        }${limit ? `&limit=${limit}` : ""}`;
+        return `/bookings/get-bookings-by-room?${`page=${++page}`}${
+          hotelId ? `&&hotel_id=${hotelId}` : ""
+        }${roomId ? `&&room_id=${roomId}` : ""}${
+          limit ? `&&limit=${limit}` : ""
+        }`;
       },
-      providesTags:["getBookingsByRooms"]
+      providesTags: ["getBookingsByRooms"],
     }),
 
     getRoomPostedBills: build.query({
