@@ -247,13 +247,7 @@ const CheckIn = () => {
     limit: 1000000,
   });
 
-  const transformedRooms = rooms?.data?.docs
-    ?.filter((i) => i.status === "Available")
-    .map((room) => ({
-      label: `${room.roomNumber} - ${room.category}`,
-      value: room._id,
-      price: room.price,
-    }));
+
 
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 
@@ -289,35 +283,47 @@ const CheckIn = () => {
     }
   };
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
-  
-  const {data:availableRooms,isSuccess,isLoading:availableRoomsLoading} = useGetAvailableRoomsByDateQuery({
-    hotel_id:user?.assignedHotel[0],
-    fromDate:formik.values.from ? convertedStartDate(formik.values.from):"",
-    toDate:formik.values.to? convertedEndDate(formik.values.to):"",
-  },{skip:!formik.values.to})
 
-  const availableRoomsByDate = availableRooms?.data?.map((room) => ({
-    label: `${room.roomNumber} - ${room.category}`,
-    value: room._id,
-  }))
- 
-  const [error,setError]=useState("")
+  const {
+    data: availableRooms,
+    isSuccess,
+    isLoading: availableRoomsLoading,
+  } = useGetAvailableRoomsByDateQuery(
+    {
+      hotel_id: user?.assignedHotel[0],
+      fromDate: formik.values.from
+        ? convertedStartDate(formik.values.from)
+        : "",
+      toDate: formik.values.to ? convertedEndDate(formik.values.to) : "",
+    },
+    { skip: !formik.values.to }
+  );
+
+  const availableRoomsByDate = availableRooms?.data
+    ?.filter((i) => i.status !== "CheckedIn")
+    .map((room) => ({
+      label: `${room.roomNumber} - ${room.category}`,
+      value: room._id,
+    }));
+
+  console.log(availableRooms);
+
+  const [error, setError] = useState("");
 
   const handleErrorForAvailableRooms = () => {
     if (!formik.values.to) {
       setError("Please select booking date");
     }
-    if(formik.values.to){
-      setError("")
+    if (formik.values.to) {
+      setError("");
     }
   };
 
-  useEffect(()=>{
-    if(formik.values.to){
-      setError("")
+  useEffect(() => {
+    if (formik.values.to) {
+      setError("");
     }
-  },[formik.values.to])
-
+  }, [formik.values.to]);
 
   return (
     <div className={` bg-white rounded-2xl mx-auto p-8 sm:max-w-[90%]`}>
@@ -408,8 +414,8 @@ const CheckIn = () => {
         ) : null}
 
         <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
-             {/* Date */}
-             <div className="flex flex-col gap-3">
+          {/* Date */}
+          <div className="flex flex-col gap-3">
             <DatePicker
               dateFormat="dd/MM/yyyy"
               name="from"
@@ -443,7 +449,10 @@ const CheckIn = () => {
               </small>
             ) : null}
           </div>
-          <div onClick={handleErrorForAvailableRooms}  className="flex flex-col gap-3">
+          <div
+            onClick={handleErrorForAvailableRooms}
+            className="flex flex-col gap-3"
+          >
             <Select
               value={selectorValue}
               placeholder="Select Rooms"
@@ -452,7 +461,11 @@ const CheckIn = () => {
               isMulti
               isSearchable
               closeMenuOnSelect={false}
-              isDisabled={availableRoomsLoading || !formik.values.from || !formik.values.to}
+              isDisabled={
+                availableRoomsLoading ||
+                !formik.values.from ||
+                !formik.values.to
+              }
               onChange={(e) => {
                 setSelectorValue(e);
                 formik.setFieldValue("room_arr", e);
@@ -467,7 +480,9 @@ const CheckIn = () => {
                 placeholder: () => "!m-0",
               }}
             />
-            {error&& <small className="text-red-600 text-small">{error}</small>}
+            {error && (
+              <small className="text-red-600 text-small">{error}</small>
+            )}
             {formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (
               <small className="text-red-600">
                 {formik.touched.room_arr && formik.errors.room_arr}
@@ -658,8 +673,6 @@ const CheckIn = () => {
               onBlur={formik.handleBlur}
             />
           </div>
-
-       
 
           {/* Nationality box */}
           <div className="flex flex-col gap-3">
