@@ -70,6 +70,7 @@ const CheckOut = () => {
   const [addCheckOutLoading, setCheckOutLoading] = useState(false);
   const [saveCheckoutDataObj, setSaveCheckoutDataOj] = useState({});
   const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [additionalChargeComment,setComment]=useState("")
 
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
   const {
@@ -260,6 +261,7 @@ const CheckOut = () => {
           no_of_days: calculateNOD,
           rent_per_day: checkout?.data?.room_bookings[0]?.rent_per_day,
           total_room_rent: new_total_room_rent,
+          total_additional_charge_comment:additionalChargeComment,
         };
         setSaveCheckoutDataOj(saveCheckoutInfoObj);
         const response = await addCheckout({
@@ -513,6 +515,7 @@ const CheckOut = () => {
             <div className="my-5">
               <BillingSection
                 data={checkout?.data}
+                setComment={setComment}
                 totalBilling={totalBilling}
                 setTotalBilling={setTotalBilling}
                 setPBill={setPBill}
