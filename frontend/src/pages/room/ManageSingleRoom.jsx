@@ -96,12 +96,18 @@ const ManageSingleRoom = () => {
                     </h6>
                   </div>
                 </div>
+                {/* ===== */}
+               
+                   
+                 
+
+                {/* ===== */}
                 <div
                   className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5 mt-6`}
                 >
                   {room?.data?.status === "Available" ? (
                     <>
-                      <button
+                     <button
                         className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem]`}
                         onClick={() => window.ab_modal.showModal()}
                       >
@@ -113,13 +119,19 @@ const ManageSingleRoom = () => {
                       >
                         CheckIn
                       </button>
+                      <button
+                    className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
+                    onClick={() =>
+                      navigate(`/dashboard/edit-room/${room?.data?._id}`)
+                    }
+                  >
+                    Edit
+                  </button>
+                   
                     </>
-                  ) : room?.data?.status === "Booked" ? // 			}) // 				state: room, // 			navigate("/dashboard/checkin", { // 		onClick={() => // 		className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `} // 	<button // (
-                  // 		}>
-                  // 		CheckIn
-                  // 	</button>
-                  // )
-                  null : (
+                  ) : room?.data?.status === "CheckedIn" ? 			
+                   (
+                    <>
                     <button
                       onClick={() =>
                         navigate(`/dashboard/checkout?room=${room?.data?._id}`)
@@ -128,16 +140,25 @@ const ManageSingleRoom = () => {
                     >
                       CheckOut
                     </button>
-                  )}
-                  {/* Modal Edit  */}
-                  <button
-                    className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
-                    onClick={() =>
-                      navigate(`/dashboard/edit-room/${room?.data?._id}`)
-                    }
-                  >
-                    Edit
-                  </button>
+                       <button
+                       className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem]`}
+                       onClick={() => window.ab_modal.showModal()}
+                     >
+                       Booking
+                     </button>
+                        <button
+                        className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
+                        onClick={() =>
+                          navigate(`/dashboard/edit-room/${room?.data?._id}`)
+                        }
+                      >
+                        Edit
+                      </button>
+                      </>
+                   ):null
+                  }
+                  
+               
                 </div>
               </div>
             </div>
