@@ -268,7 +268,9 @@ const FoodCheckout = () => {
                       <td></td>
                       <td>Total</td>
                       <td>
-                        <td> {orderData?.data?.total_price}</td>
+                        {grandTotal}
+                           {/* {orderData?.data?.total_price} */}
+                        
                       </td>
                       <td></td>
                     </tr>
@@ -457,6 +459,7 @@ const FoodCheckout = () => {
           <div className="p-4" ref={componentRef}>
             <FoodCheckoutPrint
               hotelInfo={hotelInfo}
+            
               orderData={orderData}
               finalTotal={finalTotal}
               discountAmount={discountAmount}

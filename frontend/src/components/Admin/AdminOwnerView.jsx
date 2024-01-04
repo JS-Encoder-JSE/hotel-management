@@ -45,106 +45,91 @@ const AdminOwnerView = () => {
           <div className="card-body grid grid-cols xl:grid-cols-2 gap-4">
             <div className="">
               <h2 className="card-title mb-3">Client Information </h2>
-              {/* <div
-                className="sm:flex-row"
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                <span style={{ flexBasis: "50%" }}>Address</span>
-                <span style={{ flexBasis: "50%" }}>{data?.address}</span>
-              </div> */}
-              <table className="table-auto w-full overflow-x-auto">
+
+              <table className="table-auto overflow-x-auto">
                 <tbody>
                   <tr>
                     <th className="text-start">User Name</th>
-                    <td className="pl-5">:</td>
-                    <td className="break-all">{data?.username}</td>
+                    <td className="pl-3">:</td>
+                    <td className="break-all pl-4">{data?.username}</td>
                   </tr>
                   <tr>
                     <th className="text-start">Name</th>
-                    <td className="pl-5">:</td>
-                    <td className="break-all"> {data?.name}</td>
+                    <td className="pl-3">:</td>
+                    <td className="break-all pl-4"> {data?.name}</td>
                   </tr>
                   <tr>
                     <th className="text-start">Address</th>
-                    <td className="pl-5">:</td>
-                    <td className="break-all">
+                    <td className="pl-3">:</td>
+                    <td className="break-all pl-4">
                       <span>{data?.address}</span>
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Contact No</th>
-                    <td className="pl-5">:</td>
+                    <td className="pl-3">:</td>
                     <td className="break-all">
-                      <span className="break-all">{data?.phone_no}</span>
+                      <span className="break-all pl-4">{data?.phone_no}</span>
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Emergency No</th>
-                    <td className="pl-5">:</td>
+                    <td className="pl-3">:</td>
                     <td className="break-all">
-                      <span className="break-all">
+                      <span className="break-all pl-4">
                         {data?.emergency_contact}
                       </span>
                     </td>
                   </tr>
+
                   <tr>
                     <th className="text-start">Email</th>
-                    <td className="pl-5">:</td>
-                    <td className="break-all">
-                      <span className="break-all">{data?.email}</span>
+                    <td className="pl-3">:</td>
+                    <td className="break-all pl-4">
+                      <span>{data?.email}</span>
                     </td>
                   </tr>
                 </tbody>
               </table>
-
-              {/* <h6>Username : {data?.username}</h6>
-              <h6>Name : {data?.name}</h6>
-              <h6>Address : {data?.address}</h6>
-              <h6>Contact Number : {data?.phone_no}</h6>
-              <h6>Emergency Contact: {data?.emergency_contact}</h6>
-              <h6>Email : {data?.email}</h6> */}
             </div>
-            <div className="">
+            <div>
               <h2 className="card-title mb-3">License Information </h2>
 
               <table>
                 <tbody>
                   <tr>
                     <th className="text-start">License Key</th>
-                    <td className="pl-10">:</td>
-                    <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg break-all">
+                    <td className="pl-5">:</td>
+                    <td className="md:pl-2 max-w-[200px] sm:max-w-full sm:text-xs md:text-sm lg:text-base xl:text-lg break-all pl-5">
                       {data?.license_key}
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Purchase Date</th>
-                    <td className="pl-10">:</td>
-                    <td className="md:pl-2 break-all">
+                    <td className="pl-5">:</td>
+                    <td className="md:pl-2 break-all pl-5">
                       {getOnlyFormatDate(data?.createdAt)}
-                     
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Renew Date</th>
-                    <td className="pl-10">:</td>
-                    <td className="md:pl-2 break-all">
+                    <td className="pl-5">:</td>
+                    <td className="md:pl-2 break-all pl-5">
                       {getOnlyFormatDate(data?.bill_from)}
-                    
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Expire Date</th>
-                    <td className="pl-10">:</td>
-                    <td className="md:pl-2 break-all">
+                    <td className="pl-5">:</td>
+                    <td className="md:pl-2 break-all pl-5">
                       {" "}
                       {getOnlyFormatDate(data?.bill_to)}
-                     
                     </td>
                   </tr>
                   <tr>
                     <th className="text-start">Remain Days</th>
-                    <td className="pl-10">:</td>
-                    <td className="md:pl-2 break-all">
+                    <td className="pl-5">:</td>
+                    <td className="md:pl-2 break-all pl-5">
                       {" "}
                       {Math.floor(
                         Math.abs(new Date(data?.bill_to) - new Date()) /
@@ -155,16 +140,18 @@ const AdminOwnerView = () => {
                   </tr>
                   <tr>
                     <th className="text-start"> Status</th>
-                    <td className="pl-10">:</td>
-                    <td className="md:pl-2 break-all">{data?.status}</td>
+                    <td className="pl-5">:</td>
+                    <td className="md:pl-2 break-all pl-5">{data?.status}</td>
                   </tr>
 
                   <tr>
                     <th className="text-start">Number Of Hotels</th>
-                    <td className="pl-10">:</td>
+                    <td className="pl-5">:</td>
                     <td className="flex gap-2 items-center mt-4 md:mt-0">
                       {" "}
-                      <span className="md:pl-2">{data?.maxHotels}</span>{" "}
+                      <span className="md:pl-2 pl-5">
+                        {data?.maxHotels}
+                      </span>{" "}
                       <span
                         className={`cursor-pointer`}
                         onClick={() => window.hle_modal.showModal()}
