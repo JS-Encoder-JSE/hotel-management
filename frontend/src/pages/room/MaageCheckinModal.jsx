@@ -251,13 +251,13 @@ const ManageCheckinModal = () => {
     limit: 1000000,
   });
 
-  const transformedRooms = rooms?.data?.docs
-    ?.filter((i) => i.status === "Available")
-    .map((room) => ({
-      label: `${room.roomNumber} - ${room.category}`,
-      value: room._id,
-      price: room.price,
-    }));
+  // const transformedRooms = rooms?.data?.docs
+  //   ?.filter((i) => i.status === "Available")
+  //   .map((room) => ({
+  //     label: `${room.roomNumber} - ${room.category}`,
+  //     value: room._id,
+  //     price: room.price,
+  //   }));
 
   const { data: hotelsList } = useGetRoomsAndHotelsQuery();
 
@@ -321,6 +321,7 @@ const ManageCheckinModal = () => {
           onClick={() => {
             setSelectedImages([])
             closeRef.current.click();
+            formik.resetForm()
           }}
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
