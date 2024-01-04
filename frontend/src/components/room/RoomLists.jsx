@@ -101,11 +101,13 @@ const RoomLists = ({ currentPage, setCurrentPage, rooms,forcePage }) => {
                       <div className="badge min-w-[6rem] bg-green-slimy border-green-slimy text-white">
                         Available
                       </div>
-                    ) : status === "Booked" ? (
-                      <div className="badge min-w-[6rem] bg-orange-600 border-orange-600 text-white">
-                        Booked
-                      </div>
-                    ) : (
+                    ) 
+                    // : status === "Booked" ? (
+                    //   <div className="badge min-w-[6rem] bg-orange-600 border-orange-600 text-white">
+                    //     Booked
+                    //   </div>
+                    // ) 
+                    : (
                       <div className="badge min-w-[6rem] bg-red-600 border-red-600 text-white">
                         Checked In
                       </div>

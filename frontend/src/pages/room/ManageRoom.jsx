@@ -103,7 +103,7 @@ const ManageRoom = () => {
             >
               <option value="">All</option>
               <option value="Available">Available</option>
-              <option value="Booked">Booked</option>
+              {/* <option value="Booked">Booked</option> */}
               <option value="CheckedIn">Checked In</option>
             </select>
           </div>
