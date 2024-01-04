@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { signOut } from "./auth/authSlice.js";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5001",
+baseUrl: "http://localhost:5001",
   // baseUrl: "https://v1.dakhotel.com",
   // baseUrl: "https://hotel-backend-63vk.onrender.com/",
   prepareHeaders: (headers, { getState }) => {

@@ -135,21 +135,15 @@ const AddFood = () => {
     },
   });
 
-  const handleDelete = (idx) => {
-    const tempImgs = [
-      ...selectedImages.slice(0, idx),
-      ...selectedImages.slice(idx + 1),
-    ];
-    const dataTransfer = new DataTransfer();
-
-    for (const file of tempImgs) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("photos", dataTransfer.files);
-    setSelectedImages(tempImgs);
-  };
-
+    // Image delete
+    const handleDelete = (idx) => {
+      const updatedImages = [...selectedImages];
+      updatedImages.splice(idx, 1);
+  
+      formik.setFieldValue("photos", updatedImages);
+      setSelectedImages(updatedImages);
+    };
+  
   // HandleChange
   const handleChange = (idx, newFile) => {
     const updatedImages = [...selectedImages];
@@ -157,12 +151,7 @@ const AddFood = () => {
     formik.setFieldValue("photos", updatedImages);
     setSelectedImages(updatedImages);
   };
-  useEffect(() => {
-    if (formik.values.photos) {
-      const selectedImagesArray = Array.from(formik.values.photos);
-      setSelectedImages(selectedImagesArray);
-    }
-  }, [formik.values.photos]);
+
   const predefinedOptions = [
     { key: "", value: "", label: "Category" },
     { key: "Liquor", value: "Liquor", label: "Liquor" },

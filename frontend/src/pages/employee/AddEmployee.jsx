@@ -7,6 +7,7 @@ import {
   FaEye,
   FaEyeSlash,
   FaPlusCircle,
+  FaTrash,
   FaUpload,
 } from "react-icons/fa";
 import {
@@ -25,6 +26,7 @@ import { useGetRoomsAndHotelsQuery } from "../../redux/room/roomAPI.js";
 import { Link } from "react-router-dom";
 import EmployeeView from "./EmployeeView";
 import { convertedStartDate } from "../../utils/timeZone.js";
+import { TbReplaceFilled } from "react-icons/tb";
 
 // form validation
 const validationSchema = yup.object({
@@ -55,6 +57,7 @@ const AddEmployee = () => {
 
   const [addSubAdmin] = useAddSubAdminMutation();
   const [selectedImages, setSelectedImages] = useState([]);
+
   const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
     initialValues: {
@@ -149,6 +152,7 @@ const AddEmployee = () => {
           joining_date: convertedStartDate(joining_date),
           images: obj.images,
         });
+    
         if (response?.error) {
           toast.error(response.error.data.message);
         } else {
@@ -164,6 +168,24 @@ const AddEmployee = () => {
     },
   });
 
+  console.log("selectedImg",selectedImages)
+
+  const handleDelete = (idx, image) => {
+    const tempImgs = [...selectedImages];
+    tempImgs.splice(idx, 1);
+
+    if (image.name === "profile"){
+      formik.setFieldValue("userImg", null)
+    }else if (image.name === "docs") {
+      const updatedDocuments = formik.values.documents.filter(
+        (file, index) => file !== image.file
+      );
+      formik.setFieldValue("documents", updatedDocuments);
+    }
+    setSelectedImages(tempImgs);
+  };
+
+
   // Price Validation
   const handleSalary = (e) => {
     const inputValue = e.target.value;
@@ -176,6 +198,29 @@ const AddEmployee = () => {
       formik.handleChange(e);
     }
   };
+
+
+  const handleChange = (idx, newFile, image) => {
+    const updatedImages = [...selectedImages];
+    const updatedDocuments = formik.values.documents.map((file) =>
+      file === image.file ? newFile : file
+    );
+  
+    updatedImages.splice(idx, 1, {
+      name: image.name,
+      file: newFile,
+      index: image.index,
+    });
+  
+    if (image.name === "profile") {
+      formik.setFieldValue("userImg", newFile);
+    } else if (image.name === "docs") {
+      formik.setFieldValue("documents", updatedDocuments);
+    }
+  
+    setSelectedImages(updatedImages);
+  };
+
 
   return (
     <div className={`space-y-10 md:p-6`}>
@@ -241,10 +286,33 @@ const AddEmployee = () => {
                           <div className={`relative`}>
                             <img
                               key={idx}
-                              src={URL.createObjectURL(image)}
+                              src={URL.createObjectURL(image.file)}
                               alt=""
                               className={`w-full h-96 object-cover rounded`}
                             />
+                          </div>
+                          <div className={`absolute top-3 right-3 space-x-1.5`}>
+                          <label className="relative btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy normal-case rounded">
+                              <TbReplaceFilled />
+                              <input
+                                type="file"
+                                className="absolute left-0 top-0  overflow-hidden h-0"
+                                onChange={(e) =>
+                                  handleChange(
+                                    idx,
+                                    e.currentTarget.files[0],
+                                    image
+                                  )
+                                }
+                              />
+                            </label>
+                          <button
+                              type="button"
+                              className="btn btn-sm bg-red-600 hover:bg-transparent text-white hover:text-red-600 !border-red-600 normal-case rounded"
+                              onClick={() => handleDelete(idx, image)}
+                            >
+                              <FaTrash />
+                            </button>
                           </div>
                         </SwiperSlide>
                       ))
@@ -477,14 +545,22 @@ const AddEmployee = () => {
                         const selectedImagesArray = Array.from(
                           e.currentTarget.files
                         );
-                        formik.setFieldValue("documents", [
+                        const allSelectedImgs =[
                           ...formik.values.documents,
                           ...selectedImagesArray,
-                        ]);
+                        ] 
+                        formik.setFieldValue("documents",allSelectedImgs );
                         setSelectedImages([
                           ...selectedImages,
-                          ...selectedImagesArray,
+                          ...selectedImagesArray.map((selectImg)=>{
+                            return {
+                              file:selectImg,
+                              name:"docs",
+                              index: allSelectedImgs.indexOf(selectImg)
+                            }
+                          }),
                         ]);
+                        
                       }}
                       onBlur={formik.handleBlur}
                     />
@@ -522,11 +598,16 @@ const AddEmployee = () => {
                   onChange={(e) => {
                     if (e.target.files[0]) {
                       setSelectedImages((prev) => {
-                        const updatedImages = prev.filter((image) => {
-                          image !== formik.values.userImg;
-                        });
-                        formik.setFieldValue("userImg", e.target.files[0]);
-                        return [...updatedImages, e.target.files[0]];
+                        const exist = prev.find((image)=> image.name === "profile")
+                        if(exist){
+                          const updatedImages = prev.filter((image) => {
+                           return image.name !== "profile";
+                          });
+                          formik.setFieldValue("userImg", e.target.files[0])
+                          return [...updatedImages, {file:e.target.files[0],name:"profile",index:0}]
+                        }  else{
+                          return [...prev, {file:e.target.files[0],name:"profile",index:0}]
+                        }
                       });
                     }
                   }}

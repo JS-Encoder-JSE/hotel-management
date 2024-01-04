@@ -4,6 +4,7 @@ import Select from "react-select";
 import * as yup from "yup";
 import {
   useAddBookingMutation,
+  useGetAvailableRoomsByDateQuery,
   useGetRoomsAndHotelsQuery,
   useRoomsQuery,
 } from "../../redux/room/roomAPI.js";
@@ -27,10 +28,13 @@ import {
   toDateIsoConverter,
 } from "../../utils/utils.js";
 import {
+  convertedEndDate,
+  convertedStartDate,
   getEndDateOfBookingIst,
   getStartDateOFBookingIST,
 } from "../../utils/timeZone.js";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // form validation
 const validationSchema = yup.object({
@@ -284,6 +288,36 @@ const CheckIn = () => {
       formik.handleChange(e);
     }
   };
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+  
+  const {data:availableRooms,isSuccess,isLoading:availableRoomsLoading} = useGetAvailableRoomsByDateQuery({
+    hotel_id:user?.assignedHotel[0],
+    fromDate:formik.values.from ? convertedStartDate(formik.values.from):"",
+    toDate:formik.values.to? convertedEndDate(formik.values.to):"",
+  },{skip:!formik.values.to})
+
+  const availableRoomsByDate = availableRooms?.data?.map((room) => ({
+    label: `${room.roomNumber} - ${room.category}`,
+    value: room._id,
+  }))
+ 
+  const [error,setError]=useState("")
+
+  const handleErrorForAvailableRooms = () => {
+    if (!formik.values.to) {
+      setError("Please select booking date");
+    }
+    if(formik.values.to){
+      setError("")
+    }
+  };
+
+  useEffect(()=>{
+    if(formik.values.to){
+      setError("")
+    }
+  },[formik.values.to])
+
 
   return (
     <div className={` bg-white rounded-2xl mx-auto p-8 sm:max-w-[90%]`}>
@@ -374,15 +408,51 @@ const CheckIn = () => {
         ) : null}
 
         <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
+             {/* Date */}
+             <div className="flex flex-col gap-3">
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="from"
+              placeholderText={`From`}
+              selected={formik.values.from}
+              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+              onChange={(date) => formik.setFieldValue("from", date)}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.from && Boolean(formik.errors.from) ? (
+              <small className="text-red-600">
+                {formik.touched.from && formik.errors.from}
+              </small>
+            ) : null}
+          </div>
+
+          {/* Date */}
           <div className="flex flex-col gap-3">
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              name="to"
+              placeholderText={`To`}
+              selected={formik.values.to}
+              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
+              onChange={(date) => formik.setFieldValue("to", date)}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.to && Boolean(formik.errors.to) ? (
+              <small className="text-red-600">
+                {formik.touched.to && formik.errors.to}
+              </small>
+            ) : null}
+          </div>
+          <div onClick={handleErrorForAvailableRooms}  className="flex flex-col gap-3">
             <Select
               value={selectorValue}
               placeholder="Select Rooms"
-              options={transformedRooms}
+              options={availableRoomsByDate}
               filterOption={customFilterOption}
               isMulti
               isSearchable
               closeMenuOnSelect={false}
+              isDisabled={availableRoomsLoading || !formik.values.from || !formik.values.to}
               onChange={(e) => {
                 setSelectorValue(e);
                 formik.setFieldValue("room_arr", e);
@@ -397,6 +467,7 @@ const CheckIn = () => {
                 placeholder: () => "!m-0",
               }}
             />
+            {error&& <small className="text-red-600 text-small">{error}</small>}
             {formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (
               <small className="text-red-600">
                 {formik.touched.room_arr && formik.errors.room_arr}
@@ -588,41 +659,7 @@ const CheckIn = () => {
             />
           </div>
 
-          {/* Date */}
-          <div className="flex flex-col gap-3">
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              name="from"
-              placeholderText={`From`}
-              selected={formik.values.from}
-              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("from", date)}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.from && Boolean(formik.errors.from) ? (
-              <small className="text-red-600">
-                {formik.touched.from && formik.errors.from}
-              </small>
-            ) : null}
-          </div>
-
-          {/* Date */}
-          <div className="flex flex-col gap-3">
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              name="to"
-              placeholderText={`To`}
-              selected={formik.values.to}
-              className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("to", date)}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.to && Boolean(formik.errors.to) ? (
-              <small className="text-red-600">
-                {formik.touched.to && formik.errors.to}
-              </small>
-            ) : null}
-          </div>
+       
 
           {/* Nationality box */}
           <div className="flex flex-col gap-3">

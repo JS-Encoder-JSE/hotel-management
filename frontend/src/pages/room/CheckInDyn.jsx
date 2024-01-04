@@ -29,7 +29,9 @@ import { useNavigate, useParams } from "react-router-dom";
 const validationSchema = yup.object({
   documentsType: yup.string().required("Documents type is required"),
   doc_number: yup.string().required("Document number is required"),
-  documents: yup.string().required("Documents is required"),
+  documents: yup.array().test("fileCount", "Documents is required", (value) => {
+    return value && value.length > 0;
+  }),
   paymentMethod: yup.string().when(["amount"], (amount, schema) => {
     if (amount.length > 1 || (amount > 0 && amount !== undefined)) {
       return schema.required("Payment method is required");
@@ -81,7 +83,7 @@ const CheckInDyn = ({ data }) => {
       amount: "",
       documentsType: "",
       doc_number: "",
-      documents: null,
+      documents: [],
       paymentMethod: "",
       transection_id: "",
     },
@@ -149,20 +151,13 @@ const CheckInDyn = ({ data }) => {
     },
   });
 
+  console.log(selectedImages)
   const handleDelete = (idx) => {
-    const tempImgs = [
-      ...selectedImages.slice(0, idx),
-      ...selectedImages.slice(idx + 1),
-    ];
+    const updatedImages = [...selectedImages];
+    updatedImages.splice(idx, 1);
 
-    const dataTransfer = new DataTransfer();
-
-    for (const file of tempImgs) {
-      dataTransfer.items.add(file);
-    }
-
-    formik.setFieldValue("documents", dataTransfer.files);
-    setSelectedImages(tempImgs);
+    formik.setFieldValue("documents", updatedImages);
+    setSelectedImages(updatedImages);
   };
 
   const handleChange = (idx, newFile) => {
@@ -386,9 +381,19 @@ const CheckInDyn = ({ data }) => {
                       multiple
                       name="documents"
                       className="absolute left-0 top-0  overflow-hidden h-0"
-                      onChange={(e) =>
-                        formik.setFieldValue("documents", e.currentTarget.files)
-                      }
+                      onChange={(e) => {
+                        const selectedImagesArray = Array.from(
+                          e.currentTarget.files
+                        );
+                        formik.setFieldValue("documents", [
+                          ...formik.values.documents,
+                          ...selectedImagesArray,
+                        ]);
+                        setSelectedImages([
+                          ...selectedImages,
+                          ...selectedImagesArray,
+                        ]);
+                      }}
                       onBlur={formik.handleBlur}
                     />
                   </label>
