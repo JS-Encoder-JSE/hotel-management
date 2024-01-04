@@ -48,7 +48,7 @@ const validationSchema = yup.object({
   description: yup
     .string()
     .required("Description is required")
-    .min(20, "Description at least 20 characters length"),
+    // .min(20, "Description at least 20 characters length"),
 });
 
 const EditFood = () => {

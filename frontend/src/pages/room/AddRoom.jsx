@@ -47,7 +47,7 @@ const validationSchema = yup.object({
   description: yup
     .string()
     .required("Description is required")
-    .min(10, "Description at least 10 characters length"),
+    // .min(10, "Description at least 10 characters length"),
   // hotel_id: yup.string().required("Choose hotel is required"),
 });
 

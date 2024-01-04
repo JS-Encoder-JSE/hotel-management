@@ -14,7 +14,7 @@ const validationSchema = yup.object({
   itemDescription: yup
     .string()
     .required("Description is required")
-    .min(20, "Description at least 20 characters length"),
+    // .min(20, "Description at least 20 characters length"),
 });
 
 const AddInventory = () => {

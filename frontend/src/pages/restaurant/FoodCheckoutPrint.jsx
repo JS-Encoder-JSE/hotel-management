@@ -1,7 +1,11 @@
 import React from "react";
 import SingleCheckoutItem from "../../components/restaurant/SingleCheckoutItem";
 import logo from "../../assets/logo.png";
-import { getOnlyFormatDate, versionControl } from "../../utils/utils";
+import {
+  getOnlyFormatDate,
+  getformatDateTime,
+  versionControl,
+} from "../../utils/utils";
 
 const FoodCheckoutPrint = ({
   orderData,
@@ -14,7 +18,6 @@ const FoodCheckoutPrint = ({
   checkOutDiscount,
   hotelInfo,
 }) => {
-
   const grandTotal = orderData?.data?.items?.reduce(
     (accumulator, item) => accumulator + item.total,
     0
@@ -36,7 +39,8 @@ const FoodCheckoutPrint = ({
             <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
             <h1 className="font-bold text-2xl">{/* DAK Hospital LTD */}</h1>
             <span>Customer Receipt</span> <br />
-            <span>Issue Date: {getOnlyFormatDate()} </span>
+        
+            <span>Issue Date : {getformatDateTime()} </span>
           </div>
         </div>
       </div>
@@ -46,7 +50,7 @@ const FoodCheckoutPrint = ({
             <div>
               <span className={`w-3`}>Restaurant Name</span>
               <span className="ml-5 mr-2">:</span>
-              <span>{ hotelInfo ? hotelInfo[0]?.name :""}</span>
+              <span>{hotelInfo ? hotelInfo[0]?.name : ""}</span>
             </div>
             <div>
               <span className={`w-3`}>Branch Name</span>
@@ -56,12 +60,12 @@ const FoodCheckoutPrint = ({
             <div>
               <span className={`w-3`}>Phone Number</span>
               <span className="ml-9 mr-2">:</span>
-              <span>{ hotelInfo? hotelInfo[0]?.phone_no :""}</span>
+              <span>{hotelInfo ? hotelInfo[0]?.phone_no : ""}</span>
             </div>
             <div>
               <span className={`w-3`}>Email</span>
               <span className="ml-[105px] mr-2">:</span>
-              <span>{hotelInfo? hotelInfo[0]?.email :  ""}</span>
+              <span>{hotelInfo ? hotelInfo[0]?.email : ""}</span>
             </div>
             <div className="grid grid-cols-2">
               <div>
@@ -70,9 +74,22 @@ const FoodCheckoutPrint = ({
                 <span className="ml-[83px]">:</span>
               </div>
               <span className="-ml-9">
-                {hotelInfo? hotelInfo[0]?.address : ""} 
+                {hotelInfo ? hotelInfo[0]?.address : ""}
               </span>
             </div>
+
+            {/* {orderData?.data?.order_status === "CheckedOut" && (
+              <div className="grid grid-cols-2">
+                <div>
+                  {" "}
+                  <span className={`w-3`}>CheckOut Date</span>
+                  <span className="ml-[83px]">:</span>
+                </div>
+                <span className="-ml-9">
+                  {hotelInfo ? hotelInfo[0]?.updatedAt : ""}
+                </span>
+              </div>
+            )} */}
           </div>
           <div>
             <span className={`w-26`}>
@@ -122,7 +139,10 @@ const FoodCheckoutPrint = ({
                 <td></td>
                 <td></td>
                 <td>Total</td>
-                <td>{orderData?.data?.total_price}</td>
+                <td>
+                  {grandTotal}
+                  {/* {orderData?.data?.total_price} */}
+                </td>
                 <td></td>
               </tr>
               <tr className="border-none">
