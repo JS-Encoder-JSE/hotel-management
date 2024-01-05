@@ -1,8 +1,15 @@
 import { useSelector } from "react-redux";
 import logo from "../../assets/logo.png";
 import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI";
-import { getFormateDateAndTime, getIndianFormattedDate } from "../../utils/timeZone";
-import { getOnlyFormatDate, getformatDateTime, versionControl } from "../../utils/utils";
+import {
+  getFormateDateAndTime,
+  getIndianFormattedDate,
+} from "../../utils/timeZone";
+import {
+  getOnlyFormatDate,
+  getformatDateTime,
+  versionControl,
+} from "../../utils/utils";
 
 const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
   console.log(roomNumber);
@@ -11,7 +18,7 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
       <div>
         <div className={`text-center mb-6`}>
           <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
-          <h1 className="font-bold text-2xl">DAK HOSPITALITY  LTD</h1>
+          <h1 className="font-bold text-2xl">DAK HOSPITALITY LTD</h1>
           <span>Customer Receipt</span> <br />
           <span>Issue Date : {getformatDateTime()}</span> <br />
           <span>Invoice Number : {data?.invoice_no}</span>
@@ -22,45 +29,56 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
       <div className="">
         <div>
           <div className="grid grid-cols-2 gap-24 px-5 mr-5">
-            <div>
+            <div className="py-2">
               <h2 className="font-bold">Invoice From</h2>
-              <div>
-                <div className="grid grid-cols-2 ">
-                  <p>Hotel Name :</p>
-                  <p>{hotelInfo?.name}</p>
-                </div>
+              <div className="flex items-center">
+                <div>
+                  <div className="flex gap-2">
+                    <p>Hotel Name</p>
+                    <p> :  {hotelInfo?.name}</p>
+                  </div>
 
-                <div className="grid grid-cols-2">
-                  <p>Email :</p>
-                  <p className="">{hotelInfo?.email}</p>
-                </div>
+                  <div className="flex gap-[3.4rem]">
+                    <p>Email</p>
+                    <p className=""> : {hotelInfo?.email}</p>
+                  </div>
 
-                <div className="grid grid-cols-2">
-                  <p>Phone :</p>
-                  <p>{hotelInfo?.phone_no}</p>
-                </div>
+                  <div className="flex gap-[3rem]">
+                    <p>Phone</p>
+                    <p> : {hotelInfo?.phone_no}</p>
+                  </div>
 
-                <div className="grid grid-cols-2">
-                  <p>Address :</p>
-                  <p>{hotelInfo?.address}</p>
+                  <div className="flex gap-[2.2rem]">
+                    <p>Address</p>
+                    <p>: {hotelInfo?.address}</p>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="py-2 ">
               <h2 className="font-bold">Invoice To</h2>
-              <div className="flex gap-4 items-center">
-                <div className="grid grid-cols-2">
-                  <p>Name :</p>
-                  <p>{data?.guestName}</p>
-                  <p>Phone :</p>
-                  <p>{data?.mobileNumber}</p>
-                  <p>Address :</p>
-                  <p>{data?.address}</p>
-                  <p>CheckIn Date :</p>
-                  <p>{getIndianFormattedDate(data?.checkin_date)}</p>
-                  <p>CheckOut Date :</p>
-                  <p>{getIndianFormattedDate(data?.to)}</p>
-                 
+              <div className="flex items-center">
+                <div >
+                 <div className="flex gap-[4.5rem]">
+                 <p>Name </p>
+                  <p> : {data?.guestName}</p>
+                 </div>
+                  <div className="flex gap-[4.3rem]">
+                  <p>Phone</p>
+                  <p> : {data?.mobileNumber}</p>
+                  </div>
+                 <div className="flex gap-[3.6rem]">
+                 <p>Address</p>
+                  <p> : {data?.address}</p>
+                 </div>
+                <div className="flex gap-[1.3rem]">
+                <p>CheckIn Date </p>
+                  <p> : {getIndianFormattedDate(data?.checkin_date)}</p>
+                </div>
+               <div className="flex gap-[0.5rem]">
+               <p>CheckOut Date </p>
+                  <p> : {getIndianFormattedDate(data?.to)}</p>
+               </div>
                 </div>
               </div>
             </div>
@@ -232,7 +250,7 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
       </div>
       <h1 className="text-center absolute bottom-0 pb-2 w-full">
         Powered by <span className="text-xl text-green-slimy">JS Encoder</span>.
-        Copyright © 2023. All rights reserved.Version {versionControl} 
+        Copyright © 2023. All rights reserved.Version {versionControl}
         {/* {versionControl} */}
       </h1>
     </div>
