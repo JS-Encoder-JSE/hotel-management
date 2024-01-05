@@ -22,6 +22,8 @@ const EmployeeView = () => {
     }
   }, []);
 
+  console.log(userData?.images)
+
   const downloadFile = async (url) => {
     const response = await fetch(url);
     const blob = await response.blob();

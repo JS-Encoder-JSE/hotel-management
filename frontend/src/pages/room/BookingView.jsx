@@ -12,6 +12,7 @@ import {
   getIndianFormattedDate,
 } from "../../utils/timeZone.js";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 const BookingView = () => {
   const navigate = useNavigate();
@@ -31,9 +32,39 @@ const BookingView = () => {
     }
   }, [modalOpen]);
 
-  const currentDate = new Date().toLocaleDateString();
-  const fromDate = new Date(booking?.data?.from).toLocaleDateString();
-  const toDate = new Date(booking?.data?.to).toLocaleDateString();
+  // fromDate validation
+  const targetDate = moment(booking?.data?.from);
+  // Set the time to 10:00 AM
+  targetDate.set({ hour: 10, minute: 0, second: 0, millisecond: 0 });
+  // Get the current date and time
+  const currentDate = moment();
+  // Compare the two dates
+  const isCurrentDateGreaterThanTarget = currentDate.isAfter(targetDate);
+  console.log(isCurrentDateGreaterThanTarget);
+
+  // to Date validation
+  const toTargetDate = moment(booking?.data?.to);
+  toTargetDate.set({ hour: 15, minute: 0, second: 0, millisecond: 0 });
+  const toCurrentDate = moment();
+  const isToCurrentDteLessThanTarget = toCurrentDate.isBefore(toTargetDate);
+  console.log(isToCurrentDteLessThanTarget);
+
+  // useEffect(()=>{
+  //   if(isCurrentDateGreaterThanTarget === false){
+  //     toast.error("Please wait until the scheduled date.")
+  //   }else if(isToCurrentDteLessThanTarget === false){
+  //     toast.error("The booking period for this reservation has ended")
+  //   }
+
+  // },[isCurrentDateGreaterThanTarget,isToCurrentDteLessThanTarget])
+
+  const handleError = () => {
+    if (isCurrentDateGreaterThanTarget === false) {
+      toast.error("Please wait until the scheduled date.");
+    } else if (isToCurrentDteLessThanTarget === false) {
+      toast.error("The booking period for this reservation has ended.");
+    }
+  };
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -46,20 +77,34 @@ const BookingView = () => {
           <span>Back</span>
         </div>
         <div className={`space-x-1.5`}>
-          <button
-            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-            title={`Check In`}
-            type="button"
-            disabled={
-              currentDate >= fromDate && currentDate <= toDate ? false : true
-            }
+          <span
+          className="cursor-pointer"
             onClick={() => {
-              setData(booking?.data);
-              setModalOpen(true);
+             if(isCurrentDateGreaterThanTarget === false){
+              handleError()
+             }else if(isToCurrentDteLessThanTarget === false){
+              handleError()
+             }
             }}
           >
-            <FaDoorOpen />
-          </button>
+            <button
+              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+              title={`Check In`}
+              type="button"
+              disabled={
+                isCurrentDateGreaterThanTarget === true &&
+                isToCurrentDteLessThanTarget === true
+                  ? false
+                  : true
+              }
+              onClick={() => {
+                setData(booking?.data);
+                setModalOpen(true);
+              }}
+            >
+              <FaDoorOpen />
+            </button>
+          </span>
           <span
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
             title={`Edit`}

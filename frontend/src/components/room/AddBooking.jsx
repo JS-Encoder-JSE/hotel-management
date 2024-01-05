@@ -17,6 +17,7 @@ import {
   toDateIsoConverter,
 } from "../../utils/utils.js";
 import {
+  bookingDateFormatter,
   convertedEndDate,
   convertedStartDate,
   getEndDateOfBookingIst,
@@ -231,8 +232,8 @@ const AddBooking = () => {
   
     const {data:availableRooms,isSuccess,isLoading:availableRoomsLoading} = useGetAvailableRoomsByDateQuery({
       hotel_id:user?.assignedHotel[0],
-      fromDate:formik.values.from ? convertedStartDate(formik.values.from):"",
-      toDate:formik.values.to? convertedEndDate(formik.values.to):"",
+      fromDate:formik.values.from ? getStartDateOFBookingIST(formik.values.from):"",
+      toDate:formik.values.to? getEndDateOfBookingIst(formik.values.to):"",
     },{skip:!formik.values.to})
 
     const availableRoomsByDate = availableRooms?.data?.map((room) => ({

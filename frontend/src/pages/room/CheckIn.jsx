@@ -290,9 +290,9 @@ const CheckIn = () => {
     {
       hotel_id: user?.assignedHotel[0],
       fromDate: formik.values.from
-        ? convertedStartDate(formik.values.from)
+        ? getStartDateOFBookingIST(formik.values.from)
         : "",
-      toDate: formik.values.to ? convertedEndDate(formik.values.to) : "",
+      toDate: formik.values.to ? getEndDateOfBookingIst(formik.values.to) : "",
     },
     { skip: !formik.values.to }
   );
