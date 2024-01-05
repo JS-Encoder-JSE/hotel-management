@@ -103,6 +103,13 @@ const RestaurantSalesHistory = ({ values, header, date }) => {
           />
           <View>
             <Text>{header?.title}</Text>
+            {header.subTitle ? (
+              <Text style={{ fontSize: 10, textAlign: "center" }}>
+                {header?.subTitle}
+              </Text>
+            ) : (
+              ""
+            )}
             <Text
               style={{
                 marginHorizontal: "auto",

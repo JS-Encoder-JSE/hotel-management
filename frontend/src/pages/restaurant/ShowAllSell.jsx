@@ -17,6 +17,7 @@ import { MdCurrencyRupee } from "react-icons/md";
 import EditSales from "../../components/inventory/EditSales";
 import {
   useGetDailyDataQuery,
+  useGetHotelByManagerIdQuery,
   useGetOrdersByDateQuery,
 } from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
@@ -43,8 +44,13 @@ const ShowAllSell = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
   const [PDF, setPdf] = useState([]);
-
   const { user } = useSelector((state) => state.authSlice);
+
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
 
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
@@ -215,7 +221,8 @@ const ShowAllSell = () => {
                     values={currentItems}
                     date={new Date().toLocaleDateString()}
                     header={{
-                      title: "DAK Hospitality LTD",
+                      title: `${hotelInfo[0]?.branch_name}`,
+                      subTitle: `${hotelInfo[0]?.name}`,
                       name: "Today's Sales ",
                     }}
                   />
@@ -334,7 +341,8 @@ const ShowAllSell = () => {
                     date={restaurantSalesToday?.data?.docs?.date}
                     values={restaurantSalesHistory?.data?.docs}
                     header={{
-                      title: "DAK Hospitality LTD",
+                      title: `${hotelInfo[0]?.branch_name}`,
+                      subTitle: `${hotelInfo[0]?.name}`,
                       name: "Restaurant sales",
                     }}
                   />

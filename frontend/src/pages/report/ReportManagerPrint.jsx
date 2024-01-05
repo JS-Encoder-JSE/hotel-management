@@ -12,13 +12,13 @@ import {
 } from "../../utils/utils";
 
 const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
-  console.log(roomNumber);
+  // console.log("hotelInfo",hotelInfo);
   return (
     <div>
       <div>
         <div className={`text-center mb-6`}>
           <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
-          <h1 className="font-bold text-2xl">DAK HOSPITALITY LTD</h1>
+          {/* <h1 className="font-bold text-2xl">DAK HOSPITALITY LTD</h1> */}
           <span>Customer Receipt</span> <br />
           <span>Issue Date : {getformatDateTime()}</span> <br />
           <span>Invoice Number : {data?.invoice_no}</span>
@@ -33,22 +33,26 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
               <h2 className="font-bold">Invoice From</h2>
               <div className="flex items-center">
                 <div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-[2.1rem]">
                     <p>Hotel Name</p>
                     <p> :  {hotelInfo?.name}</p>
                   </div>
+                  <div className="flex gap-[1.5rem]">
+                    <p>Branch Name</p>
+                    <p> : {hotelInfo?.branch_name}</p>
+                  </div>
 
-                  <div className="flex gap-[3.4rem]">
+                  <div className="flex gap-[5.1rem]">
                     <p>Email</p>
                     <p className=""> : {hotelInfo?.email}</p>
                   </div>
 
-                  <div className="flex gap-[3rem]">
+                  <div className="flex gap-[4.7rem]">
                     <p>Phone</p>
                     <p> : {hotelInfo?.phone_no}</p>
                   </div>
 
-                  <div className="flex gap-[2.2rem]">
+                  <div className="flex gap-[4rem]">
                     <p>Address</p>
                     <p>: {hotelInfo?.address}</p>
                   </div>

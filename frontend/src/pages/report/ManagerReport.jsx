@@ -101,7 +101,23 @@ const ManagerReport = ({ values, header }) => {
             }}
           />
           <View>
-            <Text>{header?.title}</Text>
+            {/* <Text style={{ textAlign: "center" }}>{header?.title}</Text>
+            {header.subTitle ? (
+              <Text style={{ fontSize: "10px", textAlign: "center" }}>
+                {header?.subTitle}
+              </Text>
+            ) : (
+              ""
+            )} */}
+            <Text style={{ textAlign: "center" }}>{header?.title}</Text>
+            {header.subTitle ? (
+              <Text style={{ fontSize: 10, textAlign: "center" }}>
+                {header?.subTitle}
+              </Text>
+            ) : (
+              ""
+            )}
+
             <Text
               style={{
                 marginHorizontal: "auto",
@@ -145,12 +161,15 @@ const ManagerReport = ({ values, header }) => {
                   cellValue = getformatDateTime(new Date(cellValue));
                 }
                 if (key === "checked_out") {
-                  cellValue =getIndianFormattedDate(new Date(cellValue))
-                  
+                  cellValue = getIndianFormattedDate(new Date(cellValue));
                 }
 
                 return (
-                  <Text className="uppercase" key={cellIndex} style={[styles.tableCell, styles.text]}>
+                  <Text
+                    className="uppercase"
+                    key={cellIndex}
+                    style={[styles.tableCell, styles.text]}
+                  >
                     {key === "Serial No" ? rowIndex + 1 : cellValue}
                   </Text>
                 );

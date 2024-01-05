@@ -10,7 +10,7 @@ const CustomerInfoPrint = ({ data, roomData }) => {
   return (
     <div className="py-2 ">
       <h2 className="font-bold"> Invoice To</h2>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap- items-center">
         <div className="grid grid-cols-2">
           <p>Name</p>
           <p>: {data.guestName}</p>
