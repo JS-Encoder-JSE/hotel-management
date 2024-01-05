@@ -246,8 +246,8 @@ const ManageSingleRoom = () => {
                       </div>
                     )}
                   </td>
-                  <td>{bookingDateFormatter(bookingsRoom.from)}</td>
-                  <td>{bookingDateFormatter(bookingsRoom.to)}</td>
+                  <td className="uppercase">{bookingDateFormatter(bookingsRoom.from)}</td>
+                  <td className="uppercase">{bookingDateFormatter(bookingsRoom.to)}</td>
                   
                 </tr>
                 })
