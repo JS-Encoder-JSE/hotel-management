@@ -232,10 +232,11 @@ const ManageSingleRoom = () => {
             <tbody>
               {
                 getBookingsByRooms?.data?.docs?.map((bookingsRoom,idx)=>{
+                  
                   return  <tr>
                   <th>{++idx}</th>
                   <td>
-                    {status === "Active" ? (
+                    {bookingsRoom.status === "Active" ? (
                       <div className="badge min-w-[6rem] bg-orange-600 border-orange-600 text-white">
                         Booked
                       </div>
@@ -247,6 +248,7 @@ const ManageSingleRoom = () => {
                   </td>
                   <td>{bookingDateFormatter(bookingsRoom.from)}</td>
                   <td>{bookingDateFormatter(bookingsRoom.to)}</td>
+                  
                 </tr>
                 })
               }
