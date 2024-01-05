@@ -195,7 +195,8 @@ const HotelExpenses = () => {
                         date={hotelExpenses?.docs[0]?.date}
                         values={hotelExpenses?.docs[0]?.items}
                         header={{
-                          title: "DAK Hospitality LTD",
+                          title: `${hotelInfo[0]?.name}`,
+                          subTitle: `${hotelInfo[0]?.branch_name}`,
                           name: "Today's Hotel Expenses",
                         }}
                       />
@@ -357,7 +358,8 @@ const HotelExpenses = () => {
                       date={hotelExpenses?.docs[0]?.date}
                       values={filteredExpenses?.docs}
                       header={{
-                        title: "DAK Hospitality LTD",
+                        title: `${hotelInfo[0]?.name}`,
+                        subTitle: `${hotelInfo[0]?.branch_name}`,
                         name: "Hotel Expenses History",
                       }}
                     />

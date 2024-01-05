@@ -221,8 +221,8 @@ const ShowAllSell = () => {
                     values={currentItems}
                     date={new Date().toLocaleDateString()}
                     header={{
-                      title: `${hotelInfo[0]?.branch_name}`,
-                      subTitle: `${hotelInfo[0]?.name}`,
+                      title: `${hotelInfo[0]?.name}`,
+                      subTitle: `${hotelInfo[0]?.branch_name}`,
                       name: "Today's Sales ",
                     }}
                   />
@@ -341,9 +341,9 @@ const ShowAllSell = () => {
                     date={restaurantSalesToday?.data?.docs?.date}
                     values={restaurantSalesHistory?.data?.docs}
                     header={{
-                      title: `${hotelInfo[0]?.branch_name}`,
-                      subTitle: `${hotelInfo[0]?.name}`,
-                      name: "Restaurant sales",
+                      title: `${hotelInfo[0]?.name}`,
+                      subTitle: `${hotelInfo[0]?.branch_name}`,
+                      name: "Restaurant sales History",
                     }}
                   />
                 }

@@ -67,6 +67,18 @@ const RestaurantSalesReport = ({ values, header, date }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <view>
+          <Text
+            style={{
+              marginBottom: 15,
+              textAlign: "right",
+              fontSize: 8,
+              color: "gray",
+            }}
+          >
+            Service provided by Dak Hospitality Ltd
+          </Text>
+        </view>
         <View
           style={{
             marginBottom: 15,
@@ -82,14 +94,31 @@ const RestaurantSalesReport = ({ values, header, date }) => {
             }}
           />
           <View>
-            <Text>{header?.title}</Text>
-            {header.subTitle ? (
+          <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 15,
+              }}
+            >
+              Hotel Name : {header?.title}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 10,
+              }}
+            >
+              Branch Name : {header?.subTitle}
+            </Text>
+            {/* {header.subTitle ? (
               <Text style={{ fontSize: 10, textAlign: "center" }}>
                 {header?.subTitle}
               </Text>
             ) : (
               ""
-            )}
+            )} */}
             <Text
               style={{
                 marginHorizontal: "auto",

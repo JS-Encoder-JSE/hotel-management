@@ -159,6 +159,7 @@ const ShowAllExpense = () => {
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
   return (
     <div className={`space-y-5`}>
       {resExpenses && filteredExpenses && (
@@ -197,7 +198,8 @@ const ShowAllExpense = () => {
                         date={resExpenses?.docs[0]?.date}
                         values={resExpenses?.docs[0]?.items}
                         header={{
-                          title: "DAK Hospitality LTD",
+                          title: `${hotelInfo[0]?.name}`,
+                          subTitle: `${hotelInfo[0]?.branch_name}`,
                           name: "Today's Restaurant Expenses",
                         }}
                       />
@@ -253,8 +255,6 @@ const ShowAllExpense = () => {
                                   <span>{item?.price}</span>
                                 </td>
                                 <td>{item?.remark ? item?.remark : ""}</td>
-
-                                
                               </tr>
                             );
                           })}
@@ -335,7 +335,8 @@ const ShowAllExpense = () => {
                       date={resExpenses?.docs[0]?.date}
                       values={filteredExpenses?.docs}
                       header={{
-                        title: "DAK Hospitality LTD",
+                        title: `${hotelInfo[0]?.name}`,
+                        subTitle: `${hotelInfo[0]?.branch_name}`,
                         name: "Restaurant Expenses History",
                       }}
                     />

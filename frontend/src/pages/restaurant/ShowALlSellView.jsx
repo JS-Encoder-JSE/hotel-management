@@ -9,7 +9,10 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useFormik } from "formik";
 import EditSalesView from "./EditSalesView";
 import ReactPaginate from "react-paginate";
-import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
+import {
+  useGetHotelByManagerIdQuery,
+  useGetOrdersByDateQuery,
+} from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
@@ -95,6 +98,12 @@ const ShowALlSellView = () => {
     setPdf(currentItems);
   }, [todayItem]);
 
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between`}>
@@ -113,7 +122,8 @@ const ShowALlSellView = () => {
                   date={dateParam}
                   values={currentItems}
                   header={{
-                    title: "DAK Hospitality LTD",
+                    title: `${hotelInfo[0]?.name}`,
+                    subTitle: `${hotelInfo[0]?.branch_name}`,
                     name: "All Order Information ",
                   }}
                 />

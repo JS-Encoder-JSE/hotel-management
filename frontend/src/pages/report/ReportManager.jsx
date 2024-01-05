@@ -201,8 +201,8 @@ console.log("hotelInfo",hotelInfo)
                       header={{
                         //  title : "DAK Hospitality LTD ",
                         
-                        title: `${hotelInfo[0]?.branch_name}`,
-                        subTitle: `${hotelInfo[0]?.name}`,
+                        title: `${hotelInfo[0]?.name}`,
+                        subTitle: `${hotelInfo[0]?.branch_name}`,
                         name: "All Report",
                       }}
                     />

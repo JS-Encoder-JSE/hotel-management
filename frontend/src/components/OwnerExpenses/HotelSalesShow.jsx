@@ -173,7 +173,8 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                         date={hotelTodaySales?.data?.docs}
                         values={hotelTodaySales?.data?.docs}
                         header={{
-                          title: "DAK Hospitality LTD",
+                          title: `${hotelInfo[0]?.name}`,
+                        // subTitle: `${hotelInfo[0]?.branch_name}`,
                           name: "Today's Sales ",
                         }}
                       />
@@ -313,7 +314,8 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                     date={hotelTodaySales?.data?.docs?.date}
                     values={hotelSalesHistory?.data?.docs}
                     header={{
-                      title: "DAK Hospitality LTD",
+                      title: `${hotelInfo[0]?.name}`,
+                      // subTitle: `${hotelInfo[0]?.branch_name}`,
                       name: " Hotel Sales ",
                     }}
                   />

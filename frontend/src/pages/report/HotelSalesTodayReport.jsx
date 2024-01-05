@@ -24,7 +24,7 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
     "checked_in",
     "checked_out",
     "room_numbers",
-    'payment_method',
+    "payment_method",
     "paid_amount",
     "balance_deducted",
     "balance_refunded",
@@ -105,6 +105,18 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        {/* <view>
+          <Text
+            style={{
+              marginBottom: 15,
+              textAlign: "right",
+              fontSize: 8,
+              color: "gray",
+            }}
+          >
+            Service provided by Dak Hospitality Ltd
+          </Text>
+        </view> */}
         <View
           style={{
             marginBottom: 15,
@@ -120,7 +132,15 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
             }}
           />
           <View>
-            <Text>{header?.title}</Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 15,
+              }}
+            >
+              Hotel Name : {header?.title}
+            </Text>
             <Text
               style={{
                 marginHorizontal: "auto",
@@ -138,7 +158,7 @@ const HotelSalesTodayReport = ({ values, header, date }) => {
               }}
             >
               Printed Date: {getOnlyFormatDate()}
-               {/* {new Date().toLocaleDateString()} */}
+              {/* {new Date().toLocaleDateString()} */}
             </Text>
           </View>
         </View>

@@ -86,6 +86,18 @@ const ManagerReport = ({ values, header }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <view>
+          <Text
+            style={{
+              marginBottom: 15,
+              textAlign: "right",
+              fontSize: 8,
+              color: "gray",
+            }}
+          >
+            Service provided by Dak Hospitality Ltd
+          </Text>
+        </view>
         <View
           style={{
             marginBottom: 15,
@@ -101,22 +113,45 @@ const ManagerReport = ({ values, header }) => {
             }}
           />
           <View>
-            {/* <Text style={{ textAlign: "center" }}>{header?.title}</Text>
-            {header.subTitle ? (
-              <Text style={{ fontSize: "10px", textAlign: "center" }}>
-                {header?.subTitle}
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 15,
+              }}
+            >
+              Hotel Name : {header?.title}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 10,
+              }}
+            >
+              Branch Name : {header?.subTitle}
+            </Text>
+            {/* {header.subTitle ? (
+              <Text
+                style={{
+                  marginHorizontal: "auto",
+                  marginTop: 5,
+                  fontSize: 15,
+                }}
+              >
+                Hotel / Branch Name : {header?.subTitle}
               </Text>
             ) : (
-              ""
+              <Text
+                style={{
+                  marginHorizontal: "auto",
+                  marginTop: 5,
+                  fontSize: 20,
+                }}
+              >
+                Hotel Name : {header?.title}
+              </Text>
             )} */}
-            <Text style={{ textAlign: "center" }}>{header?.title}</Text>
-            {header.subTitle ? (
-              <Text style={{ fontSize: 10, textAlign: "center" }}>
-                {header?.subTitle}
-              </Text>
-            ) : (
-              ""
-            )}
 
             <Text
               style={{
