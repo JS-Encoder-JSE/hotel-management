@@ -227,36 +227,58 @@ const AddBooking = () => {
     }
   };
 
-
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
-  
-    const {data:availableRooms,isSuccess,isLoading:availableRoomsLoading} = useGetAvailableRoomsByDateQuery({
-      hotel_id:user?.assignedHotel[0],
-      fromDate:formik.values.from ? getStartDateOFBookingIST(formik.values.from):"",
-      toDate:formik.values.to? getEndDateOfBookingIst(formik.values.to):"",
-    },{skip:!formik.values.to})
 
-    const availableRoomsByDate = availableRooms?.data?.map((room) => ({
-      label: `${room.roomNumber} - ${room.category}`,
-      value: room._id,
-    }))
-   
-    const [error,setError]=useState("")
+  const {
+    data: availableRooms,
+    isSuccess,
+    isLoading: availableRoomsLoading,
+  } = useGetAvailableRoomsByDateQuery(
+    {
+      hotel_id: user?.assignedHotel[0],
+      fromDate: formik.values.from
+        ? getStartDateOFBookingIST(formik.values.from)
+        : "",
+      toDate: formik.values.to ? getEndDateOfBookingIst(formik.values.to) : "",
+    },
+    { skip: !formik.values.to }
+  );
 
-    const handleErrorForAvailableRooms = () => {
-      if (!formik.values.to) {
-        setError("Please select booking date");
-      }
-      if(formik.values.to){
-        setError("")
-      }
-    };
+  const availableRoomsByDate = availableRooms?.data?.map((room) => ({
+    label: `${room.roomNumber} - ${room.category}`,
+    value: room._id,
+  }));
 
-    useEffect(()=>{
-      if(formik.values.to){
-        setError("")
-      }
-    },[formik.values.to])
+  const [error, setError] = useState("");
+
+  const handleErrorForAvailableRooms = () => {
+    if (!formik.values.to) {
+      setError("Please select booking date");
+    }
+    if (formik.values.to) {
+      setError("");
+    }
+  };
+
+  useEffect(() => {
+    if (formik.values.to) {
+      setError("");
+    }
+  }, [formik.values.to]);
+
+  const [restrictedToDate, setRestrictedToDate] = useState(null);
+  const updateToDate = (fromDate) => {
+    const nextDay = new Date(fromDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setRestrictedToDate(nextDay);
+  };
+
+  // Get the current date
+  const currentDates = new Date();
+
+  // Create a new date for the next day
+  const nextDate = new Date(currentDates);
+  nextDate.setDate(currentDates.getDate() + 1);
 
   return (
     <>
@@ -264,7 +286,10 @@ const AddBooking = () => {
         <button
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={() => formik.handleReset()}
+          onClick={() => {
+            setRestrictedToDate(null);
+            formik.handleReset();
+          }}
         >
           ✕
         </button>
@@ -313,6 +338,7 @@ const AddBooking = () => {
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => {
                 formik.setFieldValue("from", date);
+                updateToDate(date);
               }}
               onBlur={formik.handleBlur}
             />
@@ -329,8 +355,12 @@ const AddBooking = () => {
               dateFormat="dd/MM/yyyy"
               name="to"
               placeholderText={`To`}
+              minDate={
+                restrictedToDate === null || !formik.values.from
+                  ? nextDate
+                  : restrictedToDate
+              }
               selected={formik.values.to}
-              minDate={new Date()}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => {
                 formik.setFieldValue("to", date);
@@ -369,7 +399,10 @@ const AddBooking = () => {
               </small>
             ) : null}
           </div>
-          <div onClick={handleErrorForAvailableRooms} className="flex flex-col gap-3">
+          <div
+            onClick={handleErrorForAvailableRooms}
+            className="flex flex-col gap-3"
+          >
             <Select
               placeholder="Select Rooms"
               defaultValue={formik.values.room_arr}
@@ -378,7 +411,11 @@ const AddBooking = () => {
               filterOption={customFilterOption}
               isMulti
               isSearchable
-              isDisabled={availableRoomsLoading || !formik.values.from || !formik.values.to}
+              isDisabled={
+                availableRoomsLoading ||
+                !formik.values.from ||
+                !formik.values.to
+              }
               closeMenuOnSelect={false}
               // onKeyDown={handleKeyDown}
               onChange={(e) => {
@@ -395,11 +432,12 @@ const AddBooking = () => {
                 placeholder: () => "!m-0",
               }}
             />
-            {error&& <small className="text-red-600 text-small">{error}</small>}
+            {error && (
+              <small className="text-red-600 text-small">{error}</small>
+            )}
             {formik.touched.room_arr && Boolean(formik.errors.room_arr) ? (
               <small className="text-red-600">
                 {formik.touched.room_arr && formik.errors.room_arr}
-               
               </small>
             ) : null}
           </div>
