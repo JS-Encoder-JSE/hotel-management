@@ -35,6 +35,8 @@ const HotelSales = () => {
     value: hotel?.manager_acc?._id,
     hotelId: hotel?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
+    hotelName: hotel.name,
+    branchName: hotel.branch_name,
   }));
   const handleReset = () => {
     setselectedHotel(null);
@@ -120,6 +122,8 @@ const HotelSales = () => {
             <HotelSalesShow
               managerId={selectedHotel?.value}
               hotelId={selectedHotel?.hotelId}
+              hotelName={selectedHotel.hotelName}
+              branchName={selectedHotel.branchName}
             ></HotelSalesShow>
           ) : (
             <p className="text-center">Please Select your Hotel Branch !!</p>

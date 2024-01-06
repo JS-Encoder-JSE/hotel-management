@@ -33,7 +33,12 @@ const HotelExpense = () => {
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
+    hotelName: hotel.name,
+    branchName: hotel.branch_name,
+    managerId:hotel?.manager_acc?._id
   }));
+
+  
   const handleReset = () => {
     setselectedHotel(null);
   };
@@ -90,7 +95,9 @@ const HotelExpense = () => {
               isMulti={false}
               isSearchable
               onKeyDown={handleKeyDown}
-              onChange={(selectedOption) => setselectedHotel(selectedOption)}
+              onChange={(selectedOption) => {
+                setselectedHotel(selectedOption);
+              }}
               classNames={{
                 control: (state) =>
                   `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
@@ -117,6 +124,9 @@ const HotelExpense = () => {
           {selectedHotel ? (
             <HotelExpensesShow
               hotelId={selectedHotel?.value}
+              managerID={selectedHotel?.managerId}
+              hotelName={selectedHotel.hotelName}
+              branchName={selectedHotel.branchName}
             ></HotelExpensesShow>
           ) : (
             <p className="text-center">Please Select your Hotel Branch !!</p>

@@ -8,7 +8,12 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import logo from "../../assets/logo.png";
-import { getFormateDateAndTime, getOnlyFormatDate, getformatDateTime, versionControl } from "../../utils/utils";
+import {
+  getFormateDateAndTime,
+  getOnlyFormatDate,
+  getformatDateTime,
+  versionControl,
+} from "../../utils/utils";
 
 const RestaurantSalesReport = ({ values, header, date }) => {
   // SL	Date	Items Name	Description	Quantity	Price	Action
@@ -62,6 +67,18 @@ const RestaurantSalesReport = ({ values, header, date }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <view>
+          <Text
+            style={{
+              marginBottom: 15,
+              textAlign: "right",
+              fontSize: 8,
+              color: "gray",
+            }}
+          >
+            Service provided by Dak Hospitality Ltd
+          </Text>
+        </view>
         <View
           style={{
             marginBottom: 15,
@@ -77,7 +94,25 @@ const RestaurantSalesReport = ({ values, header, date }) => {
             }}
           />
           <View>
-            <Text>{header?.title}</Text>
+          <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 15,
+              }}
+            >
+              Hotel Name : {header?.title}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 10,
+              }}
+            >
+              Branch Name : {header?.subTitle}
+            </Text>
+          
             <Text
               style={{
                 marginHorizontal: "auto",
@@ -96,14 +131,17 @@ const RestaurantSalesReport = ({ values, header, date }) => {
             >
               Printed Date: {getOnlyFormatDate()}
               {/* {new Date().toLocaleDateString()} */}
-
             </Text>
           </View>
         </View>
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
             {tableHeaders.map((header, index) => (
-              <Text className ="text-center" key={index} style={[styles.tableCell, styles.text]}>
+              <Text
+                className="text-center"
+                key={index}
+                style={[styles.tableCell, styles.text]}
+              >
                 {header}
               </Text>
             ))}
@@ -116,11 +154,10 @@ const RestaurantSalesReport = ({ values, header, date }) => {
                     ? rowIndex + 1
                     : key === "date"
                     ? date
-                    ?
-                     new Date(date).toLocaleDateString()
-                    :getOnlyFormatDate(item[key])
-                    //  new Date(item[key]).toLocaleDateString() // Use the date prop here
-                  : item[key]}
+                      ? new Date(date).toLocaleDateString()
+                      : getOnlyFormatDate(item[key])
+                    : //  new Date(item[key]).toLocaleDateString() // Use the date prop here
+                      item[key]}
                 </Text>
               ))}
             </View>

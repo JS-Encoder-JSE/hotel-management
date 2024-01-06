@@ -78,6 +78,9 @@ const ReportManager = () => {
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
+  // const branchName = hotelInfo?.map((branch) => branch.branch_name);
+  // const hotelName = hotelInfo?.map((branchName) => branchName.name);
+console.log("hotelInfo",hotelInfo)
   const formik = useFormik({
     initialValues: {
       entries: "",
@@ -150,6 +153,7 @@ const ReportManager = () => {
       handlePrint();
     }
   }, [getCheckoutData, componentRef.current]);
+  // console.log("hotelInfo?.branch_name", hotelInfo?.branch_name);
 
   return (
     <div className={` space-y-5`}>
@@ -195,7 +199,10 @@ const ReportManager = () => {
                     <ManagerReport
                       values={PDF}
                       header={{
-                        title: "DAK Hospitality LTD",
+                        //  title : "DAK Hospitality LTD ",
+                        
+                        title: `${hotelInfo[0]?.name}`,
+                        subTitle: `${hotelInfo[0]?.branch_name}`,
                         name: "All Report",
                       }}
                     />
@@ -338,7 +345,7 @@ const ReportManager = () => {
                       <td>{report?.room_numbers.join(",")}</td>
                       <td>{getformatDateTime(report?.checked_in)}</td>
 
-                      <td >{getIndianFormattedDate(report?.checked_out)}</td>
+                      <td>{getIndianFormattedDate(report?.checked_out)}</td>
                       <td className="text-end">{report?.paid_amount}</td>
                       <td className="text-end">{report?.balance_deducted}</td>
                       <td className="text-end">{report?.balance_refunded}</td>

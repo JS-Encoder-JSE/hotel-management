@@ -11,14 +11,23 @@ import logo from "../../assets/logo.png";
 import Footer from "../Footer";
 import { Link } from "react-router-dom";
 
-const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
+const ShowAllExpenseViewPrint = ({
+  itemExpense,
+  totalItemsAmount,
+  hotelName,
+  hotelBranchName,
+}) => {
   return (
     <div className="p-4">
       <div className="mb-10">
+        <h6 className="text-gray-400 text-right">Service provided by Dak Hospitality Ltd</h6>
         <div>
           <img className="w-24 h-24 mx-auto" src={logo} alt="DHK LOGO" />
         </div>
-        <h1 className="text-center text-3xl">DAK Hospitality LTD </h1>
+        <h1 className="text-center text-3xl">Hotel Name : {hotelName} </h1>
+        <h4 className="text-center text-2xl">
+          Branch Name : {hotelBranchName}{" "}
+        </h4>
         <p className="text-center">
           Print Date :{" "}
           <span className="text-center ml-2">
@@ -54,7 +63,8 @@ const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
                   >
                     <th>{++idx}</th>
                     {/* <td>{getformatDateTime(itemExpense?.date)}</td> */}
-                    <td>{getOnlyFormatDate(itemExpense.date)}
+                    <td>
+                      {getOnlyFormatDate(itemExpense.date)}
                       {/* {itemExpense?.date && new Date(itemExpense.date).toLocaleDateString()} */}
                     </td>
                     <td>{item?.name}</td>
@@ -92,15 +102,15 @@ const ShowAllExpenseViewPrint = ({ itemExpense, totalItemsAmount }) => {
               <span>{totalItemsAmount}</span>
             </div>
           </div> */}
-<div className="flex justify-end items-center  md:ms-[20rem] mt-4 mr-[10rem]">
- <div>
- <h1 className="text-xl font-bold">Grand Total :</h1>
- </div>
-  <div className="flex items-center gap-2">
-    <FaRupeeSign className="" />
-    <span>{totalItemsAmount}</span>
-  </div>
-</div>
+          <div className="flex justify-end items-center  md:ms-[20rem] mt-4 mr-[10rem]">
+            <div>
+              <h1 className="text-xl font-bold">Grand Total :</h1>
+            </div>
+            <div className="flex items-center gap-2">
+              <FaRupeeSign className="" />
+              <span>{totalItemsAmount}</span>
+            </div>
+          </div>
         </div>
       </div>
       <div>

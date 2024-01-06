@@ -62,7 +62,7 @@ const HotelSalesView = () => {
     isLoading: orderItemSuccess,
   } = useGetReportsByDateQuery({
     cp: currentPage,
-    date:convertedStartDate(dateParam),
+    date: convertedStartDate(dateParam),
     //  getConvertedIsoStartDate(dateParam),
     hotelId: hotelId,
   });
@@ -106,7 +106,8 @@ const HotelSalesView = () => {
                   date={orderedDataByDate?.data?.docs}
                   values={orderedDataByDate?.data?.docs}
                   header={{
-                    title: "DAK Hospitality LTD",
+                    title: `${hotelInfo[0]?.name}`,
+                    subTitle: `${hotelInfo[0]?.branch_name}`,
                     name: "Hotel Sales Information ",
                   }}
                 />
@@ -156,7 +157,7 @@ const HotelSalesView = () => {
                       <th>{++idx}</th>
                       <td>{item?.guestName}</td>
                       <td>{getformatDateTime(item?.checked_in)}</td>
-                      <td>{getFormateDateAndTime (item?.checked_out)} </td>
+                      <td>{getFormateDateAndTime(item?.checked_out)} </td>
                       <td>{item?.room_numbers?.map((roomNum) => roomNum)}</td>
                       <td>{item?.payment_method}</td>
                       <td className="text-end">{item?.paid_amount}</td>
@@ -168,6 +169,7 @@ const HotelSalesView = () => {
                           hotelInfo={hotelInfo[0]}
                           booking_id={item?.booking_ids[0]}
                           roomNumber={item?.room_numbers[0]}
+                          
                         />
                       </td>
                     </tr>

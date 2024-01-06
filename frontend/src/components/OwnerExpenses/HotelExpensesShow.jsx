@@ -36,7 +36,7 @@ import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
 import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
 
-const HotelExpensesShow = ({ hotelId }) => {
+const HotelExpensesShow = ({ hotelId,hotelName,branchName,managerID }) => {
   const [forcePage, setForcePage] = useState(null);
   const navigate = useNavigate();
   const [reportsPerPage] = useState(10);
@@ -191,7 +191,9 @@ const HotelExpensesShow = ({ hotelId }) => {
                         date={hotelExpenses?.docs[0]?.date}
                         values={hotelExpenses?.docs[0]?.items}
                         header={{
-                          title: "DAK Hospitality LTD",
+                          // title: "DAK Hospitality LTD",
+                          title:`${hotelName}`,
+                          subTitle:`${branchName}`,
                           name: "Today's Hotel Expenses",
                         }}
                       />
@@ -346,7 +348,8 @@ const HotelExpensesShow = ({ hotelId }) => {
                       date={hotelExpenses?.docs[0]?.date}
                       values={filteredExpenses?.docs}
                       header={{
-                        title: "DAK Hospitality LTD",
+                        title:`${hotelName}`,
+                          subTitle:`${branchName}`,
                         name: "Hotel Expenses History",
                       }}
                     />
@@ -470,7 +473,7 @@ const HotelExpensesShow = ({ hotelId }) => {
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                               onClick={() =>
                                 navigate(
-                                  `/dashboard/hotel-expenses/${item?._id}`
+                                  `/dashboard/hotel-expenses/${item?._id}?hotelId=${hotelId}&managerID=${managerID}`
                                 )
                               }
                             >

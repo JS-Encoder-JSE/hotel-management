@@ -36,10 +36,15 @@ import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import HotelSalesTodayReport from "../../pages/report/HotelSalesTodayReport";
 import HotelSalesHistoryReport from "../../pages/report/HotelSalesHistoryReport";
 import ReportPrint from "../../pages/report/ReportPrint";
-import { convertedEndDate, convertedFromDate, convertedStartDate, getIndianFormattedDate } from "../../utils/timeZone";
+import {
+  convertedEndDate,
+  convertedFromDate,
+  convertedStartDate,
+  getIndianFormattedDate,
+} from "../../utils/timeZone";
 // import { getformatDateTime } from "./../../utils/timeZone";
 
-const HotelSalesShow = ({ managerId, hotelId }) => {
+const HotelSalesShow = ({ managerId, hotelId, hotelName, branchName }) => {
   // console.log('------hotelId',managerId);
   const [PDF, setPdf] = useState([]);
   const navigate = useNavigate();
@@ -54,11 +59,6 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
 
   const [HistoryCurrentPage, setHistoryCurrentPage] = useState(0);
 
-  const {
-    data: hotelInfo,
-    isLoading: isHotelLoading,
-    isSuccess: isHotelSuccess,
-  } = useGetHotelByManagerIdQuery(managerId);
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -173,7 +173,8 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                         date={hotelTodaySales?.data?.docs}
                         values={hotelTodaySales?.data?.docs}
                         header={{
-                          title: "DAK Hospitality LTD",
+                          title: `${hotelName}`,
+                          subTitle: `${branchName}`,
                           name: "Today's Sales ",
                         }}
                       />
@@ -313,7 +314,8 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                     date={hotelTodaySales?.data?.docs?.date}
                     values={hotelSalesHistory?.data?.docs}
                     header={{
-                      title: "DAK Hospitality LTD",
+                      title: `${hotelName}`,
+                      subTitle: `${branchName}`,
                       name: " Hotel Sales ",
                     }}
                   />
@@ -426,7 +428,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                               onClick={() =>
                                 navigate(
-                                  `/dashboard/hotel-sales-details?date=${item?.date}&&hotel=${hotelId}&managerId=${managerId}`
+                                  `/dashboard/hotel-sales-details?date=${item?.date}&hotel=${hotelId}&managerId=${managerId}`
                                 )
                               }
                             >
@@ -447,7 +449,7 @@ const HotelSalesShow = ({ managerId, hotelId }) => {
               <p className="text-center my-16">No sales yet!</p>
             )}
           </div>
-          {hotelSalesHistory?.data?.docs?.length > 0 &&  (
+          {hotelSalesHistory?.data?.docs?.length > 0 && (
             <div className="flex justify-center mt-10">
               <ReactPaginate
                 containerClassName="join rounded-none"

@@ -12,7 +12,7 @@ import logo from "../../../assets/logo.png";
 import BillingSection from "./BillingSection";
 import BillingSectionPrint from "./BillingSectionPrint";
 import { useGetHotelByManagerIdQuery } from "../../../redux/room/roomAPI";
-import { getOnlyFormatDate, versionControl } from "../../../utils/utils";
+import { getOnlyFormatDate, getformatDateTime, versionControl } from "../../../utils/utils";
 
 // current date
 const currentDate = new Date();
@@ -51,10 +51,10 @@ const CheckOutPrint = ({
           <img className="w-24 h-24 mx-auto p-2" src={logo} alt="logo" />
           {/* <h1 className="font-bold text-2xl">DAK HOSPITALITY  LTD</h1> */}
           <span>Customer Receipt</span> <br />
-          <span>Issue Date: {getOnlyFormatDate()}
+          <span>Issue Date : {getformatDateTime()}
             {/* {formattedDate} */}
              </span> <br />
-             <span>Invoice number: {invoiceNumber}</span>
+             <span>Invoice number : {invoiceNumber}</span>
         </div>
       </div>
       {isHotelSuccess && (
@@ -65,7 +65,7 @@ const CheckOutPrint = ({
               isHotelSuccess={isHotelSuccess}
             />
 
-            <CustomerInfoPrint data={data} />
+            <CustomerInfoPrint data={data} roomData={roomData} />
           </div>
           <div className=" px-4 py-2">
             {/* <h2 className="font-bold">Balance Summary</h2> */}

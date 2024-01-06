@@ -18,6 +18,7 @@ import { MdCurrencyRupee } from "react-icons/md";
 import EditTodaysales from "./EditTodaysales";
 import {
   useGetDailyDataQuery,
+  useGetHotelByManagerIdQuery,
   useGetOrdersByDateQuery,
 } from "../../redux/room/roomAPI";
 import {
@@ -33,9 +34,9 @@ import RestaurantSales from "../../pages/OwnerExpenses/RestaurantSales";
 import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import RestaurantSalesReport from "../../pages/report/RestaurantSalesReport";
 import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
+import { useSelector } from "react-redux";
 
-const RestaurantSalesShow = ({ hotelId, managerID }) => {
-  // console.log('------hotelId',hotelId);
+const RestaurantSalesShow = ({ hotelId, managerID,branchName,hotelName }) => {
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
@@ -85,6 +86,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
     data: restaurantSalesToday,
     error: restaurantSaleEx,
     isLoading: dataLoading,
+    isSuccess
   } = useGetOrdersByDateQuery({
     date: convertedStartDate(),
     order_status: "CheckedOut",
@@ -146,8 +148,9 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
   );
 
   useEffect(() => {
-    setPdf(currentItems);
-  }, [currentItems]);
+    setPdf(currentItems?currentItems:[]);
+    // console.log("cfjjfjfjlfj")
+  }, [todaySales]);
 
   useEffect(() => {
     const todayItems = restaurantSalesToday?.data?.reduce(
@@ -172,6 +175,17 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
   }, [restaurantSalesToday]);
 
   // console.log("currentItems",currentItems)
+  const { user } = useSelector((store) => store.authSlice);
+  const { data: hotelInfo } = useGetHotelByManagerIdQuery(  
+    user.role === "manager" ? user?._id : user.role === "owner" ? managerID : ""
+);
+// console.log("hotelInfo",hotelInfo)
+// console.log("condition",user.role === "manager" ? user?._id : user.role === "owner" ? managerID : "")
+//   console.log("userRoll", user.roll);
+//   console.log("user", user);
+  // console.log("hotelInfo", hotelInfo[0]?.name)
+
+  console.log("PDF",PDF)
   return (
     <div className={`space-y-5`}>
       <div className={`bg-white p-4 rounded-xl`}>
@@ -194,7 +208,9 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                         date={new Date().toLocaleDateString()}
                         values={currentItems}
                         header={{
-                          title: "DAK Hospitality LTD",
+                          title: `${hotelName}`,
+                          // title: `${hotelInfo? hotelInfo[0].name: ""}`,
+                          subTitle:`${branchName}`,
                           name: "Today's Sales ",
                         }}
                       />
@@ -315,7 +331,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                     date={restaurantSalesToday?.data?.docs?.date}
                     values={restaurantSalesHistory?.data?.docs}
                     header={{
-                      title: "DAK Hospitality LTD",
+                      title: `${hotelName}`,
+                      subTitle:`${branchName}`,
                       name: "Restaurant sales",
                     }}
                   />
@@ -447,7 +464,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                               onClick={() =>
                                 navigate(
-                                  `/dashboard/restaurant-sales-details?date=${item?.date}&hotelId=${hotelId}`
+                                  `/dashboard/restaurant-sales-details?date=${item?.date}&hotelId=${hotelId}&managerID=${managerID}`
                                 )
                               }
                             >

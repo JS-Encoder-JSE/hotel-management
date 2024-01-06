@@ -86,6 +86,18 @@ const ManagerReport = ({ values, header }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <view>
+          <Text
+            style={{
+              marginBottom: 15,
+              textAlign: "right",
+              fontSize: 8,
+              color: "gray",
+            }}
+          >
+            Service provided by Dak Hospitality Ltd
+          </Text>
+        </view>
         <View
           style={{
             marginBottom: 15,
@@ -101,7 +113,46 @@ const ManagerReport = ({ values, header }) => {
             }}
           />
           <View>
-            <Text>{header?.title}</Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 15,
+              }}
+            >
+              Hotel Name : {header?.title}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 10,
+              }}
+            >
+              Branch Name : {header?.subTitle}
+            </Text>
+            {/* {header.subTitle ? (
+              <Text
+                style={{
+                  marginHorizontal: "auto",
+                  marginTop: 5,
+                  fontSize: 15,
+                }}
+              >
+                Hotel / Branch Name : {header?.subTitle}
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  marginHorizontal: "auto",
+                  marginTop: 5,
+                  fontSize: 20,
+                }}
+              >
+                Hotel Name : {header?.title}
+              </Text>
+            )} */}
+
             <Text
               style={{
                 marginHorizontal: "auto",
@@ -145,12 +196,15 @@ const ManagerReport = ({ values, header }) => {
                   cellValue = getformatDateTime(new Date(cellValue));
                 }
                 if (key === "checked_out") {
-                  cellValue =getIndianFormattedDate(new Date(cellValue))
-                  
+                  cellValue = getIndianFormattedDate(new Date(cellValue));
                 }
 
                 return (
-                  <Text className="uppercase" key={cellIndex} style={[styles.tableCell, styles.text]}>
+                  <Text
+                    className="uppercase"
+                    key={cellIndex}
+                    style={[styles.tableCell, styles.text]}
+                  >
                     {key === "Serial No" ? rowIndex + 1 : cellValue}
                   </Text>
                 );

@@ -1,12 +1,19 @@
 import React from "react";
-import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
-import logo from "../../assets/logo.png"
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
+import logo from "../../assets/logo.png";
 import { getFormateDateAndTime, getOnlyFormatDate } from "../../utils/utils";
 
-const HotelSalesHistoryReport = ({ values, header,date }) => {
-    // SL	Date	Items Name	Description	Quantity	Price	Action
-    const desiredHeaders = ["Serial No", "date","today_hotel_income"];
-    const tableHeaders = ["Serial No","Date","Total Amount"]
+const HotelSalesHistoryReport = ({ values, header, date }) => {
+  // SL	Date	Items Name	Description	Quantity	Price	Action
+  const desiredHeaders = ["Serial No", "date", "today_hotel_income"];
+  const tableHeaders = ["Serial No", "Date", "Total Amount"];
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -16,7 +23,7 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
     table: {
       display: "table",
       width: "100%",
-      borderStyle: "solid", 
+      borderStyle: "solid",
       borderWidth: 1,
       borderColor: "#e8e8e8",
     },
@@ -40,19 +47,49 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <Text
+          style={{
+            marginBottom: 15,
+            textAlign: "right",
+            fontSize: 8,
+            color: "gray",
+          }}
+        >
+          Service provided by Dak Hospitality Ltd
+        </Text>
         <View
           style={{
             marginBottom: 15,
             alignItems: "center",
           }}
         >
-           <Image src={logo} style={{
-              width:"54px",
-              height:"54px",
-              marginBottom:"10px"
-            }}/>
+          <Image
+            src={logo}
+            style={{
+              width: "54px",
+              height: "54px",
+              marginBottom: "10px",
+            }}
+          />
           <View>
-            <Text>{header?.title}</Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 15,
+              }}
+            >
+              Hotel Name : {header?.title}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 10,
+              }}
+            >
+              Hotel Name : {header?.subTitle}
+            </Text>
             <Text
               style={{
                 marginHorizontal: "auto",
@@ -70,7 +107,7 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
               }}
             >
               Printed Date: {getOnlyFormatDate()}
-               {/* {new Date().toLocaleDateString()} */}
+              {/* {new Date().toLocaleDateString()} */}
             </Text>
           </View>
         </View>
@@ -90,10 +127,10 @@ const HotelSalesHistoryReport = ({ values, header,date }) => {
                     ? rowIndex + 1
                     : key === "date"
                     ? date
-                    ? new Date(date).toLocaleDateString()
-                    :getOnlyFormatDate(item[key])
-                    //  new Date(item[key]).toLocaleDateString() // Use the date prop here
-                  : item[key]}
+                      ? new Date(date).toLocaleDateString()
+                      : getOnlyFormatDate(item[key])
+                    : //  new Date(item[key]).toLocaleDateString() // Use the date prop here
+                      item[key]}
                 </Text>
               ))}
             </View>

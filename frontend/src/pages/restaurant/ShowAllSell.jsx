@@ -17,6 +17,7 @@ import { MdCurrencyRupee } from "react-icons/md";
 import EditSales from "../../components/inventory/EditSales";
 import {
   useGetDailyDataQuery,
+  useGetHotelByManagerIdQuery,
   useGetOrdersByDateQuery,
 } from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
@@ -43,9 +44,14 @@ const ShowAllSell = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
   const [PDF, setPdf] = useState([]);
-
   const { user } = useSelector((state) => state.authSlice);
 
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(user?._id);
+console.log("hotelInfo",hotelInfo)
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -177,7 +183,8 @@ const ShowAllSell = () => {
   }, [todayItem]);
 
   // console.log("todayItem",todayItem);
-  console.log("currentItems", currentItems);
+  // console.log("currentItems", currentItems);
+  // console.log("user",user)
 
   return (
     <div className={`space-y-5`}>
@@ -215,7 +222,8 @@ const ShowAllSell = () => {
                     values={currentItems}
                     date={new Date().toLocaleDateString()}
                     header={{
-                      title: "DAK Hospitality LTD",
+                      title: `${hotelInfo[0].name}`,
+                      subTitle: `${hotelInfo[0].branch_name}`,
                       name: "Today's Sales ",
                     }}
                   />
@@ -326,6 +334,7 @@ const ShowAllSell = () => {
               Restaurant sales History
             </h3>
           </div>
+
           <div className="flex justify-end mr-5">
             {restaurantSalesHistory?.data?.docs?.length ? (
               <PDFDownloadLink
@@ -334,8 +343,9 @@ const ShowAllSell = () => {
                     date={restaurantSalesToday?.data?.docs?.date}
                     values={restaurantSalesHistory?.data?.docs}
                     header={{
-                      title: "DAK Hospitality LTD",
-                      name: "Restaurant sales",
+                      title: `${hotelInfo[0].name}`,
+                      subTitle: `${hotelInfo[0].branch_name}`,
+                      name: "Restaurant sales History",
                     }}
                   />
                 }
@@ -463,7 +473,7 @@ const ShowAllSell = () => {
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                             onClick={() =>
                               navigate(
-                                `/dashboard/show-all-sell-details?date=${item?.date}`
+                                `/dashboard/show-all-sell-details?date=${item?.date} `
                               )
                             }
                           >

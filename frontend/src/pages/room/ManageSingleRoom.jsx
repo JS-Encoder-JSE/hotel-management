@@ -45,6 +45,7 @@ const ManageSingleRoom = () => {
     setCurrentPage(page);
   };
 
+  console.log("room Data",room?.data?.status)
 
   return (
     <>
@@ -135,6 +136,7 @@ const ManageSingleRoom = () => {
                   className={`grid grid-cols-[repeat(auto-fit,_minmax(5.5rem,_1fr))] gap-2.5 mt-6`}
                 >
                   {room?.data?.status === "Available" ? (
+                    
                     <>
                      <button
                         className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem]`}
@@ -184,7 +186,30 @@ const ManageSingleRoom = () => {
                         Edit
                       </button>
                       </>
-                   ):null
+                   ):(
+                    <>
+                      <button
+                        className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
+                        onClick={() => window.ci_modal.showModal()}
+                      >
+                        CheckIn
+                      </button>
+                      <button
+                       className={`btn btn-md bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem]`}
+                       onClick={() => window.ab_modal.showModal()}
+                     >
+                       Booking
+                     </button>
+                        <button
+                        className={`btn btn-md bg-green-slimy hover:bg-transparent text-white font-bold hover:text-green-slimy !border-green-slimy rounded normal-case min-w-[2rem] `}
+                        onClick={() =>
+                          navigate(`/dashboard/edit-room/${room?.data?._id}`)
+                        }
+                      >
+                        Edit
+                      </button>
+                    </>
+                   )
                   }
                   
                
@@ -232,10 +257,11 @@ const ManageSingleRoom = () => {
             <tbody>
               {
                 getBookingsByRooms?.data?.docs?.map((bookingsRoom,idx)=>{
+                  
                   return  <tr>
                   <th>{++idx}</th>
                   <td>
-                    {status === "Active" ? (
+                    {bookingsRoom.status === "Active" ? (
                       <div className="badge min-w-[6rem] bg-orange-600 border-orange-600 text-white">
                         Booked
                       </div>
@@ -245,8 +271,9 @@ const ManageSingleRoom = () => {
                       </div>
                     )}
                   </td>
-                  <td>{bookingDateFormatter(bookingsRoom.from)}</td>
-                  <td>{bookingDateFormatter(bookingsRoom.to)}</td>
+                  <td className="uppercase">{bookingDateFormatter(bookingsRoom.from)}</td>
+                  <td className="uppercase">{bookingDateFormatter(bookingsRoom.to)}</td>
+                  
                 </tr>
                 })
               }

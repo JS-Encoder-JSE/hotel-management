@@ -59,7 +59,7 @@ const roomAPI = baseAPI.injectEndpoints({
         };
       },
       providesTags: ["addBooking"],
-      invalidatesTags: ["room", "booking", "getAvailableRoomsByDate"],
+      invalidatesTags: ["room", "booking", "getAvailableRoomsByDate","getBookingsByRooms"],
     }),
     cancelBooking: build.mutation({
       query: ({ id, data }) => {
@@ -74,7 +74,7 @@ const roomAPI = baseAPI.injectEndpoints({
         "booking",
         "addBooking",
         "room",
-        "getAvailableRoomsByDate",
+        "getAvailableRoomsByDate","getBookingsByRooms"
       ],
     }),
 
@@ -281,7 +281,8 @@ const roomAPI = baseAPI.injectEndpoints({
           limit ? `&&limit=${limit}` : ""
         }`;
       },
-      providesTags: ["getBookingsByRooms"],
+      providesTags: ["getBookingsByRooms"]
+    
     }),
 
     getRoomPostedBills: build.query({
@@ -371,6 +372,7 @@ const roomAPI = baseAPI.injectEndpoints({
         "getCheckoutDataByBookingId",
         "subDashboard",
         "getAvailableRoomsByDate",
+        "getBookingsByRooms"
       ],
     }),
     getCheckoutDataByBookingId: build.query({

@@ -1,18 +1,29 @@
 import React from "react";
-import { Document, Page, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
-import logo from "../../assets/logo.png"
-import { getFormateDateAndTime, getOnlyFormatDate, versionControl } from "../../utils/utils";
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
+import logo from "../../assets/logo.png";
+import {
+  getFormateDateAndTime,
+  getOnlyFormatDate,
+  versionControl,
+} from "../../utils/utils";
 
-const ExpensesHistoryReport = ({ values, header,date }) => {
-    // SL	Date	Items Name	Description	Quantity	Price	Action
-    const desiredHeaders = ["Serial No", "date", "spendedfor","total_amount"];
-    const tableHeaders =["Serial No","Date","Spend For","Total Amount"]
+const ExpensesHistoryReport = ({ values, header, date }) => {
+  // SL	Date	Items Name	Description	Quantity	Price	Action
+  const desiredHeaders = ["Serial No", "date", "spendedfor", "total_amount"];
+  const tableHeaders = ["Serial No", "Date", "Spend For", "Total Amount"];
 
-    const jsEncoderTextStyle = {
-      color: "green",
-      fontWeight: "bold",
-    };
-  
+  const jsEncoderTextStyle = {
+    color: "green",
+    fontWeight: "bold",
+  };
+
   const currentYear = new Date().getFullYear();
 
   const styles = StyleSheet.create({
@@ -24,7 +35,7 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
     table: {
       display: "table",
       width: "100%",
-      borderStyle: "solid", 
+      borderStyle: "solid",
       borderWidth: 1,
       borderColor: "#e8e8e8",
     },
@@ -57,19 +68,51 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <view>
+          <Text
+            style={{
+              marginBottom: 15,
+              textAlign: "right",
+              fontSize: 8,
+              color: "gray",
+            }}
+          >
+            Service provided by Dak Hospitality Ltd
+          </Text>
+        </view>
         <View
           style={{
             marginBottom: 15,
             alignItems: "center",
           }}
         >
-           <Image src={logo} style={{
-              width:"54px",
-              height:"54px",
-              marginBottom:"10px"
-            }}/>
+          <Image
+            src={logo}
+            style={{
+              width: "54px",
+              height: "54px",
+              marginBottom: "10px",
+            }}
+          />
           <View>
-            <Text>{header?.title}</Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 15,
+              }}
+            >
+              Hotel Name : {header?.title}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 10,
+              }}
+            >
+              Branch Name : {header?.subTitle}
+            </Text>
             <Text
               style={{
                 marginHorizontal: "auto",
@@ -107,15 +150,19 @@ const ExpensesHistoryReport = ({ values, header,date }) => {
                     ? rowIndex + 1
                     : key === "date"
                     ? getOnlyFormatDate(item[key])
-                    // new Date(item[key]).toLocaleDateString() // Use the date prop here
-                    : item[key]}
+                    : // new Date(item[key]).toLocaleDateString() // Use the date prop here
+                      item[key]}
                 </Text>
               ))}
             </View>
           ))}
         </View>
         <View style={styles.footer}>
-          <Text>Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>. Copyright ©{currentYear}. All rights reserved. Version {versionControl}</Text>
+          <Text>
+            Powered by <Text style={jsEncoderTextStyle}>JS Encoder</Text>.
+            Copyright ©{currentYear}. All rights reserved. Version{" "}
+            {versionControl}
+          </Text>
         </View>
       </Page>
     </Document>

@@ -5,16 +5,28 @@ import {
   FaRegFilePdf,
   FaRupeeSign,
 } from "react-icons/fa";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useFormik } from "formik";
 import EditSalesView from "./EditSalesView";
 import ReactPaginate from "react-paginate";
-import { useGetOrdersByDateQuery } from "../../redux/room/roomAPI";
+import {
+  useGetHotelByManagerIdQuery,
+  useGetOrdersByDateQuery,
+} from "../../redux/room/roomAPI";
 import { useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RestaurantSalesHistory from "../report/RestaurantSalesHistory";
-import { getConvertedIsoStartDate, getOnlyFormatDate } from "../../utils/utils";
+import {
+  getConvertedIsoStartDate,
+  getOnlyFormatDate,
+  isValidUrl,
+} from "../../utils/utils";
 import { convertedStartDate } from "../../utils/timeZone";
 
 const ShowALlSellView = () => {
@@ -22,9 +34,12 @@ const ShowALlSellView = () => {
   const [PDF, setPdf] = useState([]);
   const dateParam = searchParams.get("date");
   const hotelId = searchParams.get("hotelId");
+  const managerID = searchParams.get("managerID");
+
+  // console.log("managerID",managerID)
 
   const { user } = useSelector((store) => store.authSlice);
-
+  console.log("user", user);
   // query by searchParams
   const {
     data: orderedDataByDate,
@@ -60,11 +75,10 @@ const ShowALlSellView = () => {
         }))
       );
     }, []);
-    // console.log("allItemsWithCreatedAt",allItemsWithCreatedAt)
 
     setTodayItem(todayItems);
   }, [orderedDataByDate]);
-  console.log("today item", todayItem);
+  // console.log("today item", todayItem);
 
   // pagination setup for today's expenses
   const itemsPerPage = 10;
@@ -95,6 +109,17 @@ const ShowALlSellView = () => {
     setPdf(currentItems);
   }, [todayItem]);
 
+  // console.log("user", user);
+  const { data: hotelInfo } = useGetHotelByManagerIdQuery(
+    user.role === "manager" ? user?._id : user.role === "owner" ? managerID : ""
+  );
+  // console.log("condition",user.role === "manager" ? user?._id : user.role === "owner" ? managerID : "")
+  // console.log("userRoll", user.roll);
+  // console.log("user", user);
+  // console.log("hotelInfo", hotelInfo[0]?.name)
+
+
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between`}>
@@ -105,6 +130,7 @@ const ShowALlSellView = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
+
         <div className={`flex justify-end`}>
           {PDF?.length ? (
             <PDFDownloadLink
@@ -113,8 +139,10 @@ const ShowALlSellView = () => {
                   date={dateParam}
                   values={currentItems}
                   header={{
-                    title: "DAK Hospitality LTD",
-                    name: "All Order Information ",
+                    title: `${hotelInfo? hotelInfo[0].name: ""}`,
+                    subTitle: `${hotelInfo? hotelInfo[0]?.branch_name :""}`,
+
+                    name: "All Order Information",
                   }}
                 />
               }
