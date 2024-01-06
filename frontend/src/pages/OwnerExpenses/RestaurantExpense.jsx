@@ -22,6 +22,7 @@ const RestaurantExpense = () => {
     filter: "Active",
   });
   const [selectedHotel1, setselectedHotel1] = useState(null);
+  console.log("selectedHotel1",selectedHotel1)
   const handleKeyDown = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
@@ -33,9 +34,12 @@ const RestaurantExpense = () => {
     label: `${hotel.name} - ${hotel.branch_name}`,
     hotelName: hotel.name,
     branchName: hotel.branch_name,
+    managerId:hotel?.manager_acc?._id
+
+
   }));
 
-  // console.log("hotels",hotels)
+  console.log("hotels",hotels)
   const hotelNames = hotels?.docs?.map((hotel) => hotel.name);
   const uniqueHotelNames = [...new Set(hotelNames)];
   
@@ -102,7 +106,9 @@ const RestaurantExpense = () => {
               isMulti={false}
               isSearchable
               onKeyDown={handleKeyDown}
-              onChange={(selectedOption) => setselectedHotel1(selectedOption)}
+              onChange={(selectedOption) => {
+                console.log("selectedOption",selectedOption)
+                setselectedHotel1(selectedOption)}}
               classNames={{
                 control: (state) =>
                   `!input !input-md !min-h-[3rem] !h-auto !input-bordered !bg-transparent !rounded !w-full !border-gray-500/50 focus-within:!outline-none ${
@@ -129,6 +135,7 @@ const RestaurantExpense = () => {
           {selectedHotel1 ? (
             <RestaurantExpenseShow
               hotelId={selectedHotel1?.value}
+              managerID={selectedHotel1?.managerId}
               hotelName={selectedHotel1.hotelName}
               branchName={selectedHotel1.branchName}
             ></RestaurantExpenseShow>

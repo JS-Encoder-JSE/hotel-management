@@ -169,6 +169,7 @@ const HotelSalesView = () => {
                           hotelInfo={hotelInfo[0]}
                           booking_id={item?.booking_ids[0]}
                           roomNumber={item?.room_numbers[0]}
+                          
                         />
                       </td>
                     </tr>

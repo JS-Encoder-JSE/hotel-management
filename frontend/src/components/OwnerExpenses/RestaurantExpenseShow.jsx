@@ -9,7 +9,7 @@ import {
 import { GrPowerReset } from "react-icons/gr";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 
@@ -41,6 +41,7 @@ import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
 const RestaurantExpenseShow = ({
   hotelId,
+  managerID,
   hotelName,
   branchName,
 }) => {
@@ -53,6 +54,8 @@ const RestaurantExpenseShow = ({
   const [editItemData, setEditItemData] = useState(null);
   const { isUserLoading, user } = useSelector((store) => store.authSlice);
 
+
+  // console.log("managerId",managerID)
   // const {
   //   data: hotelInfo,
   //   isLoading: isHotelLoading,
@@ -178,6 +181,18 @@ const RestaurantExpenseShow = ({
   };
 
   const totalExpenses = RestaurantExpenses?.docs[0]?.total_amount;
+
+
+
+
+  // const [searchParam] = useSearchParams();
+  // const hotelId = searchParam.get("hotelId");
+  // const managerID = searchParam.get("managerID");
+
+  // const { data: hotelInfo } = useGetHotelByManagerIdQuery(
+  //   user.role === "manager" ? user?._id : user.role === "owner" ? managerID : ""
+  // );
+
 
   return (
     <div className={` space-y-5`}>
@@ -480,7 +495,7 @@ const RestaurantExpenseShow = ({
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                             onClick={() =>
                               navigate(
-                                `/dashboard/restaurant-expenses/${item?._id}`
+                                `/dashboard/restaurant-expenses/${item?._id}?hotelId=${hotelId}&managerID=${managerID}`
                               )
                             }
                           >

@@ -6,11 +6,19 @@ import {
   FaRupeeSign,
   FaTrash,
 } from "react-icons/fa";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useFormik } from "formik";
 import EditExpensesView from "./EditExpensesView";
 import ReactPaginate from "react-paginate";
-import { useGetExpenseByIdQuery } from "../../redux/room/roomAPI";
+import {
+  useGetExpenseByIdQuery,
+  useGetHotelByManagerIdQuery,
+} from "../../redux/room/roomAPI";
 import FoodCheckoutPrint from "../../pages/restaurant/FoodCheckoutPrint";
 import ReactToPrint from "react-to-print";
 import ShowAllExpenseViewPrint from "./ShowAllExpenseViewPrint";
@@ -19,6 +27,7 @@ import AddBooking from "../room/AddBooking";
 import Modal from "../Modal";
 import RemoveExpenses from "./RemoveExpenses";
 import { getOnlyFormatDate, isValidUrl } from "../../utils/utils";
+import { useSelector } from "react-redux";
 
 const ShowAllExpenseView = () => {
   const componentRef = useRef();
@@ -97,6 +106,21 @@ const ShowAllExpenseView = () => {
   const location = useLocation();
   const { pathname } = location;
 
+  const [searchParams] = useSearchParams();
+  const managerID = searchParams.get("managerID");
+  
+  console.log("managerID",managerID)
+
+  const { user } = useSelector((store) => store.authSlice);
+  const { data: hotelInfo } = useGetHotelByManagerIdQuery(
+    user.role === "manager" ? user?._id : user.role === "owner" ? managerID : ""
+  );
+
+ 
+  // console.log("user",user)
+  // console.log("user_role",user.role)
+  // console.log("hotelInfo", hotelInfo);
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between `}>
@@ -114,6 +138,9 @@ const ShowAllExpenseView = () => {
               <ShowAllExpenseViewPrint
                 itemExpense={itemExpense}
                 totalItemsAmount={totalItemsAmount}
+                hotelName={hotelInfo ? hotelInfo[0]?.name : ""}
+                hotelBranchName={hotelInfo? hotelInfo[0]?.branch_name : ""}
+              
               />
             </div>
           </div>
@@ -152,7 +179,7 @@ const ShowAllExpenseView = () => {
               <th>Remark</th>
               {/* <th>Action</th> */}
               {isValidUrl("dashboard/show-all-expense", pathname) ||
-                      isValidUrl("dashboard/all-hotel-expense", pathname) ? (
+              isValidUrl("dashboard/all-hotel-expense", pathname) ? (
                 <th>Action</th>
               ) : (
                 ""

@@ -6,8 +6,8 @@ import {
   useGetCheckoutDataByBookingIdQuery,
   useGetHotelByManagerIdQuery,
 } from "../../redux/room/roomAPI";
-const ReportPrint = ({ booking_id, hotelInfo, roomNumber }) => {
-  console.log(roomNumber);
+const ReportPrint = ({ booking_id, hotelInfo, roomNumber}) => {
+  // console.log(roomNumber);,
   const componentRef = useRef();
   const { data: getCheckoutData } =
     useGetCheckoutDataByBookingIdQuery(booking_id);
@@ -32,6 +32,7 @@ const ReportPrint = ({ booking_id, hotelInfo, roomNumber }) => {
             hotelInfo={hotelInfo}
             data={getCheckoutData}
             roomNumber={roomNumber}
+            
           />
         </div>
       </div>

@@ -35,8 +35,10 @@ const HotelExpense = () => {
     label: `${hotel.name} - ${hotel.branch_name}`,
     hotelName: hotel.name,
     branchName: hotel.branch_name,
+    managerId:hotel?.manager_acc?._id
   }));
 
+  
   const handleReset = () => {
     setselectedHotel(null);
   };
@@ -122,6 +124,7 @@ const HotelExpense = () => {
           {selectedHotel ? (
             <HotelExpensesShow
               hotelId={selectedHotel?.value}
+              managerID={selectedHotel?.managerId}
               hotelName={selectedHotel.hotelName}
               branchName={selectedHotel.branchName}
             ></HotelExpensesShow>

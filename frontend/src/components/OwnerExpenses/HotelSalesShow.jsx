@@ -428,7 +428,7 @@ const HotelSalesShow = ({ managerId, hotelId, hotelName, branchName }) => {
                               className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                               onClick={() =>
                                 navigate(
-                                  `/dashboard/hotel-sales-details?date=${item?.date}&&hotel=${hotelId}&managerId=${managerId}`
+                                  `/dashboard/hotel-sales-details?date=${item?.date}&hotel=${hotelId}&managerId=${managerId}`
                                 )
                               }
                             >
