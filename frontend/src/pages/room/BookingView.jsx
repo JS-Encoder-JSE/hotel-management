@@ -61,11 +61,18 @@ const BookingView = () => {
       setRestrictedError("Please wait until the scheduled date.");
     } else if (isToCurrentDteLessThanTarget === false) {
       setRestrictedError("The booking period for this reservation has ended.");
+    }else{
+      setRestrictedError("")
     }
   }, [isCurrentDateGreaterThanTarget, isToCurrentDteLessThanTarget]);
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
+      {/* {restrictedError && (
+            <small className="text-red-500 min-w-min ml-2 px-4 py-2 flex justify-center  pt-3  pb-2 mb-2 rounded-md ">
+            <span  className="bg-slate-100 px-4 py-2 rounded-md shadow-lg">{restrictedError}</span>
+            </small>
+          )} */}
       <div className={`flex justify-between`}>
         <div
           className={`inline-flex bg-green-slimy text-white border border-green-slimy items-center space-x-1.5 hover:bg-transparent hover:text-green-slimy cursor-pointer px-3 py-1 rounded transition-colors duration-500`}
@@ -74,11 +81,11 @@ const BookingView = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        {restrictedError && (
+        {/* {restrictedError && (
             <small className="text-red-500 min-w-min ml-2 shadow-lg bg-slate-100 px-4 py-2 inline-block pt-3  pb-2 mb-2 rounded-md ">
               {restrictedError}
             </small>
-          )}
+          )} */}
         <div className={`space-x-1.5 space-y-1`}>
         
           <span
@@ -118,6 +125,11 @@ const BookingView = () => {
           </span>
         </div>
       </div>
+      {restrictedError && (
+            <small className="text-red-500 min-w-min ml-2 px-4 py-2 flex justify-center  pt-3  pb-2 mb-2 rounded-md ">
+            <span  className="bg-slate-100 px-4 py-2 rounded-md shadow-lg">{restrictedError}</span>
+            </small>
+          )}
       <div className={`flex flex-col lg:flex-row gap-10 lg:gap-16`}>
         <div>
           <h3 className={`text-2xl font-semibold mb-3`}>
