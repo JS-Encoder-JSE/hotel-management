@@ -34,8 +34,8 @@ import RestaurantSalesHistory from "../../pages/report/RestaurantSalesHistory";
 import RestaurantSalesReport from "../../pages/report/RestaurantSalesReport";
 import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
-const RestaurantSalesShow = ({ hotelId, managerID }) => {
-  // console.log('------hotelId',hotelId);
+const RestaurantSalesShow = ({ hotelId, managerID,branchName,hotelName }) => {
+  // console.log('------branchName',branchName);
   const navigate = useNavigate();
   const [managersPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(10);
@@ -147,7 +147,7 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
 
   useEffect(() => {
     setPdf(currentItems);
-  }, [currentItems]);
+  }, [restaurantSalesToday]);
 
   useEffect(() => {
     const todayItems = restaurantSalesToday?.data?.reduce(
@@ -194,7 +194,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                         date={new Date().toLocaleDateString()}
                         values={currentItems}
                         header={{
-                          title: "DAK Hospitality LTD",
+                          title: `${hotelName}`,
+                          subTitle:`${branchName}`,
                           name: "Today's Sales ",
                         }}
                       />
@@ -315,7 +316,8 @@ const RestaurantSalesShow = ({ hotelId, managerID }) => {
                     date={restaurantSalesToday?.data?.docs?.date}
                     values={restaurantSalesHistory?.data?.docs}
                     header={{
-                      title: "DAK Hospitality LTD",
+                      title: `${hotelName}`,
+                      subTitle:`${branchName}`,
                       name: "Restaurant sales",
                     }}
                   />

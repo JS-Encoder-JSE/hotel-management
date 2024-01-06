@@ -63,7 +63,7 @@ const ShowALlSellView = () => {
         }))
       );
     }, []);
-    // console.log("allItemsWithCreatedAt",allItemsWithCreatedAt)
+
 
     setTodayItem(todayItems);
   }, [orderedDataByDate]);
@@ -98,11 +98,7 @@ const ShowALlSellView = () => {
     setPdf(currentItems);
   }, [todayItem]);
 
-  const {
-    data: hotelInfo,
-    isLoading: isHotelLoading,
-    isSuccess: isHotelSuccess,
-  } = useGetHotelByManagerIdQuery(user?._id);
+
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -122,9 +118,9 @@ const ShowALlSellView = () => {
                   date={dateParam}
                   values={currentItems}
                   header={{
-                    title: `${hotelInfo[0]?.name}`,
-                    subTitle: `${hotelInfo[0]?.branch_name}`,
-                    name: "All Order Information ",
+                    // title: `${hotelInfo[0].name}`,
+                    //   subTitle: `${hotelInfo[0].branch_name}`,
+                    name: "All Order Information",
                   }}
                 />
               }

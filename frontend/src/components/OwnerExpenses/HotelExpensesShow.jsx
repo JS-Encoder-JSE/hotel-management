@@ -36,7 +36,7 @@ import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
 import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
 
-const HotelExpensesShow = ({ hotelId }) => {
+const HotelExpensesShow = ({ hotelId,hotelName,branchName }) => {
   const [forcePage, setForcePage] = useState(null);
   const navigate = useNavigate();
   const [reportsPerPage] = useState(10);
@@ -191,7 +191,9 @@ const HotelExpensesShow = ({ hotelId }) => {
                         date={hotelExpenses?.docs[0]?.date}
                         values={hotelExpenses?.docs[0]?.items}
                         header={{
-                          title: "DAK Hospitality LTD",
+                          // title: "DAK Hospitality LTD",
+                          title:`${hotelName}`,
+                          subTitle:`${branchName}`,
                           name: "Today's Hotel Expenses",
                         }}
                       />
@@ -346,7 +348,8 @@ const HotelExpensesShow = ({ hotelId }) => {
                       date={hotelExpenses?.docs[0]?.date}
                       values={filteredExpenses?.docs}
                       header={{
-                        title: "DAK Hospitality LTD",
+                        title:`${hotelName}`,
+                          subTitle:`${branchName}`,
                         name: "Hotel Expenses History",
                       }}
                     />

@@ -39,7 +39,11 @@ import {
 } from "../../redux/Owner/hotelsAPI";
 import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
-const RestaurantExpenseShow = ({ hotelId }) => {
+const RestaurantExpenseShow = ({
+  hotelId,
+  hotelName,
+  branchName,
+}) => {
   const [forcePage, setForcePage] = useState(null);
   const [PDF, setPdf] = useState([]);
   const navigate = useNavigate();
@@ -196,7 +200,9 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                       date={RestaurantExpenses?.docs[0]?.date}
                       values={RestaurantExpenses?.docs[0]?.items}
                       header={{
-                        title: "DAK Hospitality LTD",
+                        // title: "DAK Hospitality LTD",
+                        title: `${hotelName}`,
+                        subTitle: `${branchName}`,
                         name: "Today's Restaurant Expenses",
                       }}
                     />
@@ -349,7 +355,9 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                     date={RestaurantExpenses?.docs[0]?.date}
                     values={filteredExpenses?.docs}
                     header={{
-                      title: "DAK Hospitality LTD",
+                      // title: "DAK Hospitality LTD",  
+                      title:`${hotelName}`,
+                      subTitle: `${branchName}`,
                       name: "Restaurant Expenses History",
                     }}
                   />
@@ -441,7 +449,7 @@ const RestaurantExpenseShow = ({ hotelId }) => {
         <div className={`space-y-10`}>
           <div className="overflow-x-auto">
             {filteredExpenses && filteredExpenses?.docs?.length ? (
-                <table className="table">
+              <table className="table">
                 <thead>
                   <tr>
                     <th>SL</th>
@@ -454,7 +462,9 @@ const RestaurantExpenseShow = ({ hotelId }) => {
                   {filteredExpenses?.docs.map((item, idx) => {
                     return (
                       <tr
-                        className={idx % 2 === 0 ? "bg-gray-100 hover" : "hover"}
+                        className={
+                          idx % 2 === 0 ? "bg-gray-100 hover" : "hover"
+                        }
                       >
                         <th>{++idx}</th>
                         <td>
@@ -490,7 +500,6 @@ const RestaurantExpenseShow = ({ hotelId }) => {
             ) : (
               <p className="text-center my-16">No Expenses yet !</p>
             )}
-          
           </div>
 
           <div className="flex justify-center mt-10">

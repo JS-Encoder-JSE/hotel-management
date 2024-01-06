@@ -183,7 +183,8 @@ const ShowAllSell = () => {
   }, [todayItem]);
 
   // console.log("todayItem",todayItem);
-  console.log("currentItems", currentItems);
+  // console.log("currentItems", currentItems);
+  console.log("user",user)
 
   return (
     <div className={`space-y-5`}>
@@ -333,6 +334,13 @@ const ShowAllSell = () => {
               Restaurant sales History
             </h3>
           </div>
+
+          {user?.data?.role === "manager" && user?.data?.id === managerId ? (
+            <div />
+          ) : user?.data?.role === "owner" && user?.data?.id === ownerId ? (
+            <div />
+          ) : null}
+
           <div className="flex justify-end mr-5">
             {restaurantSalesHistory?.data?.docs?.length ? (
               <PDFDownloadLink
@@ -341,8 +349,8 @@ const ShowAllSell = () => {
                     date={restaurantSalesToday?.data?.docs?.date}
                     values={restaurantSalesHistory?.data?.docs}
                     header={{
-                      title: `${hotelInfo[0]?.name}`,
-                      subTitle: `${hotelInfo[0]?.branch_name}`,
+                      title: `${hotelInfo[0].name}`,
+                      subTitle: `${hotelInfo[0].branch_name}`,
                       name: "Restaurant sales History",
                     }}
                   />

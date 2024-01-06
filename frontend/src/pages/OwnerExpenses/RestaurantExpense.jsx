@@ -31,7 +31,21 @@ const RestaurantExpense = () => {
   const transformedHotel = hotels?.docs?.map((hotel) => ({
     value: hotel?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
+    hotelName: hotel.name,
+    branchName: hotel.branch_name,
   }));
+
+  // console.log("hotels",hotels)
+  const hotelNames = hotels?.docs?.map((hotel) => hotel.name);
+  const uniqueHotelNames = [...new Set(hotelNames)];
+  
+  console.log("Unique hotel names", uniqueHotelNames[0]);
+
+  const hotelBranchNames = hotels?.docs?.map((hotel) => hotel.branch_name);
+  const uniqueHotelBranchNames = [...new Set(hotelBranchNames)];
+  
+  console.log("uniqueHotelBranchNames", uniqueHotelBranchNames[0]);
+
   const handleReset = () => {
     setselectedHotel1(null);
   };
@@ -115,6 +129,8 @@ const RestaurantExpense = () => {
           {selectedHotel1 ? (
             <RestaurantExpenseShow
               hotelId={selectedHotel1?.value}
+              hotelName={selectedHotel1.hotelName}
+              branchName={selectedHotel1.branchName}
             ></RestaurantExpenseShow>
           ) : (
             <p className="text-center">Please Select your Hotel Branch !!</p>

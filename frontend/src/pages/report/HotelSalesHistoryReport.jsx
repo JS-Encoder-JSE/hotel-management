@@ -47,7 +47,7 @@ const HotelSalesHistoryReport = ({ values, header, date }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* <Text
+        <Text
           style={{
             marginBottom: 15,
             textAlign: "right",
@@ -56,7 +56,7 @@ const HotelSalesHistoryReport = ({ values, header, date }) => {
           }}
         >
           Service provided by Dak Hospitality Ltd
-        </Text> */}
+        </Text>
         <View
           style={{
             marginBottom: 15,
@@ -80,6 +80,15 @@ const HotelSalesHistoryReport = ({ values, header, date }) => {
               }}
             >
               Hotel Name : {header?.title}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: "auto",
+                marginTop: 5,
+                fontSize: 10,
+              }}
+            >
+              Hotel Name : {header?.subTitle}
             </Text>
             <Text
               style={{

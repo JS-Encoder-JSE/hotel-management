@@ -13,6 +13,7 @@ import { customFilterOption } from "../../utils/utils.js";
 
 const RestaurantSales = () => {
   const { user } = useSelector((state) => state.authSlice);
+  console.log("user",user)
   const {
     isLoading,
     data: hotels,
@@ -34,12 +35,16 @@ const RestaurantSales = () => {
     hotelId: hotel?._id,
     managerID: hotel?.manager_acc?._id,
     label: `${hotel.name} - ${hotel.branch_name}`,
+    hotelName: hotel.name,
+    branchName: hotel.branch_name,
   }));
 
+  console.log("hotel",hotels?.docs[0]?.branch_name)
   const handleReset = () => {
     setselectedHotel(null);
   };
 
+  console.log("selectedHotel",selectedHotel)
   if (isLoading || isError) {
     return (
       <Rings
@@ -125,6 +130,8 @@ const RestaurantSales = () => {
             <RestaurantSalesShow
               managerID={selectedHotel?.managerID}
               hotelId={selectedHotel?.hotelId}
+              hotelName={selectedHotel.hotelName}
+              branchName={selectedHotel.branchName}
             ></RestaurantSalesShow>
           ) : (
             <p className="text-center">Please Select your Hotel Branch !!</p>

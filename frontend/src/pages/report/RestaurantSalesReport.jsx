@@ -112,13 +112,7 @@ const RestaurantSalesReport = ({ values, header, date }) => {
             >
               Branch Name : {header?.subTitle}
             </Text>
-            {/* {header.subTitle ? (
-              <Text style={{ fontSize: 10, textAlign: "center" }}>
-                {header?.subTitle}
-              </Text>
-            ) : (
-              ""
-            )} */}
+          
             <Text
               style={{
                 marginHorizontal: "auto",
