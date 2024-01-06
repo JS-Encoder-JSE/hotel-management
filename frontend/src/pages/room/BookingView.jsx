@@ -54,15 +54,15 @@ const BookingView = () => {
       toast.error("The booking period for this reservation has ended.");
     }
   };
-  
-  const [restrictedError,setRestrictedError]=useState("")
-  useEffect(()=>{
-  if (isCurrentDateGreaterThanTarget === false) {
+
+  const [restrictedError, setRestrictedError] = useState("");
+  useEffect(() => {
+    if (isCurrentDateGreaterThanTarget === false) {
       setRestrictedError("Please wait until the scheduled date.");
     } else if (isToCurrentDteLessThanTarget === false) {
       setRestrictedError("The booking period for this reservation has ended.");
     }
-  },[isCurrentDateGreaterThanTarget,isToCurrentDteLessThanTarget])
+  }, [isCurrentDateGreaterThanTarget, isToCurrentDteLessThanTarget]);
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -74,20 +74,25 @@ const BookingView = () => {
           <FaArrowLeft />
           <span>Back</span>
         </div>
-        <div className={`space-x-1.5`}>
-          <small className="text-red-500 min-w-min ml-2">{restrictedError}</small>
+        {restrictedError && (
+            <small className="text-red-500 min-w-min ml-2 shadow-lg bg-slate-100 px-4 py-2 inline-block pt-3  pb-2 mb-2 rounded-md ">
+              {restrictedError}
+            </small>
+          )}
+        <div className={`space-x-1.5 space-y-1`}>
+        
           <span
-          className="cursor-pointer"
+            className="cursor-pointer pl-[6px]"
             onClick={() => {
-             if(isCurrentDateGreaterThanTarget === false){
-              handleError()
-             }else if(isToCurrentDteLessThanTarget === false){
-              handleError()
-             }
+              if (isCurrentDateGreaterThanTarget === false) {
+                handleError();
+              } else if (isToCurrentDteLessThanTarget === false) {
+                handleError();
+              }
             }}
           >
             <button
-              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+              className={`  btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
               title={`Check In`}
               type="button"
               disabled={
