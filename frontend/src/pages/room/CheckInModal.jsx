@@ -237,13 +237,32 @@ const CheckInModal = ({ room }) => {
   };
   const { data: hotel } = useGetHotelByIdQuery(room?.data?.hotel_id);
 
+  const [restrictedToDate, setRestrictedToDate] = useState(null);
+  const updateToDate = (fromDate) => {
+    const nextDay = new Date(fromDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setRestrictedToDate(nextDay);
+  };
+
+  // Get the current date
+  const currentDates = new Date();
+
+  // Create a new date for the next day
+  const nextDate = new Date(currentDates);
+  nextDate.setDate(currentDates.getDate() + 1);
+  
+
   return (
     <>
       <form autoComplete="off" method="dialog">
         <button
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={() => formik.handleReset()}
+          onClick={() => {
+            setRestrictedToDate(null);
+            formik.handleReset();
+          }}
+          
         >
           ✕
         </button>
@@ -518,7 +537,11 @@ const CheckInModal = ({ room }) => {
                 maxDate={new Date()}
                 selected={formik.values.from}
                 className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-                onChange={(date) => formik.setFieldValue("from", date)}
+                onChange={(date) => {
+                  formik.setFieldValue("from", date);
+                  updateToDate(date);
+                }}
+                
                 onBlur={formik.handleBlur}
               />
               {formik.touched.from && Boolean(formik.errors.from) ? (
@@ -535,7 +558,11 @@ const CheckInModal = ({ room }) => {
                 name="to"
                 placeholderText={`To`}
                 selected={formik.values.to}
-                minDate={new Date()}
+                minDate={
+                  restrictedToDate === null || !formik.values.from
+                    ? nextDate
+                    : restrictedToDate
+                }
                 className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
                 onChange={(date) => formik.setFieldValue("to", date)}
                 onBlur={formik.handleBlur}
