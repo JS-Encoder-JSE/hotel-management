@@ -39,7 +39,7 @@ const HotelListView = () => {
         data: {
           managers: [
             ...managerList
-              .map((elem) => ({
+              ?.map((elem) => ({
                 ...(elem.manager
                   ? typeof elem.manager === "string"
                     ? JSON.parse(elem.manager)
@@ -79,7 +79,7 @@ const HotelListView = () => {
 
   useEffect(() => {
     if (hotel) {
-      const tempArr = hotel.managers.map((elem) => ({
+      const tempArr = hotel.managers?.map((elem) => ({
         manager: elem,
         shift: elem.shift,
       }));
