@@ -250,6 +250,21 @@ const CheckInModal = ({ room }) => {
   // Create a new date for the next day
   const nextDate = new Date(currentDates);
   nextDate.setDate(currentDates.getDate() + 1);
+
+       
+  const [sameDateError, setSameDateError] = useState("");
+
+  const fromDate = new Date(formik.values.from).toLocaleDateString()
+  const toDate = new Date(formik.values.to).toLocaleDateString()
+
+  useEffect(()=>{
+    if(fromDate === toDate){
+      setSameDateError("From date and To date can't be same")
+    }
+    else{
+      setSameDateError("")
+    }
+  },[fromDate,toDate])
   
 
   return (
@@ -677,10 +692,12 @@ const CheckInModal = ({ room }) => {
             ) : null}
           </div>
 
+          <small className="flex justify-center pt-5 text-red-500">{sameDateError}</small>
+
           {/* button */}
           <div className={`flex justify-between md:w-[60%] md:mx-auto `}>
             <button
-              disabled={isLoading}
+              disabled={isLoading ||sameDateError}
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >

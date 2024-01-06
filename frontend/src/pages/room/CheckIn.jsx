@@ -335,6 +335,20 @@ const CheckIn = () => {
   const nextDate = new Date(currentDates);
   nextDate.setDate(currentDates.getDate() + 1);
 
+
+  const [sameDateError, setSameDateError] = useState("");
+  const fromDate = new Date(formik.values.from).toLocaleDateString()
+  const toDate = new Date(formik.values.to).toLocaleDateString()
+
+  useEffect(()=>{
+    if(fromDate === toDate){
+      setSameDateError("From date and To date can't be same")
+    }
+    else{
+      setSameDateError("")
+    }
+  },[fromDate,toDate])
+
   return (
     <div className={` bg-white rounded-2xl mx-auto p-8 sm:max-w-[90%]`}>
       <div className="mb-5">
@@ -361,6 +375,7 @@ const CheckIn = () => {
         </h3>
       </div>
       <hr />
+      <small className="flex justify-center pt-5 text-red-500">{sameDateError}</small>
       <form
         autoComplete="off"
         className="form-control grid grid-cols-1 gap-4 mt-5"
@@ -798,7 +813,7 @@ const CheckIn = () => {
         {/* button */}
         <div className={`flex justify-between md:w-[35em] md:mx-auto`}>
           <button
-            disabled={isLoading}
+            disabled={isLoading || sameDateError}
             type={"submit"}
             className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
           >

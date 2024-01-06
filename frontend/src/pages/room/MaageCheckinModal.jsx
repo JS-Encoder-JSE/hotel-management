@@ -329,6 +329,20 @@ const ManageCheckinModal = () => {
   const nextDate = new Date(currentDates);
   nextDate.setDate(currentDates.getDate() + 1);
 
+  const [sameDateError, setSameDateError] = useState("");
+
+  const fromDate = new Date(formik.values.from).toLocaleDateString()
+  const toDate = new Date(formik.values.to).toLocaleDateString()
+
+  useEffect(()=>{
+    if(fromDate === toDate){
+      setSameDateError("From date and To date can't be same")
+    }
+    else{
+      setSameDateError("")
+    }
+  },[fromDate,toDate])
+
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -338,6 +352,7 @@ const ManageCheckinModal = () => {
             closeRef.current.click();
             formik.resetForm();
             setRestrictedToDate(null);
+            setSelectorValue([])
           }}
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -348,6 +363,7 @@ const ManageCheckinModal = () => {
       <div className={`max-w-xl sm:max-w-full rounded-2xl mx-auto p-8 `}>
         <h3 className={`text-2xl font-semibold mb-3`}>Check In</h3>
         <hr />
+        <small className="flex justify-center pt-5 text-red-500">{sameDateError}</small>
         <form
           autoComplete="off"
           className="form-control grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 "
@@ -782,7 +798,7 @@ const ManageCheckinModal = () => {
           {/* button */}
           <div className={`flex justify-between sm:col-span-2`}>
             <button
-              disabled={isLoading}
+              disabled={isLoading ||sameDateError}
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >

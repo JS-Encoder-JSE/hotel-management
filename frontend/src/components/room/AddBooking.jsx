@@ -304,6 +304,7 @@ const AddBooking = () => {
           onClick={() => {
             setRestrictedToDate(null);
             formik.handleReset();
+            setSelectorValue([])
           }}
         >
           ✕
