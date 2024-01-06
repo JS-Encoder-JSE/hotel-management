@@ -273,6 +273,20 @@ const AddBookingSelect = ({ room }) => {
     }
   }, [availableRooms]);
 
+  const [restrictedToDate, setRestrictedToDate] = useState(null);
+  const updateToDate = (fromDate) => {
+    const nextDay = new Date(fromDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setRestrictedToDate(nextDay);
+  };
+
+  // Get the current date
+  const currentDates = new Date();
+
+  // Create a new date for the next day
+  const nextDate = new Date(currentDates);
+  nextDate.setDate(currentDates.getDate() + 1);
+
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -282,6 +296,7 @@ const AddBookingSelect = ({ room }) => {
           onClick={() => {
             formik.handleReset();
             setError("");
+            setRestrictedToDate(null);
           }}
         >
           ✕
@@ -528,7 +543,10 @@ const AddBookingSelect = ({ room }) => {
               minDate={new Date()}
               selected={formik.values.from}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("from", date)}
+              onChange={(date) => {
+                formik.setFieldValue("from", date);
+                updateToDate(date);
+              }}
               onBlur={formik.handleBlur}
             />
             {formik.touched.from && Boolean(formik.errors.from) ? (
@@ -544,7 +562,11 @@ const AddBookingSelect = ({ room }) => {
               dateFormat="dd/MM/yyyy"
               name="to"
               placeholderText={`To`}
-              minDate={new Date()}
+              minDate={
+                restrictedToDate === null || !formik.values.from
+                  ? nextDate
+                  : restrictedToDate
+              }
               selected={formik.values.to}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => formik.setFieldValue("to", date)}
