@@ -51,7 +51,7 @@ const ShowAllSell = () => {
     isLoading: isHotelLoading,
     isSuccess: isHotelSuccess,
   } = useGetHotelByManagerIdQuery(user?._id);
-
+console.log("hotelInfo",hotelInfo)
   const [searchParams, setSearchParams] = useState({
     fromDate: "",
     toDate: "",
@@ -184,7 +184,7 @@ const ShowAllSell = () => {
 
   // console.log("todayItem",todayItem);
   // console.log("currentItems", currentItems);
-  console.log("user",user)
+  // console.log("user",user)
 
   return (
     <div className={`space-y-5`}>
@@ -222,8 +222,8 @@ const ShowAllSell = () => {
                     values={currentItems}
                     date={new Date().toLocaleDateString()}
                     header={{
-                      title: `${hotelInfo[0]?.name}`,
-                      subTitle: `${hotelInfo[0]?.branch_name}`,
+                      title: `${hotelInfo[0].name}`,
+                      subTitle: `${hotelInfo[0].branch_name}`,
                       name: "Today's Sales ",
                     }}
                   />
@@ -334,12 +334,6 @@ const ShowAllSell = () => {
               Restaurant sales History
             </h3>
           </div>
-
-          {user?.data?.role === "manager" && user?.data?.id === managerId ? (
-            <div />
-          ) : user?.data?.role === "owner" && user?.data?.id === ownerId ? (
-            <div />
-          ) : null}
 
           <div className="flex justify-end mr-5">
             {restaurantSalesHistory?.data?.docs?.length ? (
@@ -479,7 +473,7 @@ const ShowAllSell = () => {
                             className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case ms-2`}
                             onClick={() =>
                               navigate(
-                                `/dashboard/show-all-sell-details?date=${item?.date}`
+                                `/dashboard/show-all-sell-details?date=${item?.date} `
                               )
                             }
                           >

@@ -44,7 +44,7 @@ const RestaurantSales = () => {
     setselectedHotel(null);
   };
 
-  console.log("selectedHotel",selectedHotel)
+  // console.log("selectedHotel",selectedHotel)
   if (isLoading || isError) {
     return (
       <Rings

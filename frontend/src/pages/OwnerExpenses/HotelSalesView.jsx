@@ -107,7 +107,7 @@ const HotelSalesView = () => {
                   values={orderedDataByDate?.data?.docs}
                   header={{
                     title: `${hotelInfo[0]?.name}`,
-                    // subTitle: `${hotelInfo[0]?.branch_name}`,
+                    subTitle: `${hotelInfo[0]?.branch_name}`,
                     name: "Hotel Sales Information ",
                   }}
                 />
