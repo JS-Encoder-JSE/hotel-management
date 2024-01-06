@@ -280,6 +280,21 @@ const AddBooking = () => {
   const nextDate = new Date(currentDates);
   nextDate.setDate(currentDates.getDate() + 1);
 
+  const [sameDateError, setSameDateError] = useState("");
+
+  const fromDate = new Date(formik.values.from).toLocaleDateString()
+  const toDate = new Date(formik.values.to).toLocaleDateString()
+
+  useEffect(()=>{
+    if(fromDate === toDate){
+      setSameDateError("From date and To date can't be same")
+    }
+    else{
+      setSameDateError("")
+    }
+  },[fromDate,toDate])
+
+
   return (
     <>
       <form onClick={handleRefetch} autoComplete="off" method="dialog">
@@ -298,6 +313,7 @@ const AddBooking = () => {
       <div>
         <h3 className={`text-2xl font-semibold mb-3`}>Booking</h3>
         <hr />
+        <small className="flex justify-center pt-5 text-red-500">{sameDateError}</small>
         <form
           autoComplete="off"
           className="form-control grid sm:grid-cols-2 grid-cols-1 gap-4 mt-5"
@@ -328,6 +344,7 @@ const AddBooking = () => {
           {/*  ) : null}*/}
           {/*</div>*/}
           {/* Date */}
+
           <div className="flex flex-col gap-3">
             <DatePicker
               dateFormat="dd/MM/yyyy"
@@ -654,7 +671,7 @@ const AddBooking = () => {
           {/* button */}
           <div className={`flex justify-between sm:col-span-2`}>
             <button
-              disabled={isLoading}
+              disabled={isLoading || sameDateError}
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >

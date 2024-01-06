@@ -287,6 +287,24 @@ const AddBookingSelect = ({ room }) => {
   const nextDate = new Date(currentDates);
   nextDate.setDate(currentDates.getDate() + 1);
 
+
+  const [sameDateError, setSameDateError] = useState("");
+  console.log(sameDateError)
+
+  const fromDate = new Date(formik.values.from).toLocaleDateString()
+  const toDate = new Date(formik.values.to).toLocaleDateString()
+
+  console.log(fromDate === toDate)
+
+  useEffect(()=>{
+    if(fromDate === toDate){
+      setSameDateError("From date and To date can't be same")
+    }
+    else{
+      setSameDateError("")
+    }
+  },[fromDate,toDate])
+
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -602,11 +620,12 @@ const AddBookingSelect = ({ room }) => {
           <div className="flex col-span-2 mx-auto text-red-600 mt-2">
             {error && <p>{error}</p>}
           </div>
+          <small className="flex col-span-2 mx-auto text-red-600 mt-2">{sameDateError}</small>
           <div
             className={`flex justify-between col-span-2 mx-auto md:w-[60%] w-full`}
           >
             <button
-              disabled={isLoading || isAvailableRoom === false}
+              disabled={isLoading || isAvailableRoom === false ||sameDateError}
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >

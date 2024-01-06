@@ -40,23 +40,12 @@ const BookingView = () => {
   const currentDate = moment();
   // Compare the two dates
   const isCurrentDateGreaterThanTarget = currentDate.isAfter(targetDate);
-  console.log(isCurrentDateGreaterThanTarget);
 
   // to Date validation
   const toTargetDate = moment(booking?.data?.to);
   toTargetDate.set({ hour: 15, minute: 0, second: 0, millisecond: 0 });
   const toCurrentDate = moment();
   const isToCurrentDteLessThanTarget = toCurrentDate.isBefore(toTargetDate);
-  console.log(isToCurrentDteLessThanTarget);
-
-  // useEffect(()=>{
-  //   if(isCurrentDateGreaterThanTarget === false){
-  //     toast.error("Please wait until the scheduled date.")
-  //   }else if(isToCurrentDteLessThanTarget === false){
-  //     toast.error("The booking period for this reservation has ended")
-  //   }
-
-  // },[isCurrentDateGreaterThanTarget,isToCurrentDteLessThanTarget])
 
   const handleError = () => {
     if (isCurrentDateGreaterThanTarget === false) {
@@ -65,6 +54,15 @@ const BookingView = () => {
       toast.error("The booking period for this reservation has ended.");
     }
   };
+  
+  const [restrictedError,setRestrictedError]=useState("")
+  useEffect(()=>{
+  if (isCurrentDateGreaterThanTarget === false) {
+      setRestrictedError("Please wait until the scheduled date.");
+    } else if (isToCurrentDteLessThanTarget === false) {
+      setRestrictedError("The booking period for this reservation has ended.");
+    }
+  },[isCurrentDateGreaterThanTarget,isToCurrentDteLessThanTarget])
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -77,6 +75,7 @@ const BookingView = () => {
           <span>Back</span>
         </div>
         <div className={`space-x-1.5`}>
+          <small className="text-red-500 min-w-min ml-2">{restrictedError}</small>
           <span
           className="cursor-pointer"
             onClick={() => {
