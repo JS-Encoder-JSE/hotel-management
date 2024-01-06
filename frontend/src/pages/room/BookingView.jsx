@@ -6,6 +6,13 @@ import Modal from "../../components/Modal.jsx";
 import { useGetBookingInfoByIdQuery } from "../../redux/room/roomAPI.js";
 import CheckInDyn from "./CheckInDyn.jsx";
 import { getOnlyFormatDate } from "../../utils/utils.js";
+import {
+  bookingDateFormatter,
+  getConvertedIndiaLocalDate,
+  getIndianFormattedDate,
+} from "../../utils/timeZone.js";
+import moment from "moment";
+import toast from "react-hot-toast";
 
 const BookingView = () => {
   const navigate = useNavigate();
@@ -25,6 +32,38 @@ const BookingView = () => {
     }
   }, [modalOpen]);
 
+  // fromDate validation
+  const targetDate = moment(booking?.data?.from);
+  // Set the time to 10:00 AM
+  targetDate.set({ hour: 10, minute: 0, second: 0, millisecond: 0 });
+  // Get the current date and time
+  const currentDate = moment();
+  // Compare the two dates
+  const isCurrentDateGreaterThanTarget = currentDate.isAfter(targetDate);
+
+  // to Date validation
+  const toTargetDate = moment(booking?.data?.to);
+  toTargetDate.set({ hour: 15, minute: 0, second: 0, millisecond: 0 });
+  const toCurrentDate = moment();
+  const isToCurrentDteLessThanTarget = toCurrentDate.isBefore(toTargetDate);
+
+  const handleError = () => {
+    if (isCurrentDateGreaterThanTarget === false) {
+      toast.error("Please wait until the scheduled date.");
+    } else if (isToCurrentDteLessThanTarget === false) {
+      toast.error("The booking period for this reservation has ended.");
+    }
+  };
+  
+  const [restrictedError,setRestrictedError]=useState("")
+  useEffect(()=>{
+  if (isCurrentDateGreaterThanTarget === false) {
+      setRestrictedError("Please wait until the scheduled date.");
+    } else if (isToCurrentDteLessThanTarget === false) {
+      setRestrictedError("The booking period for this reservation has ended.");
+    }
+  },[isCurrentDateGreaterThanTarget,isToCurrentDteLessThanTarget])
+
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
       <div className={`flex justify-between`}>
@@ -36,15 +75,34 @@ const BookingView = () => {
           <span>Back</span>
         </div>
         <div className={`space-x-1.5`}>
+          <small className="text-red-500 min-w-min ml-2">{restrictedError}</small>
           <span
-            className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
-            title={`Check In`}
+          className="cursor-pointer"
             onClick={() => {
-              setData(booking?.data);
-              setModalOpen(true);
+             if(isCurrentDateGreaterThanTarget === false){
+              handleError()
+             }else if(isToCurrentDteLessThanTarget === false){
+              handleError()
+             }
             }}
           >
-            <FaDoorOpen />
+            <button
+              className={`btn btn-sm bg-transparent hover:bg-green-slimy text-green-slimy hover:text-white !border-green-slimy rounded normal-case`}
+              title={`Check In`}
+              type="button"
+              disabled={
+                isCurrentDateGreaterThanTarget === true &&
+                isToCurrentDteLessThanTarget === true
+                  ? false
+                  : true
+              }
+              onClick={() => {
+                setData(booking?.data);
+                setModalOpen(true);
+              }}
+            >
+              <FaDoorOpen />
+            </button>
           </span>
           <span
             className={`btn btn-sm bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case`}
@@ -102,7 +160,7 @@ const BookingView = () => {
                 <td>
                   {getOnlyFormatDate(booking?.data?.createdAt)}
                   {/* {new Date(booking?.data?.createdAt).toLocaleString()} */}
-                  </td>
+                </td>
               </tr>
               {/* <tr>
                 <th className={`text-start`}>Booking No</th>
@@ -154,17 +212,17 @@ const BookingView = () => {
                 <th className={`text-start`}>From</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>
-                  {getOnlyFormatDate(booking?.data?.from)}
+                  {bookingDateFormatter(booking?.data?.from)}
                   {/* {new Date(booking?.data?.from).toLocaleDateString()} */}
-                  </td>
+                </td>
               </tr>
               <tr>
                 <th className={`text-start`}>To</th>
                 <td className={`w-4 text-center`}>:</td>
                 <td>
-                  {getOnlyFormatDate(booking?.data?.to)}
+                  {bookingDateFormatter(booking?.data?.to)}
                   {/* {new Date(booking?.data?.to).toLocaleDateString()} */}
-                  </td>
+                </td>
               </tr>
             </tbody>
           </table>

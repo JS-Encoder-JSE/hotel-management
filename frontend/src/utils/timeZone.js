@@ -85,40 +85,55 @@ export const convertedFromDate = (date) => {
 };
 
 // for booking or checkin we need to select the start or from date. then we have to call this func. this func will return iso formatted date of indian time 12.00 pm
-export const getStartDateOFBookingIST = (fromDate) => {
+// export const getStartDateOFBookingIST = (fromDate) => {
+//   const inputDate = getTodayFormateDate(fromDate);
+//   // console.log(inputDate);
+//   // Parse the input date string
+//   const [month, day, year] = inputDate.split("/").map(Number);
+
+//   // Create a new Date object with the parsed values
+//   const date = new Date(Date.UTC(year, month - 1, day, 5, 30, 0, 0));
+
+//   // Format the date to ISO string
+//   const isoFormat = date.toISOString();
+
+//   if (
+//     inputDate === getTodayFormateDate() &&
+//     isBefore(
+//       fromDate,
+//       set(fromDate, { hours: 10, minutes: 0, seconds: 0, milliseconds: 0 })
+//     )
+//   ) {
+//     const previousDay = addDays(fromDate, -1);
+//     const previousDate = getTodayFormateDate(previousDay);
+//     const [month, day, year] = previousDate.split("/").map(Number);
+
+//     const convertedPreviousDate = new Date(
+//       Date.UTC(year, month - 1, day, 5, 30, 0, 0)
+//     );
+
+//     const updatedFromDate = convertedPreviousDate.toISOString();
+//     return updatedFromDate;
+//   } else {
+//     // Otherwise, set check-in date to the selected date at 12:00 pm
+//     return isoFormat;
+//   }
+// };
+
+export const getStartDateOFBookingIST =(fromDate)=>{
   const inputDate = getTodayFormateDate(fromDate);
-  // console.log(inputDate);
   // Parse the input date string
   const [month, day, year] = inputDate.split("/").map(Number);
 
   // Create a new Date object with the parsed values
-  const date = new Date(Date.UTC(year, month - 1, day, 5, 30, 0, 0));
+  const date = new Date(Date.UTC(year, month - 1, day, 5, 30, 0));
 
   // Format the date to ISO string
   const isoFormat = date.toISOString();
 
-  if (
-    inputDate === getTodayFormateDate() &&
-    isBefore(
-      fromDate,
-      set(fromDate, { hours: 10, minutes: 0, seconds: 0, milliseconds: 0 })
-    )
-  ) {
-    const previousDay = addDays(fromDate, -1);
-    const previousDate = getTodayFormateDate(previousDay);
-    const [month, day, year] = previousDate.split("/").map(Number);
+  return isoFormat;
 
-    const convertedPreviousDate = new Date(
-      Date.UTC(year, month - 1, day, 5, 30, 0, 0)
-    );
-
-    const updatedFromDate = convertedPreviousDate.toISOString();
-    return updatedFromDate;
-  } else {
-    // Otherwise, set check-in date to the selected date at 12:00 pm
-    return isoFormat;
-  }
-};
+}
 
 // for booking or checkin we need to select the last date. then we have to call this func. this func will return iso date of indian time 11.59 am
 export const getEndDateOfBookingIst = (toDate) => {

@@ -286,9 +286,9 @@ const ManageCheckinModal = () => {
     {
       hotel_id: user?.assignedHotel[0],
       fromDate: formik.values.from
-        ? convertedStartDate(formik.values.from)
+        ? getStartDateOFBookingIST(formik.values.from)
         : "",
-      toDate: formik.values.to ? convertedEndDate(formik.values.to) : "",
+      toDate: formik.values.to ? getEndDateOfBookingIst(formik.values.to) : "",
     },
     { skip: !formik.values.to }
   );
@@ -297,7 +297,6 @@ const ManageCheckinModal = () => {
     label: `${room.roomNumber} - ${room.category}`,
     value: room._id,
   }));
-
 
   const [roomError, setRoomError] = useState("");
 
@@ -316,6 +315,20 @@ const ManageCheckinModal = () => {
     }
   }, [formik.values.to]);
 
+  const [restrictedToDate, setRestrictedToDate] = useState(null);
+  const updateToDate = (fromDate) => {
+    const nextDay = new Date(fromDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setRestrictedToDate(nextDay);
+  };
+
+  // Get the current date
+  const currentDates = new Date();
+
+  // Create a new date for the next day
+  const nextDate = new Date(currentDates);
+  nextDate.setDate(currentDates.getDate() + 1);
+
   return (
     <>
       <form autoComplete="off" method="dialog">
@@ -324,6 +337,7 @@ const ManageCheckinModal = () => {
             setSelectedImages([]);
             closeRef.current.click();
             formik.resetForm();
+            setRestrictedToDate(null);
           }}
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -404,7 +418,10 @@ const ManageCheckinModal = () => {
               selected={formik.values.from}
               maxDate={new Date()}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("from", date)}
+              onChange={(date) => {
+                formik.setFieldValue("from", date);
+                updateToDate(date);
+              }}
               onBlur={formik.handleBlur}
             />
             {formik.touched.from && Boolean(formik.errors.from) ? (
@@ -420,7 +437,11 @@ const ManageCheckinModal = () => {
               dateFormat="dd/MM/yyyy"
               name="to"
               placeholderText={`To`}
-              minDate={new Date()}
+              minDate={
+                restrictedToDate === null || !formik.values.from
+                  ? nextDate
+                  : restrictedToDate
+              }
               selected={formik.values.to}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => formik.setFieldValue("to", date)}

@@ -50,7 +50,6 @@ const validationSchema = yup.object({
 
   paymentMethod: yup.string().when(["amount"], (amount, schema) => {
     if (amount.length > 1 || (amount > 0 && amount !== undefined)) {
-
       return schema.required("Payment method is required");
     } else {
       return schema;
@@ -241,13 +240,82 @@ const AddBookingSelect = ({ room }) => {
     }
   };
 
+  const { isUserLoading, user } = useSelector((store) => store.authSlice);
+
+  const {
+    data: availableRooms,
+    isSuccess,
+    isLoading: availableRoomsLoading,
+  } = useGetAvailableRoomsByDateQuery(
+    {
+      hotel_id: user?.assignedHotel[0],
+      fromDate: formik.values.from
+        ? getStartDateOFBookingIST(formik.values.from)
+        : "",
+      toDate: formik.values.to ? getEndDateOfBookingIst(formik.values.to) : "",
+    },
+    { skip: !formik.values.to }
+  );
+
+  const roomsId = availableRooms?.data?.map((room_id) => room_id._id);
+  console.log(room?.data._id);
+  const isAvailableRoom = roomsId?.includes(room?.data._id);
+  console.log(isAvailableRoom);
+  console.log(roomsId);
+
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (isAvailableRoom === false) {
+      setError("The room is not available");
+    } else if (isAvailableRoom === true) {
+      setError("");
+    }
+  }, [availableRooms]);
+
+  const [restrictedToDate, setRestrictedToDate] = useState(null);
+  const updateToDate = (fromDate) => {
+    const nextDay = new Date(fromDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setRestrictedToDate(nextDay);
+  };
+
+  // Get the current date
+  const currentDates = new Date();
+
+  // Create a new date for the next day
+  const nextDate = new Date(currentDates);
+  nextDate.setDate(currentDates.getDate() + 1);
+
+
+  const [sameDateError, setSameDateError] = useState("");
+  console.log(sameDateError)
+
+  const fromDate = new Date(formik.values.from).toLocaleDateString()
+  const toDate = new Date(formik.values.to).toLocaleDateString()
+
+  console.log(fromDate === toDate)
+
+  useEffect(()=>{
+    if(fromDate === toDate){
+      setSameDateError("From date and To date can't be same")
+    }
+    else{
+      setSameDateError("")
+    }
+  },[fromDate,toDate])
+
   return (
     <>
       <form autoComplete="off" method="dialog">
         <button
           ref={closeRef}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={() => formik.handleReset()}
+          onClick={() => {
+            formik.handleReset();
+            setError("");
+            setRestrictedToDate(null);
+          }}
         >
           ✕
         </button>
@@ -490,9 +558,13 @@ const AddBookingSelect = ({ room }) => {
               dateFormat="dd/MM/yyyy"
               name="from"
               placeholderText={`From`}
+              minDate={new Date()}
               selected={formik.values.from}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
-              onChange={(date) => formik.setFieldValue("from", date)}
+              onChange={(date) => {
+                formik.setFieldValue("from", date);
+                updateToDate(date);
+              }}
               onBlur={formik.handleBlur}
             />
             {formik.touched.from && Boolean(formik.errors.from) ? (
@@ -508,6 +580,11 @@ const AddBookingSelect = ({ room }) => {
               dateFormat="dd/MM/yyyy"
               name="to"
               placeholderText={`To`}
+              minDate={
+                restrictedToDate === null || !formik.values.from
+                  ? nextDate
+                  : restrictedToDate
+              }
               selected={formik.values.to}
               className={`input input-md bg-transparent input-bordered border-gray-500/50 rounded focus:outline-none focus:border-green-slimy w-full`}
               onChange={(date) => formik.setFieldValue("to", date)}
@@ -540,11 +617,15 @@ const AddBookingSelect = ({ room }) => {
           </div>
 
           {/* button */}
+          <div className="flex col-span-2 mx-auto text-red-600 mt-2">
+            {error && <p>{error}</p>}
+          </div>
+          <small className="flex col-span-2 mx-auto text-red-600 mt-2">{sameDateError}</small>
           <div
             className={`flex justify-between col-span-2 mx-auto md:w-[60%] w-full`}
           >
             <button
-              disabled={isLoading}
+              disabled={isLoading || isAvailableRoom === false ||sameDateError}
               type={"submit"}
               className="btn btn-md w-full bg-green-slimy hover:bg-transparent text-white hover:text-green-slimy !border-green-slimy rounded normal-case"
             >
