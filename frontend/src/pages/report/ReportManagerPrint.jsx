@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import logo from "../../assets/logo.png";
-import { useGetCheckoutDataByBookingIdQuery } from "../../redux/room/roomAPI";
+import { useGetCheckoutDataByBookingIdQuery, useGetHotelByManagerIdQuery } from "../../redux/room/roomAPI";
 import {
   getFormateDateAndTime,
   getIndianFormattedDate,
@@ -11,8 +11,20 @@ import {
   versionControl,
 } from "../../utils/utils";
 
-const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
-  // console.log("hotelInfo",hotelInfo);
+const ReportManagerPrint = ({ data, roomNumber,
+  // hotelInfo,
+  managerId 
+}) => {
+  const { user } = useSelector((state) => state.authSlice);
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(
+    user.role === "manager" ? user?._id : user.role === "owner" ? managerId : ""
+  );
+// console.log("hotelInfo",hotelInfo)
+  
   return (
     <div>
       <div>
@@ -35,26 +47,26 @@ const ReportManagerPrint = ({ data, hotelInfo, roomNumber }) => {
                 <div>
                   <div className="flex gap-[2.1rem]">
                     <p>Hotel Name</p>
-                    <p> :  {hotelInfo?.name}</p>
+                    <p> :  {hotelInfo ?hotelInfo[0]?.name : ""}</p>
                   </div>
                   <div className="flex gap-[1.5rem]">
                     <p>Branch Name</p>
-                    <p> : {hotelInfo?.branch_name}</p>
+                    <p> : {hotelInfo ?hotelInfo[0]?.branch_name : ""}</p>
                   </div>
 
                   <div className="flex gap-[5.1rem]">
                     <p>Email</p>
-                    <p className=""> : {hotelInfo?.email}</p>
+                    <p className=""> : {hotelInfo ?hotelInfo[0]?.email : ""}</p>
                   </div>
 
                   <div className="flex gap-[4.7rem]">
                     <p>Phone</p>
-                    <p> : {hotelInfo?.phone_no}</p>
+                    <p> : {hotelInfo ?hotelInfo[0]?.phone_no : ""}</p>
                   </div>
 
                   <div className="flex gap-[4rem]">
                     <p>Address</p>
-                    <p>: {hotelInfo?.address}</p>
+                    <p>: {hotelInfo ?hotelInfo[0]?.address : ""}</p>
                   </div>
                 </div>
               </div>

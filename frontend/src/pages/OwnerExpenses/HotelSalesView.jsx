@@ -45,15 +45,9 @@ const HotelSalesView = () => {
   const hotelId = searchParams.get("hotel");
   const managerId = searchParams.get("managerId");
 
-  console.log(managerId);
+  // console.log(managerId);
 
   const { user } = useSelector((state) => state.authSlice);
-
-  const {
-    data: hotelInfo,
-    isLoading: isHotelLoading,
-    isSuccess: isHotelSuccess,
-  } = useGetHotelByManagerIdQuery(managerId);
 
   // query by searchParams
   const {
@@ -83,7 +77,17 @@ const HotelSalesView = () => {
     setPdf(orderedDataByDate?.data.docs);
   }, [orderedDataByDate]);
 
-  console.log(hotelInfo);
+
+
+  const {
+    data: hotelInfo,
+    isLoading: isHotelLoading,
+    isSuccess: isHotelSuccess,
+  } = useGetHotelByManagerIdQuery(
+    user.role === "manager" ? user?._id : user.role === "owner" ? managerId : ""
+  );
+
+  // console.log(hotelInfo);
 
   return (
     <div className={`bg-white p-10 rounded-2xl space-y-8`}>
@@ -106,8 +110,8 @@ const HotelSalesView = () => {
                   date={orderedDataByDate?.data?.docs}
                   values={orderedDataByDate?.data?.docs}
                   header={{
-                    title: `${hotelInfo[0]?.name}`,
-                    subTitle: `${hotelInfo[0]?.branch_name}`,
+                    title: `${hotelInfo ? hotelInfo[0]?.name : ""}`,
+                    subTitle: `${hotelInfo ? hotelInfo[0]?.branch_name : ""}`,
                     name: "Hotel Sales Information ",
                   }}
                 />
@@ -166,10 +170,10 @@ const HotelSalesView = () => {
                       <td>
                         {" "}
                         <ReportPrint
-                          hotelInfo={hotelInfo[0]}
+                          hotelInfo={hotelInfo}
+                          managerId={managerId}
                           booking_id={item?.booking_ids[0]}
                           roomNumber={item?.room_numbers[0]}
-                          
                         />
                       </td>
                     </tr>

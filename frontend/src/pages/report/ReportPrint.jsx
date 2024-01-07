@@ -6,12 +6,22 @@ import {
   useGetCheckoutDataByBookingIdQuery,
   useGetHotelByManagerIdQuery,
 } from "../../redux/room/roomAPI";
-const ReportPrint = ({ booking_id, hotelInfo, roomNumber}) => {
+import { useSelector } from "react-redux";
+const ReportPrint = ({ booking_id, roomNumber,managerId,hotelId}) => {
   // console.log(roomNumber);,
   const componentRef = useRef();
   const { data: getCheckoutData } =
     useGetCheckoutDataByBookingIdQuery(booking_id);
-  console.log(getCheckoutData);
+  // console.log(getCheckoutData);
+
+  const { user } = useSelector((store) => store.authSlice);
+
+  const { data: hotelInfo } = useGetHotelByManagerIdQuery(
+    user.role === "manager" ? user?._id : user.role === "owner" ? managerId : ""
+  );
+ 
+  //  console.log("hotelInfo",hotelInfo)
+
   return (
     <>
       <ReactToPrint
@@ -32,6 +42,7 @@ const ReportPrint = ({ booking_id, hotelInfo, roomNumber}) => {
             hotelInfo={hotelInfo}
             data={getCheckoutData}
             roomNumber={roomNumber}
+            managerId={managerId}
             
           />
         </div>

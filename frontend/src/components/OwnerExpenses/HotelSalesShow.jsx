@@ -42,6 +42,7 @@ import {
   convertedStartDate,
   getIndianFormattedDate,
 } from "../../utils/timeZone";
+import { useSelector } from "react-redux";
 // import { getformatDateTime } from "./../../utils/timeZone";
 
 const HotelSalesShow = ({ managerId, hotelId, hotelName, branchName }) => {
@@ -146,11 +147,8 @@ const HotelSalesShow = ({ managerId, hotelId, hotelName, branchName }) => {
   useEffect(() => {
     setPdf(hotelTodaySales?.data.docs);
   }, [hotelTodaySales]);
-
-  // history
-  // useEffect(() => {
-  //   if (hotelSalesHistory) setCurrentPage(hotelSalesHistory?.data?.totalPages);
-  // }, [hotelSalesHistory]);
+  
+  // console.log("managerId",managerId)
 
   return (
     <div className={`space-y-5`}>
@@ -237,9 +235,12 @@ const HotelSalesShow = ({ managerId, hotelId, hotelName, branchName }) => {
                               </td>
                               <td>
                                 <ReportPrint
-                                  hotelInfo={hotelInfo[0]}
+                                  // hotelInfo={hotelInfo[0]}
                                   booking_id={item?.booking_ids[0]}
                                   roomNumber={item?.room_numbers[0]}
+                                  managerId={managerId}
+                                  hotelId={hotelId}
+
                                 />
                               </td>
                             </tr>
