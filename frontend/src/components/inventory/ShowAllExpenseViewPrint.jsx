@@ -20,12 +20,12 @@ const ShowAllExpenseViewPrint = ({
   return (
     <div className="p-4">
       <div className="mb-10">
-        <h6 className="text-gray-400 text-right">Service provided by Dak Hospitality Ltd</h6>
+        <h6 className="text-gray-400 text-right text-[15px]">Service provided by Dak Hospitality Ltd</h6>
         <div>
           <img className="w-24 h-24 mx-auto" src={logo} alt="DHK LOGO" />
         </div>
-        <h1 className="text-center text-3xl">Hotel Name : {hotelName} </h1>
-        <h4 className="text-center text-2xl">
+        <h1 className="text-center text-2xl">Hotel Name : {hotelName} </h1>
+        <h4 className="text-center text-1xl">
           Branch Name : {hotelBranchName}{" "}
         </h4>
         <p className="text-center">
