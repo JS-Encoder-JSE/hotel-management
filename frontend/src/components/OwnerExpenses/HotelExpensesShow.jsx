@@ -35,6 +35,7 @@ import CreateReport from "../../components/pdf/CreateReport";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RestaurantExpenseReport from "../../pages/report/RestaurantExpenseReport";
 import ExpensesHistoryReport from "../../pages/report/ExpensesHistoryReport";
+import { convertedEndDate, convertedStartDate } from "../../utils/timeZone";
 
 const HotelExpensesShow = ({ hotelId }) => {
   const [forcePage, setForcePage] = useState(null);
@@ -86,8 +87,10 @@ const HotelExpensesShow = ({ hotelId }) => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
-    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
+    fromDate:convertedStartDate(),
+    toDate:convertedEndDate(),
+    // fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
+    // toDate: getConvertedIsoEndDate(getTodayFormateDate()),
     hotel_id: hotelId,
     spendedfor: "hotel",
   });

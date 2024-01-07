@@ -90,8 +90,8 @@ const HotelExpenses = () => {
     isLoading,
     isSuccess,
   } = useGetExpensesQuery({
-    fromDate: getTodayFormateDate(),
-    toDate: getTodayFormateDate(),
+    fromDate: convertedStartDate(),
+    toDate: convertedEndDate(),
     hotel_id: hotelId,
     spendedfor: "hotel",
   });

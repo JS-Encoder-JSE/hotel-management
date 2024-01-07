@@ -97,8 +97,8 @@ const ShowAllExpense = () => {
     isSuccess,
     refetch,
   } = useGetExpensesQuery({
-    fromDate: getConvertedIsoStartDate(getTodayFormateDate()),
-    toDate: getConvertedIsoEndDate(getTodayFormateDate()),
+    fromDate: convertedStartDate(),
+    toDate: convertedEndDate(),
     hotel_id: hotelId,
     spendedfor: "restaurant",
   });
