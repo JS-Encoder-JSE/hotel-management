@@ -207,15 +207,15 @@ const StatusHistory = () => {
                         <td>{item?.changed_from}</td>
                         <td>
                           {item?.extended_time?.from
-                            ? new Date(
+                            ? getOnlyFormatDate(
                                 item?.extended_time.from
-                              ).toLocaleDateString()
+                              )
                             : ""}{" "}
                           -
                           {item?.extended_time?.to
-                            ? new Date(
+                            ? getOnlyFormatDate(
                                 item?.extended_time?.to
-                              ).toLocaleDateString()
+                              )
                             : ""}
                         </td>
                       </tr>

@@ -113,7 +113,7 @@ const SuspendList = () => {
       </div>
       <div>
         {!isLoading ? (
-          owners.docs.length ? (
+          owners?.docs.length ? (
             <>
               <div className="overflow-x-auto">
                 <table className="table border">

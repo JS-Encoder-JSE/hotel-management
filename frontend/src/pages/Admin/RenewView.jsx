@@ -33,6 +33,25 @@ const RenewView = () => {
     !isLoading && data?.status === "Suspended"
       ? data?.extended_time[0]?.to
       : data?.bill_to;
+
+      const getLatestDate = (allDate) => {
+        return allDate?.reduce((latestDate, entry) => {
+          const toDate = new Date(entry.to);
+          const latestToDateObj = new Date(latestDate);
+    
+          // Compare the current entry's "to" date with the latest known "to" date
+          if (toDate > latestToDateObj) {
+            return entry.to;
+          } else {
+            return latestDate;
+          }
+        }, allDate[0]?.to);
+      };
+  // Now latestObject contains the object with the latest "to" date
+  const latestExpiredDate = (getLatestDate(data?.extended_time));
+  console.log(latestExpiredDate)
+
+  console.log(data?.extended_time);
   return (
     <div>
       <div className="card w-full bg-white shadow-xl p-5">
@@ -45,130 +64,133 @@ const RenewView = () => {
           </span>
         </div>
         {!isLoading ? (
-         <div className="card-body grid grid-cols xl:grid-cols-2 ">
-         <div className="">
-           <h2 className="card-title mb-3">Client Information</h2>
-           <table className="table-auto overflow-x-auto ">
-             <tbody>
-               <tr>
-                 <th className="text-start">User Name </th>
-                 <td className="pl-2">:</td>
-                 <td className="break-all pl-5">{data?.username}</td>
-               </tr>
-               <tr>
-                 <th className="text-start">Name</th>
-                 <td className="pl-2">:</td>
-                 <td className="break-all pl-5"> {data?.name}</td>
-               </tr>
-               <tr>
-                 <th className="text-start">Address</th>
-                 <td className="pl-2">:</td>
-                 <td className="break-all pl-5">
-                   <span>{data?.address}</span>
-                 </td>
-               </tr>
-               <tr>
-                 <th className="text-start">Contact No</th>
-                 <td className="pl-2">:</td>
-                 <td className="break-all">
-                   <span className="break-all pl-5">{data?.phone_no}</span>
-                 </td>
-               </tr>
-               <tr>
-                 <th className="text-start">Emergency No</th>
-                 <td className="pl-2">:</td>
-                 <td className="break-all">
-                   <span className="break-all pl-5">{data?.emergency_contact}</span>
-                 </td>
-               </tr>
-             
-               <tr>
-                 <th className="text-start">Email</th>
-                 <td className="pl-2">:</td>
-                 <td className="break-all pl-5">
-                   <span>{data?.email}</span>
-                 </td>
-               </tr>
-             </tbody>
-           </table>
-         </div>
+          <div className="card-body grid grid-cols xl:grid-cols-2 ">
+            <div className="">
+              <h2 className="card-title mb-3">Client Information</h2>
+              <table className="table-auto overflow-x-auto ">
+                <tbody>
+                  <tr>
+                    <th className="text-start">User Name </th>
+                    <td className="pl-2">:</td>
+                    <td className="break-all pl-5">{data?.username}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Name</th>
+                    <td className="pl-2">:</td>
+                    <td className="break-all pl-5"> {data?.name}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Address</th>
+                    <td className="pl-2">:</td>
+                    <td className="break-all pl-5">
+                      <span>{data?.address}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Contact No</th>
+                    <td className="pl-2">:</td>
+                    <td className="break-all">
+                      <span className="break-all pl-5">{data?.phone_no}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Emergency No</th>
+                    <td className="pl-2">:</td>
+                    <td className="break-all">
+                      <span className="break-all pl-5">
+                        {data?.emergency_contact}
+                      </span>
+                    </td>
+                  </tr>
 
-         <div className="">
-           <h2 className="card-title mb-3">License Information </h2>
+                  <tr>
+                    <th className="text-start">Email</th>
+                    <td className="pl-2">:</td>
+                    <td className="break-all pl-5">
+                      <span>{data?.email}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-           <table>
-             <tbody>
-             <tr>
-                 <th className="text-start">License Key</th>
-                 <td className="pl-3">:</td>
-                 <td className="break-all pl-5">
-                   <span>{data?.license_key}</span>
-                 </td>
-               </tr>
-               <tr>
-                 <th className="text-start">Purchase Date</th>
-                 <td className="pl-3">:</td>
-                 <td className=" break-all pl-5">
-                   {getOnlyFormatDate(data?.createdAt)}
-                 </td>
-               </tr>
-               <tr>
-                 <th className="text-start">Renew Date</th>
-                 <td className="pl-3">:</td>
-                 <td className=" break-all pl-5">
-                   {getOnlyFormatDate(data?.bill_from)}
-                   {/* <h6>
+            <div className="">
+              <h2 className="card-title mb-3">License Information </h2>
+
+              <table>
+                <tbody>
+                  <tr>
+                    <th className="text-start">License Key</th>
+                    <td className="pl-3">:</td>
+                    <td className="break-all pl-5">
+                      <span>{data?.license_key}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Purchase Date</th>
+                    <td className="pl-3">:</td>
+                    <td className=" break-all pl-5">
+                      {getOnlyFormatDate(data?.createdAt)}
+                    </td>
+                  </tr>
+                  {data?.bill_from && (
+                    <tr>
+                      <th className="text-start">Renew Date</th>
+                      <td className="pl-3">:</td>
+                      <td className=" break-all pl-5">
+                        {getOnlyFormatDate(data?.bill_from)}
+                        {/* <h6>
                      {" "}
                      Renew Date :
                      {new Date(data?.renew_date).toLocaleDateString()}{" "}
                    </h6> */}
-                 </td>
-               </tr>
-               <tr>
-                 <th className="text-start">Expire Date</th>
-                 <td className="pl-3">:</td>
-                 <td className=" break-all pl-5">
-                   {" "}
-                   {getOnlyFormatDate(data?.bill_to)}
-                 </td>
-               </tr>
-               <tr>
-                 <th className="text-start">Remain Days</th>
-                 <td className="pl-3">:</td>
-                 <td className=" break-all pl-5">
-                   {/* {" "}
+                      </td>
+                    </tr>
+                  )}
+                  <tr>
+                    <th className="text-start">Expire Date</th>
+                    <td className="pl-3">:</td>
+                    <td className=" break-all pl-5">
+                      {" "}
+                      {getOnlyFormatDate(latestExpiredDate)}
+                      {/* {getOnlyFormatDate(data?.bill_to)} */}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start">Remain Days</th>
+                    <td className="pl-3">:</td>
+                    <td className=" break-all pl-5">
+                      {/* {" "}
                    {Math.floor(
                      Math.abs(new Date(data?.bill_to) - new Date()) /
                        (24 * 60 * 60 * 1000)
                    )}{" "}
                    Days */}
-                    {calculateRemainingDays(bill_to)} Days
-                 </td>
-               </tr>
-               <tr>
-                 <th className="text-start"> Status</th>
-                 <td className="pl-3">:</td>
-                 <td className=" break-all pl-5">{data?.status}</td>
-               </tr>
+                      {calculateRemainingDays(bill_to)} Days
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-start"> Status</th>
+                    <td className="pl-3">:</td>
+                    <td className=" break-all pl-5">{data?.status}</td>
+                  </tr>
 
-               <tr>
-                 <th className="text-start">Number Of Hotels</th>
-                 <td className="pl-3">:</td>
-                 <td className="flex gap-2 items-center mt-4 md:mt-0">
-                   {" "}
-                   <span className=" pl-5">{data?.maxHotels}</span>
-                   <span
-                     className={`cursor-pointer`}
-                     onClick={() => window.hle_modal.showModal()}
-                   >
-                    
-                   </span>
-                 </td>
-               </tr>
-             </tbody>
-           </table>
-         </div>
-       </div>
+                  <tr>
+                    <th className="text-start">Number Of Hotels</th>
+                    <td className="pl-3">:</td>
+                    <td className="flex gap-2 items-center mt-4 md:mt-0">
+                      {" "}
+                      <span className=" pl-5">{data?.maxHotels}</span>
+                      <span
+                        className={`cursor-pointer`}
+                        onClick={() => window.hle_modal.showModal()}
+                      ></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         ) : (
           <Rings
             width="50"
